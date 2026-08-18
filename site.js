@@ -538,7 +538,10 @@
       share.textContent = r.getAttribute("data-k") + "  ·  " + r.getAttribute("data-c") +
         "  ·  " + (w / total * 100).toFixed(1) + "% of everything written here";
       rest.hidden = true; out.hidden = false;
-      requestAnimationFrame(function () { bar.style.width = (w / widest * 100).toFixed(1) + "%"; });
+      /* Set directly rather than inside requestAnimationFrame: rAF does not
+         run in a background tab, and a proportion bar that never arrives is
+         worse than one that arrives without its transition. */
+      if (bar) bar.style.width = (w / widest * 100).toFixed(1) + "%";
     }
     function clear() {
       /* a short hold, so crossing a gap between two rows does not make
