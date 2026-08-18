@@ -614,10 +614,32 @@ def page_index():
                 f"{len(P)} published pieces, {TOTAL_WORDS:,} words, all of them running.",
                 "index.html", extra="\n" + jsonld_site()) + body + foot()
 
+# The specimen figure shown beside the lead belongs to one particular piece,
+# so it is registered against that piece rather than against the slot. Adding
+# a new piece at the top of the list used to move the slot without moving the
+# figure, which left a caption describing a chart from a different document.
+SPECIMEN_OF = {"the-trillion-dollar-vintage": (
+    "spec-vintage",
+    "Figure lifted from the piece. One vintage on two bases: 1,082 billion dollars as "
+    "first reported, 990 billion after an attribution correction the page makes in "
+    "public. The fork stays open.")}
+
 def page_research():
     items = [p for p in P if p["surface"] == "independent"]
-    lead, rest = items[0], items[1:]
+    # the largest, not the first: the note beside this slot says "the largest
+    # thing here", and a positional lead makes that sentence false the moment
+    # anything is published above it
+    lead = max(items, key=lambda x: x["words"])
+    rest = [x for x in items if x is not lead]
     gt = figs.group_totals()
+
+    spec = SPECIMEN_OF.get(lead["slug"])
+    leadfig = ""
+    if spec:
+        leadfig = (f'<div id="{spec[0]}">\n'
+                   f'      <div class="fig">{fit(spec[0])}</div>\n'
+                   f'      <p class="figcap">{esc(spec[1])}</p>\n'
+                   f'    </div>')
 
     blocks = []
     for p in rest:
@@ -664,11 +686,7 @@ def page_research():
       {sig(lead, with_surface=False)}
       <a class="open" style="font-size:.9375rem;font-weight:600;color:var(--accent);text-decoration:none" href="{lead['url']}">Open the study edition <span aria-hidden="true">&#8594;</span></a>
     </div>
-    <div id="spec-vintage">
-      <div class="fig">{fit("spec-vintage")}</div>
-      <p class="figcap">Figure lifted from the piece. One vintage on two bases: 1,082 billion dollars as first
-      reported, 990 billion after an attribution correction the page makes in public. The fork stays open.</p>
-    </div>
+    {leadfig}
   </article>
 </section>
 
@@ -1619,8 +1637,11 @@ def check_site():
             if host != HOST:
                 problems.append(f"{f}: mentions {host}, which is not this site")
 
-        # 3. every local href and src resolves
-        for m in re.finditer(r'(?:href|src)="([^"]+)"', text):
+        # 3. every local href and src resolves. Script and style blocks are cut
+        # first: a page that builds its own markup client-side has href= inside
+        # a template literal, and `${esc(s.url)}` is live code, not a dead link.
+        prose = re.sub(r"<(script|style)\b[^>]*>.*?</\1>", "", text, flags=re.S | re.I)
+        for m in re.finditer(r'(?:href|src)="([^"]+)"', prose):
             u = local(m.group(1))
             # reader.html builds a couple of URLs in script; those are not links
             if u and "' +" not in u and u not in files:
