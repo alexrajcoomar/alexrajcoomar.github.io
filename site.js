@@ -481,11 +481,25 @@
         var j = jobs.filter(function (x) { return x.el === e.target; })[0];
         if (j) { animate(j); io.unobserve(e.target); }
       });
-    }, { threshold: 0.4 });
+    }, { threshold: 0.1, rootMargin: "0px 0px -4% 0px" });
     jobs.forEach(function (j) { paint(j, 0); io.observe(j.el); });
-    /* If something goes wrong with the observer the numbers must not be
-       left at zero, which would be a lie rather than an animation. */
-    setTimeout(function () { jobs.forEach(function (j) { if (!j.done) { j.done = true; paint(j, j.to); } }); }, 4000);
+
+    /* A number showing zero is a wrong number, not a pending animation, so
+       nothing is left waiting on an observer that may never report. This
+       sweeps anything already on screen, and after fifteen seconds gives up
+       and writes every remaining value in full. */
+    var swept = 0;
+    (function sweepNums() {
+      var left = 0;
+      jobs.forEach(function (j) {
+        if (j.done) return;
+        var r = j.el.getBoundingClientRect();
+        var onScreen = r.bottom > 0 && r.top < (window.innerHeight || 0);
+        if (onScreen || swept > 14000) { animate(j); io.unobserve(j.el); }
+        else left++;
+      });
+      if (left) { swept += 1000; setTimeout(sweepNums, 1000); }
+    })();
   })();
 
   /* -------------------------------------------- the corpus readout --
