@@ -42,10 +42,18 @@ jobs:
           npx playwright install --with-deps chromium
 
       - name: Measure the pieces that changed
-        if: steps.plan.outputs.needs == '1'
+        if: steps.plan.outputs.measure == '1'
         run: node build/measure.js
 
-      - name: Rebuild the listing pages
+      # The link-preview card carries the piece's title, so a title edit makes
+      # a card stale without changing any piece file. Tracked separately.
+      - name: Draw the link-preview cards that changed
+        if: steps.plan.outputs.cards == '1'
+        run: node build/cards.js
+
+      # Fails the build if a link, a canonical, an icon or a listed file does
+      # not resolve. A red mark here means the site was not published broken.
+      - name: Rebuild the listing pages and check them
         run: python3 build/build_site.py
 
       - name: Commit anything that changed
