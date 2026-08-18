@@ -63,7 +63,9 @@ jobs:
           # Installing the browser driver leaves a dependency cache behind.
           # .gitignore keeps it out from now on; this untracks the copy an
           # earlier run committed before that file existed.
-          git rm -r --cached --quiet node_modules package.json package-lock.json 2>/dev/null || true
+          # --ignore-unmatch matters: without it, git rm aborts the moment one
+          # of these paths is not tracked, and removes none of them.
+          git rm -r --cached --quiet --ignore-unmatch node_modules package.json package-lock.json || true
           git add -A
           if git diff --cached --quiet; then
             echo "site already up to date"
