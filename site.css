@@ -205,6 +205,24 @@ nav.main a[aria-current="page"]{color:var(--ink);border-bottom-color:var(--accen
   .brand span.sub{display:none}
   .searchbtn span.lbl{display:none}
 }
+/* The nav scrolls sideways rather than hiding behind a menu, but a strip that
+   scrolls with no scrollbar and no cut-off edge reads as a strip that ends:
+   at 390px "About" was clipped mid-word and looked like a layout fault. The
+   mask fades the last few pixels, which is the conventional signal that there
+   is more, and it lifts as soon as the reader reaches the end. */
+@media (max-width:56rem){
+  nav.main{
+    -webkit-mask-image:linear-gradient(to right,#000 calc(100% - 2.2rem),transparent 100%);
+    mask-image:linear-gradient(to right,#000 calc(100% - 2.2rem),transparent 100%);
+  }
+  nav.main:has(a:last-child:target),
+  nav.main.scrolled-end{-webkit-mask-image:none;mask-image:none}
+}
+@media (max-width:26rem){
+  /* one notch tighter, so the last item is at least partly in view to start */
+  nav.main{gap:0}
+  nav.main a{padding:.4rem .34rem;font-size:.85rem}
+}
 
 /* ------------------------------- hero ------------------------------- */
 .hero{padding-block:clamp(3rem,7vw,6rem) clamp(2rem,4vw,3rem)}
@@ -489,7 +507,9 @@ footer.site .cols{
   max-width:var(--shell);margin:0 auto;padding-inline:var(--gap);
   display:grid;grid-template-columns:minmax(0,1.4fr) repeat(2,minmax(0,1fr));gap:2rem
 }
-footer.site h4{font-size:.76rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);margin:0 0 .7rem}
+/* h2, not h4: the footer columns are siblings of the page's sections, and
+   jumping h2 to h4 breaks heading navigation for anyone using it. */
+footer.site h2{font-size:.76rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);margin:0 0 .7rem}
 footer.site a{display:block;text-decoration:none;font-size:.92rem;color:var(--ink-2);padding:.16rem 0}
 footer.site a:hover{color:var(--accent)}
 footer.site .fine{
@@ -574,7 +594,7 @@ footer.site .fine b{font-weight:600;color:var(--ink-2)}
   border-bottom:2px solid var(--ink);
 }
 .grouphead:first-child{margin-top:0}
-.grouphead h3{margin:0;font-size:1.0625rem;letter-spacing:-.01em}
+.grouphead h2,.grouphead h3{margin:0;font-size:1.0625rem;letter-spacing:-.01em;font-weight:650}
 .grouphead .gnote{margin:0;color:var(--ink-3);font-size:.8125rem;max-width:34rem}
 .grouphead .gcount{margin-left:auto;color:var(--ink-3);font-size:.75rem;font-variant-numeric:tabular-nums}
 
@@ -592,7 +612,12 @@ footer.site .fine b{font-weight:600;color:var(--ink-2)}
 }
 :root[data-theme="dark"] .corpus{--cf-1:#3987e5;--cf-2:#cde2fb}
 .corpus .plot{overflow-x:auto;padding-bottom:.25rem}
-.corpus .plot svg{min-width:34rem}
+/* A figure that is shrunk is a figure that is not read: at 34rem the corpus
+   labels landed at 9.1px on a phone. The floor is now the artboard the figure
+   was drawn on, so the type never renders smaller than it was set, and the
+   frame scrolls sideways instead. The table under "The numbers behind the
+   figure" is the alternative for anyone who would rather not scroll. */
+.corpus .plot svg{min-width:41rem}
 .rail-app{border-top:2px solid var(--ink);padding-top:.75rem;font-size:.8125rem;color:var(--ink-2)}
 .rail-app h3{margin:0 0 .5rem;font-size:.75rem;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-3)}
 .rail-app p{margin:0 0 .7rem}
@@ -623,6 +648,8 @@ footer.site .fine b{font-weight:600;color:var(--ink-2)}
   border-top:2px solid var(--ink);border-bottom:1px solid var(--rule);
   padding:1rem 0 1.1rem;overflow-x:auto;
 }
+/* min-width is set per figure, inline, from the artboard each one was drawn
+   on; 30rem is only the floor for anything that arrives without one. */
 .spec .frame svg{width:100%;height:auto;display:block;min-width:30rem;margin:0 auto}
 
 .spec .rule{
@@ -860,13 +887,22 @@ a.figtile:hover .ft-cap b{color:var(--accent)}
      spill past the column on a phone and widen the whole document. */
   overflow-wrap:break-word;
 }
-.docbody > h1{display:none}          /* the masthead already carries it */
+/* Only the first: this rule used to hide every top-level heading in the
+   document body, which silently deleted eight section headings from one piece
+   and five from another. The masthead carries the title; nothing else here is
+   a duplicate of it. */
+.docbody > h1:first-of-type{display:none}          /* the masthead already carries it */
 .docbody h2{
   margin:2.75rem 0 .85rem;font-size:1.375rem;letter-spacing:-.02em;font-weight:640;
   padding-top:.85rem;border-top:1px solid var(--rule);scroll-margin-top:7.25rem;
 }
 .docbody h3{margin:2rem 0 .6rem;font-size:1.0625rem;font-weight:640;letter-spacing:-.012em;scroll-margin-top:7.25rem}
 .docbody h4{margin:1.5rem 0 .5rem;font-size:.9375rem;font-weight:640;color:var(--ink-2);scroll-margin-top:7.25rem}
+/* Three documents nest a level deeper than the chapters do, because they use a
+   top-level heading for every section rather than only for the title. Without
+   a rule at this level those headings fell back to the browser default and
+   read as bold body text. */
+.docbody h5{margin:1.25rem 0 .4rem;font-size:.875rem;font-weight:640;color:var(--ink-2);letter-spacing:.01em;scroll-margin-top:7.25rem}
 .docbody p{margin:0 0 1rem;color:var(--ink-2)}
 .docbody strong{color:var(--ink);font-weight:620}
 .docbody a{color:var(--accent);text-underline-offset:2px}

@@ -159,21 +159,54 @@
                      .filter(function (r) { return r.s > 0; })
                      .sort(function (a, b) { return b.s - a.s; })
                      .slice(0, 9);
+      results.textContent = "";
       if (!hits.length) {
-        results.innerHTML = '<li class="cmdk-empty">Nothing matches that. Try a course code, or a word from a title.</li>';
+        var empty = el("li", "cmdk-empty");
+        empty.textContent = "Nothing matches that. Try a course code, or a word from a title.";
+        results.appendChild(empty);
         items = [];
         return;
       }
-      results.innerHTML = hits.map(function (r, n) {
+      /* Built as nodes, not as a string of HTML. Titles and subtitles come from
+         content/pieces.json, which is written by the editor, so an ampersand or
+         an angle bracket typed into a title used to land in this markup
+         unescaped. textContent cannot be talked into becoming an element. */
+      hits.forEach(function (r, n) {
         var it = r.it;
-        return '<li role="option" id="cmdk-o' + n + '" aria-selected="' + (n === 0) + '"' +
-          (n === 0 ? ' class="on"' : "") + '><a href="' + it.u + '">' +
-          '<span><span class="t">' + it.t + "</span>" +
-          (it.s ? '<span class="s"> — ' + it.s + "</span>" : "") + "</span>" +
-          '<span class="s">' + it.k + (it.c ? " &middot; " + it.c : "") + "</span></a></li>";
-      }).join("");
+        var li = el("li");
+        li.setAttribute("role", "option");
+        li.id = "cmdk-o" + n;
+        li.setAttribute("aria-selected", n === 0 ? "true" : "false");
+        if (n === 0) li.className = "on";
+
+        var a = el("a");
+        a.setAttribute("href", it.u);
+
+        var left = el("span");
+        var t = el("span", "t");
+        t.textContent = it.t;
+        left.appendChild(t);
+        if (it.s) {
+          var sub = el("span", "s");
+          sub.textContent = " \u2014 " + it.s;
+          left.appendChild(sub);
+        }
+
+        var right = el("span", "s");
+        right.textContent = it.k + (it.c ? " \u00b7 " + it.c : "");
+
+        a.appendChild(left);
+        a.appendChild(right);
+        li.appendChild(a);
+        results.appendChild(li);
+      });
       items = [].slice.call(results.children);
       cur = 0;
+    }
+    function el(tag, cls) {
+      var n = document.createElement(tag);
+      if (cls) n.className = cls;
+      return n;
     }
     function move(d) {
       if (!items.length) return;

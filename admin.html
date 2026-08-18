@@ -56,7 +56,11 @@ body{margin:0}
 .notice b{color:var(--ink)}
 .notice.bad{border-left-color:#a1341c}
 .notice.good{border-left-color:var(--tool)}
-h1.et{font-size:clamp(1.5rem,3vw,2rem);margin:0 0 .35rem;letter-spacing:-.02em}
+h2.et{font-size:clamp(1.5rem,3vw,2rem);margin:0 0 .35rem;letter-spacing:-.02em;font-weight:700}
+/* All five panels sit in the DOM at once and only one is shown, so five page
+   titles would all be announced. One h1 names the page, each panel is an h2. */
+.vh{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;
+    clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap;border:0}
 p.esub{color:var(--ink-2);margin:0 0 1.5rem;max-width:44rem;font-size:.95rem}
 h2.eh{font-size:1.0625rem;margin:2rem 0 .5rem;letter-spacing:-.01em}
 h2.eh:first-child{margin-top:0}
@@ -158,11 +162,12 @@ kbd{font:inherit;font-size:.8em;border:1px solid var(--rule-strong);padding:0 .2
 
 <div class="wrap">
 
+<h1 class="vh">Site editor</h1>
 <div class="notice" id="status">Connecting&hellip;</div>
 
 <!-- ============================ PIECES ============================ -->
 <section id="tab-pieces">
-  <h1 class="et">Everything on the site, in the order it appears</h1>
+  <h2 class="et">Everything on the site, in the order it appears</h2>
   <p class="esub">Drag a row to move it. The order here is the order on the site: the first
   independent piece becomes the lead on the Research page, and the first six marked
   <em>featured</em> fill the band on the home page. Click a row to edit it.</p>
@@ -192,7 +197,7 @@ kbd{font:inherit;font-size:.8em;border:1px solid var(--rule-strong);padding:0 .2
 
 <!-- ============================ ADD ============================ -->
 <section id="tab-add" class="hide">
-  <h1 class="et">Add a piece</h1>
+  <h2 class="et">Add a piece</h2>
   <p class="esub">Drop the finished HTML file here. Its title is read out of the file, and the
   rest of the details can be filled in on the next screen. The word count, figures and
   tables are counted for you when the site rebuilds.</p>
@@ -215,7 +220,7 @@ kbd{font:inherit;font-size:.8em;border:1px solid var(--rule-strong);padding:0 .2
 
 <!-- ============================ FILES ============================ -->
 <section id="tab-files" class="hide">
-  <h1 class="et">Files</h1>
+  <h2 class="et">Files</h2>
   <p class="esub">Everything sitting in the site's folder. Drop files here to add images,
   a PDF, or a replacement for something already listed. A file with the same name replaces
   the old one; a new name is simply added.</p>
@@ -238,7 +243,7 @@ kbd{font:inherit;font-size:.8em;border:1px solid var(--rule-strong);padding:0 .2
 
 <!-- ============================ SITE TEXT ============================ -->
 <section id="tab-text" class="hide">
-  <h1 class="et">Site text</h1>
+  <h2 class="et">Site text</h2>
   <p class="esub">The wording that appears in the header, the home page headline, the About
   page and the footer. Everything else on those pages is generated from the list of pieces.</p>
   <div class="panel" id="siteform"></div>
@@ -246,7 +251,7 @@ kbd{font:inherit;font-size:.8em;border:1px solid var(--rule-strong);padding:0 .2
 
 <!-- ============================ SETUP ============================ -->
 <section id="tab-setup" class="hide">
-  <h1 class="et">Connection</h1>
+  <h2 class="et">Connection</h2>
   <p class="esub">This page saves changes by writing to the site's GitHub repository. To do
   that it needs a token, which you create yourself and paste in here. It is stored only in
   this browser and is never sent anywhere except to GitHub.</p>
@@ -264,12 +269,15 @@ kbd{font:inherit;font-size:.8em;border:1px solid var(--rule-strong);padding:0 .2
         <em>Read and write</em>. Leave everything else alone. That one permission is all this needs.</li>
       <li>Generate it, copy it, and paste it below. GitHub shows it once.</li>
     </ol>
-    <p class="notice">A token is a password. Do not paste it into anything else, and do not
-    use this editor on a shared computer. <b>Forget the token</b> below wipes it from this browser.</p>
+    <p class="notice">A token is a password. It is held for this browser tab only and is
+    forgotten when the tab closes, so expect to paste it again next time you sit down to
+    publish. Do not paste it into anything else, and do not use this editor on a shared
+    computer. <b>Forget the token</b> clears it immediately.</p>
 
     <div class="field">
       <label for="tok">Token</label>
-      <p class="help">Starts with <code>github_pat_</code>.</p>
+      <p class="help">Starts with <code>github_pat_</code>. Kept for this tab only, never written
+      to long-term storage.</p>
       <input type="password" id="tok" autocomplete="off" spellcheck="false">
     </div>
     <div class="two">
@@ -305,7 +313,8 @@ kbd{font:inherit;font-size:.8em;border:1px solid var(--rule-strong);padding:0 .2
    in the first place, so the design cannot drift by editing content.
    ------------------------------------------------------------------ */
 
-var KEY = 'siteeditor.v1';
+var KEY = 'siteeditor.v1';      // owner, repo, branch — harmless, kept between visits
+var TOKKEY = 'siteeditor.token'; // the token — kept in sessionStorage only
 var cfg = { token: '', owner: '', repo: '', branch: 'main' };
 var doc = null;          // parsed content/pieces.json
 var baseline = '';       // what it looked like when loaded
@@ -354,6 +363,15 @@ function loadCfg() {
     var raw = localStorage.getItem(KEY);
     if (raw) { var o = JSON.parse(raw); for (var k in o) cfg[k] = o[k]; }
   } catch (e) {}
+  /* The token lives in sessionStorage, so it dies when the tab closes. That is
+     the right lifetime for a credential you paste in to publish and then walk
+     away from, and it keeps a write-scoped key out of long-term storage on the
+     same origin that serves every page on the site. */
+  try { cfg.token = sessionStorage.getItem(TOKKEY) || ''; } catch (e) {}
+  try {
+    var stale = JSON.parse(localStorage.getItem(KEY) || '{}');
+    if (stale.token) { delete stale.token; localStorage.setItem(KEY, JSON.stringify(stale)); }
+  } catch (e) {}
   if (!cfg.owner || !cfg.repo) {
     var h = location.hostname;               // alexrajcoomar.github.io
     if (/\.github\.io$/.test(h)) {
@@ -364,7 +382,14 @@ function loadCfg() {
   cfg.branch = cfg.branch || 'main';
 }
 function saveCfg() {
-  try { localStorage.setItem(KEY, JSON.stringify(cfg)); } catch (e) {}
+  try {
+    localStorage.setItem(KEY, JSON.stringify(
+      { owner: cfg.owner, repo: cfg.repo, branch: cfg.branch }));
+  } catch (e) {}
+  try {
+    if (cfg.token) sessionStorage.setItem(TOKKEY, cfg.token);
+    else sessionStorage.removeItem(TOKKEY);
+  } catch (e) {}
 }
 
 /* ----------------------------------------------------- the GitHub -- */
@@ -993,6 +1018,7 @@ $('save-setup').onclick = function () {
 $('forget').onclick = function () {
   cfg.token = '';
   $('tok').value = '';
+  try { sessionStorage.removeItem(TOKKEY); } catch (e) {}
   saveCfg();
   $('setuplog').textContent = 'The token is gone from this browser. You can still look around; publishing needs a new one.';
   $('publish').disabled = true;

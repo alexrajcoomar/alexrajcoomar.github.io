@@ -42,10 +42,12 @@ The editor needs a token so it can write to the repository. You make it once:
    Nothing else.
 6. Generate, copy, and paste it into the editor's **Connection** tab.
 
-That token is a password. It is stored in your browser and nowhere else, and it
-is sent only to GitHub. If you use a shared computer, press **Forget the token**
-when you are done. When it expires the editor will say so, and you repeat the
-six steps above.
+That token is a password. The editor holds it for the current browser tab only
+and forgets it when the tab closes, so expect to paste it again each time you sit
+down to publish; that is deliberate, because it keeps a key that can write to the
+repository out of long-term storage on the same address that serves the site. It
+is sent only to GitHub. **Forget the token** clears it immediately. When it
+expires the editor will say so, and you repeat the six steps above.
 
 `admin.html` itself is a public page, but it holds no secret and can do nothing
 without a token.
@@ -84,8 +86,16 @@ So: content changes in the editor, design changes in `build_site.py` and
    figures, tables and checkpoints. This is why the reading times and the
    statistics on the home page are always right, and why you never type them in.
    Pieces that did not change are not reopened, so a title edit takes seconds.
-4. It runs `build/build_site.py`, which regenerates the seven listing pages.
-5. It commits the result. GitHub Pages publishes it.
+4. It draws a link-preview card for any piece whose title or description
+   changed, so pasting a link into a message or a job application shows the
+   piece rather than a grey box.
+5. It runs `build/build_site.py`, which regenerates the listing pages, writes
+   the head metadata on every piece, refreshes `sitemap.xml` and the offline
+   cache, and then **checks its own work**: every link, every canonical
+   address, every icon and every listed file has to resolve, and no page may
+   name an address other than this site's. If any of that fails, the rebuild
+   goes red and the site keeps serving the last good version.
+6. It commits the result. GitHub Pages publishes it.
 
 You can watch step 2 onwards at
 `https://github.com/alexrajcoomar/alexrajcoomar.github.io/actions`. A red mark
@@ -105,7 +115,11 @@ until it is fixed.
 | `build/build_site.py` | Generates the seven listing pages |
 | `build/measure.js` | Counts what is on each page, in a real browser |
 | `build/measure_plan.py` | Works out which pieces need recounting |
+| `build/cards.js` | Draws the link-preview card for each piece |
 | `build/figures.json`, `specimens.json`, `refit.json` | The figures lifted out of pieces and shown on the site's own pages |
+| `content/cards.json` | Lets the rebuild skip cards whose text did not change |
+| `cards/`, `og-card.png` | The link-preview images. Written by the rebuild |
+| `sitemap.xml`, `robots.txt`, `sw.js` | Generated. Do not edit: the next rebuild overwrites them |
 | `.github/workflows/build.yml` | The instruction that runs all of the above after every change |
 | `site.css` | The look of every listing page |
 | `site.js` | The search box, the filters, the theme switch |
@@ -139,6 +153,12 @@ with it. Make a new one; the six steps are above.
 **A piece was published but shows no reading time.** Anything under 1,200 words
 is treated as an instrument rather than a document and carries no reading time
 by design. The colophon explains the rule.
+
+**The rebuild went red and says something does not resolve.** That is the check
+doing its job: a link, an image or a listed file is pointing at something that
+is not there. The message names the page and the address. Usually it means a
+file was renamed or a piece was added to the list before its file was uploaded.
+Fix it in the editor and publish again; the site was never published broken.
 
 **The site did not update.** Check the Actions tab (link above). If the rebuild
 failed, the message there says why. Nothing is lost: every version is in the
