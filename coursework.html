@@ -364,7 +364,7 @@ document.documentElement.className+=' js';})();
   </div>
   <div class="fine">
     <span>&copy; 2026 Leesharam Alexander Rajcoomar</span>
-    <span><b>50</b> pieces &middot; <b>282,176</b> words &middot; <b>124</b> figures &middot; hand-written HTML and CSS, no framework</span>
+    <span><b>50</b> pieces &middot; <b>282,176</b> words &middot; <b>124</b> figures &middot; hand-written HTML and CSS, no framework &middot; <button id="keysbtn" type="button" class="linkbtn">keyboard</button></span>
   </div>
 </footer>
 
@@ -377,6 +377,26 @@ document.documentElement.className+=' js';})();
     <div class="cmdk-foot">
       <span><kbd>&#8593;</kbd><kbd>&#8595;</kbd> move</span><span><kbd>Enter</kbd> open</span><span><kbd>Esc</kbd> close</span>
     </div>
+  </div>
+</div>
+
+<!-- The keyboard routes, written down. A shortcut nobody can find is the
+     same as one that does not exist. Opened with ? or from the footer. -->
+<div class="keys" id="keysheet" hidden role="dialog" aria-modal="true" aria-labelledby="keystitle">
+  <div class="keys-panel">
+    <h2 id="keystitle">Keyboard</h2>
+    <dl>
+      <dt><kbd>/</kbd></dt><dd>Search every piece</dd>
+      <dt><kbd>&#8984;</kbd><kbd>K</kbd></dt><dd>The same search</dd>
+      <dt><kbd>g</kbd> <kbd>h</kbd></dt><dd>Home</dd>
+      <dt><kbd>g</kbd> <kbd>r</kbd></dt><dd>Research</dd>
+      <dt><kbd>g</kbd> <kbd>c</kbd></dt><dd>Coursework</dd>
+      <dt><kbd>g</kbd> <kbd>t</kbd></dt><dd>Tools</dd>
+      <dt><kbd>g</kbd> <kbd>l</kbd></dt><dd>Library</dd>
+      <dt><kbd>g</kbd> <kbd>a</kbd></dt><dd>About</dd>
+      <dt><kbd>?</kbd></dt><dd>This list</dd>
+    </dl>
+    <button class="close" type="button">Close</button>
   </div>
 </div>
 <script>
