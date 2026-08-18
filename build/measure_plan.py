@@ -29,6 +29,7 @@ def load(name, default):
 _INJECTED = re.compile(
     r"<!--__rb-->.*?<!--/__rb-->"
     r"|<!--__rbp-->.*?<!--/__rbp-->"
+    r"|<!--__meta-->.*?<!--/__meta-->"
     r"|<!-- injected by the site build.*?-->"
     r'|<style id="__rb-style">.*?</style>'
     r'|<div id="__rb">.*?</div>'
@@ -55,14 +56,39 @@ def stale():
     return [f for f, h in now.items()
             if old.get(f) != h or f[:-5] not in seen]
 
+def cards_stale():
+    """The link-preview cards are drawn from the text in content/pieces.json,
+    not from the piece files, so they go stale on a title edit that changes no
+    file at all. They are fingerprinted separately for that reason."""
+    content = load("pieces.json", {"site": {}, "pieces": []})
+    site = content.get("site", {})
+    old  = load("cards.json", {})
+    want = []
+    for p in content.get("pieces", []):
+        # separators must match JSON.stringify in build/cards.js exactly, or
+        # the two sides disagree about what is stale and the browser opens on
+        # every build for nothing
+        key = hashlib.sha1(json.dumps(
+            [p.get("t"), p.get("s"), p.get("k"), p.get("c"), p.get("d"),
+             site.get("short"), "v2"],
+            separators=(",", ":"), ensure_ascii=False).encode("utf-8")).hexdigest()[:12]
+        card = os.path.join(ROOT, "cards", p["slug"] + ".png")
+        if old.get(p["slug"]) != key or not os.path.exists(card):
+            want.append(p["slug"])
+    if not os.path.exists(os.path.join(ROOT, "og-card.png")) or "__site" not in old:
+        want.append("__site")
+    return want
+
+
 if __name__ == "__main__":
-    todo = stale()
+    todo, cards = stale(), cards_stale()
     out = os.environ.get("GITHUB_OUTPUT")
-    line = f"needs={'1' if todo else '0'}\ncount={len(todo)}\n"
+    line = (f"measure={'1' if todo else '0'}\n"
+            f"cards={'1' if cards else '0'}\n"
+            f"needs={'1' if (todo or cards) else '0'}\n"
+            f"count={len(todo)}\n")
     if out:
         open(out, "a", encoding="utf-8").write(line)
-    sys.stderr.write(f"{len(todo)} page(s) need measuring"
-                     + (": " + ", ".join(todo[:8]) + ("…" if len(todo) > 8 else "")
-                        if todo else "")
-                     + "\n")
+    sys.stderr.write(f"{len(todo)} page(s) need measuring, "
+                     f"{len(cards)} card(s) need drawing\n")
     print(line, end="")

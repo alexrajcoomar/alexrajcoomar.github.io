@@ -6,7 +6,7 @@ This script never touches a piece's own HTML except to give it a way back
 into the site, and it never touches the stylesheet. Run by the GitHub
 Action on every push, so the site relists itself.
 """
-import datetime, html, json, os, re, sys
+import datetime, hashlib, html, json, os, re, sys
 
 ROOT    = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 CONTENT = json.load(open(os.path.join(ROOT, "content", "pieces.json"), encoding="utf-8"))
@@ -24,6 +24,11 @@ BORN     = tuple(int(x) for x in S["born"].split("-"))
 WPM      = 230
 DOC_MIN  = 1200
 TODAY    = datetime.date.today()
+# The address is written once, in content/pieces.json, and everything that shows
+# it derives from that. A label typed by hand is a label that survives a move:
+# the footer of every page used to print the old address while linking to the
+# new one, which is the single contradiction this site cannot afford.
+HOST     = SITE_URL.split("//", 1)[-1].rstrip("/")
 
 def reading_minutes(w): return max(1, round(w / WPM))
 
@@ -96,7 +101,13 @@ def head(title, desc, page, extra=""):
 <meta property="og:description" content="{esc(desc)}">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="{esc(SHORT)} — portfolio">
-<meta name="twitter:card" content="summary">
+<meta property="og:url" content="{SITE_URL}/{'' if page=='index.html' else page}">
+<meta property="og:image" content="{SITE_URL}/og-card.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="{esc(SHORT)} — portfolio">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="{SITE_URL}/og-card.png">
 <link rel="canonical" href="{SITE_URL}/{'' if page=='index.html' else page}">
 <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/inter-ui/4.1.1/variable/InterVariable.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="site.css">
@@ -127,30 +138,34 @@ document.documentElement.className+=' js';}})();
 <main id="main">
 """
 
+# The manifest is embedded inside a <script>, and the editor now writes the
+# titles, so a title is untrusted text as far as this file is concerned. The
+# only sequence that can end a script block early is "</", so it is escaped;
+# "\u003c/" is the same string to a JSON parser and inert to an HTML parser.
 WORKJSON = json.dumps([{"t":p["t"],"s":p["s"],"u":p["url"],"k":p["k"],"c":p["c"],"d":p["d"]} for p in P],
-                      separators=(",",":"))
+                      separators=(",",":")).replace("</", "<\\/")
 
 def foot():
     return f"""</main>
 <footer class="site">
   <div class="cols">
     <div>
-      <h4>{esc(SHORT)}</h4>
+      <h2>{esc(SHORT)}</h2>
       <p class="small" style="max-width:26rem;color:var(--ink-2)">Accounting and Financial Management, Analytics stream, University of Waterloo. {len(P)} published pieces: research, interactive tools and references, all of them running rather than described.</p>
       <p class="small"><a href="mailto:{EMAIL}" style="color:var(--accent)">{EMAIL}</a></p>
     </div>
     <div>
-      <h4>Sections</h4>
+      <h2>Sections</h2>
       <a href="research.html">Research and writing</a>
       <a href="coursework.html">Coursework</a>
       <a href="tools.html">Interactive tools</a>
       <a href="library.html">Full library</a>
     </div>
     <div>
-      <h4>This site</h4>
+      <h2>This site</h2>
       <a href="about.html">About and contact</a>
       <a href="colophon.html">Colophon and method</a>
-      <a href="{SITE_URL}">basmatierajcoomar-pixel.github.io</a>
+      <a href="{SITE_URL}">{HOST}</a>
     </div>
   </div>
   <div class="fine">
@@ -235,6 +250,17 @@ def feature(p, delay=0):
       </a>"""
 
 
+def _smallest_label(d):
+    """The smallest type in a figure, in the figure's own coordinates. Read from
+    whatever the figure declares; a figure that declares nothing inherits the
+    browser default, which is what the specimens do."""
+    txt = d.get("svg", "") + d.get("css", "")
+    sizes = [float(x) for x in re.findall(r'font-size:\s*([\d.]+)px', txt)]
+    sizes += [float(x) for x in re.findall(r'font-size="([\d.]+)"', txt)]
+    sizes += [float(x) for x in re.findall(r'font-size:\s*([\d.]+)(?![\d.px])', txt)]
+    return min(sizes) if sizes else 16.0
+
+
 def strip_svg(fid):
     """Keep the artboard the figure was drawn on, widen it a little so any text
     that spills past the edge still lands inside the box, and cap the display
@@ -247,7 +273,14 @@ def strip_svg(fid):
                  f'viewBox="{x - px:.0f} {y - py:.0f} {w + px * 2:.0f} {h + py * 2:.0f}"',
                  svg, count=1)
     svg = re.sub(r'\s(width|height)="[\d.]+"', "", svg, count=2)
-    svg = svg.replace("<svg ", f'<svg style="max-width:{w * 1.10:.0f}px" ', 1)
+    # Floor as well as ceiling. Capped alone, the figure still shrank to fit a
+    # phone and its labels went with it: 10.5 units of type at 0.59 scale is
+    # 6.2px on screen. The floor is the smallest width at which the smallest
+    # label in this particular figure still lands at 10.5px, so the frame
+    # scrolls sideways rather than shrinking the type below legibility.
+    art  = w * 1.10
+    floor = min(art, art * (10.5 / _smallest_label(d)))
+    svg = svg.replace("<svg ", f'<svg style="max-width:{art:.0f}px;min-width:{floor:.0f}px" ', 1)
     return svg
 
 def lifted(fid, rule, title, note, href):
@@ -303,7 +336,9 @@ def fit(sid):
     h  = h0 * 1.08
     svg = re.sub(r'viewBox="[^"]*"', f'viewBox="{x0:.0f} {y0:.0f} {w:.0f} {h:.0f}"', svg, count=1)
     svg = re.sub(r'\s(width|height)="[\d.]+"', "", svg, count=2)
-    svg = svg.replace("<svg ", f'<svg style="max-width:{w:.0f}px" ', 1)
+    floor = min(w, w * (10.5 / _smallest_label(SPECS[sid])))
+    svg = svg.replace("<svg ",
+                      f'<svg style="max-width:{w:.0f}px;min-width:{floor:.0f}px" ', 1)
     return svg
 
 
@@ -577,7 +612,7 @@ def page_index():
                 f"Research, interactive study tools and references built by Alex Rajcoomar, "
                 f"Accounting and Financial Management student at the University of Waterloo. "
                 f"{len(P)} published pieces, {TOTAL_WORDS:,} words, all of them running.",
-                "index.html") + body + foot()
+                "index.html", extra="\n" + jsonld_site()) + body + foot()
 
 def page_research():
     items = [p for p in P if p["surface"] == "independent"]
@@ -739,8 +774,9 @@ def page_coursework():
   <div class="sechead"><h2>Coverage</h2><p class="note">What exists per course, counted from the files themselves.</p><span class="count">{len(items)} of {len(P)}</span></div>
   <p class="note measure" style="margin-bottom:1rem">Word counts exclude the question banks inside the interactive
   tools, because those live in code rather than prose, so the tool-heavy courses read lower than they are.
-  The remaining {len(P)-len(items)} pieces are not tied to one course: they sit under
-  <a href="research.html" style="color:var(--accent)">research</a> and <a href="tools.html" style="color:var(--accent)">tools</a>.</p>
+  The remaining {len(P)-len(items)} pieces are not tied to one course: {N_INDEP} under
+  <a href="research.html" style="color:var(--accent)">research</a> and the {N_PERSONAL} read for
+  their own sake in the <a href="library.html" style="color:var(--accent)">library</a>.</p>
   <div class="tw"><table class="ctab">
     <thead><tr><th scope="col">Course</th><th scope="col" class="tnum">Interactive</th>
     <th scope="col" class="tnum">References</th><th scope="col" class="tnum">Total</th>
@@ -775,7 +811,7 @@ def page_library():
             n += 1
             rows.append(row(n, p))
         blocks.append(f"""  <section class="lgroup" data-group="{key}">
-    <div class="grouphead"><h3>{SURF_LABEL[key]}</h3>
+    <div class="grouphead"><h2>{SURF_LABEL[key]}</h2>
       <p class="gnote">{esc(notes[key])}</p>
       <span class="gcount">{len(items)} pieces &middot; {w:,} words</span></div>
     <ol class="index">
@@ -838,7 +874,7 @@ def page_about():
     <div><b>Focus</b><span>Financial reporting under IFRS and ASPE, Canadian tax, and the analytics side of accounting.</span></div>
     <div><b>Standing interests</b><span>The science of learning, judgment under uncertainty, and capital cycles. Outside coursework, AI in medicine and commercial spaceflight.</span></div>
     <div><b>Contact</b><span><a href="mailto:{EMAIL}" style="color:var(--accent)">{EMAIL}</a></span></div>
-    <div><b>This site</b><span><a href="{SITE_URL}" style="color:var(--accent)">basmatierajcoomar-pixel.github.io</a></span></div>
+    <div><b>This site</b><span><a href="{SITE_URL}" style="color:var(--accent)">{HOST}</a></span></div>
   </div>
 </section>
 
@@ -902,7 +938,7 @@ def page_about():
 """
     return head(f"About — {SHORT}",
                 "Alex Rajcoomar, Accounting and Financial Management student in the Analytics stream at the University of Waterloo.",
-                "about.html") + body + foot()
+                "about.html", extra="\n" + jsonld_person()) + body + foot()
 
 def page_colophon():
     gt = figs.group_totals()
@@ -987,8 +1023,15 @@ def page_colophon():
   <div class="sechead"><h2>How it is built</h2><span class="count">Technical</span></div>
   <div class="prose measure">
     <p>Hand-written HTML, CSS and JavaScript. No framework, no build step on the reader's side, no
-    tracking, no cookies, no analytics. The whole site is {len(P)} standalone documents plus one
-    stylesheet and one script, served as static files by GitHub Pages.</p>
+    tracking, no cookies, no analytics. {len(P)} pieces served as static files by GitHub Pages.
+    The {len(SHELL_PAGES)} pages the build generates, this one included, share one stylesheet and one
+    script; each piece carries its own styling inside itself, so a change to the site's look cannot
+    reach into a piece and a broken piece cannot reach the site.</p>
+    <p>The listing pages are generated. Content lives in one file, <code>content/pieces.json</code>:
+    every piece's title, description, tags, section and position. A script reads it and rewrites the
+    listing pages, and a GitHub Action runs that script after every change. Any piece whose file
+    changed is opened in a headless browser first and counted, which is where every number on this
+    page comes from. Nothing here is typed in by hand, which is the only way the counts stay true.</p>
     <p>Figures are static SVG generated at build time, so every chart renders with JavaScript disabled.
     JavaScript adds only enhancements: the theme toggle, the search palette, the library filters, the
     reveal-on-scroll, and the age in the first sentence of the home page, which is computed from a date
@@ -1021,30 +1064,43 @@ def page_colophon():
 
 MOBILE_FIT_FULL = """
 <style id="__mobile_fit">
-/* Added by the site build. These older documents pushed past the right edge of
-   a phone screen: long unbreakable strings widened the page, and a few wide
-   tables had no scroll container. This constrains both without touching the
-   layout on a laptop. */
+/* Injected by the site build. These pages were laid out for letter paper and
+   hold their column widths in inches, which is right for the printed sheet and
+   wrong for a 390px screen: the page itself overflowed sideways, so the whole
+   document rubber-banded and the header slid off. The sheet keeps its width
+   and scrolls inside its own frame instead, which leaves the type at the size
+   it was set and the page still. */
 @media (max-width:48rem){
   html,body{max-width:100%}
   body{overflow-wrap:break-word}
-  table{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch;max-width:100%}
-  pre,code{overflow-x:auto;max-width:100%}
-  img,svg{max-width:100%;height:auto}
+  svg,img{max-width:100%;height:auto}
+  /* The sheet keeps the width it was set at and scrolls inside its own frame.
+     Clipping it instead would stop the page sliding, at the price of putting
+     part of the document out of reach, which is the worse trade on a page
+     whose content is the point. */
+  body > *,.sheet,.page,.wrap,main,article{
+    max-width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch
+  }
+  /* the injected return bar is the build's own furniture and already fits */
+  body > #__rb,body > #__rb-pill,body > style,body > script{overflow:visible}
+  table{display:block;max-width:100%;overflow-x:auto}
+  /* a segmented control that clips its own buttons puts two of them out of
+     reach on a phone; let the control scroll instead of hiding them */
+  .seg{overflow-x:auto;max-width:100%}
 }
 </style>
 """
 
 MOBILE_FIT_ART = """
 <style id="__mobile_fit">
-/* Added by the site build. One fixed-width drawing sat wider than a phone
-   screen. Scaling it keeps the figure's own proportions, and therefore its
-   declared unit, intact; the tables here already scroll inside their own
-   containers and are left alone. */
+/* Injected by the site build. A long unbreakable token or a wide figure was
+   pushing the page sideways on a phone; nothing else about the layout is
+   touched. */
 @media (max-width:48rem){
   html,body{max-width:100%}
   body{overflow-wrap:break-word}
   svg,img{max-width:100%;height:auto}
+  table{display:block;max-width:100%;overflow-x:auto}
 }
 </style>
 """
@@ -1060,14 +1116,18 @@ OVERFLOWING = {
 }
 
 def fit_mobile(path, css):
-    """Only touches pages that actually overflow; leaves the rest alone."""
+    """Only touches pages that actually overflow; leaves the rest alone. An
+    older block is replaced rather than left in place, so improving these rules
+    reaches pages that already carry a previous version of them."""
     text = open(path, encoding="utf-8", errors="ignore").read()
-    if "__mobile_fit" in text:
-        return
+    before = text
+    text = re.sub(r'\s*<style id="__mobile_fit">.*?</style>', "", text, flags=re.S)
     i = text.lower().rfind("</head>")
     if i == -1:
         return
-    open(path, "w", encoding="utf-8").write(text[:i] + css + text[i:])
+    text = text[:i] + css + text[i:]
+    if text != before:
+        open(path, "w", encoding="utf-8").write(text)
 
 
 RETURN_BAR = """
@@ -1104,15 +1164,28 @@ RETURN_BAR = """
 }
 #__rb-pill.__on{opacity:1;transform:none;pointer-events:auto}
 #__rb-pill:hover{background:#16150f;color:#fff}
+/* Dark has to answer to two things: the reader's system setting, and the
+   theme button on the page, which sets data-theme on <html>. Keyed to the
+   media query alone, the bar stayed paper-white across the top of an essay
+   the reader had just switched to dark, and read as a rendering fault. The
+   media query is scoped so an explicit light choice wins, and the attribute
+   selector is repeated so an explicit dark choice wins on a light system. */
 @media (prefers-color-scheme:dark){
-  #__rb{background:#131310;border-bottom-color:#2c2b24;color:#c0bcb1}
-  #__rb .__rb-home{color:#f7f5ef}
-  #__rb .__rb-home i{color:#948f85}
-  #__rb a{color:#85adea}
-  #__rb .__mark{background:#f7f5ef;color:#131310}
-  #__rb-pill{background:rgba(247,245,239,.95);color:#131310;border-color:rgba(0,0,0,.2)}
-  #__rb-pill:hover{background:#fff;color:#000}
+  :root:not([data-theme="light"]) #__rb{background:#131310;border-bottom-color:#2c2b24;color:#c0bcb1}
+  :root:not([data-theme="light"]) #__rb .__rb-home{color:#f7f5ef}
+  :root:not([data-theme="light"]) #__rb .__rb-home i{color:#948f85}
+  :root:not([data-theme="light"]) #__rb a{color:#85adea}
+  :root:not([data-theme="light"]) #__rb .__mark{background:#f7f5ef;color:#131310}
+  :root:not([data-theme="light"]) #__rb-pill{background:rgba(247,245,239,.95);color:#131310;border-color:rgba(0,0,0,.2)}
+  :root:not([data-theme="light"]) #__rb-pill:hover{background:#fff;color:#000}
 }
+:root[data-theme="dark"] #__rb{background:#131310;border-bottom-color:#2c2b24;color:#c0bcb1}
+:root[data-theme="dark"] #__rb .__rb-home{color:#f7f5ef}
+:root[data-theme="dark"] #__rb .__rb-home i{color:#948f85}
+:root[data-theme="dark"] #__rb a{color:#85adea}
+:root[data-theme="dark"] #__rb .__mark{background:#f7f5ef;color:#131310}
+:root[data-theme="dark"] #__rb-pill{background:rgba(247,245,239,.95);color:#131310;border-color:rgba(0,0,0,.2)}
+:root[data-theme="dark"] #__rb-pill:hover{background:#fff;color:#000}
 @media (prefers-reduced-motion:reduce){#__rb-pill{transition:none}}
 @media print{#__rb,#__rb-pill{display:none !important}}
 </style>
@@ -1189,15 +1262,130 @@ def add_return(path, up="index.html", upname="Home", bar=True):
         open(path, "w", encoding="utf-8").write(text)
 
 
+# --------------------------------------------------- piece page heads ----
+# Every piece is a standalone file with its own <head>, written at different
+# times by different converters. That is how twenty-two of them ended up
+# claiming their canonical URL was /none: the converter was handed the string
+# "none" to switch off the nav highlight and it reached the canonical too.
+# Hand-maintained head tags drift, so the build owns them now. The values come
+# from content/pieces.json, which means editing a title in the editor also
+# corrects the search-engine and link-preview copy for that piece.
+
+def _card_for(p):
+    """The link-preview image. A piece keeps its own card if one has been
+    rendered; otherwise it falls back to the site card, which is always
+    present, so a page never advertises an image that 404s."""
+    own = "cards/" + p["slug"] + ".png"
+    return own if os.path.exists(os.path.join(OUT, own)) else "og-card.png"
+
+# Every piece already styles itself off data-theme on <html>; none of them read
+# the choice the reader made on the site, so switching to dark on the home page
+# and opening an essay put them back in daylight. This applies the stored
+# choice before first paint, and mirrors a toggle inside a piece back to the
+# same place, so there is one preference rather than fifty-eight.
+THEME_JS = """<script>
+(function(){
+  var d=document.documentElement;
+  try{var t=localStorage.getItem('theme'); if(t) d.setAttribute('data-theme',t);}catch(e){}
+  new MutationObserver(function(){
+    try{
+      var v=d.getAttribute('data-theme');
+      if(v) localStorage.setItem('theme',v); else localStorage.removeItem('theme');
+    }catch(e){}
+  }).observe(d,{attributes:true,attributeFilter:['data-theme']});
+})();
+</script>"""
+
+_HEAD_START, _HEAD_END = "<!--__meta-->", "<!--/__meta-->"
+
+# The pieces were written before the site had a mark, so twenty-six of them
+# showed a blank tab icon and asked the server for a favicon.ico that is not
+# there. One definition, used by the shell pages and injected into the pieces.
+FAVICON = ("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'>"
+           "<rect width='100' height='100' fill='%2316150f'/><text x='50' y='72' font-size='64' "
+           "font-family='Helvetica,Arial' font-weight='bold' fill='%23faf9f6' "
+           "text-anchor='middle'>A</text></svg>")
+
+def head_block(p):
+    url  = SITE_URL + "/" + p["url"]
+    desc = (p.get("blurb") or p.get("s") or "").strip()
+    if len(desc) > 300:
+        desc = desc[:297].rsplit(" ", 1)[0] + "\u2026"
+    title = f'{p["t"]} \u2014 {SHORT}'
+    return f"""{_HEAD_START}
+<link rel="icon" href="{FAVICON}">
+<link rel="canonical" href="{url}">
+<meta property="og:title" content="{esc(title)}">
+<meta property="og:description" content="{esc(desc)}">
+<meta property="og:type" content="article">
+<meta property="og:url" content="{url}">
+<meta property="og:site_name" content="{esc(SHORT)} \u2014 portfolio">
+<meta property="og:image" content="{SITE_URL}/{_card_for(p)}">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="{esc(p["t"])} \u2014 {esc(SHORT)}">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="{SITE_URL}/{_card_for(p)}">
+{THEME_JS}
+{_HEAD_END}"""
+
+# the tags the build now owns, wherever an earlier converter left them
+_OWNED = re.compile(
+    r'\s*<link rel="canonical"[^>]*>'
+    r'|\s*<meta property="og:(?:title|description|type|url|site_name|image(?::\w+)?)"[^>]*>'
+    r'|\s*<meta name="twitter:(?:card|image)"[^>]*>'
+    r"|\s*<link rel=\"icon\"[^>]*>")
+
+def normalise_head(path, p):
+    """Replace whatever head metadata a piece carries with the generated block.
+    Idempotent: the block is delimited, so a second run reproduces the file."""
+    try:
+        text = open(path, encoding="utf-8", errors="ignore").read()
+    except Exception:
+        return False
+    before = text
+    text = re.sub(re.escape(_HEAD_START) + r".*?" + re.escape(_HEAD_END) + r"\n?",
+                  "", text, flags=re.S)
+    text = _OWNED.sub("", text)
+    i = text.lower().find("</head>")
+    if i == -1:
+        return False
+    text = text[:i] + head_block(p) + "\n" + text[i:]
+    if text != before:
+        open(path, "w", encoding="utf-8").write(text)
+    return True
+
+_STALE_HOST = re.compile(r"\b([A-Za-z0-9][A-Za-z0-9-]*\.github\.io)\b")
+
+def fix_stale_host(path):
+    """Twenty-two pieces carry a footer that was generated before the site
+    moved, and it printed the old address as the label on a link that already
+    pointed at the new one. The address is not head metadata, so it survived
+    the head rewrite; it is corrected here, wherever it appears, including in
+    plain text where no URL parser would have found it."""
+    try:
+        text = open(path, encoding="utf-8", errors="ignore").read()
+    except Exception:
+        return False
+    fixed = _STALE_HOST.sub(lambda m: HOST if m.group(1) != HOST else m.group(1), text)
+    if fixed != text:
+        open(path, "w", encoding="utf-8").write(fixed)
+        return True
+    return False
+
+
 def add_returns_everywhere():
-    """Every piece that is not one of the generated shell pages, and does not
-    already carry the site header, gets the bar. The tools get the pill only:
-    they are full-screen applications and a bar would sit inside their chrome."""
+    """Two things per standalone piece: the head metadata the build owns, and a
+    way back into the site. The bar is skipped where a page already carries full
+    navigation, and the tools get the floating pill only, because a bar inside a
+    full-screen application sits in the wrong place. The head is normalised on
+    every piece regardless, including the converted notes."""
     shell = {"index.html", "library.html", "about.html", "404.html", "research.html",
              "coursework.html", "tools.html", "reader.html", "colophon.html",
              "admin.html"}
-    where = {}
+    where, by_url = {}, {}
     for p in P:
+        by_url[p["url"]] = p
         if p["surface"] == "independent":
             where[p["url"]] = ("research.html", "Research")
         elif p["c"] == "AFM 291":
@@ -1207,30 +1395,280 @@ def add_returns_everywhere():
         else:
             where[p["url"]] = ("coursework.html", "Coursework")
     tools = {p["url"] for p in P if p["k"] == "Tool"}
-    n = 0
+    n = heads = 0
     for f in sorted(os.listdir(OUT)):
         if not f.endswith(".html") or f in shell:
             continue
         path = os.path.join(OUT, f)
+        if f in by_url and normalise_head(path, by_url[f]):
+            heads += 1
+        fix_stale_host(path)
         if 'class="docbar"' in open(path, encoding="utf-8", errors="ignore").read():
             continue                      # converted notes already carry full navigation
         up, upname = where.get(f, ("index.html", "Home"))
         add_return(path, up, upname, bar=f not in tools)
         n += 1
-    return n
-
-
+    return n, heads
 
 
 # --------------------------------------------------------------- write ----
+def page_404():
+    """Generated like every other shell page, so its piece count and contact
+    address cannot fall behind. It used to be the one page the build touched
+    but never rewrote, and it sat at 21 pieces and a stale email for months."""
+    body = f"""<div class="hero shell" style="padding-block:clamp(3rem,8vw,6rem) 2rem">
+  <p class="eyebrow accent">404</p>
+  <h1 class="display" style="font-size:clamp(2rem,5vw,3.4rem)">That page is not here.</h1>
+  <p class="lede">The address may have a typo, or the piece may have been renamed. The library holds
+  all {len(P)} pieces, and pressing <kbd>/</kbd> searches them from anywhere.</p>
+  <p style="margin-top:1.5rem"><a href="library.html" style="color:var(--accent);font-weight:620">Open the library <span aria-hidden="true">&#8594;</span></a></p>
+</div>
+"""
+    return head("Page not found \u2014 " + SHORT,
+                f"That address is not on this site. The library holds all {len(P)} pieces.",
+                "404.html") + body + foot()
+
+
+# ------------------------------------------------------- service worker ----
+def page_sw():
+    """A real offline cache, generated so the file list and the version cannot
+    fall behind. Three tools register this and three manifests promise the
+    reader they work offline; the placeholder that shipped before cached
+    nothing, so a reload with no connection failed and the promise was false.
+
+    Precached: the installable tools and the icons their manifests name. They
+    are single self-contained files that request nothing else, which is what
+    makes a precache honest here rather than a partial one. The cache name
+    carries a digest of those files, so publishing a new version of a tool
+    retires the old cache instead of serving a stale page forever."""
+    want = []
+    for p in P:
+        if not p["pwa"]:
+            continue
+        want.append(p["url"])
+        base = p["slug"]
+        for suffix in ("-192.png", "-512.png"):
+            if os.path.exists(os.path.join(OUT, base + suffix)):
+                want.append(base + suffix)
+        man = base + ".webmanifest"
+        if os.path.exists(os.path.join(OUT, man)):
+            want.append(man)
+    want = sorted(set(want))
+
+    h = hashlib.sha1()
+    for f in want:
+        path = os.path.join(OUT, f)
+        if os.path.exists(path):
+            with open(path, "rb") as fh:
+                h.update(f.encode("utf-8") + fh.read())
+    version = h.hexdigest()[:12]
+    files = json.dumps(want, indent=2)
+
+    return f"""/* Offline cache for the installable tools. Generated by build/build_site.py
+   from the pieces marked as installing to a phone; do not edit by hand, the
+   next build overwrites it. Version changes whenever a cached file changes,
+   which is what retires the previous cache. */
+const VERSION = "{version}";
+const CACHE   = "site-" + VERSION;
+const FILES   = {files};
+
+self.addEventListener("install", e => {{
+  e.waitUntil(
+    caches.open(CACHE)
+      // addAll is all-or-nothing, so one missing file would leave the tools
+      // with no cache at all. Each file is added on its own and a failure is
+      // survivable: the rest still work offline.
+      .then(c => Promise.all(FILES.map(f => c.add(f).catch(() => null))))
+      .then(() => self.skipWaiting())
+  );
+}});
+
+self.addEventListener("activate", e => {{
+  e.waitUntil(
+    caches.keys()
+      .then(keys => Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k))))
+      .then(() => self.clients.claim())
+  );
+}});
+
+self.addEventListener("fetch", e => {{
+  const req = e.request;
+  if (req.method !== "GET") return;
+  const url = new URL(req.url);
+  if (url.origin !== location.origin) return;
+
+  // Network first, so a published change is picked up as soon as there is a
+  // connection; the cache is the fallback that makes the offline claim true.
+  e.respondWith(
+    fetch(req)
+      .then(res => {{
+        if (res && res.ok && res.type === "basic") {{
+          const copy = res.clone();
+          caches.open(CACHE).then(c => c.put(req, copy)).catch(() => {{}});
+        }}
+        return res;
+      }})
+      .catch(() => caches.match(req).then(hit => hit || caches.match("index.html")))
+  );
+}});
+"""
+
+
+# ----------------------------------------------------- sitemap, robots ----
+def page_sitemap():
+    """Every address on the site, in one file, so a search engine does not have
+    to guess which of fifty-eight files matter. Generated from the same list
+    that builds the pages, so a piece cannot be listed here and missing there."""
+    urls = [("", "1.0")] + [(p, "0.8") for p in SHELL_PAGES if p != "index.html"]
+    urls += [(x["url"], "0.7" if x["featured"] else "0.6") for x in P]
+    seen, rows = set(), []
+    stamp = TODAY.isoformat()
+    for loc, pri in urls:
+        if loc in seen or loc == "404.html":
+            continue
+        seen.add(loc)
+        rows.append(f"  <url>\n    <loc>{SITE_URL}/{loc}</loc>\n"
+                    f"    <lastmod>{stamp}</lastmod>\n"
+                    f"    <priority>{pri}</priority>\n  </url>")
+    return ('<?xml version="1.0" encoding="UTF-8"?>\n'
+            '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+            + "\n".join(rows) + "\n</urlset>\n")
+
+
+def page_robots():
+    """The editor is not for readers and not for indexes."""
+    return (f"User-agent: *\nAllow: /\nDisallow: /admin.html\n\n"
+            f"Sitemap: {SITE_URL}/sitemap.xml\n")
+
+
+def jsonld_site():
+    data = {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": f"{SHORT} — portfolio",
+        "url": SITE_URL + "/",
+        "inLanguage": "en-CA",
+        "author": {"@type": "Person", "name": NAME},
+    }
+    return ('<script type="application/ld+json">'
+            + json.dumps(data, separators=(",", ":")).replace("</", "<\\/")
+            + "</script>")
+
+
+def jsonld_person():
+    data = {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": NAME,
+        "alternateName": SHORT,
+        "url": SITE_URL + "/",
+        "email": "mailto:" + EMAIL,
+        "affiliation": {"@type": "CollegeOrUniversity",
+                        "name": S["affiliation"][0],
+                        "department": S["affiliation"][1]},
+        "knowsAbout": ["Financial reporting under IFRS and ASPE",
+                       "Canadian taxation", "Accounting analytics"],
+    }
+    return ('<script type="application/ld+json">'
+            + json.dumps(data, separators=(",", ":")).replace("</", "<\\/")
+            + "</script>")
+
+
 SHELL_PAGES = ("index.html", "research.html", "coursework.html", "tools.html",
-               "library.html", "about.html", "colophon.html")
+               "library.html", "about.html", "colophon.html", "404.html")
+
+# ------------------------------------------------------------- checks ----
+# The build guarantees what it generates. Everything it merely touches was
+# still hand-maintained, and drifted: twenty-two pages claimed a canonical URL
+# of /none, the footer printed the old address while linking to the new one,
+# and two tools asked for an icon that was never there. None of that was
+# visible in a diff, because nothing was looking. These three assertions look.
+# They run on every build and fail it, which is the same move as the colophon
+# applied to the build: state the rule, then let something disagree with you.
+
+def check_site():
+    problems, files = [], set(os.listdir(OUT))
+    for sub in ("cards",):
+        if os.path.isdir(os.path.join(OUT, sub)):
+            files |= {sub + "/" + f for f in os.listdir(os.path.join(OUT, sub))}
+
+    def local(u):
+        if not u or re.match(r"^(https?:|mailto:|tel:|#|data:|//|javascript:)", u):
+            return None
+        return u.split("#")[0].split("?")[0] or None
+
+    for f in sorted(os.listdir(OUT)):
+        if not f.endswith(".html"):
+            continue
+        text = open(os.path.join(OUT, f), encoding="utf-8", errors="ignore").read()
+
+        # 1. every canonical resolves to a file that exists
+        for m in re.finditer(r'<link rel="canonical" href="([^"]+)"', text):
+            href = m.group(1)
+            if not href.startswith(SITE_URL):
+                problems.append(f"{f}: canonical points off-site, {href}")
+                continue
+            rest = href[len(SITE_URL):].lstrip("/") or "index.html"
+            if rest not in files:
+                problems.append(f"{f}: canonical is {href}, which is not a file here")
+
+        # 2. no page names a host other than this one
+        # bare, not just inside a URL: the stale address that survived the
+        # move was sitting in link text, where a URL pattern never saw it
+        for host in set(re.findall(r"\b[A-Za-z0-9][A-Za-z0-9-]*\.github\.io\b", text)):
+            if host != HOST:
+                problems.append(f"{f}: mentions {host}, which is not this site")
+
+        # 3. every local href and src resolves
+        for m in re.finditer(r'(?:href|src)="([^"]+)"', text):
+            u = local(m.group(1))
+            # reader.html builds a couple of URLs in script; those are not links
+            if u and "' +" not in u and u not in files:
+                problems.append(f"{f}: links to {u}, which does not exist")
+
+    # 4. every manifest icon resolves
+    for f in sorted(os.listdir(OUT)):
+        if not f.endswith(".webmanifest"):
+            continue
+        try:
+            data = json.load(open(os.path.join(OUT, f), encoding="utf-8"))
+        except Exception as e:
+            problems.append(f"{f}: is not readable as JSON ({e})")
+            continue
+        for icon in data.get("icons", []):
+            if icon.get("src") not in files:
+                problems.append(f"{f}: names icon {icon.get('src')}, which does not exist")
+
+    # 5. a converted document must carry exactly one top-level heading in its
+    # body. More than one means the stylesheet's title-suppressing rule is
+    # deleting section headings from the page, which is how eight of them
+    # disappeared from one piece without anything failing.
+    for f in sorted(os.listdir(OUT)):
+        if not f.endswith(".html"):
+            continue
+        text = open(os.path.join(OUT, f), encoding="utf-8", errors="ignore").read()
+        i = text.find('class="docbody"')
+        if i == -1:
+            continue
+        n = len(re.findall(r"<h1[\s>]", text[i:]))
+        if n > 1:
+            problems.append(f"{f}: {n} top-level headings in the document body; "
+                            f"all but the first are hidden by the stylesheet")
+
+    # 6. every listed piece has a file behind it
+    for x in P:
+        if x["url"] not in files:
+            problems.append(f"content/pieces.json: {x['slug']} points at {x['url']}, which does not exist")
+
+    return sorted(set(problems))
+
 
 def main():
     pages = {"index.html": page_index(), "research.html": page_research(),
              "coursework.html": page_coursework(), "tools.html": page_tools(),
              "library.html": page_library(), "about.html": page_about(),
-             "colophon.html": page_colophon()}
+             "colophon.html": page_colophon(), "404.html": page_404(),
+             "sitemap.xml": page_sitemap(), "robots.txt": page_robots()}
     changed = []
     for name, text in pages.items():
         path = os.path.join(OUT, name)
@@ -1244,11 +1682,31 @@ def main():
         if os.path.exists(path):
             fit_mobile(path, css)
 
-    n = add_returns_everywhere()
+    n, heads = add_returns_everywhere()
+
+    # After the pieces, not before: the service worker's version is a digest of
+    # the files it caches, and the pass above edits three of them. Generated
+    # first, the digest described the previous build and the file never settled.
+    sw = page_sw()
+    swpath = os.path.join(OUT, "sw.js")
+    if (not os.path.exists(swpath)) or open(swpath, encoding="utf-8").read() != sw:
+        open(swpath, "w", encoding="utf-8").write(sw)
+        changed.append("sw.js")
 
     print(f"{len(P)} pieces · {TOTAL_WORDS:,} words · {TOTAL_FIGS} figures · {TOTAL_TBLS} tables")
     print("rewrote: " + (", ".join(changed) if changed else "nothing, pages already current"))
-    print(f"return navigation checked on {n} standalone pieces")
+    print(f"return navigation checked on {n} standalone pieces, "
+          f"head metadata written on {heads}")
+
+    problems = check_site()
+    if problems:
+        print(f"\n{len(problems)} problem(s) found. The site was written, but this is broken:")
+        for line in problems[:40]:
+            print("  " + line)
+        if len(problems) > 40:
+            print(f"  ... and {len(problems) - 40} more")
+        sys.exit(1)
+    print("checks passed: every link, canonical, icon and listed file resolves")
 
 if __name__ == "__main__":
     main()

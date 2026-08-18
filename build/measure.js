@@ -44,6 +44,7 @@ const files = fs.readdirSync(ROOT)
 const INJECTED = new RegExp([
   '<!--__rb-->[\\s\\S]*?<!--\\/__rb-->',
   '<!--__rbp-->[\\s\\S]*?<!--\\/__rbp-->',
+  '<!--__meta-->[\\s\\S]*?<!--\\/__meta-->',
   '<!-- injected by the site build[\\s\\S]*?-->',
   '<style id="__rb-style">[\\s\\S]*?<\\/style>',
   '<div id="__rb">[\\s\\S]*?<\\/div>',
@@ -81,7 +82,14 @@ for (const slug of Object.keys(metrics)) {
     res.writeHead(200, { 'content-type': TYPES[path.extname(file).toLowerCase()] || 'application/octet-stream' });
     fs.createReadStream(file).pipe(res);
   });
-  await new Promise(r => server.listen(8790, r));
+  // port 0 lets the operating system pick a free one. A fixed port dies with
+  // an unhandled EADDRINUSE if anything else on the machine is already there,
+  // which turns a measuring step into a failed build for no reason.
+  await new Promise((resolve, reject) => {
+    server.once('error', reject);
+    server.listen(0, '127.0.0.1', resolve);
+  });
+  const PORT = server.address().port;
 
   // CI installs its own Chromium and needs no path; a local sandbox that
   // already has one can point at it with PW_CHROMIUM.
@@ -92,7 +100,7 @@ for (const slug of Object.keys(metrics)) {
     const ctx = await browser.newContext({ viewport: { width: 1280, height: 900 } });
     const page = await ctx.newPage();
     try {
-      await page.goto(`http://127.0.0.1:8790/${encodeURIComponent(f)}`,
+      await page.goto(`http://127.0.0.1:${PORT}/${encodeURIComponent(f)}`,
                       { waitUntil: 'networkidle', timeout: 45000 });
     } catch (e) { /* a page that never goes idle is still measurable */ }
     await page.waitForTimeout(700);
