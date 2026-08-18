@@ -3,9 +3,6 @@
 <head>
 <meta charset="utf-8">
 <meta name="description" content="A single visual reference for the macro models: what each diagram shows, which curve moves, and what it means.">
-<meta property="og:title" content="ECON 102 Master Visual Reference — Every model in one place">
-<meta property="og:description" content="A single visual reference for the macro models: what each diagram shows, which curve moves, and what it means.">
-<meta property="og:type" content="article">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>ECON 102 — Master Visual Reference</title>
 <style>
@@ -206,18 +203,58 @@ footer{margin-top:52px;padding-top:18px;border-top:1px solid var(--line);
 </style>
 
 <style id="__mobile_fit">
-/* Added by the site build. These older documents pushed past the right edge of
-   a phone screen: long unbreakable strings widened the page, and a few wide
-   tables had no scroll container. This constrains both without touching the
-   layout on a laptop. */
+/* Injected by the site build. These pages were laid out for letter paper and
+   hold their column widths in inches, which is right for the printed sheet and
+   wrong for a 390px screen: the page itself overflowed sideways, so the whole
+   document rubber-banded and the header slid off. The sheet keeps its width
+   and scrolls inside its own frame instead, which leaves the type at the size
+   it was set and the page still. */
 @media (max-width:48rem){
   html,body{max-width:100%}
   body{overflow-wrap:break-word}
-  table{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch;max-width:100%}
-  pre,code{overflow-x:auto;max-width:100%}
-  img,svg{max-width:100%;height:auto}
+  svg,img{max-width:100%;height:auto}
+  /* The sheet keeps the width it was set at and scrolls inside its own frame.
+     Clipping it instead would stop the page sliding, at the price of putting
+     part of the document out of reach, which is the worse trade on a page
+     whose content is the point. */
+  body > *,.sheet,.page,.wrap,main,article{
+    max-width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch
+  }
+  /* the injected return bar is the build's own furniture and already fits */
+  body > #__rb,body > #__rb-pill,body > style,body > script{overflow:visible}
+  table{display:block;max-width:100%;overflow-x:auto}
+  /* a segmented control that clips its own buttons puts two of them out of
+     reach on a phone; let the control scroll instead of hiding them */
+  .seg{overflow-x:auto;max-width:100%}
 }
 </style>
+<!--__meta-->
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%2316150f'/><text x='50' y='72' font-size='64' font-family='Helvetica,Arial' font-weight='bold' fill='%23faf9f6' text-anchor='middle'>A</text></svg>">
+<link rel="canonical" href="https://alexrajcoomar.github.io/econ102-visual-reference.html">
+<meta property="og:title" content="ECON 102 Master Visual Reference — Alex Rajcoomar">
+<meta property="og:description" content="A single visual reference for the macro models: what each diagram shows, which curve moves, and what it means.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://alexrajcoomar.github.io/econ102-visual-reference.html">
+<meta property="og:site_name" content="Alex Rajcoomar — portfolio">
+<meta property="og:image" content="https://alexrajcoomar.github.io/og-card.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="ECON 102 Master Visual Reference — Alex Rajcoomar">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://alexrajcoomar.github.io/og-card.png">
+<script>
+(function(){
+  var d=document.documentElement;
+  try{var t=localStorage.getItem('theme'); if(t) d.setAttribute('data-theme',t);}catch(e){}
+  new MutationObserver(function(){
+    try{
+      var v=d.getAttribute('data-theme');
+      if(v) localStorage.setItem('theme',v); else localStorage.removeItem('theme');
+    }catch(e){}
+  }).observe(d,{attributes:true,attributeFilter:['data-theme']});
+})();
+</script>
+<!--/__meta-->
 </head>
 <body>
 <!--__rb-->
@@ -253,15 +290,28 @@ footer{margin-top:52px;padding-top:18px;border-top:1px solid var(--line);
 }
 #__rb-pill.__on{opacity:1;transform:none;pointer-events:auto}
 #__rb-pill:hover{background:#16150f;color:#fff}
+/* Dark has to answer to two things: the reader's system setting, and the
+   theme button on the page, which sets data-theme on <html>. Keyed to the
+   media query alone, the bar stayed paper-white across the top of an essay
+   the reader had just switched to dark, and read as a rendering fault. The
+   media query is scoped so an explicit light choice wins, and the attribute
+   selector is repeated so an explicit dark choice wins on a light system. */
 @media (prefers-color-scheme:dark){
-  #__rb{background:#131310;border-bottom-color:#2c2b24;color:#c0bcb1}
-  #__rb .__rb-home{color:#f7f5ef}
-  #__rb .__rb-home i{color:#948f85}
-  #__rb a{color:#85adea}
-  #__rb .__mark{background:#f7f5ef;color:#131310}
-  #__rb-pill{background:rgba(247,245,239,.95);color:#131310;border-color:rgba(0,0,0,.2)}
-  #__rb-pill:hover{background:#fff;color:#000}
+  :root:not([data-theme="light"]) #__rb{background:#131310;border-bottom-color:#2c2b24;color:#c0bcb1}
+  :root:not([data-theme="light"]) #__rb .__rb-home{color:#f7f5ef}
+  :root:not([data-theme="light"]) #__rb .__rb-home i{color:#948f85}
+  :root:not([data-theme="light"]) #__rb a{color:#85adea}
+  :root:not([data-theme="light"]) #__rb .__mark{background:#f7f5ef;color:#131310}
+  :root:not([data-theme="light"]) #__rb-pill{background:rgba(247,245,239,.95);color:#131310;border-color:rgba(0,0,0,.2)}
+  :root:not([data-theme="light"]) #__rb-pill:hover{background:#fff;color:#000}
 }
+:root[data-theme="dark"] #__rb{background:#131310;border-bottom-color:#2c2b24;color:#c0bcb1}
+:root[data-theme="dark"] #__rb .__rb-home{color:#f7f5ef}
+:root[data-theme="dark"] #__rb .__rb-home i{color:#948f85}
+:root[data-theme="dark"] #__rb a{color:#85adea}
+:root[data-theme="dark"] #__rb .__mark{background:#f7f5ef;color:#131310}
+:root[data-theme="dark"] #__rb-pill{background:rgba(247,245,239,.95);color:#131310;border-color:rgba(0,0,0,.2)}
+:root[data-theme="dark"] #__rb-pill:hover{background:#fff;color:#000}
 @media (prefers-reduced-motion:reduce){#__rb-pill{transition:none}}
 @media print{#__rb,#__rb-pill{display:none !important}}
 </style>

@@ -2,7 +2,7 @@
    from the pieces marked as installing to a phone; do not edit by hand, the
    next build overwrites it. Version changes whenever a cached file changes,
    which is what retires the previous cache. */
-const VERSION = "73b3daf5a034";
+const VERSION = "3b57b78e09d1";
 const CACHE   = "site-" + VERSION;
 const FILES   = [
   "daily-learning-cockpit-192.png",

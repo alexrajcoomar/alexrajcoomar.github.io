@@ -3,9 +3,6 @@
 <head>
 <meta charset="utf-8">
 <meta name="description" content="The full visual study system for AFM 291, covering the course end to end in one interactive document.">
-<meta property="og:title" content="AFM 291 Interactive Study System — Intermediate Financial Accounting 1">
-<meta property="og:description" content="The full visual study system for AFM 291, covering the course end to end in one interactive document.">
-<meta property="og:type" content="article">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>AFM 291 — Interactive Visual Study System</title>
 <style>
@@ -261,18 +258,58 @@ footer{margin-top:40px;border-top:1px solid var(--grid);padding-top:12px;color:v
 </style>
 
 <style id="__mobile_fit">
-/* Added by the site build. These older documents pushed past the right edge of
-   a phone screen: long unbreakable strings widened the page, and a few wide
-   tables had no scroll container. This constrains both without touching the
-   layout on a laptop. */
+/* Injected by the site build. These pages were laid out for letter paper and
+   hold their column widths in inches, which is right for the printed sheet and
+   wrong for a 390px screen: the page itself overflowed sideways, so the whole
+   document rubber-banded and the header slid off. The sheet keeps its width
+   and scrolls inside its own frame instead, which leaves the type at the size
+   it was set and the page still. */
 @media (max-width:48rem){
   html,body{max-width:100%}
   body{overflow-wrap:break-word}
-  table{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch;max-width:100%}
-  pre,code{overflow-x:auto;max-width:100%}
-  img,svg{max-width:100%;height:auto}
+  svg,img{max-width:100%;height:auto}
+  /* The sheet keeps the width it was set at and scrolls inside its own frame.
+     Clipping it instead would stop the page sliding, at the price of putting
+     part of the document out of reach, which is the worse trade on a page
+     whose content is the point. */
+  body > *,.sheet,.page,.wrap,main,article{
+    max-width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch
+  }
+  /* the injected return bar is the build's own furniture and already fits */
+  body > #__rb,body > #__rb-pill,body > style,body > script{overflow:visible}
+  table{display:block;max-width:100%;overflow-x:auto}
+  /* a segmented control that clips its own buttons puts two of them out of
+     reach on a phone; let the control scroll instead of hiding them */
+  .seg{overflow-x:auto;max-width:100%}
 }
 </style>
+<!--__meta-->
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%2316150f'/><text x='50' y='72' font-size='64' font-family='Helvetica,Arial' font-weight='bold' fill='%23faf9f6' text-anchor='middle'>A</text></svg>">
+<link rel="canonical" href="https://alexrajcoomar.github.io/afm291-study-system.html">
+<meta property="og:title" content="AFM 291 Interactive Study System — Alex Rajcoomar">
+<meta property="og:description" content="The full visual study system for AFM 291, covering the course end to end in one interactive document.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://alexrajcoomar.github.io/afm291-study-system.html">
+<meta property="og:site_name" content="Alex Rajcoomar — portfolio">
+<meta property="og:image" content="https://alexrajcoomar.github.io/og-card.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="AFM 291 Interactive Study System — Alex Rajcoomar">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://alexrajcoomar.github.io/og-card.png">
+<script>
+(function(){
+  var d=document.documentElement;
+  try{var t=localStorage.getItem('theme'); if(t) d.setAttribute('data-theme',t);}catch(e){}
+  new MutationObserver(function(){
+    try{
+      var v=d.getAttribute('data-theme');
+      if(v) localStorage.setItem('theme',v); else localStorage.removeItem('theme');
+    }catch(e){}
+  }).observe(d,{attributes:true,attributeFilter:['data-theme']});
+})();
+</script>
+<!--/__meta-->
 </head>
 <body class="mode-deep">
 <header class="hdr">

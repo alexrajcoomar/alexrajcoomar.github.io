@@ -11,7 +11,13 @@
 <meta property="og:description" content="How this site is built, and the exact definition behind every number on it.">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Alex Rajcoomar — portfolio">
-<meta name="twitter:card" content="summary">
+<meta property="og:url" content="https://alexrajcoomar.github.io/colophon.html">
+<meta property="og:image" content="https://alexrajcoomar.github.io/og-card.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Alex Rajcoomar — portfolio">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://alexrajcoomar.github.io/og-card.png">
 <link rel="canonical" href="https://alexrajcoomar.github.io/colophon.html">
 <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/inter-ui/4.1.1/variable/InterVariable.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="site.css">
@@ -126,8 +132,15 @@ document.documentElement.className+=' js';})();
   <div class="sechead"><h2>How it is built</h2><span class="count">Technical</span></div>
   <div class="prose measure">
     <p>Hand-written HTML, CSS and JavaScript. No framework, no build step on the reader's side, no
-    tracking, no cookies, no analytics. The whole site is 48 standalone documents plus one
-    stylesheet and one script, served as static files by GitHub Pages.</p>
+    tracking, no cookies, no analytics. 48 pieces served as static files by GitHub Pages.
+    The 8 pages the build generates, this one included, share one stylesheet and one
+    script; each piece carries its own styling inside itself, so a change to the site's look cannot
+    reach into a piece and a broken piece cannot reach the site.</p>
+    <p>The listing pages are generated. Content lives in one file, <code>content/pieces.json</code>:
+    every piece's title, description, tags, section and position. A script reads it and rewrites the
+    listing pages, and a GitHub Action runs that script after every change. Any piece whose file
+    changed is opened in a headless browser first and counted, which is where every number on this
+    page comes from. Nothing here is typed in by hand, which is the only way the counts stay true.</p>
     <p>Figures are static SVG generated at build time, so every chart renders with JavaScript disabled.
     JavaScript adds only enhancements: the theme toggle, the search palette, the library filters, the
     reveal-on-scroll, and the age in the first sentence of the home page, which is computed from a date
@@ -146,8 +159,8 @@ document.documentElement.className+=' js';})();
     fetched the markdown in the browser instead. Converting at build time is better: the text is in
     the page, so it prints, it can be searched, it survives JavaScript being off, and it can be
     measured like everything else.</p>
-    <p>The corpus as of this build: 48 pieces, 260,772 words, 96 figures,
-    663 tables and 155 checkpoint questions. 48,420 of those words
+    <p>The corpus as of this build: 48 pieces, 260,775 words, 96 figures,
+    663 tables and 155 checkpoint questions. 48,421 of those words
     were not assigned by anyone.</p>
   </div>
 </section>
@@ -155,27 +168,27 @@ document.documentElement.className+=' js';})();
 <footer class="site">
   <div class="cols">
     <div>
-      <h4>Alex Rajcoomar</h4>
+      <h2>Alex Rajcoomar</h2>
       <p class="small" style="max-width:26rem;color:var(--ink-2)">Accounting and Financial Management, Analytics stream, University of Waterloo. 48 published pieces: research, interactive tools and references, all of them running rather than described.</p>
       <p class="small"><a href="mailto:leesharamrajcoomar@gmail.com" style="color:var(--accent)">leesharamrajcoomar@gmail.com</a></p>
     </div>
     <div>
-      <h4>Sections</h4>
+      <h2>Sections</h2>
       <a href="research.html">Research and writing</a>
       <a href="coursework.html">Coursework</a>
       <a href="tools.html">Interactive tools</a>
       <a href="library.html">Full library</a>
     </div>
     <div>
-      <h4>This site</h4>
+      <h2>This site</h2>
       <a href="about.html">About and contact</a>
       <a href="colophon.html">Colophon and method</a>
-      <a href="https://alexrajcoomar.github.io">basmatierajcoomar-pixel.github.io</a>
+      <a href="https://alexrajcoomar.github.io">alexrajcoomar.github.io</a>
     </div>
   </div>
   <div class="fine">
     <span>&copy; 2026 Leesharam Alexander Rajcoomar</span>
-    <span><b>48</b> pieces &middot; <b>260,772</b> words &middot; <b>96</b> figures &middot; hand-written HTML and CSS, no framework</span>
+    <span><b>48</b> pieces &middot; <b>260,775</b> words &middot; <b>96</b> figures &middot; hand-written HTML and CSS, no framework</span>
   </div>
 </footer>
 
