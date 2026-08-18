@@ -1,134 +1,149 @@
 # My website
 
-This folder **is** the website. Every file in it gets published exactly as it is.
-There is nothing to install, nothing to compile, and no command to run.
+Live at **https://alexrajcoomar.github.io**
 
-Live at: `https://alexrajcoomar.github.io`
+This folder is the website. Adding or changing anything is done from the editor
+page, not by editing files here.
 
 ---
 
-## The pages that hold it together
+## The editor
 
-| File | What it is |
+**https://alexrajcoomar.github.io/admin.html**
+
+Bookmark that. It is where every routine change happens:
+
+| What you want to do | Where |
 |---|---|
-| `index.html` | The home page: the headline, the four statistics, the three sections, six featured pieces |
-| `research.html` | Section 1. The data essays and the primer, plus the method pieces |
-| `coursework.html` | Section 2. Everything grouped by course, with the coverage table |
-| `tools.html` | Section 3. The six interactive tools |
-| `library.html` | The full searchable, filterable list of all 21 pieces |
-| `about.html` | Bio, what the portfolio demonstrates, contact |
-| `reader.html` | Displays any `.md` file in this folder using the site's own typography |
-| `404.html` | Shown when an address does not exist |
-| `site.css` | The look of all of the above. Change a colour here and every page changes. |
-| `site.js` | The search box, the filters, the theme switch, the scroll reveals |
+| Add a new piece | **Pieces** → *Add a piece* → drop the HTML file |
+| Change a title, description or tags | **Pieces** → click the row → edit on the right |
+| Reorder anything | **Pieces** → drag a row, or use the ▲ ▼ buttons |
+| Feature something on the home page | **Pieces** → click the row → *Feature it on the home page* |
+| Replace a file with a newer version | **Pieces** → click the row → *Replace the file* |
+| Upload images or a PDF | **Files** → drop them |
+| Take something off the site | **Pieces** → click the row → *Remove from the site* |
+| Change the headline, your email, the About text | **Site text** |
 
-Everything else is a project. Each project is one self-contained `.html` file
-named after its web address: `skill-forge.html` is live at
-`https://alexrajcoomar.github.io/skill-forge.html`.
+Nothing is saved until you press **Publish**. The page tells you what is waiting
+to be published before you do. After you press it, GitHub rebuilds the site
+itself; the change is usually live within a minute or two.
 
-Projects do **not** use `site.css` or `site.js`. Each one carries its own styling
-inside itself, so changing the site's look can never break a project, and a
-broken project can never break the site.
+### The one-time setup
 
----
+The editor needs a token so it can write to the repository. You make it once:
 
-## Press `/` anywhere
+1. Sign in to GitHub as the account that owns the site.
+2. Go to **Settings → Developer settings → Personal access tokens → Fine-grained
+   tokens → Generate new token**.
+3. Name it *Site editor*. Set the expiry you want.
+4. **Resource owner**: the organisation that owns the site.
+   **Repository access**: *Only select repositories* → pick this repository.
+5. **Permissions → Repository permissions → Contents**: *Read and write*.
+   Nothing else.
+6. Generate, copy, and paste it into the editor's **Connection** tab.
 
-On any of the pages above, pressing the `/` key opens a search box over the page
-that finds any of the 21 pieces by title, course or topic. `Cmd + K` or
-`Ctrl + K` does the same. Arrow keys move, `Enter` opens, `Esc` closes.
+That token is a password. It is stored in your browser and nowhere else, and it
+is sent only to GitHub. If you use a shared computer, press **Forget the token**
+when you are done. When it expires the editor will say so, and you repeat the
+six steps above.
 
----
-
-## Adding a new project
-
-**Step 1.** Rename your file to lowercase with hyphens instead of spaces.
-`My New Thing.html` becomes `my-new-thing.html`. This becomes its web address,
-so keep it short.
-
-**Step 2.** Go to your repository on github.com. Click **Add file**, then
-**Upload files**. Drag the file onto the page. Scroll down, click
-**Commit changes**.
-
-**Step 3.** Wait about a minute, then open
-`https://alexrajcoomar.github.io/my-new-thing.html`. It is live.
-
-At this point the project works but is not *listed* anywhere. To get it into the
-right section, the library and the search box, ask Claude: *"add
-my-new-thing.html to my site, it belongs under coursework for AFM 291."*
-Claude hands back the shell pages that changed and you upload those the same
-way. Tell it which section it belongs in, because that is the one thing it
-cannot work out from the file.
-
-## Adding research written in Markdown
-
-**Step 1.** Upload the `.md` file exactly like any other file.
-
-**Step 2.** Link to it through the reader, not directly:
-
-```
-reader.html?doc=my-paper.md
-```
-
-A raw `.md` address makes the browser download the file instead of showing it,
-which is the reason `reader.html` exists. The reader handles headings, bold and
-italic, links, images, bullet and numbered lists, quotes, tables, code blocks
-and horizontal rules. It ignores a YAML block at the top of the file if there is
-one, and it prints the word count and a reading estimate.
-
-Ask Claude to add the link into `research.html` so the piece is listed.
-
-## Replacing a file
-
-Upload a file with the same name. GitHub overwrites it. Same one-minute wait.
-
-## Deleting a project
-
-On github.com, click the file, then the trash icon at the top right of the file
-view, then **Commit changes**. Ask Claude to regenerate the shell pages
-afterwards so it stops being listed.
+`admin.html` itself is a public page, but it holds no secret and can do nothing
+without a token.
 
 ---
 
-## Things that will save you a support call
+## Where content ends and design begins
 
-- **Nothing appears / an old version appears.** Wait a minute, then reload with
-  the cache bypassed: `Cmd + Shift + R`. GitHub takes 30 to 60 seconds to
-  publish, and browsers hold onto old copies.
-- **Never put a space in a filename.** Spaces turn into `%20` in the address
-  and links break. Hyphens only.
-- **Never rename `index.html`.** That file *is* the home page.
-- **Don't delete `.nojekyll` or `sw.js`.** `.nojekyll` stops GitHub from trying
-  to reinterpret your HTML. `sw.js` is what lets the installable apps be added
-  to a phone home screen.
-- **The reader only works on the published site.** Opening `reader.html` from
-  your own disk fails, because browsers refuse to let a local page read local
-  files. This is not a bug in the page.
-- **Everything here is public.** Anyone with the address can read it, and search
-  engines will index it. Do not upload anything with marks, personal
-  information, or graded work you have not submitted yet.
+This is the part worth understanding, because it is what keeps the site from
+breaking.
 
----
+**`content/pieces.json` is the content.** One entry per piece: its title, its
+description, its tags, where it belongs, whether it is featured, and which file
+it opens. The order of the entries is the order on the site. The editor writes
+this file and nothing else.
 
-## Two things worth adding when you have them
+**`build/build_site.py` is the design.** It reads `content/pieces.json` and
+writes the seven pages that list things: `index.html`, `research.html`,
+`coursework.html`, `tools.html`, `library.html`, `about.html`, `colophon.html`.
+Those seven files are *output*. Editing them by hand is pointless: the next
+publish overwrites them.
 
-- **A LinkedIn or GitHub link.** There is a place for it in the footer of every
-  page and in the contact list on `about.html`. It was left out rather than
-  guessed at. Send Claude the address and it goes in.
-- **A résumé PDF.** Upload `resume.pdf` and ask for a download link in the
-  header. It was not built as an empty button, because a link to a file that is
-  not there is worse than no link.
+**`site.css` is the look.** One stylesheet for the whole site. It is not
+generated, and nothing in the editor touches it.
+
+So: content changes in the editor, design changes in `build_site.py` and
+`site.css`, and the two cannot collide.
 
 ---
 
-## What this site is built on
+## What happens when you press Publish
 
-Plain HTML and CSS, served by GitHub Pages. No framework, no build step, no
-monthly cost. The counts and statistics on the pages are generated from the
-files themselves rather than typed in, so they cannot drift out of date without
-the pages being regenerated.
+1. The editor writes `content/pieces.json` and any uploaded files in one commit.
+2. GitHub starts the workflow in `.github/workflows/build.yml`.
+3. It opens any piece whose file changed in a real browser and counts its words,
+   figures, tables and checkpoints. This is why the reading times and the
+   statistics on the home page are always right, and why you never type them in.
+   Pieces that did not change are not reopened, so a title edit takes seconds.
+4. It runs `build/build_site.py`, which regenerates the seven listing pages.
+5. It commits the result. GitHub Pages publishes it.
 
-The only outside dependency is the Inter typeface from a public CDN. If that
-ever fails, a metric-matched fallback takes over and the page does not shift.
-Everything works with JavaScript switched off: the search box and the filters
-disappear, and every link, list and page still works.
+You can watch step 2 onwards at
+`https://github.com/alexrajcoomar/alexrajcoomar.github.io/actions`. A red mark
+there means the rebuild failed; the site keeps serving the last good version
+until it is fixed.
+
+---
+
+## The files
+
+| Path | What it is |
+|---|---|
+| `admin.html` | The editor |
+| `content/pieces.json` | **The content.** Every piece, in order |
+| `content/metrics.json` | Word, figure and table counts. Written by the rebuild, not by you |
+| `content/fingerprints.json` | Lets the rebuild skip pieces that did not change |
+| `build/build_site.py` | Generates the seven listing pages |
+| `build/measure.js` | Counts what is on each page, in a real browser |
+| `build/measure_plan.py` | Works out which pieces need recounting |
+| `build/figures.json`, `specimens.json`, `refit.json` | The figures lifted out of pieces and shown on the site's own pages |
+| `.github/workflows/build.yml` | The instruction that runs all of the above after every change |
+| `site.css` | The look of every listing page |
+| `site.js` | The search box, the filters, the theme switch |
+| `.nojekyll` | Tells GitHub to publish the files exactly as they are |
+| everything else `.html` | A piece. Self-contained, carries its own styling |
+
+Each piece is one self-contained file named after its address:
+`skill-forge.html` is live at `https://alexrajcoomar.github.io/skill-forge.html`.
+Pieces do not use `site.css`, so changing the site's look can never break a
+piece, and a broken piece can never break the site.
+
+---
+
+## Naming files
+
+Lowercase, hyphens instead of spaces, ending in `.html`:
+`deferred-tax-ladder.html`. The editor cleans up names it is given, but a name
+chosen well stays in the address bar forever, so it is worth a second's thought.
+
+A file's name is its web address. Renaming a published piece breaks every link
+anyone has to it, which is why the editor replaces files in place rather than
+uploading a second copy under a new name.
+
+---
+
+## If something goes wrong
+
+**The editor says the token was refused.** It expired, or a space was copied
+with it. Make a new one; the six steps are above.
+
+**A piece was published but shows no reading time.** Anything under 1,200 words
+is treated as an instrument rather than a document and carries no reading time
+by design. The colophon explains the rule.
+
+**The site did not update.** Check the Actions tab (link above). If the rebuild
+failed, the message there says why. Nothing is lost: every version is in the
+repository's history and can be restored.
+
+**Something was removed by mistake.** *Remove from the site* only unlists a
+piece; the file is still there and the link still works. Add it back from
+**Pieces → Add a piece → Add an entry for it**.

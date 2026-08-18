@@ -1,0 +1,1050 @@
+<!DOCTYPE html>
+<html lang="en-CA">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Site editor</title>
+<meta name="color-scheme" content="light dark">
+<link rel="stylesheet" href="site.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%2316150f'/><text x='50' y='72' font-size='60' font-family='Helvetica,Arial' font-weight='bold' fill='%23faf9f6' text-anchor='middle'>E</text></svg>">
+<script>
+(function(){try{var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+</script>
+<style>
+/* The editor borrows the site's tokens from site.css, so it looks like the
+   thing it edits and there is no second palette to keep in step. Everything
+   below is layout for the editor only; none of it reaches the site. */
+body{margin:0}
+.ehead{
+  position:sticky;top:0;z-index:40;background:var(--paper);
+  border-bottom:1px solid var(--rule);
+}
+.ebar{
+  max-width:84rem;margin:0 auto;padding:.7rem clamp(1rem,3vw,2rem);
+  display:flex;align-items:center;gap:1rem;flex-wrap:wrap;
+}
+.ebrand{display:flex;align-items:center;gap:.55rem;font-weight:650;color:var(--ink);text-decoration:none}
+.ebrand .mark{display:inline-grid;place-items:center;width:1.5rem;height:1.5rem;background:var(--ink);color:var(--paper);font-size:.8rem;font-weight:700}
+.ebrand small{font-weight:400;color:var(--ink-3)}
+.etabs{display:flex;gap:.25rem;flex-wrap:wrap}
+.etab{
+  appearance:none;border:1px solid transparent;background:none;color:var(--ink-2);
+  font:inherit;font-size:.875rem;font-weight:550;padding:.4rem .7rem;cursor:pointer;
+}
+.etab:hover{color:var(--ink);background:var(--panel)}
+.etab[aria-selected="true"]{background:var(--ink);color:var(--paper)}
+.espacer{margin-left:auto}
+.btn{
+  appearance:none;font:inherit;font-size:.875rem;font-weight:600;cursor:pointer;
+  padding:.45rem .85rem;border:1px solid var(--edge);background:var(--paper);color:var(--ink);
+}
+.btn:hover{background:var(--panel)}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+.btn-go{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.btn-go:hover{background:var(--accent);border-color:var(--accent);color:#fff}
+.btn-quiet{border-color:var(--rule-strong);color:var(--ink-2);font-weight:500}
+.btn-warn{border-color:#a1341c;color:#a1341c}
+:root[data-theme="dark"] .btn-warn,
+:root:where(:not([data-theme="light"])) .btn-warn{border-color:#e08a72;color:#e08a72}
+.wrap{max-width:84rem;margin:0 auto;padding:clamp(1rem,3vw,2rem)}
+.panel{border:1px solid var(--rule);background:var(--panel);padding:clamp(1rem,2.5vw,1.5rem)}
+.notice{
+  border-left:3px solid var(--accent);background:var(--panel);
+  padding:.85rem 1rem;font-size:.9rem;color:var(--ink-2);margin:0 0 1.25rem;
+}
+.notice b{color:var(--ink)}
+.notice.bad{border-left-color:#a1341c}
+.notice.good{border-left-color:var(--tool)}
+h1.et{font-size:clamp(1.5rem,3vw,2rem);margin:0 0 .35rem;letter-spacing:-.02em}
+p.esub{color:var(--ink-2);margin:0 0 1.5rem;max-width:44rem;font-size:.95rem}
+h2.eh{font-size:1.0625rem;margin:2rem 0 .5rem;letter-spacing:-.01em}
+h2.eh:first-child{margin-top:0}
+
+/* --- two-column workspace --- */
+.work{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:1.5rem;align-items:start}
+@media (max-width:64rem){.work{grid-template-columns:minmax(0,1fr)}}
+.listhead{display:flex;align-items:center;gap:.6rem;flex-wrap:wrap;margin-bottom:.6rem}
+.listhead .count{color:var(--ink-3);font-size:.8125rem;margin-left:auto}
+input.search{
+  flex:1 1 12rem;min-width:0;font:inherit;font-size:.875rem;padding:.4rem .6rem;
+  border:1px solid var(--edge);background:var(--paper);color:var(--ink);
+}
+.plist{border:1px solid var(--rule);background:var(--paper);max-height:70vh;overflow:auto}
+.prow{
+  display:grid;grid-template-columns:1.5rem minmax(0,1fr) auto;gap:.6rem;align-items:center;
+  padding:.55rem .7rem;border-bottom:1px solid var(--rule);cursor:pointer;background:var(--paper);
+}
+.prow:last-child{border-bottom:0}
+.prow:hover{background:var(--panel)}
+.prow[aria-current="true"]{background:var(--panel-2);box-shadow:inset 3px 0 0 var(--accent)}
+.prow.drag{opacity:.35}
+.prow.over{box-shadow:inset 0 3px 0 var(--accent)}
+.grip{cursor:grab;color:var(--ink-3);font-size:1rem;line-height:1;text-align:center;user-select:none}
+.grip:active{cursor:grabbing}
+.pt{font-weight:600;font-size:.9375rem;line-height:1.25;overflow-wrap:anywhere}
+.pm{font-size:.75rem;color:var(--ink-3);display:flex;gap:.4rem;flex-wrap:wrap;margin-top:.15rem;align-items:center}
+.pm .dot{color:var(--rule-strong)}
+.badge{font-size:.6875rem;font-weight:650;letter-spacing:.02em;text-transform:uppercase;padding:.08rem .3rem;border:1px solid var(--rule-strong);color:var(--ink-2)}
+.badge.new{border-color:var(--tool);color:var(--tool)}
+.badge.edit{border-color:var(--accent);color:var(--accent)}
+.badge.file{border-color:var(--ref);color:var(--ref)}
+.nudge{display:flex;flex-direction:column;gap:.1rem}
+.nudge button{
+  appearance:none;border:1px solid var(--rule-strong);background:var(--paper);color:var(--ink-2);
+  font:inherit;font-size:.6rem;line-height:1;padding:.15rem .3rem;cursor:pointer;
+}
+.nudge button:hover{background:var(--panel-2);color:var(--ink)}
+
+/* --- field forms --- */
+.field{margin-bottom:1.1rem}
+.field label{display:block;font-weight:600;font-size:.875rem;margin-bottom:.2rem;color:var(--ink)}
+.field .help{font-size:.8125rem;color:var(--ink-3);margin:0 0 .35rem;line-height:1.45}
+.field input[type=text],.field textarea,.field select{
+  width:100%;font:inherit;font-size:.9375rem;padding:.45rem .6rem;
+  border:1px solid var(--edge);background:var(--paper);color:var(--ink);
+}
+.field textarea{min-height:5.5rem;resize:vertical;line-height:1.5}
+.field .cnt{font-size:.75rem;color:var(--ink-3);text-align:right;margin-top:.15rem}
+.field .cnt.over{color:#a1341c}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+@media (max-width:34rem){.two{grid-template-columns:1fr}}
+.check{display:flex;gap:.55rem;align-items:flex-start;margin-bottom:.8rem}
+.check input{margin-top:.2rem;width:1rem;height:1rem;flex:none;accent-color:var(--accent)}
+.check span{font-size:.875rem;color:var(--ink-2)}
+.check b{display:block;color:var(--ink);font-size:.9375rem}
+.filerow{display:flex;gap:.5rem;align-items:center;flex-wrap:wrap;font-size:.875rem;color:var(--ink-2)}
+.filerow code{background:var(--panel-2);padding:.1rem .3rem;font-size:.85em;overflow-wrap:anywhere}
+
+/* --- drop zone --- */
+.drop{
+  border:1.5px dashed var(--edge);background:var(--paper);padding:1.5rem 1rem;text-align:center;
+  color:var(--ink-2);font-size:.9rem;cursor:pointer;
+}
+.drop:hover,.drop.hot{border-color:var(--accent);background:var(--panel);color:var(--ink)}
+.drop b{display:block;color:var(--ink);font-size:1rem;margin-bottom:.2rem}
+.drop small{display:block;color:var(--ink-3);margin-top:.4rem;font-size:.8125rem}
+
+/* --- tables --- */
+table.et{width:100%;border-collapse:collapse;font-size:.875rem}
+table.et th,table.et td{text-align:left;padding:.45rem .5rem;border-bottom:1px solid var(--rule);vertical-align:top}
+table.et th{font-size:.75rem;text-transform:uppercase;letter-spacing:.04em;color:var(--ink-3);font-weight:650}
+table.et td code{overflow-wrap:anywhere}
+
+.pend{border:1px solid var(--rule);background:var(--panel);padding:.9rem 1rem;margin-bottom:1.25rem}
+.pend h3{margin:0 0 .4rem;font-size:.9375rem}
+.pend ul{margin:0;padding-left:1.1rem;font-size:.875rem;color:var(--ink-2);line-height:1.6}
+.hide{display:none !important}
+.log{font-size:.8125rem;color:var(--ink-3);white-space:pre-wrap;margin-top:.75rem;line-height:1.5}
+kbd{font:inherit;font-size:.8em;border:1px solid var(--rule-strong);padding:0 .25rem;background:var(--panel-2)}
+</style>
+</head>
+<body>
+
+<header class="ehead">
+  <div class="ebar">
+    <a class="ebrand" href="index.html"><span class="mark" aria-hidden="true">E</span>Site editor <small>&middot; alexrajcoomar.github.io</small></a>
+    <div class="etabs" role="tablist">
+      <button class="etab" role="tab" aria-selected="true"  data-tab="pieces">Pieces</button>
+      <button class="etab" role="tab" aria-selected="false" data-tab="files">Files</button>
+      <button class="etab" role="tab" aria-selected="false" data-tab="text">Site text</button>
+      <button class="etab" role="tab" aria-selected="false" data-tab="setup">Connection</button>
+    </div>
+    <span class="espacer"></span>
+    <button class="btn btn-quiet" id="themebtn" type="button" title="Light or dark">&#9686;</button>
+    <button class="btn btn-go" id="publish" type="button" disabled>Publish</button>
+  </div>
+</header>
+
+<div class="wrap">
+
+<div class="notice" id="status">Connecting&hellip;</div>
+
+<!-- ============================ PIECES ============================ -->
+<section id="tab-pieces">
+  <h1 class="et">Everything on the site, in the order it appears</h1>
+  <p class="esub">Drag a row to move it. The order here is the order on the site: the first
+  independent piece becomes the lead on the Research page, and the first six marked
+  <em>featured</em> fill the band on the home page. Click a row to edit it.</p>
+
+  <div class="pend hide" id="pending">
+    <h3>Waiting to be published</h3>
+    <ul id="pendlist"></ul>
+  </div>
+
+  <div class="work">
+    <div>
+      <div class="listhead">
+        <input class="search" id="search" type="text" placeholder="Filter by title, course or tag" aria-label="Filter the list">
+        <button class="btn" id="addbtn" type="button">Add a piece</button>
+        <span class="count" id="pcount"></span>
+      </div>
+      <div class="plist" id="plist"></div>
+    </div>
+
+    <div>
+      <div class="panel" id="editor">
+        <p class="esub" style="margin:0">Select a piece on the left to edit it, or add a new one.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ ADD ============================ -->
+<section id="tab-add" class="hide">
+  <h1 class="et">Add a piece</h1>
+  <p class="esub">Drop the finished HTML file here. Its title is read out of the file, and the
+  rest of the details can be filled in on the next screen. The word count, figures and
+  tables are counted for you when the site rebuilds.</p>
+  <div class="panel">
+    <div class="drop" id="adddrop" tabindex="0" role="button">
+      <b>Drop an HTML file here</b>
+      or click to choose one
+      <small>The file keeps its name, so keep names lowercase with hyphens: <code>my-new-essay.html</code></small>
+    </div>
+    <input type="file" id="addfile" accept=".html,.htm" class="hide">
+    <p class="esub" style="margin:1.25rem 0 .5rem">Already uploaded the file another way?</p>
+    <div class="filerow">
+      <input type="text" id="addpath" placeholder="existing-file.html" style="flex:1 1 14rem;min-width:0;font:inherit;padding:.4rem .6rem;border:1px solid var(--edge);background:var(--paper);color:var(--ink)">
+      <button class="btn" id="addlink" type="button">Add an entry for it</button>
+    </div>
+    <p class="log" id="addlog"></p>
+    <p style="margin-top:1.25rem"><button class="btn btn-quiet" id="addcancel" type="button">Back to the list</button></p>
+  </div>
+</section>
+
+<!-- ============================ FILES ============================ -->
+<section id="tab-files" class="hide">
+  <h1 class="et">Files</h1>
+  <p class="esub">Everything sitting in the site's folder. Drop files here to add images,
+  a PDF, or a replacement for something already listed. A file with the same name replaces
+  the old one; a new name is simply added.</p>
+  <div class="panel">
+    <div class="drop" id="filedrop" tabindex="0" role="button">
+      <b>Drop any files here</b>
+      images, PDFs, HTML, anything the site should serve
+      <small>Files over about 25&nbsp;MB will not upload. Keep names lowercase with hyphens.</small>
+    </div>
+    <input type="file" id="filepick" multiple class="hide">
+    <h2 class="eh">Waiting to upload</h2>
+    <table class="et"><tbody id="uplist"><tr><td colspan="3" style="color:var(--ink-3)">Nothing yet.</td></tr></tbody></table>
+    <h2 class="eh">Already on the site</h2>
+    <div class="listhead"><input class="search" id="fsearch" type="text" placeholder="Filter files" aria-label="Filter files"></div>
+    <div style="max-height:26rem;overflow:auto;border:1px solid var(--rule)">
+      <table class="et"><tbody id="repolist"></tbody></table>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ SITE TEXT ============================ -->
+<section id="tab-text" class="hide">
+  <h1 class="et">Site text</h1>
+  <p class="esub">The wording that appears in the header, the home page headline, the About
+  page and the footer. Everything else on those pages is generated from the list of pieces.</p>
+  <div class="panel" id="siteform"></div>
+</section>
+
+<!-- ============================ SETUP ============================ -->
+<section id="tab-setup" class="hide">
+  <h1 class="et">Connection</h1>
+  <p class="esub">This page saves changes by writing to the site's GitHub repository. To do
+  that it needs a token, which you create yourself and paste in here. It is stored only in
+  this browser and is never sent anywhere except to GitHub.</p>
+
+  <div class="panel">
+    <h2 class="eh">How to make the token</h2>
+    <ol style="font-size:.9375rem;color:var(--ink-2);line-height:1.7;padding-left:1.2rem;max-width:46rem">
+      <li>Sign in to GitHub as the account that owns the site, and open
+        <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">Settings &rarr; Developer settings &rarr; Fine-grained tokens &rarr; Generate new token</a>.</li>
+      <li>Name it something like <em>Site editor</em> and set the expiry you want. When it expires
+        the editor will say so, and you make a new one the same way.</li>
+      <li>Under <b>Resource owner</b> choose the organisation that owns the site, then under
+        <b>Repository access</b> choose <em>Only select repositories</em> and pick the site's repository.</li>
+      <li>Under <b>Permissions &rarr; Repository permissions</b> set <b>Contents</b> to
+        <em>Read and write</em>. Leave everything else alone. That one permission is all this needs.</li>
+      <li>Generate it, copy it, and paste it below. GitHub shows it once.</li>
+    </ol>
+    <p class="notice">A token is a password. Do not paste it into anything else, and do not
+    use this editor on a shared computer. <b>Forget the token</b> below wipes it from this browser.</p>
+
+    <div class="field">
+      <label for="tok">Token</label>
+      <p class="help">Starts with <code>github_pat_</code>.</p>
+      <input type="password" id="tok" autocomplete="off" spellcheck="false">
+    </div>
+    <div class="two">
+      <div class="field">
+        <label for="owner">Account or organisation</label>
+        <input type="text" id="owner">
+      </div>
+      <div class="field">
+        <label for="repo">Repository</label>
+        <input type="text" id="repo">
+      </div>
+    </div>
+    <div class="field" style="max-width:16rem">
+      <label for="branch">Branch</label>
+      <input type="text" id="branch">
+    </div>
+    <div class="filerow">
+      <button class="btn btn-go" id="save-setup" type="button">Save and connect</button>
+      <button class="btn btn-warn" id="forget" type="button">Forget the token</button>
+    </div>
+    <p class="log" id="setuplog"></p>
+  </div>
+</section>
+
+</div><!-- /wrap -->
+
+<script>
+"use strict";
+/* ------------------------------------------------------------------
+   The editor writes one file: content/pieces.json. Uploaded files go
+   in beside it. Nothing here generates HTML — a GitHub Action does
+   that after every save, from the same templates that built the site
+   in the first place, so the design cannot drift by editing content.
+   ------------------------------------------------------------------ */
+
+var KEY = 'siteeditor.v1';
+var cfg = { token: '', owner: '', repo: '', branch: 'main' };
+var doc = null;          // parsed content/pieces.json
+var baseline = '';       // what it looked like when loaded
+var uploads = {};        // path -> {b64, size, type, name}
+var repoFiles = [];      // paths already in the repository
+var sel = -1;            // selected piece index
+var connected = false;
+
+/* -------------------------------------------------- small helpers -- */
+function $(id) { return document.getElementById(id); }
+function el(tag, cls, txt) {
+  var n = document.createElement(tag);
+  if (cls) n.className = cls;
+  if (txt != null) n.textContent = txt;
+  return n;
+}
+function say(msg, kind) {
+  var s = $('status');
+  s.className = 'notice' + (kind ? ' ' + kind : '');
+  s.innerHTML = msg;
+}
+function slugify(s) {
+  return String(s).toLowerCase().normalize('NFKD').replace(/[̀-ͯ]/g, '')
+    .replace(/[^a-z0-9.]+/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '');
+}
+function safeName(name) {
+  var dot = name.lastIndexOf('.');
+  var stem = dot > 0 ? name.slice(0, dot) : name;
+  var ext = dot > 0 ? name.slice(dot).toLowerCase() : '';
+  return slugify(stem) + ext;
+}
+function monthYear() {
+  var m = ['January','February','March','April','May','June','July',
+           'August','September','October','November','December'];
+  var d = new Date();
+  return m[d.getMonth()] + ' ' + d.getFullYear();
+}
+function dirty() {
+  return (doc && JSON.stringify(doc) !== baseline) || Object.keys(uploads).length > 0;
+}
+function serialise() { return JSON.stringify(doc, null, 1) + '\n'; }
+
+/* ------------------------------------------------------ settings -- */
+function loadCfg() {
+  try {
+    var raw = localStorage.getItem(KEY);
+    if (raw) { var o = JSON.parse(raw); for (var k in o) cfg[k] = o[k]; }
+  } catch (e) {}
+  if (!cfg.owner || !cfg.repo) {
+    var h = location.hostname;               // alexrajcoomar.github.io
+    if (/\.github\.io$/.test(h)) {
+      cfg.owner = cfg.owner || h.split('.')[0];
+      cfg.repo  = cfg.repo  || h;
+    }
+  }
+  cfg.branch = cfg.branch || 'main';
+}
+function saveCfg() {
+  try { localStorage.setItem(KEY, JSON.stringify(cfg)); } catch (e) {}
+}
+
+/* ----------------------------------------------------- the GitHub -- */
+function api(path, opts) {
+  opts = opts || {};
+  var headers = { 'Accept': 'application/vnd.github+json',
+                  'X-GitHub-Api-Version': '2022-11-28' };
+  if (cfg.token) headers['Authorization'] = 'Bearer ' + cfg.token;
+  if (opts.body) headers['Content-Type'] = 'application/json';
+  return fetch('https://api.github.com' + path, {
+    method: opts.method || 'GET',
+    headers: headers,
+    body: opts.body ? JSON.stringify(opts.body) : undefined
+  }).then(function (r) {
+    if (r.status === 204) return null;
+    return r.json().then(function (j) {
+      if (!r.ok) {
+        var m = (j && j.message) || ('GitHub said ' + r.status);
+        if (r.status === 401) m = 'The token was refused. It may have expired, or been pasted with a space in it.';
+        if (r.status === 403 && /rate limit/i.test(m)) m = 'GitHub is rate limiting this browser. Paste a token on the Connection tab, or wait an hour.';
+        if (r.status === 404 && cfg.token) m = 'Not found. Check the account, repository and branch on the Connection tab, and that the token can reach this repository.';
+        var e = new Error(m); e.status = r.status; throw e;
+      }
+      return j;
+    });
+  });
+}
+function repoPath() { return '/repos/' + cfg.owner + '/' + cfg.repo; }
+
+function connect() {
+  say('Reading the site&hellip;');
+  return api(repoPath() + '/contents/content/pieces.json?ref=' + encodeURIComponent(cfg.branch))
+    .then(function (j) {
+      doc = JSON.parse(decodeURIComponent(escape(atob(j.content.replace(/\n/g, '')))));
+      doc.pieces = doc.pieces || [];
+      baseline = JSON.stringify(doc);
+      return api(repoPath() + '/git/trees/' + encodeURIComponent(cfg.branch) + '?recursive=1');
+    })
+    .then(function (t) {
+      repoFiles = (t.tree || []).filter(function (n) { return n.type === 'blob'; })
+                                .map(function (n) { return n.path; });
+      connected = true;
+      var who = cfg.token ? '' : ' You are not signed in, so changes cannot be published yet — paste a token on the <b>Connection</b> tab.';
+      say('Connected to <b>' + cfg.owner + '/' + cfg.repo + '</b> · ' + doc.pieces.length +
+          ' pieces.' + who, cfg.token ? 'good' : '');
+      renderAll();
+    })
+    .catch(function (e) {
+      connected = false;
+      say('Could not read the site. ' + e.message, 'bad');
+      show('setup');
+    });
+}
+
+/* base64 for a binary file, in chunks so a large file does not blow the stack */
+function toB64(buf) {
+  var bytes = new Uint8Array(buf), out = '', CH = 0x8000;
+  for (var i = 0; i < bytes.length; i += CH) {
+    out += String.fromCharCode.apply(null, bytes.subarray(i, i + CH));
+  }
+  return btoa(out);
+}
+function utf8B64(str) {
+  return btoa(unescape(encodeURIComponent(str)));
+}
+
+/* ------------------------------------------------------ publishing -- */
+function publish() {
+  if (!cfg.token) { show('setup'); say('Paste a token first — the Connection tab explains how.', 'bad'); return; }
+  var problems = validate();
+  if (problems.length) { say('Not published. ' + problems.join(' '), 'bad'); return; }
+
+  var msg = prompt('Describe this change (this becomes the note in the site’s history):',
+                   'Update the site');
+  if (msg === null) return;
+  msg = (msg || 'Update the site').trim();
+
+  var btn = $('publish'); btn.disabled = true; btn.textContent = 'Publishing…';
+  say('Publishing&hellip;');
+
+  var files = [{ path: 'content/pieces.json', b64: utf8B64(serialise()) }];
+  for (var p in uploads) files.push({ path: p, b64: uploads[p].b64 });
+
+  var baseSha, treeSha;
+  api(repoPath() + '/git/ref/heads/' + encodeURIComponent(cfg.branch))
+    .then(function (r) {
+      baseSha = r.object.sha;
+      return api(repoPath() + '/git/commits/' + baseSha);
+    })
+    .then(function (c) {
+      treeSha = c.tree.sha;
+      // one blob per file, then one tree, then one commit: everything lands
+      // together, so the rebuild runs once and never sees a half-saved state
+      return Promise.all(files.map(function (f) {
+        return api(repoPath() + '/git/blobs', { method: 'POST',
+          body: { content: f.b64, encoding: 'base64' } })
+          .then(function (b) { return { path: f.path, mode: '100644', type: 'blob', sha: b.sha }; });
+      }));
+    })
+    .then(function (entries) {
+      return api(repoPath() + '/git/trees', { method: 'POST',
+        body: { base_tree: treeSha, tree: entries } });
+    })
+    .then(function (t) {
+      return api(repoPath() + '/git/commits', { method: 'POST',
+        body: { message: msg, tree: t.sha, parents: [baseSha] } });
+    })
+    .then(function (c) {
+      return api(repoPath() + '/git/refs/heads/' + encodeURIComponent(cfg.branch),
+        { method: 'PATCH', body: { sha: c.sha } });
+    })
+    .then(function () {
+      for (var p in uploads) if (repoFiles.indexOf(p) === -1) repoFiles.push(p);
+      uploads = {};
+      baseline = JSON.stringify(doc);
+      btn.textContent = 'Publish';
+      say('Published. GitHub is rebuilding the site now; the change usually appears within a ' +
+          'minute or two. <a href="https://github.com/' + cfg.owner + '/' + cfg.repo +
+          '/actions" target="_blank" rel="noopener">Watch the rebuild</a> or ' +
+          '<a href="index.html" target="_blank">open the site</a>.', 'good');
+      renderAll();
+    })
+    .catch(function (e) {
+      btn.textContent = 'Publish';
+      btn.disabled = false;
+      say('Nothing was published. ' + e.message, 'bad');
+    });
+}
+
+function validate() {
+  var out = [], seen = {};
+  doc.pieces.forEach(function (p, i) {
+    var where = '“' + (p.t || 'piece ' + (i + 1)) + '”';
+    if (!p.t || !p.t.trim()) out.push('A piece has no title.');
+    if (!p.url) out.push(where + ' has no file.');
+    else {
+      if (seen[p.url]) out.push('Two pieces point at ' + p.url + '.');
+      seen[p.url] = 1;
+      if (repoFiles.indexOf(p.url) === -1 && !uploads[p.url]) {
+        out.push(where + ' points at ' + p.url + ', which is not on the site.');
+      }
+    }
+  });
+  return out.slice(0, 4);
+}
+
+/* ------------------------------------------------------- the list -- */
+var KINDS = ['Essay', 'Reference', 'Tool'];
+var SURFACES = [['independent', 'Independent work'], ['course', 'Coursework'], ['personal', 'Personal interest']];
+function surfaceLabel(s) {
+  for (var i = 0; i < SURFACES.length; i++) if (SURFACES[i][0] === s) return SURFACES[i][1];
+  return s;
+}
+
+function renderList() {
+  var host = $('plist'); host.innerHTML = '';
+  var q = ($('search').value || '').toLowerCase().trim();
+  var shown = 0;
+  var base = baseline ? JSON.parse(baseline).pieces : [];
+  var byUrl = {}; base.forEach(function (p) { byUrl[p.url] = JSON.stringify(p); });
+
+  doc.pieces.forEach(function (p, i) {
+    var hay = [p.t, p.s, p.c, p.k, (p.tags || []).join(' ')].join(' ').toLowerCase();
+    if (q && hay.indexOf(q) === -1) return;
+    shown++;
+
+    var row = el('div', 'prow');
+    row.draggable = true;
+    row.dataset.i = i;
+    if (i === sel) row.setAttribute('aria-current', 'true');
+
+    var grip = el('span', 'grip', '≡');
+    grip.title = 'Drag to move';
+    row.appendChild(grip);
+
+    var mid = el('div');
+    mid.appendChild(el('div', 'pt', p.t || '(untitled)'));
+    var meta = el('div', 'pm');
+    meta.appendChild(el('span', null, p.k || '—'));
+    meta.appendChild(el('span', 'dot', '·'));
+    meta.appendChild(el('span', null, surfaceLabel(p.surface)));
+    if (p.c) { meta.appendChild(el('span', 'dot', '·')); meta.appendChild(el('span', null, p.c)); }
+    if (p.featured) { meta.appendChild(el('span', 'badge', 'featured')); }
+    if (!byUrl[p.url]) meta.appendChild(el('span', 'badge new', 'new'));
+    else {
+      if (byUrl[p.url] !== JSON.stringify(p)) meta.appendChild(el('span', 'badge edit', 'edited'));
+      // only meaningful for a piece that already had a file to replace
+      if (uploads[p.url]) meta.appendChild(el('span', 'badge file', 'file replaced'));
+    }
+    mid.appendChild(meta);
+    row.appendChild(mid);
+
+    var nudge = el('div', 'nudge');
+    var up = el('button', null, '▲'); up.title = 'Move up'; up.setAttribute('aria-label', 'Move up');
+    var dn = el('button', null, '▼'); dn.title = 'Move down'; dn.setAttribute('aria-label', 'Move down');
+    up.onclick = function (ev) { ev.stopPropagation(); move(i, i - 1); };
+    dn.onclick = function (ev) { ev.stopPropagation(); move(i, i + 1); };
+    nudge.appendChild(up); nudge.appendChild(dn);
+    row.appendChild(nudge);
+
+    row.onclick = function () { sel = i; renderList(); renderEditor(); };
+    row.addEventListener('dragstart', function (ev) {
+      ev.dataTransfer.setData('text/plain', String(i));
+      ev.dataTransfer.effectAllowed = 'move';
+      row.classList.add('drag');
+    });
+    row.addEventListener('dragend', function () { row.classList.remove('drag'); });
+    row.addEventListener('dragover', function (ev) { ev.preventDefault(); row.classList.add('over'); });
+    row.addEventListener('dragleave', function () { row.classList.remove('over'); });
+    row.addEventListener('drop', function (ev) {
+      ev.preventDefault(); row.classList.remove('over');
+      var from = parseInt(ev.dataTransfer.getData('text/plain'), 10);
+      if (!isNaN(from)) move(from, i);
+    });
+
+    host.appendChild(row);
+  });
+
+  $('pcount').textContent = q ? shown + ' of ' + doc.pieces.length : doc.pieces.length + ' pieces';
+  if (!shown) host.appendChild(el('div', 'prow', q ? 'Nothing matches that.' : 'No pieces yet.'));
+  renderPending();
+  $('publish').disabled = !dirty() || !connected;
+}
+
+function move(from, to) {
+  if (to < 0 || to >= doc.pieces.length || from === to) return;
+  var p = doc.pieces.splice(from, 1)[0];
+  doc.pieces.splice(to, 0, p);
+  if (sel === from) sel = to;
+  else if (sel > from && sel <= to) sel--;
+  else if (sel < from && sel >= to) sel++;
+  renderList(); renderEditor();
+}
+
+function renderPending() {
+  var box = $('pend' + 'ing'), list = $('pendlist');
+  var items = [];
+  if (doc && baseline) {
+    var was = JSON.parse(baseline);
+    var oldOrder = was.pieces.map(function (p) { return p.url; }).join('|');
+    var newOrder = doc.pieces.map(function (p) { return p.url; }).join('|');
+    var oldByUrl = {}; was.pieces.forEach(function (p) { oldByUrl[p.url] = JSON.stringify(p); });
+    var added = 0, edited = 0, removed = 0;
+    doc.pieces.forEach(function (p) {
+      if (!oldByUrl[p.url]) added++;
+      else if (oldByUrl[p.url] !== JSON.stringify(p)) edited++;
+    });
+    var nowUrls = {}; doc.pieces.forEach(function (p) { nowUrls[p.url] = 1; });
+    was.pieces.forEach(function (p) { if (!nowUrls[p.url]) removed++; });
+    if (added)   items.push(added + (added === 1 ? ' piece added' : ' pieces added'));
+    if (edited)  items.push(edited + (edited === 1 ? ' piece edited' : ' pieces edited'));
+    if (removed) items.push(removed + (removed === 1 ? ' piece removed from the list' : ' pieces removed from the list'));
+    if (oldOrder !== newOrder && !added && !removed) items.push('the order changed');
+    if (JSON.stringify(was.site) !== JSON.stringify(doc.site)) items.push('site text changed');
+  }
+  var n = Object.keys(uploads).length;
+  if (n) items.push(n + (n === 1 ? ' file to upload' : ' files to upload'));
+
+  list.innerHTML = '';
+  items.forEach(function (t) { list.appendChild(el('li', null, t)); });
+  box.classList.toggle('hide', items.length === 0);
+}
+
+/* ----------------------------------------------------- the editor -- */
+function textField(key, label, help, limit, area) {
+  var p = doc.pieces[sel];
+  var f = el('div', 'field');
+  var id = 'f_' + key;
+  var lab = el('label', null, label); lab.htmlFor = id; f.appendChild(lab);
+  if (help) f.appendChild(el('p', 'help', help));
+  var input = document.createElement(area ? 'textarea' : 'input');
+  if (!area) input.type = 'text';
+  input.id = id;
+  input.value = p[key] == null ? '' : p[key];
+  f.appendChild(input);
+  var cnt = null;
+  if (limit) { cnt = el('div', 'cnt'); f.appendChild(cnt); }
+  function tick() {
+    if (!cnt) return;
+    cnt.textContent = input.value.length + ' / ' + limit;
+    cnt.classList.toggle('over', input.value.length > limit);
+  }
+  input.addEventListener('input', function () {
+    doc.pieces[sel][key] = input.value;
+    tick();
+    if (key === 't') renderList();
+    else { renderPending(); $('publish').disabled = !dirty() || !connected; }
+  });
+  tick();
+  return f;
+}
+
+function selectField(key, label, help, options) {
+  var p = doc.pieces[sel];
+  var f = el('div', 'field');
+  var id = 'f_' + key;
+  var lab = el('label', null, label); lab.htmlFor = id; f.appendChild(lab);
+  if (help) f.appendChild(el('p', 'help', help));
+  var s = document.createElement('select'); s.id = id;
+  options.forEach(function (o) {
+    var v = Array.isArray(o) ? o[0] : o, t = Array.isArray(o) ? o[1] : o;
+    var op = el('option', null, t); op.value = v;
+    if ((p[key] || '') === v) op.selected = true;
+    s.appendChild(op);
+  });
+  s.addEventListener('change', function () {
+    doc.pieces[sel][key] = s.value;
+    renderList();
+  });
+  f.appendChild(s);
+  return f;
+}
+
+function checkField(key, label, help) {
+  var p = doc.pieces[sel];
+  var f = el('label', 'check');
+  var c = document.createElement('input'); c.type = 'checkbox'; c.checked = !!p[key];
+  c.addEventListener('change', function () { doc.pieces[sel][key] = c.checked; renderList(); });
+  var t = el('span');
+  t.appendChild(el('b', null, label));
+  t.appendChild(document.createTextNode(help));
+  f.appendChild(c); f.appendChild(t);
+  return f;
+}
+
+function renderEditor() {
+  var host = $('editor'); host.innerHTML = '';
+  if (sel < 0 || sel >= doc.pieces.length) {
+    host.appendChild(el('p', 'esub', 'Select a piece on the left to edit it, or add a new one.'));
+    host.querySelector('p').style.margin = '0';
+    return;
+  }
+  var p = doc.pieces[sel];
+
+  var h = el('h2', 'eh', 'Editing: ' + (p.t || '(untitled)'));
+  host.appendChild(h);
+
+  host.appendChild(textField('t', 'Title', 'Shown everywhere this piece is listed.', 70));
+  host.appendChild(textField('s', 'One-line description', 'The line directly under the title.', 95));
+
+  var two = el('div', 'two');
+  two.appendChild(selectField('k', 'Kind', 'Essay, a reference to look things up in, or an interactive tool.', KINDS));
+  two.appendChild(selectField('surface', 'Where it belongs', 'Independent work is separated from coursework across the site.', SURFACES));
+  host.appendChild(two);
+
+  var two2 = el('div', 'two');
+  var courses = {}; doc.pieces.forEach(function (x) { if (x.c) courses[x.c] = 1; });
+  var cf = textField('c', 'Course', 'Leave blank for independent work.');
+  var dl = document.createElement('datalist'); dl.id = 'courselist';
+  Object.keys(courses).sort().forEach(function (c) { var o = document.createElement('option'); o.value = c; dl.appendChild(o); });
+  cf.querySelector('input').setAttribute('list', 'courselist');
+  cf.appendChild(dl);
+  two2.appendChild(cf);
+  two2.appendChild(textField('d', 'Date shown', 'A month and a year, written out: August 2026.'));
+  host.appendChild(two2);
+
+  // tags
+  var tf = el('div', 'field');
+  var tl = el('label', null, 'Tags'); tl.htmlFor = 'f_tags'; tf.appendChild(tl);
+  tf.appendChild(el('p', 'help', 'Two or three, separated by commas. They show as small labels and are searchable.'));
+  var ti = document.createElement('input'); ti.type = 'text'; ti.id = 'f_tags';
+  ti.value = (p.tags || []).join(', ');
+  ti.addEventListener('input', function () {
+    doc.pieces[sel].tags = ti.value.split(',').map(function (s) { return s.trim(); }).filter(Boolean);
+    renderPending(); $('publish').disabled = !dirty() || !connected;
+  });
+  tf.appendChild(ti); host.appendChild(tf);
+
+  host.appendChild(textField('blurb', 'Description paragraph',
+    'The paragraph shown under the title in every list. Two sentences is usually right.', 320, true));
+  host.appendChild(textField('demo', 'What it demonstrates',
+    'Only shown on the home page and on the lead piece. Safe to leave empty.', 400, true));
+
+  host.appendChild(checkField('featured', 'Feature it on the home page',
+    ' — the first six featured pieces, in list order, fill the band under the headline.'));
+  host.appendChild(checkField('pwa', 'Installs to a phone home screen',
+    ' — only true for tools that ship a web manifest.'));
+
+  // file
+  var ff = el('div', 'field');
+  ff.appendChild(el('label', null, 'File'));
+  ff.appendChild(el('p', 'help', 'The page this entry opens. Replacing it keeps the same name, so every link to it keeps working.'));
+  var fr = el('div', 'filerow');
+  var code = el('code', null, p.url || '(none)');
+  fr.appendChild(code);
+  if (p.url) {
+    var open = el('a', null, 'Open'); open.href = p.url; open.target = '_blank'; open.rel = 'noopener';
+    fr.appendChild(open);
+  }
+  var rep = el('button', 'btn btn-quiet', 'Replace the file');
+  rep.type = 'button';
+  rep.onclick = function () {
+    var inp = document.createElement('input');
+    inp.type = 'file'; inp.accept = '.html,.htm';
+    inp.onchange = function () {
+      if (!inp.files[0]) return;
+      readFile(inp.files[0], p.url).then(function () { renderList(); renderEditor(); });
+    };
+    inp.click();
+  };
+  fr.appendChild(rep);
+  if (uploads[p.url]) {
+    var undo = el('button', 'btn btn-quiet', 'Undo the replacement');
+    undo.type = 'button';
+    undo.onclick = function () { delete uploads[p.url]; renderList(); renderEditor(); };
+    fr.appendChild(undo);
+  }
+  ff.appendChild(fr);
+  host.appendChild(ff);
+
+  // remove
+  var rm = el('button', 'btn btn-warn', 'Remove from the site');
+  rm.type = 'button';
+  rm.style.marginTop = '.5rem';
+  rm.onclick = function () {
+    if (!confirm('Take “' + (p.t || 'this piece') + '” off the site?\n\n' +
+                 'The file stays in the repository and the page keeps working if someone has ' +
+                 'the link. It simply stops being listed anywhere.')) return;
+    doc.pieces.splice(sel, 1);
+    sel = -1;
+    renderList(); renderEditor();
+  };
+  host.appendChild(rm);
+  host.appendChild(el('p', 'help', 'This only removes it from the lists. Nothing is deleted.'));
+}
+
+/* --------------------------------------------------- adding files -- */
+function readFile(file, forcePath) {
+  return new Promise(function (resolve, reject) {
+    if (file.size > 25 * 1024 * 1024) {
+      alert('“' + file.name + '” is larger than 25 MB, which is more than this can upload.');
+      return reject(new Error('too big'));
+    }
+    var r = new FileReader();
+    r.onerror = function () { reject(r.error); };
+    r.onload = function () {
+      var path = forcePath || safeName(file.name);
+      uploads[path] = { b64: toB64(r.result), size: file.size, type: file.type, name: file.name };
+      resolve(path);
+    };
+    r.readAsArrayBuffer(file);
+  });
+}
+
+function newPieceFrom(path, title) {
+  var stem = path.replace(/\.html?$/i, '');
+  var p = {
+    slug: stem, t: title || stem.replace(/-/g, ' '), s: '',
+    k: 'Reference', surface: 'course', c: '', d: monthYear(),
+    tags: [], blurb: '', demo: '', featured: false, pwa: false, url: path
+  };
+  doc.pieces.unshift(p);
+  sel = 0;
+  show('pieces');
+  renderList(); renderEditor();
+  say('Added <b>' + path + '</b>. Fill in the details on the right, then press <b>Publish</b>. ' +
+      'Its length and figures are counted automatically when the site rebuilds.', 'good');
+  window.scrollTo(0, 0);
+}
+
+function titleFromHTML(text) {
+  try {
+    var d = new DOMParser().parseFromString(text, 'text/html');
+    var t = d.querySelector('title');
+    if (t && t.textContent.trim()) return t.textContent.trim().split(/\s+[—|·]\s+/)[0];
+    var h = d.querySelector('h1');
+    if (h && h.textContent.trim()) return h.textContent.trim();
+  } catch (e) {}
+  return '';
+}
+
+function addHTMLFile(file) {
+  var path = safeName(file.name);
+  if (!/\.html?$/i.test(path)) { $('addlog').textContent = 'That is not an HTML file. Use the Files tab for images and PDFs.'; return; }
+  var already = doc.pieces.filter(function (p) { return p.url === path; })[0];
+  var reader = new FileReader();
+  reader.onload = function () {
+    var title = titleFromHTML(reader.result);
+    readFile(file, path).then(function () {
+      if (already) {
+        sel = doc.pieces.indexOf(already);
+        show('pieces'); renderList(); renderEditor();
+        say('<b>' + path + '</b> is already listed, so this replaces its file rather than adding a second entry.', 'good');
+      } else {
+        newPieceFrom(path, title);
+      }
+    });
+  };
+  reader.readAsText(file);
+}
+
+/* ------------------------------------------------------ files tab -- */
+function renderFiles() {
+  var up = $('uplist'); up.innerHTML = '';
+  var keys = Object.keys(uploads).sort();
+  if (!keys.length) {
+    var tr = el('tr'); var td = el('td', null, 'Nothing yet.');
+    td.colSpan = 3; td.style.color = 'var(--ink-3)'; tr.appendChild(td); up.appendChild(tr);
+  } else {
+    keys.forEach(function (k) {
+      var tr = el('tr');
+      var a = el('td'); a.appendChild(el('code', null, k)); tr.appendChild(a);
+      tr.appendChild(el('td', null, (uploads[k].size / 1024).toFixed(0) + ' KB'));
+      var c = el('td');
+      var b = el('button', 'btn btn-quiet', 'Cancel'); b.type = 'button';
+      b.onclick = function () { delete uploads[k]; renderAll(); };
+      c.appendChild(b); tr.appendChild(c);
+      up.appendChild(tr);
+    });
+  }
+
+  var host = $('repolist'); host.innerHTML = '';
+  var q = ($('fsearch').value || '').toLowerCase().trim();
+  var listed = {}; doc.pieces.forEach(function (p) { listed[p.url] = p.t; });
+  repoFiles.filter(function (f) {
+    return !/^(\.|build\/|\.github\/|content\/)/.test(f) && (!q || f.toLowerCase().indexOf(q) !== -1);
+  }).sort().forEach(function (f) {
+    var tr = el('tr');
+    var a = el('td'); a.appendChild(el('code', null, f)); tr.appendChild(a);
+    tr.appendChild(el('td', null, listed[f] ? 'listed as “' + listed[f] + '”' : ''));
+    var c = el('td');
+    var link = el('a', null, 'Open'); link.href = f; link.target = '_blank'; link.rel = 'noopener';
+    c.appendChild(link); tr.appendChild(c);
+    host.appendChild(tr);
+  });
+}
+
+/* -------------------------------------------------- site text tab -- */
+function renderSite() {
+  var host = $('siteform'); host.innerHTML = '';
+  if (!doc) return;
+  var s = doc.site;
+  function f(key, label, help, area) {
+    var box = el('div', 'field');
+    var id = 's_' + key;
+    var lab = el('label', null, label); lab.htmlFor = id; box.appendChild(lab);
+    if (help) box.appendChild(el('p', 'help', help));
+    var input = document.createElement(area ? 'textarea' : 'input');
+    if (!area) input.type = 'text';
+    input.id = id;
+    input.value = s[key] == null ? '' : s[key];
+    input.addEventListener('input', function () {
+      s[key] = input.value;
+      renderPending(); $('publish').disabled = !dirty() || !connected;
+    });
+    box.appendChild(input);
+    host.appendChild(box);
+  }
+  f('short', 'Name in the header', 'Appears beside the mark at the top of every page.');
+  f('name', 'Full name', 'Used in the page metadata and on the About page.');
+  f('email', 'Email address', 'Shown on the About page and in the footer.');
+  f('headline', 'Home page headline',
+    'The largest line on the site. Wrapping a word in <em>…</em> gives it the accent treatment.', true);
+  f('eyebrow', 'Line above the headline', 'A short label, e.g. Portfolio · Waterloo AFM Analytics.');
+  f('url', 'Site address', 'Used to build the canonical links. Change this only if the address changes.');
+  f('born', 'Date of birth', 'Used only to keep the age on the About page current. Format: 2006-10-09.');
+
+  var box = el('div', 'field');
+  var lab = el('label', null, 'Affiliation'); lab.htmlFor = 's_aff'; box.appendChild(lab);
+  box.appendChild(el('p', 'help', 'Two lines, shown beside your name on the About page. Separate them with a comma.'));
+  var inp = document.createElement('input'); inp.type = 'text'; inp.id = 's_aff';
+  inp.value = (s.affiliation || []).join(', ');
+  inp.addEventListener('input', function () {
+    s.affiliation = inp.value.split(',').map(function (x) { return x.trim(); }).filter(Boolean);
+    renderPending(); $('publish').disabled = !dirty() || !connected;
+  });
+  box.appendChild(inp); host.appendChild(box);
+}
+
+/* ---------------------------------------------------------- tabs -- */
+function show(name) {
+  ['pieces', 'add', 'files', 'text', 'setup'].forEach(function (t) {
+    var s = $('tab-' + t);
+    if (s) s.classList.toggle('hide', t !== name);
+  });
+  [].forEach.call(document.querySelectorAll('.etab'), function (b) {
+    b.setAttribute('aria-selected', String(b.dataset.tab === name));
+  });
+  if (name === 'files') renderFiles();
+  if (name === 'text') renderSite();
+}
+
+function renderAll() {
+  if (!doc) return;
+  renderList();
+  renderEditor();
+  renderFiles();
+  renderSite();
+  $('publish').disabled = !dirty() || !connected;
+}
+
+/* ---------------------------------------------------------- wire -- */
+loadCfg();
+$('tok').value = cfg.token || '';
+$('owner').value = cfg.owner || '';
+$('repo').value = cfg.repo || '';
+$('branch').value = cfg.branch || 'main';
+
+[].forEach.call(document.querySelectorAll('.etab'), function (b) {
+  b.onclick = function () { show(b.dataset.tab); };
+});
+
+$('themebtn').onclick = function () {
+  var now = document.documentElement.getAttribute('data-theme');
+  var next = now === 'dark' ? 'light' : (now === 'light' ? 'dark' :
+             (matchMedia('(prefers-color-scheme: dark)').matches ? 'light' : 'dark'));
+  document.documentElement.setAttribute('data-theme', next);
+  try { localStorage.setItem('theme', next); } catch (e) {}
+};
+
+$('publish').onclick = publish;
+$('search').addEventListener('input', renderList);
+$('fsearch').addEventListener('input', renderFiles);
+$('addbtn').onclick = function () { show('add'); $('addlog').textContent = ''; };
+$('addcancel').onclick = function () { show('pieces'); };
+
+$('save-setup').onclick = function () {
+  cfg.token = $('tok').value.trim();
+  cfg.owner = $('owner').value.trim();
+  cfg.repo = $('repo').value.trim();
+  cfg.branch = $('branch').value.trim() || 'main';
+  saveCfg();
+  $('setuplog').textContent = 'Saved in this browser. Connecting…';
+  connect().then(function () { if (connected) show('pieces'); });
+};
+$('forget').onclick = function () {
+  cfg.token = '';
+  $('tok').value = '';
+  saveCfg();
+  $('setuplog').textContent = 'The token is gone from this browser. You can still look around; publishing needs a new one.';
+  $('publish').disabled = true;
+};
+
+/* drop zones */
+function wireDrop(zoneId, inputId, handler, multiple) {
+  var z = $(zoneId), i = $(inputId);
+  z.onclick = function () { i.click(); };
+  z.onkeydown = function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); i.click(); } };
+  ['dragenter', 'dragover'].forEach(function (ev) {
+    z.addEventListener(ev, function (e) { e.preventDefault(); z.classList.add('hot'); });
+  });
+  ['dragleave', 'drop'].forEach(function (ev) {
+    z.addEventListener(ev, function (e) { e.preventDefault(); z.classList.remove('hot'); });
+  });
+  z.addEventListener('drop', function (e) {
+    var fs = e.dataTransfer.files;
+    if (!fs || !fs.length) return;
+    if (multiple) { [].forEach.call(fs, handler); } else { handler(fs[0]); }
+  });
+  i.addEventListener('change', function () {
+    if (!i.files.length) return;
+    if (multiple) { [].forEach.call(i.files, handler); } else { handler(i.files[0]); }
+    i.value = '';
+  });
+}
+wireDrop('adddrop', 'addfile', addHTMLFile, false);
+wireDrop('filedrop', 'filepick', function (f) {
+  readFile(f).then(function () { renderAll(); show('files'); });
+}, true);
+
+$('addlink').onclick = function () {
+  var path = safeName($('addpath').value.trim());
+  if (!path) { $('addlog').textContent = 'Type the file name first.'; return; }
+  if (repoFiles.indexOf(path) === -1 && !uploads[path]) {
+    $('addlog').textContent = 'There is no file called ' + path + ' on the site yet. Check the Files tab for the exact name.';
+    return;
+  }
+  if (doc.pieces.some(function (p) { return p.url === path; })) {
+    $('addlog').textContent = path + ' is already listed.';
+    return;
+  }
+  newPieceFrom(path, '');
+};
+
+window.addEventListener('beforeunload', function (e) {
+  if (dirty()) { e.preventDefault(); e.returnValue = ''; }
+});
+
+if (cfg.owner && cfg.repo) connect();
+else { say('Tell the editor where the site lives, on the <b>Connection</b> tab.', 'bad'); show('setup'); }
+</script>
+</body>
+</html>
