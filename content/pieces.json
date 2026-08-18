@@ -1,0 +1,895 @@
+{
+ "note": "This file is the site's content. Order in this list is the order on the site. Edit it through admin.html rather than by hand.",
+ "site": {
+  "name": "Leesharam Alexander Rajcoomar",
+  "short": "Alex Rajcoomar",
+  "email": "leesharamrajcoomar@gmail.com",
+  "url": "https://alexrajcoomar.github.io",
+  "born": "2006-10-09",
+  "headline": "I make arguments you can <em>audit</em>.",
+  "eyebrow": "Portfolio · Waterloo AFM Analytics",
+  "affiliation": [
+   "University of Waterloo",
+   "School of Accounting and Finance"
+  ]
+ },
+ "pieces": [
+  {
+   "slug": "the-trillion-dollar-vintage",
+   "t": "The Trillion-Dollar Vintage",
+   "s": "A study edition of the AI capital-cycle adjudication",
+   "k": "Essay",
+   "surface": "independent",
+   "c": "",
+   "d": "August 2026",
+   "tags": [
+    "Study edition",
+    "Capital cycles",
+    "Provenance"
+   ],
+   "blurb": "Seventeen figures built from the analysis's own numbers, under one rule: the fork between the two anchors is never closed, and any mark that arithmetic produced rather than an instrument measured is drawn open.",
+   "demo": "The largest piece here, and the one that shows the method at full size. Two rival readings of the same capital cycle are carried side by side to the end rather than averaged into one, and the page corrects its own arithmetic in public where a later attribution changed the base.",
+   "featured": true,
+   "pwa": false,
+   "url": "the-trillion-dollar-vintage.html"
+  },
+  {
+   "slug": "whose-losses-count",
+   "t": "Whose Losses Count",
+   "s": "Corporate ethics and the micro/macro foundations of strategy",
+   "k": "Essay",
+   "surface": "independent",
+   "c": "",
+   "d": "August 2026",
+   "tags": [
+    "Audited final",
+    "Ethics",
+    "Boundary"
+   ],
+   "blurb": "Eight questions, one repeating structure, and one recurring decision: where the accounting boundary sits, and whose losses fall outside it.",
+   "demo": "An accounting question asked as an ethics question. Colour means one thing on every figure: blue is inside the accounting boundary and priced, red is outside it. A result that is not distinguishable from zero is drawn as an open outline at full size rather than shrunk to nothing.",
+   "featured": true,
+   "pwa": false,
+   "url": "whose-losses-count.html"
+  },
+  {
+   "slug": "not-significant",
+   "t": "Not Significant",
+   "s": "An essay on the accounting of harm",
+   "k": "Essay",
+   "surface": "independent",
+   "c": "",
+   "d": "August 2026",
+   "tags": [
+    "Essay",
+    "Externality",
+    "Negative result"
+   ],
+   "blurb": "When a firm harms someone who does not trade with it, the share price moves 0.24 per cent. Not significant. An essay on standing, externality, and who decides which losses count.",
+   "demo": "The whole essay turns on a negative result, and reports it as one. Solid marks are quantities that reach someone's books; open outlines at full size are quantities that are real and appear on no invoice.",
+   "featured": true,
+   "pwa": false,
+   "url": "not-significant.html"
+  },
+  {
+   "slug": "global-spending-and-wealth",
+   "t": "Global Spending and Wealth",
+   "s": "Scale, structure, concentration",
+   "k": "Essay",
+   "surface": "independent",
+   "c": "",
+   "d": "August 2026",
+   "tags": [
+    "Data essay",
+    "Macro",
+    "Provenance"
+   ],
+   "blurb": "A fixed-unit data essay: one square is one trillion US dollars, declared once and never rescaled, with every figure carrying the provenance tag it was published under.",
+   "demo": "A unit declared once and held for the whole document, so quantities stay comparable by eye across every figure. Two sources that disagree are shown side by side instead of averaged.",
+   "featured": true,
+   "pwa": false,
+   "url": "global-spending-and-wealth.html"
+  },
+  {
+   "slug": "heartbeat-budget",
+   "t": "Does chronic caffeine spend your heartbeat budget faster?",
+   "s": "A question taken seriously",
+   "k": "Essay",
+   "surface": "independent",
+   "c": "",
+   "d": "August 2026",
+   "tags": [
+    "Data essay",
+    "Evidence"
+   ],
+   "blurb": "A small investigation into a popular claim, following the evidence rather than the headline.",
+   "demo": "A claim I did not believe, checked properly, and reported at the strength the evidence actually supports.",
+   "featured": true,
+   "pwa": false,
+   "url": "heartbeat-budget.html"
+  },
+  {
+   "slug": "exam-day-final-load",
+   "t": "Exam Day Final Load",
+   "s": "The last hour",
+   "k": "Reference",
+   "surface": "independent",
+   "c": "",
+   "d": "August 2026",
+   "tags": [
+    "Method",
+    "Study design"
+   ],
+   "blurb": "What to load in the last hour before an exam, and what to deliberately leave out.",
+   "demo": "A method piece: the rule for what gets cut, written down before the pressure arrives.",
+   "featured": false,
+   "pwa": false,
+   "url": "exam-day-final-load.html"
+  },
+  {
+   "slug": "daily-learning-cockpit",
+   "t": "Daily Learning Cockpit",
+   "s": "Prediction log, spaced rotation, calibration",
+   "k": "Tool",
+   "surface": "independent",
+   "c": "",
+   "d": "August 2026",
+   "tags": [
+    "Installable",
+    "Learning science",
+    "Calibration"
+   ],
+   "blurb": "A daily instrument for deliberate learning: log a prediction, work the spaced rotation, then score your own calibration.",
+   "demo": "Turns the research on durable learning into something with a button on it.",
+   "featured": true,
+   "pwa": true,
+   "url": "daily-learning-cockpit.html"
+  },
+  {
+   "slug": "the-delayed-test",
+   "t": "The Delayed Test",
+   "s": "Learning, judgment, and seeing clearly",
+   "k": "Essay",
+   "surface": "independent",
+   "c": "",
+   "d": "August 2026",
+   "tags": [
+    "Synthesis",
+    "Learning science",
+    "Judgment"
+   ],
+   "blurb": "Six adversarial research panels reduced to one argument: the feeling of learning and the fact of learning come apart, and the gap only shows at a delay.",
+   "demo": "Every claim carries the evidence grade its source file gave it, unaltered. Where a source marked a figure second-hand or contested, that flag travels with the figure into this page rather than being quietly dropped.",
+   "featured": true,
+   "pwa": false,
+   "url": "the-delayed-test.html"
+  },
+  {
+   "slug": "the-calibrated-mind",
+   "t": "The Calibrated Mind",
+   "s": "Operating principles for being right on purpose",
+   "k": "Reference",
+   "surface": "independent",
+   "c": "",
+   "d": "August 2026",
+   "tags": [
+    "Epistemics",
+    "Mental models"
+   ],
+   "blurb": "A short field guide to judging claims you cannot check yourself, written as the working companion to The Delayed Test.",
+   "demo": "",
+   "featured": false,
+   "pwa": false,
+   "url": "the-calibrated-mind.html"
+  },
+  {
+   "slug": "afm291",
+   "t": "AFM 291 Vault",
+   "s": "Map of content",
+   "k": "Reference",
+   "surface": "course",
+   "c": "AFM 291",
+   "d": "July 2026",
+   "tags": [
+    "Course hub",
+    "IFRS",
+    "ASPE"
+   ],
+   "blurb": "The hub for the AFM 291 vault: eleven documents covering intermediate financial accounting end to end, every chapter built to the same structure.",
+   "demo": "A full course rebuilt as one system rather than a pile of notes. Every chapter runs the same spine, so a topic can be found the same way twice.",
+   "featured": true,
+   "pwa": false,
+   "url": "afm291.html"
+  },
+  {
+   "slug": "us-canada-legal-architecture",
+   "t": "US and Canada Legal Architecture",
+   "s": "One page, two systems",
+   "k": "Reference",
+   "surface": "independent",
+   "c": "",
+   "d": "August 2026",
+   "tags": [
+    "Comparative law",
+    "Canada"
+   ],
+   "blurb": "Paramountcy against pre-emption, the Charter against the Bill of Rights: the structural differences between the two systems on one page.",
+   "demo": "",
+   "featured": false,
+   "pwa": false,
+   "url": "us-canada-legal-architecture.html"
+  },
+  {
+   "slug": "business-law-primer",
+   "t": "Business Law for Accountants",
+   "s": "Canada and the United States",
+   "k": "Reference",
+   "surface": "course",
+   "c": "Business law",
+   "d": "August 2026",
+   "tags": [
+    "Primer",
+    "Canada",
+    "Comparative"
+   ],
+   "blurb": "A primer on the business law an accountant needs, written to keep the Canadian and American positions distinct rather than blended.",
+   "demo": "",
+   "featured": true,
+   "pwa": false,
+   "url": "business-law-primer.html"
+  },
+  {
+   "slug": "law-arena",
+   "t": "Law Arena",
+   "s": "Business law for accountants",
+   "k": "Tool",
+   "surface": "course",
+   "c": "Business law",
+   "d": "August 2026",
+   "tags": [
+    "Installable",
+    "Drill"
+   ],
+   "blurb": "Question-by-question practice on the business law an accountant actually meets.",
+   "demo": "",
+   "featured": false,
+   "pwa": true,
+   "url": "law-arena.html"
+  },
+  {
+   "slug": "skill-forge",
+   "t": "Skill Forge",
+   "s": "AFM 291 drill engine",
+   "k": "Tool",
+   "surface": "course",
+   "c": "AFM 291",
+   "d": "August 2026",
+   "tags": [
+    "Installable",
+    "Drill",
+    "Retrieval"
+   ],
+   "blurb": "A drilling app for intermediate financial accounting, built to force retrieval rather than rereading.",
+   "demo": "",
+   "featured": true,
+   "pwa": true,
+   "url": "skill-forge.html"
+  },
+  {
+   "slug": "afm291-study-system",
+   "t": "AFM 291 Interactive Study System",
+   "s": "Intermediate Financial Accounting 1",
+   "k": "Tool",
+   "surface": "course",
+   "c": "AFM 291",
+   "d": "August 2026",
+   "tags": [
+    "Interactive",
+    "Full course"
+   ],
+   "blurb": "The full visual study system for AFM 291, covering the course end to end in one interactive document.",
+   "demo": "",
+   "featured": false,
+   "pwa": false,
+   "url": "afm291-study-system.html"
+  },
+  {
+   "slug": "practice-arena",
+   "t": "AFM 291 Practice Arena",
+   "s": "Timed question practice",
+   "k": "Tool",
+   "surface": "course",
+   "c": "AFM 291",
+   "d": "August 2026",
+   "tags": [
+    "Interactive",
+    "Timed"
+   ],
+   "blurb": "Practice questions for AFM 291 with immediate feedback, built for repetition under time pressure.",
+   "demo": "",
+   "featured": false,
+   "pwa": false,
+   "url": "practice-arena.html"
+  },
+  {
+   "slug": "econ102-exam-trainer",
+   "t": "ECON 102 Interactive Exam Trainer",
+   "s": "Macroeconomics practice",
+   "k": "Tool",
+   "surface": "course",
+   "c": "ECON 102",
+   "d": "August 2026",
+   "tags": [
+    "Interactive",
+    "Drill"
+   ],
+   "blurb": "An exam trainer for introductory macroeconomics: work the question, check the reasoning, repeat.",
+   "demo": "",
+   "featured": true,
+   "pwa": false,
+   "url": "econ102-exam-trainer.html"
+  },
+  {
+   "slug": "revenue-recognition",
+   "t": "Revenue Recognition",
+   "s": "Complete study guide",
+   "k": "Reference",
+   "surface": "course",
+   "c": "AFM 291",
+   "d": "May 2026",
+   "tags": [
+    "IFRS 15",
+    "Worked"
+   ],
+   "blurb": "A worked guide to revenue recognition, from the five-step model through the entries.",
+   "demo": "",
+   "featured": false,
+   "pwa": false,
+   "url": "revenue-recognition.html"
+  },
+  {
+   "slug": "afm291-field-manual",
+   "t": "AFM 291 Midterm Field Manual",
+   "s": "Revision C",
+   "k": "Reference",
+   "surface": "course",
+   "c": "AFM 291",
+   "d": "June 2026",
+   "tags": [
+    "Exam prep",
+    "Condensed"
+   ],
+   "blurb": "The condensed field manual for the AFM 291 midterm: what to know, in the order it gets tested.",
+   "demo": "",
+   "featured": false,
+   "pwa": false,
+   "url": "afm291-field-manual.html"
+  },
+  {
+   "slug": "afm291-journal-entries",
+   "t": "AFM 291 Journal Entry Reference",
+   "s": "Every entry, one page",
+   "k": "Reference",
+   "surface": "course",
+   "c": "AFM 291",
+   "d": "June 2026",
+   "tags": [
+    "Exam prep",
+    "Entries"
+   ],
+   "blurb": "A journal entry reference for intermediate financial accounting, organised so the right entry is findable under time pressure.",
+   "demo": "",
+   "featured": false,
+   "pwa": false,
+   "url": "afm291-journal-entries.html"
+  },
+  {
+   "slug": "afm291-inventory-gap-map",
+   "t": "AFM 291 Inventory and Gap Map",
+   "s": "What is covered, what is missing",
+   "k": "Reference",
+   "surface": "course",
+   "c": "AFM 291",
+   "d": "August 2026",
+   "tags": [
+    "Coverage audit",
+    "Method"
+   ],
+   "blurb": "An audit of my own coverage of the course: topic by topic, what is solid and what is still a gap.",
+   "demo": "",
+   "featured": false,
+   "pwa": false,
+   "url": "afm291-inventory-gap-map.html"
+  },
+  {
+   "slug": "afm274-capital-structure",
+   "t": "AFM 274 Chapter 17",
+   "s": "Capital structure in a perfect market",
+   "k": "Reference",
+   "surface": "course",
+   "c": "AFM 274",
+   "d": "June 2026",
+   "tags": [
+    "Corporate finance",
+    "Exam sheet"
+   ],
+   "blurb": "Exam sheet for capital structure under perfect-market assumptions: the propositions, and what each one actually rules out.",
+   "demo": "",
+   "featured": false,
+   "pwa": false,
+   "url": "afm274-capital-structure.html"
+  },
+  {
+   "slug": "afm274-financial-distress",
+   "t": "AFM 274 Chapter 19",
+   "s": "Financial distress, agency costs and information",
+   "k": "Reference",
+   "surface": "course",
+   "c": "AFM 274",
+   "d": "June 2026",
+   "tags": [
+    "Corporate finance",
+    "Exam sheet"
+   ],
+   "blurb": "Exam sheet for what happens to capital structure once the perfect-market assumptions come off.",
+   "demo": "",
+   "featured": false,
+   "pwa": false,
+   "url": "afm274-financial-distress.html"
+  },
+  {
+   "slug": "afm241-study-reference",
+   "t": "AFM 241 Exam Study Reference",
+   "s": "Full course reference",
+   "k": "Reference",
+   "surface": "course",
+   "c": "AFM 241",
+   "d": "June 2026",
+   "tags": [
+    "Full course",
+    "Exam prep"
+   ],
+   "blurb": "The complete study reference for AFM 241, built for the exam rather than for reading.",
+   "demo": "",
+   "featured": false,
+   "pwa": false,
+   "url": "afm241-study-reference.html"
+  },
+  {
+   "slug": "afm241-cheat-sheet",
+   "t": "AFM 241 Two-Page Cheat Sheet",
+   "s": "Compressed to what fits",
+   "k": "Reference",
+   "surface": "course",
+   "c": "AFM 241",
+   "d": "June 2026",
+   "tags": [
+    "Compression",
+    "Exam prep"
+   ],
+   "blurb": "The whole course compressed to two printable pages, on the theory that what does not fit was not load-bearing.",
+   "demo": "",
+   "featured": false,
+   "pwa": false,
+   "url": "afm241-cheat-sheet.html"
+  },
+  {
+   "slug": "hype-cycle",
+   "t": "The Gartner Hype Cycle",
+   "s": "The complete picture",
+   "k": "Reference",
+   "surface": "course",
+   "c": "AFM 241",
+   "d": "June 2026",
+   "tags": [
+    "Visual",
+    "Model"
+   ],
+   "blurb": "A visual walk through the hype cycle, phase by phase, with what each phase predicts and what it does not.",
+   "demo": "",
+   "featured": false,
+   "pwa": false,
+   "url": "hype-cycle.html"
+  },
+  {
+   "slug": "econ102-visual-reference",
+   "t": "ECON 102 Master Visual Reference",
+   "s": "Every model in one place",
+   "k": "Reference",
+   "surface": "course",
+   "c": "ECON 102",
+   "d": "August 2026",
+   "tags": [
+    "Visual",
+    "Full course"
+   ],
+   "blurb": "A single visual reference for the macro models: what each diagram shows, which curve moves, and what it means.",
+   "demo": "",
+   "featured": true,
+   "pwa": false,
+   "url": "econ102-visual-reference.html"
+  },
+  {
+   "slug": "positive-vs-normative",
+   "t": "Positive vs Normative",
+   "s": "ECON 102, slides 5 to 6",
+   "k": "Reference",
+   "surface": "course",
+   "c": "ECON 102",
+   "d": "August 2026",
+   "tags": [
+    "Visual",
+    "Concept"
+   ],
+   "blurb": "A short visual treatment of the distinction between what is and what ought to be.",
+   "demo": "",
+   "featured": false,
+   "pwa": false,
+   "url": "positive-vs-normative.html"
+  },
+  {
+   "slug": "afm291-ch1-theory-and-analytics",
+   "t": "AFM 291 Chapter 1",
+   "s": "Financial accounting theory and data analytics",
+   "k": "Reference",
+   "surface": "course",
+   "c": "AFM 291",
+   "d": "July 2026",
+   "tags": [
+    "Theory",
+    "Analytics"
+   ],
+   "blurb": "Efficient markets, agency and stakeholder theory, and where data analytics actually enters financial reporting.",
+   "demo": "",
+   "featured": false,
+   "pwa": false,
+   "url": "afm291-ch1-theory-and-analytics.html"
+  },
+  {
+   "slug": "afm291-ch2-conceptual-frameworks",
+   "t": "AFM 291 Chapter 2",
+   "s": "Conceptual frameworks for financial reporting",
+   "k": "Reference",
+   "surface": "course",
+   "c": "AFM 291",
+   "d": "July 2026",
+   "tags": [
+    "Conceptual framework",
+    "IFRS",
+    "ASPE"
+   ],
+   "blurb": "The conceptual framework worked to the level it gets tested, with the ASPE position kept beside the IFRS one rather than folded into it.",
+   "demo": "",
+   "featured": false,
+   "pwa": false,
+   "url": "afm291-ch2-conceptual-frameworks.html"
+  },
+  {
+   "slug": "afm291-ch3-accrual-accounting",
+   "t": "AFM 291 Chapter 3",
+   "s": "Accrual accounting, changes and statement structure",
+   "k": "Reference",
+   "surface": "course",
+   "c": "AFM 291",
+   "d": "July 2026",
+   "tags": [
+    "IAS 8",
+    "Accounting changes"
+   ],
+   "blurb": "Retrospective against prospective treatment, the error correction rules, and the statement structure the standards require.",
+   "demo": "",
+   "featured": false,
+   "pwa": false,
+   "url": "afm291-ch3-accrual-accounting.html"
+  },
+  {
+   "slug": "afm291-ch4-revenue-recognition",
+   "t": "AFM 291 Chapter 4",
+   "s": "Revenue recognition, in course-week order",
+   "k": "Reference",
+   "surface": "course",
+   "c": "AFM 291",
+   "d": "July 2026",
+   "tags": [
+    "IFRS 15",
+    "Long-term contracts"
+   ],
+   "blurb": "The five-step model, performance obligations satisfied over time, warranties and long-term contracts, with a missing exhibit range marked as missing rather than invented.",
+   "demo": "The note states its own gap: the source jumps from Exhibit 4-22 to 4-28, so the onerous-contract worked example is absent, and the page says so at the point where it would have appeared.",
+   "featured": true,
+   "pwa": false,
+   "url": "afm291-ch4-revenue-recognition.html"
+  },
+  {
+   "slug": "afm291-ch6-inventories",
+   "t": "AFM 291 Chapter 6",
+   "s": "Inventories: costing, cost flow, measurement and errors",
+   "k": "Reference",
+   "surface": "course",
+   "c": "AFM 291",
+   "d": "July 2026",
+   "tags": [
+    "IAS 2",
+    "Inventory"
+   ],
+   "blurb": "Costing and cost flow assumptions, lower of cost and net realisable value, and the two-year effect of an inventory error.",
+   "demo": "",
+   "featured": false,
+   "pwa": false,
+   "url": "afm291-ch6-inventories.html"
+  },
+  {
+   "slug": "afm291-ch9-intangibles-and-goodwill",
+   "t": "AFM 291 Chapter 9",
+   "s": "Intangibles, goodwill, mineral resources and grants",
+   "k": "Reference",
+   "surface": "course",
+   "c": "AFM 291",
+   "d": "July 2026",
+   "tags": [
+    "IAS 38",
+    "Goodwill"
+   ],
+   "blurb": "Intangible recognition and the six development criteria, goodwill impairment, and the grant treatments held apart.",
+   "demo": "",
+   "featured": false,
+   "pwa": false,
+   "url": "afm291-ch9-intangibles-and-goodwill.html"
+  },
+  {
+   "slug": "afm291-ch10-fair-value",
+   "t": "AFM 291 Chapter 10",
+   "s": "Applications of fair value to non-current assets",
+   "k": "Reference",
+   "surface": "course",
+   "c": "AFM 291",
+   "d": "July 2026",
+   "tags": [
+    "Fair value",
+    "IAS 40",
+    "Impairment"
+   ],
+   "blurb": "The longest note in the vault: revaluation, investment property, biological assets and held-for-sale, each traced to where the gain or loss lands.",
+   "demo": "",
+   "featured": true,
+   "pwa": false,
+   "url": "afm291-ch10-fair-value.html"
+  },
+  {
+   "slug": "afm291-key-takeaways",
+   "t": "AFM 291 Key Takeaways",
+   "s": "One reference map for the whole course",
+   "k": "Reference",
+   "surface": "course",
+   "c": "AFM 291",
+   "d": "August 2026",
+   "tags": [
+    "Visual",
+    "Whole course",
+    "Compression"
+   ],
+   "blurb": "The whole course compressed into one map with a repeating five-slot shape, written to be copied out by hand rather than reread.",
+   "demo": "",
+   "featured": true,
+   "pwa": false,
+   "url": "afm291-key-takeaways.html"
+  },
+  {
+   "slug": "afm291-study-plan",
+   "t": "AFM 291 Study Plan",
+   "s": "What to do, in what order",
+   "k": "Reference",
+   "surface": "course",
+   "c": "AFM 291",
+   "d": "August 2026",
+   "tags": [
+    "Study method",
+    "Planning"
+   ],
+   "blurb": "A study plan derived from a diagnostic rather than from the syllabus order, with the reasoning for the sequence written down.",
+   "demo": "",
+   "featured": false,
+   "pwa": false,
+   "url": "afm291-study-plan.html"
+  },
+  {
+   "slug": "afm291-reconciliation",
+   "t": "AFM 291 Reconciliation",
+   "s": "Two indexes of the same course, reconciled",
+   "k": "Reference",
+   "surface": "course",
+   "c": "AFM 291",
+   "d": "August 2026",
+   "tags": [
+    "Coverage audit",
+    "Method"
+   ],
+   "blurb": "Two indexes of the same course disagreed about what was covered. This reconciles them, conflict by conflict, before any studying was planned.",
+   "demo": "",
+   "featured": false,
+   "pwa": false,
+   "url": "afm291-reconciliation.html"
+  },
+  {
+   "slug": "afm291-w7-financial-assets",
+   "t": "AFM 291 Financial Assets I",
+   "s": "Equity investments and receivables",
+   "k": "Reference",
+   "surface": "course",
+   "c": "AFM 291",
+   "d": "July 2026",
+   "tags": [
+    "Financial assets",
+    "Equity method"
+   ],
+   "blurb": "The master classification decision tree for equity investments, the significant-influence test, and equity-method mechanics worked through.",
+   "demo": "Fills a topic the chapter notes never covered: the vault's own gap register flagged financial assets as missing.",
+   "featured": true,
+   "pwa": false,
+   "url": "afm291-w7-financial-assets.html"
+  },
+  {
+   "slug": "afm291-w7-cases",
+   "t": "AFM 291 Case Guide: Equity Investments",
+   "s": "Week 7 problem-solving companion",
+   "k": "Reference",
+   "surface": "course",
+   "c": "AFM 291",
+   "d": "July 2026",
+   "tags": [
+    "Case method",
+    "Financial assets"
+   ],
+   "blurb": "A case companion that starts by making you attempt the problem cold, then shows the marker's grid.",
+   "demo": "",
+   "featured": false,
+   "pwa": false,
+   "url": "afm291-w7-cases.html"
+  },
+  {
+   "slug": "afm291-w8-financial-assets",
+   "t": "AFM 291 Financial Assets II",
+   "s": "Non-strategic debt investments",
+   "k": "Reference",
+   "surface": "course",
+   "c": "AFM 291",
+   "d": "July 2026",
+   "tags": [
+    "Financial assets",
+    "IFRS 9"
+   ],
+   "blurb": "The three measurement categories for debt investments, the amortisation tables behind each, and where the gain or loss lands.",
+   "demo": "",
+   "featured": false,
+   "pwa": false,
+   "url": "afm291-w8-financial-assets.html"
+  },
+  {
+   "slug": "afm291-w8-cases",
+   "t": "AFM 291 Case Guide: Debt Investments",
+   "s": "Week 8 problem-solving companion",
+   "k": "Reference",
+   "surface": "course",
+   "c": "AFM 291",
+   "d": "July 2026",
+   "tags": [
+    "Case method",
+    "IFRS 9"
+   ],
+   "blurb": "Worked debt-investment cases, structured the way the answer has to be written rather than the way the topic is taught.",
+   "demo": "",
+   "featured": false,
+   "pwa": false,
+   "url": "afm291-w8-cases.html"
+  },
+  {
+   "slug": "afm291-w9-ppe",
+   "t": "AFM 291 Property, Plant and Equipment",
+   "s": "Acquisition, cost and components",
+   "k": "Reference",
+   "surface": "course",
+   "c": "AFM 291",
+   "d": "July 2026",
+   "tags": [
+    "PP&E",
+    "IAS 16",
+    "Borrowing costs"
+   ],
+   "blurb": "What goes into the cost of an asset and what never does, worked through the capitalise-or-expense hinge that every PP&E question turns on.",
+   "demo": "The other topic the chapter notes never reached. Includes the borrowing-cost flow and the component-depreciation treatment in full.",
+   "featured": true,
+   "pwa": false,
+   "url": "afm291-w9-ppe.html"
+  },
+  {
+   "slug": "afm291-w9-cases",
+   "t": "AFM 291 Case Guide: AceSpin Inc.",
+   "s": "Week 9 problem-solving companion",
+   "k": "Reference",
+   "surface": "course",
+   "c": "AFM 291",
+   "d": "July 2026",
+   "tags": [
+    "Case method",
+    "PP&E"
+   ],
+   "blurb": "A single company carried through every property, plant and equipment decision the week tests.",
+   "demo": "",
+   "featured": false,
+   "pwa": false,
+   "url": "afm291-w9-cases.html"
+  },
+  {
+   "slug": "kennedy-dossier",
+   "t": "The Kennedys",
+   "s": "A dossier",
+   "k": "Reference",
+   "surface": "personal",
+   "c": "",
+   "d": "August 2026",
+   "tags": [
+    "Personal interest",
+    "History"
+   ],
+   "blurb": "A compact dossier on the family, built for my own reading.",
+   "demo": "",
+   "featured": false,
+   "pwa": false,
+   "url": "kennedy-dossier.html"
+  },
+  {
+   "slug": "monroe-case-file",
+   "t": "Case file: 4 to 5 August 1962",
+   "s": "One night, sourced",
+   "k": "Reference",
+   "surface": "personal",
+   "c": "",
+   "d": "August 2026",
+   "tags": [
+    "Personal interest",
+    "History"
+   ],
+   "blurb": "A single night reconstructed from the record, with what is established kept apart from what is claimed.",
+   "demo": "",
+   "featured": false,
+   "pwa": false,
+   "url": "monroe-case-file.html"
+  },
+  {
+   "slug": "how-to-judge-a-president",
+   "t": "How to Judge a President",
+   "s": "A teaching companion, not a verdict",
+   "k": "Essay",
+   "surface": "personal",
+   "c": "",
+   "d": "August 2026",
+   "tags": [
+    "Personal interest",
+    "Evaluation method"
+   ],
+   "blurb": "The evaluation frameworks from a long leadership assessment, taught separately from the verdict so the method transfers to any leader.",
+   "demo": "",
+   "featured": false,
+   "pwa": false,
+   "url": "how-to-judge-a-president.html"
+  },
+  {
+   "slug": "leadership-evaluation-kit",
+   "t": "The Portable Kit",
+   "s": "A five-stage audit of an evaluation framework",
+   "k": "Reference",
+   "surface": "personal",
+   "c": "",
+   "d": "August 2026",
+   "tags": [
+    "Personal interest",
+    "Self-audit"
+   ],
+   "blurb": "A five-stage audit of an evaluation framework, including a rescoring on partial evidence to test whether its own conclusion holds up.",
+   "demo": "",
+   "featured": false,
+   "pwa": false,
+   "url": "leadership-evaluation-kit.html"
+  }
+ ]
+}
