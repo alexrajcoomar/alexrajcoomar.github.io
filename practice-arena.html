@@ -1,0 +1,1623 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="description" content="Practice questions for AFM 291 with immediate feedback, built for repetition under time pressure.">
+<meta property="og:title" content="AFM 291 Practice Arena — Timed question practice">
+<meta property="og:description" content="Practice questions for AFM 291 with immediate feedback, built for repetition under time pressure.">
+<meta property="og:type" content="article">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AFM 291 — Practice Arena</title>
+<style>
+/* ============ TOKENS (same design system as the Study System) ============ */
+:root{
+  color-scheme:light;
+  --page:#f9f9f7; --surface:#fcfcfb; --ink:#0b0b0b; --ink2:#52514e; --muted:#898781;
+  --grid:#e1e0d9; --line:#c3c2b7; --ring:rgba(11,11,11,.10);
+  --acc:#2a78d6; --t2:#eb6834; --t3:#1baf7a; --t4:#eda100; --t5:#e87ba4; --t7:#4a3aa7;
+  --good:#0ca30c; --goodtx:#006300; --warn:#fab219; --serious:#ec835a; --crit:#d03b3b;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+  --sans:system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:where(:not([data-theme="light"])){
+    color-scheme:dark;
+    --page:#0d0d0d; --surface:#1a1a19; --ink:#ffffff; --ink2:#c3c2b7; --muted:#898781;
+    --grid:#2c2c2a; --line:#383835; --ring:rgba(255,255,255,.10);
+    --acc:#3987e5; --t2:#d95926; --t3:#199e70; --t4:#c98500; --t5:#d55181; --t7:#9085e9;
+    --goodtx:#0ca30c;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --page:#0d0d0d; --surface:#1a1a19; --ink:#ffffff; --ink2:#c3c2b7; --muted:#898781;
+  --grid:#2c2c2a; --line:#383835; --ring:rgba(255,255,255,.10);
+  --acc:#3987e5; --t2:#d95926; --t3:#199e70; --t4:#c98500; --t5:#d55181; --t7:#9085e9;
+  --goodtx:#0ca30c;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+[hidden]{display:none!important}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--page);color:var(--ink);font:15px/1.5 var(--sans)}
+button{font-family:var(--sans)}
+button:focus-visible,input:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+
+/* ============ HEADER / DASHBOARD ============ */
+.hdr{position:sticky;top:0;z-index:40;display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+  padding:9px 14px;background:color-mix(in srgb,var(--surface) 94%,transparent);
+  backdrop-filter:blur(8px);border-bottom:1px solid var(--grid)}
+.brand{font-weight:800;font-size:15px;white-space:nowrap;cursor:pointer}
+.brand .logo{color:var(--acc)}
+.brand .sub{font-weight:500;color:var(--ink2);font-size:11.5px;margin-left:4px}
+.dash{display:flex;gap:6px;flex-wrap:wrap;margin-left:auto;align-items:center}
+.chip{display:inline-flex;align-items:center;gap:5px;border:1px solid var(--grid);
+  border-radius:999px;padding:4px 11px;font:700 12px var(--sans);background:var(--surface)}
+.chip .l{font-weight:600;color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.5px}
+.chip.streak{color:var(--t2)} .chip.xp{color:var(--acc)} .chip.mast{color:var(--goodtx)}
+.iconbtn{border:1px solid var(--line);background:var(--surface);color:var(--ink2);border-radius:999px;
+  width:34px;height:34px;cursor:pointer;font-size:15px;line-height:1}
+.iconbtn:hover{border-color:var(--acc);color:var(--acc)}
+.iconbtn.off{opacity:.45;text-decoration:line-through}
+
+main{max-width:900px;margin:0 auto;padding:16px 14px 70px}
+.screen{display:none}
+.screen.on{display:block;animation:in .18s ease-out}
+@keyframes in{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.screen.on{animation:none}}
+
+h1{font-size:21px;margin:12px 0 4px}
+.tag{color:var(--ink2);font-size:13px;margin:0 0 16px}
+
+/* ============ HOME: mode cards + module grid ============ */
+.modes{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px;margin-bottom:20px}
+.mode{border:1px solid var(--grid);border-radius:13px;background:var(--surface);padding:14px;
+  cursor:pointer;text-align:left;transition:transform .1s,border-color .1s;position:relative}
+.mode:hover{transform:translateY(-2px);border-color:var(--acc)}
+.mode .mi{font-size:21px;margin-bottom:6px}
+.mode h3{margin:0 0 3px;font-size:14.5px}
+.mode p{margin:0;font-size:11.5px;color:var(--ink2)}
+.mode .hs{position:absolute;top:10px;right:12px;font:700 11px var(--mono);color:var(--t4)}
+.mode .due{position:absolute;top:10px;right:12px;font:800 11px var(--sans);color:#fff;
+  background:var(--crit);border-radius:999px;padding:2px 8px}
+
+.sect{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.7px;color:var(--muted);
+  margin:18px 0 8px}
+.mods{display:grid;grid-template-columns:repeat(auto-fill,minmax(132px,1fr));gap:8px}
+.mtile{border:1px solid var(--grid);border-radius:11px;background:var(--surface);padding:10px 11px;
+  cursor:pointer;text-align:left;position:relative;min-height:74px}
+.mtile:hover{border-color:var(--acc)}
+.mtile .n{font:800 10px var(--sans);color:var(--acc)}
+.mtile .t{font-weight:700;font-size:12px;line-height:1.25;margin:2px 0 5px}
+.mtile .stars{font-size:11px;letter-spacing:1px;color:var(--t4)}
+.mtile .best{font:600 10px var(--mono);color:var(--muted)}
+.mtile.locked{opacity:.55;cursor:not-allowed}
+.mtile.locked .lock{position:absolute;top:8px;right:9px;font-size:12px}
+.mtile.done{border-color:color-mix(in srgb,var(--good) 55%,var(--grid))}
+.mtile.shake{animation:shk .3s}
+@keyframes shk{25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+.mprog{height:5px;border-radius:3px;background:var(--grid);overflow:hidden;margin-top:6px}
+.mprog i{display:block;height:100%;background:var(--good)}
+
+/* ============ QUIZ ============ */
+.qhead{display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap}
+.qhead .qn{font:700 12px var(--sans);color:var(--muted)}
+.qbar{flex:1;height:7px;border-radius:4px;background:var(--grid);overflow:hidden;min-width:120px}
+.qbar i{display:block;height:100%;background:var(--acc);transition:width .2s}
+.qbar i.warn{background:var(--crit)}
+.combo{font:800 12px var(--sans);color:var(--t2)}
+.qcard{border:1px solid var(--grid);border-radius:14px;background:var(--surface);padding:18px 18px 14px}
+.qmod{font:700 10px var(--sans);letter-spacing:.5px;text-transform:uppercase;color:var(--acc);margin-bottom:6px}
+.qtext{font-size:16px;font-weight:600;line-height:1.45;margin:0 0 14px}
+.opts{display:grid;gap:8px}
+.opt{border:1px solid var(--line);border-radius:10px;background:var(--page);padding:11px 13px;
+  text-align:left;cursor:pointer;font:500 13.5px/1.4 var(--sans);color:var(--ink);
+  display:flex;gap:9px;align-items:baseline}
+.opt .k{font:700 10.5px var(--mono);color:var(--muted);border:1px solid var(--grid);
+  border-radius:5px;padding:1px 5px;flex:none}
+.opt:hover:not(:disabled){border-color:var(--acc)}
+.opt:disabled{cursor:default}
+.opt.right{border-color:var(--good);background:color-mix(in srgb,var(--good) 10%,var(--surface))}
+.opt.wrong{border-color:var(--crit);background:color-mix(in srgb,var(--crit) 9%,var(--surface))}
+.opt.dim{opacity:.5}
+.numin{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.numin input{font:15px var(--mono);padding:9px 12px;width:170px;border:1px solid var(--line);
+  border-radius:9px;background:var(--page);color:var(--ink)}
+.numin input.right{border-color:var(--good);background:color-mix(in srgb,var(--good) 9%,var(--surface))}
+.numin input.wrong{border-color:var(--crit);background:color-mix(in srgb,var(--crit) 9%,var(--surface))}
+.given{border:1px solid var(--grid);border-radius:9px;padding:9px 12px;margin:0 0 12px;
+  background:color-mix(in srgb,var(--ink) 2.5%,transparent)}
+.given table{width:100%;border-collapse:collapse;font:12px var(--mono)}
+.given td{padding:2.5px 6px;border-bottom:1px dotted var(--grid)}
+.given td:last-child{text-align:right;white-space:nowrap}
+.given tr:last-child td{border-bottom:0}
+.given tr.tot td{border-top:1.5px solid var(--line);font-weight:700}
+.fb{margin-top:12px;border-top:1px dashed var(--line);padding-top:11px;font-size:13px;color:var(--ink2)}
+.fb .verdict{font-weight:800;font-size:13.5px;margin-bottom:5px}
+.fb .verdict.y{color:var(--goodtx)} .fb .verdict.n{color:var(--crit)}
+.fb .steps{margin-top:8px;display:grid;gap:4px}
+.fb .step{display:grid;grid-template-columns:16px 1fr auto;gap:7px;font-size:12.5px;
+  padding:3px 0;border-bottom:1px solid color-mix(in srgb,var(--ink) 6%,transparent)}
+.fb .step .sn{font:700 10px/1.6 var(--mono);color:var(--muted)}
+.fb .step .amt{font-family:var(--mono);font-size:11.5px;white-space:nowrap}
+.fb .step.hot{background:color-mix(in srgb,var(--warn) 13%,transparent);border-radius:4px;
+  padding-inline:5px;margin-inline:-5px}
+.badge{display:inline-block;font:700 9.5px var(--sans);letter-spacing:.4px;padding:1.5px 7px;
+  border-radius:999px;border:1px solid;vertical-align:1px;margin-right:4px}
+.badge.v{color:color-mix(in srgb,var(--warn) 60%,var(--ink));border-color:var(--warn);
+  background:color-mix(in srgb,var(--warn) 12%,transparent)}
+.badge.c{color:color-mix(in srgb,var(--serious) 70%,var(--ink));border-color:var(--serious);
+  background:color-mix(in srgb,var(--serious) 12%,transparent)}
+.qfoot{display:flex;gap:9px;margin-top:14px;align-items:center;flex-wrap:wrap}
+.btn{font:700 13px var(--sans);padding:10px 18px;border:1px solid var(--line);border-radius:10px;
+  background:var(--surface);color:var(--ink);cursor:pointer}
+.btn:hover{border-color:var(--acc);color:var(--acc)}
+.btn.pri{background:var(--acc);border-color:var(--acc);color:#fff}
+.btn.pri:hover{color:#fff;filter:brightness(1.07)}
+.btn.ghost{border-color:transparent;color:var(--ink2)}
+.btn:disabled{opacity:.4;cursor:default}
+
+/* ============ RESULTS ============ */
+.overlay{position:fixed;inset:0;background:color-mix(in srgb,var(--ink) 35%,transparent);
+  display:none;align-items:center;justify-content:center;z-index:60;padding:16px}
+.overlay.on{display:flex}
+.res{background:var(--surface);border:1px solid var(--grid);border-radius:16px;padding:26px 26px 20px;
+  max-width:440px;width:100%;text-align:center;animation:pop .22s ease-out}
+@keyframes pop{from{transform:scale(.92);opacity:0}to{transform:scale(1);opacity:1}}
+@media (prefers-reduced-motion:reduce){.res{animation:none}}
+.res .big{font-size:44px;font-weight:800;font-variant-numeric:tabular-nums}
+.res .big.pass{color:var(--goodtx)} .res .big.fail{color:var(--crit)}
+.res .rstars{font-size:26px;letter-spacing:5px;color:var(--t4);margin:4px 0}
+.res h2{margin:2px 0 6px;font-size:18px}
+.res p{color:var(--ink2);font-size:13px;margin:4px 0 14px}
+.res .xps{font:700 12px var(--sans);color:var(--acc)}
+
+/* ============ RAPID FIRE ============ */
+.timerwrap{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.timer{flex:1;height:10px;border-radius:6px;background:var(--grid);overflow:hidden}
+.timer i{display:block;height:100%;background:var(--t3)}
+.timer i.low{background:var(--crit)}
+.tnum{font:800 17px var(--mono);min-width:44px;text-align:right}
+.rscore{font:800 15px var(--mono);color:var(--acc)}
+
+/* ============ SIMULATOR ============ */
+.gengrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:9px}
+.gentile{border:1px solid var(--grid);border-radius:11px;background:var(--surface);padding:12px;
+  cursor:pointer;text-align:left}
+.gentile:hover{border-color:var(--acc)}
+.gentile h4{margin:0 0 3px;font-size:13px}
+.gentile .gm{font:700 9.5px var(--sans);color:var(--acc);text-transform:uppercase;letter-spacing:.5px}
+.gentile .gs{font:600 10.5px var(--mono);color:var(--muted);margin-top:4px}
+.simin{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin:7px 0}
+.simin label{font-size:12.5px;color:var(--ink2);min-width:150px}
+.simin input{font:13px var(--mono);padding:7px 10px;width:140px;border:1px solid var(--line);
+  border-radius:7px;background:var(--page);color:var(--ink)}
+.simin input.right{border-color:var(--good);background:color-mix(in srgb,var(--good) 9%,var(--surface))}
+.simin input.wrong{border-color:var(--crit);background:color-mix(in srgb,var(--crit) 9%,var(--surface))}
+.simin .mk{font:800 12px var(--sans);width:14px}
+.simin .mk.y{color:var(--goodtx)} .simin .mk.n{color:var(--crit)}
+
+/* ============ REVIEW ============ */
+.revinfo{border:1px solid var(--grid);border-radius:11px;background:var(--surface);padding:12px 14px;
+  margin-bottom:12px;font-size:13px;color:var(--ink2)}
+.boxrow{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+.boxpill{font:700 10.5px var(--mono);border:1px solid var(--grid);border-radius:999px;padding:3px 10px;color:var(--ink2)}
+
+.note{font-size:11.5px;color:var(--muted);margin-top:22px;border-top:1px solid var(--grid);padding-top:10px}
+.back{margin-bottom:10px}
+.visuallyhidden{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.banner{border:1px solid var(--warn);border-left-width:4px;border-radius:9px;background:color-mix(in srgb,var(--warn) 10%,var(--surface));padding:9px 13px;margin:10px 0;font-size:12.5px}
+.toolsrow{display:flex;gap:8px;flex-wrap:wrap;margin-top:20px}
+.toolsrow .btn{font-size:11.5px;padding:7px 12px;border-color:var(--grid)}
+.btn.danger{border-color:var(--crit);color:var(--crit)}
+.tilereset{position:absolute;top:7px;right:8px;font:700 11px var(--sans);color:var(--muted);cursor:pointer;padding:2px 5px;border-radius:5px}
+.tilereset:hover{color:var(--crit);background:color-mix(in srgb,var(--crit) 10%,transparent)}
+.misslist{max-height:260px;overflow-y:auto;text-align:left;margin-top:12px;border:1px solid var(--grid);border-radius:9px;padding:8px 11px}
+.mlh{font:700 11px var(--sans);text-transform:uppercase;letter-spacing:.5px;color:var(--crit);margin-bottom:6px}
+.mlitem{border-bottom:1px solid var(--grid);padding:7px 0;font-size:12px}
+.mlitem:last-child{border-bottom:0}
+.mlq{font-weight:600;margin-bottom:3px}
+.mlrow .no{color:var(--crit)} .mlrow .yes{color:var(--goodtx);margin-left:10px}
+.mlx{color:var(--ink2);margin-top:3px;font-size:11.5px}
+.mig{color:var(--acc);font-size:12px}
+.leechh{font:700 10.5px var(--sans);text-transform:uppercase;letter-spacing:.5px;color:var(--crit);margin-top:10px}
+.leech{font-size:12px;padding:3px 0;border-bottom:1px dotted var(--grid)}
+.leech .lm{font:700 10.5px var(--mono);color:var(--crit)}
+.chkrow{margin:10px 0;font-size:12.5px;color:var(--ink2)}
+#scr-quiz .qfoot{position:sticky;bottom:8px;background:color-mix(in srgb,var(--page) 88%,transparent);backdrop-filter:blur(6px);padding:6px;border-radius:10px}
+@media (max-width:560px){
+  .qtext{font-size:15px}
+  .dash .chip .l{display:none}
+  .numin input,.simin input{width:130px}
+}
+</style>
+</head>
+<body>
+<noscript><div style="padding:20px;font-family:system-ui">This practice app is built entirely in JavaScript — enable JavaScript (it runs fully offline; nothing is loaded from the network).</div></noscript>
+<header class="hdr">
+  <div class="brand" id="homeBtn"><span class="logo">▸</span> AFM 291 <span class="sub">Practice Arena</span></div>
+  <div class="dash">
+    <span class="chip streak" title="Daily streak">🔥 <b id="dStreak">0</b><span class="l">day streak</span></span>
+    <span class="chip xp">✦ <b id="dXp">0</b><span class="l">xp</span></span>
+    <span class="chip mast">▮ <b id="dMast">0%</b><span class="l">mastery</span></span>
+    <button class="iconbtn" id="sndBtn" title="Sound on/off">♪</button>
+    <button class="iconbtn" id="thmBtn" title="Light / dark">◐</button>
+  </div>
+</header>
+<main>
+  <!-- ============ HOME ============ -->
+  <section class="screen on" id="scr-home">
+    <h1>Practice Arena</h1>
+    <p class="tag">Every question is built from the audited vault (MOC → Reconciliation → Key Takeaways). Unverified citations keep their ⚑ flags — even in a game.</p>
+    <div class="modes">
+      <button class="mode" data-go="campaign"><div class="mi">🏁</div><h3>Chapter Campaign</h3><p>Score 80%+ to unlock the next module. Three stars at 100%.</p></button>
+      <button class="mode" data-go="rapid"><div class="mi">⚡</div><h3>Timed Rapid Fire</h3><p>60 seconds. Definitions, IFRS vs ASPE, classification. Combo scoring.</p><span class="hs" id="rapidHs"></span></button>
+      <button class="mode" data-go="sim"><div class="mi">🧮</div><h3>Calculation Simulator</h3><p>Randomised numeric drills with full worked solutions.</p></button>
+      <button class="mode" data-go="review"><div class="mi">🃏</div><h3>Smart Review</h3><p>Leitner deck of everything you've missed, spaced over days.</p><span class="due" id="dueBadge" hidden></span></button>
+    </div>
+    <div class="sect">Campaign — chapter selector</div>
+    <div class="mods" id="modGrid"></div>
+    <p class="note">Fixed figures (Red Rocket, Kennedy, Kool, Powell/Sooke, Robson/Hydro One…) are verified course figures; all other drill numbers are generated practice inputs, not course data. ⚑V = verified against ifrs.org/AASB only, still [VERIFY] vs CPA Canada Handbook Part I. ⚑C = the source contradicts itself — confirm with your instructor. Progress is stored in this browser only.</p>
+  </section>
+  <!-- ============ QUIZ (campaign + rapid + review share this) ============ -->
+  <section class="screen" id="scr-quiz">
+    <button class="btn ghost back" data-go="home">‹ Exit</button>
+    <div class="qhead">
+      <span class="qn" id="qn"></span>
+      <div class="qbar" id="qbarWrap"><i id="qbar"></i></div>
+      <span class="combo" id="combo"></span>
+      <span class="rscore" id="rscore" hidden></span>
+    </div>
+    <div class="timerwrap" id="timerWrap" hidden>
+      <div class="timer"><i id="timerBar"></i></div><span class="tnum" id="timerNum">60</span>
+    </div>
+    <div class="qcard" id="qcard"></div>
+    <div class="qfoot">
+      <button class="btn pri" id="nextBtn" hidden>Next ›</button>
+    </div>
+  </section>
+  <!-- ============ SIMULATOR ============ -->
+  <section class="screen" id="scr-sim">
+    <button class="btn ghost back" data-go="home">‹ Back</button>
+    <h1>Calculation &amp; Entry Simulator</h1>
+    <p class="tag">New numbers on every run. Answers within rounding tolerance count; worked steps appear after you check.</p>
+    <div class="gengrid" id="genGrid"></div>
+    <div id="simHost" style="margin-top:14px"></div>
+  </section>
+  <!-- ============ REVIEW ============ -->
+  <section class="screen" id="scr-review">
+    <button class="btn ghost back" data-go="home">‹ Back</button>
+    <h1>Smart Review</h1>
+    <div class="revinfo" id="revInfo"></div>
+    <label class="chkrow" hidden><input type="checkbox" id="incRetired"> Include retired cards (box 5)</label>
+    <button class="btn pri" id="revStart">Start review</button>
+  </section>
+</main>
+<div class="overlay" id="overlay"><div class="res" id="resBox"></div></div>
+<script>
+"use strict";
+/* ============ QUESTION BANK — every fact sourced from the audited vault ============ */
+const BANK=[];
+BANK.push({id:"ch1",n:"Ch.1",title:"Theory Foundations",gens:[],qs:[
+["A used-car seller knows the car's history; the buyer doesn't. Which problem is this, and what kind of information gap drives it?",
+ ["Adverse selection — hidden information about the past/present","Moral hazard — hidden future actions","The agency problem — owner vs manager","Semi-strong inefficiency"],0,
+ "Hidden INFORMATION (past/present) → adverse selection. Hidden ACTION (future) → moral hazard."],
+["A manager slacks off after being hired on a fixed salary. Classify the problem.",
+ ["Adverse selection","Moral hazard — and specifically the agency problem","Information overload","A signalling failure"],1,
+ "Hidden future ACTION → moral hazard; between owners (principals) and managers (agents) it is the agency problem."],
+["Which of these actually works as a remedy for adverse selection?",
+ ["Management stating 'our stock is undervalued'","A press release promising quality","A costly signal such as an audit or a dividend","Waiting for the market to figure it out"],2,
+ "Cheap talk never separates good firms from bad — only signals that are costly or legally risky to fake (audits, dividends) work."],
+["Debt covenants (e.g. current ratio > 2, debt-to-assets < 0.5, interest coverage > 3) primarily address which problem?",
+ ["Adverse selection","Moral hazard","Materiality","Earnings quality"],1,
+ "Covenants constrain future ACTIONS — a moral-hazard remedy, alongside incentive pay and equity stakes."],
+["A firm having a terrible year dumps every deferrable cost into it. Name the move and its direction.",
+ ["Income smoothing — neutral","Big bath — downward bias","Covenant protection — upward bias","Signal jamming — upward bias"],1,
+ "The 'big bath' concentrates pain in an already-bad year to make future years look better — a DOWNWARD motivation."],
+["True or false: positive accounting theory predicts managers only ever bias earnings upward.",
+ ["True","False — tax/regulatory avoidance, union bargaining, subsidy-seeking and the big bath all push downward"],1,
+ "Downward motivations are equally real and more commonly tested because they're counter-intuitive.",null,1],
+["Semi-strong-form market efficiency means prices reflect…",
+ ["All information, public and private","All public information — insiders can still profit on private information","Only past prices","Whatever management discloses"],1,
+ "That gap between public and private is exactly why insider-trading law exists."],
+["Why does one balance sheet mix market values (traded securities) with historical cost (inventory, equipment)?",
+ ["Inconsistent standard-setting","Where an efficient market exists its price is reliable and verifiable; where none exists, historical cost is used","IFRS requires fair value for everything","A transition provision"],1,
+ "The mixed-measurement balance sheet is a deliberate consequence of efficient-market logic, not an inconsistency."],
+["Why does a DIVIDEND work as a signal of quality when a press release doesn't?",
+ ["Dividends are legally required","Paying real cash is costly — a weak firm cannot afford to imitate it for long","Dividends are tax-advantaged","Investors prefer income"],1,
+ "A signal separates good firms from bad only when bad firms cannot afford to fake it — the whole logic of costly signals."],
+["Insider trading is legally restricted because…",
+ ["Markets are strong-form efficient","Under semi-strong efficiency, private information is NOT yet in the price — insiders could profit at outsiders' expense","Prices never reflect information","It reduces trading volume"],1,
+ "Semi-strong form prices in public information only; the private-information gap is exactly the exploitable one."]
+]});
+
+BANK.push({id:"ch2",n:"Ch.2",title:"Conceptual Framework",gens:[],qs:[
+["The two FUNDAMENTAL qualitative characteristics are…",
+ ["Comparability and timeliness","Relevance and representational faithfulness","Prudence and neutrality","Understandability and verifiability"],1,
+ "Fundamental = must-have. The other four — understandability, comparability, verifiability, timeliness — are enhancing. (The ¶2.20 reference is the textbook's own — treat the paragraph number as unconfirmed vs the Handbook.)","v"],
+["Which is NOT an enhancing qualitative characteristic?",
+ ["Verifiability","Timeliness","Relevance","Comparability"],2,
+ "Relevance is FUNDAMENTAL. Enhancers can't rescue information that fails a fundamental test."],
+["Per the Framework (¶1.2), general purpose financial statements target…",
+ ["Regulators and tax authorities","Investors, lenders and other creditors","Management and the board","All of society equally"],1,
+ "A deliberately narrow post-2011 target market — parties who provided or might provide financial resources."],
+["The Framework's objective is ultimately to help users predict…",
+ ["Next year's dividend","The amount, timing and uncertainty of future cash flows","Share price movements","Management quality"],1,
+ "Resources, claims and accrual performance all serve that single cash-flow prediction goal."],
+["Classify the four measurement bases into entry vs exit values.",
+ ["Entry: historical cost, fair value · Exit: current cost, value in use","Entry: historical cost, current cost · Exit: fair value, value in use","All four are entry values","Entry: value in use · Exit: the rest"],1,
+ "Entry = what you pay to acquire (historical, current cost); exit = what you get on disposal (fair value, value in use)."],
+["Transaction costs are treated how under entry vs exit values?",
+ ["Added under both","Deducted under both","Added to entry values, deducted from exit values","Ignored entirely"],2,
+ "Entry values ADD costs to the base; exit values DEDUCT them — one reason 'realizable value' vs 'fair value' matters."],
+["In the Quanto example, the four bases produced identical total lifetime income. What differed?",
+ ["The total income","WHEN the income was recognised","The cash flows","The ending equity"],1,
+ "Same $26 lifetime income under every basis — measurement choice shifts timing, never the lifetime total."],
+["Exhibits 2-3/2-9 call the third basis 'realizable value'; §B.6 defines it as IFRS-13-style fair value. The correct exam posture is…",
+ ["Treat them as identical — they are synonyms","NRV and fair value differ by selling costs; the source never reconciles them — flag it and confirm with the instructor","Realizable value is always correct","Fair value is always correct"],1,
+ "An open, unresolved source inconsistency: NRV deducts costs to sell, IFRS 13 fair value excludes transaction costs.","c"],
+["Most R&D spending fails recognition because…",
+ ["R&D is never an element","Future benefit isn't probable enough and the amount isn't reliably measurable","IFRS bans intangibles","It is always material"],1,
+ "The recognition gate (probable + measurable) working as designed — not a loophole."],
+["Under ASPE's framework, comprehensive income is…",
+ ["An element, as under IFRS","Not present — ASPE has no OCI at all","Renamed 'net surplus'","Optional"],1,
+ "ASPE mirrors IFRS's shape at ~1/7 the length, but has no OCI and no comprehensive-income element; materiality sits under constraints."],
+["Replacement cost of an asset still held rises from $100 to $102. Under CURRENT COST, year-1 income shows…",
+ ["Nothing until sale","A $2 holding gain","A $2 impairment","Revenue of $102"],1,
+ "Current cost recognises holding gains as prices move — under different facts it would just as easily be a holding loss."]
+]});
+
+BANK.push({id:"ch3",n:"Ch.3",title:"IAS 8 & Statement Structure",gens:[],qs:[
+["A prior-period mistake that WAS knowable at the time is a(n) ___ and gets ___.",
+ ["Estimate change — prospective treatment","Policy change — retrospective application","Error — retrospective restatement","Error — prospective treatment"],2,
+ "Knowable in a prior period → error → retrospective RESTATEMENT (as if it never occurred). IAS 8 ¶5 defines the term.","v"],
+["Management voluntarily switches its inventory cost-flow method. Treatment?",
+ ["Retrospective restatement","Retrospective application — as if the policy had always applied","Prospective only","Disclosure only"],1,
+ "A change of BASIS → policy change → retrospective APPLICATION. 'Restatement' is reserved for errors — using it here is a written-communication penalty.","v"],
+["New information shortens an asset's expected useful life. Treatment?",
+ ["Restate prior years","Retrospective application","Prospective — current and future periods only","Adjust opening retained earnings"],2,
+ "A revised JUDGMENT about an uncertain amount → estimate change → never restate."],
+["Random Home reclassifies its allowance need ($34K for 20X1) as an error. The 20X1 piece is debited to…",
+ ["Bad debt expense","Opening retained earnings","OCI","Accounts receivable"],1,
+ "20X1's expense account closed long ago — prior-year corrections land in opening retained earnings."],
+["A major customer went bankrupt in January; the receivable existed at the December year-end, and the customer's condition had been deteriorating all year. The January news is…",
+ ["Non-adjusting — it happened after year-end","Adjusting — it evidences a condition that existed at year-end","Ignored","Disclosed only if material"],1,
+ "Ask WHEN the condition existed, never when you learned of it."],
+["A warehouse burns down three weeks after year-end. Treatment?",
+ ["Adjusting — it's large","Non-adjusting — the condition arose after year-end; disclose if material","Adjusting if insured","Restate the prior year"],1,
+ "Size is a red herring. The fire's condition did not exist at the balance-sheet date."],
+["Comprehensive income equals…",
+ ["Net income","Net income + OCI","OCI − dividends","Revenue − expenses ± equity issues"],1,
+ "OCI carries unrealized value changes so net income can keep telling the realized-performance story."],
+["On an ASPE engagement, OCI…",
+ ["Works exactly as under IFRS","Recycles annually","Does not exist at all","Applies only to financial assets"],2,
+ "No OCI and no comprehensive-income statement anywhere in ASPE — never put OCI on an ASPE answer."],
+["Forthcoming IFRS 18 (periods beginning on/after 1 Jan 2027) will, among other things…",
+ ["Abolish IAS 8","Rename IAS 8 'Basis of Preparation of Financial Statements' and replace IAS 1","Merge IFRS and ASPE","Eliminate OCI"],1,
+ "Not yet in force. Treat IAS 8 paragraph numbers other than ¶5 as unverified once it lands.","v"],
+["Same $36K allowance fact classified three ways produces…",
+ ["Three different cumulative totals","The same cumulative total in three different placements","Identical statements","A GAAP violation"],1,
+ "Estimate: all $36K in 20X2. Error/policy: $34K to opening RE + $2K in 20X2. Classification, not arithmetic, is the tested skill."]
+]});
+
+BANK.push({id:"ch4",n:"Ch.4",title:"Revenue Recognition",gens:["ltc","sfc"],qs:[
+["Put the five steps of IFRS 15 in order.",
+ ["Price → contract → allocate → obligations → recognise","Contract → performance obligations → transaction price → allocate → recognise","Obligations → price → contract → recognise → allocate","Recognise → allocate → price → obligations → contract"],1,
+ "Nearly every revenue wrinkle lives inside one specific step of this spine."],
+["A customer's ability to pay is doubtful. This is assessed in…",
+ ["Step 3 — reduce the transaction price","Step 1 — does an enforceable contract even exist?","Step 5 — delay recognition","Step 4 — allocate less"],1,
+ "Collectability gates contract EXISTENCE (¶9). The price is never haircut for credit risk."],
+["A $900 bundle contains obligations with stand-alone prices of $500/$300/$200. The $300-SSP item is allocated…",
+ ["$300 — its own price","$270 — 30% of the $900","$300 less a pro-rata margin","Whatever is left over"],1,
+ "Allocate by RELATIVE SSP: the bundle discount spreads proportionally across every obligation, never onto just one."],
+["The residual approach to estimating a stand-alone selling price is allowed…",
+ ["Whenever a price is unknown","Only when the price is highly variable or not yet set","For the largest obligation","Never under IFRS 15"],1,
+ "A fenced-off last resort — market assessment and cost-plus-margin come first."],
+["Goods delivered today, $121,000 collectible in two years (10% rate). Revenue today is…",
+ ["$121,000","$100,000 — the present value; the $21,000 gap accrues as interest revenue","$110,000","Zero until cash arrives"],1,
+ "Strip the financing: revenue = cash-equivalent price today; the rest is interest, never sales."],
+["The significant-financing adjustment can be skipped when…",
+ ["The customer is creditworthy","Payment is expected within one year of delivery","The amount is under $1M","Interest rates are low"],1,
+ "The one-year practical expedient covers ordinary trade credit."],
+["What makes a warranty a SEPARATE performance obligation?",
+ ["Duration over one year","A high price","It provides service beyond guaranteeing the promised quality","Being sold by a manufacturer"],2,
+ "Substance is the only test. Duration and dollar size never distinguish assurance from service."],
+["An assurance-type warranty is accounted for as…",
+ ["Deferred revenue","A separate performance obligation","An IAS 37 provision (warranty expense/liability)","A contingent asset"],2,
+ "Not distinct → no price allocated → provision. Service-type gets its own allocation and deferred revenue."],
+["A contract is 20% complete when total cost is re-estimated at $43M against a $40M price. Recognise…",
+ ["$600K — 20% of the loss","$3M — the full expected loss, immediately","Nothing until completion","$3M spread over remaining years"],1,
+ "Onerous (IAS 37 ¶68): profits prorate with progress; losses never do."],
+["Kennedy Construction's onerous provision of $697,122.30 was booked in Year 2. In Year 3, when the contract completed, the provision was…",
+ ["Left on the books","Reversed, so the loss isn't double-counted","Reclassified to revenue","Transferred to OCI"],1,
+ "The provision unwinds against actual results as the work finishes."]
+]});
+
+BANK.push({id:"ias37",n:"IAS 37",title:"Provisions & Contingencies",gens:[],qs:[
+["A provision requires which THREE tests to all pass?",
+ ["Legal contract + payment + invoice","Present obligation from a past event + probable outflow + reliable estimate","Probable outflow + board approval + materiality","Past event + possible outflow + estimate"],1,
+ "Miss any one → no provision; at most a disclosure."],
+["A company has publicly honoured a clean-up policy for years, with no law requiring it. Contamination occurs. Obligation?",
+ ["No — no legal duty exists","Yes — a constructive obligation from established practice","Only if a lawsuit is filed","Only if insured"],1,
+ "Valid expectations from past practice leave no realistic alternative — constructive obligations count."],
+["A lawsuit loss is possible but not probable (and not remote). Treatment?",
+ ["Recognise a provision","Disclose a contingent liability — nature, estimate, uncertainties","Do nothing","Recognise half"],1,
+ "The ladder: probable+estimable → provision; possible → disclose; remote → nothing."],
+["A court win of $2M is PROBABLE. Treatment of this contingent asset?",
+ ["Recognise $2M","Recognise the PV","Disclose only — never recognise while uncertain","Credit OCI"],2,
+ "The bar is asymmetric by design: prudence never lets a gain in early, even a probable one."],
+["Under ASPE, a contingent loss is ACCRUED only when it is…",
+ ["Likely, whether or not measurable","Likely AND reliably measurable","Not determinable but measurable","Possible and material"],1,
+ "Only Likely + Measurable accrues. Every other cell except 'unlikely' still requires disclosure."],
+["Under ASPE, 'not determinable' likelihood means…",
+ ["Nothing is required","Disclosure is still required","Accrual is required","The auditor decides"],1,
+ "Uncertainty about probability is information users need; only 'unlikely' earns silence."],
+["Kool Transportation's lifetime contract loss was $270,000, of which $158,485 had already flowed through ordinary entries. The provision recognised was…",
+ ["$270,000","$158,485","$111,515 — the top-up to the full lifetime loss","Zero"],2,
+ "The provision only tops the cumulative charge up to the full loss — the course's own anchor for the mechanic."],
+["A patent-infringement suit has roughly a 20% chance of loss. Treatment?",
+ ["Provision","Disclose as a contingent liability","Nothing — remote","Recognise 20% of the claim"],1,
+ "~20% is possible, not probable and not remote → disclosure only."],
+["A loss is PROBABLE but no reliable estimate can be made. Treatment?",
+ ["Recognise a rough provision anyway","Disclose as a contingent liability — the estimate criterion failed","Nothing until estimable","Recognise the minimum of the range"],1,
+ "All three criteria must pass to recognise. Probable-but-unestimable is the disclosure cell, reassessed each period until it graduates."],
+["Lecture anchor: a breach-of-contract claim is ~70% likely to be lost, with a $1.0–1.2M estimated range. Treatment?",
+ ["Disclose only — a range is not reliable","Recognise a provision — probable outflow and a reliably estimable range","Remote — do nothing","Recognise $1.2M in OCI"],1,
+ "Probable + estimable (a bounded range qualifies) → provision. Compare the ~20% patent suit, which only earns disclosure."]
+]});
+
+BANK.push({id:"ch5",n:"Ch.5",title:"Cash & Receivables",gens:["ecl"],qs:[
+["Which bank-reconciliation items require journal entries?",
+ ["Deposits in transit and outstanding cheques","Book-side items: bank charges, NSF cheques, interest, company errors","All reconciling items","None"],1,
+ "Bank-side items already sit correctly on the books and clear on their own — journalizing them double-counts."],
+["Both sides of a bank reconciliation must converge on…",
+ ["The bank statement balance","The book balance","One identical corrected cash balance","The prior month's balance"],2,
+ "If they don't meet, reconciling items remain unfound."],
+["The entry to write off a specific uncollectible account is…",
+ ["Dr Bad debt expense / Cr AR","Dr Allowance for doubtful accounts / Cr AR","Dr AR / Cr Allowance","Dr Loss / Cr Cash"],1,
+ "No new expense — it was booked when the allowance was estimated. Re-expensing double-counts the loss."],
+["The allowance method beats direct write-off because it…",
+ ["Delays the expense","Matches bad-debt expense to the period of the related SALE","Avoids estimates","Maximises income"],1,
+ "Front-load the estimate at the point of sale; direct write-off waits and mismatches."],
+["Building an ECL provision matrix, the forward-looking multiplier is applied…",
+ ["Before computing historical loss rates","After the historical base rate is computed","Only to current buckets","Never — it's optional"],1,
+ "Base first (132,000 ÷ 4,675,000 = 2.82%), THEN × 1.10 = 3.11%. Baking the uplift into the base makes the components unauditable."],
+["Publicly traded shares are excluded from cash equivalents because they fail which gate?",
+ ["Convertible to known amounts","Insignificant risk of value change","Held for short-term needs","All three"],1,
+ "Liquid in days, but the value moves — the risk gate kills it."],
+["A bond sinking fund restricted to future debt repayment is presented as…",
+ ["A cash equivalent","Part of cash","A separately disclosed restricted (non-current) asset","An expense"],2,
+ "Liquid and safe, but it fails the unrestricted gate."],
+["An NSF cheque returned by the bank adjusts…",
+ ["The bank side","The book side — with a journal entry restoring the receivable","Neither side","Only the customer's books"],1,
+ "New information to the company → book-side adjustment → entry required."],
+["Deposits in transit are added to…",
+ ["The book balance","The BANK-statement balance — the company's books already include them","Both balances","Neither balance"],1,
+ "Recorded by the company, not yet by the bank → a bank-side reconciling item that clears on its own, with no entry."]
+]});
+BANK.push({id:"ch6",n:"Ch.6",title:"Inventories",gens:["lcnrv","foh"],qs:[
+["LIFO under Canadian standards is…",
+ ["Preferred for tax","Allowed under ASPE only","Banned under both IFRS and ASPE","Required for commodities"],2,
+ "A cost-flow ASSUMPTION allocating dollars, not boxes — and this one is prohibited in Canada."],
+["With RISING unit costs, which method reports the highest income?",
+ ["FIFO — oldest (cheapest) costs flow to COGS","Weighted average","LIFO","They're identical"],0,
+ "FIFO → lowest COGS → highest income when costs rise. The ranking REVERSES when costs fall."],
+["COGS under a periodic system is computed as…",
+ ["Purchases − ending inventory","Beginning inventory + purchases − ending inventory count","Sales × margin","A running perpetual total"],1,
+ "The backward 'plug' — which is exactly why periodic can't isolate shrinkage from sales."],
+["LCNRV is applied…",
+ ["To total inventory as one pool","Class by class, offsetting gains and losses","Item by item — gains never offset losses","Only to finished goods"],2,
+ "The most detailed practical level, one direction only, never written back above cost."],
+["Crude-oil replacement cost fell, but the refined gasoline still sells above total cost. Write down the crude?",
+ ["Yes — replacement cost fell","No — Gate 1 (the finished good) never opened, so nothing is written down","Yes, but through OCI","Only if material"],1,
+ "The cascade runs finished goods → raw materials, one direction. Falling input prices alone never open Gate 1."],
+["Raw materials that DO get written down are measured against…",
+ ["Net realizable value","Replacement cost","Fair value","Historical cost"],1,
+ "One standard, two tests — all inside IAS 2: NRV for the finished good; replacement cost serves as the best available MEASURE of NRV for materials, not a different basis from another standard.","v"],
+["Fixed overhead $300,000, normal capacity 2,000 units, actual production 1,000 units. Capitalise…",
+ ["$300,000 — all of it","$150,000 at the $150 normal rate; expense the $150,000 idle-capacity portion","$300/unit × 1,000","Nothing"],1,
+ "The rate never RISES below normal volume — the floor exists to keep idle-capacity cost out of inventory."],
+["Same facts, but production is 3,000 units. The per-unit rate…",
+ ["Stays $150 and over-capitalises","Falls to $100 so exactly $300,000 capitalises","Rises to $450","Is renegotiated"],1,
+ "A floor below normal, but it FALLS above normal — the asymmetry is the exam point."],
+["Ending inventory is overstated $5,000 in Year 1. Year 2's net income is…",
+ ["Overstated $5,000","Understated $5,000 — the error reverses through beginning inventory","Correct","Overstated $10,000"],1,
+ "Two years, opposite directions. Cumulative washes out and the balance sheet heals; each income statement stays wrong."],
+["Deliberate overproduction to spread fixed overhead across more units is…",
+ ["Efficient management","Upward earnings management — absorbing fixed OH into inventory","Required by IAS 2","Downward earnings management"],1,
+ "Ch.1's thread applied: more units → lower per-unit cost → higher income, with the cost parked on the balance sheet."]
+]});
+
+BANK.push({id:"ch7",n:"Ch.7",title:"Financial Assets",gens:["effint"],qs:[
+["The primary driver of a financial asset's classification is…",
+ ["The instrument's legal form","WHY it is held — the business model / intent","Its dollar size","Its maturity"],1,
+ "'Why you hold it' beats 'what it is' every time."],
+["A 23.5% voting stake with board influence is accounted for by…",
+ ["Consolidation","The equity method — an associate with significant influence","FVPL","The OCI election"],1,
+ "20–50% presumes significant influence. Control follows VOTING power, not dollars invested."],
+["Consolidation, proportionate consolidation and the equity method differ in…",
+ ["Total legal ownership","The investor's net income and investor-share net assets","Line-item granularity — the INVESTOR-SHARE net assets and income are the same across all three","The timing of recognition"],2,
+ "The course's worked example proves the investor-share identity. [Tutor-added] Full consolidation additionally grosses up 100% of the subsidiary's assets and liabilities with any non-controlling interest inside equity — so the identity is an investor-share identity, not a totals identity."],
+["An FVPL position is sold. The disposal gain/loss is measured against…",
+ ["Original cost","The LAST marked fair value","Average cost","Face value"],1,
+ "Prior marks already flowed through NI — measuring against cost double-counts them."],
+["The equity OCI election must be made…",
+ ["Any time before sale","Irrevocably at initial recognition, for non-trading equity only","Annually","By the auditor"],1,
+ "Once made, it never changes — and it is never available for debt or trading positions."],
+["Under the equity OCI election, dividends received go to…",
+ ["OCI","Net income — always","Retained earnings directly","The investment account"],1,
+ "Fair-value changes go to OCI, but dividends still hit NI. On disposal, AOCI → retained earnings, never NI."],
+["Debt held ONLY to collect contractual cash flows is measured at…",
+ ["FVPL","FVOCI","Amortized cost","Lower of cost and market"],2,
+ "Hold-only → amortized cost; hold-and-sell → FVOCI; trade → FVPL. Never mark hold-only debt to market."],
+["A bond bought at a discount: periodic interest income is…",
+ ["Equal to the cash coupon","Less than the coupon","Greater than the coupon — the excess accretes the carrying amount up to face","Zero until maturity"],2,
+ "Anchor: $92,278.27 → $100,000; lifetime income = coupons + discount = $40,000 + $7,721.73 = $47,721.73."],
+["Effective-interest income each period equals…",
+ ["Coupon rate × face value","Effective rate × BEGINNING-of-period carrying amount","Effective rate × face","Coupon ÷ price"],1,
+ "Never the coupon and never face — the effective rate prices the actual investment."],
+["For FVOCI debt, interest income is computed from…",
+ ["The fair-value carrying amount","The amortized-cost track underneath it","The average of both","Last year's income"],1,
+ "Two tracks, one asset: AC drives interest; (FV − AC) drives OCI. Interest stays clean of market noise."],
+["Reclassifying financial assets is permitted…",
+ ["For any single asset when management chooses","Only on a genuine whole-portfolio business-model change (debt only)","Quarterly","Never"],1,
+ "No cherry-picking; equity essentially never reclassifies. Most moves are a deemed sale at FV; FVOCI↔AC trues up through OCI."],
+["FVOCI DEBT vs the equity OCI ELECTION on disposal:",
+ ["Both recycle to net income","Neither recycles","Debt recycles through NI; the equity election transfers to retained earnings and never touches NI","Only equity recycles"],2,
+ "The single highest-yield trap in the chapter — always ask 'debt or equity?' before answering anything about OCI."],
+["Under IFRS 9 staging, a significant increase in credit risk moves the loss allowance from…",
+ ["Lifetime ECL to 12-month ECL","12-month ECL to LIFETIME ECL","Zero to 12-month","Cost to fair value"],1,
+ "Applies to amortized-cost and FVOCI debt. FVPL needs no ECL. Trade receivables skip staging entirely — the SIMPLIFIED approach applies lifetime ECL from day one, and the Ch.5 provision matrix is that model in action.","v"]
+]});
+
+BANK.push({id:"ch8",n:"Ch.8",title:"Property, Plant & Equipment",gens:["borrow"],qs:[
+["The company president personally ran the factory acquisition. Her $500,000 salary is…",
+ ["Capitalised — she was involved","Expensed — 'involved in acquiring' is not 'directly attributable to readying the asset'","Split 50/50","Deferred"],1,
+ "The salary is incurred with or without the asset. The LSM trap in one line."],
+["Which cost is capitalised into equipment?",
+ ["Staff party celebrating the purchase","Freight, installation and testing to bring it to working condition","Post-launch advertising","Operator training after go-live"],1,
+ "Capitalise what's required to get the asset to the location and condition for intended use."],
+["AFM 291's stated convention: a 'qualifying asset' for borrowing costs takes…",
+ ["More than 12 months","More than 6 months","Any duration","More than 90 days"],1,
+ "The course's own convention, per the markers — more than 6 months.","v"],
+["Capitalisation of borrowing costs commences when…",
+ ["The loan is signed","Expenditures AND borrowing costs AND preparation activities are ALL in progress","Construction is 50% done","The board approves"],1,
+ "All three at once; cessation when substantially all activities to ready the asset are complete."],
+["On a SPECIFIC construction loan, temporary investment income on surplus funds is…",
+ ["Ignored","Recognised as revenue","Netted against the interest capitalised (137,500 − 1,667 = 135,833)","Added to the asset"],2,
+ "Specific borrowings net; GENERAL borrowings never net — the asymmetry is the exam point."],
+["General borrowings capitalise at…",
+ ["The debt-to-assets ratio × expenditures","The weighted-average borrowing-COST rate × expenditures, capped at actual interest","Prime + 1%","The specific-loan rate"],1,
+ "A leverage ratio is not a capitalization rate — the source's own §E.2 shortcut contradicts §A.3, and §A.3 governs.","c"],
+["Depreciation life is shortened by new information. You…",
+ ["Restate prior years","Re-solve prospectively: remaining carrying value ÷ remaining life","Adjust opening RE","Ignore until disposal"],1,
+ "Ch.3's estimate branch: prior years keep their numbers forever."],
+["Declining-balance depreciation near end of life…",
+ ["Continues below residual value","Is capped at residual — a small plug then $0","Switches to straight line automatically","Reverses"],1,
+ "The depreciable pool is fixed; only its shape varies. Units-of-production is the one method that can miss residual."],
+["Replacing a building's roof (a separate component), the FIRST step is…",
+ ["Capitalise the new roof","Derecognise the old component's remaining carrying value as a loss","Expense the new roof","Revalue the building"],1,
+ "Otherwise the asset carries two roofs — one of which is in a landfill."],
+["An ARO liability grows toward the future restoration cost through…",
+ ["Depreciation","Interest (accretion) expense — opening balance × discount rate","Revenue","OCI"],1,
+ "Liverpool Linens: PV $107,274 at 8% accretes to $500,000 over 20 years, while the capitalised asset depreciates down. [Tutor-added ⚑V] 'ARO' is the course's (and ASPE's) name; IFRS wording is 'decommissioning, restoration and similar liabilities' — the terminology split is itself testable."],
+["Before computing a disposal gain or loss you must…",
+ ["Update depreciation to the disposal date","Obtain an appraisal","Reverse prior depreciation","Wait for cash"],0,
+ "G/L = proceeds − carrying amount AT THE DISPOSAL DATE. A stale CV misstates both the expense and the gain."]
+]});
+
+BANK.push({id:"ch9",n:"Ch.9",title:"Intangibles, Goodwill & Grants",gens:["gw"],qs:[
+["A resource is non-physical, non-monetary and controlled, but NOT identifiable. It is…",
+ ["An intangible asset","Goodwill — recognisable only if purchased","Inventory","A financial asset"],1,
+ "Identifiability (separable, or from legal/contractual rights) is the intangible-vs-goodwill split."],
+["Development costs are capitalised…",
+ ["When probable","If, and only if, ALL SIX ¶57 criteria are demonstrated — fail one, expense","At management's option","Never under IFRS"],1,
+ "An all-or-nothing gate. (¶57 verified against AASB text only — still [VERIFY] vs the Handbook.)","v"],
+["Criterion (d) — probable future benefits — requires…",
+ ["Proof of an external market, always","A demonstration of benefits; a market is ONE illustrative route, internal usefulness works too","A signed customer contract","Regulator approval"],1,
+ "'Among other things, the entity can demonstrate…' — reading a market as mandatory is the corrected v2 defect, and it decides internally-used-asset cases."],
+["Research costs are…",
+ ["Capitalised if promising","Always expensed — too uncertain to clear the benefit test","Deferred","Netted against grants"],1,
+ "Only the DEVELOPMENT phase can ever capitalise, and only through the six-criteria gate."],
+["Powell pays $60M for Sooke (FV assets $93M, FV liabilities $50M). Goodwill is…",
+ ["$33M","$17M — price less $43M identifiable net assets","$60M","$3M"],1,
+ "Goodwill is the residual plug in a business combination — never self-generated."],
+["Sooke's patents sat at $1 on its own books but were fair-valued at $9.5M in the acquisition because…",
+ ["They were revalued annually","Sooke's own R&D never cleared the capitalisation gate; an arm's-length purchase recognises the value","Goodwill absorbed them","IFRS 3 requires cost"],1,
+ "Same IP, different route onto a balance sheet: buy → capitalise; build → expense unless all six criteria pass."],
+["Gross vs net presentation of a government grant changes…",
+ ["Net income","Net assets","Neither — only presentation-based ratios like leverage differ","Both"],2,
+ "Identical NI and net assets; total assets differ (100 vs 80), so debt-to-asset ratios move."],
+["Your course notes state the IFRS-vs-ASPE grant REPAYMENT treatment both ways in different places. The exam-safe posture is…",
+ ["IFRS = catch-up, ASPE = prospective","IFRS = prospective, ASPE = catch-up","The source contradicts itself — flag the conflict and confirm with the instructor before citing either","Grants are never repayable"],2,
+ "A genuine, unresolved source conflict (stated both ways, seven times). Don't guess on a graded answer.","c"],
+["Which assets get an AUTOMATIC annual impairment test?",
+ ["All intangibles","Goodwill and indefinite-life intangibles","Finite-life intangibles","All PP&E"],1,
+ "No amortization erodes their balance, so nothing else catches an overvaluation. Finite-life assets test on indicators."],
+["A patent has a 20-year legal life but an 8-year economic life. Amortise over…",
+ ["20 years","8 years — the LESSER of legal and economic life","14 years","No amortisation"],1,
+ "The statutory term is a ceiling, not a default — the shorter life always governs."],
+["A company shows almost no intangibles on its balance sheet. You conclude…",
+ ["It has no valuable IP","It may have built its IP internally and expensed it — recognition follows measurement reliability, not value","It is failing","Its auditor erred"],1,
+ "The buy-vs-build recognition gap is about reliability of measurement, not existence of value."]
+]});
+
+BANK.push({id:"ch10",n:"Ch.10",title:"Revaluation & Impairment",gens:["recov","alloc","route"],qs:[
+["An asset with NO revaluation history is revalued UP. The increase goes to…",
+ ["Profit or loss","OCI — revaluation surplus","Retained earnings","A deferred credit"],1,
+ "The default for an increase — UNLESS it reverses a decrease previously taken to P&L for that same asset."],
+["An asset carrying a revaluation SURPLUS is revalued DOWN by more than the surplus. Routing?",
+ ["All to P&L","All to OCI","Clear the surplus through OCI first; the excess goes to P&L","Split 50/50"],2,
+ "The opposite bucket clears first, in both directions. Crossing the asset's own baseline forces a split."],
+["Elimination vs proportional restatement of a revalued asset produce…",
+ ["Different income","Different equity","Identical net carrying amount, income and equity — presentation only","Different tax"],2,
+ "Proving the identity IS the exam point. The course's Landmark PBL uses elimination."],
+["Under IAS 40's fair value model, investment-property value changes go…",
+ ["To OCI like PPE revaluations","Entirely to P&L, with NO depreciation and annual updates","To retained earnings","Nowhere until sale"],1,
+ "Leaving generic PPE for a specialized standard removes the OCI option — and the depreciation."],
+["A CGU is…",
+ ["Any group of assets management chooses","The smallest group generating cash inflows largely independent of other assets","A legal entity","One production line always"],1,
+ "Define the CGU first — VIU is a cash-flow PV, and you need to know whose flows you're bundling."],
+["Recoverable amount is…",
+ ["The LOWER of FVLCD and VIU","The HIGHER of FVLCD and value in use","Fair value always","Cost less depreciation"],1,
+ "Higher, not lower — management rationally picks the better of selling vs continuing to use."],
+["A bankruptcy-auction quote as evidence of FVLCD is…",
+ ["Acceptable if recent","Rejected — FVLCD requires an ORDERLY transaction; forced-sale prices measure distress","Preferred — it's observable","Averaged with VIU"],1,
+ "Exactly why Red Rocket's auction quotes were thrown out."],
+["Within a CGU, an impairment loss is charged FIRST against…",
+ ["The largest asset","Goodwill, in full — only the remainder spreads pro rata by carrying amount","All assets equally","The oldest asset"],1,
+ "Goodwill is the shock absorber: fully exhausted before any identifiable asset loses a dollar."],
+["The IAS 36.105 floor blocks part of an allocation. The blocked amount…",
+ ["Is simply not recognised","Reallocates pro rata to the other assets — and can cascade through further rounds","Goes to OCI","Waits until next year"],1,
+ "The standard's second sentence — the one the uncorrected vault note was missing. The floor check is a LOOP, not a pass.","v"],
+["An impairment reversal on ordinary PP&E is capped at…",
+ ["The original loss","The would-have-been carrying amount net of the depreciation that would have run","Fair value","Recoverable amount, uncapped"],1,
+ "Rebuild the counterfactual — the cap is usually SMALLER than the original loss."],
+["Goodwill impairment reversals are…",
+ ["Allowed if value recovers","Never permitted (IAS 36.124) — and ASPE never reverses anything at all","Allowed within 12 months","Recognised in OCI"],1,
+ "'An impairment loss recognised for goodwill shall not be reversed in a subsequent period' — confirmed verbatim vs two sources, [VERIFY] vs the Handbook.","v"],
+["Red Rocket: CV $720,000; FVLCD $670,000; VIU $595,325. The impairment loss is…",
+ ["$124,675","$50,000 — CV less the higher of the two","$720,000","Zero"],1,
+ "Recoverable = max(670,000, 595,325) = 670,000. Machine B then takes none of it — its own FVLCD floors it out."]
+]});
+
+BANK.push({id:"cf",n:"Capstone",title:"Cash Flow Statement",gens:["cfo"],qs:[
+["Under the indirect method, depreciation is…",
+ ["Subtracted from net income","Added back — a non-cash expense","Shown in investing","Ignored"],1,
+ "Start at NI, strip the non-cash items, then fix working-capital timing."],
+["Accounts receivable INCREASED during the year. In operating cash flow this is…",
+ ["Added — good news","Subtracted — revenue was booked that cash hasn't followed","Ignored","Shown in financing"],1,
+ "CA increase = outflow; CL increase = inflow. Sign flips are the classic error."],
+["Equipment with NBV $820K sells for $860K cash. The correct presentation is…",
+ ["Net $40K in investing","Subtract the FULL $40K gain from operating AND show the FULL $860K proceeds in investing","$860K in operating","$820K investing, $40K operating"],1,
+ "Never netted. Forgetting the operating removal double-counts the gain; showing NBV understates investing."],
+["Interest and dividends PAID are classified today (IAS 7) as…",
+ ["Always operating","A policy choice — this course's own example uses FINANCING for both","Always investing","Not reported"],1,
+ "Current IAS 7 permits a choice. The received side has no worked example in the course — confirm the convention.","v"],
+["Under IFRS 18 (effective 2027), for an entity with NO specified main business activity, interest and dividends RECEIVED will be…",
+ ["A policy choice","Mandatorily INVESTING (paid → financing)","Operating always","Netted"],1,
+ "The forthcoming standard removes today's choice for ordinary entities. ⚑V — entities WITH a specified main business activity (e.g. banks, financing businesses) classify these differently; the carve-out itself is unverified against the standard text, so treat this as the ordinary-entity rule only.","v"],
+["Wages paid to workers CONSTRUCTING a building for the company's own use are…",
+ ["Operating — payroll is operating","Investing — they create a recognised asset","Financing","Split evenly"],1,
+ "The recognized-asset test decides, not the cost's appearance. Capitalized development costs work the same way."],
+["PP&E purchases and disposal proceeds are presented…",
+ ["Netted into one line","As separate GROSS lines, always","Only if material","In the notes"],1,
+ "Gross presentation is mandatory — netting hides the scale of both flows."],
+["Which item does NOT appear as an operating add-back under the indirect method?",
+ ["Depreciation","Amortisation of intangibles","An impairment charge","Cash proceeds from a disposal"],3,
+ "Proceeds are an INVESTING inflow. The other three are non-cash charges sitting inside net income."],
+["Equipment is sold at a LOSS. Under the indirect method the loss is…",
+ ["Subtracted from operating","ADDED BACK in operating — full proceeds still go to investing","Netted against proceeds","Ignored"],1,
+ "The mirror of the disposal-gain trap: the loss is a non-cash charge inside net income; the cash story is the gross proceeds in investing."]
+]});
+/* ============ CALCULATION GENERATORS — corrected math from the v3 review ============ */
+const rnd=(a,b,step)=>{step=step||1;return a+step*Math.floor(Math.random()*((b-a)/step+1));};
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+const money=(n,dp)=>Number(n).toLocaleString("en-CA",{minimumFractionDigits:dp||0,maximumFractionDigits:dp||0});
+const $m=(n,dp)=>"$"+money(n,dp);
+
+/* IAS 36.105 allocation engine — goodwill first, pro rata, floor + cascading reallocation */
+function allocate(assets,goodwill,recoverable){
+  const total=assets.reduce((a,x)=>a+x.cv,0)+goodwill;
+  const loss=total-recoverable;
+  const out={total,loss,rounds:[],alloc:{},gwHit:0};
+  for(const a of assets)out.alloc[a.n]=0;
+  if(loss<=0)return out;
+  out.gwHit=Math.min(loss,goodwill);
+  let rem=loss-out.gwHit;
+  const capped=new Set();let r=0;
+  while(rem>0.005&&r<12){
+    r++;
+    const open=assets.filter(a=>!capped.has(a.n));
+    const base=open.reduce((s,a)=>s+a.cv,0);
+    if(base<=0)break;
+    let blocked=0;const spread={},caps=[];
+    for(const a of open)spread[a.n]=rem*a.cv/base;
+    for(const a of open){
+      const room=a.cv-a.floor;
+      if(out.alloc[a.n]+spread[a.n]>room+0.005){
+        blocked+=spread[a.n]-(room-out.alloc[a.n]);
+        out.alloc[a.n]=room;capped.add(a.n);caps.push(a.n);
+      }else out.alloc[a.n]+=spread[a.n];
+    }
+    out.rounds.push({r,base,blocked,caps});
+    rem=blocked;
+  }
+  return out;
+}
+
+const GENS={
+recov:{title:"Recoverable amount & impairment",mod:"ch10",sub:"higher-of test · orderly prices",make(){
+  const cv=rnd(45,90,1)*10000;
+  const impaired=Math.random()<0.62;
+  let fvlcd,viu;
+  if(impaired){fvlcd=cv-rnd(3,9,1)*10000;viu=fvlcd+(Math.random()<0.5?rnd(1,4,1)*5000:-rnd(1,4,1)*5000);}
+  else{fvlcd=cv-rnd(2,6,1)*10000;viu=cv+rnd(1,5,1)*10000;}
+  const rec=Math.max(fvlcd,viu),loss=Math.max(0,cv-rec);
+  const auction=Math.round(fvlcd*0.62/1000)*1000;
+  return {given:[["Carrying amount",$m(cv)],["Fair value less costs of disposal",$m(fvlcd)],
+    ["Value in use",$m(viu)],["Liquidation auction quote (30-day forced sale)",$m(auction)]],
+   ask:[{label:"Recoverable amount",ans:rec,tol:1},{label:"Impairment loss (0 if none)",ans:loss,tol:1}],
+   steps:[["The auction quote is rejected — FVLCD requires an ORDERLY transaction; forced-sale prices measure distress","rejected",1],
+    ["Recoverable amount = higher of FVLCD and VIU = max("+$m(fvlcd)+", "+$m(viu)+")",$m(rec)],
+    [loss>0?"Carrying amount exceeds recoverable amount → impaired":"Recoverable ≥ carrying → not impaired",$m(loss)]]};
+}},
+alloc:{title:"CGU allocation: goodwill first, floor, cascade",mod:"ch10",sub:"the flagship computation",make(){
+  const names=["Machine X","Machine Y","Machine Z"];
+  const cvs=[rnd(24,40,2)*10000,rnd(16,30,2)*10000,rnd(22,38,2)*10000];
+  const gw=rnd(4,9,1)*10000;
+  const assets=names.map((n,i)=>({n,cv:cvs[i],floor:0}));
+  const bind=rnd(0,2,1),sum=cvs.reduce((a,b)=>a+b,0),total=sum+gw;
+  const loss=Math.round(total*rnd(16,26,1)/100/1000)*1000,rec=total-loss;
+  const naive=(loss-gw)*cvs[bind]/sum;
+  const binds=Math.random()<0.6;
+  const room=naive*(binds?rnd(35,62,1)/100:rnd(135,190,5)/100);
+  assets[bind].floor=Math.max(1000,Math.round((cvs[bind]-room)/1000)*1000);
+  if(binds&&Math.random()<0.35){
+    const others=[0,1,2].filter(i=>i!==bind);const second=pick(others);
+    const spread1=(loss-gw)*cvs[second]/sum;
+    const blocked1=Math.max(0,naive-room);
+    const baseR=others.reduce((s,i)=>s+cvs[i],0);
+    const realloc2=blocked1*cvs[second]/baseR;
+    if(realloc2>2000){
+      const room2=spread1+realloc2*rnd(25,70,1)/100;
+      assets[second].floor=Math.max(1000,Math.round((cvs[second]-room2)/1000)*1000);
+    }
+  }
+  const res=allocate(assets,gw,rec);
+  const finals={};for(const a of assets)finals[a.n]=a.cv-res.alloc[a.n];
+  const other=assets.find(a=>a.n!==assets[bind].n);
+  const steps=[["Total CV incl. goodwill "+$m(res.total)+" − recoverable "+$m(rec)+" → loss",$m(res.loss)],
+    ["Goodwill absorbs first, in full",$m(res.gwHit)]];
+  for(const rd of res.rounds){
+    steps.push(["Round "+rd.r+": spread the remainder pro rata on open carrying amounts totalling "+$m(rd.base),""]);
+    if(rd.blocked>0.005)steps.push([rd.caps.join(", ")+" hits its floor — the blocked "+$m(rd.blocked)+" reallocates pro rata to the rest (the cascade). Convention used in THIS solution: pro rata over the ORIGINAL carrying amounts of the not-yet-floored assets","",1]);
+  }
+  for(const a of assets)steps.push(["Final carrying amount — "+a.n,$m(finals[a.n],0)]);
+  return {given:[["Machine X",$m(cvs[0])],["Machine Y",$m(cvs[1])],["Machine Z",$m(cvs[2])],
+    ["Goodwill allocated to the CGU",$m(gw)],["Total carrying amount",$m(total),1],
+    ["Recoverable amount of the CGU",$m(rec)]]
+    .concat(assets.filter(a=>a.floor>0).map(a=>[a.n+": FVLCD (reliably measurable)",$m(a.floor)])),
+   note:"Assets with no FVLCD line: neither FVLCD nor VIU individually measurable → floor is zero. Redistribution base: carrying amounts of assets not yet at their floor — confirm this convention with your instructor. Carry decimals; round only final answers.",
+   ask:[{label:"Total impairment loss",ans:res.loss,tol:1},
+    {label:"Charged to goodwill",ans:res.gwHit,tol:1},
+    {label:"Final CV — "+assets[bind].n,ans:finals[assets[bind].n],tol:5},
+    {label:"Final CV — "+other.n,ans:finals[other.n],tol:5}],steps};
+}},
+route:{title:"Revaluation routing: OCI vs P&L",mod:"ch10",sub:"history decides, not the sign",make(){
+  const scen=rnd(1,4,1),move=rnd(3,12,1)*5000;
+  let surplus=0,priorLoss=0,oci=0,pl=0,dir,story;
+  if(scen===1){dir="increase";oci=move;story="No prior revaluation loss in P&L for this asset."}
+  else if(scen===2){dir="increase";priorLoss=rnd(2,9,1)*5000;pl=Math.min(move,priorLoss);oci=move-pl;
+    story="A prior revaluation loss of "+$m(priorLoss)+" sits in P&L for this asset, unreversed."}
+  else if(scen===3){dir="decrease";pl=move;story="No revaluation surplus exists for this asset."}
+  else{dir="decrease";surplus=rnd(2,9,1)*5000;oci=Math.min(move,surplus);pl=move-oci;
+    story="A revaluation surplus of "+$m(surplus)+" sits in AOCI for this asset."}
+  return {given:[["Direction of this year's movement",dir.toUpperCase()],["Amount",$m(move)],["History",story]],
+   ask:[{label:"To OCI",ans:oci,tol:1},{label:"To P&L",ans:pl,tol:1}],
+   steps:[[dir==="increase"?"Increase → OCI by default, but FIRST reverse any prior P&L loss for this same asset"
+      :"Decrease → P&L by default, but FIRST clear any existing surplus through OCI",""],
+    [dir==="increase"?"Prior P&L loss available: "+$m(priorLoss):"Surplus available: "+$m(surplus),""],
+    ["Routed to P&L",$m(pl)],["Routed to OCI",$m(oci)],
+    [(oci>0&&pl>0)?"The movement crossed the asset's own baseline → it SPLITS. This is what the blanket 'gains→OCI' rule gets wrong.":"One side of the baseline → one bucket takes it all.","",(oci>0&&pl>0)?1:0]]};
+}},
+ltc:{title:"% completion + the onerous override",mod:"ch4",sub:"corrected provision mechanic",make(){
+  const price=rnd(40,90,5)*100000;
+  const y1Cost=Math.round(price*rnd(22,38,1)/100/1000)*1000;
+  const onerous=Math.random()<0.5;
+  const totalEst=onerous?price+rnd(2,9,1)*100000:Math.round(price*rnd(78,92,1)/100/1000)*1000;
+  const y1Total=Math.round(price*rnd(80,90,1)/100/1000)*1000;
+  const pc1=y1Cost/y1Total,y1Rev=Math.round(price*pc1),y1Profit=y1Rev-y1Cost;
+  const y2CostToDate=Math.round((y1Cost+totalEst*rnd(24,36,1)/100)/1000)*1000;
+  const pc2=Math.min(1,y2CostToDate/totalEst);
+  const y2RevCum=Math.round(price*pc2),y2Rev=y2RevCum-y1Rev;
+  const contractLoss=onerous?totalEst-price:0;
+  const cumMargin=y2RevCum-y2CostToDate;
+  const lossSoFar=onerous?Math.max(0,-cumMargin):0;
+  const charge=onerous?Math.max(0,contractLoss-lossSoFar):0;
+  const tolR=Math.max(1500,Math.round(price*0.0008));
+  const steps=[["Year 1 %: "+$m(y1Cost)+" ÷ "+$m(y1Total),(pc1*100).toFixed(1)+"%"],
+    ["Year 1 revenue / profit",$m(y1Rev)+" / "+$m(y1Profit)],
+    ["Year 2 %: "+$m(y2CostToDate)+" ÷ "+$m(totalEst),(pc2*100).toFixed(1)+"%"],
+    ["Year 2 revenue = cumulative "+$m(y2RevCum)+" − "+$m(y1Rev),$m(y2Rev)]];
+  if(onerous){
+    steps.push(["Total cost now exceeds price → ONEROUS (IAS 37 ¶68)",$m(totalEst)+" vs "+$m(price),1]);
+    steps.push(["Loss already recognised via cost-to-cost: cum. revenue − cum. costs","("+$m(lossSoFar)+")"]);
+    steps.push(["Provision tops up to the FULL lifetime loss now: "+$m(contractLoss)+" − "+$m(lossSoFar),$m(charge),1]);
+    steps.push(["Course anchor: Kool — 270,000 lifetime loss − 158,485 already recognised = 111,515 provision","✓"]);
+  }else steps.push(["Cost stays below price → not onerous; profit keeps accruing with progress","—"]);
+  return {given:[["Contract price",$m(price)],["Year 1 costs incurred",$m(y1Cost)],
+    ["Year 1 estimated total cost",$m(y1Total)],["Year 2 cumulative costs",$m(y2CostToDate)],
+    ["Year 2 REVISED total cost",$m(totalEst)]],
+   note:"Carry unrounded percentages; enter 0 where nothing arises.",
+   ask:[{label:"Year 2 revenue",ans:y2Rev,tol:tolR},{label:"Total contract loss",ans:contractLoss,tol:1},
+    {label:"Onerous provision now",ans:charge,tol:tolR}],steps};
+}},
+lcnrv:{title:"LCNRV: the two gates",mod:"ch6",sub:"finished goods first, always",make(){
+  const fgCost=rnd(60,140,5)*1000;
+  const impaired=Math.random()<0.55;
+  const costToSell=rnd(3,12,1)*1000;
+  const sell=impaired?Math.round(fgCost*rnd(78,94,1)/100/500)*500
+                     :Math.round(fgCost*rnd(112,135,1)/100/500)*500+costToSell;
+  const nrv=sell-costToSell,fgWd=Math.max(0,fgCost-nrv);
+  const rmCv=rnd(20,60,5)*1000;
+  const rmRepl=Math.round(rmCv*rnd(76,116,1)/100/500)*500;
+  const rmWd=(fgWd>0&&rmRepl<rmCv)?rmCv-rmRepl:0;
+  return {given:[["Finished goods at cost",$m(fgCost)],["Estimated selling price",$m(sell)],
+    ["Costs to sell",$m(costToSell)],["Raw materials carrying amount",$m(rmCv)],
+    ["Raw materials replacement cost",$m(rmRepl)]],
+   ask:[{label:"Finished-goods writedown (0 if none)",ans:fgWd,tol:1},
+    {label:"Raw-materials writedown (0 if none)",ans:rmWd,tol:1}],
+   steps:[["Gate 1 — NRV of the finished good: "+$m(sell)+" − "+$m(costToSell),$m(nrv)],
+    [fgWd>0?"NRV below cost → write the finished good down":"NRV at/above cost → nothing is written down ANYWHERE",$m(fgWd),fgWd>0?0:1],
+    [fgWd>0?"Gate 2 opens — raw materials tested on REPLACEMENT cost, not NRV":"Gate 2 never opens — falling input prices alone don't matter","",0],
+    ["Raw-materials writedown",$m(rmWd)]]};
+}},
+ecl:{title:"ECL provision matrix",mod:"ch5",sub:"base rate first, uplift second",make(){
+  const exp=rnd(30,70,5)*100000;
+  const lossHist=Math.round(exp*rnd(15,45,1)/1000/500)*500;
+  const upl=pick([1.05,1.10,1.15,1.20]);
+  const bal=rnd(20,60,5)*10000;
+  const base=lossHist/exp*100;
+  const fin=base*upl;
+  const allow=bal*fin/100;
+  return {given:[["Historical credit losses (this bucket)",$m(lossHist)],["Historical exposure",$m(exp)],
+    ["Forward-looking multiplier","× "+upl.toFixed(2)],["Period-end bucket balance",$m(bal)]],
+   note:"Course anchor: 132,000 ÷ 4,675,000 = 2.82% × 1.10 = 3.11%. Rate answers in %, two decimals.",
+   ask:[{label:"Historical base rate (%)",ans:base,tol:0.02},{label:"Final ECL rate (%)",ans:fin,tol:0.02},
+    {label:"Allowance for this bucket",ans:allow,tol:5}],
+   steps:[["Base rate FIRST: "+$m(lossHist)+" ÷ "+$m(exp),base.toFixed(2)+"%"],
+    ["Then the uplift: "+base.toFixed(2)+"% × "+upl.toFixed(2),fin.toFixed(2)+"%",1],
+    ["Apply to the period-end balance: "+$m(bal)+" × "+fin.toFixed(2)+"%",$m(allow,0)],
+    ["Applying the multiplier before the base rate inflates 'history' and makes the components unauditable","trap"]]};
+}},
+effint:{title:"Effective interest: discount bond, year 1",mod:"ch7",sub:"rate × opening carrying",make(){
+  const face=rnd(5,20,1)*10000;
+  const r=pick([4,4.5,5,5.5,6])/100;
+  const c=r-pick([0.5,1,1.5])/100;
+  const n=rnd(6,10,1);
+  const coupon=Math.round(face*c*100)/100;
+  const ann=(1-Math.pow(1+r,-n))/r;
+  const price=Math.round((coupon*ann+face*Math.pow(1+r,-n))*100)/100;
+  const disc=Math.round((face-price)*100)/100;
+  const inc1=Math.round(price*r*100)/100;
+  const amort1=Math.round((inc1-coupon)*100)/100;
+  const carry1=Math.round((price+amort1)*100)/100;
+  const lifetime=Math.round((coupon*n+disc)*100)/100;
+  return {given:[["Face value",$m(face)],["Coupon per period",$m(coupon,2)],
+    ["Effective rate per period",(r*100).toFixed(1)+"%"],["Periods to maturity",n],
+    ["Issue price (given)",$m(price,2)]],
+   note:"Course anchor: Robson/Hydro One — price 92,278.27, discount 7,721.73, lifetime income 47,721.73. Answers to 2 decimals.",
+   ask:[{label:"Period-1 interest income",ans:inc1,tol:0.5},
+    {label:"Carrying amount, end of period 1",ans:carry1,tol:0.5},
+    {label:"LIFETIME interest income",ans:lifetime,tol:0.5}],
+   steps:[["Income = effective rate × OPENING carrying: "+(r*100).toFixed(1)+"% × "+$m(price,2),$m(inc1,2),1],
+    ["Discount amortised = income − coupon: "+$m(inc1,2)+" − "+$m(coupon,2),$m(amort1,2)],
+    ["Carrying accretes UP toward face",$m(carry1,2)],
+    ["Lifetime income = all coupons + the whole discount: "+$m(coupon*n,2)+" + "+$m(disc,2),$m(lifetime,2)]]};
+}},
+foh:{title:"Fixed overhead at normal capacity",mod:"ch6",sub:"a floor, not a ceiling",make(){
+  const foh=rnd(2,5,1)*100000;
+  const norm=rnd(2,5,1)*1000;
+  const mode=pick(["below","at","above"]);
+  const act=mode==="below"?Math.round(norm*rnd(40,70,5)/100):mode==="at"?norm:Math.round(norm*rnd(120,160,5)/100);
+  const nrate=foh/norm;
+  const rate=mode==="above"?foh/act:nrate;
+  const cap=Math.min(foh,rate*act);
+  const expd=foh-cap;
+  return {given:[["Fixed manufacturing overhead",$m(foh)],["Normal capacity (units)",money(norm)],
+    ["Actual production (units)",money(act)]],
+   note:"Rate to 2 decimals where needed. Course anchor: 300,000 ÷ 2,000 = $150 floor.",
+   ask:[{label:"Rate applied ($/unit)",ans:rate,tol:0.05},{label:"Overhead capitalised",ans:cap,tol:5},
+    {label:"Expensed as idle capacity (0 if none)",ans:expd,tol:5}],
+   steps:[["Normal-capacity rate: "+$m(foh)+" ÷ "+money(norm)+" units",$m(nrate,2)],
+    [mode==="below"?"Below normal → the rate is CAPPED at the normal rate; unabsorbed overhead is expensed"
+     :mode==="at"?"At normal → everything capitalises at the normal rate"
+     :"Above normal → the rate FALLS ("+$m(foh)+" ÷ "+money(act)+") so only actual overhead capitalises",$m(rate,2),mode!=="at"?1:0],
+    ["Capitalised: rate × actual units",$m(cap,0)],["Idle-capacity expense",$m(expd,0)]]};
+}},
+gw:{title:"Goodwill: the residual",mod:"ch9",sub:"price − FV of identifiable net assets",make(){
+  const fvA=rnd(50,120,5)*1000000;
+  const fvL=Math.round(fvA*rnd(35,65,1)/100/1000000)*1000000;
+  const net=fvA-fvL;
+  const price=net+rnd(5,25,1)*1000000;
+  const carryNet=Math.round(net*rnd(55,85,5)/100/1000000)*1000000;
+  const gwv=price-net;
+  return {given:[["Purchase price",$m(price)],["CARRYING amount of net assets (distractor)",$m(carryNet)],
+    ["Fair value of identifiable assets",$m(fvA)],["Fair value of liabilities assumed",$m(fvL)]],
+   note:"Course anchor: Powell/Sooke — 60M − (93M − 50M) = 17M.",
+   ask:[{label:"FV of identifiable net assets",ans:net,tol:1},{label:"Goodwill",ans:gwv,tol:1}],
+   steps:[["FV net assets = FV assets − FV liabilities: "+$m(fvA)+" − "+$m(fvL),$m(net)],
+    ["Goodwill = price − FV net assets: "+$m(price)+" − "+$m(net),$m(gwv),1],
+    ["The carrying amount is bait — goodwill is measured against FAIR values in the combination","trap"]]};
+}},
+sfc:{title:"Significant financing component",mod:"ch4",sub:"revenue = PV today",make(){
+  const pv=rnd(40,160,5)*1000;
+  const r=pick([6,8,10,12])/100;
+  const n=pick([2,3]);
+  const fut=Math.round(pv*Math.pow(1+r,n)*100)/100;
+  const interest=Math.round((fut-pv)*100)/100;
+  return {given:[["Goods delivered today; single payment due",$m(fut,2)],["Collection in (years)",n],
+    ["Implicit annual rate",(r*100)+"%"]],
+   note:"Course anchor: 121,000 ÷ 1.10² = 100,000 revenue + 21,000 interest.",
+   ask:[{label:"Revenue recognised today (PV)",ans:pv,tol:2},
+    {label:"Total interest revenue over the term",ans:interest,tol:2}],
+   steps:[["Revenue = future amount ÷ (1+r)ⁿ = "+$m(fut,2)+" ÷ "+(1+r).toFixed(2)+"^"+n,$m(pv,0),1],
+    ["The gap accrues as INTEREST revenue over the term — never as sales",$m(interest,2)],
+    ["Under one year? The practical expedient skips all of this","note"]]};
+}},
+cfo:{title:"Indirect operating cash flow",mod:"cf",sub:"non-cash + working capital",make(){
+  const ni=rnd(150,600,10)*1000;
+  const dep=rnd(40,160,10)*1000;
+  const nbv=rnd(50,300,10)*1000;
+  const gain=rnd(10,60,5)*1000;
+  const dAR=rnd(-60,60,10)*1000;
+  const dINV=rnd(-50,50,10)*1000;
+  const dAP=rnd(-40,60,10)*1000;
+  const cfoV=ni+dep-gain-dAR-dINV+dAP;
+  const proceeds=nbv+gain;
+  const dirn=v=>v>=0?"increased "+$m(v):"decreased "+$m(-v);
+  return {given:[["Net income",$m(ni)],["Depreciation",$m(dep)],
+    ["Gain on equipment sale (NBV "+$m(nbv)+")",$m(gain)],
+    ["Accounts receivable",dirn(dAR)],["Inventory",dirn(dINV)],["Accounts payable",dirn(dAP)]],
+   ask:[{label:"Cash from operating activities",ans:cfoV,tol:2},
+    {label:"Investing inflow from the sale",ans:proceeds,tol:1}],
+   steps:[["Start at net income",$m(ni)],["Add back depreciation (non-cash)","+"+$m(dep)],
+    ["Remove the FULL gain — it belongs to the disposal, not operations","−"+$m(gain),1],
+    ["AR "+(dAR>=0?"up → subtract":"down → add"),(dAR>=0?"−":"+")+$m(Math.abs(dAR))],
+    ["Inventory "+(dINV>=0?"up → subtract":"down → add"),(dINV>=0?"−":"+")+$m(Math.abs(dINV))],
+    ["AP "+(dAP>=0?"up → add":"down → subtract"),(dAP>=0?"+":"−")+$m(Math.abs(dAP))],
+    ["Operating cash flow",$m(cfoV)],
+    ["Investing shows FULL proceeds = NBV + gain: "+$m(nbv)+" + "+$m(gain),$m(proceeds),1]]};
+}},
+borrow:{title:"Borrowing costs: specific loan",mod:"ch8",sub:"net the investment income",make(){
+  const loan=rnd(2,6,1)*1000000;
+  const r=pick([4,4.5,5,5.5,6,6.5])/100;
+  const mo=rnd(4,12,1);
+  const gross=Math.round(loan*r*mo/12);
+  const inv=rnd(5,40,1)*100;
+  const net=gross-inv;
+  return {given:[["Specific construction loan",$m(loan)],["Annual rate",(r*100).toFixed(1)+"%"],
+    ["Months of qualifying construction this period",mo],
+    ["Income from temporarily investing surplus funds",$m(inv)]],
+   note:"Qualifying asset per the AFM 291 convention: construction > 6 months. Course anchor: 137,500 − 1,667 = 135,833.",
+   ask:[{label:"Gross interest for the period",ans:gross,tol:2},
+    {label:"Amount capitalised",ans:net,tol:2}],
+   steps:[["Gross interest: "+$m(loan)+" × "+(r*100).toFixed(1)+"% × "+mo+"/12",$m(gross)],
+    ["SPECIFIC borrowings net temporary investment income: "+$m(gross)+" − "+$m(inv),$m(net),1],
+    ["A GENERAL pool would use the weighted-average borrowing-cost rate with NO netting — and never a leverage ratio","trap"]]};
+}}
+};
+/* ============ ENGINE (v2 — post external review: shuffle, stable IDs, migration,
+   dynamic sessions, Leitner retirement/leeches, export/import, a11y) ============ */
+const D=document,$=s=>D.querySelector(s),$$=s=>[...D.querySelectorAll(s)];
+function E(t,c,h){const e=D.createElement(t);if(c)e.className=c;if(h!=null)e.innerHTML=h;return e;}
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;};
+function h32(s){let h=5381;for(let i=0;i<s.length;i++)h=(h*33^s.charCodeAt(i))>>>0;return h.toString(36);}
+function parseNum(s){
+  let t=String(s).trim().replace(/[\s $,%]/g,"").replace(/[−–—]/g,"-");
+  let neg=false;
+  if(/^\(.*\)$/.test(t)){neg=true;t=t.slice(1,-1);}
+  if(!/^-?\d*\.?\d+$/.test(t))return NaN;
+  const v=parseFloat(t);
+  return neg?-v:v;
+}
+
+/* ---- stable question IDs + lookup ---- */
+const QIX={};
+for(const m of BANK){
+  m.ids=m.qs.map(q=>m.id+".q"+h32(q[0]));
+  m.qs.forEach((q,i)=>QIX[m.ids[i]]={m,q,i});
+}
+
+/* ---- guarded persistence (visible when blocked) ---- */
+const MEM={};let storageOk=true;
+const store={
+  get(k){try{const v=localStorage.getItem(k);return v===null?(MEM[k]??null):v;}catch(e){storageOk=false;return MEM[k]??null;}},
+  set(k,v){MEM[k]=v;try{localStorage.setItem(k,v);}catch(e){storageOk=false;}}
+};
+const ST_KEY="afm291.arena.v2";
+let ST={schema:2,xp:0,snd:true,theme:"",streak:{last:"",days:0},best:{},rapidHigh:0,leit:{},calc:{},migInfo:null};
+try{
+  const raw=store.get(ST_KEY);
+  if(raw)ST=Object.assign(ST,JSON.parse(raw));
+  else{
+    const v1=store.get("afm291.arena.v1");
+    if(v1){ // A3 migration: carry scores, keep generator review cards, drop stale positional refs
+      const o=JSON.parse(v1);
+      for(const k of["xp","snd","streak","best","rapidHigh","calc"])if(o[k]!=null)ST[k]=o[k];
+      let kept=0,dropped=0;
+      for(const key in (o.leit||{})){
+        if(key.startsWith("g:")&&GENS[key.slice(2)]){ST.leit[key]=o.leit[key];kept++;}
+        else dropped++;
+      }
+      if(dropped)ST.migInfo={dropped,kept};
+    }
+  }
+}catch(e){}
+const save=()=>store.set(ST_KEY,JSON.stringify(ST));
+if(ST.theme)D.documentElement.dataset.theme=ST.theme;
+
+/* ---- daily streak ---- */
+(function(){
+  const today=new Date().toISOString().slice(0,10);
+  if(ST.streak.last!==today){
+    const y=new Date(Date.now()-864e5).toISOString().slice(0,10);
+    ST.streak.days=(ST.streak.last===y)?ST.streak.days+1:1;
+    ST.streak.last=today;save();
+  }
+})();
+
+/* ---- Web Audio synth ---- */
+let AC=null;
+function tone(f,dur,type,vol,when){
+  if(!ST.snd)return;
+  try{
+    AC=AC||new (window.AudioContext||window.webkitAudioContext)();
+    if(AC.state==="suspended")AC.resume();
+    const t=AC.currentTime+(when||0);
+    const o=AC.createOscillator(),g=AC.createGain();
+    o.type=type||"sine";o.frequency.value=f;
+    g.gain.setValueAtTime(0.0001,t);
+    g.gain.exponentialRampToValueAtTime(vol||0.12,t+0.012);
+    g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+    o.connect(g).connect(AC.destination);o.start(t);o.stop(t+dur+0.05);
+  }catch(e){}
+}
+const sfx={
+  click:()=>tone(440,0.06,"sine",0.05),
+  right:()=>{tone(660,0.09,"sine",0.1);tone(880,0.12,"sine",0.1,0.07);},
+  wrong:()=>tone(170,0.22,"square",0.07),
+  tick:()=>tone(1000,0.03,"sine",0.05),
+  unlock:()=>{[523,659,784,1047].forEach((f,i)=>tone(f,0.14,"sine",0.1,i*0.09));},
+  end:()=>{tone(392,0.15,"sine",0.1);tone(330,0.2,"sine",0.1,0.12);}
+};
+
+/* ---- helpers ---- */
+const modById=id=>BANK.find(m=>m.id===id);
+const unlocked=i=>i===0||(ST.best[BANK[i-1].id]||0)>=80;
+const starsFor=s=>s>=100?3:s>=90?2:s>=80?1:0;
+const badge=f=>f==="v"?'<span class="badge v">⚑ VERIFY vs Handbook</span>':f==="c"?'<span class="badge c">⚑ SOURCE CONFLICT</span>':"";
+const todayStr=()=>new Date().toISOString().slice(0,10);
+
+/* ---- Leitner: 6 boxes, retirement, leech tracking ---- */
+const DAYS=[0,1,3,7,21,60];
+function leitMark(key,ok,kind,ref){
+  const e=ST.leit[key]||{box:0,due:0,k:kind,ref,miss:0};
+  if(ok){if(ST.leit[key]){e.box=Math.min(5,e.box+1);e.due=Date.now()+DAYS[Math.min(e.box,DAYS.length-1)]*864e5;}else return;}
+  else{e.box=0;e.due=Date.now();e.miss=(e.miss||0)+1;}
+  e.k=kind;e.ref=ref;ST.leit[key]=e;save();
+}
+const dueItems=inclRetired=>Object.entries(ST.leit)
+  .filter(([k,e])=>e.due<=Date.now()&&(inclRetired||e.box<5));
+const leeches=()=>Object.entries(ST.leit).filter(([k,e])=>(e.miss||0)>=3);
+
+/* ---- dashboard ---- */
+function mastery(){
+  let s=0;for(const m of BANK)s+=Math.min(100,ST.best[m.id]||0);
+  return Math.round(s/BANK.length);
+}
+function paintDash(){
+  $("#dStreak").textContent=ST.streak.days;
+  $("#dXp").textContent=ST.xp;
+  $("#dMast").textContent=mastery()+"%";
+  $("#sndBtn").classList.toggle("off",!ST.snd);
+  const due=dueItems().length,b=$("#dueBadge");
+  b.hidden=!due;if(due)b.textContent=due+" due";
+  $("#rapidHs").textContent=ST.rapidHigh?("HI "+ST.rapidHigh):"";
+}
+
+/* ---- home / module grid ---- */
+function rapidPoolSize(){
+  let n=0;BANK.forEach((m,i)=>{if(unlocked(i))n+=m.qs.length;});return n;
+}
+function paintHome(){
+  paintDash();
+  const rp=$('.mode[data-go="rapid"] p');
+  if(rp)rp.textContent="60 seconds. Combo scoring. Current pool: "+rapidPoolSize()+" items from your unlocked chapters.";
+  const g=$("#modGrid");g.innerHTML="";
+  BANK.forEach((m,i)=>{
+    const un=unlocked(i),best=ST.best[m.id]||0,st=starsFor(best);
+    const t=E("button","mtile"+(un?"":" locked")+(st?" done":""));
+    t.innerHTML='<span class="n">'+m.n+'</span><div class="t">'+m.title+'</div>'+
+      (un?('<span class="stars">'+("★".repeat(st)+"☆".repeat(3-st))+'</span> <span class="best">'+(best?best+"%":"—")+'</span>'+
+      '<div class="mprog"><i style="width:'+Math.min(100,best)+'%"></i></div>')
+        :'<span class="lock">🔒</span><span class="best">needs 80% on '+BANK[i-1].n+'</span>');
+    if(un&&best>0){
+      const rb=E("span","tilereset","⟲");
+      rb.title="Reset this chapter";
+      rb.onclick=ev=>{ev.stopPropagation();
+        if(rb.dataset.arm){resetChapter(m.id);}
+        else{rb.dataset.arm="1";rb.textContent="sure?";setTimeout(()=>{rb.dataset.arm="";rb.textContent="⟲";},2500);}
+      };
+      t.appendChild(rb);
+    }
+    t.onclick=()=>{
+      if(!un){t.classList.remove("shake");void t.offsetWidth;t.classList.add("shake");sfx.wrong();return;}
+      sfx.click();startCampaign(m);
+    };
+    g.appendChild(t);
+  });
+}
+function resetChapter(mid){
+  delete ST.best[mid];
+  const m=modById(mid);
+  for(const id of m.ids)delete ST.leit[id];
+  for(const gid of m.gens){delete ST.leit["g:"+gid];delete ST.calc[gid];}
+  save();paintHome();
+}
+
+/* ---- navigation ---- */
+function go(s){
+  $$(".screen").forEach(x=>x.classList.remove("on"));
+  const scr=$("#scr-"+s);scr.classList.add("on");
+  if(s==="home")paintHome();
+  window.scrollTo({top:0,behavior:"instant"});
+  scr.setAttribute("tabindex","-1");scr.focus({preventScroll:true});
+}
+
+/* ============ QUIZ SESSION ============ */
+let S=null,timerInt=null,TOK=0;
+function stopTimer(){if(timerInt){clearInterval(timerInt);timerInt=null;}}
+function startCampaign(m){
+  const k=Math.min(2,m.gens.length);
+  const items=shuffle(m.qs.map((q,i)=>({k:"mcq",id:m.ids[i],mod:m,q}))).slice(0,10-k);
+  for(const gid of shuffle(m.gens).slice(0,k)){
+    const gen=GENS[gid];
+    items.push({k:"num",id:"g:"+gid,gid,gen,d:gen.make(),mod:m});
+  }
+  S={mode:"campaign",m,items:shuffle(items),i:0,ok:0,combo:0,score:0,miss:[],token:++TOK};
+  $("#timerWrap").hidden=true;$("#rscore").hidden=true;
+  go("quiz");renderItem();
+}
+function startRapid(){
+  const pool=[];
+  BANK.forEach((m,i)=>{if(unlocked(i))m.qs.forEach((q,j)=>pool.push({k:"mcq",id:m.ids[j],mod:m,q}));});
+  S={mode:"rapid",pool:shuffle(pool),i:0,ok:0,n:0,combo:0,score:0,t:60,miss:[],token:++TOK};
+  $("#timerWrap").hidden=false;$("#rscore").hidden=false;
+  go("quiz");
+  stopTimer();
+  let lastTick=61;
+  timerInt=setInterval(()=>{
+    S.t-=0.1;
+    const bar=$("#timerBar");bar.style.width=Math.max(0,S.t/60*100)+"%";
+    bar.classList.toggle("low",S.t<=10);
+    $("#timerNum").textContent=Math.max(0,Math.ceil(S.t));
+    if(S.t<=5&&Math.ceil(S.t)<lastTick){lastTick=Math.ceil(S.t);sfx.tick();}
+    if(S.t<=0)endRapid();
+  },100);
+  renderItem();
+}
+function startReview(inclRetired){
+  const due=shuffle(dueItems(inclRetired)).slice(0,12);
+  const items=due.map(([key,e])=>{
+    if(e.k==="g"){const gen=GENS[e.ref];if(!gen)return null;
+      return {k:"num",id:key,gid:e.ref,gen,d:gen.make(),mod:modById(gen.mod),review:1};}
+    const hit=QIX[e.ref];if(!hit)return null;
+    return {k:"mcq",id:key,mod:hit.m,q:hit.q,review:1};
+  }).filter(Boolean);
+  if(!items.length){
+    $("#revInfo").innerHTML="<b>Couldn't resolve any due card to a live question.</b> This usually means the bank changed since those cards were stored. They'll be cleaned up as you keep practising.";
+    return;
+  }
+  S={mode:"review",items,i:0,ok:0,combo:0,score:0,miss:[],token:++TOK};
+  $("#timerWrap").hidden=true;$("#rscore").hidden=true;
+  go("quiz");renderItem();
+}
+
+function currentItem(){return S.mode==="rapid"?S.pool[S.i%S.pool.length]:S.items[S.i];}
+function renderItem(){
+  const it=currentItem();if(!it)return endSession();
+  const total=S.mode==="rapid"?null:S.items.length;
+  $("#qn").textContent=S.mode==="rapid"?("answered "+S.n):("Q"+(S.i+1)+" / "+total+" · keys 1–9");
+  const bar=$("#qbar");
+  bar.style.width=S.mode==="rapid"?"100%":((S.i)/total*100)+"%";
+  $("#combo").textContent=S.combo>=3?("combo ×"+(1+Math.min(3,Math.floor(S.combo/3)))):"";
+  if(S.mode==="rapid")$("#rscore").textContent=S.score+" pts";
+  $("#nextBtn").hidden=true;
+  const c=$("#qcard");c.innerHTML="";
+  c.appendChild(E("div","qmod",it.mod?it.mod.n+" · "+it.mod.title:""));
+  if(it.k==="mcq")renderMcq(it,c);else renderNum(it,c);
+}
+/* A1: options shuffled at render time; ns flag (6th element) preserves authored order */
+function renderMcq(it,c){
+  const [q,opts,a,x,flag,ns]=it.q;
+  c.appendChild(E("p","qtext",q));
+  const order=ns?opts.map((_,i)=>i):shuffle(opts.map((_,i)=>i));
+  it._order=order;
+  const wrap=E("div","opts");
+  order.forEach((orig,pos)=>{
+    const b=E("button","opt",'<span class="k">'+(pos+1)+'</span><span>'+opts[orig]+'</span>');
+    b.onclick=()=>gradeMcq(it,orig,pos,wrap,c);
+    wrap.appendChild(b);
+  });
+  c.appendChild(wrap);
+}
+function gradeMcq(it,orig,pos,wrap,c){
+  const [q,opts,a,x,flag]=it.q;
+  const ok=orig===a;
+  const correctPos=it._order.indexOf(a);
+  [...wrap.children].forEach((b,j)=>{
+    b.disabled=true;
+    if(j===correctPos){b.classList.add("right");b.insertAdjacentHTML("beforeend",' <b aria-hidden="true">✓</b>');}
+    else if(j===pos){b.classList.add("wrong");b.insertAdjacentHTML("beforeend",' <b aria-hidden="true">✗</b>');}
+    else b.classList.add("dim");
+  });
+  record(it,ok);
+  if(!ok)S.miss.push({label:q,chosen:opts[orig],ans:opts[a],x,flag});
+  if(S.mode==="rapid"){
+    S.n++;
+    const tok=S.token;
+    setTimeout(()=>{if(S&&S.token===tok)next();},ok?260:600);
+    return;
+  }
+  const fb=E("div","fb");fb.setAttribute("aria-live","polite");
+  fb.appendChild(E("div","verdict "+(ok?"y":"n"),ok?"Correct":"Not quite"));
+  fb.appendChild(E("div","",badge(flag)+x));
+  c.appendChild(fb);
+  $("#nextBtn").hidden=false;$("#nextBtn").focus();
+}
+function renderNum(it,c){
+  const d=it.d,ask=d.ask[0];
+  c.appendChild(E("p","qtext",it.gen.title));
+  const gv=E("div","given"),t=E("table");
+  t.insertAdjacentHTML("afterbegin",'<caption class="visuallyhidden">Given facts for this computation</caption>');
+  for(const r of d.given){const tr=E("tr",r[2]?"tot":"");tr.appendChild(E("td",null,r[0]));tr.appendChild(E("td",null,r[1]));t.appendChild(tr);}
+  gv.appendChild(t);c.appendChild(gv);
+  if(d.note)c.appendChild(E("p","tag",d.note));
+  const line=E("div","numin");
+  line.appendChild(E("label",null,"<b>"+ask.label+"</b> ="));
+  const inp=E("input");inp.type="text";inp.inputMode="decimal";inp.setAttribute("aria-label",ask.label);
+  line.appendChild(inp);
+  const chk=E("button","btn pri","Check");
+  line.appendChild(chk);
+  c.appendChild(line);
+  setTimeout(()=>inp.focus(),50);
+  const doCheck=()=>{
+    if(inp.disabled)return;
+    const v=parseNum(inp.value);
+    const ok=isFinite(v)&&Math.abs(v-ask.ans)<=(ask.tol??1);
+    inp.disabled=true;chk.disabled=true;
+    inp.classList.add(ok?"right":"wrong");
+    record(it,ok);
+    if(!ok)S.miss.push({label:it.gen.title+" — "+ask.label,chosen:inp.value||"(blank)",ans:money(ask.ans,ask.ans%1?2:0),x:"See the worked steps in the simulator for this generator."});
+    const fb=E("div","fb");fb.setAttribute("aria-live","polite");
+    fb.appendChild(E("div","verdict "+(ok?"y":"n"),(ok?"Correct":"Answer: "+money(ask.ans,ask.ans%1?2:0))));
+    const stepsW=E("div","steps");
+    d.steps.forEach((s,i)=>{
+      const st=E("div","step"+(s[2]?" hot":""));
+      st.appendChild(E("span","sn",(i+1)+"."));
+      st.appendChild(E("span",null,s[0]));
+      st.appendChild(E("span","amt",s[1]==null?"":s[1]));
+      stepsW.appendChild(st);
+    });
+    fb.appendChild(stepsW);c.appendChild(fb);
+    $("#nextBtn").hidden=false;$("#nextBtn").focus();
+  };
+  chk.onclick=doCheck;
+  inp.addEventListener("keydown",e=>{if(e.key==="Enter")doCheck();});
+}
+function record(it,ok){
+  if(ok){
+    S.ok++;S.combo++;
+    const mult=1+Math.min(3,Math.floor(S.combo/3));
+    S.score+=10*(S.mode==="rapid"?mult:1);
+    ST.xp+=S.mode==="rapid"?5:10;
+    sfx.right();
+    if(it.review)leitMark(it.id,true,ST.leit[it.id]?.k||"q",ST.leit[it.id]?.ref||it.id);
+  }else{
+    S.combo=0;sfx.wrong();
+    if(it.k==="mcq")leitMark(it.id,false,"q",it.id);
+    else leitMark("g:"+it.gid,false,"g",it.gid);
+  }
+  save();paintDash();
+}
+function next(){
+  S.i++;
+  if(S.mode!=="rapid"&&S.i>=S.items.length)return endSession();
+  renderItem();
+}
+$("#nextBtn").onclick=next;
+
+/* ---- session ends ---- */
+function endSession(){
+  if(S.mode==="campaign"){
+    const total=S.items.length,pct=Math.round(S.ok/total*100);
+    const need=Math.ceil(total*0.8);
+    const prevBest=ST.best[S.m.id]||0;
+    const pass=pct>=80;
+    if(pct>prevBest)ST.best[S.m.id]=pct;
+    if(pass){ST.xp+=40;if(pct>=100)ST.xp+=25;}
+    save();
+    const idx=BANK.indexOf(S.m);
+    const unlockedNext=pass&&idx<BANK.length-1&&prevBest<80;
+    showResults({
+      big:pct+"%",cls:pass?"pass":"fail",
+      stars:starsFor(pct),
+      h:pass?(pct>=100?"Perfect run.":"Module passed."):"Below the 80% gate",
+      p:pass?(unlockedNext?BANK[idx+1].n+" — "+BANK[idx+1].title+" is now unlocked.":"Best: "+ST.best[S.m.id]+"%. Misses went to your review deck.")
+            :"You need "+need+" of "+total+". Every miss is queued in Smart Review — clear those first, then retry.",
+      xp:(S.ok*10)+(pass?40:0)+(pct>=100?25:0),miss:S.miss});
+    if(unlockedNext)sfx.unlock();else if(pass)sfx.right();else sfx.end();
+  }else if(S.mode==="review"){
+    showResults({big:S.ok+"/"+S.items.length,cls:S.ok===S.items.length?"pass":"fail",stars:0,
+      h:"Review complete",p:"Correct cards moved up a box; misses reset to box 0 and stay due. Boxes now run 0/1/3/7/21/60 days — box 5 cards are retired.",xp:S.ok*10,miss:S.miss});
+    sfx.end();
+  }
+  stopTimer();
+}
+function endRapid(){
+  stopTimer();
+  const hi=S.score>ST.rapidHigh;
+  if(hi)ST.rapidHigh=S.score;
+  ST.xp+=Math.round(S.score/10);save();
+  showResults({big:S.score+"",cls:hi?"pass":"fail",stars:0,
+    h:hi?"New high score!":"Time!",
+    p:S.n+" answered · "+S.ok+" correct. Pool = "+rapidPoolSize()+" items from your unlocked chapters.",
+    xp:Math.round(S.score/10),miss:S.miss});
+  if(hi)sfx.unlock();else sfx.end();
+}
+let lastFocus=null;
+function showResults(r){
+  const b=$("#resBox");
+  b.setAttribute("role","dialog");b.setAttribute("aria-modal","true");
+  b.innerHTML='<div class="big '+r.cls+'">'+r.big+'</div>'+
+    (r.stars?'<div class="rstars">'+("★".repeat(r.stars)+"☆".repeat(3-r.stars))+'</div>':"")+
+    '<h2 tabindex="-1">'+r.h+'</h2><p>'+r.p+'</p><div class="xps">+'+r.xp+' XP</div>';
+  if(r.miss&&r.miss.length){ /* F1: show every miss with the explanation */
+    const ml=E("div","misslist");
+    ml.appendChild(E("div","mlh",r.miss.length+" missed — review before retrying"));
+    for(const ms of r.miss){
+      ml.appendChild(E("div","mlitem",
+        "<div class='mlq'>"+ms.label+"</div>"+
+        "<div class='mlrow'><span class='no'>you: "+ms.chosen+"</span> <span class='yes'>ans: "+ms.ans+"</span></div>"+
+        "<div class='mlx'>"+(ms.flag?badge(ms.flag):"")+(ms.x||"")+"</div>"));
+    }
+    b.appendChild(ml);
+  }
+  const row=E("div","qfoot");row.style.justifyContent="center";
+  const home=E("button","btn","Home");home.onclick=closeResults;
+  const again=E("button","btn pri","Go again");
+  again.onclick=()=>{$("#overlay").classList.remove("on");
+    if(S.mode==="campaign")startCampaign(S.m);else if(S.mode==="rapid")startRapid();else startReview();};
+  row.append(home,again);b.appendChild(row);
+  lastFocus=D.activeElement;
+  $("#overlay").classList.add("on");
+  b.querySelector("h2").focus();
+}
+function closeResults(){
+  $("#overlay").classList.remove("on");go("home");
+  if(lastFocus&&lastFocus.focus)lastFocus.focus();
+}
+D.addEventListener("keydown",e=>{if(e.key==="Escape"&&$("#overlay").classList.contains("on"))closeResults();});
+
+/* ============ SIMULATOR ============ */
+const GT={}; // gid -> stat node (A5 fix)
+function simStatText(gid){const st=ST.calc[gid]||{n:0,k:0};return st.n?st.k+" / "+st.n+" correct":"not attempted";}
+function paintSim(){
+  const g=$("#genGrid");g.innerHTML="";$("#simHost").innerHTML="";
+  for(const gid in GENS){
+    const gen=GENS[gid];
+    const t=E("button","gentile",'<div class="gm">'+modById(gen.mod).n+'</div><h4>'+gen.title+'</h4>'+
+      '<div class="tag" style="margin:0;font-size:11px">'+gen.sub+'</div>');
+    const gs=E("div","gs",simStatText(gid));
+    t.appendChild(gs);GT[gid]=gs;
+    t.onclick=()=>{sfx.click();openSim(gid);};
+    g.appendChild(t);
+  }
+}
+function openSim(gid){
+  const gen=GENS[gid],host=$("#simHost");
+  host.innerHTML="";
+  const card=E("div","qcard");
+  card.appendChild(E("div","qmod",modById(gen.mod).n+" · "+gen.title));
+  const body=E("div");card.appendChild(body);
+  const foot=E("div","qfoot");
+  const bNew=E("button","btn pri","New numbers"),bChk=E("button","btn","Check"),bShow=E("button","btn ghost","Show working");
+  foot.append(bNew,bChk,bShow);card.appendChild(foot);
+  host.appendChild(card);
+  let d,fields,graded,shown;
+  function render(){
+    d=gen.make();fields=[];graded=false;shown=false;
+    bChk.disabled=false;
+    body.innerHTML="";
+    const gv=E("div","given"),t=E("table");
+    for(const r of d.given){const tr=E("tr",r[2]?"tot":"");tr.appendChild(E("td",null,r[0]));tr.appendChild(E("td",null,r[1]));t.appendChild(tr);}
+    gv.appendChild(t);body.appendChild(gv);
+    if(d.note)body.appendChild(E("p","tag",d.note));
+    for(const a of d.ask){
+      const line=E("div","simin");
+      line.appendChild(E("label",null,a.label));
+      const inp=E("input");inp.type="text";inp.inputMode="decimal";inp.setAttribute("aria-label",a.label);
+      const mk=E("span","mk","");
+      line.append(inp,mk);body.appendChild(line);
+      fields.push({a,inp,mk});
+      inp.addEventListener("keydown",e=>{if(e.key==="Enter")check();});
+    }
+    const w=E("div","fb");w.hidden=true;w.setAttribute("aria-live","polite");
+    w.appendChild(E("div","verdict","Worked solution"));
+    const sw=E("div","steps");
+    d.steps.forEach((s,i)=>{const st=E("div","step"+(s[2]?" hot":""));
+      st.appendChild(E("span","sn",(i+1)+"."));st.appendChild(E("span",null,s[0]));
+      st.appendChild(E("span","amt",s[1]==null?"":s[1]));sw.appendChild(st);});
+    w.appendChild(sw);body.appendChild(w);
+    body._work=w;
+  }
+  function check(){
+    if(graded)return;
+    let all=true;
+    for(const f of fields){
+      const v=parseNum(f.inp.value);
+      const ok=isFinite(v)&&Math.abs(v-f.a.ans)<=(f.a.tol??1);
+      f.inp.classList.toggle("right",ok);f.inp.classList.toggle("wrong",!ok);
+      f.mk.className="mk "+(ok?"y":"n");f.mk.textContent=ok?"✓":"✗";
+      if(!ok)all=false;
+    }
+    body._work.hidden=false;
+    graded=true;
+    const st=ST.calc[gid]=ST.calc[gid]||{n:0,k:0};
+    if(!shown){
+      st.n++;if(all)st.k++;
+      // A10: XP only on the first correct per generator per day — no farming
+      if(all&&st.xd!==todayStr()){ST.xp+=10;st.xd=todayStr();}
+    }
+    if(!all)leitMark("g:"+gid,false,"g",gid);
+    else if(ST.leit["g:"+gid])leitMark("g:"+gid,true,"g",gid);
+    save();paintDash();
+    if(GT[gid])GT[gid].textContent=simStatText(gid);
+    if(all)sfx.right();else sfx.wrong();
+  }
+  bNew.onclick=()=>{sfx.click();render();};
+  bChk.onclick=check;
+  bShow.onclick=()=>{shown=true;body._work.hidden=false;
+    for(const f of fields)if(!f.inp.value)f.inp.placeholder=money(f.a.ans,f.a.ans%1?2:0);};
+  render();
+  card.scrollIntoView({behavior:"smooth",block:"start"});
+}
+
+/* ============ REVIEW SCREEN ============ */
+function paintReview(){
+  const due=dueItems().length,retired=Object.values(ST.leit).filter(e=>e.box>=5).length,
+        all=Object.keys(ST.leit).length,lch=leeches();
+  const boxes=[0,0,0,0,0,0];
+  for(const k in ST.leit)boxes[Math.min(5,ST.leit[k].box)]++;
+  let html=(all?("<b>"+due+"</b> card"+(due===1?"":"s")+" due now · "+all+" in the deck ("+retired+" retired). Correct answers climb 0 → 1 → 3 → 7 → 21 → 60-day intervals; box 5 is retired. A miss resets the card to box 0.")
+    :"Nothing here yet. Miss a question anywhere — campaign, rapid fire or the simulator — and it joins the deck automatically.");
+  if(ST.migInfo){html+="<br><span class='mig'>Storage migrated: "+ST.migInfo.kept+" review card"+(ST.migInfo.kept===1?"":"s")+" carried over, "+ST.migInfo.dropped+" dropped (the question bank changed underneath them). Scores and streaks were preserved.</span>";ST.migInfo=null;save();}
+  html+='<div class="boxrow">'+boxes.map((n,i)=>'<span class="boxpill">'+(i===5?"retired":"box "+i)+" · "+n+"</span>").join("")+"</div>";
+  if(lch.length){
+    html+='<div class="leechh">Leeches — missed 3+ times. These are concept problems, not card problems:</div>';
+    for(const [k,e] of lch.slice(0,6)){
+      let name=k;
+      if(e.k==="g"&&GENS[e.ref])name=GENS[e.ref].title;
+      else if(QIX[e.ref])name=QIX[e.ref].m.n+" — "+QIX[e.ref].q[0].slice(0,70)+(QIX[e.ref].q[0].length>70?"…":"");
+      html+='<div class="leech">'+name+' <span class="lm">×'+e.miss+'</span></div>';
+    }
+  }
+  $("#revInfo").innerHTML=html;
+  $("#revStart").disabled=!due;
+  const inc=$("#incRetired");
+  if(inc)inc.parentElement.hidden=!retired;
+}
+
+/* ============ EXPORT / IMPORT / RESET (B4, B5) ============ */
+function wireTools(){
+  const host=$("#scr-home .note");
+  const row=E("div","toolsrow");
+  const ex=E("button","btn ghost","Export progress");
+  ex.onclick=()=>{
+    const blob=new Blob([JSON.stringify(ST,null,1)],{type:"application/json"});
+    const a=E("a");a.href=URL.createObjectURL(blob);
+    a.download="afm291-arena-progress-"+todayStr()+".json";a.click();
+    setTimeout(()=>URL.revokeObjectURL(a.href),2000);
+  };
+  const imLbl=E("label","btn ghost","Import progress");
+  const im=E("input");im.type="file";im.accept=".json,application/json";im.hidden=true;
+  im.onchange=()=>{
+    const f=im.files[0];if(!f)return;
+    const rd=new FileReader();
+    rd.onload=()=>{try{
+      const o=JSON.parse(rd.result);
+      if(!o||typeof o!=="object")throw 0;
+      ST.xp=Math.max(ST.xp,o.xp||0);
+      ST.rapidHigh=Math.max(ST.rapidHigh,o.rapidHigh||0);
+      if(o.streak&&o.streak.last>(ST.streak.last||""))ST.streak=o.streak;
+      for(const k in (o.best||{}))ST.best[k]=Math.max(ST.best[k]||0,o.best[k]);
+      for(const k in (o.leit||{})){
+        const inc=o.leit[k];
+        if(!(k.startsWith("g:")?GENS[k.slice(2)]:QIX[k]))continue;
+        const cur=ST.leit[k];
+        ST.leit[k]=(!cur||inc.due<cur.due)?inc:cur;
+      }
+      for(const g in (o.calc||{}))if(!ST.calc[g]||(o.calc[g].n||0)>(ST.calc[g].n||0))ST.calc[g]=o.calc[g];
+      save();paintHome();
+      imLbl.textContent="Imported ✓";setTimeout(()=>imLbl.textContent="Import progress",1800);
+    }catch(e){imLbl.textContent="Bad file";setTimeout(()=>imLbl.textContent="Import progress",1800);}};
+    rd.readAsText(f);im.value="";
+  };
+  imLbl.appendChild(im);imLbl.tabIndex=0;
+  imLbl.addEventListener("click",()=>im.click());
+  const rs=E("button","btn ghost","Reset all progress");
+  let arm=null;
+  rs.onclick=()=>{
+    if(arm===null){rs.textContent="Really reset everything? Click again";rs.classList.add("danger");
+      arm=setTimeout(()=>{arm=null;rs.textContent="Reset all progress";rs.classList.remove("danger");},4000);return;}
+    clearTimeout(arm);arm=null;
+    ST={schema:2,xp:0,snd:ST.snd,theme:ST.theme,streak:{last:"",days:0},best:{},rapidHigh:0,leit:{},calc:{},migInfo:null};
+    save();paintHome();
+    rs.textContent="Cleared ✓";rs.classList.remove("danger");
+    setTimeout(()=>rs.textContent="Reset all progress",1800);
+  };
+  row.append(ex,imLbl,rs);
+  host.parentElement.insertBefore(row,host);
+}
+
+/* ============ WIRING ============ */
+$$("[data-go]").forEach(b=>b.addEventListener("click",()=>{
+  const to=b.dataset.go;sfx.click();
+  if(to==="campaign"){go("home");D.getElementById("modGrid").scrollIntoView({behavior:"smooth"});return;}
+  if(to==="rapid")return startRapid();
+  if(to==="sim"){go("sim");paintSim();return;}
+  if(to==="review"){go("review");paintReview();return;}
+  stopTimer();go(to);
+}));
+$("#homeBtn").onclick=()=>{stopTimer();go("home");};
+$("#revStart").onclick=()=>startReview($("#incRetired")&&$("#incRetired").checked);
+$("#sndBtn").onclick=()=>{ST.snd=!ST.snd;save();paintDash();if(ST.snd)sfx.right();};
+$("#thmBtn").onclick=()=>{ /* A6: persisted */
+  const r=D.documentElement,cur=r.dataset.theme||"auto";
+  const nxt=cur==="auto"?"dark":cur==="dark"?"light":"";
+  if(nxt)r.dataset.theme=nxt;else delete r.dataset.theme;
+  ST.theme=nxt;save();
+};
+D.addEventListener("keydown",e=>{
+  if(/^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName))return;
+  if(!$("#scr-quiz").classList.contains("on"))return;
+  if(/^[1-9]$/.test(e.key)){
+    const opts=$$("#qcard .opt:not(:disabled)");
+    const i=+e.key-1;if(opts[i])opts[i].click();
+  }
+});
+
+/* ---- boot ---- */
+if(!storageOk){
+  const warn=E("div","banner","Private-browsing or blocked storage detected — progress will NOT survive closing this tab. Export from the home screen if you want to keep it.");
+  D.querySelector("main").prepend(warn);
+}
+wireTools();
+paintHome();
+</script>
+
+
+<a id="__rb-pill" href="afm291.html">&#8592; The vault</a>
+<script>
+(function(){
+  var p=document.getElementById('__rb-pill'); if(!p) return;
+  var t=false;
+  function run(){ t=false;
+    p.classList.toggle('__on',(window.scrollY||document.documentElement.scrollTop)>420); }
+  function q(){ if(!t){ t=true; requestAnimationFrame(run); } }
+  addEventListener('scroll',q,{passive:true}); run();
+})();
+</script>
+</body>
+</html>

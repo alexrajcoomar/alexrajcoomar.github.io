@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Kennedys — A Dossier</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800;900&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#E4DEC9;
+    --card:#EFEADA;
+    --card-light:#F7F4E9;
+    --ink:#1C2130;
+    --ink-soft:#4E5468;
+    --muted:#82806D;
+    --rule:#C7BE9F;
+    --wire:#9C2B1D;
+    --wire-deep:#6B1D12;
+    --gold:#7A6330;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'IBM Plex Sans',sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:920px;margin:0 auto;padding:0 24px 80px;}
+  a{color:var(--wire-deep);}
+  :focus-visible{outline:2px solid var(--wire);outline-offset:2px;}
+
+  /* ---------- masthead ---------- */
+  .masthead{
+    padding:56px 0 28px;
+    border-bottom:3px double var(--ink);
+    text-align:center;
+  }
+  .masthead .kicker{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11px;
+    letter-spacing:.16em;
+    text-transform:uppercase;
+    color:var(--wire-deep);
+    margin-bottom:14px;
+  }
+  .masthead h1{
+    font-family:'Playfair Display',serif;
+    font-weight:900;
+    font-size:clamp(44px,9vw,84px);
+    letter-spacing:-.01em;
+    margin:0 0 10px;
+    line-height:.95;
+  }
+  .masthead .dek{
+    font-family:'Playfair Display',serif;
+    font-style:italic;
+    font-weight:400;
+    font-size:18px;
+    color:var(--ink-soft);
+    max-width:560px;
+    margin:0 auto;
+  }
+  .stat-row{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:1px;
+    background:var(--ink);
+    margin-top:32px;
+    border:1px solid var(--ink);
+  }
+  .stat{
+    background:var(--paper);
+    padding:18px 10px;
+    text-align:center;
+  }
+  .stat .n{
+    font-family:'Playfair Display',serif;
+    font-weight:800;
+    font-size:26px;
+    display:block;
+  }
+  .stat .l{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:10px;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    color:var(--ink-soft);
+    display:block;
+    margin-top:4px;
+  }
+
+  /* ---------- section scaffolding ---------- */
+  section{padding:52px 0 0;}
+  .sec-head{display:flex;align-items:baseline;gap:14px;margin-bottom:22px;}
+  .roman{
+    font-family:'Playfair Display',serif;
+    font-weight:800;
+    font-size:15px;
+    color:var(--gold);
+    border:1px solid var(--gold);
+    border-radius:50%;
+    width:30px;height:30px;
+    display:flex;align-items:center;justify-content:center;
+    flex:none;
+  }
+  .sec-head h2{
+    font-family:'Playfair Display',serif;
+    font-weight:800;
+    font-size:28px;
+    margin:0;
+  }
+  .sec-head .sub{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11px;
+    color:var(--muted);
+    margin-left:auto;
+    text-align:right;
+  }
+  .lede{color:var(--ink-soft);font-size:15px;line-height:1.65;max-width:640px;margin:0 0 24px;}
+
+  /* ---------- founder cards ---------- */
+  .founders{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+  .card{
+    background:var(--card);
+    border:1px solid var(--rule);
+    border-radius:2px;
+    padding:20px 22px;
+  }
+  .card .name{
+    font-family:'Playfair Display',serif;
+    font-weight:800;
+    font-size:19px;
+    margin:0 0 2px;
+  }
+  .card .dates{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11px;
+    color:var(--wire-deep);
+    margin-bottom:10px;
+    display:block;
+  }
+  .card p{font-size:13.5px;line-height:1.6;color:var(--ink-soft);margin:0;}
+
+  /* ---------- nine children grid ---------- */
+  .nine{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .nine .card .name{font-size:16px;}
+  .nine .card p{font-size:12.8px;}
+
+  /* ---------- wire bulletins ---------- */
+  .wires{border-top:1px solid var(--ink);border-bottom:1px solid var(--ink);}
+  .wire-item{
+    display:grid;
+    grid-template-columns:96px 1fr;
+    gap:16px;
+    padding:14px 0;
+    border-bottom:1px dashed var(--rule);
+  }
+  .wire-item:last-child{border-bottom:none;}
+  .wire-year{
+    font-family:'Playfair Display',serif;
+    font-weight:900;
+    font-size:26px;
+    color:var(--ink);
+    line-height:1;
+  }
+  .wire-tag{
+    display:inline-block;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:9.5px;
+    letter-spacing:.08em;
+    color:#fff;
+    background:var(--wire);
+    padding:2px 6px;
+    margin-bottom:6px;
+  }
+  .wire-body{font-size:13.5px;line-height:1.55;color:var(--ink-soft);}
+  .wire-body b{color:var(--ink);font-weight:600;}
+
+  /* ---------- today grid ---------- */
+  .today{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .today .card .name{font-size:15.5px;}
+  .today .card p{font-size:12.8px;}
+  .now-flag{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:10px;
+    color:var(--gold);
+    border:1px solid var(--gold);
+    padding:1px 6px;
+    border-radius:10px;
+    display:inline-block;
+    margin-top:8px;
+  }
+
+  /* ---------- camelot pull ---------- */
+  .camelot{
+    margin-top:52px;
+    background:var(--ink);
+    color:var(--card-light);
+    padding:40px 36px;
+    border-radius:2px;
+  }
+  .camelot .kicker{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:10.5px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:#B8AE84;
+    margin-bottom:14px;
+  }
+  .camelot blockquote{
+    font-family:'Playfair Display',serif;
+    font-style:italic;
+    font-weight:700;
+    font-size:clamp(22px,3.6vw,30px);
+    line-height:1.3;
+    margin:0 0 16px;
+  }
+  .camelot p{font-size:13.5px;line-height:1.7;color:#C9C2A6;margin:0;max-width:620px;}
+
+  footer{
+    margin-top:48px;
+    padding-top:20px;
+    border-top:1px solid var(--rule);
+    font-family:'IBM Plex Mono',monospace;
+    font-size:10.5px;
+    color:var(--muted);
+    text-align:center;
+  }
+
+  @media (max-width:640px){
+    .founders,.nine,.today{grid-template-columns:1fr;}
+    .stat-row{grid-template-columns:1fr;}
+    .wire-item{grid-template-columns:64px 1fr;}
+  }
+
+  @media (prefers-reduced-motion:no-preference){
+    .reveal{animation:rise .5s ease-out both;}
+  }
+  @keyframes rise{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+</style>
+</head>
+<body>
+<!-- injected by the site build: a way back into the site from a standalone
+     piece. A static bar at the top, so it is visible on arrival, and a pill
+     that appears once you have scrolled past it, so there is always a way out.
+     Self-contained, because these pages do not load the site stylesheet. -->
+<style id="__rb-style">
+#__rb{
+  box-sizing:border-box;display:flex;flex-wrap:wrap;align-items:center;gap:.6rem 1.25rem;
+  padding:.6rem clamp(1rem,4vw,2rem);border-bottom:1px solid #ddd9cf;background:#faf9f6;
+  font:500 13px/1.35 InterVar,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  color:#55524a;
+}
+#__rb a{color:#14509b;text-decoration:none;display:inline-flex;align-items:center;gap:.4rem}
+#__rb a:hover{text-decoration:underline}
+#__rb .__rb-home{font-weight:640;color:#16150f}
+#__rb .__rb-home i{font-style:normal;font-weight:400;color:#6f6c63}
+#__rb .__rb-right{margin-left:auto;display:flex;gap:1.1rem;flex-wrap:wrap}
+#__rb .__mark{
+  display:inline-grid;place-items:center;width:1.2rem;height:1.2rem;flex:none;
+  background:#16150f;color:#faf9f6;font-size:.72rem;font-weight:700;
+}
+#__rb-pill{
+  position:fixed;left:14px;bottom:14px;z-index:2147483000;
+  display:inline-flex;align-items:center;gap:.45rem;padding:.58rem .9rem;
+  background:rgba(22,21,15,.93);color:#faf9f6;text-decoration:none;border-radius:99px;
+  font:600 12.5px/1 InterVar,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  border:1px solid rgba(255,255,255,.16);box-shadow:0 6px 22px rgba(0,0,0,.28);
+  opacity:0;transform:translateY(6px);pointer-events:none;
+  transition:opacity .2s ease,transform .2s ease;
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+}
+#__rb-pill.__on{opacity:1;transform:none;pointer-events:auto}
+#__rb-pill:hover{background:#16150f;color:#fff}
+@media (prefers-color-scheme:dark){
+  #__rb{background:#131310;border-bottom-color:#2c2b24;color:#c0bcb1}
+  #__rb .__rb-home{color:#f7f5ef}
+  #__rb .__rb-home i{color:#948f85}
+  #__rb a{color:#85adea}
+  #__rb .__mark{background:#f7f5ef;color:#131310}
+  #__rb-pill{background:rgba(247,245,239,.95);color:#131310;border-color:rgba(0,0,0,.2)}
+  #__rb-pill:hover{background:#fff;color:#000}
+}
+@media (prefers-reduced-motion:reduce){#__rb-pill{transition:none}}
+@media print{#__rb,#__rb-pill{display:none !important}}
+</style>
+<div id="__rb">
+  <a class="__rb-home" href="index.html"><span class="__mark" aria-hidden="true">A</span>Alex Rajcoomar <i>portfolio</i></a>
+  <span class="__rb-right"><a href="library.html">Library</a><a href="library.html">All work</a></span>
+</div>
+
+<div class="wrap">
+
+  <div class="masthead reveal">
+    <div class="kicker">A Dossier — Compiled 2026</div>
+    <h1>The Kennedys</h1>
+    <p class="dek">Three generations of a Boston-Irish family that turned American politics into the closest thing the republic has to a royal house — and paid for it repeatedly.</p>
+    <div class="stat-row">
+      <div class="stat"><span class="n">1884</span><span class="l">Dynasty begins</span></div>
+      <div class="stat"><span class="n">9 · 3 · 1</span><span class="l">Children · senators · president</span></div>
+      <div class="stat"><span class="n">104</span><span class="l">Rose Kennedy's age at death</span></div>
+    </div>
+  </div>
+
+  <section>
+    <div class="sec-head"><span class="roman">I</span><h2>The founders</h2></div>
+    <p class="lede">Everything downstream starts with one self-made fortune and one iron ambition: to turn money into political power within a generation.</p>
+    <div class="founders">
+      <div class="card">
+        <p class="name">Joseph P. Kennedy Sr.</p>
+        <span class="dates">1888 – 1969</span>
+        <p>Self-made multimillionaire; first chairman of the SEC, then U.S. Ambassador to Britain. Openly unfaithful throughout his marriage — his affair with actress Gloria Swanson was the most famous — and by most biographers' accounts actively encouraged the same in his sons.</p>
+      </div>
+      <div class="card">
+        <p class="name">Rose Fitzgerald Kennedy</p>
+        <span class="dates">1890 – 1995</span>
+        <p>Daughter of Boston mayor "Honey Fitz" Fitzgerald. Bore nine children in eighteen years and outlived five of them. Lived to 104, long enough to see two grandchildren die and a third become a president's widow twice over.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="roman">II</span><h2>The nine</h2><span class="sub">1915–1932</span></div>
+    <p class="lede">The generation the myth is actually about. Four of the nine died before fifty, by war, accident, or assassination.</p>
+    <div class="nine">
+      <div class="card">
+        <p class="name">Joseph Jr.</p><span class="dates">1915–1944</span>
+        <p>The original heir — his grandfather predicted he'd be the first Catholic president. Killed when his explosives-laden bomber detonated over England on a volunteer mission, age 29.</p>
+      </div>
+      <div class="card">
+        <p class="name">John Fitzgerald</p><span class="dates">1917–1963</span>
+        <p>35th President of the United States, 1961–63. Youngest man ever elected to the office. Assassinated in Dallas, age 46.</p>
+      </div>
+      <div class="card">
+        <p class="name">Rosemary</p><span class="dates">1918–2005</span>
+        <p>Intellectually disabled from birth. Given a lobotomy in 1941 on her father's order, without her mother's knowledge. Institutionalized for the rest of her life.</p>
+      </div>
+      <div class="card">
+        <p class="name">Kathleen "Kick"</p><span class="dates">1920–1948</span>
+        <p>Married into British aristocracy. Widowed within months when her husband was killed in WWII. Died in a plane crash over France, age 28.</p>
+      </div>
+      <div class="card">
+        <p class="name">Eunice Shriver</p><span class="dates">1921–2009</span>
+        <p>Founded the Special Olympics in 1968. Widely regarded, including within the family, as the sibling who did the most enduring good with the name.</p>
+      </div>
+      <div class="card">
+        <p class="name">Patricia "Pat"</p><span class="dates">1924–2006</span>
+        <p>Married actor Peter Lawford, the family's direct social link to Frank Sinatra's "Rat Pack." Divorced in 1966.</p>
+      </div>
+      <div class="card">
+        <p class="name">Robert Francis</p><span class="dates">1925–1968</span>
+        <p>U.S. Attorney General under JFK, later Senator from New York. Assassinated in Los Angeles while running for president, age 42.</p>
+      </div>
+      <div class="card">
+        <p class="name">Jean Kennedy Smith</p><span class="dates">1928–2020</span>
+        <p>U.S. Ambassador to Ireland, 1993–98. The last of the nine siblings to die.</p>
+      </div>
+      <div class="card">
+        <p class="name">Edward "Ted"</p><span class="dates">1932–2009</span>
+        <p>U.S. Senator from Massachusetts for 47 years, the "Lion of the Senate." A 1969 crash on Chappaquiddick Island killed passenger Mary Jo Kopechne and ended his presidential prospects for good.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="roman">III</span><h2>The wire</h2><span class="sub">1944–1999</span></div>
+    <p class="lede">What the public actually experienced, in the order it landed — the sequence that built the "Kennedy curse" as a piece of national folklore.</p>
+    <div class="wires">
+      <div class="wire-item"><div class="wire-year">1944</div><div><span class="wire-tag">Bulletin</span><div class="wire-body"><b>Joseph Jr. killed.</b> Naval bomber explodes over England on a volunteer mission. Age 29.</div></div></div>
+      <div class="wire-item"><div class="wire-year">1948</div><div><span class="wire-tag">Bulletin</span><div class="wire-body"><b>Kathleen killed.</b> Private plane crashes in the mountains of southern France. Age 28.</div></div></div>
+      <div class="wire-item"><div class="wire-year">1963</div><div><span class="wire-tag">Bulletin</span><div class="wire-body"><b>JFK assassinated.</b> Shot during a motorcade in Dallas. Age 46.</div></div></div>
+      <div class="wire-item"><div class="wire-year">1968</div><div><span class="wire-tag">Bulletin</span><div class="wire-body"><b>RFK assassinated.</b> Shot at the Ambassador Hotel, Los Angeles, minutes after winning the California primary. Age 42.</div></div></div>
+      <div class="wire-item"><div class="wire-year">1969</div><div><span class="wire-tag">Bulletin</span><div class="wire-body"><b>Chappaquiddick.</b> Ted Kennedy drives off a bridge on Martha's Vineyard; passenger Mary Jo Kopechne, 28, drowns. He pleads guilty to leaving the scene.</div></div></div>
+      <div class="wire-item"><div class="wire-year">1984</div><div><span class="wire-tag">Bulletin</span><div class="wire-body"><b>David Kennedy dies.</b> RFK's son found dead of a drug overdose in Palm Beach. Age 28.</div></div></div>
+      <div class="wire-item"><div class="wire-year">1997</div><div><span class="wire-tag">Bulletin</span><div class="wire-body"><b>Michael Kennedy dies.</b> RFK's son killed in a skiing accident in Aspen. Age 37.</div></div></div>
+      <div class="wire-item"><div class="wire-year">1999</div><div><span class="wire-tag">Bulletin</span><div class="wire-body"><b>JFK Jr. killed.</b> Small plane he is piloting crashes off Martha's Vineyard, killing him, his wife, and her sister. Age 38.</div></div></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="roman">IV</span><h2>Where it stands now</h2><span class="sub">Selected, gen. III+</span></div>
+    <p class="lede">The dynasty didn't stop in 1999 — it just got quieter, then abruptly loud again in Washington.</p>
+    <div class="today">
+      <div class="card">
+        <p class="name">Caroline Kennedy</p><span class="dates">b. 1957</span>
+        <p>JFK's only child still living. Author and attorney; served as U.S. Ambassador to Japan, 2013–17.</p>
+      </div>
+      <div class="card">
+        <p class="name">Robert F. Kennedy Jr.</p><span class="dates">b. 1954</span>
+        <p>RFK's son. Environmental lawyer turned anti-vaccine activist. Ran for president in 2024, dropped out, endorsed Trump.</p>
+        <span class="now-flag">Now: U.S. Secretary of Health &amp; Human Services (since Feb 2025)</span>
+      </div>
+      <div class="card">
+        <p class="name">John F. Kennedy Jr.</p><span class="dates">1960–1999</span>
+        <p>Lawyer, then founder of George magazine. Died piloting the plane that crashed off Martha's Vineyard.</p>
+      </div>
+      <div class="card">
+        <p class="name">David &amp; Michael Kennedy</p><span class="dates">1955–1984 · 1958–1997</span>
+        <p>Two of RFK's eleven children, both dead before 40 — overdose and skiing accident, thirteen years apart.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="camelot">
+    <div class="kicker">Life Magazine · December 6, 1963</div>
+    <blockquote>"There'll be great presidents again… but there'll never be another Camelot."</blockquote>
+    <p>Jackie Kennedy's own words, given to journalist Theodore White one week after the assassination — and by most historical accounts, a myth she built on purpose, in real time, over a single evening.</p>
+  </div>
+
+  <footer>Compiled from public biographical and historical record · not an official Kennedy family document</footer>
+
+</div>
+
+<a id="__rb-pill" href="library.html">&#8592; Library</a>
+<script>
+(function(){
+  var p=document.getElementById('__rb-pill'); if(!p) return;
+  var t=false;
+  function run(){ t=false;
+    p.classList.toggle('__on',(window.scrollY||document.documentElement.scrollTop)>420); }
+  function q(){ if(!t){ t=true; requestAnimationFrame(run); } }
+  addEventListener('scroll',q,{passive:true}); run();
+})();
+</script>
+</body>
+</html>

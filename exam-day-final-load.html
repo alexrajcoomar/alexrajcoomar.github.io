@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="description" content="What to load in the last hour before an exam, and what to deliberately leave out.">
+<meta property="og:title" content="Exam Day Final Load — The last hour">
+<meta property="og:description" content="What to load in the last hour before an exam, and what to deliberately leave out.">
+<meta property="og:type" content="article">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Exam Day — Final Load</title>
+<style>
+:root{
+  --bg:#fcfcfb; --panel:#f4f4f2; --panel2:#eeeeeb;
+  --ink-1:#0b0b0b; --ink-2:#52514e; --ink-3:#8b8a85; --line:#dcdbd6;
+  --s1:#2a78d6; --s2:#eb6834; --s3:#1baf7a;
+  --flag:#c0392b; --flag-bg:#fbecea; --gold:#8a6300; --gold-bg:#fdf5e4;
+}
+@media (prefers-color-scheme: dark){
+  :root:where(:not([data-theme="light"])){
+    --bg:#1a1a19; --panel:#232322; --panel2:#2b2b29;
+    --ink-1:#fff; --ink-2:#c3c2b7; --ink-3:#8d8c84; --line:#33332f;
+    --s1:#3987e5; --s2:#d95926; --s3:#199e70;
+    --flag:#e0655a; --flag-bg:#361c1c; --gold:#e3ab5c; --gold-bg:#2f2513;
+  }
+}
+*{box-sizing:border-box}
+body{margin:0;padding:0 0 60px;background:var(--bg);color:var(--ink-1);
+  font:15px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Helvetica,Arial,sans-serif}
+.m{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+.wrap{max-width:960px;margin:0 auto;padding:0 18px}
+header{border-bottom:3px solid var(--ink-1);padding:22px 0 12px;margin-bottom:16px}
+h1{font-size:22px;margin:0 0 4px}
+.sub{margin:0;color:var(--ink-2);font-size:13px}
+h2{font-size:16px;margin:26px 0 10px;padding-top:14px;border-top:1px solid var(--line);
+  letter-spacing:.02em}
+h2 .n{display:inline-block;background:var(--s1);color:#fff;border-radius:5px;
+  font-size:11px;padding:2px 7px;margin-right:8px}
+
+.grid7{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+@media (min-width:760px){.grid7{grid-template-columns:repeat(3,1fr)}}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+.card .t{font-size:12.5px;font-weight:700;margin:0 0 2px}
+.card .m0{font-size:10.5px;color:var(--ink-2);margin:0 0 6px}
+svg{display:block;width:100%;height:auto}
+.ax{stroke:var(--ink-3);stroke-width:1.1}
+.axlab{fill:var(--ink-2);font-size:9px;font-family:ui-monospace,monospace}
+.curvelab{font-size:9px;font-family:ui-monospace,monospace;font-weight:700}
+.dot{fill:var(--ink-1)}
+.note{font-size:11px;color:var(--ink-2);margin:6px 0 0;line-height:1.4}
+.note b{color:var(--s1)}
+
+.fbox{background:var(--panel2);border-radius:10px;padding:14px 16px;font-size:13px;
+  line-height:1.9;overflow-x:auto}
+.fbox .g{color:var(--ink-3);font-size:11px;letter-spacing:.06em;text-transform:uppercase;
+  display:block;margin:10px 0 2px}
+.fbox .g:first-child{margin-top:0}
+
+.chain{background:var(--panel);border-left:4px solid var(--s1);border-radius:0 10px 10px 0;
+  padding:12px 16px;margin-bottom:10px;font-size:13.5px;line-height:1.9}
+.chain b.h{display:block;color:var(--s1);font-size:12px;letter-spacing:.04em;
+  text-transform:uppercase;margin-bottom:6px}
+.chain .flow{font-family:ui-monospace,monospace;font-size:13px}
+.chain .note2{color:var(--ink-2);font-size:12px;margin-top:6px}
+
+.amb{background:var(--gold-bg);border-left:4px solid var(--gold);border-radius:0 10px 10px 0;
+  padding:10px 16px;margin-bottom:8px;font-size:13px;line-height:1.7}
+
+ol.traps{padding-left:20px;margin:0}
+ol.traps li{background:var(--flag-bg);border-left:4px solid var(--flag);border-radius:0 8px 8px 0;
+  padding:8px 12px;margin-bottom:7px;font-size:13.5px;line-height:1.5;list-style:none;margin-left:-20px}
+ol.traps li b{color:var(--flag)}
+
+.corner{background:var(--s1);color:#fff;border-radius:12px;padding:16px 20px;margin-top:20px;
+  font-size:14px;line-height:1.7}
+.corner b{display:block;font-size:12px;letter-spacing:.08em;text-transform:uppercase;
+  margin-bottom:6px;opacity:.85}
+.corner .m{background:rgba(255,255,255,.15);padding:1px 6px;border-radius:4px}
+
+@media print{
+  body{padding:0}
+  header{padding-top:0}
+  h2{break-before:auto}
+  .grid7{grid-template-columns:repeat(3,1fr)}
+}
+</style>
+</head>
+<body>
+<!-- injected by the site build: a way back into the site from a standalone
+     piece. A static bar at the top, so it is visible on arrival, and a pill
+     that appears once you have scrolled past it, so there is always a way out.
+     Self-contained, because these pages do not load the site stylesheet. -->
+<style id="__rb-style">
+#__rb{
+  box-sizing:border-box;display:flex;flex-wrap:wrap;align-items:center;gap:.6rem 1.25rem;
+  padding:.6rem clamp(1rem,4vw,2rem);border-bottom:1px solid #ddd9cf;background:#faf9f6;
+  font:500 13px/1.35 InterVar,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  color:#55524a;
+}
+#__rb a{color:#14509b;text-decoration:none;display:inline-flex;align-items:center;gap:.4rem}
+#__rb a:hover{text-decoration:underline}
+#__rb .__rb-home{font-weight:640;color:#16150f}
+#__rb .__rb-home i{font-style:normal;font-weight:400;color:#6f6c63}
+#__rb .__rb-right{margin-left:auto;display:flex;gap:1.1rem;flex-wrap:wrap}
+#__rb .__mark{
+  display:inline-grid;place-items:center;width:1.2rem;height:1.2rem;flex:none;
+  background:#16150f;color:#faf9f6;font-size:.72rem;font-weight:700;
+}
+#__rb-pill{
+  position:fixed;left:14px;bottom:14px;z-index:2147483000;
+  display:inline-flex;align-items:center;gap:.45rem;padding:.58rem .9rem;
+  background:rgba(22,21,15,.93);color:#faf9f6;text-decoration:none;border-radius:99px;
+  font:600 12.5px/1 InterVar,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  border:1px solid rgba(255,255,255,.16);box-shadow:0 6px 22px rgba(0,0,0,.28);
+  opacity:0;transform:translateY(6px);pointer-events:none;
+  transition:opacity .2s ease,transform .2s ease;
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+}
+#__rb-pill.__on{opacity:1;transform:none;pointer-events:auto}
+#__rb-pill:hover{background:#16150f;color:#fff}
+@media (prefers-color-scheme:dark){
+  #__rb{background:#131310;border-bottom-color:#2c2b24;color:#c0bcb1}
+  #__rb .__rb-home{color:#f7f5ef}
+  #__rb .__rb-home i{color:#948f85}
+  #__rb a{color:#85adea}
+  #__rb .__mark{background:#f7f5ef;color:#131310}
+  #__rb-pill{background:rgba(247,245,239,.95);color:#131310;border-color:rgba(0,0,0,.2)}
+  #__rb-pill:hover{background:#fff;color:#000}
+}
+@media (prefers-reduced-motion:reduce){#__rb-pill{transition:none}}
+@media print{#__rb,#__rb-pill{display:none !important}}
+</style>
+<div id="__rb">
+  <a class="__rb-home" href="index.html"><span class="__mark" aria-hidden="true">A</span>Alex Rajcoomar <i>portfolio</i></a>
+  <span class="__rb-right"><a href="research.html">Research</a><a href="library.html">All work</a></span>
+</div>
+
+<div class="wrap">
+<header>
+  <h1>Exam Day — Final Load</h1>
+  <p class="sub">Every graph, every formula, both chains, five traps. In deployment order. Scan, don't read.</p>
+</header>
+
+<h2><span class="n">1</span>The seven graphs</h2>
+<div class="grid7">
+
+  <div class="card">
+    <p class="t">Production</p>
+    <p class="m0">Y vs N</p>
+    <svg viewBox="0 0 220 130">
+      <line class="ax" x1="30" y1="10" x2="30" y2="105"/>
+      <line class="ax" x1="30" y1="105" x2="205" y2="105"/>
+      <text class="axlab" x="14" y="14">Y</text>
+      <text class="axlab" x="196" y="120">N</text>
+      <path d="M30,105 C70,45 130,25 195,20" fill="none" stroke="var(--s1)" stroke-width="2"/>
+      <line x1="60" y1="82" x2="150" y2="55" stroke="var(--s2)" stroke-width="2"/>
+      <text class="curvelab" fill="var(--s2)" x="150" y="50">slope=MPN</text>
+      <path d="M30,105 C65,38 120,15 195,10" fill="none" stroke="var(--s1)" stroke-width="1.3" stroke-dasharray="3 3" opacity=".5"/>
+    </svg>
+    <p class="note">Concave. <b>A↑ or K↑ rotates it up</b> — steeper at every N (dashed).</p>
+  </div>
+
+  <div class="card">
+    <p class="t">Labour</p>
+    <p class="m0">w vs N</p>
+    <svg viewBox="0 0 220 130">
+      <line class="ax" x1="30" y1="10" x2="30" y2="105"/>
+      <line class="ax" x1="30" y1="105" x2="205" y2="105"/>
+      <text class="axlab" x="14" y="14">w</text>
+      <text class="axlab" x="196" y="120">N</text>
+      <line x1="40" y1="100" x2="180" y2="20" stroke="var(--s1)" stroke-width="2"/>
+      <line x1="40" y1="20" x2="180" y2="100" stroke="var(--s2)" stroke-width="2"/>
+      <circle class="dot" cx="110" cy="60" r="3"/>
+      <line x1="30" y1="35" x2="150" y2="35" stroke="var(--ink-2)" stroke-width="1.4" stroke-dasharray="3 3"/>
+      <line x1="100" y1="35" x2="150" y2="35" stroke="var(--flag)" stroke-width="4"/>
+      <text class="curvelab" fill="var(--s1)" x="160" y="34">N&#8202;S</text>
+      <text class="curvelab" fill="var(--s2)" x="160" y="100">N&#8202;D</text>
+    </svg>
+    <p class="note">Clearing = dot. <b>Sticky</b> = wage stuck above w*, employment read off N^D, red bar = unemployment.</p>
+  </div>
+
+  <div class="card">
+    <p class="t">Goods (closed)</p>
+    <p class="m0">r vs S,I</p>
+    <svg viewBox="0 0 220 130">
+      <line class="ax" x1="30" y1="10" x2="30" y2="105"/>
+      <line class="ax" x1="30" y1="105" x2="205" y2="105"/>
+      <text class="axlab" x="14" y="14">r</text>
+      <text class="axlab" x="188" y="120">S,I</text>
+      <line x1="40" y1="100" x2="180" y2="20" stroke="var(--s1)" stroke-width="2"/>
+      <line x1="40" y1="20" x2="180" y2="100" stroke="var(--s2)" stroke-width="2"/>
+      <circle class="dot" cx="110" cy="60" r="3"/>
+      <text class="curvelab" fill="var(--s1)" x="150" y="30">S&#8202;D</text>
+      <text class="curvelab" fill="var(--s2)" x="150" y="98">I&#8202;D</text>
+    </svg>
+    <p class="note">S*=I* at r*. <b>G lives inside S^D = Y − C − G.</b></p>
+  </div>
+
+  <div class="card">
+    <p class="t">Asset</p>
+    <p class="m0">r vs M/P</p>
+    <svg viewBox="0 0 220 130">
+      <line class="ax" x1="30" y1="10" x2="30" y2="105"/>
+      <line class="ax" x1="30" y1="105" x2="205" y2="105"/>
+      <text class="axlab" x="14" y="14">r</text>
+      <text class="axlab" x="180" y="120">M/P</text>
+      <line x1="115" y1="15" x2="115" y2="100" stroke="var(--s1)" stroke-width="2"/>
+      <line x1="45" y1="25" x2="175" y2="95" stroke="var(--s2)" stroke-width="2"/>
+      <circle class="dot" cx="115" cy="60" r="3"/>
+      <text class="curvelab" fill="var(--s1)" x="120" y="24">M/P</text>
+      <text class="curvelab" fill="var(--s2)" x="150" y="90">L(&middot;)</text>
+    </svg>
+    <p class="note">M/P vertical. <b>Axis is r, not i.</b></p>
+  </div>
+
+  <div class="card">
+    <p class="t">MPK<sup>f</sup> inset</p>
+    <p class="m0">cost vs K</p>
+    <svg viewBox="0 0 220 130">
+      <line class="ax" x1="30" y1="10" x2="30" y2="105"/>
+      <line class="ax" x1="30" y1="105" x2="205" y2="105"/>
+      <text class="axlab" x="10" y="14">cost</text>
+      <text class="axlab" x="196" y="120">K</text>
+      <line x1="40" y1="45" x2="185" y2="45" stroke="var(--s2)" stroke-width="2"/>
+      <path d="M40,15 C90,25 140,55 185,95" fill="none" stroke="var(--s1)" stroke-width="2"/>
+      <circle class="dot" cx="107" cy="45" r="3"/>
+      <text class="curvelab" fill="var(--s2)" x="150" y="42">uc</text>
+      <text class="curvelab" fill="var(--s1)" x="150" y="90">MPK&#8202;f</text>
+    </svg>
+    <p class="note">uc=(r+d)p&#8202;K. <b>Tax: MPK^f = uc/(1−τ).</b> Sets K*.</p>
+  </div>
+
+  <div class="card">
+    <p class="t">Goods (open)</p>
+    <p class="m0">r vs NX, S−I</p>
+    <svg viewBox="0 0 220 130">
+      <line class="ax" x1="30" y1="10" x2="30" y2="105"/>
+      <line class="ax" x1="30" y1="105" x2="205" y2="105"/>
+      <text class="axlab" x="14" y="14">r</text>
+      <text class="axlab" x="170" y="120">NX,S−I</text>
+      <line x1="40" y1="100" x2="180" y2="20" stroke="var(--s1)" stroke-width="2"/>
+      <line x1="40" y1="20" x2="180" y2="100" stroke="var(--s2)" stroke-width="2"/>
+      <line x1="65" y1="10" x2="65" y2="105" stroke="var(--ink-3)" stroke-width="1" stroke-dasharray="2 2"/>
+      <text class="axlab" x="55" y="118">0</text>
+      <circle class="dot" cx="55" cy="66" r="3"/>
+      <text class="curvelab" fill="var(--s1)" x="150" y="30">S&#8202;D−I&#8202;D</text>
+      <text class="curvelab" fill="var(--s2)" x="150" y="98">NX&#8202;D</text>
+    </svg>
+    <p class="note">NX* = S*−I*. <b>Can sit left of zero</b> = deficit.</p>
+  </div>
+
+  <div class="card" style="grid-column:span 1">
+    <p class="t">FX market</p>
+    <p class="m0">e_nom vs D</p>
+    <svg viewBox="0 0 220 130">
+      <line class="ax" x1="30" y1="10" x2="30" y2="105"/>
+      <line class="ax" x1="30" y1="105" x2="205" y2="105"/>
+      <text class="axlab" x="6" y="14">e_nom</text>
+      <text class="axlab" x="196" y="120">D</text>
+      <line x1="40" y1="20" x2="180" y2="100" stroke="var(--s1)" stroke-width="2"/>
+      <line x1="40" y1="100" x2="180" y2="20" stroke="var(--s2)" stroke-width="2"/>
+      <circle class="dot" cx="110" cy="60" r="3"/>
+      <text class="curvelab" fill="var(--s1)" x="150" y="30">D&#8202;D</text>
+      <text class="curvelab" fill="var(--s2)" x="150" y="98">D&#8202;S</text>
+    </svg>
+    <p class="note">e_nom = foreign per 1 CAD. <b>Up = appreciate.</b></p>
+  </div>
+
+</div>
+
+<h2><span class="n">2</span>Formulas that compute marks</h2>
+<div class="fbox m">
+<span class="g">National accounts</span>
+GDP = C + I + G + NX &nbsp;&nbsp; GNP = GDP + NFP &nbsp;&nbsp; CA = NX + NFP
+S = Y + NFP − C − G = I + CA
+
+<span class="g">Prices</span>
+π = ΔP / P(<b style="color:var(--s2)">earlier</b>) &nbsp;&nbsp; deflator = nominal / real &nbsp;&nbsp; r ≈ i − π
+
+<span class="g">Labour</span>
+LF = E + U &nbsp;&nbsp; u-rate = U / LF &nbsp;&nbsp; natural = frictional + structural
+MPN = w &nbsp;(hiring rule)
+payroll tax τ: MPN = (1+τ)w &nbsp;— pivots N^D at the N-intercept
+income tax t: N^S = (1−t)w &nbsp;— pivots from the origin
+
+<span class="g">Investment</span>
+uc = (r+d)&middot;p_K
+I^D = K* − K_t + d&middot;K_t &nbsp;&nbsp; <b style="color:var(--flag)">← d appears TWICE</b>
+
+<span class="g">Money</span>
+M/P = L(Y, r+π&#7497;)
+mm = (cu+1)/(cu+res) &nbsp;&nbsp; M = mm &middot; BASE
+
+<span class="g">Search &amp; inequality</span>
+M(U,V) = δ&middot;E &nbsp;&nbsp; U* = LF − E*
+Gini = 1 − 2&middot;(area under Lorenz)
+
+<span class="g">Policy</span>
+Taylor: i = π + 0.02 + 0.5y + 0.5(π − 0.02) &nbsp;&nbsp;→ slope <b style="color:var(--s1)">1.5</b>
+</div>
+
+<h2><span class="n">3</span>The two near-certain chains</h2>
+
+<div class="chain">
+  <b class="h">G↑, sticky wage</b>
+  <div class="flow">S&#8202;D ← left &nbsp;→&nbsp; r*↑, S*↓ &nbsp;→&nbsp; AD&gt;AS &nbsp;→&nbsp; P↑ &nbsp;→&nbsp; M/P ← left<br>
+  W stuck &nbsp;→&nbsp; W/P↓ &nbsp;→&nbsp; down along N&#8202;D &nbsp;→&nbsp; N↑, U↓, Y↑</div>
+  <p class="note2">Feedback (Y↑ nudges S&#8202;D and L partly back) never overrides the initial move.</p>
+</div>
+
+<div class="chain">
+  <b class="h">A↓, market clearing</b>
+  <div class="flow">MPN↓ &nbsp;→&nbsp; N&#8202;D ← left &nbsp;→&nbsp; w*↓, N*↓ &nbsp;→&nbsp; Y*↓ &nbsp;→&nbsp; S&#8202;D ← left &nbsp;→&nbsp; r↑ (goods pins it)<br>
+  P↑ &nbsp;→&nbsp; M/P↓ (→r↑) vs L↓ (→r↓) &nbsp;→&nbsp; asset alone ambiguous &nbsp;→&nbsp; <b style="color:var(--s1)">M/P dominates</b></div>
+</div>
+
+<h2><span class="n">4</span>Ambiguity setups — tested twice on A2</h2>
+<div class="amb"><b class="m" style="color:var(--gold)">d↑:</b> uc channel → K*↓ → I&#8202;D left. <b>BUT</b> the d&middot;K_t term → I&#8202;D right. Ambiguous — draw 3 cases.</div>
+<div class="amb"><b class="m" style="color:var(--gold)">FX, 4 channels:</b> Y_foreign↑→D&#8202;D↑(e↑) &middot; r_domestic↑→D&#8202;D↑(e↑) &middot; r_foreign↓→D&#8202;S↓(e↑) &middot; Y_domestic↑→D&#8202;S↑(e↓). Ambiguous — 3-case graph.</div>
+
+<h2><span class="n">5</span>Five traps</h2>
+<ol class="traps">
+  <li><b>Circle exactly one option.</b> Hedging is penalized — "ambiguous" is the answer only when channels genuinely oppose.</li>
+  <li><b>π divides by the earlier P.</b> Always.</li>
+  <li><b>"Temporary" MPK shock → no I^D shift.</b> MPK^f itself is untouched.</li>
+  <li><b>mm is (cu+1)/(cu+res), never 1/res.</b> 1/res only when cu=0.</li>
+  <li><b>Numbers come out clean.</b> Ugly arithmetic = an error upstream. Graph marks are separate — label axes, curves, both equilibria, always.</li>
+</ol>
+
+<div class="corner">
+  <b>First thing when the paper opens — write your convention corner</b>
+  <span class="m">e_nom</span> = foreign currency per 1 CAD &nbsp;&middot;&nbsp;
+  <span class="m">W/P</span> falls when P rises (wage stuck) &nbsp;&middot;&nbsp;
+  <span class="m">r</span> is the asset-market axis, not i.
+  <br><br>Then run the Algorithm, steps 1–5, on every single question. You've drilled this. Go collect the marks.
+</div>
+
+</div>
+
+
+<a id="__rb-pill" href="research.html">&#8592; Research</a>
+<script>
+(function(){
+  var p=document.getElementById('__rb-pill'); if(!p) return;
+  var t=false;
+  function run(){ t=false;
+    p.classList.toggle('__on',(window.scrollY||document.documentElement.scrollTop)>420); }
+  function q(){ if(!t){ t=true; requestAnimationFrame(run); } }
+  addEventListener('scroll',q,{passive:true}); run();
+})();
+</script>
+</body>
+</html>

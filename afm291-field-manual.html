@@ -1,0 +1,1078 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="description" content="The condensed field manual for the AFM 291 midterm: what to know, in the order it gets tested.">
+<meta property="og:title" content="AFM 291 Midterm Field Manual — Revision C">
+<meta property="og:description" content="The condensed field manual for the AFM 291 midterm: what to know, in the order it gets tested.">
+<meta property="og:type" content="article">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AFM 291 — MIDTERM 01 FIELD MANUAL · MT1-FM REV C</title>
+<style>
+  /* ============ CORE ============ */
+  * { margin:0; padding:0; box-sizing:border-box; }
+  :root{
+    --ink:#000;
+    --charcoal:#1a1a1a;
+    --paper:#fff;
+    --ash:#e8e4dc;          /* ASPE tone — the only non-mono accent, used as a learning code */
+    --ash2:#f1eee8;
+    --hair:1px solid var(--charcoal);
+  }
+  html,body{
+    background:#9a9a9a;
+    font-family:-apple-system,"Inter","Helvetica Neue","Segoe UI",Arial,sans-serif;
+    color:var(--ink);
+    -webkit-print-color-adjust:exact;
+    print-color-adjust:exact;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  /* ============ SHEET ============ */
+  .sheet{
+    width:8.5in;
+    background:var(--paper);
+    margin:0.3in auto;
+    padding:0.30in 0.40in;
+    box-shadow:0 6px 30px rgba(0,0,0,.45);
+    display:flex;
+    flex-direction:column;
+    gap:0.072in;
+    page-break-after:always;
+    break-after:page;
+  }
+  /* Full-page look is a SCREEN affordance only. In print the box is sized by its
+     content (see @media print) so the last sheet never lands on the page boundary. */
+  @media screen{ .sheet{ min-height:11in; } }
+  .sheet:last-of-type{ page-break-after:auto; break-after:auto; }
+
+  .printbar{
+    width:8.5in; margin:0.25in auto 0;
+    background:var(--ink); color:var(--paper);
+    font-size:7.5pt; font-weight:800; letter-spacing:.18em;
+    padding:.09in .15in; text-transform:uppercase;
+  }
+  @media print{
+    @page{ size:letter; margin:0; }
+    html,body{ background:var(--paper); }
+    .printbar{ display:none; }
+    /* One sheet == one page. Do NOT force a full-page min-height in print: pinning the
+       box to 11in lands its bottom edge exactly on the page boundary and emits a blank
+       trailing page. Let content size the box; max-height + overflow are a spill guard. */
+    .sheet{ margin:0; box-shadow:none; min-height:0; max-height:11in; overflow:hidden; }
+    .sheet:last-of-type{ page-break-after:auto; break-after:auto; }
+  }
+
+  /* ============ MASTHEAD ============ */
+  .mast{
+    background:var(--ink); color:var(--paper);
+    display:flex; justify-content:space-between; align-items:stretch;
+    padding:.11in .15in; break-inside:avoid; page-break-inside:avoid; flex:none;
+  }
+  .mast h1{ font-size:25pt; font-weight:900; letter-spacing:-.02em; line-height:.9; text-transform:uppercase; }
+  .mast h1 span{ display:block; font-size:8pt; font-weight:700; letter-spacing:.24em; margin-top:.05in; }
+  .mast .meta{
+    text-align:right; font-size:6.3pt; font-weight:700; letter-spacing:.10em;
+    text-transform:uppercase; line-height:1.5; display:flex; flex-direction:column; justify-content:center;
+  }
+  .mast .meta b{ font-weight:900; }
+
+  /* ============ CRUMB / INDEX ============ */
+  .crumb{ display:grid; grid-template-columns:repeat(5,1fr); border:1.5px solid var(--ink); break-inside:avoid; flex:none; }
+  .crumb div{ font-size:5.2pt; font-weight:900; text-transform:uppercase; letter-spacing:.03em; padding:.025in .04in; text-align:center; border-right:1px solid var(--charcoal); line-height:1.12; }
+  .crumb div:last-child{ border-right:none; }
+  .crumb div.on{ background:var(--ink); color:var(--paper); }
+  .crumb div em{ font-style:normal; font-size:6.2pt; }
+
+  /* ============ DOCTRINE ============ */
+  .doctrine{
+    border-top:3px solid var(--ink); border-bottom:1px solid var(--charcoal);
+    display:grid; grid-template-columns:1fr 1fr 1fr; gap:.16in; padding:.05in 0 .06in;
+    break-inside:avoid; page-break-inside:avoid; flex:none;
+  }
+  .doctrine div{ font-size:6.6pt; font-weight:800; letter-spacing:.06em; text-transform:uppercase; line-height:1.45; }
+  .doctrine i{ font-style:normal; font-weight:400; letter-spacing:.02em; color:var(--charcoal); display:block; }
+
+  /* ============ ZONE LABEL ============ */
+  .zlabel{ display:flex; align-items:center; gap:.1in; break-inside:avoid; page-break-inside:avoid; flex:none; margin-top:0; }
+  .zlabel .badge{ background:var(--ink); color:var(--paper); font-size:7pt; font-weight:900; letter-spacing:.12em; padding:.03in .075in; text-transform:uppercase; }
+  .zlabel .name{ font-size:7.6pt; font-weight:800; letter-spacing:.14em; text-transform:uppercase; }
+  .zlabel .rule{ flex:1; border-top:2px solid var(--ink); }
+  .zlabel .sub{ font-size:5.8pt; font-weight:400; letter-spacing:.04em; color:var(--charcoal); text-transform:uppercase; text-align:right; line-height:1.3; max-width:3.4in; }
+
+  /* ============ LEGEND BAR ============ */
+  .legendbar{ display:flex; gap:.14in; border:1.5px solid var(--ink); padding:.04in .08in; align-items:center; flex:none; flex-wrap:wrap; }
+  .legendbar span{ font-size:5.6pt; font-weight:800; text-transform:uppercase; letter-spacing:.04em; display:flex; align-items:center; }
+  .legendbar .sw{ width:.12in; height:.12in; border:1.5px solid var(--ink); margin-right:.04in; }
+  .legendbar .sw.w{ background:#fff; }
+  .legendbar .sw.a{ background:var(--ash); }
+  .legendbar .sw.k{ background:var(--ink); }
+  .legendbar .tri{ font-weight:900; margin-right:.03in; }
+  .legendbar .mot{ margin-left:auto; color:var(--charcoal); font-weight:700; }
+
+  /* ============ MNEMONIC STRIP ============ */
+  .mnemo{ border:2px solid var(--ink); background:var(--ash); font-size:6.3pt; font-weight:900; letter-spacing:.04em; text-transform:uppercase; padding:.04in .08in; text-align:center; line-height:1.36; flex:none; }
+  .mnemo b{ background:var(--ink); color:var(--paper); padding:.005in .045in; margin:0 .005in; }
+
+  /* ============ FLOW (5-STEP) ============ */
+  .flow{
+    display:grid; grid-template-columns:1fr .17in 1fr .17in 1fr .17in 1fr .17in 1fr;
+    align-items:stretch; break-inside:avoid; page-break-inside:avoid; flex:none;
+  }
+  .step{ border:3px solid var(--ink); padding:.05in .055in; display:flex; flex-direction:column; gap:.025in; }
+  .step .n{ font-size:12.5pt; font-weight:900; line-height:1; }
+  .step .c{ font-size:6.6pt; font-weight:800; letter-spacing:.02em; text-transform:uppercase; line-height:1.25; }
+  .step .q{ font-size:5.1pt; font-weight:400; letter-spacing:.015em; color:var(--charcoal); text-transform:uppercase; line-height:1.38; margin-top:auto; }
+  .step.s5{ background:var(--ink); color:var(--paper); }
+  .step.s5 .q{ color:var(--paper); opacity:.85; }
+  .arrow{ display:flex; align-items:center; justify-content:center; font-size:8.5pt; font-weight:900; }
+
+  /* ============ DECISION GATE ============ */
+  .decision{ display:grid; grid-template-columns:.92in 1fr 1fr; border:3px solid var(--ink); break-inside:avoid; page-break-inside:avoid; flex:none; }
+  .decision .dk{ background:var(--ink); color:var(--paper); font-size:7pt; font-weight:900; letter-spacing:.05em; text-transform:uppercase; padding:.055in; display:flex; align-items:center; line-height:1.3; }
+  .decision .dc{ padding:.055in .08in; border-left:2px solid var(--ink); }
+  .decision .dc h4{ font-size:6.9pt; font-weight:900; letter-spacing:.04em; text-transform:uppercase; margin-bottom:.03in; }
+  .decision .dc p{ font-size:6.1pt; line-height:1.52; color:var(--charcoal); letter-spacing:.004em; }
+  .decision .dc p b{ color:var(--ink); font-weight:800; }
+  .decision .dc .bk{ display:inline-block; background:var(--ink); color:var(--paper); font-weight:900; padding:0 .035in; }
+  .decision .dc small{ display:block; margin-top:.035in; font-size:5.3pt; color:var(--charcoal); text-transform:uppercase; letter-spacing:.015em; line-height:1.42; }
+  .tri-i{ font-weight:900; }
+
+  /* ============ PANELS ============ */
+  .panels{ display:grid; grid-template-columns:1fr 1fr 1fr; gap:.1in; break-inside:avoid; page-break-inside:avoid; align-items:stretch; flex:none; }
+  .panels.p4{ grid-template-columns:repeat(4,1fr); gap:.08in; }
+  .panel{ border:3px solid var(--ink); display:flex; flex-direction:column; }
+  .panel .phead{ background:var(--ink); color:var(--paper); font-size:6.6pt; font-weight:900; letter-spacing:.05em; text-transform:uppercase; padding:.04in .06in; line-height:1.2; }
+  .panel .phead.aspe{ background:var(--charcoal); }
+  .panel .pbody{ padding:.05in .06in .055in; flex:1; font-size:5.95pt; line-height:1.5; color:var(--charcoal); letter-spacing:.004em; }
+  .panel .pbody b{ color:var(--ink); font-weight:800; }
+  .panel.shade{ background:var(--ash2); }
+  .recall{ display:flex; align-items:center; gap:.045in; border-top:2px solid var(--ink); padding:.035in .06in; font-size:5.4pt; font-weight:800; letter-spacing:.05em; text-transform:uppercase; }
+  .dot{ width:.125in; height:.125in; border:1.7pt solid var(--ink); border-radius:50%; }
+  .recall .dot{ width:.092in; height:.092in; }
+
+  /* ============ BLIND DRILL (active recall) ============ */
+  .blind{ border:3px solid var(--ink); break-inside:avoid; page-break-inside:avoid; flex:none; display:flex; flex-direction:column; }
+  .blind .bh{ background:var(--ink); color:var(--paper); display:flex; justify-content:space-between; align-items:center; padding:.04in .08in; }
+  .blind .bh .bt{ font-size:6.8pt; font-weight:900; text-transform:uppercase; letter-spacing:.06em; }
+  .blind .bh .bs{ font-size:5.2pt; font-weight:700; letter-spacing:.05em; text-transform:uppercase; opacity:.85; }
+  .blind .bbody{ display:grid; grid-template-columns:1.85fr 1fr; }
+  .blind .bpass{ padding:.045in .08in; border-right:2px solid var(--ink); font-size:5.5pt; line-height:1.5; color:var(--charcoal); letter-spacing:.005em; }
+  .blind .bpass b{ color:var(--ink); font-weight:900; }
+  .blind .bpass .p{ display:block; }
+  .blind .bgrid{ padding:.045in .08in; display:flex; flex-direction:column; justify-content:center; gap:.03in; }
+  .blind .brow{ display:flex; align-items:center; gap:.05in; }
+  .blind .brow .l{ font-size:5pt; font-weight:900; text-transform:uppercase; letter-spacing:.03em; width:.34in; }
+  .blind .dbx{ flex:1; height:.16in; border:2pt solid var(--ink); position:relative; }
+  .blind .dbx s{ position:absolute; top:-.005in; left:.02in; font-size:4pt; font-weight:800; text-decoration:none; color:var(--ink); }
+  .blind .bnote{ font-size:4.7pt; font-weight:800; text-transform:uppercase; letter-spacing:.02em; color:var(--charcoal); margin-top:.015in; line-height:1.3; }
+
+  /* ============ COMPARISON TABLE (IFRS vs ASPE) ============ */
+  .cmp{ border:3px solid var(--ink); display:flex; flex-direction:column; break-inside:avoid; page-break-inside:avoid; flex:none; }
+  .cmp .chead{ display:grid; grid-template-columns:.95in 1fr 1fr; }
+  .cmp .chead .hc{ background:var(--ink); color:var(--paper); font-size:6.6pt; font-weight:900; letter-spacing:.06em; text-transform:uppercase; padding:.055in .075in; border-left:1px solid var(--paper); }
+  .cmp .chead .hc:first-child{ border-left:none; }
+  .cmp .crow{ display:grid; grid-template-columns:.95in 1fr 1fr; border-top:1px solid var(--charcoal); }
+  .cmp .ck{ background:var(--ash); font-size:6pt; font-weight:900; letter-spacing:.02em; text-transform:uppercase; padding:.06in .065in; display:flex; align-items:center; line-height:1.22; border-right:2px solid var(--ink); }
+  .cmp .ci, .cmp .ca{ padding:.065in .08in; font-size:6.3pt; line-height:1.5; letter-spacing:.003em; }
+  .cmp .ci{ background:#fff; }
+  .cmp .ca{ background:var(--ash); border-left:1px solid var(--charcoal); }
+  .cmp .ci b, .cmp .ca b{ font-weight:800; }
+  .cmp .crow.hot .ck{ background:var(--ink); color:var(--paper); }
+  .cmp .crow.hot .ci, .cmp .crow.hot .ca{ font-weight:800; }
+  .cmp .big{ font-size:7.2pt; font-weight:900; text-transform:uppercase; letter-spacing:.015em; }
+
+  /* ============ ASSET BLOCK (rebuilt) ============ */
+  .asset{ border:3px solid var(--ink); display:flex; flex-direction:column; break-inside:avoid; page-break-inside:avoid; flex:none; }
+  .asset .aban{ background:var(--ink); color:var(--paper); font-size:6.8pt; font-weight:900; text-transform:uppercase; letter-spacing:.05em; padding:.045in .08in; display:flex; justify-content:space-between; align-items:center; }
+  .asset .aban .tag{ font-size:5.4pt; border:1px solid var(--paper); padding:.012in .045in; letter-spacing:.04em; }
+  .asset .ahead{ display:grid; grid-template-columns:.95in 1fr 1fr; border-bottom:2px solid var(--ink); }
+  .asset .ahead div{ font-size:6.3pt; font-weight:900; text-transform:uppercase; letter-spacing:.05em; padding:.05in .07in; }
+  .asset .ahead .hi{ border-left:2px solid var(--ink); }
+  .asset .ahead .ha{ border-left:1px solid var(--charcoal); background:var(--ash); }
+  .asset .arow{ display:grid; grid-template-columns:.95in 1fr 1fr; border-bottom:1px solid var(--charcoal); }
+  .asset .arow .an{ background:var(--ash); font-size:6pt; font-weight:900; text-transform:uppercase; letter-spacing:.02em; padding:.06in .07in; display:flex; align-items:center; gap:.04in; border-right:2px solid var(--ink); line-height:1.18; }
+  .asset .arow .an em{ font-style:normal; font-size:9pt; font-weight:900; }
+  .asset .arow .ai, .asset .arow .aa{ padding:.065in .08in; font-size:6.25pt; line-height:1.5; }
+  .asset .arow .ai b, .asset .arow .aa b{ font-weight:800; }
+  .asset .arow .aa{ background:var(--ash); border-left:1px solid var(--charcoal); }
+  .asset .asub{ background:var(--charcoal); color:var(--paper); font-size:6.1pt; font-weight:900; text-transform:uppercase; letter-spacing:.08em; padding:.045in .08in; }
+  .asset .arow.rec .an{ background:#fff; }
+  .asset .afoot{ background:var(--ash); border-top:2px solid var(--ink); font-size:6pt; font-weight:700; text-transform:uppercase; letter-spacing:.02em; padding:.055in .08in; line-height:1.5; }
+  .asset .afoot b{ font-weight:900; }
+  .asset .afoot .q1{ background:var(--ink); color:var(--paper); padding:0 .035in; font-weight:900; }
+
+  /* ============ PROBABILITY LADDER ============ */
+  .ladder{ border:3px solid var(--ink); padding:.05in .08in .05in; break-inside:avoid; page-break-inside:avoid; flex:none; }
+  .ladder .lh{ display:flex; justify-content:space-between; align-items:baseline; margin-bottom:.04in; }
+  .ladder .lh .t{ font-size:6.8pt; font-weight:900; text-transform:uppercase; letter-spacing:.05em; }
+  .ladder .lh .dir{ font-size:5.4pt; font-weight:800; color:var(--charcoal); text-transform:uppercase; letter-spacing:.05em; }
+  .ladder .scalerow{ display:grid; grid-template-columns:.5in 1fr; align-items:center; gap:.06in; margin-top:.028in; }
+  .ladder .srk{ font-size:6.3pt; font-weight:900; text-transform:uppercase; letter-spacing:.03em; }
+  .ladder .scale{ display:flex; }
+  .ladder .seg{ flex:1; border:2px solid var(--ink); border-right:none; padding:.03in .02in; text-align:center; font-size:5.9pt; font-weight:900; text-transform:uppercase; letter-spacing:.015em; line-height:1.15; }
+  .ladder .seg:last-child{ border-right:2px solid var(--ink); }
+  .ladder .seg.a{ background:var(--ash); }
+  .ladder .seg.span2{ flex:2; }
+  .ladder .marks{ display:grid; grid-template-columns:.5in 1fr; gap:.06in; margin-top:.018in; }
+  .ladder .mk{ display:flex; }
+  .ladder .mk .m{ flex:1; font-size:4.8pt; font-weight:800; text-transform:uppercase; letter-spacing:.005em; color:var(--charcoal); text-align:center; line-height:1.26; padding:0 .015in; }
+  .ladder .mk .m b{ color:var(--ink); }
+  .ladder .cap{ border-top:2px solid var(--ink); margin-top:.045in; padding-top:.035in; font-size:5.75pt; font-weight:800; text-transform:uppercase; letter-spacing:.02em; line-height:1.42; }
+  .ladder .cap b{ background:var(--ink); color:var(--paper); padding:0 .035in; }
+
+  /* ============ PROVISION GATE ============ */
+  .gate{ border:3px solid var(--ink); padding:.05in .07in .05in; break-inside:avoid; page-break-inside:avoid; flex:none; }
+  .gate .ghead{ display:flex; align-items:center; gap:.06in; font-size:5.7pt; font-weight:900; text-transform:uppercase; letter-spacing:.04em; margin-bottom:.04in; flex-wrap:wrap; }
+  .gate .ghead .ch{ background:var(--ink); color:var(--paper); padding:.02in .05in; letter-spacing:.03em; }
+  .gaterow{ display:grid; grid-template-columns:2.05in 1fr; align-items:stretch; gap:.08in; }
+  .gbox{ border:2px solid var(--ink); padding:.035in .055in; display:flex; flex-direction:column; justify-content:center; gap:.014in; }
+  .gbox .gn{ font-size:5.6pt; font-weight:900; letter-spacing:.04em; }
+  .gbox .gq{ font-size:6.6pt; font-weight:900; text-transform:uppercase; letter-spacing:.005em; line-height:1.2; }
+  .gbranch{ display:flex; align-items:center; gap:.05in; font-size:5.85pt; line-height:1.38; color:var(--charcoal); letter-spacing:.004em; flex-wrap:wrap; }
+  .gbranch .no{ font-weight:900; color:var(--ink); white-space:nowrap; }
+  .gbranch b{ color:var(--ink); font-weight:800; }
+  .gyes{ width:2.05in; text-align:center; font-size:5.9pt; font-weight:900; letter-spacing:.07em; padding:.008in 0; }
+  .chip{ display:inline-block; background:var(--ink); color:var(--paper); font-size:5.4pt; font-weight:900; padding:.02in .05in; text-transform:uppercase; letter-spacing:.025em; white-space:nowrap; }
+  .chip.gh{ background:var(--paper); color:var(--ink); border:1.5px solid var(--ink); }
+  .provide{ background:var(--ink); color:var(--paper); text-align:center; font-size:8pt; font-weight:900; letter-spacing:.05em; padding:.04in; text-transform:uppercase; margin-top:.012in; }
+
+  /* ============ TIERS (contingent assets) ============ */
+  .tiers{ display:grid; grid-template-columns:1fr 1fr 1fr; border:3px solid var(--ink); break-inside:avoid; page-break-inside:avoid; flex:none; }
+  .tier{ padding:.05in .07in; border-right:2px solid var(--ink); display:flex; flex-direction:column; gap:.018in; }
+  .tier:last-child{ border-right:none; }
+  .tier .cond{ font-size:6.1pt; font-weight:900; text-transform:uppercase; letter-spacing:.02em; line-height:1.2; }
+  .tier .arr{ font-size:6.8pt; font-weight:900; }
+  .tier .out{ font-size:6.5pt; font-weight:900; text-transform:uppercase; letter-spacing:.015em; }
+  .tier.act{ background:var(--ink); color:var(--paper); }
+
+  /* ============ MATRIX (ASPE losses) — de-cramped ============ */
+  table.matrix2{ width:100%; border-collapse:collapse; table-layout:fixed; border:3px solid var(--ink); break-inside:avoid; page-break-inside:avoid; }
+  .matrix2 th, .matrix2 td{ border:1.5px solid var(--charcoal); padding:.085in .07in; font-size:6.5pt; text-align:center; line-height:1.38; }
+  .matrix2 thead th{ background:var(--ink); color:var(--paper); font-weight:900; text-transform:uppercase; letter-spacing:.03em; font-size:6.3pt; }
+  .matrix2 thead th:first-child{ background:var(--charcoal); font-size:5.8pt; }
+  .matrix2 tbody th{ background:var(--ash); font-weight:900; text-transform:uppercase; text-align:left; font-size:6.2pt; }
+  .matrix2 td.accrue{ background:var(--ink); color:var(--paper); font-weight:900; text-transform:uppercase; }
+  .matrix2 td.disc{ font-weight:900; text-transform:uppercase; }
+  .matrix2 td.none{ color:var(--charcoal); text-transform:uppercase; font-size:5.8pt; font-weight:700; }
+  .matrix2 td small{ display:block; font-size:5.1pt; font-weight:600; color:#555; text-transform:uppercase; letter-spacing:.01em; }
+  .matrix2 td.accrue small{ color:#ccc; }
+
+  /* ============ BINARY GATE ============ */
+  .binwrap{ display:grid; grid-template-columns:1fr 1fr; gap:.1in; break-inside:avoid; page-break-inside:avoid; flex:none; align-items:stretch; }
+  .binary{ border:3px solid var(--ink); display:flex; flex-direction:column; }
+  .binary .bhead{ background:var(--ink); color:var(--paper); font-size:6.5pt; font-weight:900; padding:.035in .06in; text-transform:uppercase; letter-spacing:.04em; }
+  .binary .bq{ font-size:6.7pt; font-weight:900; text-transform:uppercase; padding:.04in .06in; border-bottom:2px solid var(--ink); letter-spacing:.005em; line-height:1.22; }
+  .binary .bb{ display:grid; grid-template-columns:1fr 1fr; flex:1; }
+  .binary .br{ padding:.04in .06in; font-size:5.95pt; line-height:1.42; color:var(--charcoal); letter-spacing:.004em; }
+  .binary .br.yes{ border-right:2px solid var(--ink); }
+  .binary .br .bl{ font-size:5.6pt; font-weight:900; letter-spacing:.04em; display:block; margin-bottom:.018in; color:var(--ink); }
+  .binary .br b{ color:var(--ink); font-weight:800; }
+  .binary .bfoot{ border-top:1px solid var(--charcoal); font-size:5.4pt; color:var(--charcoal); text-transform:uppercase; padding:.032in .06in; line-height:1.4; letter-spacing:.01em; }
+  .binary .bfoot b{ color:var(--ink); font-weight:800; }
+
+  /* ============ CHANGES (3 panel) ============ */
+  .changes{ display:grid; grid-template-columns:1fr 1fr 1fr; gap:.1in; break-inside:avoid; page-break-inside:avoid; flex:none; align-items:stretch; }
+  .chg{ border:3px solid var(--ink); display:flex; flex-direction:column; }
+  .chg .chgh{ background:var(--ink); color:var(--paper); padding:.035in .06in; }
+  .chg .chgh .ct{ font-size:6.6pt; font-weight:900; text-transform:uppercase; letter-spacing:.02em; line-height:1.1; }
+  .chg .chgh .cr{ font-size:6.2pt; font-weight:900; letter-spacing:.08em; margin-top:.018in; }
+  .chg .chgb{ padding:.042in .06in; font-size:5.85pt; line-height:1.44; flex:1; color:var(--charcoal); letter-spacing:.004em; }
+  .chg .chgb b{ color:var(--ink); font-weight:800; }
+  .chg .chgtag{ border-top:2px solid var(--ink); background:var(--ash); font-size:5.6pt; font-weight:900; letter-spacing:.06em; text-transform:uppercase; padding:.03in .06in; text-align:center; }
+
+  /* ============ TRAPS (Where Marks Die) ============ */
+  .traps{ display:grid; grid-template-columns:1fr 1fr; border:3px solid var(--ink); break-inside:avoid; page-break-inside:avoid; flex:none; }
+  .trap{ padding:.045in .075in; border-bottom:1px solid var(--charcoal); }
+  .trap:nth-child(odd){ border-right:2px solid var(--ink); }
+  .trap:nth-last-child(-n+2){ border-bottom:none; }
+  .trap .th{ font-size:6.05pt; font-weight:900; text-transform:uppercase; letter-spacing:.015em; display:flex; align-items:center; gap:.05in; }
+  .trap .th s{ text-decoration:none; background:var(--ink); color:var(--paper); padding:.005in .04in; font-size:5.4pt; }
+  .trap .th .ref{ margin-left:auto; border:1px solid var(--ink); font-size:4.8pt; font-weight:900; padding:.005in .035in; letter-spacing:.01em; white-space:nowrap; }
+  .trap .td{ font-size:5.6pt; line-height:1.42; color:var(--charcoal); letter-spacing:.004em; margin-top:.022in; }
+  .trap .td b{ color:var(--ink); font-weight:800; }
+
+  /* ============ PROTOCOL + LOG ============ */
+  .protocol{ display:grid; grid-template-columns:1fr 1fr 1fr 1fr 1.55fr; border:3px solid var(--ink); break-inside:avoid; page-break-inside:avoid; flex:none; }
+  .pstep{ padding:.042in .055in; border-right:2px solid var(--ink); }
+  .pstep:last-child{ border-right:none; background:var(--ink); color:var(--paper); }
+  .pstep .pn{ font-size:8pt; font-weight:900; }
+  .pstep .pt{ font-size:6.4pt; font-weight:900; letter-spacing:.03em; text-transform:uppercase; }
+  .pstep .pd{ font-size:5.35pt; line-height:1.38; color:var(--charcoal); letter-spacing:.008em; text-transform:uppercase; margin-top:.016in; }
+  .pstep .pd b{ color:var(--ink); font-weight:800; }
+  .pstep:last-child .pd{ color:var(--paper); opacity:.88; }
+  .pstep:last-child .pd b{ color:var(--paper); }
+
+  .cadence{ display:grid; grid-template-columns:repeat(3,1fr); border:1.5px solid var(--ink); break-inside:avoid; flex:none; }
+  .cadence div{ font-size:5.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.02em; padding:.03in .06in; border-right:1px solid var(--charcoal); line-height:1.36; color:var(--charcoal); }
+  .cadence div:last-child{ border-right:none; }
+  .cadence div b{ color:var(--ink); font-weight:900; }
+
+  .login{ display:flex; align-items:center; gap:.055in; font-size:5.8pt; font-weight:800; letter-spacing:.05em; text-transform:uppercase; flex:none; line-height:1.35; }
+  .login::before{ content:""; width:.092in; height:.092in; background:var(--ink); flex:none; }
+  .login i{ font-style:normal; font-weight:400; color:var(--charcoal); letter-spacing:.03em; }
+
+  table.log{ width:100%; border-collapse:collapse; table-layout:fixed; border:3px solid var(--ink); break-inside:avoid; page-break-inside:avoid; flex:none; }
+  table.log th{ background:var(--ink); color:var(--paper); font-size:6pt; font-weight:900; letter-spacing:.05em; text-transform:uppercase; padding:.045in; text-align:left; border-right:1px solid var(--paper); }
+  table.log th:last-child{ border-right:none; text-align:center; }
+  table.log td{ border:1.2px solid var(--charcoal); height:.34in; }
+  table.log td.ckc{ text-align:center; vertical-align:middle; }
+  .ck{ width:.16in; height:.16in; border:2px solid var(--ink); }
+  table.log td.ckc .ck{ margin:0 auto; }
+
+  /* ============ WORKED EXAMPLE ============ */
+  .wex{ border:3px solid var(--ink); display:flex; flex-direction:column; break-inside:avoid; page-break-inside:avoid; }
+  .wex .wh{ background:var(--ink); color:var(--paper); display:flex; justify-content:space-between; align-items:center; padding:.045in .08in; }
+  .wex .wh .wt{ font-size:7pt; font-weight:900; text-transform:uppercase; letter-spacing:.03em; }
+  .wex .wh .wf{ font-size:5.5pt; font-weight:900; letter-spacing:.04em; border:1px solid var(--paper); padding:.012in .045in; white-space:nowrap; }
+  .wex .wfacts{ font-size:6pt; line-height:1.46; padding:.05in .08in; border-bottom:1px solid var(--charcoal); background:var(--ash); }
+  .wex .wfacts b{ font-weight:900; }
+  .wex .wsteps{ padding:.05in .08in; display:flex; flex-direction:column; gap:.035in; }
+  .wex .ws{ display:grid; grid-template-columns:.2in 1fr; gap:.06in; font-size:6pt; line-height:1.46; }
+  .wex .ws .si{ font-weight:900; }
+  .wex .ws b{ font-weight:800; }
+  .wex .lookup{ background:#fff; border:1.5px solid var(--ink); font-weight:900; padding:.004in .035in; font-variant-numeric:tabular-nums; }
+  .wex .wans{ background:var(--ink); color:var(--paper); font-size:6.6pt; font-weight:900; text-transform:uppercase; letter-spacing:.02em; padding:.05in .08in; line-height:1.4; }
+  .wex .wans b{ background:var(--paper); color:var(--ink); padding:0 .04in; }
+  .wex .wwatch{ border-top:1px solid var(--charcoal); font-size:5.5pt; color:var(--charcoal); text-transform:uppercase; letter-spacing:.01em; padding:.04in .08in; line-height:1.44; }
+  .wex .wwatch b{ color:var(--ink); font-weight:900; }
+
+  /* ============ PV REFERENCE ============ */
+  .pvwrap{ display:grid; grid-template-columns:1fr 1fr; gap:.1in; break-inside:avoid; page-break-inside:avoid; flex:none; align-items:start; }
+  .pvbox{ border:3px solid var(--ink); }
+  .pvbox .pvh{ background:var(--ink); color:var(--paper); font-size:6.4pt; font-weight:900; text-transform:uppercase; letter-spacing:.04em; padding:.04in .07in; display:flex; justify-content:space-between; align-items:baseline; }
+  .pvbox .pvh em{ font-style:normal; font-size:5pt; font-weight:700; opacity:.85; }
+  table.pvref{ width:100%; border-collapse:collapse; table-layout:fixed; }
+  .pvref th, .pvref td{ border:1px solid var(--charcoal); font-size:6.1pt; text-align:center; padding:.035in .02in; font-variant-numeric:tabular-nums; }
+  .pvref thead th{ background:var(--charcoal); color:var(--paper); font-weight:900; }
+  .pvref tbody th{ background:var(--ash); font-weight:900; }
+  .pvref td.hl{ background:#fff; font-weight:900; box-shadow:inset 0 0 0 2px var(--ink); }
+
+  /* ============ MVD BAR ============ */
+  .mvd{ background:var(--ink); color:var(--paper); padding:.055in .12in .06in; break-inside:avoid; page-break-inside:avoid; flex:none; }
+  .mvd .m1{ display:flex; flex-wrap:wrap; justify-content:space-between; align-items:baseline; gap:.04in .2in; }
+  .mvd .m1 .t{ font-size:9.5pt; font-weight:900; letter-spacing:.05em; text-transform:uppercase; white-space:nowrap; }
+  .mvd .m1 .d{ font-size:6.8pt; font-weight:800; letter-spacing:.04em; text-transform:uppercase; text-align:right; line-height:1.35; }
+  .mvd .m2{ border-top:1px solid var(--paper); margin-top:.045in; padding-top:.045in; display:flex; justify-content:space-between; gap:.2in; font-size:5.6pt; font-weight:700; letter-spacing:.04em; text-transform:uppercase; opacity:.92; line-height:1.45; }
+  .mvd .m2 div:last-child{ white-space:nowrap; }
+
+  .docline{ display:flex; justify-content:space-between; font-size:5.3pt; font-weight:700; letter-spacing:.13em; text-transform:uppercase; color:var(--charcoal); flex:none; }
+</style>
+
+<style id="__mobile_fit">
+/* Added by the site build. These older documents pushed past the right edge of
+   a phone screen: long unbreakable strings widened the page, and a few wide
+   tables had no scroll container. This constrains both without touching the
+   layout on a laptop. */
+@media (max-width:48rem){
+  html,body{max-width:100%}
+  body{overflow-wrap:break-word}
+  table{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch;max-width:100%}
+  pre,code{overflow-x:auto;max-width:100%}
+  img,svg{max-width:100%;height:auto}
+}
+</style>
+</head>
+<body>
+<!-- injected by the site build: a way back into the site from a standalone
+     piece. A static bar at the top, so it is visible on arrival, and a pill
+     that appears once you have scrolled past it, so there is always a way out.
+     Self-contained, because these pages do not load the site stylesheet. -->
+<style id="__rb-style">
+#__rb{
+  box-sizing:border-box;display:flex;flex-wrap:wrap;align-items:center;gap:.6rem 1.25rem;
+  padding:.6rem clamp(1rem,4vw,2rem);border-bottom:1px solid #ddd9cf;background:#faf9f6;
+  font:500 13px/1.35 InterVar,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  color:#55524a;
+}
+#__rb a{color:#14509b;text-decoration:none;display:inline-flex;align-items:center;gap:.4rem}
+#__rb a:hover{text-decoration:underline}
+#__rb .__rb-home{font-weight:640;color:#16150f}
+#__rb .__rb-home i{font-style:normal;font-weight:400;color:#6f6c63}
+#__rb .__rb-right{margin-left:auto;display:flex;gap:1.1rem;flex-wrap:wrap}
+#__rb .__mark{
+  display:inline-grid;place-items:center;width:1.2rem;height:1.2rem;flex:none;
+  background:#16150f;color:#faf9f6;font-size:.72rem;font-weight:700;
+}
+#__rb-pill{
+  position:fixed;left:14px;bottom:14px;z-index:2147483000;
+  display:inline-flex;align-items:center;gap:.45rem;padding:.58rem .9rem;
+  background:rgba(22,21,15,.93);color:#faf9f6;text-decoration:none;border-radius:99px;
+  font:600 12.5px/1 InterVar,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  border:1px solid rgba(255,255,255,.16);box-shadow:0 6px 22px rgba(0,0,0,.28);
+  opacity:0;transform:translateY(6px);pointer-events:none;
+  transition:opacity .2s ease,transform .2s ease;
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+}
+#__rb-pill.__on{opacity:1;transform:none;pointer-events:auto}
+#__rb-pill:hover{background:#16150f;color:#fff}
+@media (prefers-color-scheme:dark){
+  #__rb{background:#131310;border-bottom-color:#2c2b24;color:#c0bcb1}
+  #__rb .__rb-home{color:#f7f5ef}
+  #__rb .__rb-home i{color:#948f85}
+  #__rb a{color:#85adea}
+  #__rb .__mark{background:#f7f5ef;color:#131310}
+  #__rb-pill{background:rgba(247,245,239,.95);color:#131310;border-color:rgba(0,0,0,.2)}
+  #__rb-pill:hover{background:#fff;color:#000}
+}
+@media (prefers-reduced-motion:reduce){#__rb-pill{transition:none}}
+@media print{#__rb,#__rb-pill{display:none !important}}
+</style>
+<div id="__rb">
+  <a class="__rb-home" href="index.html"><span class="__mark" aria-hidden="true">A</span>Alex Rajcoomar <i>portfolio</i></a>
+  <span class="__rb-right"><a href="afm291.html">The vault</a><a href="library.html">All work</a></span>
+</div>
+
+
+<div class="printbar">PRINT SPEC — PAPER: LETTER 8.5×11 · SCALE: 100% · MARGINS: NONE · BACKGROUND GRAPHICS: ON · 5 SHEETS</div>
+
+<!-- ===================== SHEET 1 — REVENUE: FIVE-STEP ===================== -->
+<div class="sheet">
+
+  <div class="mast">
+    <h1>AFM 291<span>Midterm 01 · Field Manual</span></h1>
+    <div class="meta">
+      <div><b>STANDARD</b> — IFRS 15 / ASPE 3400 / IAS 37</div>
+      <div><b>METHOD</b> — REDRAW BLIND · CHECK · FIX</div>
+      <div><b>REF</b> — S26 GUIDANCE APPENDIX GOVERNS</div>
+      <div><b>DOC</b> MT1-FM · REV C · SHEET 1/5</div>
+    </div>
+  </div>
+
+  <div class="crumb">
+    <div class="on"><em>1</em> · Five-Step Model</div>
+    <div><em>2</em> · IFRS vs ASPE</div>
+    <div><em>3</em> · TVM + PV Tables</div>
+    <div><em>4</em> · Assets + Contingencies</div>
+    <div><em>5</em> · Changes + Drill</div>
+  </div>
+
+  <div class="doctrine">
+    <div>RULE 1 — <b>NAME</b> THE FRAMEWORK<i>IFRS or ASPE decides the rule. State it first.</i></div>
+    <div>RULE 2 — <b>CITE</b> THE CRITERION<i>The appendix is open. Point to the page — don't recite from memory.</i></div>
+    <div>RULE 3 — <b>REDRAW</b> IT BLIND<i>If you can't draw the model + gate, you don't own it.</i></div>
+  </div>
+
+  <div class="zlabel">
+    <div class="badge">ZONE R1</div>
+    <div class="name">IFRS 15 — The Five-Step Model</div>
+    <div class="rule"></div>
+    <div class="sub">Guidance p.3–4 · redraw the chain + gate blind</div>
+  </div>
+
+  <div class="mnemo"><b>I</b> Identify Contract → <b>P</b> Identify POs → <b>D</b> Determine Price → <b>A</b> Allocate → <b>R</b> Recognize &nbsp;·&nbsp; "INITIAL PERFORMANCE DETERMINES ALLOCATION OF REVENUE"</div>
+
+  <div class="flow">
+    <div class="step"><div class="n">01</div><div class="c">Identify the Contract</div><div class="q">5 tests. Collection PROBABLE. No contract → no model.</div></div>
+    <div class="arrow">▶</div>
+    <div class="step"><div class="n">02</div><div class="c">Identify Performance Obligations</div><div class="q">Distinct = capable AND in-context. Missed POs lose marks.</div></div>
+    <div class="arrow">▶</div>
+    <div class="step"><div class="n">03</div><div class="c">Determine Transaction Price</div><div class="q">Variable? Estimate, then CONSTRAIN. Financing → discount.</div></div>
+    <div class="arrow">▶</div>
+    <div class="step"><div class="n">04</div><div class="c">Allocate Price to Each PO</div><div class="q">Relative STAND-ALONE selling price (SSP).</div></div>
+    <div class="arrow">▶</div>
+    <div class="step s5"><div class="n">05</div><div class="c">Recognize on Transfer of CONTROL</div><div class="q">Decision gate below ↓</div></div>
+  </div>
+
+  <div class="decision">
+    <div class="dk">Step 05<br>Control<br>Gate</div>
+    <div class="dc">
+      <h4>Over Time — If ANY ONE Holds</h4>
+      <p><b>①</b> Customer simultaneously RECEIVES + CONSUMES benefits as you perform &nbsp; <b>②</b> Customer CONTROLS the asset as it is created / enhanced &nbsp; <b>③</b> Asset has NO ALTERNATIVE USE + enforceable RIGHT TO PAYMENT for work done to date</p>
+      <small>B4 backstop — another entity wouldn't substantially re-perform the work done → over time</small>
+    </div>
+    <div class="dc">
+      <h4>None Hold → <span class="bk">Point in Time</span> (default)</h4>
+      <p>Recognize at the moment <b>control</b> transfers. <span class="tri-i">△</span> indicators (general IFRS 15, not in appendix): physical possession · legal title · risks + rewards · acceptance · present right to payment.</p>
+      <small>Billing / invoice date ≠ revenue. Control + performance drive recognition.</small>
+    </div>
+  </div>
+
+  <div class="blind">
+    <div class="bh"><div class="bt">Blind Drill — 5-Step Chain + Control Gate</div><div class="bs">Spaced · ≥1 day between passes</div></div>
+    <div class="bbody">
+      <div class="bpass">
+        <span class="p"><b>PASS 1 —</b> copy it with notes open. Learn the shape: 5 boxes, the 3 over-time tests, the default.</span>
+        <span class="p"><b>PASS 2 —</b> draw notes-CLOSED. Check vs p.3–4. Fix every gap in RED.</span>
+        <span class="p"><b>PASS 3 —</b> draw BLIND + timed (&lt;3 min), zero errors. Now you own it.</span>
+      </div>
+      <div class="bgrid">
+        <div class="brow"><div class="l">5-Step</div><div class="dbx"><s>P1</s></div><div class="dbx"><s>P2</s></div><div class="dbx"><s>P3</s></div></div>
+        <div class="brow"><div class="l">Gate</div><div class="dbx"><s>P1</s></div><div class="dbx"><s>P2</s></div><div class="dbx"><s>P3</s></div></div>
+        <div class="bnote">Write the DATE in each box when that pass is clean. 3/3 dated = owned.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="zlabel">
+    <div class="badge">STEP NOTES</div>
+    <div class="name">The Testable Detail Behind Each Step</div>
+    <div class="rule"></div>
+    <div class="sub">This is where the marks actually sit</div>
+  </div>
+
+  <div class="panels p4">
+    <div class="panel">
+      <div class="phead">01 · Contract — All 5</div>
+      <div class="pbody"><b>Approved</b> (written / oral / customary) · <b>Rights</b> identifiable · <b>Payment terms</b> identifiable · <b>Commercial substance</b> · <b>Collection probable</b>. Fail any → no contract under the model.</div>
+    </div>
+    <div class="panel">
+      <div class="phead">02 · Distinct — Need BOTH</div>
+      <div class="pbody"><b>Capable of being distinct</b> — usable alone or with readily available resources. <b>Distinct in context</b> — separately identifiable; no significant integration / modification / customization; not highly interdependent. <b>Series</b> of substantially-same goods with same transfer pattern = <b>one PO</b>.</div>
+    </div>
+    <div class="panel">
+      <div class="phead">03 · Transaction Price</div>
+      <div class="pbody"><b>Variable</b> — expected value (many similar outcomes) vs most likely (two outcomes). <b>CONSTRAIN</b>: include only if highly probable NO significant reversal. Also: significant financing (→ discount, Sheet 3) · non-cash · consideration payable to customer.</div>
+    </div>
+    <div class="panel">
+      <div class="phead">04 · Allocate</div>
+      <div class="pbody">Split the price on a <b>relative SSP</b> basis where SSP is available. (SSP defined under ASPE A9 — Sheet 2: best evidence is the observable separate-sale price; a list price is <b>not presumed</b> to be SSP.)</div>
+    </div>
+  </div>
+
+  <div class="docline">
+    <div>MT1-FM · REV C · ISSUED 06.2026</div>
+    <div>REDRAW IT BLIND OR YOU DON'T OWN IT</div>
+  </div>
+
+</div>
+
+<!-- ===================== SHEET 2 — REVENUE: IFRS vs ASPE ===================== -->
+<div class="sheet">
+
+  <div class="mast">
+    <h1>AFM 291<span>Revenue · Framework Split</span></h1>
+    <div class="meta">
+      <div><b>STANDARD</b> — IFRS 15 vs ASPE 3400</div>
+      <div><b>CORE SPLIT</b> — CONTROL vs RISKS + REWARDS</div>
+      <div><b>METHOD</b> — ONE CONTRACT, BOTH WAYS</div>
+      <div><b>DOC</b> MT1-FM · REV C · SHEET 2/5</div>
+    </div>
+  </div>
+
+  <div class="crumb">
+    <div><em>1</em> · Five-Step Model</div>
+    <div class="on"><em>2</em> · IFRS vs ASPE</div>
+    <div><em>3</em> · TVM + PV Tables</div>
+    <div><em>4</em> · Assets + Contingencies</div>
+    <div><em>5</em> · Changes + Drill</div>
+  </div>
+
+  <div class="legendbar">
+    <span><i class="sw w"></i>WHITE = IFRS</span>
+    <span><i class="sw a"></i>ASH = ASPE</span>
+    <span><i class="sw k"></i>BLACK = TRIGGER / OUTCOME</span>
+    <span><i class="tri">△</i>SUPPLEMENTS THE APPENDIX</span>
+    <span class="mot">SAME CONTRACT — DIFFERENT TRIGGER. KNOW WHERE + WHY THEY DIVERGE.</span>
+  </div>
+
+  <div class="zlabel">
+    <div class="badge">ZONE R2</div>
+    <div class="name">IFRS 15 vs ASPE 3400 — Line by Line</div>
+    <div class="rule"></div>
+    <div class="sub">Guidance p.3–6 · the first row decides everything downstream</div>
+  </div>
+
+  <div class="cmp">
+    <div class="chead"><div class="hc">Axis</div><div class="hc">IFRS 15</div><div class="hc">ASPE 3400</div></div>
+    <div class="crow hot"><div class="ck">Core Trigger</div><div class="ci"><span class="big">Transfer of CONTROL</span></div><div class="ca"><span class="big">Risks + Rewards transferred + collection assured</span></div></div>
+    <div class="crow"><div class="ck">Model</div><div class="ci">5-step model, applied per performance obligation</div><div class="ca">Performance satisfied · measurable reliably · collection assured. (+ persuasive evidence · delivery · price fixed/determinable)</div></div>
+    <div class="crow"><div class="ck">Distinct Unit</div><div class="ci">Distinct <b>performance obligations</b> (capable + in-context)</div><div class="ca">Separate <b>units of account</b> — stand-alone value + (if right of return) remaining delivery probable & in vendor's control</div></div>
+    <div class="crow"><div class="ck">Allocate</div><div class="ci">Relative <b>SSP</b></div><div class="ca">Relative <b>SSP</b> — same basis (A9)</div></div>
+    <div class="crow"><div class="ck">Variable Price</div><div class="ci">Expected value / most likely, <b>then constrain</b> (no significant reversal)</div><div class="ca">Price must be <b>fixed or determinable</b></div></div>
+    <div class="crow"><div class="ck">Timing</div><div class="ci">Over time (3 criteria) <b>or</b> point in time (default)</div><div class="ca">Delivery / performance; long-term → <b>% completion</b> (default) or <b>completed contract</b></div></div>
+    <div class="crow"><div class="ck">Long-Term Loss</div><div class="ci">Onerous contract → recognize <b>expected gross loss</b></div><div class="ca">Expected loss → recognize the <b>ENTIRE loss immediately</b>, regardless of % complete</div></div>
+    <div class="crow"><div class="ck">Financing</div><div class="ci">Significant financing component → <b>discount to PV</b> (Sheet 3)</div><div class="ca">No 3400 detail; deferred → note receivable (S.3856); below-market → <b>PV at market rate</b></div></div>
+    <div class="crow"><div class="ck">Warranty</div><div class="ci">Assurance vs service — <b>B28–B30</b> (gate below)</div><div class="ca">No warranty guidance in the appendix</div></div>
+  </div>
+
+  <div class="zlabel">
+    <div class="badge">ASPE</div>
+    <div class="name">3400 Mechanics You Must Carry</div>
+    <div class="rule"></div>
+    <div class="sub">The detail IFRS folds inside the 5-step model</div>
+  </div>
+
+  <div class="panels p4">
+    <div class="panel shade">
+      <div class="phead aspe">Long-Term Contracts</div>
+      <div class="pbody"><b>% of completion</b> — relate revenue to work done (default when progress is estimable). <b>Completed contract</b> ONLY when performance is a SINGLE ACT or progress CAN'T be reliably estimated (.18).</div>
+    </div>
+    <div class="panel shade">
+      <div class="phead aspe">Expected Losses</div>
+      <div class="pbody">Probable total costs &gt; total revenue → recognize the <b>ENTIRE expected loss NOW</b>. Irrespective of: work commenced · degree of completion · profits on other contracts.</div>
+    </div>
+    <div class="panel shade">
+      <div class="phead aspe">Multiple Deliverables</div>
+      <div class="pbody">Separate unit of account if BOTH: (a) if a general right of return, remaining delivery is probable + substantially in the vendor's control; (b) the deliverable has <b>stand-alone value</b> to the customer.</div>
+    </div>
+    <div class="panel shade">
+      <div class="phead aspe">SSP (A9) &amp; Deferred Pay</div>
+      <div class="pbody"><b>SSP</b> = price sold separately; best evidence = observable separate-sale price; a list price is <b>NOT presumed</b> to be SSP. <b>Deferred / below-market</b> (S.3856) → receivable at <b>PV at a market rate</b>.</div>
+    </div>
+  </div>
+
+  <div class="zlabel">
+    <div class="badge">ZONE R3</div>
+    <div class="name">Warranty Decision — IFRS B28–B30</div>
+    <div class="rule"></div>
+    <div class="sub">Guidance p.4 · one pivot — separately purchasable?</div>
+  </div>
+
+  <div class="binwrap" style="grid-template-columns:1.5fr 1fr;">
+    <div class="binary">
+      <div class="bhead">Warranty — Performance Obligation or Provision?</div>
+      <div class="bq">Can the customer purchase the warranty SEPARATELY?</div>
+      <div class="bb">
+        <div class="br yes"><span class="bl">YES → B29</span> Distinct service → it's a <b>PERFORMANCE OBLIGATION</b>. Allocate part of the price; recognize over the service period.</div>
+        <div class="br"><span class="bl">NO → B30</span> Account under <b>IAS 37 — provision</b>. <b>UNLESS</b> it provides a service <b>beyond</b> assurance (then that part is a PO).</div>
+      </div>
+      <div class="bfoot"><b>Assurance-type</b> = product meets agreed specs (provision). <b>Service-type</b> = something extra the customer could buy alone (performance obligation).</div>
+    </div>
+    <div class="binary">
+      <div class="bhead">Blind Drill — R2 Table</div>
+      <div class="bq" style="border-bottom:none; font-size:6pt;">Reproduce the 9-row split from blank.</div>
+      <div class="recall" style="border-top:2px solid var(--ink);"><b>Reps</b><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+      <div class="bfoot"><b>Drill:</b> take ONE contract with a bundled warranty + a financing term — solve it under IFRS, then ASPE. Mark every line where the answers split.</div>
+    </div>
+  </div>
+
+  <div class="docline">
+    <div>MT1-FM · REV C · ISSUED 06.2026</div>
+    <div>CONTROL vs RISKS + REWARDS</div>
+  </div>
+
+</div>
+
+<!-- ===================== SHEET 3 — TIME VALUE OF MONEY ===================== -->
+<div class="sheet">
+
+  <div class="mast">
+    <h1>AFM 291<span>Time Value of Money</span></h1>
+    <div class="meta">
+      <div><b>SCOPE</b> — FINANCING + DEFERRED PAYMENT</div>
+      <div><b>TOOLS</b> — PVF (SINGLE SUM) · PVFA (ANNUITY)</div>
+      <div><b>RULE</b> — DISCOUNT AT A MARKET RATE</div>
+      <div><b>DOC</b> MT1-FM · REV C · SHEET 3/5</div>
+    </div>
+  </div>
+
+  <div class="crumb">
+    <div><em>1</em> · Five-Step Model</div>
+    <div><em>2</em> · IFRS vs ASPE</div>
+    <div class="on"><em>3</em> · TVM + PV Tables</div>
+    <div><em>4</em> · Assets + Contingencies</div>
+    <div><em>5</em> · Changes + Drill</div>
+  </div>
+
+  <div class="zlabel">
+    <div class="badge">ZONE T1</div>
+    <div class="name">When &amp; How to Discount</div>
+    <div class="rule"></div>
+    <div class="sub">Guidance p.3 (IFRS) · p.6 (ASPE 3856)</div>
+  </div>
+
+  <div class="binwrap">
+    <div class="binary">
+      <div class="bhead">IFRS — Significant Financing Component</div>
+      <div class="bq">Does payment timing differ significantly from transfer?</div>
+      <div class="bb">
+        <div class="br yes"><span class="bl">YES → FINANCE</span> Use the <b>cash-equivalent price</b>: discount the consideration to <b>PV</b>. Revenue = PV; the rest is <b>interest income</b> over time.</div>
+        <div class="br"><span class="bl">NO</span> Recognize the stated amount — no financing adjustment.</div>
+      </div>
+      <div class="bfoot">Step 3(b) of the 5-step model. The gap between nominal and PV is <b>interest, not sales revenue</b>.</div>
+    </div>
+    <div class="binary">
+      <div class="bhead">ASPE — Deferred Payment (S.3856)</div>
+      <div class="bq">Is the interest rate offered BELOW market?</div>
+      <div class="bb">
+        <div class="br yes"><span class="bl">YES → DISCOUNT</span> Record the receivable at the <b>PV of cash flows using a market rate</b>. Difference unwinds as interest.</div>
+        <div class="br"><span class="bl">NO</span> Receivable at face — rate is already at market.</div>
+      </div>
+      <div class="bfoot">3400 has no IFRS-style financing rule; the receivable falls under <b>Section 3856</b>.</div>
+    </div>
+  </div>
+
+  <div class="mnemo">WHICH TABLE? &nbsp; ONE FUTURE AMOUNT → <b>PVF</b> (SINGLE SUM) &nbsp;·&nbsp; EQUAL PAYMENTS EACH PERIOD → <b>PVFA</b> (ORDINARY ANNUITY) &nbsp;·&nbsp; PV = CASH FLOW × FACTOR</div>
+
+  <div class="zlabel">
+    <div class="badge">ZONE T2</div>
+    <div class="name">Worked Examples — Navigate the Tables</div>
+    <div class="rule"></div>
+    <div class="sub">Illustrative figures · method + PV factors from the appendix</div>
+  </div>
+
+  <div class="binwrap">
+    <div class="wex">
+      <div class="wh"><div class="wt">EX 1 — Single Sum</div><div class="wf">IFRS · SIG. FINANCING</div></div>
+      <div class="wfacts">Jan 1: sell equipment; customer pays <b>$100,000 in 3 years</b>, no interim payments. Cash price not separately observable. Market rate <b>8%</b>.</div>
+      <div class="wsteps">
+        <div class="ws"><div class="si">1</div><div>Significant financing → discount to the <b>cash-equivalent price</b>.</div></div>
+        <div class="ws"><div class="si">2</div><div>One future amount → use <b>PVF</b>. Look up n=3, r=8% → <span class="lookup">0.7938</span></div></div>
+        <div class="ws"><div class="si">3</div><div>Revenue at delivery = $100,000 × 0.7938.</div></div>
+        <div class="ws"><div class="si">4</div><div>Interest income = $100,000 − $79,380, earned over 3 yrs.</div></div>
+      </div>
+      <div class="wans">REVENUE <b>$79,380</b> · INTEREST INCOME <b>$20,620</b> OVER 3 YRS</div>
+      <div class="wwatch"><b>Watch:</b> don't book the full $100,000 as revenue at delivery — the $20,620 gap is <b>interest</b>, recognized over the term (effective interest).</div>
+    </div>
+
+    <div class="wex">
+      <div class="wh"><div class="wt">EX 2 — Annuity</div><div class="wf">ASPE · S.3856</div></div>
+      <div class="wfacts">Sell goods; customer pays <b>$10,000 / year for 4 years</b> (each year-end). Rate offered is below market. Market rate <b>10%</b>.</div>
+      <div class="wsteps">
+        <div class="ws"><div class="si">1</div><div>Below-market deferred terms → receivable at <b>PV at the market rate</b>.</div></div>
+        <div class="ws"><div class="si">2</div><div>Equal payments → use <b>PVFA</b>. Look up n=4, r=10% → <span class="lookup">3.1699</span></div></div>
+        <div class="ws"><div class="si">3</div><div>Receivable / revenue at sale = $10,000 × 3.1699.</div></div>
+        <div class="ws"><div class="si">4</div><div>Interest income = $40,000 nominal − $31,699 PV, over 4 yrs.</div></div>
+      </div>
+      <div class="wans">RECEIVABLE / REVENUE <b>$31,699</b> · INTEREST <b>$8,301</b> OVER 4 YRS</div>
+      <div class="wwatch"><b>Watch:</b> the $40,000 nominal is <b>not</b> revenue — PV is the measure. Using PVF instead of PVFA here is the classic error.</div>
+    </div>
+  </div>
+
+  <div class="zlabel">
+    <div class="badge">ZONE T3</div>
+    <div class="name">PV Factor Quick-Reference</div>
+    <div class="rule"></div>
+    <div class="sub">High-use subset · full tables in appendix (2–15% · n=1–12)</div>
+  </div>
+
+  <div class="pvwrap">
+    <div class="pvbox">
+      <div class="pvh"><span>PVF — Single Sum</span><em>PV = FV × factor</em></div>
+      <table class="pvref">
+        <thead><tr><th>n</th><th>6%</th><th>8%</th><th>10%</th><th>12%</th></tr></thead>
+        <tbody>
+          <tr><th>1</th><td>0.9434</td><td>0.9259</td><td>0.9091</td><td>0.8929</td></tr>
+          <tr><th>2</th><td>0.8900</td><td>0.8573</td><td>0.8264</td><td>0.7972</td></tr>
+          <tr><th>3</th><td>0.8396</td><td class="hl">0.7938</td><td>0.7513</td><td>0.7118</td></tr>
+          <tr><th>4</th><td>0.7921</td><td>0.7350</td><td>0.6830</td><td>0.6355</td></tr>
+          <tr><th>5</th><td>0.7473</td><td>0.6806</td><td>0.6209</td><td>0.5674</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="pvbox">
+      <div class="pvh"><span>PVFA — Ordinary Annuity</span><em>PV = CF × factor</em></div>
+      <table class="pvref">
+        <thead><tr><th>n</th><th>6%</th><th>8%</th><th>10%</th><th>12%</th></tr></thead>
+        <tbody>
+          <tr><th>1</th><td>0.9434</td><td>0.9259</td><td>0.9091</td><td>0.8929</td></tr>
+          <tr><th>2</th><td>1.8334</td><td>1.7833</td><td>1.7355</td><td>1.6901</td></tr>
+          <tr><th>3</th><td>2.6730</td><td>2.5771</td><td>2.4869</td><td>2.4018</td></tr>
+          <tr><th>4</th><td>3.4651</td><td>3.3121</td><td class="hl">3.1699</td><td>3.0373</td></tr>
+          <tr><th>5</th><td>4.2124</td><td>3.9927</td><td>3.7908</td><td>3.6048</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="login">CHECKED AGAINST THE APPENDIX PV TABLES. <i>&nbsp;HIGHLIGHTED CELLS ARE THE TWO FACTORS USED ABOVE. ON THE EXAM, USE THE FULL APPENDIX TABLE FOR ANY OTHER RATE / PERIOD.</i></div>
+
+  <div class="docline">
+    <div>MT1-FM · REV C · ISSUED 06.2026</div>
+    <div>PV IS THE MEASURE — THE GAP IS INTEREST</div>
+  </div>
+
+</div>
+
+<!-- ===================== SHEET 4 — RECOGNITION + CONTINGENCIES ===================== -->
+<div class="sheet">
+
+  <div class="mast">
+    <h1>AFM 291<span>Recognition · Contingencies</span></h1>
+    <div class="meta">
+      <div><b>STANDARD</b> — FRAMEWORKS / IAS 37 / ASPE</div>
+      <div><b>SIGNATURE</b> — THE PROBABILITY LADDER</div>
+      <div><b>METHOD</b> — RUN FACTS THROUGH THE GATE</div>
+      <div><b>DOC</b> MT1-FM · REV C · SHEET 4/5</div>
+    </div>
+  </div>
+
+  <div class="crumb">
+    <div><em>1</em> · Five-Step Model</div>
+    <div><em>2</em> · IFRS vs ASPE</div>
+    <div><em>3</em> · TVM + PV Tables</div>
+    <div class="on"><em>4</em> · Assets + Contingencies</div>
+    <div><em>5</em> · Changes + Drill</div>
+  </div>
+
+  <div class="zlabel">
+    <div class="badge">ZONE A1</div>
+    <div class="name">Asset Criteria &amp; Recognition</div>
+    <div class="rule"></div>
+    <div class="sub">Guidance p.2 · definition first, then recognition</div>
+  </div>
+
+  <div class="asset">
+    <div class="aban"><span>ASSET = 3 TESTS · FAIL ANY ONE → NOT AN ASSET</span><span class="tag">IFRS ≈ ASPE</span></div>
+    <div class="ahead"><div>Test</div><div class="hi">IFRS</div><div class="ha">ASPE</div></div>
+    <div class="arow"><div class="an"><em>①</em>Benefit</div><div class="ai">A <b>RIGHT</b> with the potential to produce economic benefits / future cash flows</div><div class="aa"><b>Future benefit</b> contributing (directly / indirectly) to future net cash flows</div></div>
+    <div class="arow"><div class="an"><em>②</em>Control</div><div class="ai">The right is <b>controlled</b> by the entity</div><div class="aa">Entity can <b>control access</b> to the benefit</div></div>
+    <div class="arow"><div class="an"><em>③</em>Past Event</div><div class="ai">Control arose from a <b>past event</b></div><div class="aa">The transaction / event has <b>already occurred</b></div></div>
+    <div class="asub">Recognition — Can It Go On The Statements? (applies to assets &amp; liabilities)</div>
+    <div class="arow rec"><div class="an">IFRS</div><div class="ai" style="grid-column:span 2;">Produces <b>relevant information</b> + a <b>faithful representation</b>. Relevance ← probability of in/outflow. Faithful rep ← measurement uncertainty. <b>Routed through the qualitative characteristics.</b></div></div>
+    <div class="arow rec"><div class="an">ASPE</div><div class="aa" style="grid-column:span 2;"><b>(1)</b> Appropriate basis of measurement + a reasonable estimate of the amount; <b>AND (2)</b> probable the future benefits are obtained / given up. <b>Two standalone criteria.</b></div></div>
+    <div class="afoot">BOTH FRAMEWORKS ASK THE SAME TWO QUESTIONS: <span class="q1">① IS THE BENEFIT LIKELY?</span> &nbsp; <span class="q1">② CAN YOU MEASURE IT?</span> &nbsp; IFRS ROUTES THEM THROUGH THE QUALITATIVE CHARACTERISTICS; ASPE STATES THEM OUTRIGHT.</div>
+  </div>
+
+  <div class="ladder">
+    <div class="lh"><div class="t">⊕ Probability Ladder — The Words + The Thresholds</div><div class="dir">LESS CERTAIN ───────────────► MORE CERTAIN</div></div>
+    <div class="scalerow">
+      <div class="srk">IFRS</div>
+      <div class="scale">
+        <div class="seg">Remote</div>
+        <div class="seg">Possible</div>
+        <div class="seg">Probable</div>
+        <div class="seg">Virtually Certain</div>
+      </div>
+    </div>
+    <div class="marks">
+      <div></div>
+      <div class="mk">
+        <div class="m">do <b>NOTHING</b></div>
+        <div class="m">▲ <b>DISCLOSE</b> (not remote)</div>
+        <div class="m">▲ <b>LIABILITY: PROVIDE</b><br>asset: disclose</div>
+        <div class="m">▲ <b>ASSET: RECOGNIZE</b></div>
+      </div>
+    </div>
+    <div class="scalerow">
+      <div class="srk">ASPE</div>
+      <div class="scale">
+        <div class="seg a span2">Unlikely</div>
+        <div class="seg a">Not Determinable</div>
+        <div class="seg a">Likely</div>
+      </div>
+    </div>
+    <div class="cap"><b>ASYMMETRY</b> &nbsp; A liability is recognized at PROBABLE — but an asset only at VIRTUALLY CERTAIN. Bad news books easier than good news. Never mix the IFRS words (probable / possible / remote) with the ASPE words (likely / not determinable / unlikely).</div>
+  </div>
+
+  <div class="zlabel">
+    <div class="badge">ZONE C1</div>
+    <div class="name">IFRS Provisions &amp; Contingent Liabilities — IAS 37</div>
+    <div class="rule"></div>
+    <div class="sub">Guidance p.9 · YES drops down · NO branches right</div>
+  </div>
+
+  <div class="gate">
+    <div class="ghead">OUTCOMES: <span class="ch">PROVIDE</span> <span class="ch">DISCLOSE CONTINGENT LIABILITY</span> <span class="ch">DO NOTHING</span></div>
+
+    <div class="gaterow">
+      <div class="gbox"><div class="gn">GATE 1</div><div class="gq">Present obligation from a past (obligating) event?</div></div>
+      <div class="gbranch"><span class="no">NO ▶</span> <span class="chip gh">Possible obligation?</span> &nbsp;<b>NO →</b> <span class="chip">DO NOTHING</span> &nbsp;<b>YES →</b> go to the REMOTE test (Gate 2 NO branch)</div>
+    </div>
+    <div class="gyes">▼ YES</div>
+
+    <div class="gaterow">
+      <div class="gbox"><div class="gn">GATE 2</div><div class="gq">Probable outflow of resources?</div></div>
+      <div class="gbranch"><span class="no">NO ▶</span> <span class="chip gh">Remote?</span> &nbsp;<b>YES →</b> <span class="chip">DO NOTHING</span> &nbsp;<b>NO →</b> <span class="chip">DISCLOSE</span></div>
+    </div>
+    <div class="gyes">▼ YES</div>
+
+    <div class="gaterow">
+      <div class="gbox"><div class="gn">GATE 3</div><div class="gq">Reliable estimate of the amount?</div></div>
+      <div class="gbranch"><span class="no">NO (rare) ▶</span> <span class="chip">DISCLOSE CONTINGENT LIABILITY</span></div>
+    </div>
+    <div class="gyes">▼ YES</div>
+
+    <div class="provide">███ PROVIDE — recognize the provision ███</div>
+  </div>
+
+  <div class="zlabel">
+    <div class="badge">ZONE C2</div>
+    <div class="name">Contingent Assets (IFRS) &amp; Contingent Losses (ASPE)</div>
+    <div class="rule"></div>
+    <div class="sub">Guidance p.9–10 · note the asymmetry + the vocabulary</div>
+  </div>
+
+  <div class="tiers">
+    <div class="tier act"><div class="cond">IFRS asset · VIRTUALLY CERTAIN</div><div class="arr">▶</div><div class="out">RECOGNIZE — not contingent</div></div>
+    <div class="tier"><div class="cond">IFRS asset · PROBABLE (not virt. certain)</div><div class="arr">▶</div><div class="out">DISCLOSE only — no asset</div></div>
+    <div class="tier"><div class="cond">IFRS asset · NOT PROBABLE</div><div class="arr">▶</div><div class="out">NO asset · NO disclosure</div></div>
+  </div>
+
+  <table class="matrix2">
+    <thead>
+      <tr><th>ASPE Contingent Loss — Measure ↓ / Probability →</th><th>Likely</th><th>Not Determinable</th><th>Unlikely</th></tr>
+    </thead>
+    <tbody>
+      <tr><th>Measurable — can estimate</th><td class="accrue">Accrue / Recognize<small>disclose excess exposure</small></td><td class="disc">Disclose</td><td class="none">No accrual<small>no disclosure</small></td></tr>
+      <tr><th>Not Measurable — cannot estimate</th><td class="disc">Disclose</td><td class="disc">Disclose</td><td class="none">No accrual<small>no disclosure</small></td></tr>
+    </tbody>
+  </table>
+  <div class="login">ONLY MEASURABLE + LIKELY ACCRUES · UNLIKELY = NOTHING · EVERYTHING ELSE DISCLOSES. <i>&nbsp;CONTINGENT GAINS (ASPE) — NEVER ACCRUED; DISCLOSE ONLY IF LIKELY (.17/.22).</i> &nbsp; <b style="font-weight:900;">ONEROUS (IFRS):</b> unavoidable costs to complete &gt; benefits → recognize the expected GROSS loss now.</div>
+
+  <div class="docline">
+    <div>MT1-FM · REV C · ISSUED 06.2026</div>
+    <div>BAD NEWS BOOKS EASIER THAN GOOD NEWS</div>
+  </div>
+
+</div>
+
+<!-- ===================== SHEET 5 — CHANGES + DRILL ===================== -->
+<div class="sheet">
+
+  <div class="mast">
+    <h1>AFM 291<span>Changes · Events · Error Rehab</span></h1>
+    <div class="meta">
+      <div><b>STANDARD</b> — CHANGES / SUBSEQUENT EVENTS</div>
+      <div><b>NOTE</b> — IFRS &amp; ASPE SIMILAR HERE</div>
+      <div><b>METHOD</b> — EVERY LOST MARK = A ROW</div>
+      <div><b>DOC</b> MT1-FM · REV C · SHEET 5/5</div>
+    </div>
+  </div>
+
+  <div class="crumb">
+    <div><em>1</em> · Five-Step Model</div>
+    <div><em>2</em> · IFRS vs ASPE</div>
+    <div><em>3</em> · TVM + PV Tables</div>
+    <div><em>4</em> · Assets + Contingencies</div>
+    <div class="on"><em>5</em> · Changes + Drill</div>
+  </div>
+
+  <div class="zlabel">
+    <div class="badge">ZONE J1</div>
+    <div class="name">Changes — Estimate / Policy / Error</div>
+    <div class="rule"></div>
+    <div class="sub">Guidance p.7 · the trap is the treatment, not the framework</div>
+  </div>
+
+  <div class="changes">
+    <div class="chg">
+      <div class="chgh"><div class="ct">Change in Estimate</div><div class="cr">→ PROSPECTIVE</div></div>
+      <div class="chgb">Amounts subject to <b>measurement uncertainty</b>, revised for new information / developments / experience. Apply <b>going forward</b> — no restatement.</div>
+      <div class="chgtag">Eyes Forward</div>
+    </div>
+    <div class="chg">
+      <div class="chgh"><div class="ct">Change in Policy</div><div class="cr">→ RETROSPECTIVE</div></div>
+      <div class="chgb">Voluntary change allowed <b>only if</b> it gives reliable + <b>more relevant</b> information. <b>Restate</b> prior periods as if always applied.</div>
+      <div class="chgtag">Look Back</div>
+    </div>
+    <div class="chg">
+      <div class="chgh"><div class="ct">Prior Period Error</div><div class="cr">→ RETRO. RESTATEMENT</div></div>
+      <div class="chgb">Omission / misuse of reliable info that <b>was available</b> (incl. math errors, misapplied policy, <b>fraud</b>). Fix + <b>re-present</b> prior periods.</div>
+      <div class="chgtag">Look Back</div>
+    </div>
+  </div>
+
+  <div class="mnemo">ESTIMATE = EYES FORWARD (PROSPECTIVE) &nbsp;·&nbsp; POLICY + ERROR = LOOK BACK (RETROSPECTIVE) &nbsp;·&nbsp; ONLY <b>NEW INFO</b> EARNS "PROSPECTIVE"</div>
+
+  <div class="zlabel">
+    <div class="badge">ZONE J2</div>
+    <div class="name">Subsequent Events — Adjust or Disclose?</div>
+    <div class="rule"></div>
+    <div class="sub">Guidance p.7–8 · test = when the condition arose</div>
+  </div>
+
+  <div class="binwrap">
+    <div class="binary">
+      <div class="bhead">Subsequent Events Gate</div>
+      <div class="bq">Did the CONDITION exist at period-end?</div>
+      <div class="bb">
+        <div class="br yes"><span class="bl">YES → ADJUSTING</span> Provides evidence of a condition that existed at period-end → <b>ADJUST</b> the financial statements.</div>
+        <div class="br"><span class="bl">NO → NON-ADJUSTING</span> New condition arising after period-end → <b>DISCLOSE</b> if material.</div>
+      </div>
+      <div class="bfoot">Window: period-end → <b>authorized for issue</b> (IFRS) / <b>completion of F/S</b> (ASPE). Decide by WHEN THE CONDITION AROSE, not when you learned it.</div>
+    </div>
+    <div class="binary">
+      <div class="bhead">Non-Adjusting — Disclose What?</div>
+      <div class="bq" style="font-size:6pt;">For a material non-adjusting event:</div>
+      <div class="bb" style="grid-template-columns:1fr;">
+        <div class="br"><span class="bl">DISCLOSE</span> The <b>nature</b> of the event; and an <b>estimate of its financial effect</b>, or a statement that an estimate cannot be made. Plus the <b>date authorized for issue</b> (IFRS).</div>
+      </div>
+      <div class="bfoot">Disclosure is in the <b>notes</b> — the numbers on the face of the statements do not change.</div>
+    </div>
+  </div>
+
+  <div class="zlabel">
+    <div class="badge">ZONE J3</div>
+    <div class="name">Where Marks Die</div>
+    <div class="rule"></div>
+    <div class="sub">Tied to guidance pages · mine each into a row below</div>
+  </div>
+
+  <div class="traps">
+    <div class="trap"><div class="th"><s>01</s>Framework Swap<span class="ref">p.3 / p.5</span></div><div class="td">IFRS = <b>control</b> · ASPE = <b>risks + rewards</b>. Name it first or the whole answer drifts.</div></div>
+    <div class="trap"><div class="th"><s>02</s>Half a Distinct Test<span class="ref">p.3 §2</span></div><div class="td"><b>Capable</b> AND <b>distinct-in-context</b>. Integration / customization kills the split.</div></div>
+    <div class="trap"><div class="th"><s>03</s>Constraint Skipped<span class="ref">p.3 §3a</span></div><div class="td">Estimate variable consideration, <b>then constrain</b> — only if a significant reversal is highly improbable.</div></div>
+    <div class="trap"><div class="th"><s>04</s>Wrong Probability Word<span class="ref">p.9–10</span></div><div class="td">IFRS: probable / possible / remote (+ virtually certain). ASPE: likely / not determinable / unlikely. <b>Don't mix.</b></div></div>
+    <div class="trap"><div class="th"><s>05</s>Booked Good News Early<span class="ref">p.10</span></div><div class="td">Liability books at probable; an <b>asset needs virtually certain</b>. ASPE <b>gains never accrue</b>.</div></div>
+    <div class="trap"><div class="th"><s>06</s>Loss Prorated<span class="ref">p.10 / p.6</span></div><div class="td">Onerous / expected loss = the <b>ENTIRE loss NOW</b>, not by % complete.</div></div>
+    <div class="trap"><div class="th"><s>07</s>Wrong Change Treatment<span class="ref">p.7</span></div><div class="td"><b>Estimate forward</b>; policy + error <b>back</b> (restate). Easy to flip under pressure.</div></div>
+    <div class="trap"><div class="th"><s>08</s>Event Misclassified<span class="ref">p.7–8</span></div><div class="td">Classify by <b>when the condition existed</b>, not when you found out.</div></div>
+    <div class="trap"><div class="th"><s>09</s>List Price = SSP<span class="ref">p.6 A9</span></div><div class="td">A stated / list price is <b>NOT presumed</b> to be the stand-alone selling price.</div></div>
+    <div class="trap"><div class="th"><s>10</s>Billing = Revenue<span class="ref">p.4 / p.5</span></div><div class="td">Invoice / cash timing doesn't drive recognition — <b>control / performance</b> does.</div></div>
+    <div class="trap"><div class="th"><s>11</s>Warranty Assumed a PO<span class="ref">p.4 B29/30</span></div><div class="td">Only a PO if <b>separately purchasable</b> (B29); otherwise IAS 37 provision (B30).</div></div>
+    <div class="trap"><div class="th"><s>12</s>Completed-Contract Default<span class="ref">p.6 .18</span></div><div class="td">% completion is the default; completed contract only for a <b>single act</b> or when progress can't be estimated.</div></div>
+  </div>
+
+  <div class="zlabel">
+    <div class="badge">ZONE J4</div>
+    <div class="name">Error Log + Rehab Protocol</div>
+    <div class="rule"></div>
+    <div class="sub">Practice problem missed → a row before any new study</div>
+  </div>
+
+  <div class="protocol">
+    <div class="pstep"><div class="pn">01</div><div class="pt">Skim — 10′</div><div class="pd"><b>Skim</b> the appendix page for the red topic. Skim, not study.</div></div>
+    <div class="pstep"><div class="pn">02</div><div class="pt">Execute — 30–40′</div><div class="pd"><b>Solve</b> problems · <b>redraw</b> the gate / model blind · check.</div></div>
+    <div class="pstep"><div class="pn">03</div><div class="pt">Quiz — 10′</div><div class="pd"><b>Test</b> page-closed. Misses → rows below.</div></div>
+    <div class="pstep"><div class="pn">04</div><div class="pt">Encode — 5′</div><div class="pd"><b>Write</b> 3–5 recall cards from the misses.</div></div>
+    <div class="pstep"><div class="pn">⊘</div><div class="pt">Standing Order</div><div class="pd"><b>Every lost mark = a row. Redo on date +3.</b> This table outranks new material.</div></div>
+  </div>
+
+  <div class="cadence">
+    <div><b>DAILY</b> — log every miss as it happens · 1 row each (date · topic · rule).</div>
+    <div><b>+3 DAYS</b> — redo each row page-closed. Clean redo → tick the box.</div>
+    <div><b>WEEKLY (SUN)</b> — re-test all still-open rows + worst Blind Drills.</div>
+  </div>
+
+  <div class="login">Tired? Fill 3 cells — date · topic · rule. <i>Detail can wait for the redo. A half-row beats no row.</i></div>
+
+  <table class="log">
+    <colgroup>
+      <col style="width:.58in"><col style="width:1.5in"><col style="width:1.35in"><col style="width:1.35in"><col style="width:1.55in"><col style="width:.5in"><col style="width:.45in">
+    </colgroup>
+    <thead>
+      <tr><th>Date</th><th>Topic / Question</th><th>What I Did</th><th>Why Wrong</th><th>Rule to Remember</th><th>Redo +3</th><th>✓</th></tr>
+    </thead>
+    <tbody>
+      <tr><td></td><td></td><td></td><td></td><td></td><td></td><td class="ckc"><div class="ck"></div></td></tr>
+      <tr><td></td><td></td><td></td><td></td><td></td><td></td><td class="ckc"><div class="ck"></div></td></tr>
+      <tr><td></td><td></td><td></td><td></td><td></td><td></td><td class="ckc"><div class="ck"></div></td></tr>
+      <tr><td></td><td></td><td></td><td></td><td></td><td></td><td class="ckc"><div class="ck"></div></td></tr>
+    </tbody>
+  </table>
+
+  <div class="mvd">
+    <div class="m1">
+      <div class="t">Minimum Viable Rep</div>
+      <div class="d">ONE STRUCTURE REDRAWN BLIND + ONE PROBLEM SOLVED + ONE ROW LOGGED = DAY HELD</div>
+    </div>
+    <div class="m2">
+      <div>NAME THE FRAMEWORK · CITE THE CRITERION · RUN THE FACTS THROUGH THE GATE — THE APPENDIX IS A TOOL, NOT A TEACHER</div>
+      <div>BORING IS WINNING</div>
+    </div>
+  </div>
+
+  <div class="docline">
+    <div>MT1-FM · REV C · ISSUED 06.2026</div>
+    <div>FRAME BEFORE YOU RESOLVE</div>
+  </div>
+
+</div>
+
+
+
+<a id="__rb-pill" href="afm291.html">&#8592; The vault</a>
+<script>
+(function(){
+  var p=document.getElementById('__rb-pill'); if(!p) return;
+  var t=false;
+  function run(){ t=false;
+    p.classList.toggle('__on',(window.scrollY||document.documentElement.scrollTop)>420); }
+  function q(){ if(!t){ t=true; requestAnimationFrame(run); } }
+  addEventListener('scroll',q,{passive:true}); run();
+})();
+</script>
+</body>
+</html>

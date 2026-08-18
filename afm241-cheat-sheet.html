@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8">
+<meta property="og:title" content="AFM 241 Two-Page Cheat Sheet — Compressed to what fits">
+<meta property="og:description" content="The whole course compressed to two printable pages, on the theory that what does not fit was not load-bearing.">
+<meta property="og:type" content="article">
+<title>AFM 241 Two-Page Cheat Sheet — Compressed to what fits</title>
+<meta name="description" content="The whole course compressed to two printable pages, on the theory that what does not fit was not load-bearing.">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  @page { size: Letter; margin: 0.4in 0.42in; }
+  *{ margin:0; padding:0; box-sizing:border-box; }
+  :root{
+    --ink:#0f172a; --body:#1e293b; --mut:#64748b; --line:#e2e8f0;
+    --amber:#f59e0b; --teal:#0d9488; --teal-t:#ecfdfa;
+    --violet:#7c3aed; --violet-t:#f3eefe; --emer:#059669; --emer-t:#e9f9f1;
+    --red:#dc2626; --red-t:#fef2f2; --slate:#334155;
+  }
+  body{ font-family:"Helvetica Neue",Arial,sans-serif; color:var(--body); font-size:8.6pt; line-height:1.35; }
+  b{ font-weight:700; } .ink{ color:var(--ink); }
+  .p2{ break-before:page; }
+
+  /* hero */
+  .hero{ background:var(--ink); color:#fff; border-radius:9px; padding:13px 16px; position:relative; overflow:hidden; }
+  .hero::after{ content:""; position:absolute; right:-30px; top:-30px; width:120px; height:120px; background:var(--amber); opacity:.16; border-radius:50%; }
+  .hero h1{ font-size:19pt; font-weight:800; letter-spacing:-.3px; }
+  .hero .accent{ color:var(--amber); }
+  .hero .sub{ color:#cbd5e1; font-size:8.4pt; margin-top:2px; font-weight:500; }
+  .hero .facts{ margin-top:8px; display:flex; gap:6px; flex-wrap:wrap; }
+  .hero .chip{ font-size:7.6pt; font-weight:700; background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.25); padding:2px 8px; border-radius:20px; }
+  .hero .chip.warn{ background:var(--red); border-color:var(--red); }
+
+  /* lens */
+  .lens{ display:flex; gap:6px; flex-wrap:wrap; align-items:center; margin:9px 0 4px; }
+  .lens .lab{ font-size:7.6pt; font-weight:800; letter-spacing:.6px; color:var(--mut); text-transform:uppercase; }
+  .lens .t{ font-size:8pt; font-weight:700; color:#fff; padding:3px 9px; border-radius:20px; }
+
+  /* section header tab */
+  .sh{ display:flex; align-items:center; gap:8px; margin:12px 0 7px; }
+  .sh .tab{ color:#fff; font-size:10.5pt; font-weight:800; letter-spacing:.3px; padding:3px 11px; border-radius:6px; text-transform:uppercase; }
+  .sh .ln{ flex:1; height:3px; border-radius:2px; }
+  .sh .hint{ font-size:7.8pt; font-weight:600; color:var(--mut); }
+
+  .lead{ font-size:8.8pt; margin-bottom:7px; } .lead b{ color:var(--ink); }
+
+  /* cards row */
+  .cards{ display:grid; gap:8px; }
+  .cards.c3{ grid-template-columns:1fr 1fr 1fr; }
+  .cards.c2{ grid-template-columns:1fr 1fr; }
+  .card{ border:1px solid var(--line); border-radius:8px; padding:8px 10px; background:#fff; border-top:3px solid var(--cc,#334155); }
+  .card .big{ font-size:12pt; font-weight:800; color:var(--cc,#334155); letter-spacing:.3px; }
+  .card .nm{ font-weight:800; font-size:9pt; color:var(--ink); }
+  .card .d{ font-size:8.2pt; color:var(--body); margin-top:2px; }
+  .card .ex{ font-size:7.8pt; color:var(--mut); margin-top:3px; font-style:italic; }
+
+  /* stat callout */
+  .stat{ display:flex; gap:12px; align-items:center; background:var(--teal-t); border-radius:8px; padding:9px 12px; margin:9px 0; }
+  .stat .v{ font-size:17pt; font-weight:800; color:var(--teal); line-height:1; white-space:nowrap; }
+  .stat .x{ font-size:8.4pt; } .stat .x b{ color:var(--ink); }
+
+  /* diagram */
+  .dia{ border:1px solid var(--line); border-radius:8px; padding:8px 10px; background:#fbfcfe; margin:6px 0; }
+  svg{ width:100%; height:auto; display:block; }
+  .cap{ font-size:7.8pt; color:var(--mut); font-style:italic; margin-top:4px; }
+  .cap b{ color:var(--ink); font-style:normal; }
+
+  /* stage strip */
+  .stages{ display:grid; grid-template-columns:repeat(6,1fr); gap:5px; margin-top:6px; }
+  .stage{ border-radius:6px; padding:5px 6px; background:var(--violet-t); border-left:3px solid var(--violet); }
+  .stage .n{ font-size:7.4pt; font-weight:800; color:var(--violet); }
+  .stage .t{ font-size:7.6pt; font-weight:700; color:var(--ink); line-height:1.15; }
+  .stage .d{ font-size:7pt; color:var(--mut); margin-top:1px; line-height:1.2; }
+
+  /* traps table */
+  .traps{ border:1px solid var(--red); border-radius:8px; overflow:hidden; }
+  .traps .r{ display:grid; grid-template-columns:1.05fr 1.3fr 1.3fr; font-size:8pt; }
+  .traps .r.head{ background:var(--red); color:#fff; font-weight:800; }
+  .traps .r.head>div{ padding:5px 9px; }
+  .traps .r>div{ padding:5px 9px; border-bottom:1px solid var(--red-t); }
+  .traps .r .c0{ font-weight:800; color:var(--ink); border-right:1px solid var(--red-t); }
+  .traps .r .c1{ color:var(--red); border-right:1px solid var(--red-t); }
+  .traps .r .c1::before{ content:"✗ "; font-weight:800; }
+  .traps .r .c2{ color:var(--emer); }
+  .traps .r .c2::before{ content:"✓ "; font-weight:800; }
+  .traps .r:nth-child(even)>div{ background:#fffafa; }
+
+  /* mini comparison + lists */
+  .grid2{ display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+  .box{ border:1px solid var(--line); border-radius:8px; padding:8px 10px; border-left:3px solid var(--cc,#334155); }
+  .box .h{ font-size:9pt; font-weight:800; color:var(--cc,#334155); margin-bottom:3px; }
+  .box .kv{ font-size:8pt; margin-bottom:2px; } .box .kv b{ color:var(--ink); }
+  .box .kv .a{ font-weight:800; }
+
+  .numbers{ display:grid; grid-template-columns:repeat(4,1fr); gap:7px; margin-top:4px; }
+  .ncell{ border:1px solid var(--line); border-radius:7px; padding:6px 8px; }
+  .ncell .v{ font-size:11pt; font-weight:800; color:var(--amber); line-height:1; }
+  .ncell .l{ font-size:7.2pt; color:var(--mut); margin-top:2px; line-height:1.2; } .ncell .l b{ color:var(--ink); }
+
+  .foot{ margin-top:9px; padding-top:5px; border-top:1px solid var(--line); font-size:7.4pt; color:var(--mut); display:flex; justify-content:space-between; }
+</style></head><body>
+<!-- injected by the site build: a way back into the site from a standalone
+     piece. A static bar at the top, so it is visible on arrival, and a pill
+     that appears once you have scrolled past it, so there is always a way out.
+     Self-contained, because these pages do not load the site stylesheet. -->
+<style id="__rb-style">
+#__rb{
+  box-sizing:border-box;display:flex;flex-wrap:wrap;align-items:center;gap:.6rem 1.25rem;
+  padding:.6rem clamp(1rem,4vw,2rem);border-bottom:1px solid #ddd9cf;background:#faf9f6;
+  font:500 13px/1.35 InterVar,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  color:#55524a;
+}
+#__rb a{color:#14509b;text-decoration:none;display:inline-flex;align-items:center;gap:.4rem}
+#__rb a:hover{text-decoration:underline}
+#__rb .__rb-home{font-weight:640;color:#16150f}
+#__rb .__rb-home i{font-style:normal;font-weight:400;color:#6f6c63}
+#__rb .__rb-right{margin-left:auto;display:flex;gap:1.1rem;flex-wrap:wrap}
+#__rb .__mark{
+  display:inline-grid;place-items:center;width:1.2rem;height:1.2rem;flex:none;
+  background:#16150f;color:#faf9f6;font-size:.72rem;font-weight:700;
+}
+#__rb-pill{
+  position:fixed;left:14px;bottom:14px;z-index:2147483000;
+  display:inline-flex;align-items:center;gap:.45rem;padding:.58rem .9rem;
+  background:rgba(22,21,15,.93);color:#faf9f6;text-decoration:none;border-radius:99px;
+  font:600 12.5px/1 InterVar,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  border:1px solid rgba(255,255,255,.16);box-shadow:0 6px 22px rgba(0,0,0,.28);
+  opacity:0;transform:translateY(6px);pointer-events:none;
+  transition:opacity .2s ease,transform .2s ease;
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+}
+#__rb-pill.__on{opacity:1;transform:none;pointer-events:auto}
+#__rb-pill:hover{background:#16150f;color:#fff}
+@media (prefers-color-scheme:dark){
+  #__rb{background:#131310;border-bottom-color:#2c2b24;color:#c0bcb1}
+  #__rb .__rb-home{color:#f7f5ef}
+  #__rb .__rb-home i{color:#948f85}
+  #__rb a{color:#85adea}
+  #__rb .__mark{background:#f7f5ef;color:#131310}
+  #__rb-pill{background:rgba(247,245,239,.95);color:#131310;border-color:rgba(0,0,0,.2)}
+  #__rb-pill:hover{background:#fff;color:#000}
+}
+@media (prefers-reduced-motion:reduce){#__rb-pill{transition:none}}
+@media print{#__rb,#__rb-pill{display:none !important}}
+</style>
+<div id="__rb">
+  <a class="__rb-home" href="index.html"><span class="__mark" aria-hidden="true">A</span>Alex Rajcoomar <i>portfolio</i></a>
+  <span class="__rb-right"><a href="coursework.html">Coursework</a><a href="library.html">All work</a></span>
+</div>
+
+
+<!-- ============= PAGE 1 ============= -->
+<div class="hero">
+  <h1>AFM 241 <span class="accent">·</span> Exam Cheat Sheet</h1>
+  <div class="sub">Emerging Tech / Business IT · Weeks 1–7 · the frameworks + the traps, distilled</div>
+  <div class="facts"><span class="chip">90 multiple-choice</span><span class="chip">lectures + readings + tutorials</span><span class="chip warn">BMC NOT tested</span></div>
+</div>
+
+<div class="lens">
+  <span class="lab">Decode every question →</span>
+  <span class="t" style="background:var(--teal)">value vs hype</span>
+  <span class="t" style="background:var(--teal)">sustaining vs disruptive</span>
+  <span class="t" style="background:var(--emer)">amplify vs abdicate</span>
+  <span class="t" style="background:var(--amber)">marginal vs full cost</span>
+</div>
+
+<!-- DISRUPTION -->
+<div class="sh"><span class="tab" style="background:var(--teal)">1 · Disruption</span><span class="ln" style="background:var(--teal)"></span><span class="hint">Christensen · the biggest block</span></div>
+
+<div class="lead"><b>The Innovator's Dilemma:</b> good companies get beaten by cheaper, "worse" products because the same rational financial logic that wins their best customers <b>blinds them to disruption from below.</b></div>
+
+<div class="dia">
+<svg viewBox="0 0 540 52" xmlns="http://www.w3.org/2000/svg" font-family="Arial">
+  <defs><marker id="ar" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><polygon points="0,0 7,3 0,6" fill="#0d9488"/></marker></defs>
+  <g font-size="8.4" font-weight="bold" text-anchor="middle">
+  <rect x="0" y="12" width="96" height="30" rx="5" fill="#ecfdfa" stroke="#0d9488" stroke-width="1.4"/><text x="48" y="25">Marginal-cost</text><text x="48" y="36">trap</text>
+  <line x1="98" y1="27" x2="116" y2="27" stroke="#0d9488" stroke-width="2" marker-end="url(#ar)"/>
+  <rect x="120" y="12" width="96" height="30" rx="5" fill="#ecfdfa" stroke="#0d9488" stroke-width="1.4"/><text x="168" y="25">Parmenides'</text><text x="168" y="36">Fallacy</text>
+  <line x1="218" y1="27" x2="236" y2="27" stroke="#0d9488" stroke-width="2" marker-end="url(#ar)"/>
+  <rect x="240" y="12" width="100" height="30" rx="5" fill="#ecfdfa" stroke="#0d9488" stroke-width="1.4"/><text x="290" y="25">Metrics set the</text><text x="290" y="36">RPV "Values"</text>
+  <line x1="342" y1="27" x2="360" y2="27" stroke="#0d9488" stroke-width="2" marker-end="url(#ar)"/>
+  <rect x="364" y="12" width="86" height="30" rx="5" fill="#ecfdfa" stroke="#0d9488" stroke-width="1.4"/><text x="407" y="25">Bias to</text><text x="407" y="36">sustaining</text>
+  <line x1="452" y1="27" x2="470" y2="27" stroke="#0d9488" stroke-width="2" marker-end="url(#ar)"/>
+  <rect x="472" y="10" width="68" height="34" rx="5" fill="#0d9488"/><text x="506" y="24" fill="#fff">GETS</text><text x="506" y="37" fill="#fff">DISRUPTED</text>
+  </g>
+</svg>
+<div class="cap"><b>Why incumbents fail (the chain):</b> a "why did they fail?" question wants a link here — not "bad management." <b>RPV</b> = Resources (what you have) · Processes (how you work) · <b>Values</b> (what you'll fund — the part that rejects low-margin disruptors).</div>
+</div>
+
+<div class="lead" style="margin:8px 0 4px"><b>Classify any disruption — ask WHO it targets (not how good it is):</b></div>
+<div class="cards c3">
+  <div class="card" style="--cc:#1d4ed8"><div class="big">↑ UP</div><div class="nm">Sustaining</div><div class="d">Better product for your <b>top, best-paying</b> customers. The norm — fine.</div><div class="ex">"cheaper-better-faster" vs rivals</div></div>
+  <div class="card" style="--cc:#b45309"><div class="big">↓ DOWN</div><div class="nm">Low-end</div><div class="d">"Good enough" for <b>over-served existing</b> customers, cheaper model.</div><div class="ex">Walmart · Netflix · phone cameras</div></div>
+  <div class="card" style="--cc:#059669"><div class="big">↗ OUT</div><div class="nm">New-market</div><div class="d">Serves <b>non-consumers</b> who couldn't buy before (no $/skill/access).</div><div class="ex">Sony radio · Southwest vs the car</div></div>
+</div>
+
+<div class="stat">
+  <div class="v">400% <span style="color:var(--mut);font-size:10pt">vs</span> 24.6%</div>
+  <div class="x"><b>Marginal vs full cost (US Steel).</b> Reusing the old plant shows a fake <b>400% ROI</b> (marginal cost $50/ton); the new capability's real basis is <b>24.6%</b> (full cost $270/ton). <span style="color:var(--red);font-weight:700">Trap: the 400% answer.</span> &nbsp;DCF terminal value = <b>CF ÷ (r−g)</b>.</div>
+</div>
+
+<!-- HYPE CYCLE -->
+<div class="sh"><span class="tab" style="background:var(--violet)">2 · Gartner Hype Cycle</span><span class="ln" style="background:var(--violet)"></span><span class="hint">judging &amp; timing new tech</span></div>
+
+<div class="dia">
+<svg viewBox="0 0 540 150" xmlns="http://www.w3.org/2000/svg" font-family="Arial">
+  <line x1="40" y1="10" x2="40" y2="126" stroke="#94a3b8" stroke-width="1.3"/>
+  <line x1="40" y1="126" x2="532" y2="126" stroke="#94a3b8" stroke-width="1.3"/>
+  <text x="12" y="86" font-size="7.6" font-weight="bold" fill="#64748b" transform="rotate(-90 12,86)">EXPECTATIONS →</text>
+  <text x="470" y="140" font-size="7.6" font-weight="bold" fill="#64748b">TIME →</text>
+  <path d="M54,112 C84,112 110,26 140,22 C176,17 200,104 236,114 C278,126 318,84 352,72 C430,54 486,52 524,50" stroke="#7c3aed" stroke-width="3" fill="none"/>
+  <circle cx="54" cy="112" r="3" fill="#7c3aed"/><text x="40" y="123" font-size="7.4" font-weight="bold" fill="#7c3aed">1 Trigger</text>
+  <circle cx="140" cy="22" r="3" fill="#7c3aed"/><text x="96" y="14" font-size="7.4" font-weight="bold" fill="#7c3aed">2 Peak (hype)</text>
+  <circle cx="236" cy="114" r="3" fill="#7c3aed"/><text x="198" y="124" font-size="7.4" font-weight="bold" fill="#7c3aed">3 Trough</text>
+  <circle cx="352" cy="72" r="3" fill="#7c3aed"/><text x="322" y="64" font-size="7.4" font-weight="bold" fill="#7c3aed">4 Slope</text>
+  <circle cx="524" cy="50" r="3" fill="#7c3aed"/><text x="476" y="42" font-size="7.4" font-weight="bold" fill="#7c3aed">5 Plateau</text>
+  <text x="150" y="70" font-size="7" font-style="italic" fill="#a855f7">rise 1 = HYPE</text>
+  <text x="300" y="100" font-size="7" font-style="italic" fill="#a855f7">rise 2 = real VALUE</text>
+</svg>
+<div class="cap"><b>Expectations spike on hype, crash, then climb on real value.</b> Tested: the ORDER — the <b>Trough never precedes the Peak</b>. In the Trough, genuine-fit adopters push on; hype-chasers bail. (6 = Beyond → Swamp, then Cliff.)</div>
+</div>
+
+<div class="stages">
+  <div class="stage"><div class="n">1</div><div class="t">Trigger</div><div class="d">buzz, few users</div></div>
+  <div class="stage"><div class="n">2</div><div class="t">Peak</div><div class="d">"silver bullet" hype</div></div>
+  <div class="stage"><div class="n">3</div><div class="t">Trough</div><div class="d">reality; shakeout</div></div>
+  <div class="stage"><div class="n">4</div><div class="t">Slope</div><div class="d">real uses emerge</div></div>
+  <div class="stage"><div class="n">5</div><div class="t">Plateau</div><div class="d">mainstream, boring</div></div>
+  <div class="stage"><div class="n">6</div><div class="t">Beyond</div><div class="d">Swamp → Cliff</div></div>
+</div>
+
+<!-- ============= PAGE 2 ============= -->
+<div class="p2"></div>
+<div class="sh"><span class="tab" style="background:var(--red)">3 · Don't get trapped</span><span class="ln" style="background:var(--red)"></span><span class="hint">the highest-value content — concept → ✗ wrong pick → ✓ truth</span></div>
+
+<div class="traps">
+  <div class="r head"><div>Concept</div><div>✗ Wrong answer</div><div>✓ Actually true</div></div>
+  <div class="r"><div class="c0">Low-end vs new-market</div><div class="c1">Walmart = new-market</div><div class="c2">Low-end (over-served existing customers)</div></div>
+  <div class="r"><div class="c0">Uber</div><div class="c1">Uber disrupted taxis</div><div class="c2">Share grab via regulatory arbitrage — not disruptive</div></div>
+  <div class="r"><div class="c0">Sustaining vs disruptive</div><div class="c1">A breakthrough/startup = disruptive</div><div class="c2">Disruptive = simple, accessible, affordable; a process</div></div>
+  <div class="r"><div class="c0">Marginal vs full cost</div><div class="c1">Reuse old plant — 400% ROI</div><div class="c2">Cost a new capability at full cost (24.6%)</div></div>
+  <div class="r"><div class="c0">Parmenides' Fallacy</div><div class="c1">"Do nothing" = stable status quo</div><div class="c2">The do-nothing path is a non-linear decline</div></div>
+  <div class="r"><div class="c0">Hype Cycle order</div><div class="c1">Trough before the Peak</div><div class="c2">Impossible — hype (Peak) precedes the let-down</div></div>
+  <div class="r"><div class="c0">Swamp vs Cliff</div><div class="c1">Still used daily but costly = Cliff</div><div class="c2">That's the Swamp; Cliff = discontinued, resale-only</div></div>
+  <div class="r"><div class="c0">Gartner vs Forrester</div><div class="c1">Magic Quadrant = Offering × Strategy</div><div class="c2">That's Forrester's Wave; Gartner = Execute × Vision</div></div>
+  <div class="r"><div class="c0">Phoenix vs rebrand</div><div class="c1">Renaming/patent tweak = Phoenix</div><div class="c2">Phoenix needs a genuinely new capability</div></div>
+  <div class="r"><div class="c0">SOC 2 Type 1 vs 2</div><div class="c1">Type 1 is tested over time</div><div class="c2">Type 1 = point-in-time design; Type 2 = over time</div></div>
+  <div class="r"><div class="c0">ML vs GenAI</div><div class="c1">GenAI's goal is prediction</div><div class="c2">GenAI = generation; ML is the predictor</div></div>
+  <div class="r"><div class="c0">RPA vs Claude</div><div class="c1">RPA automates analysis/judgment</div><div class="c2">That's Claude; RPA = structured, rule-based steps</div></div>
+  <div class="r"><div class="c0">Amplify vs abdicate</div><div class="c1">Trust the polished AI output</div><div class="c2">Unverified reliance = abdication; verify &amp; own it</div></div>
+  <div class="r"><div class="c0">Org Type B</div><div class="c1">Type B's risk = adopting too late</div><div class="c2">Type B's danger = adopting too EARLY (lured by hype)</div></div>
+</div>
+
+<!-- AI TOOLKIT -->
+<div class="sh"><span class="tab" style="background:var(--emer)">4 · AI Toolkit</span><span class="ln" style="background:var(--emer)"></span><span class="hint">spell-outs + what each actually is</span></div>
+
+<div class="grid2">
+  <div class="box" style="--cc:var(--emer)"><div class="h">ML vs GenAI</div>
+    <div class="kv"><span class="a">ML</span> (Machine Learning): learns from data to <b>predict</b>. Goal = predictive accuracy.</div>
+    <div class="kv"><span class="a">GenAI</span> (Generative AI): LLMs on the <b>transformer</b> (2017); <b>creates</b> output. Goal = generation.</div></div>
+  <div class="box" style="--cc:var(--emer)"><div class="h">RPA vs Claude</div>
+    <div class="kv"><span class="a">RPA</span> (Robotic Process Automation): rule-based, structured tasks; fixed cost; devs build.</div>
+    <div class="kv"><span class="a">Claude</span>: augments cognitive work; variable cost; anyone builds.</div></div>
+  <div class="box" style="--cc:var(--emer)"><div class="h">6 Pillars of LLM security</div>
+    <div class="kv"><b>SOC 2</b> (audit of vendor controls; Type 1 = design / Type 2 = over time) · permissioning · refuse prompt-injection · admin oversight · zero data retention · audit logging.</div></div>
+  <div class="box" style="--cc:var(--emer)"><div class="h">The 4Ds of AI Fluency</div>
+    <div class="kv"><span class="a">Delegation</span> (what to hand AI) · <span class="a">Description</span> (the goal — prompting) · <span class="a">Discernment</span> (trust it? = skepticism) · <span class="a">Diligence</span> (own it = you sign the file).</div></div>
+</div>
+
+<!-- NUMBERS -->
+<div class="sh"><span class="tab" style="background:var(--slate)">5 · Numbers &amp; names</span><span class="ln" style="background:var(--slate)"></span><span class="hint">if a figure/name appears, it's usually one of these</span></div>
+<div class="numbers">
+  <div class="ncell"><div class="v">400 / 24.6%</div><div class="l"><b>US Steel ROI</b> — old vs new plant</div></div>
+  <div class="ncell"><div class="v">2017</div><div class="l"><b>Transformer</b> (powers GenAI)</div></div>
+  <div class="ncell"><div class="v">~200</div><div class="l"><b>Skill description</b> chars (what + when)</div></div>
+  <div class="ncell"><div class="v">$69M</div><div class="l"><b>Beeple NFT</b>; market $67M→$14B→crash</div></div>
+  <div class="ncell"><div class="v">$3.5B / $11.4B</div><div class="l"><b>DCF terminal value</b> CF÷(r−g)</div></div>
+  <div class="ncell"><div class="v">Logic Theorist</div><div class="l"><b>first true AI</b> (1955–56)</div></div>
+  <div class="ncell"><div class="v">A · B · C</div><div class="l"><b>org types</b>: aggressive / majority / conservative</div></div>
+  <div class="ncell"><div class="v">5 moats</div><div class="l">Momentum · Tech · Ecosystem · New-tech · Model</div></div>
+</div>
+
+<div class="foot"><div>AFM 241 · figures per course slides · pair with the 13-page reference for depth</div><div>Trough never precedes Peak · 400% is the trap · Walmart = low-end</div></div>
+
+
+
+<a id="__rb-pill" href="coursework.html">&#8592; Coursework</a>
+<script>
+(function(){
+  var p=document.getElementById('__rb-pill'); if(!p) return;
+  var t=false;
+  function run(){ t=false;
+    p.classList.toggle('__on',(window.scrollY||document.documentElement.scrollTop)>420); }
+  function q(){ if(!t){ t=true; requestAnimationFrame(run); } }
+  addEventListener('scroll',q,{passive:true}); run();
+})();
+</script>
+</body></html>

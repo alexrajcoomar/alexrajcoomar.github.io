@@ -1,0 +1,1001 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="description" content="A journal entry reference for intermediate financial accounting, organised so the right entry is findable under time pressure.">
+<meta property="og:title" content="AFM 291 Journal Entry Reference — Every entry, one page">
+<meta property="og:description" content="A journal entry reference for intermediate financial accounting, organised so the right entry is findable under time pressure.">
+<meta property="og:type" content="article">
+<title>AFM 291 — Midterm 1 Journal Entry Reference</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700;9..144,900&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #FAF7F0;
+    --paper-edge: #F2EDE0;
+    --ink: #1A1714;
+    --ink-soft: #4A4540;
+    --ink-muted: #8A857D;
+    --rule: #D9D2C2;
+    --rule-soft: #E8E2D2;
+
+    --demand: #B53A2B;          /* 🔴 Demand: deep brick */
+    --demand-tint: #FBEEEB;
+    --supply: #3F6B3A;          /* 🟢 Supply: deep moss */
+    --supply-tint: #ECF2E8;
+    --ifrs: #A66E2C;            /* 🟡 IFRS: burnt amber */
+    --ifrs-tint: #F8EFDD;
+    --aspe: #355971;            /* 🔵 ASPE: steel blue */
+    --aspe-tint: #E5ECF2;
+    --warn: #8E6A1F;
+    --warn-tint: #F8EFD7;
+
+    --dr: #355971;              /* debit ink — steel */
+    --cr: #B53A2B;              /* credit ink — brick */
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    background: #E8E1D1;
+    font-family: "Source Serif 4", Georgia, serif;
+    color: var(--ink);
+    font-size: 11.5px;
+    line-height: 1.45;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .page {
+    max-width: 880px;
+    margin: 24px auto;
+    background: var(--paper);
+    padding: 32px 36px 28px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08), 0 1px 3px rgba(0,0,0,0.04);
+    position: relative;
+    border-radius: 2px;
+  }
+
+  /* ============ MASTHEAD ============ */
+  .masthead {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    padding-bottom: 14px;
+    border-bottom: 2px solid var(--ink);
+    margin-bottom: 16px;
+  }
+  .masthead-left h1 {
+    font-family: "Fraunces", serif;
+    font-weight: 600;
+    font-size: 28px;
+    letter-spacing: -0.01em;
+    line-height: 1.02;
+    margin-bottom: 4px;
+  }
+  .masthead-left h1 .accent {
+    font-style: italic;
+    font-weight: 400;
+    color: var(--ink-soft);
+  }
+  .masthead-left .subtitle {
+    font-size: 12px;
+    color: var(--ink-soft);
+    font-style: italic;
+  }
+  .masthead-right {
+    text-align: right;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 9.5px;
+    color: var(--ink-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    line-height: 1.6;
+  }
+  .masthead-right .label { color: var(--ink); font-weight: 600; }
+
+  /* ============ LEGEND ============ */
+  .legend {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    padding: 7px 10px;
+    background: var(--paper-edge);
+    border: 1px solid var(--rule);
+    border-radius: 2px;
+    margin-bottom: 8px;
+    font-family: "Bricolage Grotesque", sans-serif;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 500;
+  }
+  .legend-item { display: flex; align-items: center; gap: 6px; color: var(--ink-soft); }
+  .legend-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+  .dot-ifrs   { background: var(--ifrs); }
+  .dot-aspe   { background: var(--aspe); }
+  .dot-dr     { background: var(--dr); border-radius: 1px; }
+  .dot-cr     { background: var(--cr); border-radius: 1px; }
+
+  .how-strip {
+    font-size: 10px;
+    color: var(--ink-soft);
+    font-style: italic;
+    margin-bottom: 18px;
+    padding-left: 2px;
+  }
+  .how-strip strong { color: var(--ink); font-style: normal; }
+
+  /* ============ SECTION LABEL ============ */
+  .section-label {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin: 22px 0 10px;
+  }
+  .section-label .number {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 9px;
+    color: var(--ink-muted);
+    font-weight: 500;
+    letter-spacing: 0.1em;
+  }
+  .section-label .title {
+    font-family: "Bricolage Grotesque", sans-serif;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-weight: 700;
+    color: var(--ink);
+  }
+  .section-label .rule { flex: 1; height: 1px; background: var(--rule); align-self: center; }
+  .section-label .tag {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 8.5px;
+    color: var(--ink-muted);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  /* ============ GRID ============ */
+  .grid-2-even {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 14px;
+  }
+  .grid-2 {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 16px;
+    margin-bottom: 14px;
+  }
+
+  /* ============ CARD ============ */
+  .card {
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    border-radius: 2px;
+    padding: 12px 14px;
+  }
+  .card-title {
+    font-family: "Bricolage Grotesque", sans-serif;
+    font-size: 10.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-weight: 700;
+    color: var(--ink);
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--rule);
+    margin-bottom: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 8px;
+  }
+  .card-title .tag {
+    font-size: 8.5px;
+    font-weight: 500;
+    color: var(--ink-muted);
+    letter-spacing: 0.06em;
+    text-align: right;
+  }
+  .card-title.ifrs { color: var(--ifrs); border-bottom-color: var(--ifrs); }
+  .card-title.aspe { color: var(--aspe); border-bottom-color: var(--aspe); }
+
+  /* ============ LEDGER / JOURNAL ENTRY ============ */
+  .je-caption {
+    font-family: "Bricolage Grotesque", sans-serif;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.09em;
+    font-weight: 700;
+    color: var(--ink-soft);
+    margin: 9px 0 3px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .je-caption:first-of-type { margin-top: 2px; }
+  .je-caption .step {
+    font-family: "Fraunces", serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--supply);
+    line-height: 1;
+  }
+  .ledger {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10px;
+    border: 1px solid var(--rule-soft);
+    border-left: 3px solid var(--supply);
+    border-radius: 1px;
+    background: #FCFAF4;
+    overflow: hidden;
+  }
+  .ledger-head {
+    display: grid;
+    grid-template-columns: 1fr 74px 74px;
+    padding: 3px 10px;
+    background: var(--paper-edge);
+    border-bottom: 1px solid var(--rule-soft);
+    font-family: "Bricolage Grotesque", sans-serif;
+    font-size: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-weight: 700;
+    color: var(--ink-muted);
+  }
+  .ledger-head .amt { text-align: right; }
+  .je-row {
+    display: grid;
+    grid-template-columns: 1fr 74px 74px;
+    padding: 2px 10px;
+    align-items: baseline;
+  }
+  .je-row + .je-row { border-top: 1px dotted var(--rule-soft); }
+  .je-row .acct { color: var(--ink); }
+  .je-row.cr .acct { padding-left: 16px; color: var(--ink-soft); }
+  .je-row .dr-amt { text-align: right; color: var(--dr); font-weight: 500; }
+  .je-row .cr-amt { text-align: right; color: var(--cr); font-weight: 500; }
+  .je-row .tag-dr { color: var(--dr); font-weight: 600; }
+  .je-row .tag-cr { color: var(--cr); font-weight: 600; }
+  .alloc-note {
+    font-size: 9.5px;
+    font-family: "JetBrains Mono", monospace;
+    background: var(--ifrs-tint);
+    border-left: 3px solid var(--ifrs);
+    padding: 5px 9px;
+    margin: 2px 0 4px;
+    color: var(--ink);
+    line-height: 1.5;
+  }
+  .je-foot {
+    font-size: 9.5px;
+    color: var(--ink-soft);
+    font-style: italic;
+    margin-top: 6px;
+    line-height: 1.4;
+  }
+  .je-foot strong { color: var(--ink); font-style: normal; font-weight: 600; }
+
+  /* ============ DECISION CARD (warranty types) ============ */
+  .decide {
+    display: grid;
+    grid-template-columns: 110px 1fr 1fr;
+    font-size: 10px;
+    border: 1px solid var(--rule);
+    border-radius: 2px;
+    overflow: hidden;
+    margin-bottom: 14px;
+  }
+  .decide > div { padding: 6px 9px; border-bottom: 1px solid var(--rule-soft); }
+  .decide .dh {
+    font-family: "Bricolage Grotesque", sans-serif;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 700;
+    background: var(--paper-edge);
+  }
+  .decide .dh.c1 { color: var(--supply); }
+  .decide .dh.c2 { color: var(--demand); }
+  .decide .rk {
+    font-family: "Bricolage Grotesque", sans-serif;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-weight: 600;
+    color: var(--ink-soft);
+    background: #FCFAF4;
+  }
+  .decide .col1 { background: var(--supply-tint); }
+  .decide .col2 { background: var(--demand-tint); }
+  .decide b { font-weight: 700; color: var(--ink); }
+  .decide > div:nth-last-child(-n+3) { border-bottom: none; }
+
+  /* ============ MATRIX ============ */
+  .matrix { width: 100%; border-collapse: collapse; font-size: 10px; }
+  .matrix th, .matrix td { border: 1px solid var(--rule-soft); padding: 5px 7px; text-align: left; vertical-align: top; }
+  .matrix th {
+    font-family: "Bricolage Grotesque", sans-serif;
+    font-size: 8.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    font-weight: 700;
+    background: var(--paper-edge);
+    color: var(--ink-soft);
+  }
+  .matrix td.rk {
+    font-family: "Bricolage Grotesque", sans-serif;
+    font-size: 9px;
+    font-weight: 700;
+    color: var(--ink);
+    background: #FCFAF4;
+    white-space: nowrap;
+  }
+  .matrix .yes { color: var(--supply); font-weight: 600; }
+  .matrix .mid { color: var(--warn); font-weight: 600; }
+  .matrix .no  { color: var(--ink-muted); }
+
+  /* ============ COMPARISON TABLE ============ */
+  .cmp { width: 100%; border-collapse: collapse; font-size: 10px; }
+  .cmp th, .cmp td { padding: 5px 7px; border-bottom: 1px solid var(--rule-soft); text-align: left; vertical-align: top; }
+  .cmp th {
+    font-family: "Bricolage Grotesque", sans-serif;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 700;
+    border-bottom: 1px solid var(--rule);
+  }
+  .cmp th.ifrs-col { color: var(--ifrs); }
+  .cmp th.aspe-col { color: var(--aspe); }
+  .cmp td.lbl { font-weight: 600; color: var(--ink); }
+  .cmp tr:last-child td { border-bottom: none; }
+  .cmp .ifrs-text { color: var(--ifrs); font-weight: 600; }
+  .cmp .aspe-text { color: var(--aspe); font-weight: 600; }
+
+  /* ============ FORMULA ============ */
+  .formula {
+    background: var(--supply-tint);
+    border-left: 3px solid var(--supply);
+    padding: 8px 11px;
+    font-size: 10px;
+    line-height: 1.7;
+    margin-bottom: 8px;
+  }
+  .formula code {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 9.5px;
+    color: var(--ink);
+  }
+  .formula b { color: var(--supply); }
+
+  /* ============ KENNEDY SCHEDULE ============ */
+  .sched { width: 100%; border-collapse: collapse; font-size: 9.5px; font-family: "JetBrains Mono", monospace; }
+  .sched th, .sched td { padding: 4px 6px; border-bottom: 1px solid var(--rule-soft); text-align: right; }
+  .sched th {
+    font-family: "Bricolage Grotesque", sans-serif;
+    font-size: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-weight: 700;
+    color: var(--ink-soft);
+    background: var(--paper-edge);
+    border-bottom: 1px solid var(--rule);
+  }
+  .sched td:first-child, .sched th:first-child { text-align: left; font-weight: 600; }
+  .sched .asset { color: var(--supply); font-weight: 600; }
+  .sched .liab  { color: var(--demand); font-weight: 600; }
+
+  /* ============ CALLOUTS ============ */
+  .callout {
+    padding: 10px 12px;
+    border-radius: 2px;
+    font-size: 10px;
+    line-height: 1.5;
+    margin-bottom: 8px;
+  }
+  .callout.warn { background: var(--warn-tint); border-left: 3px solid var(--warn); }
+  .callout.insight { background: var(--supply-tint); border-left: 3px solid var(--supply); }
+  .callout .head {
+    font-family: "Bricolage Grotesque", sans-serif;
+    font-size: 9.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-weight: 700;
+    margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .callout.warn .head { color: var(--warn); }
+  .callout.insight .head { color: var(--supply); }
+  .callout b { color: var(--ink); font-weight: 600; }
+  .callout .ifrs-text { color: var(--ifrs); font-weight: 600; }
+  .callout .aspe-text { color: var(--aspe); font-weight: 600; }
+
+  /* ============ CHEAT STRIP ============ */
+  .cheat {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 6px;
+    margin-bottom: 8px;
+  }
+  .cheat-item {
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    border-top: 3px solid var(--ink);
+    padding: 7px 9px;
+    font-size: 9.5px;
+    line-height: 1.4;
+  }
+  .cheat-item .q {
+    font-family: "Bricolage Grotesque", sans-serif;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 3px;
+  }
+  .cheat-item .a { color: var(--ink-soft); }
+  .cheat-item code {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 9px;
+    color: var(--dr);
+  }
+
+  /* ============ SELF TEST ============ */
+  details.test {
+    background: var(--paper-edge);
+    border: 1px solid var(--rule);
+    border-radius: 2px;
+    padding: 9px 12px;
+    margin-bottom: 8px;
+    font-size: 10px;
+  }
+  details.test summary {
+    font-family: "Bricolage Grotesque", sans-serif;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 700;
+    color: var(--demand);
+    cursor: pointer;
+  }
+  details.test ol { margin: 8px 0 0 16px; line-height: 1.6; }
+  details.test .ans { color: var(--supply); font-weight: 600; }
+
+  /* ============ VERIFICATION ============ */
+  .verify { width: 100%; border-collapse: collapse; font-size: 10px; }
+  .verify th, .verify td { padding: 5px 7px; border-bottom: 1px solid var(--rule-soft); text-align: left; vertical-align: top; }
+  .verify th {
+    font-family: "Bricolage Grotesque", sans-serif;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 700;
+    background: var(--paper-edge);
+    border-bottom: 1px solid var(--rule);
+  }
+  .verify .st { white-space: nowrap; font-weight: 600; }
+  .verify .ok { color: var(--supply); }
+  .verify .qq { color: var(--warn); }
+  .verify .om { color: var(--demand); }
+
+  /* ============ FOOTER ============ */
+  .footer {
+    margin-top: 20px;
+    padding-top: 10px;
+    border-top: 1px solid var(--rule);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 8.5px;
+    color: var(--ink-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+  }
+  .footer .center { color: var(--ink-soft); }
+
+  /* ============ PRINT ============ */
+  @media print {
+    @page { size: letter portrait; margin: 0.4in; }
+    html, body { background: white; font-size: 9.5pt; }
+    .page { box-shadow: none; margin: 0; padding: 0; max-width: 100%; }
+    .section-label, .card, .grid-2, .grid-2-even, details.test { break-inside: avoid; }
+    details.test[open] { break-inside: auto; }
+  }
+</style>
+
+<style id="__mobile_fit">
+/* Added by the site build. These older documents pushed past the right edge of
+   a phone screen: long unbreakable strings widened the page, and a few wide
+   tables had no scroll container. This constrains both without touching the
+   layout on a laptop. */
+@media (max-width:48rem){
+  html,body{max-width:100%}
+  body{overflow-wrap:break-word}
+  table{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch;max-width:100%}
+  pre,code{overflow-x:auto;max-width:100%}
+  img,svg{max-width:100%;height:auto}
+}
+</style>
+</head>
+<body>
+<!-- injected by the site build: a way back into the site from a standalone
+     piece. A static bar at the top, so it is visible on arrival, and a pill
+     that appears once you have scrolled past it, so there is always a way out.
+     Self-contained, because these pages do not load the site stylesheet. -->
+<style id="__rb-style">
+#__rb{
+  box-sizing:border-box;display:flex;flex-wrap:wrap;align-items:center;gap:.6rem 1.25rem;
+  padding:.6rem clamp(1rem,4vw,2rem);border-bottom:1px solid #ddd9cf;background:#faf9f6;
+  font:500 13px/1.35 InterVar,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  color:#55524a;
+}
+#__rb a{color:#14509b;text-decoration:none;display:inline-flex;align-items:center;gap:.4rem}
+#__rb a:hover{text-decoration:underline}
+#__rb .__rb-home{font-weight:640;color:#16150f}
+#__rb .__rb-home i{font-style:normal;font-weight:400;color:#6f6c63}
+#__rb .__rb-right{margin-left:auto;display:flex;gap:1.1rem;flex-wrap:wrap}
+#__rb .__mark{
+  display:inline-grid;place-items:center;width:1.2rem;height:1.2rem;flex:none;
+  background:#16150f;color:#faf9f6;font-size:.72rem;font-weight:700;
+}
+#__rb-pill{
+  position:fixed;left:14px;bottom:14px;z-index:2147483000;
+  display:inline-flex;align-items:center;gap:.45rem;padding:.58rem .9rem;
+  background:rgba(22,21,15,.93);color:#faf9f6;text-decoration:none;border-radius:99px;
+  font:600 12.5px/1 InterVar,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  border:1px solid rgba(255,255,255,.16);box-shadow:0 6px 22px rgba(0,0,0,.28);
+  opacity:0;transform:translateY(6px);pointer-events:none;
+  transition:opacity .2s ease,transform .2s ease;
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+}
+#__rb-pill.__on{opacity:1;transform:none;pointer-events:auto}
+#__rb-pill:hover{background:#16150f;color:#fff}
+@media (prefers-color-scheme:dark){
+  #__rb{background:#131310;border-bottom-color:#2c2b24;color:#c0bcb1}
+  #__rb .__rb-home{color:#f7f5ef}
+  #__rb .__rb-home i{color:#948f85}
+  #__rb a{color:#85adea}
+  #__rb .__mark{background:#f7f5ef;color:#131310}
+  #__rb-pill{background:rgba(247,245,239,.95);color:#131310;border-color:rgba(0,0,0,.2)}
+  #__rb-pill:hover{background:#fff;color:#000}
+}
+@media (prefers-reduced-motion:reduce){#__rb-pill{transition:none}}
+@media print{#__rb,#__rb-pill{display:none !important}}
+</style>
+<div id="__rb">
+  <a class="__rb-home" href="index.html"><span class="__mark" aria-hidden="true">A</span>Alex Rajcoomar <i>portfolio</i></a>
+  <span class="__rb-right"><a href="afm291.html">The vault</a><a href="library.html">All work</a></span>
+</div>
+
+
+<div class="page">
+
+  <!-- ============ MASTHEAD ============ -->
+  <header class="masthead">
+    <div class="masthead-left">
+      <h1>AFM 291 <span class="accent">— Journal Entries</span></h1>
+      <div class="subtitle">Revenue · Warranties · Provisions · Long-Term Contracts · Onerous Contracts</div>
+    </div>
+    <div class="masthead-right">
+      <div class="label">Midterm 1 Reference</div>
+      <div>Spring 2026</div>
+      <div>IFRS &nbsp;·&nbsp; ASPE</div>
+    </div>
+  </header>
+
+  <!-- ============ LEGEND ============ -->
+  <div class="legend">
+    <div class="legend-item"><span class="legend-dot dot-ifrs"></span> IFRS</div>
+    <div class="legend-item"><span class="legend-dot dot-aspe"></span> ASPE</div>
+    <div class="legend-item"><span class="legend-dot dot-dr"></span> Debit (Dr)</div>
+    <div class="legend-item"><span class="legend-dot dot-cr"></span> Credit (Cr)</div>
+  </div>
+  <div class="how-strip">
+    Your exam appendix gives the <strong>standards text</strong> (5-step model, B28–B30 warranty rules, IAS 37 / 3290 guidance) but <strong>not the journal entries</strong> — this sheet covers the entries you have to produce from understanding. Dollar figures are illustrations from your reference; confirm them against the matching problem (see Verification Pass at the end).
+  </div>
+
+  <!-- ============ § 1 WARRANTIES ============ -->
+  <div class="section-label">
+    <span class="number">§ 01</span>
+    <span class="title">Warranties — Assurance vs Service</span>
+    <span class="rule"></span>
+    <span class="tag">IFRS 15 · B28–B30</span>
+  </div>
+
+  <div class="decide">
+    <div class="dh"></div>
+    <div class="dh c1">Assurance-type</div>
+    <div class="dh c2">Service-type</div>
+
+    <div class="rk">Nature</div>
+    <div class="col1">Covers only normal manufacturing defects</div>
+    <div class="col2">Extra service beyond defects (extended coverage, theft, etc.)</div>
+
+    <div class="rk"># of P.O.s</div>
+    <div class="col1"><b>1</b> — the product only</div>
+    <div class="col2"><b>2</b> — product + a separate service P.O.</div>
+
+    <div class="rk">Treatment</div>
+    <div class="col1">Warranty is <b>not</b> a P.O. → account under <b>IAS 37 provision</b></div>
+    <div class="col2"><b>Allocate</b> price on SSP basis; defer the service portion</div>
+
+    <div class="rk">Revenue</div>
+    <div class="col1">Point in time (product)</div>
+    <div class="col2">Service portion recognized <b>over time</b></div>
+  </div>
+
+  <div class="callout insight">
+    <div class="head">⚖ The B29 / B30 test (judgement)</div>
+    Separately purchasable? → it's a distinct <b>service</b> P.O. (B29). Not separately purchasable, and only assures the product meets spec? → <b>IAS 37 provision</b> (B30). Also weigh: does it provide service beyond normal defects, and is the coverage period much longer than normal?
+  </div>
+
+  <div class="grid-2-even">
+
+    <!-- ASSURANCE -->
+    <div class="card">
+      <div class="card-title"><span>Assurance-type Warranty</span><span class="tag">P4-28 illustration</span></div>
+
+      <div class="je-caption"><span class="step">①</span> At sale — 100 tablets @ $500</div>
+      <div class="ledger">
+        <div class="ledger-head"><span>Account</span><span class="amt">Dr</span><span class="amt">Cr</span></div>
+        <div class="je-row"><span class="acct">Cash / AR</span><span class="dr-amt">50,000</span><span class="cr-amt"></span></div>
+        <div class="je-row cr"><span class="acct">Revenue — Tablets</span><span class="dr-amt"></span><span class="cr-amt">50,000</span></div>
+      </div>
+
+      <div class="je-caption"><span class="step">②</span> Record provision — expected $25 / unit</div>
+      <div class="ledger">
+        <div class="ledger-head"><span>Account</span><span class="amt">Dr</span><span class="amt">Cr</span></div>
+        <div class="je-row"><span class="acct">Warranty Expense</span><span class="dr-amt">2,500</span><span class="cr-amt"></span></div>
+        <div class="je-row cr"><span class="acct">Warranty Provision</span><span class="dr-amt"></span><span class="cr-amt">2,500</span></div>
+      </div>
+
+      <div class="je-caption"><span class="step">③</span> When actual claims occur</div>
+      <div class="ledger">
+        <div class="ledger-head"><span>Account</span><span class="amt">Dr</span><span class="amt">Cr</span></div>
+        <div class="je-row"><span class="acct">Warranty Provision</span><span class="dr-amt">2,000</span><span class="cr-amt"></span></div>
+        <div class="je-row cr"><span class="acct">Cash / Parts / Labour</span><span class="dr-amt"></span><span class="cr-amt">2,000</span></div>
+      </div>
+
+      <div class="je-foot"><strong>Logic:</strong> at sale you have a present obligation but unknown future cost → estimate via expected value and match the expense to the revenue period. Actual claims <em>reduce</em> the provision; they don't set its initial size.</div>
+    </div>
+
+    <!-- SERVICE -->
+    <div class="card">
+      <div class="card-title"><span>Service-type Warranty</span><span class="tag">P4-28 illustration</span></div>
+
+      <div class="alloc-note">Allocate the $600 package on SSP:<br>&nbsp;&nbsp;Product + assurance&nbsp;&nbsp;= $480<br>&nbsp;&nbsp;Service warranty&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= $120</div>
+
+      <div class="je-caption"><span class="step">①</span> At sale</div>
+      <div class="ledger">
+        <div class="ledger-head"><span>Account</span><span class="amt">Dr</span><span class="amt">Cr</span></div>
+        <div class="je-row"><span class="acct">Cash</span><span class="dr-amt">90,000</span><span class="cr-amt"></span></div>
+        <div class="je-row cr"><span class="acct">Revenue — Tablets</span><span class="dr-amt"></span><span class="cr-amt">72,000</span></div>
+        <div class="je-row cr"><span class="acct">Unearned Service Revenue</span><span class="dr-amt"></span><span class="cr-amt">18,000</span></div>
+      </div>
+
+      <div class="je-caption"><span class="step">②</span> Recognize service over time — input method</div>
+      <div class="ledger">
+        <div class="ledger-head"><span>Account</span><span class="amt">Dr</span><span class="amt">Cr</span></div>
+        <div class="je-row"><span class="acct">Unearned Service Revenue</span><span class="dr-amt">7,200</span><span class="cr-amt"></span></div>
+        <div class="je-row cr"><span class="acct">Service Revenue</span><span class="dr-amt"></span><span class="cr-amt">7,200</span></div>
+      </div>
+
+      <div class="je-foot"><strong>Logic:</strong> the service warranty is a separate P.O., so part of the price is deferred as a contract liability (Unearned Service Revenue) and earned across the coverage period. The product portion is still recognized at the point of sale.</div>
+    </div>
+
+  </div>
+
+  <!-- ============ § 2 PROVISIONS & CONTINGENCIES ============ -->
+  <div class="section-label">
+    <span class="number">§ 02</span>
+    <span class="title">Provisions &amp; Contingent Liabilities</span>
+    <span class="rule"></span>
+    <span class="tag">IAS 37 · ASPE 3290</span>
+  </div>
+
+  <div class="grid-2">
+
+    <!-- RECOGNITION + JE -->
+    <div class="card">
+      <div class="card-title ifrs"><span>IFRS — Recognize a Provision if…</span><span class="tag">all three</span></div>
+      <div class="je-foot" style="margin-top:0;margin-bottom:8px;">
+        <strong>1.</strong> Present obligation from a <strong>past (obligating) event</strong> &nbsp;·&nbsp;
+        <strong>2.</strong> Outflow of resources is <strong>probable</strong> &nbsp;·&nbsp;
+        <strong>3.</strong> A <strong>reliable estimate</strong> of the amount can be made.
+      </div>
+
+      <div class="je-caption"><span class="step">①</span> Recognize the provision</div>
+      <div class="ledger">
+        <div class="ledger-head"><span>Account</span><span class="amt">Dr</span><span class="amt">Cr</span></div>
+        <div class="je-row"><span class="acct">Expense (Warranty / Legal / etc.)</span><span class="dr-amt tag-dr">X</span><span class="cr-amt"></span></div>
+        <div class="je-row cr"><span class="acct">Provision</span><span class="dr-amt"></span><span class="cr-amt tag-cr">X</span></div>
+      </div>
+
+      <div class="je-caption"><span class="step">②</span> When the obligation is settled</div>
+      <div class="ledger">
+        <div class="ledger-head"><span>Account</span><span class="amt">Dr</span><span class="amt">Cr</span></div>
+        <div class="je-row"><span class="acct">Provision</span><span class="dr-amt tag-dr">X</span><span class="cr-amt"></span></div>
+        <div class="je-row cr"><span class="acct">Cash / Payable</span><span class="dr-amt"></span><span class="cr-amt tag-cr">X</span></div>
+      </div>
+      <div class="je-foot"><strong>Measurement:</strong> use the <strong>best estimate</strong>. For a large population of items, use expected value (probability-weighted); for a single obligation with a continuous range of outcomes, the midpoint is typically used.</div>
+    </div>
+
+    <!-- MATRIX -->
+    <div class="card">
+      <div class="card-title ifrs"><span>IFRS Decision Matrix</span><span class="tag">likelihood × estimate</span></div>
+      <table class="matrix">
+        <thead>
+          <tr><th></th><th>Measurable</th><th>Not measurable (rare)</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="rk">Probable</td><td class="yes">Recognize provision</td><td class="mid">Disclose</td></tr>
+          <tr><td class="rk">Possible</td><td class="mid">Disclose contingent liability</td><td class="mid">Disclose</td></tr>
+          <tr><td class="rk">Remote</td><td class="no">No action</td><td class="no">No action</td></tr>
+        </tbody>
+      </table>
+      <div class="je-foot" style="margin-top:9px;">
+        <strong>Probable</strong> = more likely than not (&gt; 50%) &nbsp;·&nbsp;
+        <strong>Possible</strong> = less than probable, more than remote &nbsp;·&nbsp;
+        <strong>Remote</strong> = slight chance.
+      </div>
+      <div class="je-foot">
+        <strong>Contingent assets (IFRS):</strong> virtually certain → recognize (no longer contingent); probable → disclose only; not probable → nothing. <strong>Gains are never recognized early.</strong>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- IFRS vs ASPE comparison -->
+  <div class="card">
+    <div class="card-title"><span>IFRS vs ASPE — Contingencies / Losses</span><span class="tag">terminology &amp; measurement</span></div>
+    <table class="cmp">
+      <thead>
+        <tr><th style="width:24%;"></th><th class="ifrs-col" style="width:38%;">IFRS (IAS 37)</th><th class="aspe-col" style="width:38%;">ASPE (Section 3290)</th></tr>
+      </thead>
+      <tbody>
+        <tr><td class="lbl">Terminology</td><td>Probable · Possible · Remote</td><td>Likely · Not determinable · Unlikely</td></tr>
+        <tr><td class="lbl">Recognition threshold</td><td><span class="ifrs-text">Probable</span> (&gt; 50%) + reliable estimate</td><td><span class="aspe-text">Likely</span> + reasonably estimable</td></tr>
+        <tr><td class="lbl">Range of estimates</td><td>Best estimate — <b>midpoint</b> of a range</td><td>Use the <b>minimum</b> of the range</td></tr>
+        <tr><td class="lbl">Contingent gains</td><td>Never recognized</td><td>Never accrued (disclose if likely)</td></tr>
+        <tr><td class="lbl">Disclosure</td><td>Unless remote</td><td>Broader — more situations require disclosure</td></tr>
+      </tbody>
+    </table>
+    <div class="callout insight" style="margin-top:10px;margin-bottom:0;">
+      <div class="head">💡 Worked application — Canless Isotopes (P11-49)</div>
+      <em>Sued $10M, admits liability, estimates $5M–$6M, has $1M-deductible insurance.</em><br>
+      <span class="ifrs-text">IFRS:</span> recognize a provision of <b>$5.5M</b> (midpoint best estimate); insurance is a <b>separate contingent asset</b> (don't net — recognize only if virtually certain, otherwise disclose).<br>
+      <span class="aspe-text">ASPE:</span> accrue <b>$5M</b> (minimum of the range); disclose the insurance and the range.
+    </div>
+  </div>
+
+  <!-- ============ § 3 LONG-TERM CONTRACTS ============ -->
+  <div class="section-label">
+    <span class="number">§ 03</span>
+    <span class="title">Long-Term Construction Contracts</span>
+    <span class="rule"></span>
+    <span class="tag">IFRS 15 · over time</span>
+  </div>
+
+  <div class="callout insight">
+    <div class="head">⚖ Why over time? — IFRS 15.35(b)</div>
+    The entity's performance <b>creates or enhances an asset that the customer controls</b> as it is created. (The other two over-time gateways: the customer simultaneously receives &amp; consumes the benefits; or the asset has <b>no alternative use</b> and the entity has an <b>enforceable right to payment</b> for work completed to date.) If none apply → recognize at a <b>point in time</b>.
+  </div>
+
+  <div class="grid-2">
+
+    <!-- 5-PHASE LEDGER -->
+    <div class="card">
+      <div class="card-title"><span>The 5-Phase Entry Sequence</span><span class="tag">apply each period</span></div>
+
+      <div class="je-caption"><span class="step">①</span> Incur costs</div>
+      <div class="ledger">
+        <div class="ledger-head"><span>Account</span><span class="amt">Dr</span><span class="amt">Cr</span></div>
+        <div class="je-row"><span class="acct">Construction in Progress (CIP)</span><span class="dr-amt tag-dr">X</span><span class="cr-amt"></span></div>
+        <div class="je-row cr"><span class="acct">Cash / AP</span><span class="dr-amt"></span><span class="cr-amt tag-cr">X</span></div>
+      </div>
+
+      <div class="je-caption"><span class="step">②</span> Bill the client</div>
+      <div class="ledger">
+        <div class="ledger-head"><span>Account</span><span class="amt">Dr</span><span class="amt">Cr</span></div>
+        <div class="je-row"><span class="acct">Accounts Receivable</span><span class="dr-amt tag-dr">X</span><span class="cr-amt"></span></div>
+        <div class="je-row cr"><span class="acct">Billings on CIP</span><span class="dr-amt"></span><span class="cr-amt tag-cr">X</span></div>
+      </div>
+
+      <div class="je-caption"><span class="step">③</span> Receive payment</div>
+      <div class="ledger">
+        <div class="ledger-head"><span>Account</span><span class="amt">Dr</span><span class="amt">Cr</span></div>
+        <div class="je-row"><span class="acct">Cash</span><span class="dr-amt tag-dr">X</span><span class="cr-amt"></span></div>
+        <div class="je-row cr"><span class="acct">Accounts Receivable</span><span class="dr-amt"></span><span class="cr-amt tag-cr">X</span></div>
+      </div>
+
+      <div class="je-caption"><span class="step">④</span> Recognize revenue (period-end)</div>
+      <div class="ledger">
+        <div class="ledger-head"><span>Account</span><span class="amt">Dr</span><span class="amt">Cr</span></div>
+        <div class="je-row"><span class="acct">Cost of Sales</span><span class="dr-amt tag-dr">X</span><span class="cr-amt"></span></div>
+        <div class="je-row"><span class="acct">CIP (gross profit plug)</span><span class="dr-amt tag-dr">X</span><span class="cr-amt"></span></div>
+        <div class="je-row cr"><span class="acct">Revenue</span><span class="dr-amt"></span><span class="cr-amt tag-cr">X</span></div>
+      </div>
+
+      <div class="je-caption"><span class="step">⑤</span> Completion — close out</div>
+      <div class="ledger">
+        <div class="ledger-head"><span>Account</span><span class="amt">Dr</span><span class="amt">Cr</span></div>
+        <div class="je-row"><span class="acct">Billings on CIP</span><span class="dr-amt tag-dr">X</span><span class="cr-amt"></span></div>
+        <div class="je-row cr"><span class="acct">Construction in Progress</span><span class="dr-amt"></span><span class="cr-amt tag-cr">X</span></div>
+      </div>
+    </div>
+
+    <!-- MECHANICS -->
+    <div class="card">
+      <div class="card-title"><span>Input Method &amp; Presentation</span><span class="tag">cumulative basis</span></div>
+
+      <div class="formula">
+        <b>% Complete</b> = <code>cumulative costs to date ÷ latest estimated total costs</code><br>
+        <b>Revenue to date</b> = <code>% complete × contract price</code><br>
+        <b>Current-year revenue</b> = <code>revenue to date − prior years</code>
+      </div>
+
+      <div class="je-caption">Worked Phase ④ — applying 20X1 schedule figures</div>
+      <div class="ledger">
+        <div class="ledger-head"><span>Account</span><span class="amt">Dr</span><span class="amt">Cr</span></div>
+        <div class="je-row"><span class="acct">Cost of Sales</span><span class="dr-amt">6,500,000</span><span class="cr-amt"></span></div>
+        <div class="je-row"><span class="acct">CIP (gross profit)</span><span class="dr-amt">722,222</span><span class="cr-amt"></span></div>
+        <div class="je-row cr"><span class="acct">Revenue</span><span class="dr-amt"></span><span class="cr-amt">7,222,222</span></div>
+      </div>
+      <div class="je-foot" style="margin-bottom:8px;">Cost of Sales = period costs; the CIP debit = period gross profit; Revenue = % × price for the period. (Cost is the $7,222,222 − $722,222 plug from the 20X1 row.)</div>
+
+      <div class="callout insight" style="margin-bottom:0;">
+        <div class="head">📐 Contract asset vs liability</div>
+        <b>Net position = CIP − Billings.</b> Positive → <b>Contract Asset</b> (current asset). Negative → <b>Contract Liability</b> (current liability). CIP carries both accumulated costs <em>and</em> recognized gross profit, so net CIP = revenue recognized to date.
+      </div>
+    </div>
+
+  </div>
+
+  <!-- KENNEDY SCHEDULE -->
+  <div class="card">
+    <div class="card-title"><span>Kennedy Construction — Input Method Summary</span><span class="tag">$40M contract · ties to $2.4M final profit</span></div>
+    <table class="sched">
+      <thead>
+        <tr><th>Year</th><th>% Complete</th><th>Revenue (yr)</th><th>Gross Profit (yr)</th><th>Cum. CIP</th><th>Cum. Billings</th><th>Net Position</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>20X1</td><td>18.06%</td><td>7,222,222</td><td>722,222</td><td>7,222,222</td><td>7,200,000</td><td class="asset">+22,222 Asset</td></tr>
+        <tr><td>20X2</td><td>67.21%</td><td>19,663,024</td><td>1,563,024</td><td>26,885,246</td><td>27,200,000</td><td class="liab">−314,754 Liab.</td></tr>
+        <tr><td>20X3</td><td>100%</td><td>13,114,754</td><td>114,754</td><td>40,000,000</td><td>40,000,000</td><td>0</td></tr>
+      </tbody>
+    </table>
+    <div class="je-foot">Gross profit totals 722,222 + 1,563,024 + 114,754 = <strong>$2,400,000</strong> (reduced from the original $4M estimate by cost overruns). <strong>ASPE:</strong> same mechanics under the <strong>percentage-of-completion method</strong>; use the <strong>completed-contract method</strong> only for a single act or when progress can't be reasonably estimated (recognize everything at completion).</div>
+  </div>
+
+  <!-- ============ § 4 ONEROUS ============ -->
+  <div class="section-label">
+    <span class="number">§ 04</span>
+    <span class="title">Onerous Contracts / Expected Losses</span>
+    <span class="rule"></span>
+    <span class="tag">IFRS &amp; ASPE 3400</span>
+  </div>
+
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title"><span>The Rule</span><span class="tag">recognize loss now</span></div>
+      <div class="je-foot" style="margin-top:0;">
+        When unavoidable costs of completing the contract <strong>exceed the economic benefits</strong> (total estimated costs &gt; contract revenue), recognize the <strong>entire expected loss immediately</strong> — regardless of % complete or whether work has started. Set up a <strong>Provision for Expected Losses</strong>.
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span>The Entry</span><span class="tag">illustration</span></div>
+      <div class="je-caption">Recognize the full expected loss</div>
+      <div class="ledger">
+        <div class="ledger-head"><span>Account</span><span class="amt">Dr</span><span class="amt">Cr</span></div>
+        <div class="je-row"><span class="acct">Expected Loss (Expense)</span><span class="dr-amt">697,122</span><span class="cr-amt"></span></div>
+        <div class="je-row cr"><span class="acct">Provision for Expected Losses</span><span class="dr-amt"></span><span class="cr-amt">697,122</span></div>
+      </div>
+      <div class="je-foot">The $697,122 is an illustrative figure — it is a separate scenario, not the profitable Kennedy contract above. Recompute it for your specific problem.</div>
+    </div>
+  </div>
+
+  <!-- ============ CHEAT STRIP ============ -->
+  <div class="section-label">
+    <span class="number">§ 05</span>
+    <span class="title">Which Entry? — One-Glance Triggers</span>
+    <span class="rule"></span>
+  </div>
+  <div class="cheat">
+    <div class="cheat-item"><div class="q">Warranty, can't buy separately</div><div class="a">1 P.O. → <code>Dr Warranty Expense / Cr Warranty Provision</code></div></div>
+    <div class="cheat-item"><div class="q">Warranty sold separately</div><div class="a">2 P.O.s → allocate SSP; <code>Cr Unearned Service Revenue</code>, earn over time</div></div>
+    <div class="cheat-item"><div class="q">Probable + estimable obligation</div><div class="a">Provision → <code>Dr Expense / Cr Provision</code>; settle vs the provision</div></div>
+    <div class="cheat-item"><div class="q">Possible (not probable)</div><div class="a">No entry → <b>disclose</b> contingent liability only</div></div>
+    <div class="cheat-item"><div class="q">Customer controls asset as built</div><div class="a">Over time → run the 5-phase CIP / Billings sequence</div></div>
+    <div class="cheat-item"><div class="q">Total cost &gt; contract revenue</div><div class="a">Onerous → <code>Dr Expected Loss / Cr Provision</code> in full, now</div></div>
+  </div>
+
+  <!-- ============ SELF TEST ============ -->
+  <details class="test">
+    <summary>▶ Active recall — name the entry (cover the answers)</summary>
+    <ol>
+      <li>A product sold with a 2-year warranty that customers <em>cannot</em> buy separately. What entry, if any, relates to the warranty at sale? <span class="ans">→ Dr Warranty Expense / Cr Warranty Provision (best-estimate amount); the product revenue is recognized in full.</span></li>
+      <li>You're told a lawsuit loss is "possible but not probable," estimable at $2M. Entry? <span class="ans">→ No journal entry. Disclose a contingent liability.</span></li>
+      <li>Period-end on an over-time contract: which account absorbs the period's gross profit, and is it debited or credited? <span class="ans">→ CIP, debited (alongside Dr Cost of Sales, Cr Revenue).</span></li>
+      <li>Cumulative CIP $26.9M vs cumulative Billings $27.2M. Asset or liability, and how much? <span class="ans">→ Contract liability of ~$314,754 (Billings exceed CIP).</span></li>
+      <li>IFRS range $5M–$6M with no better estimate within it — what amount do you provide, and how does ASPE differ? <span class="ans">→ IFRS $5.5M (midpoint); ASPE $5M (minimum of the range).</span></li>
+    </ol>
+  </details>
+
+  <!-- ============ VERIFICATION PASS ============ -->
+  <div class="section-label">
+    <span class="number">✅</span>
+    <span class="title">Verification Pass</span>
+    <span class="rule"></span>
+    <span class="tag">check before relying</span>
+  </div>
+  <table class="verify">
+    <thead>
+      <tr><th style="width:34%;">Item</th><th style="width:14%;">Status</th><th>Action</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Warranty example unit counts</td>
+        <td class="st qq">❓ Inconsistent</td>
+        <td>The assurance illustration uses 100 units / $50,000; the service illustration implies 150 units / $90,000. They're presented as one P4-28 but use different quantities — confirm the exact facts and numbers against your problem set.</td>
+      </tr>
+      <tr>
+        <td>Onerous loss = $697,122</td>
+        <td class="st om">⛔ Illustrative only</td>
+        <td>Does not tie to the profitable Kennedy schedule; it's a separate scenario. Recompute for the specific contract you're given.</td>
+      </tr>
+      <tr>
+        <td>Kennedy schedule figures</td>
+        <td class="st ok">✅ Internally consistent</td>
+        <td>I verified each year ties out and the gross profit sums to $2.4M. Still confirm against your solution, since the inputs are problem-specific.</td>
+      </tr>
+      <tr>
+        <td>Range rules: IFRS midpoint / ASPE minimum</td>
+        <td class="st qq">❓ From your reference</td>
+        <td>Your exam appendix states measurement loosely ("reliable / reasonable estimate") and doesn't restate the midpoint-vs-minimum convention. Confirm these against your lecture notes.</td>
+      </tr>
+      <tr>
+        <td>"Expected value" vs "most likely"</td>
+        <td class="st qq">❓ Keep contexts separate</td>
+        <td>IFRS 15 uses expected value vs most-likely to estimate <em>variable consideration</em> (transaction price). IAS 37 uses best estimate (expected value / midpoint) to measure a <em>provision</em>. Don't mix the two.</td>
+      </tr>
+      <tr>
+        <td>All journal entry structures</td>
+        <td class="st ok">✅ From your materials</td>
+        <td>Account names and entry forms are taken directly from your uploaded reference and the exam appendix. Figures are reproduced as given.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="footer">
+    <div>AFM 291 · Midterm 1</div>
+    <div class="center">Frame the issue → then post the entry</div>
+    <div>Journal Entry Reference · Rev. 1</div>
+  </footer>
+
+</div>
+
+
+
+<a id="__rb-pill" href="afm291.html">&#8592; The vault</a>
+<script>
+(function(){
+  var p=document.getElementById('__rb-pill'); if(!p) return;
+  var t=false;
+  function run(){ t=false;
+    p.classList.toggle('__on',(window.scrollY||document.documentElement.scrollTop)>420); }
+  function q(){ if(!t){ t=true; requestAnimationFrame(run); } }
+  addEventListener('scroll',q,{passive:true}); run();
+})();
+</script>
+</body>
+</html>

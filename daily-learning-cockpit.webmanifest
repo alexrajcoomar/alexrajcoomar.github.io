@@ -1,0 +1,14 @@
+{
+  "name": "Daily Learning Cockpit",
+  "short_name": "Cockpit",
+  "description": "Prediction log, spaced rota, calibration instruments and a reading room — transcribed from six adversarial research files. 100% offline.",
+  "start_url": "./daily-learning-cockpit.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f9f9f7",
+  "theme_color": "#2a78d6",
+  "icons": [
+    { "src": "daily-learning-cockpit-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "daily-learning-cockpit-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}

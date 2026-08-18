@@ -1,0 +1,1548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="description" content="A single visual reference for the macro models: what each diagram shows, which curve moves, and what it means.">
+<meta property="og:title" content="ECON 102 Master Visual Reference — Every model in one place">
+<meta property="og:description" content="A single visual reference for the macro models: what each diagram shows, which curve moves, and what it means.">
+<meta property="og:type" content="article">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ECON 102 — Master Visual Reference</title>
+<style>
+:root{
+  color-scheme: light;
+  --bg:#fcfcfb; --panel:#f4f4f2; --panel2:#eeeeeb;
+  --ink-1:#0b0b0b; --ink-2:#52514e; --ink-3:#8b8a85; --ink-4:#c9c8c3; --line:#dcdbd6;
+  --s1:#2a78d6;  /* supply family */
+  --s2:#eb6834;  /* demand family */
+  --s3:#1baf7a;  /* outcome / annotation */
+  --flag:#8b1a1a; --flag-bg:#fbecec;
+  --gold:#8a6300; --gold-bg:#fdf5e4;
+}
+@media (prefers-color-scheme: dark){
+  :root:where(:not([data-theme="light"])){
+    color-scheme: dark;
+    --bg:#1a1a19; --panel:#232322; --panel2:#2b2b29;
+    --ink-1:#ffffff; --ink-2:#c3c2b7; --ink-3:#8d8c84; --ink-4:#4a4a46; --line:#33332f;
+    --s1:#3987e5; --s2:#d95926; --s3:#199e70;
+    --flag:#f08a8a; --flag-bg:#361c1c;
+    --gold:#e3ab5c; --gold-bg:#2f2513;
+  }
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;padding:38px 26px 90px;background:var(--bg);color:var(--ink-1);
+  font:16px/1.62 -apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Helvetica,Arial,sans-serif;
+  -webkit-font-smoothing:antialiased}
+.wrap{max-width:960px;margin:0 auto}
+
+/* ---------- masthead ---------- */
+.mast{border-bottom:3px solid var(--ink-1);padding-bottom:16px;margin-bottom:26px}
+h1{font-size:29px;margin:0 0 5px;letter-spacing:-.025em}
+.mast p{margin:0;color:var(--ink-2);font-size:13.5px}
+.thesis{background:var(--panel);border-left:4px solid var(--s1);border-radius:0 10px 10px 0;
+  padding:16px 20px;margin:22px 0 30px;font-size:15.5px}
+.thesis b{display:block;font-size:10.5px;letter-spacing:.11em;text-transform:uppercase;
+  color:var(--ink-2);margin-bottom:5px}
+
+/* ---------- nav ---------- */
+nav{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px 20px;margin-bottom:34px}
+nav .nh{font-size:10.5px;letter-spacing:.11em;text-transform:uppercase;color:var(--ink-2);
+  font-weight:700;margin-bottom:9px}
+nav ol{margin:0;padding-left:20px;columns:2;column-gap:32px;font-size:14px}
+nav li{margin-bottom:4px;break-inside:avoid}
+nav a{color:var(--ink-1);text-decoration:none;border-bottom:1px solid var(--ink-4)}
+nav a:hover{border-color:var(--s1);color:var(--s1)}
+
+/* ---------- structure ---------- */
+section{margin-bottom:12px;padding-top:14px}
+h2{font-size:20px;margin:44px 0 4px;letter-spacing:-.015em;
+   border-bottom:2px solid var(--ink-1);padding-bottom:7px}
+h2 .pt{font-size:11px;letter-spacing:.11em;text-transform:uppercase;color:var(--ink-2);
+   display:block;font-weight:700;margin-bottom:3px;border:0}
+h3{font-size:16.5px;margin:30px 0 9px}
+h3 .c,.c{font-variant-numeric:tabular-nums;color:var(--ink-3);font-size:.8em;font-weight:400}
+p{margin:0 0 12px}
+
+/* ---------- code / formulas ---------- */
+pre{background:var(--panel);border:1px solid var(--line);border-radius:9px;padding:14px 17px;
+  overflow-x:auto;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  font-size:13.4px;line-height:1.72;margin:0 0 14px}
+code,.m{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.94em}
+.eq{background:var(--panel2);border:1px solid var(--line);border-radius:9px;
+  padding:13px 17px;margin:0 0 14px;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  font-size:14.5px;text-align:center;font-weight:600}
+
+/* ---------- callouts ---------- */
+.warn,.gold,.core{border-radius:0 9px 9px 0;padding:13px 18px;margin:0 0 15px;font-size:14.8px}
+.warn{border-left:4px solid var(--flag);background:var(--flag-bg)}
+.warn b{color:var(--flag)}
+.gold{border-left:4px solid var(--gold);background:var(--gold-bg)}
+.gold b{color:var(--gold)}
+.core{border-left:4px solid var(--s1);background:var(--panel)}
+.core b{color:var(--s1)}
+
+/* ---------- self test ---------- */
+.rv{background:var(--ink-4);color:transparent;border-radius:4px;cursor:pointer;
+  padding:0 4px;transition:.12s;user-select:none;box-decoration-break:clone;
+  -webkit-box-decoration-break:clone}
+.rv:hover{background:var(--ink-3)}
+.rv.on{background:transparent;color:inherit;box-shadow:inset 0 -2px 0 var(--s3);cursor:default}
+.qbox{border:1px dashed var(--s3);border-radius:9px;padding:13px 17px;margin:0 0 15px;
+  background:var(--panel);font-size:14.8px}
+.qbox .qt{font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--s3);
+  font-weight:700;margin-bottom:6px}
+.hint{font-size:12.5px;color:var(--ink-3);margin-top:9px}
+
+/* ---------- flow maps & new figures ---------- */
+.nd{fill:var(--panel2);stroke:var(--line);stroke-width:1.2}
+.ndp{fill:var(--panel2);stroke:var(--s3);stroke-width:2}
+.ndd{fill:var(--panel2);stroke:var(--s3);stroke-width:1.6;stroke-dasharray:6 4}
+.flow{stroke:var(--ink-3);stroke-width:1.6;fill:none}
+.tn{fill:var(--ink-1);font-size:11px}
+.tnb{fill:var(--ink-1);font-size:11px;font-weight:700}
+.tt{fill:var(--ink-2);font-size:10px}
+.lanetag{fill:var(--ink-3);font-size:9.5px;letter-spacing:.08em;font-weight:700}
+
+/* ---------- reveal controls ---------- */
+.ctl{position:fixed;right:16px;bottom:16px;display:flex;gap:8px;z-index:60}
+.ctl button{background:var(--panel);border:1px solid var(--line);border-radius:8px;
+  padding:8px 13px;color:var(--ink-1);font:600 12.5px/1 -apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Helvetica,Arial,sans-serif;
+  cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,.08)}
+.ctl button:hover{border-color:var(--s1);color:var(--s1)}
+
+/* ---------- self-test numbering ---------- */
+.wrap{counter-reset:st}
+.qbox{counter-increment:st}
+.qbox .qt::after{content:" #" counter(st)}
+
+/* ---------- mantras ---------- */
+.chips{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:0 0 18px}
+.chip{border:1.5px solid var(--ink-1);border-radius:9px;padding:10px 12px;font-size:13px;
+  font-weight:700;text-align:center;background:var(--panel)}
+.chip small{display:block;font-weight:400;color:var(--ink-3);font-size:10.5px;margin-top:4px}
+
+/* ---------- FX anchor & money pipeline ---------- */
+.fxbox{border:2px solid var(--ink-1);border-radius:10px;padding:15px 18px;margin:0 0 15px;
+  background:var(--panel);text-align:center}
+.fxdef{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:14.5px;
+  font-weight:700;margin-bottom:10px}
+.fxrow{font-size:15px;font-weight:600;margin:6px 0}
+.pipe{display:flex;gap:12px;align-items:stretch;flex-wrap:wrap;margin:0 0 10px}
+.pcard{flex:1;min-width:170px;border:1px solid var(--line);border-radius:9px;background:var(--panel);
+  padding:12px 14px;font-size:13.5px;text-align:center}
+.pcard b{display:block;font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-2);margin-bottom:4px}
+.parrow{align-self:center;font-size:17px;color:var(--ink-3);font-weight:700;white-space:nowrap}
+.dials{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:0 0 15px}
+.dial{border:1px dashed var(--line);border-radius:8px;padding:9px 11px;font-size:12.5px;
+  text-align:center;color:var(--ink-2)}
+.dial b{display:block;color:var(--ink-1);font-size:14px;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+@media (max-width:760px){
+  .chips{grid-template-columns:1fr 1fr}
+  .dials{grid-template-columns:1fr}
+}
+@media print{.ctl{display:none}}
+
+/* ---------- tables ---------- */
+table{width:100%;border-collapse:collapse;font-size:14.3px;margin:0 0 16px}
+th{text-align:left;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2);
+  border-bottom:1.5px solid var(--line);padding:0 10px 7px 0;vertical-align:bottom}
+td{padding:9px 10px 9px 0;border-bottom:1px solid var(--line);vertical-align:top}
+td.n{color:var(--ink-2);font-size:13.3px}
+.up{color:var(--s3);font-weight:700} .dn{color:var(--s2);font-weight:700}
+.amb{color:var(--ink-2);font-weight:700;font-style:italic}
+
+/* ---------- figures ---------- */
+figure{margin:0 0 18px;border:1px solid var(--line);border-radius:12px;
+  background:var(--panel);padding:16px 16px 12px}
+figure.plain{background:transparent}
+figcaption{font-size:13px;color:var(--ink-2);margin-top:9px;line-height:1.55}
+figcaption b{color:var(--ink-1)}
+.figtitle{font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-2);
+  font-weight:700;margin-bottom:10px}
+.panels{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.panels.two{grid-template-columns:repeat(2,1fr)}
+svg{display:block;width:100%;height:auto;overflow:visible}
+figure > svg{max-width:520px;margin-left:auto;margin-right:auto}
+figure > svg.wide{max-width:760px}
+.ax{stroke:var(--ink-3);stroke-width:1.6;fill:none}
+.cs{stroke:var(--s1);stroke-width:2.2;fill:none;stroke-linecap:round}
+.cd{stroke:var(--s2);stroke-width:2.2;fill:none;stroke-linecap:round}
+.cn{stroke:var(--ink-2);stroke-width:2;fill:none;stroke-linecap:round}
+.dash{stroke-dasharray:7 4.5}
+.gl{stroke:var(--ink-4);stroke-width:1.1;fill:none;stroke-dasharray:3 3}
+.ann{stroke:var(--s3);stroke-width:1.9;fill:none}
+.annf{fill:var(--s3)}
+text{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Helvetica,Arial,sans-serif}
+.t{fill:var(--ink-1);font-size:11.5px}
+.ts{fill:var(--ink-2);font-size:10.5px}
+.tb{fill:var(--ink-1);font-size:12.5px;font-weight:700}
+.legend{display:flex;gap:18px;flex-wrap:wrap;font-size:12.5px;color:var(--ink-2);margin-bottom:12px}
+.legend i{display:inline-block;width:20px;height:0;border-top-width:2.4px;border-top-style:solid;
+  vertical-align:middle;margin-right:6px}
+.lg1{border-color:var(--s1)} .lg2{border-color:var(--s2)} .lg3{border-color:var(--s3)}
+.lgd{border-top-style:dashed !important;border-color:var(--ink-2)}
+
+footer{margin-top:52px;padding-top:18px;border-top:1px solid var(--line);
+  color:var(--ink-2);font-size:12.5px}
+
+@media (max-width:760px){
+  nav ol{columns:1}
+  .panels,.panels.two{grid-template-columns:1fr}
+}
+@media print{
+  :root{--bg:#fff;--panel:#f5f5f3;--panel2:#eee;--ink-1:#000;--ink-2:#3c3c3c;--ink-3:#6f6f6f;
+    --ink-4:#b8b8b8;--line:#bcbcbc;--s1:#12539b;--s2:#a83f18;--s3:#0d6a4a;
+    --flag:#7a0f0f;--flag-bg:#fbeded;--gold:#6d4e00;--gold-bg:#fbf4e3}
+  body{padding:0;font-size:10.6pt}
+  nav{display:none}
+  .rv{background:transparent !important;color:inherit !important;
+      box-shadow:inset 0 -1.5px 0 var(--s3) !important}
+  h2{margin-top:26px;page-break-after:avoid}
+  h3{page-break-after:avoid}
+  figure,pre,.eq,.qbox,.warn,.gold,.core,tr{break-inside:avoid;page-break-inside:avoid}
+  a{color:inherit;text-decoration:none}
+}
+</style>
+
+<style id="__mobile_fit">
+/* Added by the site build. These older documents pushed past the right edge of
+   a phone screen: long unbreakable strings widened the page, and a few wide
+   tables had no scroll container. This constrains both without touching the
+   layout on a laptop. */
+@media (max-width:48rem){
+  html,body{max-width:100%}
+  body{overflow-wrap:break-word}
+  table{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch;max-width:100%}
+  pre,code{overflow-x:auto;max-width:100%}
+  img,svg{max-width:100%;height:auto}
+}
+</style>
+</head>
+<body>
+<!-- injected by the site build: a way back into the site from a standalone
+     piece. A static bar at the top, so it is visible on arrival, and a pill
+     that appears once you have scrolled past it, so there is always a way out.
+     Self-contained, because these pages do not load the site stylesheet. -->
+<style id="__rb-style">
+#__rb{
+  box-sizing:border-box;display:flex;flex-wrap:wrap;align-items:center;gap:.6rem 1.25rem;
+  padding:.6rem clamp(1rem,4vw,2rem);border-bottom:1px solid #ddd9cf;background:#faf9f6;
+  font:500 13px/1.35 InterVar,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  color:#55524a;
+}
+#__rb a{color:#14509b;text-decoration:none;display:inline-flex;align-items:center;gap:.4rem}
+#__rb a:hover{text-decoration:underline}
+#__rb .__rb-home{font-weight:640;color:#16150f}
+#__rb .__rb-home i{font-style:normal;font-weight:400;color:#6f6c63}
+#__rb .__rb-right{margin-left:auto;display:flex;gap:1.1rem;flex-wrap:wrap}
+#__rb .__mark{
+  display:inline-grid;place-items:center;width:1.2rem;height:1.2rem;flex:none;
+  background:#16150f;color:#faf9f6;font-size:.72rem;font-weight:700;
+}
+#__rb-pill{
+  position:fixed;left:14px;bottom:14px;z-index:2147483000;
+  display:inline-flex;align-items:center;gap:.45rem;padding:.58rem .9rem;
+  background:rgba(22,21,15,.93);color:#faf9f6;text-decoration:none;border-radius:99px;
+  font:600 12.5px/1 InterVar,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  border:1px solid rgba(255,255,255,.16);box-shadow:0 6px 22px rgba(0,0,0,.28);
+  opacity:0;transform:translateY(6px);pointer-events:none;
+  transition:opacity .2s ease,transform .2s ease;
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+}
+#__rb-pill.__on{opacity:1;transform:none;pointer-events:auto}
+#__rb-pill:hover{background:#16150f;color:#fff}
+@media (prefers-color-scheme:dark){
+  #__rb{background:#131310;border-bottom-color:#2c2b24;color:#c0bcb1}
+  #__rb .__rb-home{color:#f7f5ef}
+  #__rb .__rb-home i{color:#948f85}
+  #__rb a{color:#85adea}
+  #__rb .__mark{background:#f7f5ef;color:#131310}
+  #__rb-pill{background:rgba(247,245,239,.95);color:#131310;border-color:rgba(0,0,0,.2)}
+  #__rb-pill:hover{background:#fff;color:#000}
+}
+@media (prefers-reduced-motion:reduce){#__rb-pill{transition:none}}
+@media print{#__rb,#__rb-pill{display:none !important}}
+</style>
+<div id="__rb">
+  <a class="__rb-home" href="index.html"><span class="__mark" aria-hidden="true">A</span>Alex Rajcoomar <i>portfolio</i></a>
+  <span class="__rb-right"><a href="coursework.html">Coursework</a><a href="library.html">All work</a></span>
+</div>
+
+<div class="wrap">
+
+<div class="mast">
+  <h1>ECON 102 — Master Visual Reference</h1>
+  <p>Introduction to Macroeconomics · University of Waterloo · Prof. Kate Rybczynski · built from the 338-slide deck (<span class="c">ECON102slides2026CompleteJan4.pdf</span>). PDF page = printed slide number.</p>
+</div>
+
+<div class="thesis">
+  <b>The whole course in one sentence</b>
+  Behaviour comes from <strong>objectives subject to constraints</strong>; <strong>curves</strong> come from behaviour;
+  <strong>markets</strong> come from curves; and the <strong>economy</strong> comes from markets that must agree with each other.
+</div>
+
+<div class="core">
+  <b>How to drill this.</b> Grey blocks like <span class="rv">this one</span> are hidden answers — click to reveal
+  (buttons bottom-right reveal or re-hide everything). <strong>Pass 1:</strong> read a part, work its numbered
+  SELF-TESTs on paper before revealing. <strong>Pass 2</strong> (next day): redo only the self-tests, then run the
+  Gauntlet at the end of Part 9. <strong>Pass 3:</strong> reproduce Maps 1–2 and Figures 2–6 on blank paper — the
+  exam is a blank page. Printing reveals every answer, so print only after drilling.
+</div>
+
+<nav>
+  <div class="nh">Contents</div>
+  <ol>
+    <li><a href="#p1">Foundations — accounting &amp; measurement</a></li>
+    <li><a href="#p2">Foundations — production &amp; the labour market</a></li>
+    <li><a href="#p3">Saving, investment &amp; the goods market</a></li>
+    <li><a href="#p4">Money, the asset market &amp; inflation</a></li>
+    <li><a href="#p5">The three markets together — the analytical core</a></li>
+    <li><a href="#p6">Trends, cycles, growth &amp; inequality</a></li>
+    <li><a href="#p7">Monetary &amp; fiscal policy</a></li>
+    <li><a href="#p8">International, exchange rates &amp; BoP</a></li>
+    <li><a href="#p9">Graphing technique &amp; exam craft</a></li>
+    <li><a href="#p10">Errata — flag these</a></li>
+  </ol>
+</nav>
+
+<div class="legend">
+  <span><i class="lg1"></i>Supply-family curve (N<sup>S</sup>, S<sup>D</sup>, M/P)</span>
+  <span><i class="lg2"></i>Demand-family curve (N<sup>D</sup>, I<sup>D</sup>, L, NX<sup>D</sup>)</span>
+  <span><i class="lg3"></i>Outcome / annotation</span>
+  <span><i class="lgd lg1"></i>Dashed = position <em>after</em> the shock</span>
+</div>
+
+<!-- ============================================================ 1 -->
+<section id="p1">
+<h2><span class="pt">Part 1 · Sections I–II</span>Foundations — accounting &amp; measurement</h2>
+
+<h3>1.1 The national accounts identities <span class="c">[17–33]</span></h3>
+<pre>GDP = C + I + G + NX                        [17]
+Production = Expenditure = Income           [21]   ← true by definition
+GNP = GDP + NFP                             [25]
+Yd  = Y + NFP + TR + INT − T                [26]
+S(pvt)  = Yd − C
+S(govt) = (T − TR − INT) − G                [27]
+S = S(pvt) + S(govt) = Y + NFP − C − G      [28]
+S = I + NX + NFP = I + CA                   [29–30]
+National wealth = domestic physical assets + net foreign assets   [33]</pre>
+
+<div class="core">
+  <b>Why domestic financial assets vanish from national wealth.</b> Your deposit is your asset and the
+  bank's liability; both parties are residents, so the entries cancel on aggregation. What survives is
+  real things located here plus net claims on foreigners. <strong>A country cannot get richer by lending
+  to itself.</strong>
+</div>
+
+<h3>1.2 Stock vs flow <span class="c">[32]</span></h3>
+<p><strong>Flow</strong> = calculated <em>over</em> a period. <strong>Stock</strong> = calculated <em>at</em> a point.
+A flow is the rate at which a stock changes.</p>
+<table>
+<thead><tr><th>Flow</th><th>Stock</th><th>Where</th></tr></thead>
+<tbody>
+<tr><td>Saving</td><td>Wealth</td><td class="n">The slide-32 title pair</td></tr>
+<tr><td>Deficit</td><td>Debt</td><td class="n">Q10(c): deficit yr10 = <strong>$4</strong>, debt yr5 = <strong>$20</strong></td></tr>
+<tr><td>Investment (I)</td><td>Capital stock (K)</td><td class="n">I<sup>D</sup> = K* − K<sub>t</sub> + dK<sub>t</sub> [149]</td></tr>
+<tr><td>Current account</td><td>Net foreign assets</td><td class="n">CA builds the NFA stock [33, 266]</td></tr>
+<tr><td>Matches / separations</td><td>E and U</td><td class="n">M(U,V) = δE [113–114]</td></tr>
+<tr><td>GDP</td><td>—</td><td class="n">"during a fixed period of time" [12]</td></tr>
+</tbody>
+</table>
+
+<h3>1.3 Prices, inflation, real vs nominal <span class="c">[34–48]</span></h3>
+<pre>π(t+1) = [P(t+1) − P(t)] / P(t)             [35]
+GDP deflator = nominal GDP / real GDP       [36]
+Laspeyres = GDP(t+1) at t prices   ÷ GDP(t) at t prices      [41]
+Paasche   = GDP(t+1) at t+1 prices ÷ GDP(t) at t+1 prices    [41]
+Fisher    = (Laspeyres × Paasche)^½ ; chain by multiplying   [41–42]
+(1+r) = (1+i)/(1+π)  ;  r ≈ i − π  ;  expected r ≈ i − πᵉ    [47–48]
+r(after tax) = (1 − t)·i − πᵉ                                [132]</pre>
+
+<div class="warn"><b>Denominator trap.</b> π divides by <strong>P(t)</strong>, the <em>earlier</em> period.
+Q11: (1.20 − 1.15)/1.15 = <strong>4.35%</strong>. Dividing by 1.20 gives 4.17% — wrong. No calculators, so no safety net.</div>
+
+<p><strong>Real vs nominal is one operation — divide by P</strong> [34]:</p>
+<table>
+<thead><tr><th>Concept</th><th>Nominal</th><th>Real</th><th>Link</th></tr></thead>
+<tbody>
+<tr><td>Output</td><td class="m">nominal GDP</td><td class="m">real GDP</td><td class="n">deflator = nom ÷ real [36]</td></tr>
+<tr><td>Wage</td><td class="m">W</td><td class="m">w = W/P</td><td class="n">hiring rule MPN = w [80–83]</td></tr>
+<tr><td>Interest</td><td class="m">i</td><td class="m">r</td><td class="n">(1+r) = (1+i)/(1+π) [47]</td></tr>
+<tr><td>Exchange rate</td><td class="m">e_nom</td><td class="m">e = e_nom·P/P_for</td><td class="n">[280–281]</td></tr>
+<tr><td>Money</td><td class="m">M</td><td class="m">M/P</td><td class="n">M/P = L(Y, r+πᵉ) [165]</td></tr>
+</tbody>
+</table>
+
+<div class="qbox">
+  <div class="qt">Self-test</div>
+  Nominal GDP falls 21% while the single good's price falls 11%. Is real GDP growth base-dependent?<br>
+  → <span class="rv">No — with one good, real growth is −11.1% on <em>any</em> base year. Q23. And note the published answer box says −11.1% for <em>nominal</em> growth; the correct nominal figure is −21%.</span>
+</div>
+
+<div class="gold"><b>GDP's two-sided critique</b> — both directions are examinable.
+<strong>Under</strong>-estimates: home production, the underground economy [Q7, Q8].
+<strong>Over</strong>-estimates: remedial/defensive spending — paying to clean up damage counts as output [Q7b, Q8b].
+StatCan puts unpaid household work at roughly <strong>25%–37% of GDP</strong> (2019). Cite the percentages, not the dollar figure.</div>
+</section>
+
+<!-- ============================================================ 2 -->
+<section id="p2">
+<h2><span class="pt">Part 2 · Sections III–IV</span>Foundations — production &amp; the labour market</h2>
+
+<h3>2.1 The production function <span class="c">[67–75]</span></h3>
+<div class="eq">Y = F(A, K, N) &nbsp;&nbsp;often&nbsp;&nbsp; Y = A · F(K, N) = A·K<sup>α</sup>·N<sup>1−α</sup></div>
+<pre>MPN = ΔY/ΔN = slope of the production function     [69–70]
+MPK = ΔY/ΔK                                        [69]
+A   = Y / F(K,N)     ← A is a RESIDUAL             [71]
+α = capital owners' income share ; 1−α = labour's  [72]</pre>
+
+<figure>
+  <div class="figtitle">Figure 1 · Production function and MPN <span class="c">[68–70]</span></div>
+  <svg viewBox="0 0 340 235" role="img" aria-label="Concave production function with a tangent line showing the marginal product of labour">
+    <line class="ax" x1="46" y1="18" x2="46" y2="205"/>
+    <line class="ax" x1="46" y1="205" x2="320" y2="205"/>
+    <text class="tb" x="30" y="20">Y</text>
+    <text class="tb" x="316" y="223">N</text>
+    <path class="cs" d="M 46 205 C 96 125, 166 80, 306 60"/>
+    <text class="t" x="240" y="48">Y = A·F(K,N)</text>
+    <line class="ann" x1="69" y1="161" x2="189" y2="74"/>
+    <circle class="annf" cx="119" cy="125" r="3.6"/>
+    <text class="t" x="126" y="112" fill="var(--s3)">slope = MPN(N₁)</text>
+    <line class="gl" x1="119" y1="125" x2="119" y2="205"/>
+    <line class="gl" x1="46" y1="125" x2="119" y2="125"/>
+    <text class="ts" x="112" y="219">N₁</text>
+    <text class="ts" x="30" y="129">Y₁</text>
+    <text class="ts" x="200" y="200">MPN falls as N rises → diminishing returns</text>
+  </svg>
+  <figcaption><b>MPN is the slope, not the height.</b> The curve flattens as N rises, so MPN falls — diminishing
+  returns [70]. A higher <b>A</b> (or K) raises the slope at <em>every</em> N, which is why a productivity shock
+  shifts labour demand [74].</figcaption>
+</figure>
+
+<div class="qbox">
+  <div class="qt">Self-test</div>
+  TFP growth is computed assuming Y = AKN<sup>0.5</sup> when the truth is Y = AK<sup>0.5</sup>N<sup>0.5</sup>. Does the error matter?<br>
+  → <span class="rv">Enormously — Q16 gives 300% vs 900%. Slide 72: "this calculation method will be incorrect if we are wrong about the functional form." A is a residual, so every specification error lands in A.</span>
+</div>
+
+<h3>2.2 Labour demand and the hiring rule <span class="c">[80–99]</span></h3>
+<pre>MRPN = MPN × P ;  hire until MRPN = W  ⇔  MPN = w = W/P   [80–83]
+  payroll tax τ on FIRMS:   MPN = (1+τ)w      ← hits MC, not MPN
+  income tax t on WORKERS:  N^S = (1−t)w                  [99]
+FE = Y* = A·F(K, N*)                                      [105]</pre>
+
+<div class="qbox">
+  <div class="qt">Self-test</div>
+  MPN = 30 − ¼N and N^S = 2w. Derive labour demand and clear the market.<br>
+  → <span class="rv">Hiring rule MPN = w ⇒ w = 30 − ¼N ⇒ <strong>N^D = 120 − 4w</strong>. Clear: 2w = 120 − 4w ⇒ 6w = 120 ⇒ <strong>w* = 20, N* = 40</strong> [midterm Q3b]. To graph it, plot the INVERSE: w = 30 − N/4 [88, 312].</span>
+</div>
+
+<figure>
+  <div class="figtitle">Figure 2 · Labour market — market clearing vs sticky wage <span class="c">[88, 106–108]</span></div>
+  <div class="panels two">
+    <svg viewBox="0 0 320 235" role="img" aria-label="Market clearing labour market with supply and demand intersecting at w star and N star">
+      <text class="tb" x="8" y="14">A · Market clearing</text>
+      <line class="ax" x1="52" y1="26" x2="52" y2="205"/>
+      <line class="ax" x1="52" y1="205" x2="300" y2="205"/>
+      <text class="tb" x="36" y="26">w</text><text class="tb" x="298" y="223">N</text>
+      <line class="cs" x1="70" y1="190" x2="285" y2="47"/>
+      <text class="t" x="258" y="40">N<tspan baseline-shift="super" font-size="8">S</tspan></text>
+      <line class="cd" x1="70" y1="58" x2="285" y2="186"/>
+      <text class="t" x="258" y="198">N<tspan baseline-shift="super" font-size="8">D</tspan></text>
+      <circle class="annf" cx="173" cy="121" r="4"/>
+      <line class="gl" x1="52" y1="121" x2="173" y2="121"/>
+      <line class="gl" x1="173" y1="121" x2="173" y2="205"/>
+      <text class="ts" x="33" y="125">w*</text><text class="ts" x="166" y="219">N*</text>
+      <text class="ts" x="56" y="234" fill="var(--s3)">N<tspan baseline-shift="super" font-size="8">S</tspan> = N<tspan baseline-shift="super" font-size="8">D</tspan> by construction ⇒ U = 0, always</text>
+    </svg>
+    <svg viewBox="0 0 320 235" role="img" aria-label="Sticky wage labour market: demand shifts left, wage stuck, gap between supply and demand is unemployment">
+      <text class="tb" x="8" y="14">B · Sticky wage</text>
+      <line class="ax" x1="52" y1="26" x2="52" y2="205"/>
+      <line class="ax" x1="52" y1="205" x2="300" y2="205"/>
+      <text class="tb" x="36" y="26">w</text><text class="tb" x="298" y="223">N</text>
+      <line class="cs" x1="70" y1="190" x2="285" y2="47"/>
+      <text class="t" x="258" y="40">N<tspan baseline-shift="super" font-size="8">S</tspan></text>
+      <line class="cd" x1="70" y1="58" x2="285" y2="186"/>
+      <text class="t" x="256" y="200">N₁<tspan baseline-shift="super" font-size="8">D</tspan></text>
+      <line class="cd dash" x1="70" y1="93" x2="240" y2="194"/>
+      <text class="t" x="188" y="180">N₂<tspan baseline-shift="super" font-size="8">D</tspan></text>
+      <line class="gl" x1="52" y1="121" x2="180" y2="121"/>
+      <text class="ts" x="20" y="125">w stuck</text>
+      <line class="ann" x1="118" y1="107" x2="173" y2="107"/>
+      <line class="ann" x1="118" y1="103" x2="118" y2="111"/>
+      <line class="ann" x1="173" y1="103" x2="173" y2="111"/>
+      <text class="ts" x="106" y="97" fill="var(--s3)">unemployment</text>
+      <circle class="annf" cx="118" cy="121" r="3.4"/><circle class="annf" cx="173" cy="121" r="3.4"/>
+      <line class="gl" x1="118" y1="121" x2="118" y2="205"/>
+      <line class="gl" x1="173" y1="121" x2="173" y2="205"/>
+      <text class="ts" x="108" y="219">N<tspan baseline-shift="super" font-size="8">D</tspan></text>
+      <text class="ts" x="164" y="219">N<tspan baseline-shift="super" font-size="8">S</tspan></text>
+      <text class="ts" x="56" y="234" fill="var(--s3)">the horizontal gap at the stuck wage IS the unemployment</text>
+    </svg>
+  </div>
+  <figcaption><b>Unemployment = N<sup>S</sup> − N<sup>D</sup> at the prevailing wage</b> [106]. In panel A the two are equal by
+  construction, so unemployment is <em>always zero</em> — you cannot answer an unemployment question inside that
+  framework. In panel B the wage is stuck above the new clearing level and the horizontal gap is the unemployment.
+  <b>Wages stick only when above w*</b> — wages below w* are not stuck [107].</figcaption>
+</figure>
+
+<pre>Slide 108 worked:  N^S = 3w, wage stuck at w = 10, N^D falls to 28 − w
+                   N^S = 3(10) = 30 ;  N^D = 28 − 10 = 18
+                   Unemployment = 30 − 18 = 12</pre>
+
+<div class="gold"><b>Why wages stick</b> [109]: institutional factors — wage floors, negotiated contracts — plus
+<strong>efficiency wages</strong>: firms pay above clearing to cut turnover, attract and retain better workers, and raise effort.
+Cross-link: efficiency wages need wage <em>dispersion</em> to work, which is why slide 245 says some inequality may be
+necessary to motivate effort.</div>
+
+<h3>2.3 Search &amp; matching <span class="c">[110–115]</span></h3>
+<div class="eq">M(U, V) = δE &nbsp;&nbsp;·&nbsp;&nbsp; U* = LF − E*</div>
+<p>Solve for a <strong>steady state</strong>, not an equilibrium point: flows in = flows out. Free entry drives the
+expected value of posting a job to zero; the wage comes from a bargaining assumption [114].</p>
+<pre>A ↓ → match productivity ↓ → value of posting a job ↓
+    → fewer vacancies → lower matching rate → E* ↓, U* ↑        [115]</pre>
+<p>Because matching takes time and matches dissolve, <strong>there is always some unemployment</strong> [110, 112].
+This is a pure stock–flow model: U and E are stocks, M(U,V) and δE are flows.</p>
+
+<h3>2.4 Labour market measures &amp; unemployment types <span class="c">[116–122]</span></h3>
+<pre>LF = Employed + Unemployed
+Participation rate      = LF ÷ working-age population
+Unemployment rate (R4)  = Unemployed ÷ LF
+Employment ratio        = Employed ÷ working-age population</pre>
+<p><strong>Types</strong> [117]: frictional (brief, between jobs) · structural (longer, capability or demand-shift) ·
+cyclical (fluctuation around FE). <strong>Natural rate = frictional + structural</strong> — cyclical excluded.</p>
+<p><strong>Measures</strong> [119]: R1 (≥1 yr) · R2 (≥3 mo) · R3 (US definition) · <strong>R4 official</strong> ·
+R5 (+discouraged) · R7 (+involuntary part-time). Measurement issues [118]: discouraged workers, underemployment, long-term unemployment.</p>
+<p><strong>Four drivers of changes in unemployment</strong> [122]: 1 participation-rate changes · 2 structural change ·
+3 policy changes affecting incentives · 4 <strong>hysteresis</strong> (skills and mismatch; insider/outsider theory).</p>
+
+<div class="qbox">
+  <div class="qt">Self-test</div>
+  Unemployment stays at 100 people but the measured rate rises from 10% to 11.1%. What happened?<br>
+  → <span class="rv">The labour force shrank. Q23(f). The rate is U ÷ LF — a smaller denominator raises the rate with no change in the number unemployed. This is driver 1 on slide 122.</span>
+</div>
+</section>
+
+<!-- ============================================================ 3 -->
+<section id="p3">
+<h2><span class="pt">Part 3 · Section V</span>Saving, investment &amp; the goods market</h2>
+
+<pre>S^D = Y − C^D − G            (closed economy)        [126]
+uc  = (r + d) · p_k          user cost of capital    [141]
+Choose K* where MPK^f = uc                           [142]
+  with capital tax τ:  uc = (1−τ)MPK^f  ⇔  uc/(1−τ) = MPK^f   [146]
+I^D = K* − K_t + dK_t                                [149]
+Goods market:  Y = C^D + I^D + G  ⇔  S^D = I^D       [153–154]</pre>
+
+<figure>
+  <div class="figtitle">Figure 3 · Goods market equilibrium <span class="c">[153–154]</span></div>
+  <svg viewBox="0 0 340 235" role="img" aria-label="Goods market with upward saving demand and downward investment demand intersecting at r star">
+    <line class="ax" x1="52" y1="24" x2="52" y2="205"/>
+    <line class="ax" x1="52" y1="205" x2="318" y2="205"/>
+    <text class="tb" x="36" y="24">r</text><text class="tb" x="296" y="223">S, I</text>
+    <line class="cs" x1="70" y1="185" x2="290" y2="52"/>
+    <text class="t" x="262" y="45">S<tspan baseline-shift="super" font-size="8">D</tspan></text>
+    <line class="cd" x1="70" y1="58" x2="290" y2="182"/>
+    <text class="t" x="264" y="194">I<tspan baseline-shift="super" font-size="8">D</tspan></text>
+    <circle class="annf" cx="178" cy="120" r="4"/>
+    <line class="gl" x1="52" y1="120" x2="178" y2="120"/>
+    <line class="gl" x1="178" y1="120" x2="178" y2="205"/>
+    <text class="ts" x="34" y="124">r*</text><text class="ts" x="168" y="219">S*=I*</text>
+  </svg>
+  <figcaption><b>The real interest rate clears the goods market.</b> S<sup>D</sup> slopes up (higher r rewards saving),
+  I<sup>D</sup> slopes down (higher r raises the user cost). <b>G enters through S<sup>D</sup> = Y − C − G</b>, so higher G
+  shifts saving <em>left</em>. Open economy: the same picture becomes NX = S<sup>D</sup> − I<sup>D</sup> [274].</figcaption>
+</figure>
+
+<table>
+<thead><tr><th>Shock</th><th>Which curve</th><th>Direction</th><th>r*</th><th>Q</th></tr></thead>
+<tbody>
+<tr><td>Y falls</td><td>S<sup>D</sup></td><td>left</td><td class="up">↑</td><td class="n">Q30(a)</td></tr>
+<tr><td>Expected future Y falls</td><td>S<sup>D</sup></td><td>right</td><td class="dn">↓</td><td class="n">Q30(b)</td></tr>
+<tr><td>G falls</td><td>S<sup>D</sup></td><td>right</td><td class="dn">↓</td><td class="n">Q30(c)</td></tr>
+<tr><td>MPK<sup>f</sup> rises</td><td>I<sup>D</sup></td><td>right</td><td class="up">↑</td><td class="n">Q31(a)</td></tr>
+<tr><td>Capital tax τ falls</td><td>I<sup>D</sup></td><td>right</td><td class="up">↑</td><td class="n">Q31(b)</td></tr>
+<tr><td>p<sub>k</sub> rises (uc ↑)</td><td>I<sup>D</sup></td><td>left</td><td class="dn">↓</td><td class="n">Q32(b)</td></tr>
+</tbody>
+</table>
+
+<div class="warn"><b>"Temporary" is a keyword.</b> A <em>temporary</em> rise in MPK does <strong>not</strong> touch MPK<sup>f</sup>,
+so K* is unchanged and I<sup>D</sup> does not shift for that reason. The p<sub>k</sub> channel still operates. Q32(b) turns entirely on this.</div>
+
+<div class="qbox">
+  <div class="qt">Self-test</div>
+  Closed economy, S<sup>D</sup> = 400 + 175r with G = 0. Find r*. Then set G = 100.<br>
+  → <span class="rv">Q33: r* = 100/425 = <strong>0.235</strong>. With G = 100, S<sup>D</sup> = 300 + 175r and r* = <strong>0.471</strong>. Higher G ⇒ less saving at every r ⇒ r* rises. Exactly the mechanism in Part 5.</span>
+</div>
+</section>
+
+<!-- ============================================================ 4 -->
+<section id="p4">
+<h2><span class="pt">Part 4 · Money and Inflation</span>Money, the asset market &amp; inflation</h2>
+
+<pre>M^D = P · L(Y, i)  ;  i = r + πᵉ                      [164]
+M/P = L(Y, r + πᵉ)      ← asset market equilibrium     [165, 187]
+res = RES/DEP ;  cu = CU/DEP                           [174, 178]
+M = CU + DEP     ;  BASE = CU + RES                    [178]
+mm = M/BASE = (cu + 1)/(cu + res)                      [178–179]
+ΔP/P = ΔM/M − ΔL/L                                     [190]</pre>
+
+<div class="warn"><b>Her multiplier is not 1/RR.</b> External material (Khan, most AP prep) teaches
+mm = 1/reserve ratio, which is <strong>her special case when cu = 0</strong>. Q40 has cu = 0.667 and
+mm = <strong>1.724</strong>. Use <span class="m">(cu+1)/(cu+res)</span>.</div>
+
+<div class="pipe">
+  <div class="pcard"><b>Central bank</b>sets <span class="m">BASE = CU + RES</span><br>(open-market operations)</div>
+  <div class="parrow">× mm ⟶</div>
+  <div class="pcard"><b>Money supply</b><span class="m">M = CU + DEP</span><br><span class="m">mm = (cu+1)/(cu+res)</span></div>
+</div>
+<div class="dials">
+  <div class="dial"><b>cu</b>the PUBLIC chooses currency vs deposits</div>
+  <div class="dial"><b>res</b>the BANKS choose reserves vs lending</div>
+  <div class="dial"><b>BASE</b>the CENTRAL BANK sets it directly</div>
+</div>
+<p class="c" style="font-size:13px;margin-top:-6px">Three actors, three dials [180] — Q41 wants one move from each: cu ↓, res ↓, or an open-market purchase all raise M.</p>
+
+<figure>
+  <div class="figtitle">Figure 4 · Asset market equilibrium <span class="c">[165, 187]</span></div>
+  <svg viewBox="0 0 340 235" role="img" aria-label="Asset market with vertical real money supply and downward sloping money demand">
+    <line class="ax" x1="52" y1="24" x2="52" y2="205"/>
+    <line class="ax" x1="52" y1="205" x2="318" y2="205"/>
+    <text class="tb" x="38" y="24">r</text><text class="tb" x="292" y="223">M/P</text>
+    <line class="cs" x1="176" y1="36" x2="176" y2="205"/>
+    <text class="t" x="160" y="30">M/P</text>
+    <line class="cd" x1="80" y1="56" x2="292" y2="185"/>
+    <text class="t" x="252" y="196">L(Y, r+πᵉ)</text>
+    <circle class="annf" cx="176" cy="114" r="4"/>
+    <line class="gl" x1="52" y1="114" x2="176" y2="114"/>
+    <text class="ts" x="34" y="118">r*</text>
+    <text class="ts" x="196" y="80">quantity = BASE × mm —</text>
+    <text class="ts" x="196" y="93">central bank, banks, public [178–180]</text>
+  </svg>
+  <figcaption><b>The vertical axis is the REAL rate r</b>, not the nominal rate. Real money supply M/P is vertical —
+  the quantity is set by policy and the banking system, not by r. Money demand L(·) slopes down because a higher r
+  raises the opportunity cost of holding money, and shifts <em>right</em> when Y rises.</figcaption>
+</figure>
+
+<div class="warn"><b>Erratum [187, 189].</b> Those two slides label the vertical axis "M/P" but the values on it are r*.
+The axis is <strong>r</strong>. Slides 214, 218 and 337 have it right — draw it their way.</div>
+
+<table>
+<thead><tr><th>Shock</th><th>Curve</th><th>Direction</th><th>r*</th><th>Q</th></tr></thead>
+<tbody>
+<tr><td>Other assets become more liquid</td><td>L(·)</td><td>left</td><td class="dn">↓</td><td class="n">Q35(a)</td></tr>
+<tr><td>Contractionary policy (M ↓)</td><td>M/P</td><td>left</td><td class="up">↑</td><td class="n">Q35(b)</td></tr>
+<tr><td>cu rises (multiplier shrinks)</td><td>M/P</td><td>left</td><td class="up">↑</td><td class="n">Q35(c)</td></tr>
+<tr><td>Y rises</td><td>L(·)</td><td>right</td><td class="up">↑</td><td class="n">—</td></tr>
+</tbody>
+</table>
+<p class="c" style="font-size:13px">Note Q35(b) and Q35(c) look <em>identical</em> on the graph — different causes, same shift.</p>
+
+<div class="qbox">
+  <div class="qt">Self-test</div>
+  Q35(b) contractionary policy and Q35(c) a rise in cu produce identical graphs. What distinguishes them?<br>
+  → <span class="rv">Only the actor. Both shift M/P left and raise r*: in (b) the central bank shrinks BASE; in (c) the public raises cu, shrinking mm = (cu+1)/(cu+res). The graph cannot tell you which happened — name the mechanism to earn the marks [180].</span>
+</div>
+
+<div class="qbox">
+  <div class="qt">Self-test</div>
+  M = 1,000,000; CU = 400,000; res = 0.3. Find DEP, RES, cu, mm and BASE.<br>
+  → <span class="rv">DEP = 600,000 · RES = 0.3(600,000) = 180,000 · cu = 400,000/600,000 = 0.667 ·
+  mm = (0.667+1)/(0.667+0.3) = 1.667/0.967 = <strong>1.724</strong> · BASE = 1,000,000/1.724 = <strong>580,000</strong>.
+  Cross-check: BASE = CU + RES = 400,000 + 180,000 = 580,000 ✓ (Q40)</span>
+</div>
+
+<div class="gold"><b>Three actors change M</b> [180]: the <strong>public</strong> (cu), the <strong>banks</strong> (res),
+and the <strong>central bank</strong> (BASE, via open market operations). Q41 asks for one of each.</div>
+</section>
+
+<!-- ============================================================ 5 -->
+<section id="p5">
+<h2><span class="pt">Part 5 · The analytical core</span>The three markets together</h2>
+
+<div class="core"><b>The single most examinable idea in the course.</b> Every comparative static runs
+<strong>labour → goods → asset</strong>, and <strong>r* must be the same economy-wide</strong>. That cross-market
+consistency is what resolves within-market ambiguity [212, 214, 334].</div>
+
+<figure>
+  <div class="figtitle">Choosing the framework — decide this BEFORE drawing anything</div>
+  <svg class="wide" viewBox="0 0 760 292" role="img" aria-label="Decision tree for choosing between market clearing, sticky wage and search and matching frameworks">
+    <defs><marker id="arrC" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 z" style="fill:var(--ink-3)"/></marker></defs>
+    <rect class="nd" x="230" y="18" width="300" height="36" rx="8"/>
+    <text class="tnb" x="380" y="40" text-anchor="middle">Does the analysis need unemployment &gt; 0?</text>
+    <path class="flow" d="M 300 54 C 240 68, 200 78, 178 92" marker-end="url(#arrC)"/>
+    <text class="tnb" x="245" y="66">NO</text>
+    <path class="flow" d="M 460 54 C 520 68, 560 78, 582 92" marker-end="url(#arrC)"/>
+    <text class="tnb" x="512" y="66">YES</text>
+    <rect class="ndp" x="24" y="96" width="300" height="64" rx="8"/>
+    <text class="tnb" x="174" y="115" text-anchor="middle">MARKET CLEARING [106]</text>
+    <text class="tn" x="174" y="131" text-anchor="middle">w adjusts ⇒ N^S = N^D ⇒ U = 0, always</text>
+    <text class="tt" x="174" y="148" text-anchor="middle">money neutral · supply / RBC shocks analysed here [212]</text>
+    <rect class="nd" x="436" y="96" width="300" height="36" rx="8"/>
+    <text class="tn" x="586" y="118" text-anchor="middle">what creates the unemployment?</text>
+    <path class="flow" d="M 520 132 C 480 148, 460 158, 448 172" marker-end="url(#arrC)"/>
+    <path class="flow" d="M 640 132 C 660 148, 664 158, 662 172" marker-end="url(#arrC)"/>
+    <rect class="ndp" x="340" y="176" width="200" height="84" rx="8"/>
+    <text class="tnb" x="440" y="194" text-anchor="middle">STICKY WAGE [107–109]</text>
+    <text class="tn" x="440" y="210" text-anchor="middle">wage held ABOVE w*:</text>
+    <text class="tn" x="440" y="225" text-anchor="middle">floors · contracts ·</text>
+    <text class="tn" x="440" y="240" text-anchor="middle">efficiency wages</text>
+    <text class="tt" x="440" y="255" text-anchor="middle">demand shocks (G, M) live here [216]</text>
+    <rect class="ndp" x="552" y="176" width="200" height="84" rx="8"/>
+    <text class="tnb" x="652" y="194" text-anchor="middle">SEARCH &amp; MATCHING</text>
+    <text class="tn" x="652" y="210" text-anchor="middle">matching takes time;</text>
+    <text class="tn" x="652" y="225" text-anchor="middle">matches dissolve (δ)</text>
+    <text class="tn" x="652" y="240" text-anchor="middle">M(U,V) = δE · U* = LF − E*</text>
+    <text class="tt" x="652" y="255" text-anchor="middle">U &gt; 0 always [110–115]</text>
+    <text class="tt" x="380" y="284" text-anchor="middle">SHOCK SORTER — A / energy = SUPPLY ⇒ clearing [212] · G or M = DEMAND ⇒ sticky wage [217] · supply + clearing ⇒ P ↓ · demand + rigidity ⇒ P ↑</text>
+  </svg>
+  <figcaption><b>Practice midterm Q2(a) is this tree:</b> which framework can represent unemployment? Only the
+  right-hand branches. Choosing the wrong box loses the whole question, not part of it.</figcaption>
+</figure>
+
+<h3>5.1 Temporary negative supply shock — market clearing <span class="c">[212–215]</span></h3>
+
+<figure>
+  <div class="figtitle">Map 1 · The causal chain — temporary A ↓, market clearing <span class="c">[212–214]</span></div>
+  <svg class="wide" viewBox="0 0 760 344" role="img" aria-label="Causal map of a negative supply shock propagating from the labour market through output, goods and prices to the asset market">
+    <defs><marker id="arrA" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 z" style="fill:var(--ink-3)"/></marker></defs>
+    <text class="lanetag" x="24" y="16">LABOUR — THE SHOCK ENTERS</text>
+    <rect class="nd" x="24" y="24" width="64" height="36" rx="8"/>
+    <text class="tnb" x="56" y="46" text-anchor="middle">A ↓</text>
+    <line class="flow" x1="88" y1="42" x2="108" y2="42" marker-end="url(#arrA)"/>
+    <rect class="nd" x="112" y="24" width="150" height="36" rx="8"/>
+    <text class="tn" x="187" y="46" text-anchor="middle">MPN ↓ at every N</text>
+    <line class="flow" x1="262" y1="42" x2="282" y2="42" marker-end="url(#arrA)"/>
+    <rect class="nd" x="286" y="24" width="150" height="36" rx="8"/>
+    <text class="tn" x="361" y="46" text-anchor="middle">N^D shifts LEFT</text>
+    <line class="flow" x1="436" y1="42" x2="456" y2="42" marker-end="url(#arrA)"/>
+    <rect class="nd" x="460" y="24" width="170" height="36" rx="8"/>
+    <text class="tn" x="545" y="46" text-anchor="middle">w* ↓ and N* ↓</text>
+    <text class="lanetag" x="180" y="86">OUTPUT</text>
+    <rect class="nd" x="180" y="94" width="320" height="36" rx="8"/>
+    <text class="tn" x="340" y="116" text-anchor="middle">Y* = A·F(K, N*) FALLS — both A ↓ and N* ↓</text>
+    <path class="flow" d="M 545 60 C 545 78, 505 80, 480 92" marker-end="url(#arrA)"/>
+    <path class="flow" d="M 56 60 C 56 84, 120 94, 178 106" marker-end="url(#arrA)"/>
+    <text class="lanetag" x="90" y="156">GOODS</text>
+    <text class="lanetag" x="420" y="156">PRICES</text>
+    <rect class="ndp" x="90" y="164" width="300" height="42" rx="8"/>
+    <text class="tn" x="240" y="181" text-anchor="middle">S^D = Y − C^D − G shifts LEFT</text>
+    <text class="tnb" x="240" y="197" text-anchor="middle">⇒ r* RISES — pinned HERE</text>
+    <rect class="nd" x="420" y="164" width="316" height="42" rx="8"/>
+    <text class="tn" x="578" y="190" text-anchor="middle">supply &lt; demand ⇒ P RISES</text>
+    <path class="flow" d="M 290 130 C 270 144, 255 150, 246 160" marker-end="url(#arrA)"/>
+    <path class="flow" d="M 430 130 C 480 142, 540 148, 565 160" marker-end="url(#arrA)"/>
+    <text class="lanetag" x="24" y="226">ASSET</text>
+    <rect class="nd" x="24" y="234" width="340" height="42" rx="8"/>
+    <text class="tn" x="194" y="260" text-anchor="middle">Y ↓ ⇒ L(·) falls ⇒ pushes r DOWN</text>
+    <rect class="nd" x="420" y="234" width="316" height="42" rx="8"/>
+    <text class="tn" x="578" y="260" text-anchor="middle">P ↑ ⇒ M/P falls ⇒ pushes r UP</text>
+    <path class="flow" d="M 578 206 L 578 230" marker-end="url(#arrA)"/>
+    <path class="flow" d="M 196 130 C 60 140, 44 200, 110 232" marker-end="url(#arrA)"/>
+    <rect class="ndd" x="140" y="296" width="480" height="42" rx="8"/>
+    <text class="tn" x="380" y="313" text-anchor="middle">asset market ALONE is ambiguous — but r* must equal the goods-market r*</text>
+    <text class="tnb" x="380" y="329" text-anchor="middle">⇒ the M/P effect DOMINATES ⇒ r ↑</text>
+    <path class="flow" d="M 194 276 C 194 288, 250 292, 290 296" marker-end="url(#arrA)"/>
+    <path class="flow" d="M 578 276 C 578 288, 520 292, 480 296" marker-end="url(#arrA)"/>
+  </svg>
+  <figcaption><b>Read it top to bottom, then say it out loud without looking.</b> One shock, four stages: labour sets
+  N*, output falls, the goods market prices the scarcity of saving (r ↑) while excess demand raises P, and the asset
+  market is forced to agree. The <b>pinned</b> box is the whole trick — within-market ambiguity is resolved by the
+  market that is NOT ambiguous.</figcaption>
+</figure>
+
+<figure>
+  <div class="figtitle">Figure 5 · A ↓ propagating through all three markets</div>
+  <div class="panels">
+    <svg viewBox="0 0 300 240" role="img" aria-label="Labour market: demand shifts left, wage and employment fall">
+      <text class="tb" x="4" y="13">① Labour ⟶</text>
+      <line class="ax" x1="46" y1="26" x2="46" y2="200"/>
+      <line class="ax" x1="46" y1="200" x2="284" y2="200"/>
+      <text class="tb" x="30" y="26">w</text><text class="tb" x="282" y="218">N</text>
+      <line class="cs" x1="62" y1="186" x2="272" y2="48"/>
+      <text class="ts" x="248" y="42">N<tspan baseline-shift="super" font-size="7">S</tspan></text>
+      <line class="cd" x1="62" y1="56" x2="272" y2="182"/>
+      <text class="ts" x="244" y="192">N₁<tspan baseline-shift="super" font-size="7">D</tspan></text>
+      <line class="cd dash" x1="62" y1="92" x2="238" y2="196"/>
+      <text class="ts" x="190" y="176">N₂<tspan baseline-shift="super" font-size="7">D</tspan></text>
+      <circle class="annf" cx="165" cy="118" r="3.6"/>
+      <circle class="annf" cx="137" cy="136" r="3.6"/>
+      <line class="gl" x1="46" y1="118" x2="165" y2="118"/>
+      <line class="gl" x1="46" y1="136" x2="137" y2="136"/>
+      <line class="gl" x1="165" y1="118" x2="165" y2="200"/>
+      <line class="gl" x1="137" y1="136" x2="137" y2="200"/>
+      <text class="ts" x="24" y="122">w₁*</text><text class="ts" x="24" y="146">w₂*</text>
+      <text class="ts" x="126" y="214">N₂*</text><text class="ts" x="156" y="214">N₁*</text>
+      <text class="ts" x="52" y="232" fill="var(--s3)">A↓ ⇒ MPN↓ ⇒ N<tspan baseline-shift="super" font-size="7">D</tspan> left ⇒ w*, N* both fall</text>
+    </svg>
+    <svg viewBox="0 0 300 240" role="img" aria-label="Goods market: saving demand shifts left, real rate rises">
+      <text class="tb" x="4" y="13">② Goods ⟶</text>
+      <line class="ax" x1="46" y1="26" x2="46" y2="200"/>
+      <line class="ax" x1="46" y1="200" x2="284" y2="200"/>
+      <text class="tb" x="32" y="26">r</text><text class="tb" x="264" y="218">S, I</text>
+      <line class="cs" x1="62" y1="182" x2="266" y2="52"/>
+      <text class="ts" x="242" y="46">S₁<tspan baseline-shift="super" font-size="7">D</tspan></text>
+      <line class="cs dash" x1="62" y1="146" x2="222" y2="44"/>
+      <text class="ts" x="196" y="38">S₂<tspan baseline-shift="super" font-size="7">D</tspan></text>
+      <line class="cd" x1="62" y1="56" x2="266" y2="180"/>
+      <text class="ts" x="244" y="192">I<tspan baseline-shift="super" font-size="7">D</tspan></text>
+      <circle class="annf" cx="163" cy="118" r="3.6"/>
+      <circle class="annf" cx="134" cy="100" r="3.6"/>
+      <line class="gl" x1="46" y1="118" x2="163" y2="118"/>
+      <line class="gl" x1="46" y1="100" x2="134" y2="100"/>
+      <text class="ts" x="26" y="122">r₁*</text><text class="ts" x="26" y="97">r₂*</text>
+      <text class="ts" x="52" y="232" fill="var(--s3)">Y↓ ⇒ S<tspan baseline-shift="super" font-size="7">D</tspan>=Y−C−G falls ⇒ r rises. No ambiguity.</text>
+    </svg>
+    <svg viewBox="0 0 300 240" role="img" aria-label="Asset market: real money supply shifts far left and money demand shifts slightly left, so the real rate rises">
+      <text class="tb" x="4" y="13">③ Asset</text>
+      <line class="ax" x1="46" y1="26" x2="46" y2="200"/>
+      <line class="ax" x1="46" y1="200" x2="284" y2="200"/>
+      <text class="tb" x="32" y="26">r</text><text class="tb" x="256" y="218">M/P</text>
+      <line class="cs" x1="200" y1="40" x2="200" y2="200"/>
+      <text class="ts" x="190" y="34">M/P₁</text>
+      <line class="cs dash" x1="120" y1="40" x2="120" y2="200"/>
+      <text class="ts" x="98" y="34">M/P₂</text>
+      <path class="ann" d="M 194 54 L 128 54" stroke-width="1.5"/>
+      <path class="annf" d="M 122 54 l 6.5 -3.4 l 0 6.8 z"/>
+      <line class="cd" x1="66" y1="52" x2="280" y2="180"/>
+      <text class="ts" x="244" y="192">L(Y₁,·)</text>
+      <line class="cd dash" x1="66" y1="79" x2="235" y2="180"/>
+      <text class="ts" x="186" y="168">L(Y₂,·)</text>
+      <circle class="annf" cx="200" cy="132" r="3.6"/>
+      <circle class="annf" cx="120" cy="111" r="3.6"/>
+      <line class="gl" x1="46" y1="132" x2="200" y2="132"/>
+      <line class="gl" x1="46" y1="111" x2="120" y2="111"/>
+      <text class="ts" x="26" y="136">r₁*</text><text class="ts" x="26" y="108">r₂*</text>
+      <text class="ts" x="56" y="226" fill="var(--s3)">M/P left pushes r UP · L left pushes r DOWN</text>
+      <text class="ts" x="56" y="238" fill="var(--s3)">goods market says r↑ ⇒ M/P must dominate</text>
+    </svg>
+  </div>
+  <figcaption><b>The asset market alone cannot sign r.</b> P rises so M/P falls (pushes r up) but Y falls so L(·) falls
+  (pushes r down). The <em>goods</em> market pins r ↑ unambiguously — therefore the M/P effect <b>must</b> dominate in the
+  asset market. That is the argument slide 212 makes, and it is the template for every ambiguous question in this course. <span class="hint">Blank-paper rep: draw all three panels from Map 1 without looking, then check here.</span></figcaption>
+</figure>
+
+<pre>A ↓ → MPN ↓ → N^D left → w*, N* fall
+FE = Y* = A·F(K,N*) falls          [both A↓ and N*↓]
+Y* ↓ → Supply &lt; Demand → P ↑ → M/P falls      (pushes r UP)
+Y  ↓ → S^D = Y − C^D − G falls    → r ↑        (goods market)
+Y  ↓ → L(·) falls                              (pushes r DOWN)
+Asset market ambiguous → goods market pins r ↑ → M/P dominates.
+Recessionary: Y is falling.</pre>
+
+<div class="gold"><b>RBC and its three criticisms</b> [215]: RBC explains cycles with <strong>supply shocks</strong>.
+Criticised for (1) reliance on productivity shocks <em>which are unknown</em>, (2) predicting <strong>money neutrality</strong>,
+(3) predicting <strong>zero unemployment</strong>.</div>
+
+<h3>5.2 Increase in G — sticky wage <span class="c">[216–219, 333–338]</span></h3>
+
+<figure>
+  <div class="figtitle">Map 2 · The causal chain — G ↑, sticky wage <span class="c">[217–219]</span></div>
+  <svg class="wide" viewBox="0 0 760 306" role="img" aria-label="Causal map of a government spending increase under nominal wage rigidity">
+    <defs><marker id="arrB" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 z" style="fill:var(--ink-3)"/></marker></defs>
+    <text class="lanetag" x="24" y="16">GOODS — THE SHOCK ENTERS</text>
+    <rect class="nd" x="24" y="24" width="70" height="36" rx="8"/>
+    <text class="tnb" x="59" y="46" text-anchor="middle">G ↑</text>
+    <line class="flow" x1="94" y1="42" x2="114" y2="42" marker-end="url(#arrB)"/>
+    <rect class="nd" x="118" y="24" width="250" height="36" rx="8"/>
+    <text class="tn" x="243" y="46" text-anchor="middle">S^D = Y − C − G shifts LEFT</text>
+    <line class="flow" x1="368" y1="42" x2="388" y2="42" marker-end="url(#arrB)"/>
+    <rect class="ndp" x="392" y="24" width="110" height="36" rx="8"/>
+    <text class="tnb" x="447" y="46" text-anchor="middle">r ↑</text>
+    <text class="lanetag" x="118" y="86">PRICES</text>
+    <rect class="nd" x="118" y="94" width="250" height="36" rx="8"/>
+    <text class="tn" x="243" y="116" text-anchor="middle">AD ↑ ⇒ demand &gt; supply</text>
+    <line class="flow" x1="368" y1="112" x2="388" y2="112" marker-end="url(#arrB)"/>
+    <rect class="nd" x="392" y="94" width="110" height="36" rx="8"/>
+    <text class="tnb" x="447" y="116" text-anchor="middle">P ↑</text>
+    <line class="flow" x1="502" y1="112" x2="522" y2="112" marker-end="url(#arrB)"/>
+    <rect class="nd" x="526" y="94" width="210" height="36" rx="8"/>
+    <text class="tn" x="631" y="116" text-anchor="middle">M/P ↓ ⇒ r ↑ again</text>
+    <path class="flow" d="M 59 60 C 59 78, 100 84, 132 92" marker-end="url(#arrB)"/>
+    <text class="lanetag" x="24" y="156">LABOUR — THE ENGINE</text>
+    <rect class="nd" x="24" y="164" width="240" height="42" rx="8"/>
+    <text class="tn" x="144" y="181" text-anchor="middle">W stuck, P rising</text>
+    <text class="tnb" x="144" y="197" text-anchor="middle">⇒ W/P FALLS</text>
+    <line class="flow" x1="264" y1="185" x2="284" y2="185" marker-end="url(#arrB)"/>
+    <rect class="nd" x="288" y="164" width="250" height="42" rx="8"/>
+    <text class="tn" x="413" y="181" text-anchor="middle">move DOWN ALONG N^D</text>
+    <text class="tn" x="413" y="197" text-anchor="middle">(not a shift) ⇒ N ↑</text>
+    <line class="flow" x1="538" y1="185" x2="558" y2="185" marker-end="url(#arrB)"/>
+    <rect class="ndp" x="562" y="164" width="174" height="42" rx="8"/>
+    <text class="tnb" x="649" y="190" text-anchor="middle">Y ↑ EXPANSIONARY</text>
+    <path class="flow" d="M 447 130 C 380 148, 220 146, 156 162" marker-end="url(#arrB)"/>
+    <rect class="ndd" x="118" y="238" width="520" height="42" rx="8"/>
+    <text class="tn" x="378" y="255" text-anchor="middle">feedback: Y ↑ ⇒ L(·) ↑ and S^D shifts partly back RIGHT</text>
+    <text class="tnb" x="378" y="271" text-anchor="middle">— neither OVERRIDES the original shift [217]</text>
+    <path class="flow" d="M 649 206 C 649 220, 600 228, 560 238" marker-end="url(#arrB)"/>
+    <text class="tt" x="380" y="298" text-anchor="middle">the wage is rigid DOWNWARD only ⇒ N can rise at most to where N^S = N^D [219] — never past it</text>
+  </svg>
+  <figcaption><b>Demand shock + rigidity ⇒ P rises and Y rises.</b> The middle lane is why money and fiscal policy
+  are non-neutral here: the price level does the work the nominal wage refuses to do. Blank-paper rep: draw
+  Figure 6's three panels from this map, then check.</figcaption>
+</figure>
+
+<figure>
+  <div class="figtitle">Figure 6 · G ↑ under nominal wage rigidity</div>
+  <div class="panels">
+    <svg viewBox="0 0 300 240" role="img" aria-label="Goods market: saving demand shifts left when G rises, real rate rises">
+      <text class="tb" x="4" y="13">① Goods ⟶</text>
+      <line class="ax" x1="46" y1="26" x2="46" y2="200"/>
+      <line class="ax" x1="46" y1="200" x2="284" y2="200"/>
+      <text class="tb" x="32" y="26">r</text><text class="tb" x="264" y="218">S, I</text>
+      <line class="cs" x1="62" y1="182" x2="266" y2="52"/>
+      <text class="ts" x="240" y="46">S₁<tspan baseline-shift="super" font-size="7">D</tspan>(G₁)</text>
+      <line class="cs dash" x1="62" y1="146" x2="222" y2="44"/>
+      <text class="ts" x="190" y="38">S₂<tspan baseline-shift="super" font-size="7">D</tspan>(G₂)</text>
+      <line class="cd" x1="62" y1="56" x2="266" y2="180"/>
+      <text class="ts" x="244" y="192">I<tspan baseline-shift="super" font-size="7">D</tspan></text>
+      <circle class="annf" cx="168" cy="120" r="3.6"/>
+      <circle class="annf" cx="136" cy="101" r="3.6"/>
+      <line class="gl" x1="46" y1="120" x2="168" y2="120"/>
+      <line class="gl" x1="46" y1="101" x2="136" y2="101"/>
+      <text class="ts" x="28" y="124">r₁*</text><text class="ts" x="28" y="98">r₂*</text>
+      <text class="ts" x="126" y="170" fill="var(--s3)">S<tspan baseline-shift="super" font-size="7">D</tspan>=Y−C−G↑</text>
+    </svg>
+    <svg viewBox="0 0 300 240" role="img" aria-label="Asset market: price level rises so real money supply falls, real rate rises">
+      <text class="tb" x="4" y="13">② Asset ⟶</text>
+      <line class="ax" x1="46" y1="26" x2="46" y2="200"/>
+      <line class="ax" x1="46" y1="200" x2="284" y2="200"/>
+      <text class="tb" x="32" y="26">r</text><text class="tb" x="256" y="218">M/P</text>
+      <line class="cs" x1="184" y1="36" x2="184" y2="200"/>
+      <text class="ts" x="176" y="30">M/P₁</text>
+      <line class="cs dash" x1="142" y1="36" x2="142" y2="200"/>
+      <text class="ts" x="114" y="30">M/P₂</text>
+      <line class="cd" x1="66" y1="70" x2="272" y2="186"/>
+      <text class="ts" x="236" y="198">L(Y₁,·)</text>
+      <line class="cd dash" x1="66" y1="48" x2="266" y2="161"/>
+      <text class="ts" x="212" y="146">L(Y₂,·)</text>
+      <circle class="annf" cx="184" cy="136" r="3.6"/>
+      <circle class="annf" cx="142" cy="91" r="3.6"/>
+      <line class="gl" x1="46" y1="136" x2="184" y2="136"/>
+      <line class="gl" x1="46" y1="91" x2="142" y2="91"/>
+      <text class="ts" x="28" y="140">r₁*</text><text class="ts" x="28" y="88">r₂*</text>
+      <text class="ts" x="56" y="176" fill="var(--s3)">P↑ ⇒ M/P↓</text>
+    </svg>
+    <svg viewBox="0 0 300 240" role="img" aria-label="Labour market: real wage falls as prices rise with nominal wage stuck, employment rises">
+      <text class="tb" x="4" y="13">③ Labour</text>
+      <line class="ax" x1="46" y1="26" x2="46" y2="200"/>
+      <line class="ax" x1="46" y1="200" x2="284" y2="200"/>
+      <text class="tb" x="30" y="26">W/P</text><text class="tb" x="282" y="218">N</text>
+      <line class="cs" x1="62" y1="186" x2="272" y2="48"/>
+      <text class="ts" x="248" y="42">N<tspan baseline-shift="super" font-size="7">S</tspan></text>
+      <line class="cd" x1="62" y1="56" x2="272" y2="182"/>
+      <text class="ts" x="246" y="192">N<tspan baseline-shift="super" font-size="7">D</tspan></text>
+      <line class="gl" x1="46" y1="92" x2="216" y2="92"/>
+      <line class="gl" x1="46" y1="108" x2="192" y2="108"/>
+      <text class="ts" x="20" y="90">W/P₁</text><text class="ts" x="20" y="118">W/P₂</text>
+      <path class="ann" d="M 62 96 L 62 104" stroke-width="1.8"/>
+      <path class="annf" d="M 62 108 l -3.4 -6.5 l 6.8 0 z"/>
+      <line class="ann" x1="122" y1="78" x2="205" y2="78"/>
+      <line class="ann" x1="122" y1="74" x2="122" y2="82"/><line class="ann" x1="205" y1="74" x2="205" y2="82"/>
+      <text class="ts" x="118" y="68" fill="var(--s3)">unemployment (G₁)</text>
+      <line class="ann" x1="149" y1="126" x2="181" y2="126"/>
+      <line class="ann" x1="149" y1="122" x2="149" y2="130"/><line class="ann" x1="181" y1="122" x2="181" y2="130"/>
+      <text class="ts" x="150" y="140" fill="var(--s3)">U(G₂)</text>
+      <circle class="annf" cx="122" cy="92" r="3.4"/><circle class="annf" cx="149" cy="108" r="3.4"/>
+      <line class="gl" x1="122" y1="92" x2="122" y2="200"/>
+      <line class="gl" x1="149" y1="108" x2="149" y2="200"/>
+      <text class="ts" x="114" y="214">N₁</text><text class="ts" x="144" y="214">N₂</text>
+      <text class="ts" x="52" y="232" fill="var(--s3)">W/P falls ⇒ move DOWN ALONG N<tspan baseline-shift="super" font-size="7">D</tspan> ⇒ N and Y rise</text>
+    </svg>
+  </div>
+  <figcaption><b>The engine is the real wage.</b> W is stuck in nominal terms, P rises, so <b>W/P falls</b> — firms move
+  <em>down along</em> N<sup>D</sup>, employment rises, and Y rises with it. Nothing about the worker's nominal wage changed.
+  Note also that Y ↑ shifts L(·) right and pushes S<sup>D</sup> partly back right, <b>but neither override the original shift</b> [217].</figcaption>
+</figure>
+
+<pre>G ↑ → S^D = Y − C − G falls (LEFT) → r ↑
+    → AD rises → Demand &gt; Supply → P ↑ → M/P ↓
+W stuck, P rising → W/P FALLS → N rises → Y rises   (expansionary)
+Numerically [335–336]:
+  G = 0    → P = 1.33, Y = 500, r* = 0,     S = 100,  C = 400, N = 5
+  G = 100  → P = 1.39, Y = 686, r* = 0.625, S = 68.7, C = 517, N = 7</pre>
+
+<div class="warn"><b>Wage rigidity is one-directional</b> [219]. The nominal wage is rigid <em>downward</em> only.
+If the price rise were very large, the most you would see is employment rising to where N<sup>S</sup> = N<sup>D</sup> —
+it cannot overshoot into excess labour demand. Never draw N past the clearing point.</div>
+
+<h3>5.3 The shock playbook</h3>
+<table>
+<thead><tr><th>Shock</th><th>Framework</th><th>N</th><th>w</th><th>Y</th><th>r*</th><th>P</th></tr></thead>
+<tbody>
+<tr><td>Positive supply (A ↑)</td><td class="n">Market clearing</td><td class="up">↑</td><td class="up">↑ *</td><td class="up">↑</td><td class="dn">↓</td><td class="dn">↓</td></tr>
+<tr><td>Negative supply (A ↓)</td><td class="n">Market clearing</td><td class="dn">↓</td><td class="dn">↓</td><td class="dn">↓</td><td class="up">↑</td><td class="up">↑</td></tr>
+<tr><td>Increase in G</td><td class="n">Sticky wage</td><td class="up">↑</td><td class="dn">W/P ↓</td><td class="up">↑</td><td class="up">↑</td><td class="up">↑</td></tr>
+<tr><td>Decrease in G</td><td class="n">Sticky wage</td><td class="dn">↓</td><td class="up">W/P ↑</td><td class="dn">↓</td><td class="dn">↓</td><td class="dn">↓</td></tr>
+<tr><td>Increase in M</td><td class="n">Sticky wage</td><td class="up">↑</td><td class="dn">W/P ↓</td><td class="up">↑</td><td class="dn">↓</td><td class="up">↑</td></tr>
+</tbody>
+</table>
+<p class="c" style="font-size:13px">* See errata — the Q47 solution says w* falls; a rightward N<sup>D</sup> shift along an upward N<sup>S</sup> should <em>raise</em> w*, and its own graph shows w₂* above w₁*. Unresolved.</p>
+
+<div class="core"><b>Sort every shock two ways:</b> supply or demand × market-clearing or rigid.
+<strong>Supply shock + clearing ⇒ P falls.</strong> <strong>Demand shock + rigidity ⇒ P rises.</strong>
+And: two changes in the same direction ⇒ determinate; opposite directions ⇒ ambiguous. Check each variable separately.</div>
+
+<h3>5.4 Model comparison <span class="c">[106–115, 215, 220]</span></h3>
+<table>
+<thead><tr><th>Model</th><th>Unemployment?</th><th>Money neutral?</th><th>Real wage</th><th>Weak point</th></tr></thead>
+<tbody>
+<tr><td>Market clearing</td><td>No — always zero [106]</td><td>Yes</td><td class="n">—</td><td class="n">Cannot model unemployment</td></tr>
+<tr><td>Sticky wage</td><td>Yes, if w stuck above w* [107]</td><td><strong>No</strong> [220]</td><td class="n">Counter-cyclical</td><td class="n">Predicts countercyclical real wages [220]</td></tr>
+<tr><td>Search &amp; matching</td><td>Always [110–112]</td><td class="n">—</td><td class="n">Bargaining</td><td class="n">Wage needs a bargaining assumption</td></tr>
+<tr><td>RBC (supply shocks)</td><td>No [215]</td><td>Yes</td><td class="n">Pro-cyclical</td><td class="n">A unobservable; zero unemployment</td></tr>
+</tbody>
+</table>
+<p>Each model repairs the other's main flaw. RBC's three failures are exactly what sticky wage fixes — and sticky
+wage breaks the real-wage prediction instead. <strong>Q42's release valve:</strong> real-wage cyclicality is empirically
+<em>contested</em> (models disagree; composition effects), so neither is cleanly refuted there.</p>
+
+<div class="qbox">
+  <div class="qt">Self-test</div>
+  Under a temporary <em>positive</em> supply shock with market clearing, what happens to N*, Y*, r*, I*, P?<br>
+  → <span class="rv">Q47: N* ↑, Y* ↑, r* ↓, I* ↑ (movement along I<sup>D</sup>), P ↓. Mirror image of slides 212–215. The w* direction is the disputed one — see errata.</span>
+</div>
+</section>
+
+<!-- ============================================================ 6 -->
+<section id="p6">
+<h2><span class="pt">Part 6 · Trends, Cycles and Inequality</span>Cycles, growth &amp; distribution</h2>
+
+<h3>6.1 Business cycle anatomy <span class="c">[195–208]</span></h3>
+
+<figure>
+  <div class="figtitle">Figure 7 · The business cycle and its three dimensions <span class="c">[196–201]</span></div>
+  <svg viewBox="0 0 700 260" role="img" aria-label="Aggregate economic activity oscillating around a rising trend, with peaks, troughs, expansions and contractions marked">
+    <line class="ax" x1="52" y1="18" x2="52" y2="222"/>
+    <line class="ax" x1="52" y1="222" x2="676" y2="222"/>
+    <text class="tb" x="26" y="18">AEA</text><text class="tb" x="654" y="240">time</text>
+    <line class="gl" x1="60" y1="196" x2="668" y2="72" stroke-dasharray="6 4"/>
+    <text class="ts" x="622" y="66">trend</text>
+    <path class="cn" d="M 60 178 C 96 208, 118 206, 148 190 C 196 164, 214 84, 268 82
+                        C 320 80, 340 156, 388 168 C 424 176, 438 60, 492 52
+                        C 546 44, 560 108, 604 128 C 636 142, 652 150, 668 154"/>
+    <text class="tb" x="640" y="146">AEA</text>
+    <circle class="annf" cx="268" cy="82" r="4"/><circle class="annf" cx="492" cy="52" r="4"/>
+    <circle class="annf" cx="128" cy="203" r="4"/><circle class="annf" cx="388" cy="168" r="4"/>
+    <line class="gl" x1="268" y1="82" x2="268" y2="222"/><line class="gl" x1="492" y1="52" x2="492" y2="222"/>
+    <line class="gl" x1="128" y1="203" x2="128" y2="222"/><line class="gl" x1="388" y1="168" x2="388" y2="222"/>
+    <text class="ts" x="252" y="74">peak</text><text class="ts" x="476" y="44">peak</text>
+    <text class="ts" x="110" y="218">trough</text><text class="ts" x="370" y="184">trough</text>
+    <text class="ts" x="180" y="128" transform="rotate(-32 180 128)">expansion</text>
+    <text class="ts" x="304" y="120" transform="rotate(34 304 120)">contraction</text>
+    <text class="ts" x="418" y="120" transform="rotate(-38 418 120)">expansion</text>
+    <line class="ann" x1="268" y1="238" x2="492" y2="238"/>
+    <line class="ann" x1="268" y1="233" x2="268" y2="243"/><line class="ann" x1="492" y1="233" x2="492" y2="243"/>
+    <text class="ts" x="318" y="253" fill="var(--s3)">one cycle: peak to peak</text>
+    <line class="ann" x1="388" y1="168" x2="388" y2="110"/>
+    <line class="ann" x1="383" y1="110" x2="393" y2="110"/>
+    <text class="ts" x="396" y="106" fill="var(--s3)">depth</text>
+  </svg>
+  <figcaption><b>Cycles are recurrent and persistent</b> [207], measured <b>peak-to-peak or trough-to-trough</b> [196],
+  and quantified along <b>depth</b> [198], <b>length/speed</b> [199] and <b>duration</b> [200–201].
+  <b>There is no universally used definition of a recession</b> [202] — magnitude, duration and scope, with experts
+  sometimes divided, and the label usually applied only in hindsight [203].</figcaption>
+</figure>
+
+<p><strong>Co-movement</strong> [207]: procyclical (moves with AEA) · countercyclical (against) · acyclical (no discernible
+co-movement). <strong>Timing</strong> [208]: leading (moves before) · lagging (peaks/troughs after) · coincidence (same time).
+<strong>Components of AEA</strong> [210]: production; expenditure; employment/unemployment/labour productivity; money growth
+and inflation; financial variables.</p>
+
+<h3>6.2 What drives growth <span class="c">[225–229]</span></h3>
+<p>Slide 225: <em>"there are three elements which influence growth"</em> — read straight off Y = F(A, K, N).</p>
+<table>
+<thead><tr><th>Source</th><th>Mechanism</th><th>Catch</th></tr></thead>
+<tbody>
+<tr><td><strong>1 · N</strong></td><td>More population/employment ⇒ more output</td><td class="n">Raises aggregate Y, not necessarily Y per person [225]</td></tr>
+<tr><td><strong>2 · K</strong></td><td>Higher capital stock ⇒ higher Y</td><td class="n"><strong>Diminishing returns</strong>: higher K ⇒ smaller MPK ⇒ <strong>convergence</strong>; low-K countries grow faster [226–227]</td></tr>
+<tr><td><strong>3 · A</strong></td><td>Positive supply shock; raises MPN at every N</td><td class="n">If A is <strong>endogenous</strong>, the economy <em>may or may not</em> converge [228]</td></tr>
+</tbody>
+</table>
+<p>A higher saving rate moves the steady-state K and raises <em>short-term</em> growth, but the economy still converges
+to a balanced growth path [227]. <strong>Saving raises the level, not the permanent growth rate.</strong></p>
+
+<figure>
+  <div class="figtitle">Diminishing returns to K ⇒ convergence <span class="c">[226–227]</span></div>
+  <svg viewBox="0 0 380 252" role="img" aria-label="Concave production of output in capital: equal capital increments yield shrinking output gains">
+    <line class="ax" x1="50" y1="20" x2="50" y2="200"/>
+    <line class="ax" x1="50" y1="200" x2="352" y2="200"/>
+    <text class="tb" x="26" y="20">Y</text>
+    <text class="tb" x="344" y="218">K</text>
+    <path class="cs" d="M 50 200 C 120 84, 200 58, 344 44"/>
+    <text class="t" x="252" y="36">Y = F(A, K, N)</text>
+    <line class="gl" x1="70" y1="169" x2="70" y2="200"/>
+    <line class="gl" x1="130" y1="108" x2="130" y2="200"/>
+    <line class="gl" x1="240" y1="60" x2="240" y2="200"/>
+    <line class="gl" x1="300" y1="49" x2="300" y2="200"/>
+    <line class="ann" x1="70" y1="206" x2="130" y2="206"/>
+    <line class="ann" x1="240" y1="206" x2="300" y2="206"/>
+    <text class="ts" x="74" y="220">same ΔK</text>
+    <text class="ts" x="242" y="220">same ΔK</text>
+    <line class="gl" x1="50" y1="169" x2="70" y2="169"/>
+    <line class="gl" x1="50" y1="108" x2="130" y2="108"/>
+    <line class="ann" x1="58" y1="169" x2="58" y2="108"/>
+    <text class="ts" x="64" y="140" fill="var(--s3)">BIG ΔY</text>
+    <line class="gl" x1="240" y1="60" x2="232" y2="60"/>
+    <line class="gl" x1="300" y1="49" x2="232" y2="49"/>
+    <line class="ann" x1="232" y1="60" x2="232" y2="49"/>
+    <text class="ts" x="170" y="58" fill="var(--s3)">tiny ΔY</text>
+    <text class="tt" x="200" y="240" text-anchor="middle">low-K economies get more Y per unit of investment ⇒ they grow FASTER ⇒ convergence to balanced growth</text>
+  </svg>
+  <figcaption><b>Why saving can't buy permanent growth:</b> a higher saving rate moves the steady-state K and lifts
+  growth <em>temporarily</em>, but diminishing MPK drags the economy back to the balanced path [227]. Escape requires
+  <b>A</b> — and if A is endogenous, convergence itself is no longer guaranteed [228].</figcaption>
+</figure>
+
+<div class="qbox">
+  <div class="qt">Self-test</div>
+  Two countries share A, N and the saving rate; one holds a quarter of the other's capital stock. Which grows faster?<br>
+  → <span class="rv">The low-K country [Q49 — Lomond]. Lower K ⇒ higher MPK ⇒ each unit of investment buys more output growth ⇒ it converges upward toward the shared balanced growth path [226–227].</span>
+</div>
+
+<div class="gold"><b>Growth's drawbacks are examinable</b> [232–233]: structural unemployment and associated human losses,
+obsolescence of capital, unsustainability and environmental degradation, potential decreases in well-being, and
+<strong>increasing inequality</strong>. Slide 233 asks <em>"Growth for whom?"</em>; slide 234 leaves the growth–inequality
+relationship deliberately <strong>unresolved</strong> — present it as contested.</div>
+
+<h3>6.3 Measuring inequality <span class="c">[238–243]</span></h3>
+
+<figure>
+  <div class="figtitle">Figure 8 · Lorenz curve and the Gini <span class="c">[238–241]</span></div>
+  <svg viewBox="0 0 340 275" role="img" aria-label="Lorenz curve below the 45 degree line with area A between them and area B beneath the curve">
+    <line class="ax" x1="56" y1="20" x2="56" y2="230"/>
+    <line class="ax" x1="56" y1="230" x2="300" y2="230"/>
+    <text class="ts" x="6" y="30">Cumulative</text><text class="ts" x="6" y="42">% income</text>
+    <text class="ts" x="146" y="252">Cumulative % population</text>
+    <path d="M 56 230 L 266 20 L 266 230 Z" fill="var(--s3)" opacity="0.09"/>
+    <path d="M 56 230 C 118 226, 182 200, 218 156 C 244 124, 258 74, 266 20 L 266 230 Z"
+          fill="var(--s2)" opacity="0.10"/>
+    <line class="cn" x1="56" y1="230" x2="266" y2="20"/>
+    <text class="ts" x="112" y="150" transform="rotate(-45 112 150)">45° line (perfect equality)</text>
+    <path class="cs" d="M 56 230 C 118 226, 182 200, 218 156 C 244 124, 258 74, 266 20"/>
+    <text class="t" x="88" y="204">Lorenz curve</text>
+    <line class="gl" x1="146" y1="200" x2="176" y2="214" stroke-dasharray="0"/>
+    <text class="tb" x="188" y="120" fill="var(--s3)">A</text>
+    <text class="tb" x="228" y="196" fill="var(--s2)">B</text>
+    <line class="gl" x1="56" y1="20" x2="266" y2="20"/>
+    <line class="gl" x1="266" y1="20" x2="266" y2="230"/>
+    <text class="ts" x="40" y="24">100</text><text class="ts" x="258" y="246">100</text>
+    <text class="ts" x="46" y="244">0</text>
+  </svg>
+  <figcaption>
+  <b>Gini = A ÷ (A + B)</b> — "the area between the 45° line and the Lorenz curve" over "the area below the 45° line" [238].
+  Since A + B = ½, this equals <b>1 − 2 × (area under the Lorenz curve)</b>. Perfect equality ⇒ curve = 45° line ⇒
+  <b>Gini = 0</b> [239]. <b>Lower Gini = more equality.</b>
+  </figcaption>
+</figure>
+
+<div class="qbox">
+  <div class="qt">Self-test — do this by hand, no calculator</div>
+  Quintile income shares 5 / 10 / 15 / 25 / 45. Compute the Gini using trapezoids.<br>
+  → <span class="rv">Cumulative income: 5, 15, 30, 55, 100. Trapezoid strips of width 20:
+  (0+5)/2·20 = 50 · (5+15)/2·20 = 200 · (15+30)/2·20 = 450 · (30+55)/2·20 = 850 · (55+100)/2·20 = 1550.
+  Sum = 3100. Area under the 45° line = 5000. Gini = (5000 − 3100)/5000 = <strong>0.3800</strong> — matches slide 240 exactly.</span>
+  <div class="hint">Each strip = (height₁ + height₂)/2 × width. Learn this method — it always comes out clean.</div>
+</div>
+
+<table>
+<thead><tr><th>Measure</th><th>Strengths</th><th>Weaknesses</th></tr></thead>
+<tbody>
+<tr><td><strong>Gini</strong> [238–242]</td><td class="n">Intuitive; one number</td><td class="n">Different distributions can give the same Gini</td></tr>
+<tr><td><strong>Theil</strong> / generalized entropy [242]</td><td class="n">Invariant to population size and income scale; <strong>additively decomposable</strong>; rank preserving</td><td class="n">Less intuitive; top/bottom sensitivity depends on weights; not directly comparable</td></tr>
+<tr><td><strong>Decile ratios</strong> (90-10) [243]</td><td class="n">Intuitive</td><td class="n">Do not use all information — blind between the deciles</td></tr>
+<tr><td><strong>Consumption</strong> inequality [244]</td><td class="n">End result of wage, income and wealth; better welfare summary</td><td class="n">Also reflects choice</td></tr>
+</tbody>
+</table>
+
+<h3>6.4 Poverty <span class="c">[235–237]</span></h3>
+<p><strong>Poverty = deprivation of resources</strong>, including the means to participate politically and socially;
+clearly a <em>relative</em> measure once you take the fuller dimensionality [235]. Canada's official measure is the
+<strong>Market Basket Measure</strong> — income needed for a basket meeting basic needs, adjusted for location and family
+size [236]. Large urban Ontario, 2020: <strong>$23,153</strong> single · <strong>$46,306</strong> four-person.</p>
+
+<div class="warn"><b>Q52 — the sharpest distributional trap.</b> If the already-poor get poorer, the poverty
+<strong>rate does not change</strong>. A headcount is insensitive to <strong>depth</strong>. This is the cleanest illustration
+of why one statistic hides distributional change.</div>
+
+<div class="gold"><b>Poverty vs inequality</b> [245]: some inequality may be <em>necessary to motivate effort</em> —
+"efficiency wages would not be effective without wage differences." But inequality may carry negative health and wellbeing
+implications, so intervening on it may matter in its own right. Poverty may be the simpler trigger for intervention.
+Both sides are hers; present both.</div>
+</section>
+
+<!-- ============================================================ 7 -->
+<section id="p7">
+<h2><span class="pt">Part 7 · Section VIII</span>Monetary &amp; fiscal policy</h2>
+
+<h3>7.1 Monetary policy <span class="c">[249–256]</span></h3>
+<p>Goal: a stable economy for current and future wellbeing [249]. Method: <strong>flexible inflation targeting</strong>,
+BoC target <strong>2%</strong> [251]. Too low a target risks contracting the economy; too high risks instability;
+<strong>frequently changing targets destroy credibility</strong> [251].</p>
+<pre>π high/rising → raise i_ON → prime rate ↑ → borrowing dearer
+              → C and I demanded fall → inflation slows       [250]
+π low/falling → lower i_ON → borrowing cheaper → C, I ↑ → prices bolstered</pre>
+<p><strong>Other tools</strong> [252]: <strong>QE</strong> — buy government bonds, raising their price and lowering
+returns; payment increases settlement balances (reserves). <strong>QT</strong> reverses by selling or letting bonds mature.
+Plus financial regulation.</p>
+
+<div class="eq">Taylor rule: &nbsp; i<sub>ON</sub> = π + 0.02 + 0.5y + 0.5(π − 0.02) &nbsp;&nbsp; where y = (Y − FE)/FE &nbsp;<span class="c">[255]</span></div>
+
+<div class="core"><b>The property that matters: ∂i/∂π = 1.5 &gt; 1.</b> The nominal rate moves <em>more</em> than
+one-for-one with inflation, so the <strong>real</strong> rate rises when inflation rises. A rule responding less than
+one-for-one would be destabilising. Sanity check: at π = 2%, y = 0 ⇒ i = 4% nominal, 2% real.</div>
+
+<figure>
+  <div class="figtitle">The Taylor property, drawn — slope 1.5 vs slope 1 <span class="c">[255]</span></div>
+  <svg viewBox="0 0 380 262" role="img" aria-label="Taylor rule line with slope 1.5 crossing a slope-one reference line at the two percent inflation target">
+    <line class="ax" x1="56" y1="22" x2="56" y2="210"/>
+    <line class="ax" x1="56" y1="210" x2="344" y2="210"/>
+    <text class="tb" x="30" y="22">i</text>
+    <text class="tb" x="350" y="228">π</text>
+    <line class="gl" x1="147" y1="210" x2="147" y2="30"/>
+    <text class="ts" x="140" y="224">2%</text>
+    <text class="ts" x="231" y="224">4%</text>
+    <text class="ts" x="322" y="224">6%</text>
+    <text class="ts" x="32" y="174">2%</text>
+    <text class="ts" x="32" y="134">4%</text>
+    <text class="ts" x="32" y="94">6%</text>
+    <text class="ts" x="32" y="54">8%</text>
+    <line class="cn dash" x1="56" y1="170" x2="330" y2="50"/>
+    <text class="tt" x="338" y="44" text-anchor="end">slope 1</text>
+    <line class="cs" x1="56" y1="190" x2="299" y2="30"/>
+    <text class="t" x="296" y="24" text-anchor="end">Taylor — slope 1.5</text>
+    <circle class="annf" cx="147" cy="130" r="4.5"/>
+    <line class="gl" x1="56" y1="130" x2="147" y2="130"/>
+    <text class="ts" x="156" y="152">target: π = 2%, i = 4%, r = 2%</text>
+    <line class="ann" x1="239" y1="70" x2="239" y2="90"/>
+    <line class="ann" x1="234" y1="70" x2="244" y2="70"/>
+    <line class="ann" x1="234" y1="90" x2="244" y2="90"/>
+    <text class="ts" x="246" y="106" fill="var(--s3)">+1pt of r</text>
+    <text class="tt" x="200" y="244" text-anchor="middle">at π = 4%: the rule sets i = 7%, not 6% ⇒ r = 3% — the REAL rate rises, leaning against inflation.</text>
+    <text class="tt" x="200" y="257" text-anchor="middle">a rule with slope &lt; 1 would CUT the real rate as inflation rose — destabilising.</text>
+  </svg>
+  <figcaption>Check the anchor: π = 2%, y = 0 ⇒ i = 0.02 + 0.02 + 0 + 0 = <b>4%</b>, so r = 2%. Above target the
+  Taylor line pulls away from the slope-1 line — that vertical gap IS the extra real-rate response.</figcaption>
+</figure>
+
+<div class="qbox">
+  <div class="qt">Self-test</div>
+  Inflation runs at 4% with output at FE (y = 0). What does the Taylor rule set, and what happened to r?<br>
+  → <span class="rv">i = 0.04 + 0.02 + 0 + 0.5(0.04 − 0.02) = <strong>7%</strong>. r = i − π = <strong>3%</strong> — a full point above the 2% neutral stance. The rule leans against the boom precisely because ∂i/∂π = 1.5 [255].</span>
+</div>
+
+<p><strong>Rules vs discretion</strong> [256]. Rules: lags make outcomes and timing unpredictable; rules improve credibility.
+Discretion: the system is too complex for a simple rule; improving forecasts can improve policy.
+<strong>Effectiveness constraints</strong> [253–254]: <strong>lags</strong> — hard to pick the policy and to assess it;
+<strong>credibility</strong> — disinflating without a recession requires being believed. Slide 253: monetary policy
+"may not always be the most effective option, particularly with respect to combatting recessions."</p>
+
+<h3>7.2 Fiscal policy <span class="c">[257–262]</span></h3>
+<pre>Government expenditure = G + TR + INT
+Government revenue     = T
+surplus = T − G − TR − INT
+deficit = G + TR + INT − T
+Fiscal policy = changing G, T, or tax rates            [257]</pre>
+<p><strong>Benefits</strong> [258]: increase aggregate demand · capital formation · influence saving, investment and labour.<br>
+<strong>Drawbacks</strong> [259]: deficits · <strong>inflexible mechanism</strong> · lags · inflation ·
+<strong>distortions leading to inefficiencies</strong>.</p>
+
+<div class="gold"><b>Automatic stabilizers</b> [260] — "budgetary provisions which allow G and T to rise/fall automatically
+with economic fluctuation." Examples: <strong>Employment Insurance and taxes</strong>. They exist to defeat the
+<em>decision-lag</em> drawback, which is the entire answer to Q55. Slide 260 also defines <strong>seignorage</strong>:
+raising money to fund spending by printing money.</p></div>
+
+<p><strong>Targeted policies</strong> [261–262]. Lower unemployment: job training, reform EI, reduce market interference,
+monetary and fiscal policy. Lower inflation: monetary policy, direct wage/price controls (Keynesian).</p>
+
+<div class="core"><b>The Lucas critique</b> [263] — the deepest slide in the section.
+<em>"When you introduce a policy, you change people's behaviour, so if you are not modelling behaviours (those objectives
+which generate the curves) your predictions could be inaccurate."</em> Curves come from optimisation under constraints [57];
+policy changes constraints; so policy moves the very curves you used to predict it. Pair with credibility [254] and the
+flattened Phillips curve [193] — three views of one idea.</div>
+
+<div class="qbox">
+  <div class="qt">Self-test</div>
+  A government must choose between a discretionary stimulus package and a standing food relief program that scales with
+  need. Which does the course favour, and on what single ground?<br>
+  → <span class="rv">The food relief program — it is an <strong>automatic stabilizer</strong>, so it defeats the decision-lag drawback [259–260]. Q55.</span>
+</div>
+</section>
+
+<!-- ============================================================ 8 -->
+<section id="p8">
+<h2><span class="pt">Part 8 · Section IX</span>International, exchange rates &amp; balance of payments</h2>
+
+<h3>8.1 Balance of payments accounting <span class="c">[265–270]</span></h3>
+<pre>CA = NX + NFP                                    [266]
+CA balance = sum of all credits − sum of all debits
+KA = capital inflows − capital outflows          [268–269]
+CA + KA = 0    ← true BY DEFINITION              [269]
+But in the data, CA + KA ≠ 0 → statistical discrepancy   [270]</pre>
+
+<div class="core"><b>This is double-entry bookkeeping at national scale.</b> CA + KA = 0 has the same status as
+Assets = Liabilities + Equity — an identity enforced by construction, not an equilibrium condition. Every international
+transaction is recorded twice with opposite signs. The <strong>statistical discrepancy</strong> [270] is the national
+suspense account — and it is the same lesson as the discrepancy in the three GDP approaches [16, 20, 21].
+<strong>She teaches this twice.</strong></div>
+
+<pre>S = GNP − C − G = C+I+G+NX+NFP − C − G = I + NX + NFP = I + CA   [272]
+Open goods market:  S^D = I^D + CA ;  with NFP = 0:  S^D = I^D + NX   [273]
+                    NX = S^D − I^D                                     [274]</pre>
+
+<figure>
+  <div class="figtitle">Figure 9 · Open-economy goods market — NX = S<sup>D</sup> − I<sup>D</sup> <span class="c">[275]</span></div>
+  <svg viewBox="0 0 400 268" role="img" aria-label="Open economy: net export demand crosses saving minus investment left of zero, giving a trade deficit">
+    <line class="ax" x1="56" y1="20" x2="56" y2="212"/>
+    <line class="ax" x1="56" y1="212" x2="380" y2="212"/>
+    <text class="tb" x="38" y="20">r</text><text class="tb" x="330" y="230">S−I, NX</text>
+    <line class="gl" x1="246" y1="26" x2="246" y2="212" stroke-dasharray="0"/>
+    <text class="ts" x="242" y="226">0</text>
+    <line class="cs" x1="86" y1="188" x2="330" y2="58"/>
+    <text class="t" x="300" y="50">S<tspan baseline-shift="super" font-size="8">D</tspan> − I<tspan baseline-shift="super" font-size="8">D</tspan></text>
+    <line class="cd" x1="98" y1="52" x2="340" y2="196"/>
+    <text class="t" x="312" y="208">NX<tspan baseline-shift="super" font-size="8">D</tspan></text>
+    <circle class="annf" cx="196" cy="129" r="4"/>
+    <line class="gl" x1="56" y1="129" x2="196" y2="129"/>
+    <line class="gl" x1="196" y1="129" x2="196" y2="212"/>
+    <text class="ts" x="38" y="133">r*</text><text class="ts" x="180" y="226">NX*</text>
+    <line class="ann" x1="196" y1="150" x2="246" y2="150"/>
+    <line class="ann" x1="196" y1="146" x2="196" y2="154"/><line class="ann" x1="246" y1="146" x2="246" y2="154"/>
+    <text class="ts" x="56" y="252" fill="var(--s3)">NX* sits LEFT of zero ⇒ NX &lt; 0 ⇒ trade deficit ⇒ CA deficit ⇒ net borrower</text>
+  </svg>
+  <figcaption><b>A trade deficit is simply saving falling short of investment.</b> The country funds the gap by borrowing
+  abroad — hence <b>net borrower</b> (Q56). The current account is the <em>flow</em>; net foreign assets [33] is the
+  <em>stock</em> it accumulates into. Same relationship as saving → wealth, one level up.</figcaption>
+</figure>
+
+<h3>8.2 Exchange rates <span class="c">[280–285, 303–307]</span></h3>
+<pre>e_nom = FOREIGN currency per ONE unit of DOMESTIC currency   [280]
+        Canadian convention:  e_nom UP  ⇒  CAD STRENGTHENS
+Real exchange rate:  e = e_nom × P / P_for                   [281]
+PPP:  e = 1  ⇒  e_nom = P_for / P                            [284–285]</pre>
+
+<div class="warn"><b>The single worst trap in the course.</b> Most US-oriented material quotes the reciprocal.
+Internalise the wrong direction and you invert <strong>every</strong> answer in Q58–Q66. Write the convention at the top
+of your page before starting any FX question.</div>
+
+<div class="fxbox">
+  <div class="fxdef">e_nom = units of FOREIGN currency per 1 unit of DOMESTIC (CAD) &nbsp;[280]</div>
+  <div class="fxrow" style="color:var(--s3)">e_nom ↑ &nbsp;⇒&nbsp; 1 CAD buys MORE foreign &nbsp;⇒&nbsp; CAD APPRECIATES</div>
+  <div class="fxrow" style="color:var(--s2)">e_nom ↓ &nbsp;⇒&nbsp; 1 CAD buys LESS foreign &nbsp;⇒&nbsp; CAD DEPRECIATES</div>
+  <div style="font-size:12.5px;color:var(--ink-2);margin-top:8px">US-oriented sources usually quote the reciprocal (CAD per USD). Reproduce this box at the top of the page before any FX question — one inversion flips every answer in Q58–Q66.</div>
+</div>
+
+<div class="core"><b>One instrument, one target</b> [303–304, 307]. The Bank of Canada <strong>cannot</strong> lower the
+exchange rate and lower inflation simultaneously — Q59 and Q60 both answer <strong>no</strong>. The same policy rate that
+fights domestic inflation also moves the currency. This is why FX translation risk on CAD-listed holdings is not
+avoidable by policy.</div>
+
+<div class="qbox">
+  <div class="qt">Self-test</div>
+  Mexican pesos depreciate against CAD; Canadian inflation is 50% and Mexican inflation 200%. Has Mexico become
+  cheaper in real terms?<br>
+  → <span class="rv">No — the opposite. Q62: Mexico moves from ½ to <strong>⅔</strong> of the Canadian price. A <strong>nominal depreciation is not a real depreciation</strong> when the depreciating country's inflation outruns it.</span>
+</div>
+
+<div class="qbox">
+  <div class="qt">Self-test — clean arithmetic, no calculator</div>
+  A Big Mac costs 5,200 won in Seoul and USD 5.58 in the US; the market rate is 1,274 won/USD. Valued how?<br>
+  → <span class="rv">Implied PPP rate = 5200 ÷ 5.58 = <strong>931.9 won/USD</strong>. The market demands 1,274 — far more won per dollar than PPP implies — so the won is <strong>undervalued ≈ 27%</strong> [Q61].</span>
+</div>
+
+<p><strong>Classify every FX shock</strong> [Q58]: does it move the <strong>demand</strong> for the currency or the
+<strong>supply</strong>? Slide 292 (foreign r ↑) moves <strong>supply</strong>. Two-country adding-up [Q63–64]:
+one country's NX rise is the other's fall.</p>
+</section>
+
+<!-- ============================================================ 9 -->
+<section id="p9">
+<h2><span class="pt">Part 9 · Technique</span>Graphing conventions &amp; exam craft</h2>
+
+<h3>9.1 Shift vs pivot <span class="c">[317]</span></h3>
+<p><strong>A variable in the intercept shifts. A variable in the slope pivots.</strong></p>
+
+<figure>
+  <div class="figtitle">Figure 10 · Shift vs pivot — and where each tax lands</div>
+  <div class="panels two">
+    <svg viewBox="0 0 320 230" role="img" aria-label="Parallel shift of a labour supply curve">
+      <text class="tb" x="4" y="13">Shift — parallel</text>
+      <line class="ax" x1="50" y1="26" x2="50" y2="196"/>
+      <line class="ax" x1="50" y1="196" x2="300" y2="196"/>
+      <text class="tb" x="34" y="26">w</text><text class="tb" x="298" y="214">N</text>
+      <line class="cs" x1="70" y1="182" x2="270" y2="48"/>
+      <text class="ts" x="246" y="42">N₁<tspan baseline-shift="super" font-size="7">S</tspan></text>
+      <line class="cs dash" x1="120" y1="182" x2="300" y2="61"/>
+      <text class="ts" x="276" y="56">N₂<tspan baseline-shift="super" font-size="7">S</tspan></text>
+      <text class="ts" x="82" y="112">wealth ↑ ⇒ intercept moves</text>
+      <text class="ts" x="82" y="126">⇒ the whole line slides</text>
+    </svg>
+    <svg viewBox="0 0 320 230" role="img" aria-label="Pivot of a labour supply curve about the origin">
+      <text class="tb" x="4" y="13">Pivot — about a fixed point</text>
+      <line class="ax" x1="50" y1="26" x2="50" y2="196"/>
+      <line class="ax" x1="50" y1="196" x2="300" y2="196"/>
+      <text class="tb" x="34" y="26">w</text><text class="tb" x="298" y="214">N</text>
+      <line class="cs" x1="50" y1="196" x2="280" y2="44"/>
+      <text class="ts" x="256" y="38">N₁<tspan baseline-shift="super" font-size="7">S</tspan></text>
+      <line class="cs dash" x1="50" y1="196" x2="192" y2="44"/>
+      <text class="ts" x="170" y="38">N₂<tspan baseline-shift="super" font-size="7">S</tspan></text>
+      <circle class="annf" cx="50" cy="196" r="4.5"/>
+      <text class="ts" x="60" y="188" fill="var(--s3)">anchor</text>
+      <text class="ts" x="112" y="132">income tax t: N<tspan baseline-shift="super" font-size="7">S</tspan> = (1−t)w</text>
+      <text class="ts" x="112" y="146">scales w ⇒ slope changes</text>
+    </svg>
+  </div>
+  <figcaption>
+  <b>Income tax on workers</b> — N<sup>S</sup> = (1−t)w — <b>pivots labour supply about the origin</b> [99, Q19c, Q65].
+  <b>Payroll tax on firms</b> — MPN = (1+τ)w — <b>pivots labour demand about its N-intercept</b>: set w = 0 and
+  N = 120 for any τ (practice midterm Q3c). Both pivot because both <em>scale w</em>. <b>Wealth shifts</b> supply, because
+  it moves the intercept.
+  </figcaption>
+</figure>
+
+<h3>9.2 The graphing convention <span class="c">[88, 312]</span></h3>
+<div class="warn"><b>Price goes on the vertical axis, so you plot the INVERSE function</b> — still labelled
+N<sup>D</sup> / N<sup>S</sup>. Given N<sup>D</sup> = 500 − 20w, you graph <span class="m">w = 25 − N/20</span>.
+Plotting the function as written puts the wrong variable on the wrong axis and costs the graph marks.</div>
+
+<h3>9.3 Colour convention in her deck <span class="c">[57–58, 92–95, 128–129, 317–319]</span></h3>
+<p><strong>Black = essential. Grey = supplementary</strong> ("FYI only – not required" / "you will NOT be required to do
+any calculus"). Navy = hyperlinks. Green/blue on graphs = emphasis. Grey appears on only ~45 of 338 slides.
+<strong>Where the deck says in words that something is not required, believe the words</strong> — slide 332 is black but
+says it will not be tested.</p>
+
+<h3>9.4 How to answer well</h3>
+<table>
+<thead><tr><th>Rule</th><th>Why it earns marks</th></tr></thead>
+<tbody>
+<tr><td><strong>Name the mechanism, not just the direction</strong></td><td class="n">"A ↑ raises MPN at every N, so N<sup>D</sup> shifts right" beats "A ↑ increases demand"</td></tr>
+<tr><td><strong>Distinguish a shift from a movement along</strong></td><td class="n">Most marks in the course turn on this one distinction</td></tr>
+<tr><td><strong>State ambiguity — then pick one</strong></td><td class="n">Say what it depends on, but on a paper offering options, <strong>circle exactly one. Hedging is penalised.</strong> Where "ambiguous" is itself an option (Q3d, Q4d), choosing it is correct</td></tr>
+<tr><td><strong>Check the comparison base</strong></td><td class="n">Midterm Q4(d) compares to part (b), not part (c)</td></tr>
+<tr><td><strong>Use cross-market consistency</strong></td><td class="n">r* equal economy-wide resolves within-market ambiguity</td></tr>
+<tr><td><strong>Watch for "temporary"</strong></td><td class="n">Kills the MPK<sup>f</sup> channel but not the p<sub>k</sub> channel</td></tr>
+<tr><td><strong>Check the exponent sum</strong></td><td class="n">Before assuming constant returns to scale</td></tr>
+<tr><td><strong>Criticism is examinable</strong></td><td class="n">Learning outcome 5. Use the four model-evaluation criteria [63] — criterion 1 says assumptions must be <em>appropriate for the research question</em>, not merely realistic</td></tr>
+<tr><td><strong>Arithmetic must come out clean</strong></td><td class="n">No calculators ⇒ ugly numbers mean you made an error</td></tr>
+</tbody>
+</table>
+
+<div class="gold"><b>The best cross-section connections</b> [334] — these are what turn a good answer into a top one:
+Lucas critique [263] ↔ constrained maximisation [57] · credibility [254] ↔ flattened Phillips curve [193] ·
+efficiency wages [109] ↔ "some inequality motivates effort" [245] · technology growth [232] ↔ structural unemployment [117] ·
+A-as-residual [71] ↔ the first RBC criticism [215] · statistical discrepancy [16, 20] ↔ CA + KA ≠ 0 [270] ·
+"disciplines" vs "ties up" monetary policy [307] ↔ rules vs discretion [256].</div>
+
+<h3>9.5 The eight mantras — say them, don't read them</h3>
+<div class="chips">
+  <div class="chip">Divide by P<small>nominal → real, everywhere [34]</small></div>
+  <div class="chip">Intercept shifts, slope pivots<small>taxes scale w ⇒ pivots [317]</small></div>
+  <div class="chip">Supply + clearing ⇒ P ↓<small>demand + rigidity ⇒ P ↑ [212, 217]</small></div>
+  <div class="chip">One r* for the whole economy<small>cross-market consistency [212]</small></div>
+  <div class="chip">Same direction ⇒ determinate<small>opposite ⇒ ambiguous — check each variable</small></div>
+  <div class="chip">Divide by the EARLIER P<small>π = ΔP / P(t) [35]</small></div>
+  <div class="chip">"Temporary" never touches MPK<sup>f</sup><small>only the p_k channel moves I^D [Q32b]</small></div>
+  <div class="chip">cu · res · BASE<small>public · banks · central bank [180]</small></div>
+</div>
+
+<h3>9.6 The gauntlet — twelve cold questions, whole course</h3>
+<p style="font-size:14px;color:var(--ink-2);margin-bottom:10px">Answer aloud before revealing. Wrong or slow ⇒ reread that part today.</p>
+<table>
+<thead><tr><th style="width:52%">Prompt</th><th>Answer</th></tr></thead>
+<tbody>
+<tr><td>Anne Murray performs in Vienna — Canada's GDP, GNP, or both?</td><td><span class="rv">GNP only — a Canadian factor of production working abroad [Q6, 25]</span></td></tr>
+<tr><td>The public abandons banks and holds all currency. M = ?</td><td><span class="rv">mm → 1, so M = BASE [Q39, 178]</span></td></tr>
+<tr><td>A temporary rise in MPK — what happens to I^D?</td><td><span class="rv">Nothing via the MPK^f channel (K* unchanged); only a p_k change would shift it [Q32b, 141–149]</span></td></tr>
+<tr><td>M ↑ under sticky wage: N, W/P, Y, r*, P?</td><td><span class="rv">N ↑ · W/P ↓ · Y ↑ · r* ↓ · P ↑ — and I* rises by movement ALONG I^D [Q44]</span></td></tr>
+<tr><td>Minimum wage set exactly AT w* — employment and unemployment?</td><td><span class="rv">Employment unchanged, unemployment zero [midterm Q4b]</span></td></tr>
+<tr><td>The already-poor get poorer. The poverty rate does…?</td><td><span class="rv">Nothing — a headcount is blind to depth [Q52]</span></td></tr>
+<tr><td>Can the BoC cut the exchange rate AND inflation together?</td><td><span class="rv">No — one instrument cannot hit two targets [Q59/60, 303–307]</span></td></tr>
+<tr><td>Income tax rises in an open economy: r and NX?</td><td><span class="rv">r ↑ unambiguously (S^D left and NX^D right agree); NX ambiguous [Q65]</span></td></tr>
+<tr><td>Two effects push a variable in opposite directions ⇒ ?</td><td><span class="rv">Ambiguous — unless another market pins it [212]. Same direction ⇒ determinate.</span></td></tr>
+<tr><td>Natural rate of unemployment = ?</td><td><span class="rv">Frictional + structural — cyclical excluded [117]</span></td></tr>
+<tr><td>Deflation with a stuck nominal wage is…?</td><td><span class="rv">Contractionary — P ↓ raises W/P, so employment falls [219 logic, run in reverse]</span></td></tr>
+<tr><td>The statistical discrepancy appears twice in this course — where?</td><td><span class="rv">The three GDP approaches disagreeing in data [16, 20] and CA + KA ≠ 0 in data [270]</span></td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- ============================================================ 10 -->
+<section id="p10">
+<h2><span class="pt">Part 10</span>Errata — flag these</h2>
+
+<h3>In the slides</h3>
+<table>
+<thead><tr><th>Slide</th><th>Says</th><th>Should be</th></tr></thead>
+<tbody>
+<tr><td class="m">[191]</td><td>In heated growth, "the central bank could <strong>reduce</strong> the overnight rate"</td><td><strong>Raise.</strong> Slide 250 is correct — cite 250</td></tr>
+<tr><td class="m">[187, 189]</td><td>Vertical axis labelled "M/P" but carrying r* values</td><td>The axis is <strong>r</strong> (214, 218, 337 correct)</td></tr>
+<tr><td class="m">[185]</td><td>Refers to "section XIII"</td><td>Section <strong>VIII</strong></td></tr>
+<tr><td class="m">[281]</td><td>Real exchange rate given as 1.167</td><td>Her own numbers (0.7 × 2.00 / 1.30) give <strong>1.077</strong>. <strong>Unresolved — ask her</strong></td></tr>
+<tr><td class="m">[184]</td><td>"the deposit rate = the target rate"</td><td>Correct when written; since <strong>January 2025</strong> the deposit rate sits <strong>5bp below</strong> target</td></tr>
+</tbody>
+</table>
+
+<h3>In the study-question solutions</h3>
+<table>
+<thead><tr><th>Question</th><th>Issue</th></tr></thead>
+<tbody>
+<tr><td class="m">Q23(a)</td><td>Answer box says −11.1%; correct <strong>nominal</strong> GDP growth is <strong>−21%</strong> (the worked line says so). Also writes 65,000 where 8000 × 8 = <strong>64,000</strong>. Most consequential error in the set</td></tr>
+<tr><td class="m">Q47</td><td>Reports w* <strong>falling</strong> after a rightward N<sup>D</sup> shift along an upward N<sup>S</sup>; it should <strong>rise</strong>, and the graph labels w₂* above w₁*. <strong>Unresolved — ask her</strong></td></tr>
+<tr><td class="m">Q11(b)</td><td>Inflation given as 4%; exact <strong>4.35%</strong></td></tr>
+<tr><td class="m">Q11(d)</td><td>Writes "r = 0.03 − 0.04 = −1"; should be <strong>−0.01</strong></td></tr>
+<tr><td class="m">Q17(c)</td><td>Writes "(100 − 280)/1"; should be <strong>(300 − 280)/1</strong></td></tr>
+<tr><td class="m">Q57</td><td>Cross-references "question 57c)"; means <strong>Q56(c)</strong></td></tr>
+<tr><td class="m">Q15 / Q33</td><td>Rounding: TFP growth −4.39% (given −4%); r* 0.2353 / 0.4706 (given 0.24 / 0.47)</td></tr>
+</tbody>
+</table>
+<p><strong>Practice midterm solutions: no errors found</strong> — two cosmetic typos only.</p>
+
+<div class="warn"><b>Two remain unresolved</b> — slide 281's real exchange rate and Q47's w* direction.
+Email Prof. Rybczynski rather than memorising a contradiction.</div>
+</section>
+
+<footer>
+  <p><strong>Sources.</strong> All slide references are to <em>ECON102slides2026CompleteJan4.pdf</em> (338 slides;
+  PDF page = printed slide number). Study-question references are to <em>ECON102studyquestionsApr3.pdf</em> (Q1–Q67).
+  Figures are redrawn schematics of her graphs, not reproductions — geometry is illustrative, the labels and
+  relationships are hers.</p>
+  <p><strong>Not official course material.</strong> Where a redrawn figure and her slide disagree, her slide governs.
+  Her outline asks you not to learn models or notation from outside sources; everything here uses her notation from her deck.</p>
+  <p><strong>Numbering.</strong> The official outline numbers <strong>VI = Trends/Cycles/Inequality</strong> and
+  <strong>VII = Money and Inflation</strong>; only the slide deck reverses them. Refer to these two by name, never numeral.</p>
+</footer>
+
+</div>
+<div class="ctl">
+  <button id="ra" type="button">Reveal all</button>
+  <button id="ha" type="button">Hide all</button>
+</div>
+<script>
+document.addEventListener('click', function(e){
+  var t = e.target.closest('.rv');
+  if (t) t.classList.add('on');
+});
+var ra = document.getElementById('ra'), ha = document.getElementById('ha');
+if (ra) ra.addEventListener('click', function(){
+  document.querySelectorAll('.rv').forEach(function(n){ n.classList.add('on'); });
+});
+if (ha) ha.addEventListener('click', function(){
+  document.querySelectorAll('.rv').forEach(function(n){ n.classList.remove('on'); });
+});
+</script>
+
+
+<a id="__rb-pill" href="coursework.html">&#8592; Coursework</a>
+<script>
+(function(){
+  var p=document.getElementById('__rb-pill'); if(!p) return;
+  var t=false;
+  function run(){ t=false;
+    p.classList.toggle('__on',(window.scrollY||document.documentElement.scrollTop)>420); }
+  function q(){ if(!t){ t=true; requestAnimationFrame(run); } }
+  addEventListener('scroll',q,{passive:true}); run();
+})();
+</script>
+</body>
+</html>

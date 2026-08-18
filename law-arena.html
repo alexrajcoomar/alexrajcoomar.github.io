@@ -1,0 +1,1554 @@
+<!doctype html>
+<html lang="en-CA">
+<head>
+<meta charset="utf-8">
+<meta name="description" content="Question-by-question practice on the business law an accountant actually meets.">
+<meta property="og:title" content="Law Arena — Business law for accountants">
+<meta property="og:description" content="Question-by-question practice on the business law an accountant actually meets.">
+<meta property="og:type" content="article">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Law Arena — Business Law for Accountants</title>
+<link rel="manifest" href="law-arena.webmanifest">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Law Arena">
+<meta name="theme-color" content="#f9f9f7" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0d0d0d" media="(prefers-color-scheme: dark)">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="icon" type="image/png" href="law-arena-192.png">
+
+<style>
+/* ============ TOKENS (same design system as the Practice Arena) ============ */
+:root{
+  color-scheme:light;
+  --page:#f9f9f7; --surface:#fcfcfb; --ink:#0b0b0b; --ink2:#52514e; --muted:#898781;
+  --grid:#e1e0d9; --line:#c3c2b7; --ring:rgba(11,11,11,.10);
+  --acc:#a8202c; --t2:#eb6834; --t3:#1baf7a; --t4:#eda100; --t5:#e87ba4; --t7:#1f3f74;
+  --good:#0ca30c; --goodtx:#006300; --warn:#fab219; --serious:#ec835a; --crit:#d03b3b;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+  --sans:system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:where(:not([data-theme="light"])){
+    color-scheme:dark;
+    --page:#0d0d0d; --surface:#1a1a19; --ink:#ffffff; --ink2:#c3c2b7; --muted:#898781;
+    --grid:#2c2c2a; --line:#383835; --ring:rgba(255,255,255,.10);
+    --acc:#f08d96; --t2:#d95926; --t3:#199e70; --t4:#c98500; --t5:#d55181; --t7:#93b4e8;
+    --goodtx:#0ca30c;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --page:#0d0d0d; --surface:#1a1a19; --ink:#ffffff; --ink2:#c3c2b7; --muted:#898781;
+  --grid:#2c2c2a; --line:#383835; --ring:rgba(255,255,255,.10);
+  --acc:#f08d96; --t2:#d95926; --t3:#199e70; --t4:#c98500; --t5:#d55181; --t7:#93b4e8;
+  --goodtx:#0ca30c;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+[hidden]{display:none!important}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--page);color:var(--ink);font:15px/1.5 var(--sans)}
+button{font-family:var(--sans)}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+
+/* ============ HEADER / DASHBOARD ============ */
+.hdr{position:sticky;top:0;z-index:40;display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+  padding:9px 14px;background:color-mix(in srgb,var(--surface) 94%,transparent);
+  backdrop-filter:blur(8px);border-bottom:1px solid var(--grid)}
+.brand{font-weight:800;font-size:15px;white-space:nowrap;cursor:pointer}
+.brand .logo{color:var(--acc)}
+.brand .sub{font-weight:500;color:var(--ink2);font-size:11.5px;margin-left:4px}
+.dash{display:flex;gap:6px;flex-wrap:wrap;margin-left:auto;align-items:center}
+.chip{display:inline-flex;align-items:center;gap:5px;border:1px solid var(--grid);
+  border-radius:999px;padding:4px 11px;font:700 12px var(--sans);background:var(--surface)}
+.chip .l{font-weight:600;color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.5px}
+.chip.streak{color:var(--t2)} .chip.xp{color:var(--acc)} .chip.mast{color:var(--goodtx)}
+.iconbtn{border:1px solid var(--line);background:var(--surface);color:var(--ink2);border-radius:999px;
+  width:34px;height:34px;cursor:pointer;font-size:15px;line-height:1}
+.iconbtn:hover{border-color:var(--acc);color:var(--acc)}
+.iconbtn.off{opacity:.45;text-decoration:line-through}
+
+main{max-width:900px;margin:0 auto;padding:16px 14px 70px}
+.screen{display:none}
+.screen.on{display:block;animation:in .18s ease-out}
+@keyframes in{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.screen.on{animation:none}}
+
+h1{font-size:21px;margin:12px 0 4px}
+.tag{color:var(--ink2);font-size:13px;margin:0 0 16px}
+
+/* ============ HOME: mode cards + module grid ============ */
+.modes{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px;margin-bottom:20px}
+.mode{border:1px solid var(--grid);border-radius:13px;background:var(--surface);padding:14px;
+  cursor:pointer;text-align:left;transition:transform .1s,border-color .1s;position:relative}
+.mode:hover{transform:translateY(-2px);border-color:var(--acc)}
+.mode .mi{font-size:21px;margin-bottom:6px}
+.mode h3{margin:0 0 3px;font-size:14.5px}
+.mode p{margin:0;font-size:11.5px;color:var(--ink2)}
+.mode .hs{position:absolute;top:10px;right:12px;font:700 11px var(--mono);color:var(--t4)}
+.mode .due{position:absolute;top:10px;right:12px;font:800 11px var(--sans);color:#fff;
+  background:var(--crit);border-radius:999px;padding:2px 8px}
+
+.sect{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.7px;color:var(--muted);
+  margin:18px 0 8px}
+.mods{display:grid;grid-template-columns:repeat(auto-fill,minmax(132px,1fr));gap:8px}
+.mtile{border:1px solid var(--grid);border-radius:11px;background:var(--surface);padding:10px 11px;
+  cursor:pointer;text-align:left;position:relative;min-height:74px}
+.mtile:hover{border-color:var(--acc)}
+.mtile .n{font:800 10px var(--sans);color:var(--acc)}
+.mtile .t{font-weight:700;font-size:12px;line-height:1.25;margin:2px 0 5px}
+.mtile .stars{font-size:11px;letter-spacing:1px;color:var(--t4)}
+.mtile .best{font:600 10px var(--mono);color:var(--muted)}
+.mtile.locked{opacity:.55;cursor:not-allowed}
+.mtile.locked .lock{position:absolute;top:8px;right:9px;font-size:12px}
+.mtile.done{border-color:color-mix(in srgb,var(--good) 55%,var(--grid))}
+.mtile.shake{animation:shk .3s}
+@keyframes shk{25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+.mprog{height:5px;border-radius:3px;background:var(--grid);overflow:hidden;margin-top:6px}
+.mprog i{display:block;height:100%;background:var(--good)}
+
+/* ============ QUIZ ============ */
+.qhead{display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap}
+.qhead .qn{font:700 12px var(--sans);color:var(--muted)}
+.qbar{flex:1;height:7px;border-radius:4px;background:var(--grid);overflow:hidden;min-width:120px}
+.qbar i{display:block;height:100%;background:var(--acc);transition:width .2s}
+.combo{font:800 12px var(--sans);color:var(--t2)}
+.qcard{border:1px solid var(--grid);border-radius:14px;background:var(--surface);padding:18px 18px 14px}
+.qmod{font:700 10px var(--sans);letter-spacing:.5px;text-transform:uppercase;color:var(--acc);margin-bottom:6px}
+.qtext{font-size:16px;font-weight:600;line-height:1.45;margin:0 0 14px}
+.opts{display:grid;gap:8px}
+.opt{border:1px solid var(--line);border-radius:10px;background:var(--page);padding:11px 13px;
+  text-align:left;cursor:pointer;font:500 13.5px/1.4 var(--sans);color:var(--ink);
+  display:flex;gap:9px;align-items:baseline}
+.opt .k{font:700 10.5px var(--mono);color:var(--muted);border:1px solid var(--grid);
+  border-radius:5px;padding:1px 5px;flex:none}
+.opt:hover:not(:disabled){border-color:var(--acc)}
+.opt:disabled{cursor:default}
+.opt.right{border-color:var(--good);background:color-mix(in srgb,var(--good) 10%,var(--surface))}
+.opt.wrong{border-color:var(--crit);background:color-mix(in srgb,var(--crit) 9%,var(--surface))}
+.opt.dim{opacity:.5}
+.recall{border:1px dashed var(--line);border-radius:10px;padding:13px 15px;margin:0 0 6px;
+  background:color-mix(in srgb,var(--acc) 4%,var(--surface));font-size:13px;color:var(--ink2)}
+.recall b{color:var(--ink)}
+.numin{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.numin input{font:15px var(--mono);padding:9px 12px;width:170px;border:1px solid var(--line);
+  border-radius:9px;background:var(--page);color:var(--ink)}
+.numin input.right{border-color:var(--good);background:color-mix(in srgb,var(--good) 9%,var(--surface))}
+.numin input.wrong{border-color:var(--crit);background:color-mix(in srgb,var(--crit) 9%,var(--surface))}
+.given{border:1px solid var(--grid);border-radius:9px;padding:9px 12px;margin:0 0 12px;
+  background:color-mix(in srgb,var(--ink) 2.5%,transparent)}
+.given table{width:100%;border-collapse:collapse;font:12px var(--mono)}
+.given td{padding:2.5px 6px;border-bottom:1px dotted var(--grid)}
+.given td:last-child{text-align:right;white-space:nowrap}
+.given tr:last-child td{border-bottom:0}
+.given tr.tot td{border-top:1.5px solid var(--line);font-weight:700}
+.fb{margin-top:12px;border-top:1px dashed var(--line);padding-top:11px;font-size:13px;color:var(--ink2)}
+.fb .verdict{font-weight:800;font-size:13.5px;margin-bottom:5px}
+.fb .verdict.y{color:var(--goodtx)} .fb .verdict.n{color:var(--crit)}
+.fb .connect{display:block;margin-top:7px;color:var(--t7);font-size:12px}
+.fb .steps{margin-top:8px;display:grid;gap:4px}
+.fb .step{display:grid;grid-template-columns:16px 1fr auto;gap:7px;font-size:12.5px;
+  padding:3px 0;border-bottom:1px solid color-mix(in srgb,var(--ink) 6%,transparent)}
+.fb .step .sn{font:700 10px/1.6 var(--mono);color:var(--muted)}
+.fb .step .amt{font-family:var(--mono);font-size:11.5px;white-space:nowrap}
+.fb .step.hot{background:color-mix(in srgb,var(--warn) 13%,transparent);border-radius:4px;
+  padding-inline:5px;margin-inline:-5px}
+.badge{display:inline-block;font:700 9.5px var(--sans);letter-spacing:.4px;padding:1.5px 7px;
+  border-radius:999px;border:1px solid;vertical-align:1px;margin-right:4px}
+.badge.v{color:color-mix(in srgb,var(--warn) 60%,var(--ink));border-color:var(--warn);
+  background:color-mix(in srgb,var(--warn) 12%,transparent)}
+.badge.c{color:color-mix(in srgb,var(--serious) 70%,var(--ink));border-color:var(--serious);
+  background:color-mix(in srgb,var(--serious) 12%,transparent)}
+.qfoot{display:flex;gap:9px;margin-top:14px;align-items:center;flex-wrap:wrap}
+.btn{font:700 13px var(--sans);padding:10px 18px;border:1px solid var(--line);border-radius:10px;
+  background:var(--surface);color:var(--ink);cursor:pointer}
+.btn:hover{border-color:var(--acc);color:var(--acc)}
+.btn.pri{background:var(--acc);border-color:var(--acc);color:#fff}
+.btn.pri:hover{color:#fff;filter:brightness(1.07)}
+.btn.ghost{border-color:transparent;color:var(--ink2)}
+.btn:disabled{opacity:.4;cursor:default}
+
+/* ============ RESULTS ============ */
+.overlay{position:fixed;inset:0;background:color-mix(in srgb,var(--ink) 35%,transparent);
+  display:none;align-items:center;justify-content:center;z-index:60;padding:16px}
+.overlay.on{display:flex}
+.res{background:var(--surface);border:1px solid var(--grid);border-radius:16px;padding:26px 26px 20px;
+  max-width:440px;width:100%;text-align:center;animation:pop .22s ease-out}
+@keyframes pop{from{transform:scale(.92);opacity:0}to{transform:scale(1);opacity:1}}
+@media (prefers-reduced-motion:reduce){.res{animation:none}}
+.res .big{font-size:44px;font-weight:800;font-variant-numeric:tabular-nums}
+.res .big.pass{color:var(--goodtx)} .res .big.fail{color:var(--crit)}
+.res .rstars{font-size:26px;letter-spacing:5px;color:var(--t4);margin:4px 0}
+.res h2{margin:2px 0 6px;font-size:18px}
+.res p{color:var(--ink2);font-size:13px;margin:4px 0 14px}
+.res .xps{font:700 12px var(--sans);color:var(--acc)}
+
+/* ============ TERM SPRINT ============ */
+.timerwrap{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.timer{flex:1;height:10px;border-radius:6px;background:var(--grid);overflow:hidden}
+.timer i{display:block;height:100%;background:var(--t3)}
+.timer i.low{background:var(--crit)}
+.tnum{font:800 17px var(--mono);min-width:44px;text-align:right}
+.rscore{font:800 15px var(--mono);color:var(--acc)}
+
+/* ============ CASE CLINIC ============ */
+.gengrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:9px}
+.gentile{border:1px solid var(--grid);border-radius:11px;background:var(--surface);padding:12px;
+  cursor:pointer;text-align:left}
+.gentile:hover{border-color:var(--acc)}
+.gentile h4{margin:0 0 3px;font-size:13px}
+.gentile .gm{font:700 9.5px var(--sans);color:var(--acc);text-transform:uppercase;letter-spacing:.5px}
+.gentile .gs{font:600 10.5px var(--mono);color:var(--muted);margin-top:4px}
+.simin{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin:7px 0}
+.simin label{font-size:12.5px;color:var(--ink2);min-width:150px}
+.simin input{font:13px var(--mono);padding:7px 10px;width:140px;border:1px solid var(--line);
+  border-radius:7px;background:var(--page);color:var(--ink)}
+.simin select{font:13px var(--sans);padding:7px 10px;max-width:330px;border:1px solid var(--line);
+  border-radius:7px;background:var(--page);color:var(--ink)}
+.simin input.right,.simin select.right{border-color:var(--good);background:color-mix(in srgb,var(--good) 9%,var(--surface))}
+.simin input.wrong,.simin select.wrong{border-color:var(--crit);background:color-mix(in srgb,var(--crit) 9%,var(--surface))}
+.simin .mk{font:800 12px var(--sans);width:14px}
+.simin .mk.y{color:var(--goodtx)} .simin .mk.n{color:var(--crit)}
+.scen{border-left:3px solid var(--acc);background:color-mix(in srgb,var(--acc) 5%,var(--surface));
+  border-radius:0 8px 8px 0;padding:10px 14px;margin:0 0 12px;font-size:13.5px;line-height:1.55}
+
+/* ============ REVIEW ============ */
+.revinfo{border:1px solid var(--grid);border-radius:11px;background:var(--surface);padding:12px 14px;
+  margin-bottom:12px;font-size:13px;color:var(--ink2)}
+.boxrow{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+.boxpill{font:700 10.5px var(--mono);border:1px solid var(--grid);border-radius:999px;padding:3px 10px;color:var(--ink2)}
+
+.note{font-size:11.5px;color:var(--muted);margin-top:22px;border-top:1px solid var(--grid);padding-top:10px}
+.back{margin-bottom:10px}
+.visuallyhidden{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.banner{border:1px solid var(--warn);border-left-width:4px;border-radius:9px;background:color-mix(in srgb,var(--warn) 10%,var(--surface));padding:9px 13px;margin:10px 0;font-size:12.5px}
+.toolsrow{display:flex;gap:8px;flex-wrap:wrap;margin-top:20px}
+.toolsrow .btn{font-size:11.5px;padding:7px 12px;border-color:var(--grid)}
+.btn.danger{border-color:var(--crit);color:var(--crit)}
+.tilereset{position:absolute;top:7px;right:8px;font:700 11px var(--sans);color:var(--muted);cursor:pointer;padding:2px 5px;border-radius:5px}
+.tilereset:hover{color:var(--crit);background:color-mix(in srgb,var(--crit) 10%,transparent)}
+.misslist{max-height:260px;overflow-y:auto;text-align:left;margin-top:12px;border:1px solid var(--grid);border-radius:9px;padding:8px 11px}
+.mlh{font:700 11px var(--sans);text-transform:uppercase;letter-spacing:.5px;color:var(--crit);margin-bottom:6px}
+.mlitem{border-bottom:1px solid var(--grid);padding:7px 0;font-size:12px}
+.mlitem:last-child{border-bottom:0}
+.mlq{font-weight:600;margin-bottom:3px}
+.mlrow .no{color:var(--crit)} .mlrow .yes{color:var(--goodtx);margin-left:10px}
+.mlx{color:var(--ink2);margin-top:3px;font-size:11.5px}
+.leechh{font:700 10.5px var(--sans);text-transform:uppercase;letter-spacing:.5px;color:var(--crit);margin-top:10px}
+.leech{font-size:12px;padding:3px 0;border-bottom:1px dotted var(--grid)}
+.leech .lm{font:700 10.5px var(--mono);color:var(--crit)}
+.chkrow{margin:10px 0;font-size:12.5px;color:var(--ink2)}
+#scr-quiz .qfoot{position:sticky;bottom:8px;background:color-mix(in srgb,var(--page) 88%,transparent);backdrop-filter:blur(6px);padding:6px;border-radius:10px}
+@media (max-width:560px){
+  .qtext{font-size:15px}
+  .dash .chip .l{display:none}
+  .numin input,.simin input{width:130px}
+}
+</style>
+</head>
+<body>
+<noscript><div style="padding:20px;font-family:system-ui">This practice app is built entirely in JavaScript — enable JavaScript (it runs fully offline; nothing is loaded from the network).</div></noscript>
+<header class="hdr">
+  <div class="brand" id="homeBtn"><span class="logo">§</span> Law Arena <span class="sub">Business Law for Accountants</span></div>
+  <div class="dash">
+    <span class="chip streak" title="Daily streak">🔥 <b id="dStreak">0</b><span class="l">day streak</span></span>
+    <span class="chip xp">✦ <b id="dXp">0</b><span class="l">xp</span></span>
+    <span class="chip mast">▮ <b id="dMast">0%</b><span class="l">mastery</span></span>
+    <button class="iconbtn" id="sndBtn" title="Sound on/off">♪</button>
+    <button class="iconbtn" id="thmBtn" title="Light / dark">◐</button>
+  </div>
+</header>
+<main>
+  <!-- ============ HOME ============ -->
+  <section class="screen on" id="scr-home">
+    <h1>Law Arena</h1>
+    <p class="tag">Built from the reviewed business-law primer (15 Aug 2026 revision). Canadian frame; US law as the comparison. ⚑ answers rest on points the primer still marks <b>[VERIFY]</b> — the flags survive into the game until you clear them against a primary source.</p>
+    <div class="modes">
+      <button class="mode" data-go="campaign"><div class="mi">🏛️</div><h3>Section Campaign</h3><p>Score 80%+ to unlock the next section. Recall-first prompts, error-spotting, and case items mixed in.</p></button>
+      <button class="mode" data-go="rapid"><div class="mi">⚡</div><h3>Term Sprint</h3><p>60 seconds. False friends, courts out of citations, CA↔US translations. Combo scoring.</p><span class="hs" id="rapidHs"></span></button>
+      <button class="mode" data-go="sim"><div class="mi">⚖️</div><h3>Case Clinic</h3><p>Randomised fact patterns: duty of care, liability caps, limitation periods, regime choice.</p></button>
+      <button class="mode" data-go="review"><div class="mi">🃏</div><h3>Smart Review</h3><p>Leitner deck of everything you've missed, spaced over days.</p><span class="due" id="dueBadge" hidden></span></button>
+    </div>
+    <div class="sect">Campaign — section selector</div>
+    <div class="mods" id="modGrid"></div>
+    <p class="note">Nothing here is legal advice. Case holdings (Hercules, Livent, Bhasin, Tercon, BCE…) and figures (Part XXIII.1 caps, CBCA 25% residency, CCAA $5M) mirror the primer; ⚑ [VERIFY] items were matched to secondary sources only and stay flagged until cleared against the statute or judgment. ⚑ jurisdiction items vary by province or state — confirm locally. Progress is stored in this browser only; export before switching devices.</p>
+  </section>
+  <!-- ============ QUIZ (campaign + sprint + review share this) ============ -->
+  <section class="screen" id="scr-quiz">
+    <button class="btn ghost back" data-go="home">‹ Exit</button>
+    <div class="qhead">
+      <span class="qn" id="qn"></span>
+      <div class="qbar" id="qbarWrap"><i id="qbar"></i></div>
+      <span class="combo" id="combo"></span>
+      <span class="rscore" id="rscore" hidden></span>
+    </div>
+    <div class="timerwrap" id="timerWrap" hidden>
+      <div class="timer"><i id="timerBar"></i></div><span class="tnum" id="timerNum">60</span>
+    </div>
+    <div class="qcard" id="qcard"></div>
+    <div class="qfoot">
+      <button class="btn pri" id="nextBtn" hidden>Next ›</button>
+    </div>
+  </section>
+  <!-- ============ CASE CLINIC ============ -->
+  <section class="screen" id="scr-sim">
+    <button class="btn ghost back" data-go="home">‹ Back</button>
+    <h1>Case Clinic</h1>
+    <p class="tag">New facts on every run. Decide the outcome, name the controlling concept, compute the figure. The reasoning appears after you commit — not before.</p>
+    <div class="gengrid" id="genGrid"></div>
+    <div id="simHost" style="margin-top:14px"></div>
+  </section>
+  <!-- ============ REVIEW ============ -->
+  <section class="screen" id="scr-review">
+    <button class="btn ghost back" data-go="home">‹ Back</button>
+    <h1>Smart Review</h1>
+    <div class="revinfo" id="revInfo"></div>
+    <label class="chkrow" hidden><input type="checkbox" id="incRetired"> Include retired cards (box 5)</label>
+    <button class="btn pri" id="revStart">Start review</button>
+  </section>
+</main>
+<div class="overlay" id="overlay"><div class="res" id="resBox"></div></div>
+<script>
+"use strict";
+/* ============ QUESTION BANK — every fact sourced from the reviewed primer ============
+   Question format: [text, options, answerIndex, explanation, flag, noShuffle, recallFirst]
+   flag: "v" = [VERIFY] pending primary source · "j" = varies by province/state
+   recallFirst: options stay hidden until you commit to an answer in your head       */
+const BANK=[];
+BANK.push({id:"f1",n:"§1",title:"Foundations & Courts",gens:["court"],qs:[
+["Rank the four sources of law, top authority first.",
+ ["Statute → constitution → regulation → common law","Constitution → statute → regulation → judge-made law","Regulation → statute → constitution → common law","Common law → statute → regulation → constitution"],1,
+ "A lower layer that contradicts a higher one is void. Judge-made law fills every remaining space and interprets the layers above it.",null,null,1],
+["The Tax Court reads a provision of the ITA one way; a CRA income tax folio reads it the other way. Which governs?",
+ ["The folio — CRA administers the Act","The court — administrative guidance states the administrator's position and a court can and does disagree with it","Whichever came later","The taxpayer chooses"],1,
+ "A regulator's guidance is not automatically law. Folios, OSC staff notices and IRS revenue rulings are positions, not binding rules. (US contrast: Treasury Regulations DO carry legal force.)<span class=\"connect\">↪ Connects: §8 Tax — guidance force differs across the border.</span>"],
+["Where does the RESIDUAL law-making power sit in each country?",
+ ["Canada: provinces · US: federal government","Canada: federal Parliament (peace, order and good government) · US: the states (Tenth Amendment)","Both federal","Both state/provincial"],1,
+ "The two constitutions are mirror images here — the single most important structural inversion in the comparison."],
+["Contract, tort, corporate and securities law mostly live at which level in Canada?",
+ ["Federal — trade and commerce","Provincial — property and civil rights in the province, s. 92(13)","Shared equally","Municipal"],1,
+ "Section 92(13) is the broadest, most consequential head in Canadian business law. The US puts securities federal (SEC) but leaves contract, tort and corporate law to fifty states."],
+["A criminal charge is laid in Montreal. Which legal tradition governs the proceeding?",
+ ["Quebec civil law — it's Quebec","Common law — Quebec's Civil Code covers private law; criminal, constitutional and administrative law remain common law (and criminal law is federal)","A blend chosen by the judge","Depends on the accused's preference"],1,
+ "Quebec is civilian for contracts, property, obligations, civil liability; public law stays common law. One Criminal Code for the whole country."],
+["Your Quebec client grants security over equipment. The registration you are looking for is…",
+ ["A PPSA financing statement","A hypothec under the Civil Code","A UCC-1","A debenture at CIPO"],1,
+ "Quebec private law does not use the PPSA. Do not assume an Ontario template describes the Quebec position.<span class=\"connect\">↪ Connects: §6 Insolvency — federal statutes sit on top of provincial/state security law.</span>"],
+["An income tax dispute with the CRA that survives the objection stage goes to…",
+ ["The provincial superior court","The Federal Court","The Tax Court of Canada","Small claims court"],2,
+ "Then the Federal Court of Appeal, then the SCC with leave. Provincial superior courts have inherent jurisdiction over almost everything else."],
+["A US federal district court hears a Texas contract dispute only because the parties are from different states. It must apply…",
+ ["Federal common law","Texas substantive law — predicting what the Texas Supreme Court would do (the Erie doctrine)","The law of the circuit","Delaware law"],1,
+ "There has been no general federal common law since Erie. Diversity jurisdiction changes the courtroom, not the law."],
+["The US Supreme Court can correct a state supreme court's reading of its own state's contract law.",
+ ["True — it is the top court","False — state supreme courts are FINAL on questions of state law; the US Supreme Court touches only federal questions"],1,
+ "This is why 'the US rule' on contract or tort questions is really fifty rules.",null,1],
+["Someone hands you a case 'on point' for your Ontario client: 2018 BCCA 191. Its force in Ontario is…",
+ ["Binding — it's a Canadian appellate court","Persuasive only — it binds British Columbia courts; Ontario courts may follow it or not","Binding if the SCC denied leave","None — different province"],1,
+ "Learn to read the court out of the citation before you read the holding. This exact case (Rosas v Toca) is the primer's example of a BC rule whose reception elsewhere is unsettled.","j"]
+]});
+
+BANK.push({id:"ct",n:"§2",title:"Contract",gens:["cisg"],qs:[
+["Name the elements of a binding contract.",
+ ["Offer, acceptance, consideration, intention, capacity, lawful object","Offer, acceptance, writing, signature","Offer, consideration, notarization","Agreement plus payment"],0,
+ "Writing is NOT on the list — most contracts need no writing at all. Consideration (value moving each way) is the element that generates most CA/US divergence.",null,null,1],
+["A supplier promises, without anything in return, to hold its offer open for 30 days. Under Canadian common law the offer is…",
+ ["Irrevocable for 30 days","Revocable any time before acceptance — the promise to hold it open needs its own consideration or a seal","Irrevocable if written","Void"],1,
+ "US contrast: UCC § 2-205 makes a merchant's signed written firm offer irrevocable without consideration, capped at three months."],
+["Mid-contract, a customer agrees to pay more for the same performance, then refuses to honour the increase. In BC, after Rosas v Toca, the variation is…",
+ ["Unenforceable — no fresh consideration","Enforceable absent duress — but that is a BC appellate rule; its reception in Ontario and elsewhere is not settled","Enforceable everywhere in Canada","A criminal matter"],1,
+ "The traditional rule required fresh consideration for a variation. Do not carry the BC position into another province without checking.","v"],
+["Bhasin v Hrynew (2014 SCC 71) established…",
+ ["A general duty to negotiate in good faith","Good faith as an organizing principle, with a duty of honest performance that cannot be contracted out of","A duty to disclose all material facts","That good faith applies only to franchises"],1,
+ "Developed in Callow (2020) and Wastech (2021). US contrast: UCC § 1-304 and Restatement § 205 implied good faith long before Canada did — content varies by state."],
+["An Ontario manufacturer ships goods to a Michigan buyer. The contract says nothing about governing law. The sale is governed by…",
+ ["Ontario's Sale of Goods Act","UCC Article 2","The CISG — it applies BY DEFAULT to cross-border commercial goods sales between contracting states unless expressly excluded","Federal trade law"],2,
+ "Both countries are parties. No writing requirement, no perfect tender rule, different risk-transfer analysis — cut-off testing on cross-border shipments can follow rules nobody in the room assumed.<span class=\"connect\">↪ Connects: IFRS 15 transfer of control — the legal layer under revenue cut-off.</span>"],
+["A purchase order was sent but never accepted in any way the law recognizes. Under IFRS 15, revenue is…",
+ ["Recognizable if delivery occurred","Not recognizable — step 1 requires an approved contract with committed parties, and that is a legal formation question","Recognizable at 50%","Deferred to cash receipt"],1,
+ "Contract formation determines when an enforceable right to consideration exists. No contract, no revenue — the accounting question resolves into the legal one."],
+["Canadian Sale of Goods Acts imply conditions of…",
+ ["Best price and prompt delivery","Title, description, merchantable quality, fitness for purpose","Insurance and inspection","Good faith only"],1,
+ "Descended from the English Act of 1893 and largely untouched for a century. The UCC is the substantially modernized cousin — and Louisiana never adopted Article 2."],
+["Under Tercon, a limitation-of-liability clause survives if…",
+ ["It is prominent and initialled","It applies on its terms, was not unconscionable at formation, and no overriding public policy defeats it","The other side had a lawyer","It caps at the fee"],1,
+ "The three-step Canadian framework. This is the mechanism by which a firm caps exposure on a non-audit engagement.",null,null,1],
+["Your US office asks whether the liability cap in an engagement letter will hold in their state. The honest answer is…",
+ ["Yes — Tercon applies","Check the state — several states restrict or void limitation clauses in professional engagements, particularly audits","No cap ever holds in the US","Only if under $1M"],1,
+ "Tercon is Canadian law. US enforceability is state-by-state, and independence rules constrain caps on audits in both countries.","v"],
+["Sattva decided that contractual interpretation is mostly a question of mixed fact and law. The practical consequence is…",
+ ["More appeals succeed","Appellate review of interpretation is NARROWER — the trial reading usually stands","Contracts must be interpreted literally","Extrinsic evidence is banned"],1,
+ "Canadian courts read commercial contracts as a whole in the surrounding circumstances. US states split — New York four-corners strict, California permissive."]
+]});
+
+BANK.push({id:"tt",n:"§3",title:"Tort & Auditor Liability",gens:["duty"],qs:[
+["List the five elements a negligence plaintiff must prove.",
+ ["Duty, breach of the standard, causation, remoteness, damage","Duty, intent, loss, motive, reliance","Contract, breach, loss","Fault, harm, proximity"],0,
+ "Fail ANY one and the claim dies. For third parties suing auditors the fight is almost always at element one: duty.",null,null,1],
+["State the two stages of the Anns/Cooper duty test.",
+ ["Foreseeability, then insurance","Proximity + reasonable foreseeability (prima facie duty), then residual policy considerations that can negate it","Reliance, then damages","Statute, then common law"],1,
+ "The dominant stage-two policy concern for accountants: liability in an indeterminate amount, for an indeterminate time, to an indeterminate class.",null,null,1],
+["In Hercules, shareholders who relied on audited statements for personal investment decisions lost because…",
+ ["The audit was not negligent","The statutory purpose of the audit is to let shareholders AS A COLLECTIVITY supervise management — not to guide individual investment decisions","They sued too late","They were not foreseeable"],1,
+ "A prima facie duty arose at stage one and was negated at stage two. Exposure anchors to the PURPOSE of the engagement, not to everyone who foreseeably read the statements."],
+["In Livent, Deloitte was liable for the statutory audit but NOT for the comfort-letter/press-release work because…",
+ ["The audit fee was higher","Each undertaking was analyzed separately: the losses claimed on the financing work fell outside the scope of what Deloitte undertook","Comfort letters are privileged","The limitation period had expired"],1,
+ "What you undertake defines what you owe. Damages on the 1997 audit: roughly $40.4M.<span class=\"connect\">↪ Connects: the engagement letter is the perimeter of tort exposure — vague scope is a liability position.</span>"],
+["Ultramares (NY, 1931) still matters because New York applies…",
+ ["Pure foreseeability","A near-privity rule, refined into the three-part Credit Alliance test","Restatement § 552","The Anns test"],1,
+ "Cardozo's 'indeterminate amount… time… class' is the phrase every accounting student eventually meets. New York remains the strictest major US position."],
+["Bily (California, 1992) split auditor exposure. The holding:",
+ ["No third party ever recovers","General negligence: client only. Negligent misrepresentation: third parties under Restatement § 552, limited to specifically intended, known beneficiaries","All foreseeable users recover","Only the SEC can sue"],1,
+ "Most US states land in this § 552 middle ground — which is why 'who exactly was the audit for?' is the first US question."],
+["A US lender tells your firm it intends to rely on the audit. The firm says nothing. The risk of silence is…",
+ ["None — no contract, no duty","Becoming a KNOWN INTENDED USER inside Restatement § 552 with none of the protections a negotiated reliance letter would have set","Automatic liability","Losing the client"],1,
+ "The response to a reliance request is a negotiated reliance letter with defined terms, not silence."],
+["Compliance with CAS on the file proves the standard of care was met.",
+ ["True — standards define the standard","False — compliance is strong evidence but not automatically conclusive"],1,
+ "The standard is the reasonably competent professional; professional standards are powerful evidence of it, no more. And unrecorded work is, in evidentiary terms, work that did not happen.",null,1],
+["A client memo reads: 'The lender was never our client and signed nothing with us, so we have no exposure on the audit.' The flaw is…",
+ ["Nothing — privity governs in Canada","Tort duty does not require a contract: in Canada the scope-of-undertaking analysis (Hercules/Livent) decides, and a lender can also negotiate reliance","Lenders cannot sue auditors","The memo needed letterhead"],1,
+ "Spot-the-error: negligence operates outside contract. Privity reasoning is a US (New York) instinct, not the Canadian framework."],
+["A plaintiff suing an auditor on a public-company failure will usually plead…",
+ ["Negligence only","Both common law negligence AND the statutory securities cause of action — the statutory claim is usually the stronger one","Breach of contract only","Fraud only"],1,
+ "Do not stop at tort. Part XXIII.1 (or s. 11/10b-5 in the US) operates on different, often easier terms.<span class=\"connect\">↪ Connects: §5 Securities — leave test, caps, defences.</span>"],
+["Which of these is NOT one of the primer's protections against auditor liability?",
+ ["A tightly scoped engagement letter","Negotiated third-party reliance letters","Documentation of work performed","Vague, flexible scope language to preserve client goodwill"],3,
+ "Vague scope language EXPANDS the undertaking — after Livent, scope creep is legal exposure creep."]
+]});
+
+BANK.push({id:"bo",n:"§4",title:"Business Organizations",gens:[],qs:[
+["Two friends run a food truck together, splitting profits. No paperwork exists. At law they are…",
+ ["Co-owners with no obligations","A general partnership — it arises automatically from carrying on business in common with a view to profit","A corporation by estoppel","Employees of each other"],1,
+ "Nobody needs to intend it. Each partner is liable without limit and can bind the firm as its agent."],
+["In an Ontario LLP, a partner is NOT personally liable for…",
+ ["Their own negligent work","Work done under their direct supervision","The firm's debts and other partners' negligence — Ontario has been FULL SHIELD since 1 August 2007","Anything at all"],2,
+ "Wider than the older partial-shield description still circulating in textbooks. The shield never covers your own file. Shield scope varies by province — check the governing statute.","j"],
+["A US LLC shows up in your Canadian client's structure. For Canadian tax purposes the CRA generally treats it as…",
+ ["A partnership","A corporation — which creates recurring double-taxation and treaty headaches","A trust","Transparent, like in the US"],1,
+ "Canada has no LLC statute and no true equivalent. Confirm the current CRA administrative position before advising on any specific structure.","v"],
+["Under the CBCA, the director residency rule is…",
+ ["No requirement","At least 25% resident Canadians; at least one where the board has fewer than four (s. 105(3)) — while Ontario removed its own requirement in 2021","A majority must be resident","All directors resident"],1,
+ "Confirmed against Justice Laws in the primer's 15 Aug 2026 review; other provinces vary, so confirm per jurisdiction.","j"],
+["A company operating entirely in California but incorporated in Delaware is governed, for director duties, by…",
+ ["California law — that's where it operates","Delaware law — the internal affairs doctrine follows the state of incorporation","Federal law","Whichever the plaintiff picks"],1,
+ "The internal affairs doctrine is why Delaware's Chancery Court effectively makes US corporate law."],
+["BCE settled that a Canadian director's fiduciary duty is owed to…",
+ ["Shareholders","The corporation itself — directors may consider shareholders, employees, creditors, the environment and more (s. 122(1.1)) in deciding its best interests","Creditors once insolvency nears","The board chair"],1,
+ "Delaware contrast: duties run to the corporation AND its shareholders, wealth maximization orients the analysis, and Revlon narrows the field further once a sale of control is inevitable."],
+["Peoples v Wise held that as a corporation approaches insolvency, the fiduciary duty…",
+ ["Shifts to creditors","Does NOT shift to creditors — though the duty of care may be owed to them","Splits between shareholders and creditors","Suspends"],1,
+ "The fiduciary lodestar stays the corporation all the way down.<span class=\"connect\">↪ Connects: §6 Insolvency — what boards can defend doing near the edge.</span>"],
+["The business judgment rule, compared:",
+ ["Identical doctrines","Delaware: a formal PRESUMPTION plaintiffs must rebut. Canada: deference asking whether the decision fell in a range of reasonable alternatives. Outcomes converge more than framing suggests","Canada has no deference","Delaware reviews merits de novo"],1,
+ "Honest, informed decisions are protected from hindsight in both countries; the doctrinal machinery differs."],
+["A minority shareholder in a CBCA corporation is being squeezed by conduct that unfairly disregards her interests. Her primary remedy is…",
+ ["A derivative action","The oppression remedy (s. 241) — open to a wide class of complainants including, at the court's discretion, creditors, with open-ended remedies","Selling her shares","A criminal complaint"],1,
+ "The US has no general equivalent: some states protect close-corporation minorities; Delaware runs everything through fiduciary litigation."],
+["Canadian courts pierce the corporate veil when (Transamerica)…",
+ ["A subsidiary is undercapitalized","There is complete domination PLUS conduct akin to fraud — rarely","The parent guarantees debts","Any injustice results"],1,
+ "US alter-ego tests vary by state and pierce somewhat more readily. The practical protection is accountant-controlled: separate books, separate accounts, arm's-length intercompany terms, real records."]
+]});
+
+BANK.push({id:"sec",n:"§5",title:"Securities & Reporting",gens:["caps"],qs:[
+["Canada's securities regulator is…",
+ ["The CSA — a federal agency","Thirteen provincial and territorial commissions coordinating through the CSA, which itself has no independent legal authority; there is NO federal regulator","The OSC, nationally","The Bank of Canada"],1,
+ "National Instruments are developed centrally and adopted jurisdiction by jurisdiction. A passport system covers most filers — Ontario participates through an interface arrangement instead."],
+["The 2011 Supreme Court reference on a federal Canadian Securities Act held…",
+ ["Securities is federal — banking power","The proposed Act exceeded the federal trade and commerce power — securities regulation stayed provincial","Securities is criminal law","Ottawa never tried"],1,
+ "A 2018 reference upheld a cooperative model, but implementation paused in 2021 and it was never brought into force. The file is dormant, not formally closed.","v"],
+["A Canadian reporting issuer's financial statements are prepared under…",
+ ["US GAAP","IFRS as adopted in Canada (CPA Canada Handbook Part I)","ASPE","CSA GAAP"],1,
+ "ASPE (Part II) is for private enterprises. US contrast: US GAAP set by the FASB — though foreign private issuers may file IFRS as issued by the IASB with no reconciliation."],
+["The auditor's ICFR attestation requirement (SOX 404(b)) applies in Canada…",
+ ["To all reporting issuers","To TSX issuers only","Not at all — NI 52-109 has officers certify ICFR design and disclose material weaknesses, but no auditor attestation","Only for cross-listed issuers"],2,
+ "The single most-cited compliance difference between the two markets. In the US, 404(b) binds accelerated filers; smaller companies are exempt."],
+["Audit firms auditing Canadian reporting issuers are inspected by…",
+ ["The PCAOB","CPAB — the Canadian Public Accountability Board","The OSC directly","CPA Canada"],1,
+ "The PCAOB is the US analogue, created by SOX, overseen by the SEC — its own mandate has been contested through 2025–26 and remains a live file.","v"],
+["Under s. 11 of the 1933 Act, a purchaser suing an auditor over a registration statement must prove reliance and scienter.",
+ ["True","False — neither is required; the auditor must establish its own due diligence defence"],1,
+ "That inversion of the burden is what makes s. 11 dangerous. Secondary-market 10b-5 claims DO require scienter — but get the Basic fraud-on-the-market presumption of reliance.",null,1],
+["Part XXIII.1's most distinctive gatekeeping feature is…",
+ ["Jury trials","A LEAVE requirement — good faith plus a reasonable possibility of success, screened on paper before discovery; the SCC calls it a robust deterrent","Unlimited damages","Automatic class certification"],1,
+ "Canada makes plaintiffs pass a merits screen, then caps recovery. The US lets the class in easily, then fights scienter and damages."],
+["The Part XXIII.1 liability caps (Ontario):",
+ ["Uncapped for everyone","Issuer: greater of 5% of market cap or $1M · directors/officers: greater of 50% of compensation or $25K · experts: greater of $1M and 12-month revenue from the issuer — unless the defendant KNEW of the misrepresentation","$1M for everyone","5% of the claim"],1,
+ "The expert formula was matched to a law-firm summary on 15 Aug 2026 — still read s. 138.1 before quoting it anywhere that counts.","v"],
+["Canadian courts' position on fraud-on-the-market for common law negligent misrepresentation:",
+ ["Adopted from Basic","Rejected — individual reliance must be proven, which limits what can certify as a common issue","Presumed for efficient markets","Irrelevant"],1,
+ "One more reason the statutory claim, with its deemed-reliance design, is the one that matters in Canada."],
+["Why do global audit firms price US engagements differently from Canadian ones?",
+ ["US GAAP is harder","Litigation architecture: no leave screen, fraud-on-the-market classes, juries, punitive damages and the American costs rule produce a far larger tail risk","SEC fees","Currency"],1,
+ "Substantive negligence law converges; procedure drives the loss distribution.<span class=\"connect\">↪ Connects: §9 Procedure — the four rows that compound.</span>"]
+]});
+BANK.push({id:"ins",n:"§6",title:"Insolvency & Secured Lending",gens:["regime"],qs:[
+["Match the Canadian statutes to their roles.",
+ ["BIA restructures large companies; CCAA liquidates","BIA: liquidations and the rules-driven proposal route; CCAA: the skeletal, court-driven vehicle for every large restructuring (claims over $5M)","Both are provincial","CCAA covers individuals"],1,
+ "The CCAA is deliberately short — the court shapes the process through orders. US contrast: one comprehensive Bankruptcy Code, Chapters 7/11/13/15.",null,null,1],
+["The CCAA initial stay of proceedings…",
+ ["Is automatic and indefinite","Is discretionary and limited to 10 days — extensions require the debtor to show good faith and due diligence","Lasts one year","Requires creditor consent"],1,
+ "Chapter 11's stay is the opposite: broad, AUTOMATIC on filing, no fixed expiry. That difference belongs in a going-concern assessment, not just the disclosure.<span class=\"connect\">↪ Connects: CAS 570 — what the entity can actually do.</span>"],
+["The Monitor in a CCAA proceeding is…",
+ ["The debtor's advocate","A neutral court-appointed licensed insolvency trustee reporting to all stakeholders — usually from an accounting firm's restructuring practice","The largest creditor's nominee","A judge"],1,
+ "No Chapter 11 counterpart: the US pairs a debtor-in-possession with an adversarial creditors' committee. A live Canadian career path with no direct US analogue."],
+["Plan approval thresholds, CCAA vs Chapter 11:",
+ ["CCAA needs unanimity","Near-identical: majority in number + two-thirds in value of those voting, per class — the real differences sit elsewhere (stay, oversight, cram down)","Chapter 11 needs 90%","CCAA counts all creditors, voting or not"],1,
+ "CCAA s. 6(1): 'present and voting' — confirmed against Justice Laws in the primer's review."],
+["A plan is rejected by one impaired class. Confirmation over that class's objection is…",
+ ["Available in both systems","Available under Chapter 11 (cram down, if fair and equitable and one impaired class accepts) — NOT available under the CCAA, where every class must approve","Available under the CCAA only","Never available anywhere"],1,
+ "Cram down is the sharpest structural divergence in the restructuring comparison."],
+["Chapter 11 eligibility requires proof of insolvency.",
+ ["True","False — filing the petition is sufficient; the CCAA, by contrast, requires an insolvent debtor with claims over $5M"],1,
+ "Access to the automatic stay without an insolvency test is part of what makes Chapter 11 a strategic tool.",null,1],
+["Security interests being enforced inside a federal insolvency are created and ranked under…",
+ ["The same federal statute","Provincial law (PPSAs / Quebec hypothecs) in Canada; state law (UCC Article 9) in the US","International convention","Common law liens only"],1,
+ "Both countries layer a federal insolvency process over sub-national security law. The PPSAs are direct descendants of Article 9 and share most vocabulary."],
+["Your going-concern client can file Chapter 11; a comparable Canadian client would need a CCAA order. The assessment difference is…",
+ ["None — insolvency is insolvency","The US entity gets an automatic stay by filing; the Canadian entity must persuade a judge to grant and repeatedly extend a discretionary stay — a real difference in what the entity can DO","Canadian entities cannot restructure","Chapter 11 is faster, always"],1,
+ "The primer's point: that difference belongs in the CAS 570 / IAS 1 assessment itself."]
+]});
+
+BANK.push({id:"emp",n:"§7",title:"Employment",gens:["notice"],qs:[
+["State the default termination rule in each country.",
+ ["Both require cause","US: at-will (Montana excepted) — any reason or none, no notice. Canada: NO at-will — dismissal without cause requires reasonable notice or pay in lieu","Both require notice","Canada: at-will; US: notice"],1,
+ "The largest single divergence in day-to-day commercial consequence.",null,null,1],
+["An Ontario employee without a valid termination clause is entitled to…",
+ ["The ESA statutory minimum only","TWO stacked entitlements: the ESA floor (notice and, above a threshold, severance) PLUS common law reasonable notice on the Bardal factors","Whatever the employer offers","Nothing beyond two weeks"],1,
+ "Courts read termination clauses strictly and strike them readily — and a void clause revives the full common law entitlement."],
+["The Bardal factors are…",
+ ["Performance, salary, attitude, attendance","Character of employment, length of service, age, availability of similar employment","Cause, notice, severance, mitigation","Union status and seniority"],1,
+ "Note what is NOT there: performance is not a Bardal factor. Long-service senior employees routinely receive notice measured in many months.",null,null,1],
+["An employer alleges just cause and loses. The consequence:",
+ ["Reduced notice","The full reasonable-notice entitlement anyway — just cause is a high bar reserved for conduct that fundamentally repudiates the relationship","A new trial","Statutory minimum only"],1,
+ "Alleging cause is not a discount strategy; failing on it just adds litigation cost to the full bill."],
+["The employer unilaterally cuts a manager's pay 30% and demotes her. She resigns and sues. This is…",
+ ["A resignation — no claim","Constructive dismissal — a unilateral fundamental change lets the employee treat the contract as terminated and claim notice","Frustration of contract","An ESA complaint only"],1,
+ "The employer never said 'you're fired' — the change itself is the termination."],
+["A restructuring model applies one severance factor across the Ontario and Ohio workforces. Your review comment:",
+ ["Reasonable simplification","Error, usually material — the Ontario provision must reflect statutory notice, statutory severance AND common law notice; the Ohio provision may be near nil absent a plan or WARN trigger","Ohio is understated","Use the average"],1,
+ "IAS 37 measurement follows the legal entitlements, and the entitlements differ completely.<span class=\"connect\">↪ Connects: §2 — the accounting number is downstream of the legal analysis.</span>"],
+["Canada's 'dependent contractor' category means…",
+ ["A contractor with one client is always an employee","An intermediate category — economically dependent contractors are entitled to reasonable notice, a category the US does not have in the same form","Nothing — labels govern","Contractors never get notice"],1,
+ "And the CRA/IRS tax tests do not necessarily align with the employment-law characterization: one worker can be a contractor for one purpose and an employee for another."],
+["Which US federal statutes overlay the at-will default?",
+ ["None — states control everything","Title VII, ADEA, ADA (discrimination), FLSA (wage and hour), WARN (mass-layoff notice)","ERISA only","The UCC"],1,
+ "At-will is the default, cut back by federal statutory overlays and state-by-state exceptions (public policy, implied contract, good faith)."]
+]});
+
+BANK.push({id:"tax",n:"§8",title:"Tax as Law",gens:[],qs:[
+["Trace the Canadian income tax dispute path.",
+ ["CRA → provincial court → SCC","Notice of objection to CRA Appeals → Tax Court of Canada → Federal Court of Appeal → SCC with leave; payment generally NOT required first","IRS Appeals → Tax Court","Objection → Federal Court → SCC"],1,
+ "US contrast: three forums — Tax Court before payment, district court or Court of Federal Claims for refund suits after payment.",null,null,1],
+["Which administrative guidance carries actual legal force?",
+ ["CRA income tax folios","US Treasury Regulations — CRA folios, technical interpretations and rulings are persuasive administrative positions only","IRS revenue rulings","OSC staff notices"],1,
+ "The asymmetry trips people constantly: 'the regs' mean something different in each country.<span class=\"connect\">↪ Connects: §1 — sources of law and where guidance sits.</span>"],
+["The US taxes on citizenship as well as residence.",
+ ["False — residence only, like Canada","True — US citizens and green-card holders are taxed on worldwide income wherever they live, nearly unique globally"],1,
+ "Why a TFSA can be a US reporting problem for a US person in Toronto, and why renunciation is a tax event.",null,1],
+["After the 2024 GAAR amendments (royal assent 20 June 2024), the avoidance-transaction threshold is…",
+ ["Primarily for tax purposes","One of the MAIN purposes — a considerably wider net, with lacking economic substance tending to indicate abuse, a 25% penalty, and three extra years of reassessment absent disclosure","Solely for tax purposes","Unchanged"],1,
+ "Most amendments apply to transactions from 1 January 2024; preamble and penalty from royal assent. Confirm the coming-into-force rule per provision on a real file.","v"],
+["The US never legislated a GAAR. Instead it uses…",
+ ["Nothing — form always wins","Judicial doctrines (substance over form, step transaction, sham, business purpose) plus codified economic substance in § 7701(o) with a 40% strict-liability penalty where undisclosed","A federal GAAR since 1988","State anti-avoidance rules"],1,
+ "The 20%/40% § 6662 penalty structure is the aggressive part: no reasonable-cause defence at 40%."],
+["Your tax-planning memo to a Canadian client is protected from CRA production by accountant-client privilege.",
+ ["True — professional privilege","False — there is NO accountant-client privilege in Canada; working papers, memos and emails are producible"],1,
+ "The narrow route is being retained BY the client's lawyer in aid of legal advice — structured properly, not achieved by cc'ing counsel. Case law is fact-specific.","v",1],
+["IRC § 7525 (the US tax-practitioner privilege) does NOT cover…",
+ ["Tax advice to a taxpayer","Criminal matters, return preparation, tax-shelter promotion, state proceedings, private litigation — or work product","CPAs","Enrolled agents"],1,
+ "Materially narrower than it sounds. The working rule in both countries: write every file note as if a tax authority and a judge will read it."],
+["CCA is best described to a US colleague as…",
+ ["'Our MACRS'","'Our capital cost recovery system — different classes, rates, conventions and recapture; do NOT map it onto MACRS'","'Depreciation, same thing'","'A tax credit'"],1,
+ "False friends throughout: TFSA is not a Roth (no treaty protection), GST/HST is a VAT with input credits, a US sales tax is single-stage with none."],
+["Provincial income tax in Canada is mostly…",
+ ["Self-administered by each province","Layered on the federal base and administered federally — except Revenu Québec, which administers separately","Collected by municipalities","Nonexistent"],1,
+ "One more reason the Quebec file always looks different.<span class=\"connect\">↪ Connects: §1 — Quebec's structural distinctness runs through everything.</span>"]
+]});
+
+BANK.push({id:"pro",n:"§9",title:"Profession, AML & Procedure",gens:["limit"],qs:[
+["Who can take away your ability to practise public accounting in Ontario?",
+ ["CPA Canada","CPA Ontario — the provincial body holds licensing, discipline and practice inspection; CPA Canada supports the profession and standard-setting but is not a regulator","The OSC","FINTRAC"],1,
+ "Public accounting is a separate authorization from the CPA designation itself. US contrast: fifty state boards, coordinated through NASBA, never unified.",null,null,1],
+["A Canadian CPA wanting a US licence has historically used…",
+ ["The full Uniform CPA Exam, no shortcuts","IQEX under a mutual recognition agreement — but eligibility conditions and participating state boards change; confirm with NASBA and the target board","Automatic recognition","A TN visa"],1,
+ "Treat any description of the pathway, including this one, as needing current confirmation.","v"],
+["Your firm is asked to EXECUTE the transfer of a client's funds to close an asset purchase. Under the PCMLTFA this…",
+ ["Changes nothing","Makes the firm a FINTRAC reporting entity — receiving, paying or transferring funds and directing such movements are trigger activities; advising alone is not","Requires only a memo","Is prohibited"],1,
+ "The advising/instructing line does the work. Audit, review and compilation engagements are excluded. Once captured: compliance programme, KYC and beneficial ownership, PEP checks, monitoring, reporting."],
+["US AML obligations reach accountants…",
+ ["Exactly as in Canada","Mostly indirectly — the BSA/FinCEN framework historically did not cover accountants as financial institutions; obligations arrive via client-side rules, Form 8300, and the shifting beneficial-ownership regime","Through the SEC","Not at all"],1,
+ "The beneficial ownership reporting regime has changed repeatedly and is not a stable target — check current scope before advising.","v"],
+["The single largest deterrent to speculative litigation in Canada is…",
+ ["Slow courts","The costs rule: loser pays a meaningful portion of the winner's fees (partial or substantial indemnity)","Low damages","Judicial screening"],1,
+ "The American rule — each side bears its own costs, plaintiffs' fees often contingent — makes a weak US claim nearly free to bring."],
+["Ontario examination for discovery, by default:",
+ ["Unlimited depositions","One representative per party, seven hours total, absent leave — against the US pattern of multiple depositions where discovery cost is itself a settlement lever","No oral discovery exists","Three witnesses each"],1,
+ "Procedure decides who can afford to sue — and therefore how much litigation exists to be afraid of."],
+["Civil juries and punitive damages in Canada are…",
+ ["Common, like the US","Rare and modest — no constitutional civil-jury right, Quebec has none at all, and Whiten's $1M punitive award is famous precisely because it was exceptional","Constitutionally guaranteed","Capped at $10,000"],1,
+ "Seventh Amendment juries plus punitive multiples are a large piece of the US litigation tail."],
+["Ontario's 2020 class action amendments…",
+ ["Loosened certification","Added express predominance and superiority requirements — moving toward US Rule 23(b)(3) — and gave defendants a direct certification appeal","Abolished class actions","Copied Quebec"],1,
+ "One of the few places Canadian procedure moved TOWARD the American model."],
+["Ontario limitation periods for a professional negligence claim:",
+ ["6 years flat","Basic: 2 years from DISCOVERABILITY. Ultimate: 15 years from the act or omission regardless of discovery","2 years from the work","10 years, always"],1,
+ "The two-year clock starts when the client discovers the problem — possibly years after the work. The 15-year ceiling is what finally closes the file. US: state-by-state, sometimes with separate statutes of repose.","j"],
+["Files, once an engagement ends, should be retained with an eye on…",
+ ["The next busy season","The limitation clock — claims can surface up to the ultimate period; documentation is the evidence of the standard of care","Office storage costs","Nothing — closed is closed"],1,
+ "Unrecorded (or destroyed) work is, in evidentiary terms, work that did not happen.<span class=\"connect\">↪ Connects: §3 — documentation as liability protection.</span>"]
+]});
+
+BANK.push({id:"tr",n:"§10",title:"Translation Gauntlet",gens:[],qs:[
+["'Reasonable notice' translates to which US concept?",
+ ["Severance pay","WARN notice","Nothing — the US default is at-will; there is no implied notice entitlement to translate","Garden leave"],2,
+ "The most dangerous kind of translation: a Canadian concept with NO US referent at all."],
+["A US colleague equates the oppression remedy with a derivative suit. The correction:",
+ ["They are the same","The oppression remedy is far broader — open to creditors, not limited to close corporations, with open-ended remedies; the derivative suit is a different, narrower vehicle","Derivative suits are broader","Neither exists in Canada"],1,
+ "Delaware has no general oppression statute at all."],
+["The CCAA Monitor's closest US analogue is…",
+ ["The US Trustee","A Chapter 11 examiner","The creditors' committee","None of these is right — the Monitor is a neutral court officer with no Chapter 11 counterpart"],3,
+ "When the honest answer is 'no equivalent exists,' saying so beats forcing a match."],
+["PPSA registration ↔ UCC-1 financing statement:",
+ ["Identical systems","Close cousins sharing vocabulary — but priority rules and mechanics differ, and Quebec uses hypothecs instead","Unrelated concepts","The UCC-1 is Canadian"],1,
+ "The safest kind of pair — but 'close cousin' still means 'check the differences.'","j"],
+["TFSA ↔ Roth IRA:",
+ ["Perfect equivalents","Superficially similar — but the TFSA generally has NO US treaty protection and can create US reporting problems for a US person","The Roth is Canadian","Both are pensions"],1,
+ "An RRSP gets treaty deferral; a TFSA does not. The difference is a real cross-border planning trap."],
+["GST/HST ↔ US sales tax:",
+ ["Same tax, different name","Structurally different: a multi-stage VAT with input tax credits versus a single-stage retail tax with none","Both VATs","Both single-stage"],1,
+ "No US federal VAT exists at all — the closest US concept is fifty state sales-tax regimes."],
+["SEDAR+ ↔ EDGAR:",
+ ["A trap pair","The closest true equivalence on the table — functionally parallel filing systems","Unrelated","EDGAR is Canadian"],1,
+ "One genuine friend among the false ones. Pick the right database per issuer: SEDAR+ for Canadian reporting issuers, EDGAR for US registrants."],
+["'Reporting issuer' status in Canada is acquired…",
+ ["Federally, once","Province by province — against the US model where registrant status is federal, once","By stock exchange listing only","By CRA designation"],1,
+ "Thirteen jurisdictions, one issuer. The passport system papers over most of it — Ontario via interface."],
+["A US 'Superior Court' is…",
+ ["Always the top state court","Ambiguous — the trial court in some states, the appellate court in others; a Canadian superior court, by contrast, has inherent jurisdiction over almost everything","A federal court","A tax court"],1,
+ "Same words, different institutions. Read the jurisdiction out of the name before assuming anything."],
+["Chartered Professional Accountant ↔ Certified Public Accountant:",
+ ["Interchangeable licences","Parallel designations with different structures: provincial licence plus separate public-accounting authorization vs state licence with mobility provisions","The CPA (US) works in Canada automatically","Both federal licences"],1,
+ "Same initials, different regulatory architecture — and neither works across the border without a recognition process.","v"]
+]});
+/* ============ CASE CLINIC GENERATORS — randomized fact patterns ============ */
+const rnd=(a,b,step)=>{step=step||1;return a+step*Math.floor(Math.random()*((b-a)/step+1));};
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+const money=(n,dp)=>Number(n).toLocaleString("en-CA",{minimumFractionDigits:dp||0,maximumFractionDigits:dp||0});
+const $m=(n,dp)=>"$"+money(n,dp);
+const CO=["Northgate","Halton Forge","Verano","Cobalt Ridge","Maplecrest","Kingsway Foods"];
+const FIRM=["Fraser & Hale LLP","Whitmore Partners LLP","Dunham & Cross LLP"];
+
+const GENS={
+court:{title:"Citation decoder",mod:"f1",sub:"read the court before the holding",make(){
+  const POOL=[
+   {c:"2019 ONCA 402",ct:1,b:1,x:"ONCA = Ontario Court of Appeal. Binds Ontario courts; persuades everyone else."},
+   {c:"2016 BCCA 12",ct:2,b:2,x:"BCCA = British Columbia Court of Appeal. Binding force stops at the BC border."},
+   {c:"2021 SCC 7",ct:0,b:0,x:"SCC decisions bind every court in Canada — common law and Quebec civil law alike."},
+   {c:"[1997] 2 SCR 165",ct:0,b:0,x:"Older SCC reporter format: volume 2 of the 1997 Supreme Court Reports, page 165. Still the top court."},
+   {c:"2020 FCA 88",ct:3,b:3,x:"Federal Court of Appeal — sits over the Federal Court and the Tax Court of Canada."},
+   {c:"2022 TCC 51",ct:4,b:4,x:"Tax Court of Canada — a trial court. Its decisions bind no other court; they persuade."},
+   {c:"3 Cal. 4th 370 (1992)",ct:5,b:5,x:"California Reports, 4th series → California Supreme Court. Final on California law (this is Bily)."},
+   {c:"65 N.Y.2d 536 (1985)",ct:6,b:6,x:"N.Y.2d = New York Court of Appeals — New York's TOP court, despite the name (this is Credit Alliance)."},
+   {c:"255 N.Y. 170 (1931)",ct:6,b:6,x:"Ultramares. A New York STATE decision despite its fame — never 'the US rule'."},
+   {c:"573 U.S. 258 (2014)",ct:7,b:7,x:"U.S. Reports → Supreme Court of the United States. Binding on federal questions only — it cannot fix a state court's reading of state law."}];
+  const it=pick(POOL);
+  const courts=["Supreme Court of Canada","Ontario Court of Appeal","British Columbia Court of Appeal","Federal Court of Appeal","Tax Court of Canada","California Supreme Court","New York Court of Appeals (NY's top court)","Supreme Court of the United States"];
+  const binds=["Every Canadian court","Ontario courts only","British Columbia courts only","The Federal Court and the Tax Court","No other court — trial level, persuasive only","California courts only","New York courts only","All US courts, on federal questions only"];
+  return {scen:"A colleague hands you a case they say is 'directly on point' for your client. The citation reads: <b>"+it.c+"</b>. Decode it before you read a word of the holding.",
+   given:[["Citation",it.c]],
+   ask:[{label:"Which court decided it?",opts:courts,ans:it.ct},
+        {label:"Whom does it bind?",opts:binds,ans:it.b}],
+   steps:[[it.x,""],["A case from a court that does not bind your client's jurisdiction is persuasive at best — the most common error when searching US law from Canada.","",1]]};
+}},
+cisg:{title:"Governing law: the CISG trap",mod:"ct",sub:"silence has consequences",make(){
+  const seller=pick(CO)+" Manufacturing (Ontario)";
+  const states=["Michigan","New York","Ohio","Texas"];
+  const cross=Math.random()<0.7;
+  const buyerState=pick(states);
+  const buyer=cross?("a commercial buyer in "+buyerState):"a commercial buyer in Ottawa";
+  const clause=cross?pick([0,0,1,2]):pick([0,1]);
+  const clauseTxt=["is silent on governing law","expressly excludes the CISG and chooses Ontario law","expressly excludes the CISG and chooses "+buyerState+" law"][clause];
+  let ans,why;
+  if(!cross){ans=0;why="Both parties are in Canada — the CISG needs parties in DIFFERENT contracting states. Ontario's Sale of Goods Act applies.";}
+  else if(clause===0){ans=2;why="Cross-border commercial goods sale, both countries contracting states, no exclusion → the CISG applies BY DEFAULT, displacing the SGA and UCC alike.";}
+  else if(clause===1){ans=0;why="An express exclusion works. With Ontario law chosen, the provincial Sale of Goods Act governs.";}
+  else{ans=1;why="An express exclusion works. With "+buyerState+" law chosen, that state's UCC Article 2 governs.";}
+  const ask=[{label:"Which regime governs the sale?",opts:["Ontario Sale of Goods Act","The chosen state's UCC Article 2","The CISG"],ans}];
+  if(ans===2)ask.push({label:"Under the CISG, the writing requirement is…",opts:["The same as domestic law","There is none — no writing requirement, no perfect tender rule, different risk-transfer analysis"],ans:1});
+  else ask.push({label:"The exclusion/domestic outcome matters on an audit because…",opts:["It never does","Transfer-of-control and cut-off analysis follow the governing sales law the parties actually have — not the one everyone assumed"],ans:1});
+  return {scen:seller+" sells industrial goods to "+buyer+". The contract "+clauseTxt+".",
+   given:[["Seller","Ontario"],["Buyer",cross?buyerState+", USA":"Ontario"],["Governing-law clause",clauseTxt]],
+   ask,steps:[[why,"",1],["Many contracts opt out of the CISG expressly; many fail to by inadvertence. If the file is silent, ask the question.",""]]};
+}},
+duty:{title:"Duty of care analyzer",mod:"tt",sub:"Hercules · Livent · Credit Alliance",make(){
+  const co=pick(CO)+" Inc",firm=pick(FIRM);
+  const s=rnd(0,4,1);
+  const outcomes=["Recovery available — the loss falls inside the scope of the undertaking","No recovery — the loss falls outside the undertaking's purpose or scope","Duty exists but is defined and bounded by the negotiated reliance letter","No recovery — New York's near-privity rule (Credit Alliance) is not satisfied"];
+  const concepts=["Scope of the undertaking (Hercules / Livent)","Indeterminate liability policy at Anns/Cooper stage two","US state-by-state relationship rules (privity / § 552)","The terms of the specific reliance undertaking"];
+  let scen,a1,a2,steps;
+  if(s===0){scen="An individual shareholder of "+co+" read the statutory audit report signed by "+firm+", bought more shares personally, and lost the investment when fraud surfaced. She sues the auditor in Ontario.";a1=1;a2=1;
+   steps=[["Stage one: proximity and foreseeability likely give a prima facie duty — auditors know shareholders read audits.",""],
+   ["Stage two kills it: the statutory audit exists so shareholders AS A COLLECTIVITY can supervise management, not to guide personal investment decisions (Hercules).","",1],
+   ["Exposure anchors to the engagement's purpose, not to everyone who foreseeably relied.",""]];}
+  else if(s===1){scen=co+" (through its receiver) sues "+firm+" over a negligent statutory audit: had the audit been competent, the fraud would have surfaced and the company would not have kept trading on a false picture, piling up further losses.";a1=0;a2=0;
+   steps=[["This is Livent itself: the corporation's own losses from continued operation fell INSIDE what the statutory audit undertook — letting shareholders scrutinize management.","",1],
+   ["Same auditor, same year, different claimant and loss than the Hercules pattern — the scope analysis, not sympathy, decides both.",""]];}
+  else if(s===2){scen=firm+" helped "+co+" with a comfort letter and press release for one specific financing. An investor who saw the press release later claims general trading losses across several years.";a1=1;a2=0;
+   steps=[["Proximity existed on the financing work — but the loss claimed was not within the scope of what the firm undertook for that financing (the Livent comfort-letter holding).","",1],
+   ["Each distinct piece of work is analyzed against its OWN undertaking. Scope creep on an engagement is exposure creep.",""]];}
+  else if(s===3){scen="A lender asked "+firm+" for permission to rely on "+co+"'s audited statements for a credit renewal. The firm negotiated a reliance letter: named lender, stated purpose, stated cap. The lender now sues for a loss inside that purpose.";a1=2;a2=3;
+   steps=[["A negotiated reliance letter CREATES the duty on defined terms — named user, defined purpose, negotiated cap.","",1],
+   ["Compare silence: in the US, silence can put you inside Restatement § 552 as a known intended user with none of these protections.",""]];}
+  else{scen="A New York lender relied on "+co+"'s certified statements audited by "+firm+" (a US practice). No engagement-level contact linked the auditor to this lender. It sues in New York in negligence.";a1=3;a2=2;
+   steps=[["New York still requires privity or a relationship approaching it — the Credit Alliance three-part test refining Ultramares.","",1],
+   ["Ask 'which state?' before answering ANY US auditor-liability question — New York, California and § 552 states differ materially.",""]];}
+  return {scen,given:[["Claimant",["Individual shareholder","The corporation (receiver)","Press-release investor","Named lender with reliance letter","New York lender, no privity"][s]],["Work performed",["Statutory audit","Statutory audit","Financing comfort letter / press release","Statutory audit + reliance letter","US audit"][s]]],
+   ask:[{label:"Most likely outcome",opts:outcomes,ans:a1},{label:"Controlling concept",opts:concepts,ans:a2}],steps};
+}},
+caps:{title:"Part XXIII.1 liability caps",mod:"sec",sub:"issuer · D&O · expert",make(){
+  const small=Math.random()<0.35;
+  const mkt=small?rnd(8,18,1)*1000000:rnd(100,900,25)*10000000;
+  const comp=rnd(4,30,2)*100000;
+  const rev=rnd(3,26,1)*100000;
+  const iCap=Math.max(0.05*mkt,1000000);
+  const dCap=Math.max(0.5*comp,25000);
+  const eCap=Math.max(1000000,rev);
+  return {scen:"A secondary-market misrepresentation action gets leave in Ontario. Compute each defendant's statutory liability cap. (None of the defendants knew of the misrepresentation, so the caps hold.)",
+   given:[["Issuer market capitalization",$m(mkt)],["CFO's 12-month compensation from issuer + affiliates",$m(comp)],["Audit firm's 12-month revenue from issuer + affiliates",$m(rev)]],
+   note:"⚑ [VERIFY] — the expert formula was matched to a law-firm summary of s. 138.1 on 15 Aug 2026, not yet to the statute itself. The caps fall away for a defendant who KNEW the statement was false.",
+   ask:[{label:"Issuer cap",ans:iCap,tol:2},
+        {label:"CFO cap",ans:dCap,tol:2},
+        {label:"Audit firm (expert) cap",ans:eCap,tol:2}],
+   steps:[["Issuer: greater of 5% of market cap ("+$m(0.05*mkt)+") and $1,000,000",$m(iCap)],
+    ["Director/officer: greater of 50% of compensation ("+$m(0.5*comp)+") and $25,000",$m(dCap)],
+    ["Expert: greater of $1,000,000 and 12-month revenue from the issuer ("+$m(rev)+")",$m(eCap),1],
+    ["The leave screen filters the claim; the caps bound the recovery — the two halves of Canada's compromise.",""]]};
+}},
+regime:{title:"Restructuring regime chooser",mod:"ins",sub:"CCAA · BIA · Chapter 11",make(){
+  const co=pick(CO)+" Group";
+  const claims=rnd(2,9,1)*1000000;
+  const insolvent=Math.random()<0.8;
+  const ccaa=insolvent&&claims>5000000;
+  return {scen:co+" is in distress. Total claims against it: "+$m(claims)+". The company "+(insolvent?"cannot meet obligations as they come due (insolvent)":"is still meeting obligations as they come due (not insolvent)")+". Management wants to restructure, not liquidate.",
+   given:[["Total claims",$m(claims)],["Insolvent?",insolvent?"Yes":"No"]],
+   ask:[{label:"Canadian restructuring vehicle",opts:["CCAA — insolvent with claims over $5M","BIA proposal — the CCAA test is not met"],ans:ccaa?0:1},
+    {label:"Stay of proceedings, Canada vs Chapter 11",opts:["Both automatic on filing","Canada: discretionary court order (initial CCAA stay capped at 10 days, extensions earned) · Chapter 11: broad AUTOMATIC stay, no fixed expiry"],ans:1},
+    {label:"Cramming down a dissenting class is possible…",opts:["In Chapter 11 only — the CCAA requires every class to approve","In both systems","In the CCAA only"],ans:0}],
+   steps:[[ccaa?"Insolvent + claims over $5M → CCAA available: skeletal statute, court-shaped process, Monitor appointed.":"CCAA needs BOTH insolvency and claims over $5M — this file takes the BIA's rules-driven proposal route (or, if solvent, private workout).","",1],
+    ["Chapter 11 needs NO insolvency test — filing suffices, and the automatic stay lands instantly.",""],
+    ["Approval in both: majority in number + two-thirds in value of those voting, per class. The difference is what happens to a dissenting class.",""]]};
+}},
+notice:{title:"Termination triage",mod:"emp",sub:"who owes what on dismissal",make(){
+  const age=rnd(31,61,1),yrs=rnd(3,28,1);
+  const role=pick(["operations manager","senior accountant","plant supervisor","controller"]);
+  const s=pick([0,1,2,3,3]);
+  const juris=s===0?"Ohio":"Ontario";
+  const scenTx=["is dismissed without cause from an Ohio plant. No employment contract, no severance plan.",
+   "is dismissed for cause in Ontario: a documented, serious fraud against the employer.",
+   "is dismissed without cause in Ontario. The written contract limits termination entitlements to the ESA minimum, and the clause is properly drafted (assume enforceable).",
+   "is dismissed without cause in Ontario. The contract's termination clause is void (it contracted below ESA minimums)."][s===3?3:s];
+  const opts=["Nothing beyond final wages — at-will jurisdiction (absent a plan or WARN trigger)","Nothing — just cause, the high bar, is established on these facts","ESA statutory minimum only — a valid limiting clause holds","ESA floor PLUS common law reasonable notice on the Bardal factors"];
+  const ans=s===0?0:s===1?1:s===2?2:3;
+  const ask=[{label:"Entitlement on dismissal",opts,ans}];
+  if(s===0)ask.push({label:"What could still constrain the employer?",opts:["Nothing at all","Federal overlays: discrimination statutes, WARN mass-layoff notice; plus state-law exceptions"],ans:1});
+  if(s===1)ask.push({label:"If cause FAILS at trial, the employer pays…",opts:["A discounted amount","The full reasonable-notice entitlement anyway"],ans:1});
+  if(s===2)ask.push({label:"Courts read termination clauses…",opts:["Generously, to honour the bargain","Strictly — struck readily, and a struck clause revives the full common law entitlement"],ans:1});
+  if(s===3)ask.push({label:"Why does the void clause matter so much?",opts:["It converts to the ESA minimum","A void clause is ignored ENTIRELY — the full common law entitlement revives"],ans:1});
+  return {scen:"A "+age+"-year-old "+role+" with "+yrs+" years of service "+scenTx,
+   given:[["Jurisdiction",juris],["Age / service",age+" / "+yrs+" yrs"],["Contract",["None","N/A — cause alleged","Valid ESA-limiting clause","Void termination clause"][s]]],
+   ask,steps:[[s===0?"At-will: any reason or none, no notice — the provision in a restructuring model may be near nil.":"Canada stacks entitlements: ESA floor, then common law reasonable notice unless a VALID clause limits it.","",1],
+    ["Bardal factors: character of employment, length of service, age, availability of similar work — "+yrs+" years at "+age+" points to notice measured in months.",""],
+    ["Cross-border models applying one severance factor to both countries are usually materially wrong.",""]]};
+}},
+limit:{title:"Limitation clock (Ontario)",mod:"pro",sub:"2-year discovery · 15-year ultimate",make(){
+  const work=rnd(2012,2021,1);
+  const gap=rnd(1,6,1);
+  const disc=work+gap;
+  const basic=disc+2,ult=work+15;
+  const first=Math.min(basic,ult);
+  return {scen:"Your firm completed tax-structuring work for a client in "+work+". The client first discovered the problem (and its link to the work) in "+disc+". Ontario's Limitations Act, 2002 governs.",
+   given:[["Year work performed",work],["Year problem discovered",disc]],
+   note:"⚑ Ontario figures (confirmed against commentary in the primer's review). Other provinces have their own limitation statutes.",
+   ask:[{label:"Basic period expires (year end)",ans:basic,tol:0},
+        {label:"Ultimate period expires (year end)",ans:ult,tol:0},
+        {label:"A claim first started in "+(first+1)+" is…",opts:["Still alive","Statute-barred — the earlier of the two periods has run"],ans:1}],
+   steps:[["Basic: 2 years from DISCOVERABILITY — "+disc+" + 2","end "+basic,1],
+    ["Ultimate: 15 years from the act or omission, regardless of discovery — "+work+" + 15","end "+ult],
+    ["Whichever expires first bars the claim. The discovery clock can start years after the work; the 15-year ceiling is what finally closes the file.",""],
+    ["Retention policy follows the limitation clock — documentation IS the evidence of the standard of care.",""]]};
+}}
+};
+/* ============ ENGINE (adapted from the Practice Arena: shuffle, stable IDs,
+   Leitner retirement/leeches, export/import, a11y — plus recall-first gates
+   and select-based clinic answers) ============ */
+const D=document,$=s=>D.querySelector(s),$$=s=>[...D.querySelectorAll(s)];
+function E(t,c,h){const e=D.createElement(t);if(c)e.className=c;if(h!=null)e.innerHTML=h;return e;}
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;};
+function h32(s){let h=5381;for(let i=0;i<s.length;i++)h=(h*33^s.charCodeAt(i))>>>0;return h.toString(36);}
+function parseNum(s){
+  let t=String(s).trim().replace(/[\s $,%]/g,"").replace(/[−–—]/g,"-");
+  let neg=false;
+  if(/^\(.*\)$/.test(t)){neg=true;t=t.slice(1,-1);}
+  if(!/^-?\d*\.?\d+$/.test(t))return NaN;
+  const v=parseFloat(t);
+  return neg?-v:v;
+}
+
+/* ---- stable question IDs + lookup ---- */
+const QIX={};
+for(const m of BANK){
+  m.ids=m.qs.map(q=>m.id+".q"+h32(q[0]));
+  m.qs.forEach((q,i)=>QIX[m.ids[i]]={m,q,i});
+}
+
+/* ---- guarded persistence (visible when blocked) ---- */
+const MEM={};let storageOk=true;
+const store={
+  get(k){try{const v=localStorage.getItem(k);return v===null?(MEM[k]??null):v;}catch(e){storageOk=false;return MEM[k]??null;}},
+  set(k,v){MEM[k]=v;try{localStorage.setItem(k,v);}catch(e){storageOk=false;}}
+};
+const ST_KEY="lawarena.v1";
+let ST={schema:1,xp:0,snd:true,theme:"",streak:{last:"",days:0},best:{},rapidHigh:0,leit:{},calc:{}};
+try{
+  const raw=store.get(ST_KEY);
+  if(raw)ST=Object.assign(ST,JSON.parse(raw));
+}catch(e){}
+const save=()=>store.set(ST_KEY,JSON.stringify(ST));
+if(ST.theme)D.documentElement.dataset.theme=ST.theme;
+
+/* ---- daily streak ---- */
+(function(){
+  const today=new Date().toISOString().slice(0,10);
+  if(ST.streak.last!==today){
+    const y=new Date(Date.now()-864e5).toISOString().slice(0,10);
+    ST.streak.days=(ST.streak.last===y)?ST.streak.days+1:1;
+    ST.streak.last=today;save();
+  }
+})();
+
+/* ---- Web Audio synth ---- */
+let AC=null;
+function tone(f,dur,type,vol,when){
+  if(!ST.snd)return;
+  try{
+    AC=AC||new (window.AudioContext||window.webkitAudioContext)();
+    if(AC.state==="suspended")AC.resume();
+    const t=AC.currentTime+(when||0);
+    const o=AC.createOscillator(),g=AC.createGain();
+    o.type=type||"sine";o.frequency.value=f;
+    g.gain.setValueAtTime(0.0001,t);
+    g.gain.exponentialRampToValueAtTime(vol||0.12,t+0.012);
+    g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+    o.connect(g).connect(AC.destination);o.start(t);o.stop(t+dur+0.05);
+  }catch(e){}
+}
+const sfx={
+  click:()=>tone(440,0.06,"sine",0.05),
+  right:()=>{tone(660,0.09,"sine",0.1);tone(880,0.12,"sine",0.1,0.07);},
+  wrong:()=>tone(170,0.22,"square",0.07),
+  tick:()=>tone(1000,0.03,"sine",0.05),
+  unlock:()=>{[523,659,784,1047].forEach((f,i)=>tone(f,0.14,"sine",0.1,i*0.09));},
+  end:()=>{tone(392,0.15,"sine",0.1);tone(330,0.2,"sine",0.1,0.12);}
+};
+
+/* ---- helpers ---- */
+const modById=id=>BANK.find(m=>m.id===id);
+const unlocked=i=>i===0||(ST.best[BANK[i-1].id]||0)>=80;
+const starsFor=s=>s>=100?3:s>=90?2:s>=80?1:0;
+const badge=f=>f==="v"?'<span class="badge v">⚑ [VERIFY] — primary source pending</span>':f==="j"?'<span class="badge c">⚑ varies by province / state</span>':"";
+const todayStr=()=>new Date().toISOString().slice(0,10);
+
+/* ---- Leitner: 6 boxes, retirement, leech tracking ---- */
+const DAYS=[0,1,3,7,21,60];
+function leitMark(key,ok,kind,ref){
+  const e=ST.leit[key]||{box:0,due:0,k:kind,ref,miss:0};
+  if(ok){if(ST.leit[key]){e.box=Math.min(5,e.box+1);e.due=Date.now()+DAYS[Math.min(e.box,DAYS.length-1)]*864e5;}else return;}
+  else{e.box=0;e.due=Date.now();e.miss=(e.miss||0)+1;}
+  e.k=kind;e.ref=ref;ST.leit[key]=e;save();
+}
+const dueItems=inclRetired=>Object.entries(ST.leit)
+  .filter(([k,e])=>e.due<=Date.now()&&(inclRetired||e.box<5));
+const leeches=()=>Object.entries(ST.leit).filter(([k,e])=>(e.miss||0)>=3);
+
+/* ---- dashboard ---- */
+function mastery(){
+  let s=0;for(const m of BANK)s+=Math.min(100,ST.best[m.id]||0);
+  return Math.round(s/BANK.length);
+}
+function paintDash(){
+  $("#dStreak").textContent=ST.streak.days;
+  $("#dXp").textContent=ST.xp;
+  $("#dMast").textContent=mastery()+"%";
+  $("#sndBtn").classList.toggle("off",!ST.snd);
+  const due=dueItems().length,b=$("#dueBadge");
+  b.hidden=!due;if(due)b.textContent=due+" due";
+  $("#rapidHs").textContent=ST.rapidHigh?("HI "+ST.rapidHigh):"";
+}
+
+/* ---- home / module grid ---- */
+function sprintPool(){
+  const pool=[];
+  BANK.forEach((m,i)=>{if(unlocked(i)||m.id==="tr")m.qs.forEach((q,j)=>pool.push({k:"mcq",id:m.ids[j],mod:m,q}));});
+  return pool;
+}
+function paintHome(){
+  paintDash();
+  const rp=$('.mode[data-go="rapid"] p');
+  if(rp)rp.textContent="60 seconds. Combo scoring. Pool: "+sprintPool().length+" items — the Translation Gauntlet is always in, plus your unlocked sections.";
+  const g=$("#modGrid");g.innerHTML="";
+  BANK.forEach((m,i)=>{
+    const un=unlocked(i),best=ST.best[m.id]||0,st=starsFor(best);
+    const t=E("button","mtile"+(un?"":" locked")+(st?" done":""));
+    t.innerHTML='<span class="n">'+m.n+'</span><div class="t">'+m.title+'</div>'+
+      (un?('<span class="stars">'+("★".repeat(st)+"☆".repeat(3-st))+'</span> <span class="best">'+(best?best+"%":"—")+'</span>'+
+      '<div class="mprog"><i style="width:'+Math.min(100,best)+'%"></i></div>')
+        :'<span class="lock">🔒</span><span class="best">needs 80% on '+BANK[i-1].n+'</span>');
+    if(un&&best>0){
+      const rb=E("span","tilereset","⟲");
+      rb.title="Reset this section";
+      rb.onclick=ev=>{ev.stopPropagation();
+        if(rb.dataset.arm){resetChapter(m.id);}
+        else{rb.dataset.arm="1";rb.textContent="sure?";setTimeout(()=>{rb.dataset.arm="";rb.textContent="⟲";},2500);}
+      };
+      t.appendChild(rb);
+    }
+    t.onclick=()=>{
+      if(!un){t.classList.remove("shake");void t.offsetWidth;t.classList.add("shake");sfx.wrong();return;}
+      sfx.click();startCampaign(m);
+    };
+    g.appendChild(t);
+  });
+}
+function resetChapter(mid){
+  delete ST.best[mid];
+  const m=modById(mid);
+  for(const id of m.ids)delete ST.leit[id];
+  for(const gid of m.gens){delete ST.leit["g:"+gid];delete ST.calc[gid];}
+  save();paintHome();
+}
+
+/* ---- navigation ---- */
+function go(s){
+  $$(".screen").forEach(x=>x.classList.remove("on"));
+  const scr=$("#scr-"+s);scr.classList.add("on");
+  if(s==="home")paintHome();
+  window.scrollTo({top:0,behavior:"instant"});
+  scr.setAttribute("tabindex","-1");scr.focus({preventScroll:true});
+}
+
+/* ============ QUIZ SESSION ============ */
+let S=null,timerInt=null,TOK=0;
+function stopTimer(){if(timerInt){clearInterval(timerInt);timerInt=null;}}
+function startCampaign(m){
+  const k=Math.min(2,m.gens.length);
+  const items=shuffle(m.qs.map((q,i)=>({k:"mcq",id:m.ids[i],mod:m,q}))).slice(0,10-k);
+  for(const gid of shuffle(m.gens).slice(0,k)){
+    const gen=GENS[gid];
+    items.push({k:"num",id:"g:"+gid,gid,gen,d:gen.make(),mod:m});
+  }
+  S={mode:"campaign",m,items:shuffle(items),i:0,ok:0,combo:0,score:0,miss:[],token:++TOK};
+  $("#timerWrap").hidden=true;$("#rscore").hidden=true;
+  go("quiz");renderItem();
+}
+function startRapid(){
+  S={mode:"rapid",pool:shuffle(sprintPool()),i:0,ok:0,n:0,combo:0,score:0,t:60,miss:[],token:++TOK};
+  $("#timerWrap").hidden=false;$("#rscore").hidden=false;
+  go("quiz");
+  stopTimer();
+  let lastTick=61;
+  timerInt=setInterval(()=>{
+    S.t-=0.1;
+    const bar=$("#timerBar");bar.style.width=Math.max(0,S.t/60*100)+"%";
+    bar.classList.toggle("low",S.t<=10);
+    $("#timerNum").textContent=Math.max(0,Math.ceil(S.t));
+    if(S.t<=5&&Math.ceil(S.t)<lastTick){lastTick=Math.ceil(S.t);sfx.tick();}
+    if(S.t<=0)endRapid();
+  },100);
+  renderItem();
+}
+function startReview(inclRetired){
+  const due=shuffle(dueItems(inclRetired)).slice(0,12);
+  const items=due.map(([key,e])=>{
+    if(e.k==="g"){const gen=GENS[e.ref];if(!gen)return null;
+      return {k:"num",id:key,gid:e.ref,gen,d:gen.make(),mod:modById(gen.mod),review:1};}
+    const hit=QIX[e.ref];if(!hit)return null;
+    return {k:"mcq",id:key,mod:hit.m,q:hit.q,review:1};
+  }).filter(Boolean);
+  if(!items.length){
+    $("#revInfo").innerHTML="<b>Couldn't resolve any due card to a live question.</b> This usually means the bank changed since those cards were stored. They'll be cleaned up as you keep practising.";
+    return;
+  }
+  S={mode:"review",items,i:0,ok:0,combo:0,score:0,miss:[],token:++TOK};
+  $("#timerWrap").hidden=true;$("#rscore").hidden=true;
+  go("quiz");renderItem();
+}
+
+function currentItem(){return S.mode==="rapid"?S.pool[S.i%S.pool.length]:S.items[S.i];}
+function renderItem(){
+  const it=currentItem();if(!it)return endSession();
+  const total=S.mode==="rapid"?null:S.items.length;
+  $("#qn").textContent=S.mode==="rapid"?("answered "+S.n):("Q"+(S.i+1)+" / "+total+" · keys 1–9");
+  const bar=$("#qbar");
+  bar.style.width=S.mode==="rapid"?"100%":((S.i)/total*100)+"%";
+  $("#combo").textContent=S.combo>=3?("combo ×"+(1+Math.min(3,Math.floor(S.combo/3)))):"";
+  if(S.mode==="rapid")$("#rscore").textContent=S.score+" pts";
+  $("#nextBtn").hidden=true;
+  const c=$("#qcard");c.innerHTML="";
+  c.appendChild(E("div","qmod",it.mod?it.mod.n+" · "+it.mod.title:""));
+  if(it.k==="mcq")renderMcq(it,c);else renderNum(it,c);
+}
+/* options shuffled at render time; noShuffle flag preserves authored order;
+   recall-first gate hides options until you commit to an answer in your head */
+function renderMcq(it,c){
+  const [q,opts,a,x,flag,ns,rf]=it.q;
+  c.appendChild(E("p","qtext",q));
+  const order=ns?opts.map((_,i)=>i):shuffle(opts.map((_,i)=>i));
+  it._order=order;
+  const wrap=E("div","opts");
+  order.forEach((orig,pos)=>{
+    const b=E("button","opt",'<span class="k">'+(pos+1)+'</span><span>'+opts[orig]+'</span>');
+    b.onclick=()=>gradeMcq(it,orig,pos,wrap,c);
+    wrap.appendChild(b);
+  });
+  if(rf&&S.mode!=="rapid"){
+    const gate=E("div","recall","<b>Retrieval first.</b> Say the answer — out loud or in your head — before you look. The reveal is the test.");
+    const rb=E("button","btn pri","I've committed — show the options");
+    rb.style.marginTop="8px";
+    gate.appendChild(E("div")).appendChild(rb);
+    wrap.hidden=true;
+    rb.onclick=()=>{gate.remove();wrap.hidden=false;sfx.click();};
+    c.appendChild(gate);
+    setTimeout(()=>rb.focus(),50);
+  }
+  c.appendChild(wrap);
+}
+function gradeMcq(it,orig,pos,wrap,c){
+  const [q,opts,a,x,flag]=it.q;
+  const ok=orig===a;
+  const correctPos=it._order.indexOf(a);
+  [...wrap.children].forEach((b,j)=>{
+    b.disabled=true;
+    if(j===correctPos){b.classList.add("right");b.insertAdjacentHTML("beforeend",' <b aria-hidden="true">✓</b>');}
+    else if(j===pos){b.classList.add("wrong");b.insertAdjacentHTML("beforeend",' <b aria-hidden="true">✗</b>');}
+    else b.classList.add("dim");
+  });
+  record(it,ok);
+  if(!ok)S.miss.push({label:q,chosen:opts[orig],ans:opts[a],x,flag});
+  if(S.mode==="rapid"){
+    S.n++;
+    const tok=S.token;
+    setTimeout(()=>{if(S&&S.token===tok)next();},ok?260:600);
+    return;
+  }
+  const fb=E("div","fb");fb.setAttribute("aria-live","polite");
+  fb.appendChild(E("div","verdict "+(ok?"y":"n"),ok?"Correct":"Not quite"));
+  fb.appendChild(E("div","",badge(flag)+x));
+  c.appendChild(fb);
+  $("#nextBtn").hidden=false;$("#nextBtn").focus();
+}
+/* clinic item inside a campaign/review session — every field must be right */
+function renderNum(it,c){
+  const d=it.d;
+  c.appendChild(E("p","qtext",it.gen.title));
+  if(d.scen)c.appendChild(E("div","scen",d.scen));
+  const gv=E("div","given"),t=E("table");
+  t.insertAdjacentHTML("afterbegin",'<caption class="visuallyhidden">Given facts</caption>');
+  for(const r of d.given){const tr=E("tr",r[2]?"tot":"");tr.appendChild(E("td",null,r[0]));tr.appendChild(E("td",null,r[1]));t.appendChild(tr);}
+  gv.appendChild(t);c.appendChild(gv);
+  if(d.note)c.appendChild(E("p","tag",d.note));
+  const fields=[];
+  for(const a of d.ask){
+    const line=E("div","simin");
+    line.appendChild(E("label",null,"<b>"+a.label+"</b>"));
+    let ctl;
+    if(a.opts){
+      ctl=E("select");
+      ctl.appendChild(new Option("— choose —","-1"));
+      a.opts.forEach((o,i)=>ctl.appendChild(new Option(o,String(i))));
+      ctl.setAttribute("aria-label",a.label);
+    }else{
+      ctl=E("input");ctl.type="text";ctl.inputMode="decimal";ctl.setAttribute("aria-label",a.label);
+      ctl.addEventListener("keydown",e=>{if(e.key==="Enter")doCheck();});
+    }
+    line.appendChild(ctl);c.appendChild(line);
+    fields.push({a,ctl});
+  }
+  const foot=E("div","numin");
+  const chk=E("button","btn pri","Check all");
+  foot.appendChild(chk);c.appendChild(foot);
+  setTimeout(()=>fields[0]&&fields[0].ctl.focus(),50);
+  let graded=false;
+  const doCheck=()=>{
+    if(graded)return;graded=true;
+    let all=true;const parts=[];
+    for(const f of fields){
+      let ok;
+      if(f.a.opts){ok=parseInt(f.ctl.value,10)===f.a.ans;parts.push(f.a.label+": "+f.a.opts[f.a.ans]);}
+      else{const v=parseNum(f.ctl.value);ok=isFinite(v)&&Math.abs(v-f.a.ans)<=(f.a.tol??1);parts.push(f.a.label+": "+money(f.a.ans,f.a.ans%1?2:0));}
+      f.ctl.disabled=true;
+      f.ctl.classList.add(ok?"right":"wrong");
+      if(!ok)all=false;
+    }
+    chk.disabled=true;
+    record(it,all);
+    if(!all)S.miss.push({label:it.gen.title,chosen:"see the worked reasoning",ans:parts.join(" · "),x:"Run this scenario again in the Case Clinic — new facts every time."});
+    const fb=E("div","fb");fb.setAttribute("aria-live","polite");
+    fb.appendChild(E("div","verdict "+(all?"y":"n"),all?"Correct — every field":"Not quite — the reasoning:"));
+    const stepsW=E("div","steps");
+    d.steps.forEach((s,i)=>{
+      const st=E("div","step"+(s[2]?" hot":""));
+      st.appendChild(E("span","sn",(i+1)+"."));
+      st.appendChild(E("span",null,s[0]));
+      st.appendChild(E("span","amt",s[1]==null?"":s[1]));
+      stepsW.appendChild(st);
+    });
+    fb.appendChild(stepsW);c.appendChild(fb);
+    $("#nextBtn").hidden=false;$("#nextBtn").focus();
+  };
+  chk.onclick=doCheck;
+}
+function record(it,ok){
+  if(ok){
+    S.ok++;S.combo++;
+    const mult=1+Math.min(3,Math.floor(S.combo/3));
+    S.score+=10*(S.mode==="rapid"?mult:1);
+    ST.xp+=S.mode==="rapid"?5:10;
+    sfx.right();
+    if(it.review)leitMark(it.id,true,ST.leit[it.id]?.k||"q",ST.leit[it.id]?.ref||it.id);
+  }else{
+    S.combo=0;sfx.wrong();
+    if(it.k==="mcq")leitMark(it.id,false,"q",it.id);
+    else leitMark("g:"+it.gid,false,"g",it.gid);
+  }
+  save();paintDash();
+}
+function next(){
+  S.i++;
+  if(S.mode!=="rapid"&&S.i>=S.items.length)return endSession();
+  renderItem();
+}
+$("#nextBtn").onclick=next;
+
+/* ---- session ends ---- */
+function endSession(){
+  if(S.mode==="campaign"){
+    const total=S.items.length,pct=Math.round(S.ok/total*100);
+    const need=Math.ceil(total*0.8);
+    const prevBest=ST.best[S.m.id]||0;
+    const pass=pct>=80;
+    if(pct>prevBest)ST.best[S.m.id]=pct;
+    if(pass){ST.xp+=40;if(pct>=100)ST.xp+=25;}
+    save();
+    const idx=BANK.indexOf(S.m);
+    const unlockedNext=pass&&idx<BANK.length-1&&prevBest<80;
+    showResults({
+      big:pct+"%",cls:pass?"pass":"fail",
+      stars:starsFor(pct),
+      h:pass?(pct>=100?"Perfect run.":"Section passed."):"Below the 80% gate",
+      p:pass?(unlockedNext?BANK[idx+1].n+" — "+BANK[idx+1].title+" is now unlocked.":"Best: "+ST.best[S.m.id]+"%. Misses went to your review deck.")
+            :"You need "+need+" of "+total+". Every miss is queued in Smart Review — clear those first, then retry.",
+      xp:(S.ok*10)+(pass?40:0)+(pct>=100?25:0),miss:S.miss});
+    if(unlockedNext)sfx.unlock();else if(pass)sfx.right();else sfx.end();
+  }else if(S.mode==="review"){
+    showResults({big:S.ok+"/"+S.items.length,cls:S.ok===S.items.length?"pass":"fail",stars:0,
+      h:"Review complete",p:"Correct cards moved up a box; misses reset to box 0 and stay due. Boxes run 0/1/3/7/21/60 days — box 5 cards are retired.",xp:S.ok*10,miss:S.miss});
+    sfx.end();
+  }
+  stopTimer();
+}
+function endRapid(){
+  stopTimer();
+  const hi=S.score>ST.rapidHigh;
+  if(hi)ST.rapidHigh=S.score;
+  ST.xp+=Math.round(S.score/10);save();
+  showResults({big:S.score+"",cls:hi?"pass":"fail",stars:0,
+    h:hi?"New high score!":"Time!",
+    p:S.n+" answered · "+S.ok+" correct. Pool = "+sprintPool().length+" items.",
+    xp:Math.round(S.score/10),miss:S.miss});
+  if(hi)sfx.unlock();else sfx.end();
+}
+let lastFocus=null;
+function showResults(r){
+  const b=$("#resBox");
+  b.setAttribute("role","dialog");b.setAttribute("aria-modal","true");
+  b.innerHTML='<div class="big '+r.cls+'">'+r.big+'</div>'+
+    (r.stars?'<div class="rstars">'+("★".repeat(r.stars)+"☆".repeat(3-r.stars))+'</div>':"")+
+    '<h2 tabindex="-1">'+r.h+'</h2><p>'+r.p+'</p><div class="xps">+'+r.xp+' XP</div>';
+  if(r.miss&&r.miss.length){
+    const ml=E("div","misslist");
+    ml.appendChild(E("div","mlh",r.miss.length+" missed — review before retrying"));
+    for(const ms of r.miss){
+      ml.appendChild(E("div","mlitem",
+        "<div class='mlq'>"+ms.label+"</div>"+
+        "<div class='mlrow'><span class='no'>you: "+ms.chosen+"</span> <span class='yes'>ans: "+ms.ans+"</span></div>"+
+        "<div class='mlx'>"+(ms.flag?badge(ms.flag):"")+(ms.x||"")+"</div>"));
+    }
+    b.appendChild(ml);
+  }
+  const row=E("div","qfoot");row.style.justifyContent="center";
+  const home=E("button","btn","Home");home.onclick=closeResults;
+  const again=E("button","btn pri","Go again");
+  again.onclick=()=>{$("#overlay").classList.remove("on");
+    if(S.mode==="campaign")startCampaign(S.m);else if(S.mode==="rapid")startRapid();else startReview();};
+  row.append(home,again);b.appendChild(row);
+  lastFocus=D.activeElement;
+  $("#overlay").classList.add("on");
+  b.querySelector("h2").focus();
+}
+function closeResults(){
+  $("#overlay").classList.remove("on");go("home");
+  if(lastFocus&&lastFocus.focus)lastFocus.focus();
+}
+D.addEventListener("keydown",e=>{if(e.key==="Escape"&&$("#overlay").classList.contains("on"))closeResults();});
+
+/* ============ CASE CLINIC (standalone) ============ */
+const GT={};
+function simStatText(gid){const st=ST.calc[gid]||{n:0,k:0};return st.n?st.k+" / "+st.n+" correct":"not attempted";}
+function paintSim(){
+  const g=$("#genGrid");g.innerHTML="";$("#simHost").innerHTML="";
+  for(const gid in GENS){
+    const gen=GENS[gid];
+    const t=E("button","gentile",'<div class="gm">'+modById(gen.mod).n+'</div><h4>'+gen.title+'</h4>'+
+      '<div class="tag" style="margin:0;font-size:11px">'+gen.sub+'</div>');
+    const gs=E("div","gs",simStatText(gid));
+    t.appendChild(gs);GT[gid]=gs;
+    t.onclick=()=>{sfx.click();openSim(gid);};
+    g.appendChild(t);
+  }
+}
+function openSim(gid){
+  const gen=GENS[gid],host=$("#simHost");
+  host.innerHTML="";
+  const card=E("div","qcard");
+  card.appendChild(E("div","qmod",modById(gen.mod).n+" · "+gen.title));
+  const body=E("div");card.appendChild(body);
+  const foot=E("div","qfoot");
+  const bNew=E("button","btn pri","New facts"),bChk=E("button","btn","Check"),bShow=E("button","btn ghost","Show reasoning");
+  foot.append(bNew,bChk,bShow);card.appendChild(foot);
+  host.appendChild(card);
+  let d,fields,graded,shown;
+  function render(){
+    d=gen.make();fields=[];graded=false;shown=false;
+    bChk.disabled=false;
+    body.innerHTML="";
+    if(d.scen)body.appendChild(E("div","scen",d.scen));
+    const gv=E("div","given"),t=E("table");
+    for(const r of d.given){const tr=E("tr",r[2]?"tot":"");tr.appendChild(E("td",null,r[0]));tr.appendChild(E("td",null,r[1]));t.appendChild(tr);}
+    gv.appendChild(t);body.appendChild(gv);
+    if(d.note)body.appendChild(E("p","tag",d.note));
+    for(const a of d.ask){
+      const line=E("div","simin");
+      line.appendChild(E("label",null,a.label));
+      let ctl;
+      if(a.opts){
+        ctl=E("select");
+        ctl.appendChild(new Option("— choose —","-1"));
+        a.opts.forEach((o,i)=>ctl.appendChild(new Option(o,String(i))));
+        ctl.setAttribute("aria-label",a.label);
+      }else{
+        ctl=E("input");ctl.type="text";ctl.inputMode="decimal";ctl.setAttribute("aria-label",a.label);
+        ctl.addEventListener("keydown",e=>{if(e.key==="Enter")check();});
+      }
+      const mk=E("span","mk","");
+      line.append(ctl,mk);body.appendChild(line);
+      fields.push({a,ctl,mk});
+    }
+    const w=E("div","fb");w.hidden=true;w.setAttribute("aria-live","polite");
+    w.appendChild(E("div","verdict","The reasoning"));
+    const sw=E("div","steps");
+    d.steps.forEach((s,i)=>{const st=E("div","step"+(s[2]?" hot":""));
+      st.appendChild(E("span","sn",(i+1)+"."));st.appendChild(E("span",null,s[0]));
+      st.appendChild(E("span","amt",s[1]==null?"":s[1]));sw.appendChild(st);});
+    w.appendChild(sw);body.appendChild(w);
+    body._work=w;
+  }
+  function check(){
+    if(graded)return;
+    let all=true;
+    for(const f of fields){
+      let ok;
+      if(f.a.opts)ok=parseInt(f.ctl.value,10)===f.a.ans;
+      else{const v=parseNum(f.ctl.value);ok=isFinite(v)&&Math.abs(v-f.a.ans)<=(f.a.tol??1);}
+      f.ctl.classList.toggle("right",ok);f.ctl.classList.toggle("wrong",!ok);
+      f.mk.className="mk "+(ok?"y":"n");f.mk.textContent=ok?"✓":"✗";
+      if(!ok)all=false;
+    }
+    body._work.hidden=false;
+    graded=true;
+    const st=ST.calc[gid]=ST.calc[gid]||{n:0,k:0};
+    if(!shown){
+      st.n++;if(all)st.k++;
+      if(all&&st.xd!==todayStr()){ST.xp+=10;st.xd=todayStr();}
+    }
+    if(!all)leitMark("g:"+gid,false,"g",gid);
+    else if(ST.leit["g:"+gid])leitMark("g:"+gid,true,"g",gid);
+    save();paintDash();
+    if(GT[gid])GT[gid].textContent=simStatText(gid);
+    if(all)sfx.right();else sfx.wrong();
+  }
+  bNew.onclick=()=>{sfx.click();render();};
+  bChk.onclick=check;
+  bShow.onclick=()=>{shown=true;body._work.hidden=false;
+    for(const f of fields){
+      if(f.a.opts){if(f.ctl.value==="-1")f.ctl.value=String(f.a.ans);}
+      else if(!f.ctl.value)f.ctl.placeholder=money(f.a.ans,f.a.ans%1?2:0);
+    }};
+  render();
+  card.scrollIntoView({behavior:"smooth",block:"start"});
+}
+
+/* ============ REVIEW SCREEN ============ */
+function paintReview(){
+  const due=dueItems().length,retired=Object.values(ST.leit).filter(e=>e.box>=5).length,
+        all=Object.keys(ST.leit).length,lch=leeches();
+  const boxes=[0,0,0,0,0,0];
+  for(const k in ST.leit)boxes[Math.min(5,ST.leit[k].box)]++;
+  let html=(all?("<b>"+due+"</b> card"+(due===1?"":"s")+" due now · "+all+" in the deck ("+retired+" retired). Correct answers climb 0 → 1 → 3 → 7 → 21 → 60-day intervals; box 5 is retired. A miss resets the card to box 0.")
+    :"Nothing here yet. Miss a question anywhere — campaign, sprint or the clinic — and it joins the deck automatically.");
+  html+='<div class="boxrow">'+boxes.map((n,i)=>'<span class="boxpill">'+(i===5?"retired":"box "+i)+" · "+n+"</span>").join("")+"</div>";
+  if(lch.length){
+    html+='<div class="leechh">Leeches — missed 3+ times. These are concept problems, not card problems. Reread that primer section before drilling again:</div>';
+    for(const [k,e] of lch.slice(0,6)){
+      let name=k;
+      if(e.k==="g"&&GENS[e.ref])name=GENS[e.ref].title;
+      else if(QIX[e.ref])name=QIX[e.ref].m.n+" — "+QIX[e.ref].q[0].slice(0,70)+(QIX[e.ref].q[0].length>70?"…":"");
+      html+='<div class="leech">'+name+' <span class="lm">×'+e.miss+'</span></div>';
+    }
+  }
+  $("#revInfo").innerHTML=html;
+  $("#revStart").disabled=!due;
+  const inc=$("#incRetired");
+  if(inc)inc.parentElement.hidden=!retired;
+}
+
+/* ============ EXPORT / IMPORT / RESET ============ */
+function wireTools(){
+  const host=$("#scr-home .note");
+  const row=E("div","toolsrow");
+  const ex=E("button","btn ghost","Export progress");
+  ex.onclick=()=>{
+    const blob=new Blob([JSON.stringify(ST,null,1)],{type:"application/json"});
+    const a=E("a");a.href=URL.createObjectURL(blob);
+    a.download="lawarena-progress-"+todayStr()+".json";a.click();
+    setTimeout(()=>URL.revokeObjectURL(a.href),2000);
+  };
+  const imLbl=E("label","btn ghost","Import progress");
+  const im=E("input");im.type="file";im.accept=".json,application/json";im.hidden=true;
+  im.onchange=()=>{
+    const f=im.files[0];if(!f)return;
+    const rd=new FileReader();
+    rd.onload=()=>{try{
+      const o=JSON.parse(rd.result);
+      if(!o||typeof o!=="object")throw 0;
+      ST.xp=Math.max(ST.xp,o.xp||0);
+      ST.rapidHigh=Math.max(ST.rapidHigh,o.rapidHigh||0);
+      if(o.streak&&o.streak.last>(ST.streak.last||""))ST.streak=o.streak;
+      for(const k in (o.best||{}))ST.best[k]=Math.max(ST.best[k]||0,o.best[k]);
+      for(const k in (o.leit||{})){
+        const inc=o.leit[k];
+        if(!(k.startsWith("g:")?GENS[k.slice(2)]:QIX[k]))continue;
+        const cur=ST.leit[k];
+        ST.leit[k]=(!cur||inc.due<cur.due)?inc:cur;
+      }
+      for(const g in (o.calc||{}))if(!ST.calc[g]||(o.calc[g].n||0)>(ST.calc[g].n||0))ST.calc[g]=o.calc[g];
+      save();paintHome();
+      imLbl.textContent="Imported ✓";setTimeout(()=>imLbl.textContent="Import progress",1800);
+    }catch(e){imLbl.textContent="Bad file";setTimeout(()=>imLbl.textContent="Import progress",1800);}};
+    rd.readAsText(f);im.value="";
+  };
+  imLbl.appendChild(im);imLbl.tabIndex=0;
+  imLbl.addEventListener("click",()=>im.click());
+  const rs=E("button","btn ghost","Reset all progress");
+  let arm=null;
+  rs.onclick=()=>{
+    if(arm===null){rs.textContent="Really reset everything? Click again";rs.classList.add("danger");
+      arm=setTimeout(()=>{arm=null;rs.textContent="Reset all progress";rs.classList.remove("danger");},4000);return;}
+    clearTimeout(arm);arm=null;
+    ST={schema:1,xp:0,snd:ST.snd,theme:ST.theme,streak:{last:"",days:0},best:{},rapidHigh:0,leit:{},calc:{}};
+    save();paintHome();
+    rs.textContent="Cleared ✓";rs.classList.remove("danger");
+    setTimeout(()=>rs.textContent="Reset all progress",1800);
+  };
+  row.append(ex,imLbl,rs);
+  host.parentElement.insertBefore(row,host);
+}
+
+/* ============ WIRING ============ */
+$$("[data-go]").forEach(b=>b.addEventListener("click",()=>{
+  const to=b.dataset.go;sfx.click();
+  if(to==="campaign"){go("home");D.getElementById("modGrid").scrollIntoView({behavior:"smooth"});return;}
+  if(to==="rapid")return startRapid();
+  if(to==="sim"){go("sim");paintSim();return;}
+  if(to==="review"){go("review");paintReview();return;}
+  stopTimer();go(to);
+}));
+$("#homeBtn").onclick=()=>{stopTimer();go("home");};
+$("#revStart").onclick=()=>startReview($("#incRetired")&&$("#incRetired").checked);
+$("#sndBtn").onclick=()=>{ST.snd=!ST.snd;save();paintDash();if(ST.snd)sfx.right();};
+$("#thmBtn").onclick=()=>{
+  const r=D.documentElement,cur=r.dataset.theme||"auto";
+  const nxt=cur==="auto"?"dark":cur==="dark"?"light":"";
+  if(nxt)r.dataset.theme=nxt;else delete r.dataset.theme;
+  ST.theme=nxt;save();
+};
+D.addEventListener("keydown",e=>{
+  if(/^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName))return;
+  if(!$("#scr-quiz").classList.contains("on"))return;
+  if(/^[1-9]$/.test(e.key)){
+    const opts=$$("#qcard .opts:not([hidden]) .opt:not(:disabled)");
+    const i=+e.key-1;if(opts[i])opts[i].click();
+  }
+});
+
+/* ---- boot ---- */
+if(!storageOk){
+  const warn=E("div","banner","Private-browsing or blocked storage detected — progress will NOT survive closing this tab. Export from the home screen if you want to keep it.");
+  D.querySelector("main").prepend(warn);
+}
+wireTools();
+paintHome();
+</script>
+
+<!-- ══════ CASE VAULT OVERLAY (additive) — the stories that built the law ══════ -->
+<style>
+.vaultcard{border:1px solid var(--grid);border-radius:14px;background:var(--surface);padding:20px 20px 16px;max-width:760px;margin:0 auto}
+.vc-era{font:700 10.5px var(--sans);letter-spacing:.8px;text-transform:uppercase;color:var(--t7);margin-bottom:6px}
+.vc-title{font-size:19px;font-weight:800;margin:0 0 12px}
+.vc-hook{font-size:14.5px;line-height:1.65}
+.vc-hook::first-letter{font-size:200%;font-weight:800;color:var(--t7);float:left;line-height:1;padding:2px 7px 0 0}
+.vc-held{border-left:3px solid var(--t7);padding:10px 14px;margin:14px 0 10px;background:color-mix(in srgb,var(--t7) 7%,transparent);border-radius:0 9px 9px 0;font-size:13.5px}
+.vc-held b{display:block;font-size:10.5px;text-transform:uppercase;letter-spacing:.7px;color:var(--t7);margin-bottom:4px}
+.vc-why{font-size:13px;color:var(--ink2);border-top:1px dashed var(--grid);padding-top:10px;margin-top:4px}
+.vc-why b{color:var(--ink)}
+.vc-nav{display:flex;gap:9px;align-items:center;margin-top:16px;flex-wrap:wrap}
+.vc-count{font:700 11.5px var(--mono);color:var(--muted);margin-left:auto}
+.vc-note{font-size:11px;color:var(--muted);margin-top:16px;text-align:center}
+.vc-dots{display:flex;gap:5px;justify-content:center;margin-top:12px}
+.vc-dot{width:8px;height:8px;border-radius:50%;background:var(--grid);cursor:pointer;border:0;padding:0}
+.vc-dot.on{background:var(--t7)}
+.vc-dot.seen{background:color-mix(in srgb,var(--t7) 45%,var(--grid))}
+</style>
+<script>
+"use strict";
+(function(){
+const D=document,E=(t,c,h)=>{const e=D.createElement(t);if(c)e.className=c;if(h!=null)e.innerHTML=h;return e;};
+/* Ten foundation stones of the common law — settled canon, told as stories.
+   Enrichment beyond the course primer: holdings are standard; verify course-specific framing. */
+const VAULT=[
+{era:"House of Lords · 1932 · Paisley, Scotland",t:"Donoghue v Stevenson — the snail in the ginger beer",
+ hook:"May Donoghue's friend bought her a bottle of ginger beer at the Wellmeadow Café. The bottle was opaque. She drank most of it before the decomposed remains of a snail floated out. She fell ill — but she had no contract with anyone: her friend bought the drink, and the café hadn't made it. Every existing legal route said: no contract, no claim.",
+ held:"Lord Atkin's neighbour principle: you owe a duty of care to persons so closely and directly affected by your acts that you ought reasonably to have them in contemplation. Negligence became a freestanding tort — no contract required.",
+ why:"Every duty question in §3 descends from this bottle — Hercules and Livent are the neighbour principle, disciplined for auditors. When a lender with no engagement letter sues your firm, the reason the claim is even conceivable is Donoghue."},
+{era:"Court of Appeal, England · 1893",t:"Carlill v Carbolic Smoke Ball — the £100 flu cure",
+ hook:"The Carbolic Smoke Ball Company promised £100 to anyone who used its smoke ball three times daily and still caught influenza — and deposited £1,000 in the bank 'shewing our sincerity in the matter.' Mrs Carlill used it exactly as directed. She caught the flu. The company called its ad an obvious puff no reasonable person would take literally.",
+ held:"The advertisement was a unilateral OFFER, accepted by performance — the £1,000 deposit proved the promise was meant seriously. Intention is judged objectively, by what a reasonable reader would understand.",
+ why:"Promotions, reward programs and public commitments can bind. When marketing drafts a promise, the objective reading — not what the drafter privately meant — is what a court enforces (and what a provision under IAS 37 may need to reflect)."},
+{era:"House of Lords · 1897 · Whitechapel, London",t:"Salomon v Salomon — the boot maker who invented the veil",
+ hook:"Aron Salomon, a leather-boot maker, incorporated his own business and sold it to the new company, taking secured debentures back. When the company failed, unsecured creditors cried sham: the 'company' was just Salomon in a paper mask, they said — its seven shareholders were Salomon, his wife and five children.",
+ held:"A properly incorporated company is a SEPARATE LEGAL PERSON — even a one-man company. The debts were the company's, not Salomon's; his security held.",
+ why:"§4's rule that veil-piercing is rare (Transamerica: complete domination plus conduct akin to fraud) starts here. It is also why the accountant's hygiene — separate books, arm's-length intercompany terms — is what keeps the veil real."},
+{era:"Court of Exchequer · 1854 · Gloucester",t:"Hadley v Baxendale — the broken crankshaft",
+ hook:"The Hadleys' flour mill stood silent: its crankshaft had snapped, and the replacement could only be modelled off the broken one. The carrier, Baxendale, promised prompt delivery to the engineers — then delayed for days. The mill's owners sued for every day of lost profits. The carrier had never been told the mill was stopped entirely.",
+ held:"Contract damages reach only (1) losses arising naturally from the breach, and (2) unusual losses within both parties' contemplation because the special circumstances were COMMUNICATED at formation.",
+ why:"The two limbs live inside every consequential-damages exclusion you will ever read — including the ones in your firm's engagement letters. What the client told you at formation defines what a breach can cost."},
+{era:"King's Bench · 1947 · wartime London",t:"High Trees — the half-rent that stuck",
+ hook:"With London under bombardment and flats standing empty, a landlord agreed in writing to halve the rent on a Mayfair block. After the war the flats filled again, and the landlord's receiver demanded the full rent — including, in the test claim's shadow, the wartime arrears. Strictly, the promise to take less had no consideration behind it.",
+ held:"Denning J: a promise intended to be binding and acted upon cannot simply be revoked for the period it covered — promissory estoppel. A shield against strict rights, not a sword to found new claims.",
+ why:"This is the doctrinal engine humming underneath §2's variation problem — the same tension Rosas v Toca resolved differently in BC. When a client 'agrees' to relax payment terms, whether that sticks is this case's question."},
+{era:"Court of Exchequer · 1864",t:"Raffles v Wichelhaus — the two ships Peerless",
+ hook:"A contract for Surat cotton 'to arrive ex Peerless from Bombay.' The buyer meant the Peerless sailing in October. The seller meant a different ship — also named Peerless — sailing in December. Neither side knew the other ship existed. Cotton prices moved; the buyer refused the December delivery.",
+ held:"No consensus ad idem — the parties never agreed on the same thing, so no contract formed at all. Latent ambiguity, honestly held on both sides, can void the bargain.",
+ why:"The drafting lesson behind every defined-terms section: ambiguity is not a style problem, it is an existence-of-contract problem. Two reasonable readings of a delivery term can mean no enforceable right to consideration — and under IFRS 15 step 1, no revenue."},
+{era:"Common Pleas · 1862",t:"Felthouse v Bindley — silence is not acceptance",
+ hook:"An uncle wrote to his nephew about buying his horse: 'If I hear no more about him, I consider the horse mine at £30 15s.' The nephew intended to accept — he even told the auctioneer to keep the horse out of the farm sale. The auctioneer sold it by mistake. The uncle sued: surely the deal was done?",
+ held:"No contract. An offeror cannot impose acceptance-by-silence on the other party. Acceptance must be communicated — intention alone, uncommunicated, binds nobody.",
+ why:"§2's formation element, in one story — and the legal floor under a familiar audit problem: an unanswered purchase order is not an approved contract, whatever the customer privately intended. No communicated acceptance, no step 1, no revenue."},
+{era:"Supreme Court of Canada · 2014 · Calgary",t:"Bhasin v Hrynew — the honest-performance case",
+ hook:"Harish Bhasin spent years building an education-savings-plan dealership. His contract auto-renewed unless notice was given. His corporate principal, pressed by Bhasin's competitor Hrynew, decided not to renew — and repeatedly misled Bhasin about its intentions while forcing an 'audit' by that very competitor. By the time the truth surfaced, his business and workforce had been walked into his rival's hands.",
+ held:"Good faith is an ORGANIZING PRINCIPLE of Canadian contract law, and parties owe a duty of HONEST PERFORMANCE — no lying about, or knowingly misleading on, matters directly linked to performance. It cannot be contracted out of.",
+ why:"The modern Canadian landmark of §2. Exercising a contractual right is lawful; actively misleading the counterparty while doing it is not — a distinction that reaches renewal decisions, discretion clauses and every commercial relationship your clients have."},
+{era:"Supreme Court of Canada · 1997 · Manitoba",t:"Hercules Managements v Ernst & Young — who is the audit FOR?",
+ hook:"Shareholders of two Manitoba companies read the audited statements, kept and increased their personal investments, and lost them when the companies collapsed. They sued the auditors: you knew shareholders would rely on these statements — and we did. Foreseeability seemed obvious. So why did they lose in Canada's top court?",
+ held:"A prima facie duty of care arose — and was negated at stage two: the statutory audit exists so shareholders AS A CLASS can oversee management, not to guide individual investment decisions. Liability anchors to the engagement's PURPOSE.",
+ why:"The case your entire §3 pivots on. It is Donoghue's principle with a governor bolted on: indeterminate liability policy. Scope of undertaking — not sympathy, not foreseeability — decides who can recover from an auditor."},
+{era:"Supreme Court of Canada · 2002 · Ontario",t:"Whiten v Pilot Insurance — the fire they called arson",
+ hook:"The Whitens' house burned down on a January night; the family fled in nightclothes, and Daphne Whiten's husband suffered frostbite. Their insurer, facing a claim it privately knew was legitimate — its own experts found no arson — spent years alleging the family torched their own home, betting that desperation would force a cheap settlement.",
+ held:"A jury's $1,000,000 punitive award was restored: the insurer's bad faith was an independent actionable wrong, and punitive damages punish conduct that offends the court's sense of decency — exceptionally.",
+ why:"Famous precisely BECAUSE it is the outlier — §9's point in one story. Canadian punitive damages are rare and modest, which is a structural reason the US litigation tail is priced differently. Whiten is the ceiling, not the norm."}];
+const KEY="lawarena.vault.seen";
+let seen={};try{seen=JSON.parse((window.store?store.get(KEY):null)||"{}");}catch(e){seen={};}
+let vi=0;
+function build(){
+  const main=D.querySelector("main");if(!main)return;
+  const scr=E("section","screen");scr.id="scr-vault";
+  scr.innerHTML='<button class="btn ghost back" id="vaultBack">‹ Back</button><h1>Case Vault</h1>'+
+    '<p class="tag">Ten foundation stones of the common law, told as the stories they were. Read one between drills — the doctrine sticks to the story.</p>';
+  const card=E("div","vaultcard");card.id="vaultCard";
+  scr.appendChild(card);
+  scr.appendChild(E("p","vc-note","Common-law canon — the holdings are settled law. How your course frames each case, verify against your own materials."));
+  const foot=main.querySelector("footer");
+  if(foot)main.insertBefore(scr,foot);else main.appendChild(scr);
+  const modes=D.querySelector(".modes");
+  if(modes){
+    const b=E("button","mode",'<div class="mi">⚖️</div><h3>Case Vault</h3><p>The snail, the smoke ball, the two ships Peerless — the stories that built the law.</p>');
+    b.addEventListener("click",()=>{if(window.sfx)sfx.click();go("vault");render();});
+    modes.appendChild(b);
+  }
+  D.getElementById("vaultBack").addEventListener("click",()=>go("home"));
+}
+function render(){
+  const c=D.getElementById("vaultCard");if(!c)return;
+  const v=VAULT[vi];
+  seen[vi]=1;try{if(window.store)store.set(KEY,JSON.stringify(seen));}catch(e){}
+  c.innerHTML='<div class="vc-era">'+v.era+'</div><h2 class="vc-title">'+v.t+'</h2><p class="vc-hook">'+v.hook+'</p>';
+  const revealBtn=E("button","btn pri","Reveal the holding");
+  const rest=E("div");rest.hidden=true;
+  rest.appendChild(E("div","vc-held","<b>Held</b>"+v.held));
+  rest.appendChild(E("div","vc-why","<b>Why you care:</b> "+v.why));
+  revealBtn.addEventListener("click",()=>{revealBtn.remove();rest.hidden=false;if(window.sfx)sfx.right();});
+  c.appendChild(revealBtn);c.appendChild(rest);
+  const nav=E("div","vc-nav");
+  const prev=E("button","btn","‹ Previous"),next=E("button","btn pri","Next case ›");
+  prev.disabled=vi===0;next.disabled=vi===VAULT.length-1;
+  prev.addEventListener("click",()=>{vi--;render();});
+  next.addEventListener("click",()=>{vi++;render();});
+  const cnt=E("span","vc-count",(vi+1)+" / "+VAULT.length);
+  nav.append(prev,next,cnt);c.appendChild(nav);
+  const dots=E("div","vc-dots");
+  VAULT.forEach((_,i)=>{
+    const d=E("button","vc-dot"+(i===vi?" on":(seen[i]?" seen":"")));
+    d.setAttribute("aria-label","Case "+(i+1));
+    d.addEventListener("click",()=>{vi=i;render();});
+    dots.appendChild(d);
+  });
+  c.appendChild(dots);
+  window.scrollTo({top:0,behavior:"instant"});
+}
+if(D.readyState==="loading")D.addEventListener("DOMContentLoaded",build);else build();
+})();
+</script>
+
+<script>
+if("serviceWorker" in navigator && location.protocol.startsWith("http")){
+  window.addEventListener("load",()=>{
+    navigator.serviceWorker.register("./sw.js").catch(err=>console.warn("SW:",err));
+  });
+}
+</script>
+
+
+<a id="__rb-pill" href="coursework.html">&#8592; Coursework</a>
+<script>
+(function(){
+  var p=document.getElementById('__rb-pill'); if(!p) return;
+  var t=false;
+  function run(){ t=false;
+    p.classList.toggle('__on',(window.scrollY||document.documentElement.scrollTop)>420); }
+  function q(){ if(!t){ t=true; requestAnimationFrame(run); } }
+  addEventListener('scroll',q,{passive:true}); run();
+})();
+</script>
+</body>
+</html>

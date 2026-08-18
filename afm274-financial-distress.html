@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="description" content="Exam sheet for what happens to capital structure once the perfect-market assumptions come off.">
+<meta property="og:title" content="AFM 274 Chapter 19 — Financial distress, agency costs and information">
+<meta property="og:description" content="Exam sheet for what happens to capital structure once the perfect-market assumptions come off.">
+<meta property="og:type" content="article">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AFM 274 · Chapter 19 — Financial Distress, Agency Costs &amp; Information (Exam Sheet)</title>
+<style>
+  :root{
+    --ink:#15314b;        /* deep navy for headings/accents */
+    --accent:#7a2733;     /* muted burgundy for warnings/agency problems */
+    --text:#1a1a1a;
+    --muted:#4a4a4a;
+    --panel:#f3f2ed;      /* very light warm gray panels */
+    --panel2:#eceae3;
+    --line:#bdbab1;
+    --hair:#d9d6cd;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family:"Charter","Georgia","Iowan Old Style",serif;
+    color:var(--text);
+    background:#fff;
+    font-size:10.5pt;
+    line-height:1.32;
+    -webkit-print-color-adjust:exact;
+    print-color-adjust:exact;
+  }
+  .page{max-width:8.0in;margin:0 auto;padding:14px 16px 20px;}
+
+  /* ---------- Typography ---------- */
+  h1,h2,h3,.label,.tag,.qa b,th{
+    font-family:"Avenir Next","Avenir","Gill Sans","Gill Sans MT","Optima","Segoe UI",sans-serif;
+  }
+  h1{font-size:16pt;color:var(--ink);margin:0 0 2px;letter-spacing:.2px;}
+  .sub{font-size:9pt;color:var(--muted);font-family:"Avenir Next","Gill Sans",sans-serif;margin:0 0 8px;}
+  h2{
+    font-size:10.5pt;color:#fff;background:var(--ink);
+    margin:0 0 6px;padding:3px 8px;border-radius:3px;letter-spacing:.3px;
+    text-transform:uppercase;
+  }
+  h3{font-size:10pt;color:var(--ink);margin:0 0 3px;}
+  p{margin:0 0 5px;}
+  ul{margin:0 0 5px;padding-left:16px;}
+  li{margin:0 0 2px;}
+  b,strong{color:#000;}
+  .em{color:var(--ink);font-weight:bold;}
+  .small{font-size:9pt;}
+  .muted{color:var(--muted);}
+
+  /* ---------- Layout ---------- */
+  .cols{column-count:2;column-gap:14px;}
+  .card{
+    break-inside:avoid;
+    border:1px solid var(--line);
+    border-radius:4px;
+    padding:7px 9px;
+    margin:0 0 10px;
+    background:#fff;
+  }
+  .card.tint{background:var(--panel);}
+  .full{margin:0 0 10px;}
+
+  /* ---------- Story banner ---------- */
+  .howto{
+    border:1.5px dashed var(--ink);border-radius:4px;
+    padding:6px 10px;margin:0 0 11px;background:var(--panel);
+    font-size:9.4pt;
+  }
+  .howto b{color:var(--ink);}
+
+  /* ---------- Math (CSS-rendered, no external deps) ---------- */
+  .eq{font-family:"Charter","Georgia",serif;font-style:italic;text-align:center;margin:5px 0;font-size:11pt;}
+  .eqL{font-family:"Charter","Georgia",serif;font-style:italic;margin:3px 0;}
+  .f{display:inline-flex;flex-direction:column;text-align:center;vertical-align:middle;line-height:1.05;font-size:.84em;margin:0 .12em;font-style:italic;}
+  .f>.n{border-bottom:1px solid currentColor;padding:0 .32em;}
+  .f>.d{padding:0 .32em;}
+  var{font-style:italic;}
+  sub{font-size:.72em;}
+  sup{font-size:.72em;}
+  .box{display:inline-block;border:1.6px solid var(--ink);border-radius:3px;padding:1px 7px;font-style:italic;background:var(--panel);}
+
+  /* ---------- Tables ---------- */
+  table{width:100%;border-collapse:collapse;font-size:9.3pt;margin:2px 0 4px;}
+  th{background:var(--ink);color:#fff;text-align:left;padding:3px 6px;font-size:8.6pt;text-transform:uppercase;letter-spacing:.2px;}
+  td{padding:3px 6px;border-bottom:1px solid var(--hair);vertical-align:top;}
+  tr:nth-child(even) td{background:var(--panel);}
+  .num{text-align:right;font-variant-numeric:tabular-nums;}
+
+  /* ---------- Agency problem cards ---------- */
+  .fal h3{color:var(--accent);}
+  .fal{border-color:var(--accent);}
+  .fal .x{color:var(--accent);font-weight:bold;}
+
+  /* ---------- Master formula (prominent) ---------- */
+  .cheat{border:2px solid var(--ink);border-radius:5px;margin:2px 0 11px;overflow:hidden;break-inside:avoid;}
+  .cheat .bar{background:var(--ink);color:#fff;padding:4px 10px;font-family:"Avenir Next","Gill Sans",sans-serif;
+    text-transform:uppercase;letter-spacing:.6px;font-size:10.5pt;font-weight:bold;display:flex;justify-content:space-between;}
+  .cheat .bar span{font-weight:normal;font-size:8.5pt;letter-spacing:.2px;opacity:.92;}
+  .cheat .body{padding:8px 10px;font-size:9.3pt;}
+  .terms{display:flex;gap:6px;justify-content:space-between;margin-top:5px;font-size:8.2pt;text-align:center;}
+  .terms .t{flex:1;border-top:2px solid var(--ink);padding-top:3px;font-family:"Avenir Next","Gill Sans",sans-serif;}
+  .terms .t.neg{border-top-color:var(--accent);color:var(--accent);}
+  .terms .t.pos{color:var(--ink);}
+
+  /* ---------- Chain diagram ---------- */
+  .chain{display:flex;align-items:center;gap:4px;font-size:8.6pt;margin:4px 0;flex-wrap:wrap;}
+  .chain .step{border:1px solid var(--ink);border-radius:3px;padding:2px 6px;background:var(--panel);
+    font-family:"Avenir Next","Gill Sans",sans-serif;font-weight:bold;color:var(--ink);}
+  .chain .arr{color:var(--muted);font-weight:bold;}
+
+  /* ---------- Active recall ---------- */
+  .qa{font-size:9.4pt;}
+  .qa .row{break-inside:avoid;margin-bottom:5px;padding-bottom:4px;border-bottom:1px dotted var(--hair);}
+  .qa b{color:var(--ink);}
+  .qa .a{color:var(--muted);}
+</style>
+</head>
+<body>
+<!-- injected by the site build: a way back into the site from a standalone
+     piece. A static bar at the top, so it is visible on arrival, and a pill
+     that appears once you have scrolled past it, so there is always a way out.
+     Self-contained, because these pages do not load the site stylesheet. -->
+<style id="__rb-style">
+#__rb{
+  box-sizing:border-box;display:flex;flex-wrap:wrap;align-items:center;gap:.6rem 1.25rem;
+  padding:.6rem clamp(1rem,4vw,2rem);border-bottom:1px solid #ddd9cf;background:#faf9f6;
+  font:500 13px/1.35 InterVar,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  color:#55524a;
+}
+#__rb a{color:#14509b;text-decoration:none;display:inline-flex;align-items:center;gap:.4rem}
+#__rb a:hover{text-decoration:underline}
+#__rb .__rb-home{font-weight:640;color:#16150f}
+#__rb .__rb-home i{font-style:normal;font-weight:400;color:#6f6c63}
+#__rb .__rb-right{margin-left:auto;display:flex;gap:1.1rem;flex-wrap:wrap}
+#__rb .__mark{
+  display:inline-grid;place-items:center;width:1.2rem;height:1.2rem;flex:none;
+  background:#16150f;color:#faf9f6;font-size:.72rem;font-weight:700;
+}
+#__rb-pill{
+  position:fixed;left:14px;bottom:14px;z-index:2147483000;
+  display:inline-flex;align-items:center;gap:.45rem;padding:.58rem .9rem;
+  background:rgba(22,21,15,.93);color:#faf9f6;text-decoration:none;border-radius:99px;
+  font:600 12.5px/1 InterVar,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  border:1px solid rgba(255,255,255,.16);box-shadow:0 6px 22px rgba(0,0,0,.28);
+  opacity:0;transform:translateY(6px);pointer-events:none;
+  transition:opacity .2s ease,transform .2s ease;
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+}
+#__rb-pill.__on{opacity:1;transform:none;pointer-events:auto}
+#__rb-pill:hover{background:#16150f;color:#fff}
+@media (prefers-color-scheme:dark){
+  #__rb{background:#131310;border-bottom-color:#2c2b24;color:#c0bcb1}
+  #__rb .__rb-home{color:#f7f5ef}
+  #__rb .__rb-home i{color:#948f85}
+  #__rb a{color:#85adea}
+  #__rb .__mark{background:#f7f5ef;color:#131310}
+  #__rb-pill{background:rgba(247,245,239,.95);color:#131310;border-color:rgba(0,0,0,.2)}
+  #__rb-pill:hover{background:#fff;color:#000}
+}
+@media (prefers-reduced-motion:reduce){#__rb-pill{transition:none}}
+@media print{#__rb,#__rb-pill{display:none !important}}
+</style>
+<div id="__rb">
+  <a class="__rb-home" href="index.html"><span class="__mark" aria-hidden="true">A</span>Alex Rajcoomar <i>portfolio</i></a>
+  <span class="__rb-right"><a href="coursework.html">Coursework</a><a href="library.html">All work</a></span>
+</div>
+
+<div class="page">
+
+  <h1>Chapter 19 — Financial Distress, Agency Costs &amp; Information</h1>
+  <p class="sub">AFM 274 · The costs side of debt · pairs with the Ch. 17 (perfect markets) and Ch. 18 (taxes) sheets</p>
+
+  <div class="howto">
+    <b>The one-line story:</b> Ch. 18 says debt adds value via the tax shield — so why not 100% debt?
+    Because past a point debt triggers <b>distress costs</b> and <b>bad shareholder behaviour</b>; the optimum <var>D</var><sup>*</sup> balances all of it,
+    and <b>information problems</b> make firms prefer internal funds → debt → equity last.
+  </div>
+
+  <!-- ===== MASTER FORMULA ===== -->
+  <div class="cheat">
+    <div class="bar">Master Formula — Full Tradeoff Theory <span>this organizes the entire chapter</span></div>
+    <div class="body">
+      <div class="eq" style="font-size:10.5pt;">
+        V<sup>L</sup> &nbsp;=&nbsp; V<sup>U</sup> &nbsp;+&nbsp; PV(ITS) &nbsp;&minus;&nbsp; PV(distress costs) &nbsp;&minus;&nbsp; PV(agency costs of debt) &nbsp;+&nbsp; PV(agency benefits of debt)
+      </div>
+      <div class="terms">
+        <div class="t">Ch. 17 base<br>business value</div>
+        <div class="t pos">Ch. 18 benefit<br>= t<sub>c</sub>D if permanent</div>
+        <div class="t neg">bankruptcy is costly<br>(direct + indirect)</div>
+        <div class="t neg">gambling +<br>under-investment</div>
+        <div class="t pos">debt disciplines<br>managers</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cols">
+
+    <!-- ===== DISTRESS CHAIN ===== -->
+    <div class="card">
+      <h3>The distress chain — know the terms</h3>
+      <div class="chain">
+        <span class="step">trouble paying = financial distress</span><span class="arr">→</span>
+        <span class="step">missed payment = default</span><span class="arr">→</span>
+        <span class="step">creditors take assets = bankruptcy</span>
+      </div>
+      <ul class="small">
+        <li><b>Insolvency</b> (can't repay debts), two flavours: <b>stock-based</b> = liabilities &gt; assets · <b>flow-based</b> = cash flow can't cover payments.</li>
+        <li>Flow-based insolvency ≠ death: if asset value is high, firm may raise funds to bridge the gap.</li>
+        <li><b>Equity never causes bankruptcy</b> — dividends are optional, interest is a legal obligation.</li>
+      </ul>
+    </div>
+
+    <!-- ===== BANKRUPTCY LAW ===== -->
+    <div class="card">
+      <h3>Bankruptcy in Canada — two routes</h3>
+      <table>
+        <tr><th></th><th>Liquidation</th><th>Reorganization</th></tr>
+        <tr><td><b>Firm</b></td><td>terminated</td><td>kept alive (going concern)</td></tr>
+        <tr><td><b>How</b></td><td>sell assets, pay creditors <b>by priority</b></td><td>issue new securities to replace old</td></tr>
+        <tr><td><b>Act</b></td><td><b>BIA</b> — smaller firms</td><td><b>CCAA</b> — larger firms</td></tr>
+      </table>
+      <p class="small"><b>Workout</b> = negotiate directly with creditors, skip court. <b>Prepackaged bankruptcy</b> = agree on plan first, then file to bind holdout creditors.</p>
+    </div>
+
+    <!-- ===== COSTS OF DISTRESS ===== -->
+    <div class="card">
+      <h3>Costs of financial distress</h3>
+      <table>
+        <tr><th></th><th>Direct</th><th>Indirect</th></tr>
+        <tr><td><b>What</b></td><td>lawyers, accountants, courts, bankers</td><td>lost customers, suppliers, employees; fire sales; distracted management</td></tr>
+        <tr><td><b>Size</b></td><td>≈ 3–4% of pre-bankruptcy assets</td><td>hard to measure — <b>often much larger</b></td></tr>
+      </table>
+      <p class="small">Costs hit only in default states. One-period PV:</p>
+      <div class="eq">PV(distress costs) = <span class="f"><span class="n">prob(distress) × cost</span><span class="d">1 + r</span></span></div>
+      <p class="small"><span class="box">Who bears them? <b>Shareholders.</b></span> Lenders foresee default risk and pay <b>less for the debt today</b> — the expected cost comes out of the share price at issuance, not out of debtholders later.</p>
+    </div>
+
+    <!-- ===== WORKED: WHO BEARS ===== -->
+    <div class="card tint">
+      <h3>Worked — who bears the cost (slide numbers)</h3>
+      <p class="small">Assets in 1 yr: <b>$250K</b> or <b>$180K</b> (50/50), β=0, r<sub>f</sub>=4%, debt face <b>$200K</b>, bankruptcy cost <b>$30K</b>.</p>
+      <table class="num">
+        <tr><th style="text-align:left;">Payoffs</th><th class="num">Good</th><th class="num">Bad (default)</th></tr>
+        <tr><td style="text-align:left;">Assets</td><td class="num">250,000</td><td class="num">180,000</td></tr>
+        <tr><td style="text-align:left;">Bankruptcy costs</td><td class="num">0</td><td class="num">&minus;30,000</td></tr>
+        <tr><td style="text-align:left;">Debt receives</td><td class="num">200,000</td><td class="num"><b>150,000</b></td></tr>
+        <tr><td style="text-align:left;">Equity receives</td><td class="num">50,000</td><td class="num">0</td></tr>
+      </table>
+      <p class="small">V (no costs) = 215,000/1.04 = <b>$206,731</b> &nbsp;·&nbsp; V (with costs) = 200,000/1.04 = <b>$192,308</b>.<br>
+      Value lost = <b>$14,423</b> = ½(30,000)/1.04 — exactly PV(bankruptcy costs). The $30K <b>vaporizes</b>: no investor gets it, the pie shrinks.</p>
+    </div>
+
+    <!-- ===== TRADEOFF & D* ===== -->
+    <div class="card">
+      <h3>Optimal leverage D<sup>*</sup> — the hump curve</h3>
+      <ul class="small">
+        <li><b>Low debt:</b> distress ≈ impossible → adding debt ≈ pure ITS gain → V<sup>L</sup> rises.</li>
+        <li><b>High debt:</b> distress probability soars → costs overwhelm ITS → V<sup>L</sup> falls.</li>
+        <li><span class="box">D<sup>*</sup> = peak: marginal ITS benefit = marginal distress cost</span></li>
+      </ul>
+      <table>
+        <tr><th>Firm type</th><th>D<sup>*</sup></th><th>Why</th></tr>
+        <tr><td>Mature / stable / utility</td><td><b>High</b></td><td>steady cash flows, tangible assets, low distress costs</td></tr>
+        <tr><td>R&amp;D / tech / growth</td><td><b>Low</b></td><td>volatile EBIT, intangible assets evaporate in distress, low taxable income</td></tr>
+      </table>
+    </div>
+
+    <!-- ===== AGENCY COST 1 ===== -->
+    <div class="card fal">
+      <h3>Agency cost 1 — Asset substitution (gambling)</h3>
+      <p class="small"><b>Setup:</b> $10 cash, owes $50 next yr → equity worth $0 if nothing changes.</p>
+      <p class="small"><b>Bet:</b> invest the $10 → 10% chance of $100, else $0, r = 50%.</p>
+      <p class="small">NPV = 10/1.5 &minus; 10 = <span class="x">&minus;$3.33</span> — value-destroying. But <b>equity</b>: $0 → 0.1(100&minus;50)/1.5 = <b>+$3.33</b>; <b>debt</b>: $10 → $3.33 (loses $6.67).</p>
+      <p class="small"><span class="x">Heads equity wins, tails debt loses</span> — distressed shareholders take &minus;NPV gambles funded with debtholders' money.</p>
+    </div>
+
+    <!-- ===== AGENCY COST 2 ===== -->
+    <div class="card fal">
+      <h3>Agency cost 2 — Debt overhang (under-investment)</h3>
+      <p class="small"><b>Setup:</b> $0 cash, owes $50 next yr.</p>
+      <p class="small"><b>Project:</b> invest $30 → <b>$60 for sure</b>, r = 10%. NPV = 60/1.1 &minus; 30 = <b>+$24.55</b>.</p>
+      <p class="small">But the $60 repays debt first ($50). Equity funds $30, gets $10 → 10/1.1 &minus; 30 = <span class="x">&minus;$20.91</span> → <b>refuses</b>. Debt would gain $45.45.</p>
+      <p class="small"><span class="x">+NPV project dies</span> because debtholders capture the benefit.</p>
+      <p class="small muted"><b>Memory hook:</b> underwater equity <i>gambles with money it has, won't invest money it doesn't.</i> Fixes: covenants (cost: monitoring), shorter-term debt, consolidate lenders.</p>
+    </div>
+
+    <!-- ===== AGENCY BENEFITS ===== -->
+    <div class="card">
+      <h3>Agency benefit — debt disciplines managers</h3>
+      <ul class="small">
+        <li>With no debt + lots of cash, managers can waste: <b>perks, empire building, pet projects</b> (= <b>management entrenchment</b> — ownership separated from control, boards rarely fire).</li>
+        <li>Mandatory interest payments leave <b>no slack for waste</b>; leverage also lets owner-managers keep bigger equity stakes → better decisions.</li>
+        <li><b>Entrenchment theory:</b> managers <i>personally</i> prefer low debt (job security, avoid discipline) → real-world leverage often <b>below</b> D<sup>*</sup>.</li>
+      </ul>
+    </div>
+
+    <!-- ===== ASYMMETRIC INFO ===== -->
+    <div class="card">
+      <h3>Asymmetric information — managers know more</h3>
+      <p class="small"><b>Signaling (debt = credible bragging):</b> talk is free; debt is a commitment that crushes a weak firm. <b>Credibility principle</b> — a claim is believable only if faking it would be too costly. ⟹ leverage ↑ announcement = <b>good news, stock ↑</b>.</p>
+      <p class="small"><b>Adverse selection (lemons):</b> issuing equity makes investors ask <i>"why sell now?"</i> → infer stock is <b>overvalued</b> → price <b>falls on announcement</b> (rises before — managers time it). Mitigate: issue just <b>after earnings</b>, when the info gap is smallest. Undervalued firms simply won't issue.</p>
+    </div>
+
+    <!-- ===== PECKING ORDER ===== -->
+    <div class="card">
+      <h3>Pecking order hypothesis</h3>
+      <div class="eq" style="font-size:10pt;">1. Retained earnings &nbsp;≻&nbsp; 2. Debt &nbsp;≻&nbsp; 3. New equity</div>
+      <ul class="small">
+        <li>RE: zero adverse selection · Debt: mild (safer, less info-sensitive) · Equity: worst signal, last resort.</li>
+        <li><b>Contrast for exam:</b> tradeoff theory → firm has a <b>target D<sup>*</sup></b>; pecking order → <b>no target</b>, just take the cheapest-signal source available.</li>
+        <li>Evidence: most firms have targets <i>and</i> follow pecking order somewhat; leverage ↑ tends to raise firm value (ITS? signaling?); high-growth industries carry less debt.</li>
+      </ul>
+    </div>
+
+  </div>
+
+  <!-- ===== ACTIVE RECALL ===== -->
+  <div class="full">
+    <h2>Active Recall — Cover the Grey Answers</h2>
+    <div class="qa cols">
+      <div class="row"><b>1. State the full tradeoff formula.</b> <span class="a">V<sup>L</sup> = V<sup>U</sup> + PV(ITS) &minus; PV(distress costs) &minus; PV(agency costs) + PV(agency benefits).</span></div>
+      <div class="row"><b>2. Direct vs. indirect distress costs?</b> <span class="a">Direct = legal/admin, ≈3–4% of assets. Indirect = lost customers/suppliers/employees — bigger, harder to measure.</span></div>
+      <div class="row"><b>3. Who bears distress costs, and when?</b> <span class="a">Shareholders, at issuance — lenders anticipate default and pay less for the debt up front.</span></div>
+      <div class="row"><b>4. Asset substitution in one line.</b> <span class="a">Near-insolvent equity takes &minus;NPV gambles: keeps the upside, debtholders eat the downside.</span></div>
+      <div class="row"><b>5. Debt overhang in one line.</b> <span class="a">Equity rejects +NPV safe projects because the payoff mostly repays debt — under-investment.</span></div>
+      <div class="row"><b>6. Why can too little debt be bad?</b> <span class="a">Lost tax shield + entrenchment waste (perks, empire building) — debt's discipline is forgone.</span></div>
+      <div class="row"><b>7. Stock reaction: leverage ↑ vs. equity issue?</b> <span class="a">Leverage ↑ = good signal, price ↑. Equity issue = overvaluation signal, price ↓ post-announcement.</span></div>
+      <div class="row"><b>8. BIA vs. CCAA?</b> <span class="a">BIA = smaller firms (often liquidation); CCAA = larger firms (reorganization, going concern).</span></div>
+      <div class="row"><b>9. Pecking order?</b> <span class="a">Retained earnings → debt → new equity (last resort); implies no target debt ratio.</span></div>
+      <div class="row"><b>10. Which firms lever up; which don't?</b> <span class="a">Stable/tangible (utilities) → high D<sup>*</sup>; growth/R&amp;D/intangible → low D<sup>*</sup>.</span></div>
+    </div>
+  </div>
+
+  <p class="small muted" style="text-align:center;border-top:1px solid var(--hair);padding-top:5px;margin-top:4px;">
+    AFM&nbsp;274 Ch.&nbsp;19 quick sheet · conceptual chapter — marks come from definitions, the two agency examples, and the tradeoff logic · all numbers from lecture slides, internally verified.
+  </p>
+
+</div>
+
+
+<a id="__rb-pill" href="coursework.html">&#8592; Coursework</a>
+<script>
+(function(){
+  var p=document.getElementById('__rb-pill'); if(!p) return;
+  var t=false;
+  function run(){ t=false;
+    p.classList.toggle('__on',(window.scrollY||document.documentElement.scrollTop)>420); }
+  function q(){ if(!t){ t=true; requestAnimationFrame(run); } }
+  addEventListener('scroll',q,{passive:true}); run();
+})();
+</script>
+</body>
+</html>

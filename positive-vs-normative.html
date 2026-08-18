@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="description" content="A short visual treatment of the distinction between what is and what ought to be.">
+<meta property="og:title" content="Positive vs Normative — ECON 102, slides 5 to 6">
+<meta property="og:description" content="A short visual treatment of the distinction between what is and what ought to be.">
+<meta property="og:type" content="article">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ECON 102 — Positive vs Normative [Slides 5–6]</title>
+<style>
+  :root{
+    --bg:#ffffff; --fg:#16181d; --muted:#5f6672; --line:#dfe3e9; --panel:#f7f8fa;
+    --pos:#1f6feb; --pos-bg:#eaf2fe; --pos-line:#a8c8f5;
+    --norm:#a8600b; --norm-bg:#fdf3e3; --norm-line:#efc98a;
+    --flag:#8b1a1a; --flag-bg:#fcecec;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#101216; --fg:#e8eaee; --muted:#9aa2ae; --line:#2a2f38; --panel:#171a20;
+      --pos:#6aa6f8; --pos-bg:#12233d; --pos-line:#2d4c7d;
+      --norm:#e3ab5c; --norm-bg:#332512; --norm-line:#6b4f22;
+      --flag:#f08a8a; --flag-bg:#3a1c1c;
+    }
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; padding:40px 28px 72px; background:var(--bg); color:var(--fg);
+    font:16px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Helvetica,Arial,sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:860px;margin:0 auto}
+  header{border-bottom:2px solid var(--fg);padding-bottom:14px;margin-bottom:32px}
+  h1{font-size:26px;margin:0 0 4px;letter-spacing:-.02em}
+  .sub{color:var(--muted);font-size:13.5px;margin:0}
+  h2{font-size:12px;letter-spacing:.11em;text-transform:uppercase;color:var(--muted);
+     margin:38px 0 14px;font-weight:700}
+  h2:first-of-type{margin-top:0}
+  .cite{font-variant-numeric:tabular-nums;color:var(--muted);font-size:.85em;font-weight:400}
+
+  /* two-column contrast */
+  .split{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .card{border:1px solid var(--line);border-radius:10px;padding:18px 20px}
+  .card.pos{background:var(--pos-bg);border-color:var(--pos-line)}
+  .card.norm{background:var(--norm-bg);border-color:var(--norm-line)}
+  .card h3{margin:0 0 2px;font-size:17px}
+  .card.pos h3{color:var(--pos)} .card.norm h3{color:var(--norm)}
+  .card .q{font-size:14.5px;font-style:italic;color:var(--muted);margin:0 0 12px}
+  .card ul{margin:0;padding-left:18px;font-size:14.5px}
+  .card li{margin-bottom:6px}
+
+  /* the test */
+  .test{border:2px solid var(--fg);border-radius:10px;padding:22px 24px;background:var(--panel)}
+  .test .lead{font-size:17px;font-weight:600;margin:0 0 16px;text-align:center}
+  .branches{display:grid;grid-template-columns:1fr auto 1fr;gap:14px;align-items:stretch}
+  .branch{border-radius:8px;padding:14px 16px;text-align:center}
+  .branch.y{background:var(--pos-bg);border:1px solid var(--pos-line)}
+  .branch.n{background:var(--norm-bg);border:1px solid var(--norm-line)}
+  .branch .ans{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+  .branch .verdict{font-size:19px;font-weight:700}
+  .branch.y .verdict{color:var(--pos)} .branch.n .verdict{color:var(--norm)}
+  .branch .why{font-size:13px;color:var(--muted);margin-top:6px}
+  .vs{display:flex;align-items:center;color:var(--muted);font-size:13px}
+
+  /* warning */
+  .warn{border-left:4px solid var(--flag);background:var(--flag-bg);padding:14px 18px;
+        border-radius:0 8px 8px 0;font-size:15px}
+  .warn strong{color:var(--flag)}
+
+  /* table */
+  table{width:100%;border-collapse:collapse;font-size:14.5px;margin-top:4px}
+  th{text-align:left;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;
+     color:var(--muted);border-bottom:1.5px solid var(--line);padding:0 10px 8px 0}
+  td{padding:11px 10px 11px 0;border-bottom:1px solid var(--line);vertical-align:top}
+  td.k{width:26px;font-weight:700;color:var(--muted)}
+  td.v{width:96px;font-weight:700;white-space:nowrap}
+  .tag-pos{color:var(--pos)} .tag-norm{color:var(--norm)}
+  td.r{color:var(--muted);font-size:13.5px;width:250px}
+  mark{background:transparent;color:var(--flag);font-weight:700;padding:0}
+
+  /* transform */
+  .arrows{display:grid;grid-template-columns:1fr 1fr;gap:16px;font-size:14.5px}
+  .arrow{border:1px solid var(--line);border-radius:10px;padding:16px 18px;background:var(--panel)}
+  .arrow .hd{font-weight:700;margin-bottom:8px;font-size:14px}
+  .arrow .ex{margin-top:10px;padding-top:10px;border-top:1px dashed var(--line);color:var(--muted);font-size:13.5px}
+
+  ol.steps{margin:0;padding-left:20px;font-size:15px}
+  ol.steps li{margin-bottom:9px}
+  footer{margin-top:44px;padding-top:16px;border-top:1px solid var(--line);
+         color:var(--muted);font-size:12.5px}
+
+  @media (max-width:680px){
+    .split,.arrows{grid-template-columns:1fr}
+    .branches{grid-template-columns:1fr}
+    .vs{justify-content:center}
+    td.r{width:auto}
+  }
+  @media print{
+    :root{--bg:#fff;--fg:#000;--muted:#444;--line:#bbb;--panel:#f4f4f4;
+          --pos:#0b4fa8;--pos-bg:#eef4fc;--pos-line:#9bbde8;
+          --norm:#7a4405;--norm-bg:#fbf4e8;--norm-line:#dcbc85;
+          --flag:#7a0f0f;--flag-bg:#fbeded;}
+    body{padding:0;font-size:11.5pt}
+    h2{margin-top:20px}
+    .card,.test,.arrow{break-inside:avoid}
+    tr{break-inside:avoid}
+  }
+</style>
+</head>
+<body>
+<!-- injected by the site build: a way back into the site from a standalone
+     piece. A static bar at the top, so it is visible on arrival, and a pill
+     that appears once you have scrolled past it, so there is always a way out.
+     Self-contained, because these pages do not load the site stylesheet. -->
+<style id="__rb-style">
+#__rb{
+  box-sizing:border-box;display:flex;flex-wrap:wrap;align-items:center;gap:.6rem 1.25rem;
+  padding:.6rem clamp(1rem,4vw,2rem);border-bottom:1px solid #ddd9cf;background:#faf9f6;
+  font:500 13px/1.35 InterVar,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  color:#55524a;
+}
+#__rb a{color:#14509b;text-decoration:none;display:inline-flex;align-items:center;gap:.4rem}
+#__rb a:hover{text-decoration:underline}
+#__rb .__rb-home{font-weight:640;color:#16150f}
+#__rb .__rb-home i{font-style:normal;font-weight:400;color:#6f6c63}
+#__rb .__rb-right{margin-left:auto;display:flex;gap:1.1rem;flex-wrap:wrap}
+#__rb .__mark{
+  display:inline-grid;place-items:center;width:1.2rem;height:1.2rem;flex:none;
+  background:#16150f;color:#faf9f6;font-size:.72rem;font-weight:700;
+}
+#__rb-pill{
+  position:fixed;left:14px;bottom:14px;z-index:2147483000;
+  display:inline-flex;align-items:center;gap:.45rem;padding:.58rem .9rem;
+  background:rgba(22,21,15,.93);color:#faf9f6;text-decoration:none;border-radius:99px;
+  font:600 12.5px/1 InterVar,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  border:1px solid rgba(255,255,255,.16);box-shadow:0 6px 22px rgba(0,0,0,.28);
+  opacity:0;transform:translateY(6px);pointer-events:none;
+  transition:opacity .2s ease,transform .2s ease;
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+}
+#__rb-pill.__on{opacity:1;transform:none;pointer-events:auto}
+#__rb-pill:hover{background:#16150f;color:#fff}
+@media (prefers-color-scheme:dark){
+  #__rb{background:#131310;border-bottom-color:#2c2b24;color:#c0bcb1}
+  #__rb .__rb-home{color:#f7f5ef}
+  #__rb .__rb-home i{color:#948f85}
+  #__rb a{color:#85adea}
+  #__rb .__mark{background:#f7f5ef;color:#131310}
+  #__rb-pill{background:rgba(247,245,239,.95);color:#131310;border-color:rgba(0,0,0,.2)}
+  #__rb-pill:hover{background:#fff;color:#000}
+}
+@media (prefers-reduced-motion:reduce){#__rb-pill{transition:none}}
+@media print{#__rb,#__rb-pill{display:none !important}}
+</style>
+<div id="__rb">
+  <a class="__rb-home" href="index.html"><span class="__mark" aria-hidden="true">A</span>Alex Rajcoomar <i>portfolio</i></a>
+  <span class="__rb-right"><a href="coursework.html">Coursework</a><a href="library.html">All work</a></span>
+</div>
+
+<div class="wrap">
+
+  <header>
+    <h1>Positive vs Normative Statements</h1>
+    <p class="sub">ECON 102 · Section I, Introduction · <span class="cite">slides 5–6</span> · study questions Q1–Q4</p>
+  </header>
+
+  <h2>The two definitions <span class="cite">[5]</span></h2>
+  <div class="split">
+    <div class="card pos">
+      <h3>Positive</h3>
+      <p class="q">“What are the effects of a policy?”</p>
+      <ul>
+        <li>A claim about <strong>what is</strong>, was, or will be</li>
+        <li>Settled by <strong>evidence</strong></li>
+        <li>Can be <strong>true or false</strong> — still positive either way</li>
+        <li>This course is built on these tools</li>
+      </ul>
+    </div>
+    <div class="card norm">
+      <h3>Normative</h3>
+      <p class="q">“Should a policy be implemented?”</p>
+      <ul>
+        <li>A claim about <strong>what ought to be</strong></li>
+        <li>Rests on a <strong>value judgment</strong></li>
+        <li>No amount of data settles it</li>
+        <li>Requires a standard of “good”</li>
+      </ul>
+    </div>
+  </div>
+
+  <h2>The test — use this, not the vocabulary</h2>
+  <div class="test">
+    <p class="lead">Could evidence, in principle, settle whether this is true?</p>
+    <div class="branches">
+      <div class="branch y">
+        <div class="ans">Yes</div>
+        <div class="verdict">POSITIVE</div>
+        <div class="why">Data could confirm or refute it</div>
+      </div>
+      <div class="vs">→</div>
+      <div class="branch n">
+        <div class="ans">No — needs a value standard</div>
+        <div class="verdict">NORMATIVE</div>
+        <div class="why">Depends on what you think is <em>good</em></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="warn" style="margin-top:16px">
+    <strong>The trap:</strong> “should,” “too,” and “needs to” are <strong>not</strong> reliable markers.
+    Q1 is built specifically to punish keyword-spotting — three of its seven statements contain a
+    trigger word and are still positive. Ask the evidence question every single time.
+  </div>
+
+  <h2>Q1 worked — sorted by the test, not the words</h2>
+  <table>
+    <thead>
+      <tr><th></th><th>Statement</th><th>Verdict</th><th>Why</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="k">a</td>
+        <td>Government expenditure on road construction <mark>should</mark> decrease unemployment rates.</td>
+        <td class="v tag-pos">POSITIVE</td>
+        <td class="r">“Should” = “is predicted to.” A forecast — measurable.</td>
+      </tr>
+      <tr>
+        <td class="k">b</td>
+        <td>Government expenditure on road construction is predicted to increase unemployment rates.</td>
+        <td class="v tag-pos">POSITIVE</td>
+        <td class="r">Explicit prediction. Same type as (a), opposite direction.</td>
+      </tr>
+      <tr>
+        <td class="k">c</td>
+        <td>The government of Vulcan spends <mark>too much</mark> on road construction.</td>
+        <td class="v tag-norm">NORMATIVE</td>
+        <td class="r">“Too much” relative to what <em>should</em> be spent. Needs a value standard.</td>
+      </tr>
+      <tr>
+        <td class="k">d</td>
+        <td>The temperature today is <mark>too warm</mark> for it to snow.</td>
+        <td class="v tag-pos">POSITIVE</td>
+        <td class="r">“Too warm for X to occur” is a physical threshold. Check the thermometer.</td>
+      </tr>
+      <tr>
+        <td class="k">e</td>
+        <td>There is <mark>too little</mark> snowfall (0.2 cm) to <mark>justify</mark> salting the roads.</td>
+        <td class="v tag-norm">NORMATIVE</td>
+        <td class="r">“Justify” imports a cost-benefit value judgment. Contrast directly with (d).</td>
+      </tr>
+      <tr>
+        <td class="k">f</td>
+        <td>Canadian GDP is currently growing at 8% per year.</td>
+        <td class="v tag-pos">POSITIVE</td>
+        <td class="r"><strong>False, but positive.</strong> Truth value ≠ statement type.</td>
+      </tr>
+      <tr>
+        <td class="k">g</td>
+        <td>Monetary policy <mark>needs to</mark> focus on inflation to be effective.</td>
+        <td class="v tag-norm">NORMATIVE</td>
+        <td class="r">Prescribes what policy ought to target, and smuggles in a definition of “effective.”</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>Converting between the two <span class="cite">[Q2 · Q3]</span></h2>
+  <div class="arrows">
+    <div class="arrow">
+      <div class="hd tag-norm">Normative → Positive</div>
+      Strip the value word. Replace it with a <strong>measurable consequence</strong>,
+      so the claim becomes something data could check.
+      <div class="ex">
+        (c) “Vulcan spends <em>too much</em> on roads”<br>
+        → “Vulcan’s road spending exceeds the level that minimises congestion cost per dollar.”
+      </div>
+    </div>
+    <div class="arrow">
+      <div class="hd tag-pos">Positive → Normative</div>
+      Add an explicit <strong>value standard</strong> — say what outcome is desirable
+      and therefore what ought to be done.
+      <div class="ex">
+        (b) “predicted to increase unemployment”<br>
+        → “Because it raises unemployment, this spending <em>should</em> be cut.”
+      </div>
+    </div>
+  </div>
+  <p style="font-size:13.5px;color:var(--muted);margin-top:10px">
+    Many transformations are acceptable — she says so in the question. Marks are for the
+    <em>mechanism</em> of the switch, not a specific sentence.
+  </p>
+
+  <h2>Why she bothers <span class="cite">[6]</span></h2>
+  <ol class="steps">
+    <li>Normative statements are about <strong>value judgments</strong>.</li>
+    <li>This course focuses on <strong>positive economics</strong> — tools to analyse the economy and make predictions.</li>
+    <li>With the analysis you build using those tools, <strong>you and others will make normative judgments</strong>.</li>
+    <li>So it is important to <strong>think about the normative implications of your analysis</strong>.</li>
+  </ol>
+
+  <div class="warn" style="margin-top:18px">
+    <strong>Q4 is the payoff.</strong> A report written purely positively — “more generous EI reduces
+    the incentive to find work, raising unemployment” — still carries normative weight.
+    <strong>Q4(b) answer: yes</strong>, there is reason to state your normative position, because
+    <strong>readers will infer your values whether or not you state them</strong>. Making the value
+    standard explicit is more honest than leaving it implicit.
+  </div>
+
+  <footer>
+    <strong>Exam note.</strong> Positive/normative is Section I, slides 1–6 — it did <em>not</em> appear on the
+    practice midterm (scope was sections II–IV). The final is cumulative, so it is live.
+    Expect one-line sorting like Q1, and expect the (d)-vs-(e) style pair where the same trigger word
+    lands on opposite sides. Answer with the evidence test, in one sentence, and pick one label — hedging is penalised.
+  </footer>
+
+</div>
+
+
+<a id="__rb-pill" href="coursework.html">&#8592; Coursework</a>
+<script>
+(function(){
+  var p=document.getElementById('__rb-pill'); if(!p) return;
+  var t=false;
+  function run(){ t=false;
+    p.classList.toggle('__on',(window.scrollY||document.documentElement.scrollTop)>420); }
+  function q(){ if(!t){ t=true; requestAnimationFrame(run); } }
+  addEventListener('scroll',q,{passive:true}); run();
+})();
+</script>
+</body>
+</html>

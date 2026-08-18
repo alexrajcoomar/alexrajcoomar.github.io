@@ -1,0 +1,1131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="description" content="An exam trainer for introductory macroeconomics: work the question, check the reasoning, repeat.">
+<meta property="og:title" content="ECON 102 Interactive Exam Trainer — Macroeconomics practice">
+<meta property="og:description" content="An exam trainer for introductory macroeconomics: work the question, check the reasoning, repeat.">
+<meta property="og:type" content="article">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ECON 102 — Interactive Exam Trainer</title>
+<style>
+:root{
+  color-scheme: light;
+  --bg:#fcfcfb; --panel:#f4f4f2; --panel2:#eeeeeb;
+  --ink-1:#0b0b0b; --ink-2:#52514e; --ink-3:#8b8a85; --ink-4:#c9c8c3; --line:#dcdbd6;
+  --s1:#2a78d6;  /* supply / primary curve */
+  --s2:#eb6834;  /* demand / second curve */
+  --s3:#1baf7a;  /* outcome, annotation */
+  --flag:#8b1a1a; --flag-bg:#fbecec;
+  --gold:#8a6300; --gold-bg:#fdf5e4;
+  --ok-bg:#e7f4ee;
+}
+@media (prefers-color-scheme: dark){
+  :root:where(:not([data-theme="light"])){
+    color-scheme: dark;
+    --bg:#1a1a19; --panel:#232322; --panel2:#2b2b29;
+    --ink-1:#ffffff; --ink-2:#c3c2b7; --ink-3:#8d8c84; --ink-4:#4a4a46; --line:#33332f;
+    --s1:#3987e5; --s2:#d95926; --s3:#199e70;
+    --flag:#f08a8a; --flag-bg:#361c1c;
+    --gold:#e3ab5c; --gold-bg:#2f2513;
+    --ok-bg:#152a22;
+  }
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;padding:0 0 80px;background:var(--bg);color:var(--ink-1);
+  font:16px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Helvetica,Arial,sans-serif;
+  -webkit-font-smoothing:antialiased}
+.m,code,.eqn,.num{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+.wrap{max-width:860px;margin:0 auto;padding:0 20px}
+
+/* ---------- masthead ---------- */
+header.mast{border-bottom:3px solid var(--ink-1);padding:34px 0 16px;margin-bottom:22px}
+h1{font-size:27px;margin:0 0 6px;letter-spacing:-.025em}
+.sub{margin:0;color:var(--ink-2);font-size:13.5px}
+.plan{background:var(--panel);border-left:4px solid var(--s1);padding:14px 18px;margin:20px 0 26px;font-size:14.5px}
+.plan b{display:block;font-size:10.5px;letter-spacing:.11em;text-transform:uppercase;color:var(--ink-2);margin-bottom:5px}
+.plan ol{margin:6px 0 0;padding-left:20px}
+.plan li{margin-bottom:3px}
+
+/* ---------- nav ---------- */
+nav.jump{position:sticky;top:0;z-index:50;background:var(--bg);border-bottom:1px solid var(--line);
+  padding:9px 0;margin-bottom:8px}
+nav.jump .inner{max-width:860px;margin:0 auto;padding:0 20px;display:flex;gap:6px;overflow-x:auto;
+  scrollbar-width:none}
+nav.jump .inner::-webkit-scrollbar{display:none}
+nav.jump a{flex:0 0 auto;font-size:12.5px;color:var(--ink-2);text-decoration:none;
+  border:1px solid var(--line);border-radius:20px;padding:4px 11px;white-space:nowrap}
+nav.jump a:hover{border-color:var(--s1);color:var(--s1)}
+
+/* ---------- modules ---------- */
+section.mod{padding-top:26px;margin-bottom:8px;border-top:1px solid var(--line)}
+section.mod:first-of-type{border-top:0}
+.eyebrow{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);
+  font-weight:700;margin-bottom:4px}
+h2{font-size:21px;margin:0 0 8px;letter-spacing:-.015em}
+.thesis{font-size:15.5px;color:var(--ink-1);margin:0 0 18px;padding-left:13px;
+  border-left:3px solid var(--s3)}
+
+/* ---------- widget shell ---------- */
+.widget{background:var(--panel);border:1px solid var(--line);border-radius:12px;
+  padding:16px 18px 18px;margin-bottom:16px}
+.ctrls{display:flex;flex-wrap:wrap;gap:16px 22px;margin-bottom:14px}
+.ctrl{flex:1 1 190px;min-width:170px}
+.ctrl .lab{display:flex;justify-content:space-between;align-items:baseline;
+  font-size:12.5px;color:var(--ink-2);margin-bottom:3px}
+.ctrl .lab .val{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  font-size:12.5px;color:var(--ink-1);font-weight:700}
+input[type=range]{width:100%;accent-color:var(--s1);cursor:pointer;margin:0}
+.btnrow{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:14px}
+button{font:inherit;font-size:12.5px;padding:5px 13px;border-radius:7px;cursor:pointer;
+  border:1px solid var(--ink-4);background:transparent;color:var(--ink-1);transition:.12s}
+button:hover{border-color:var(--s1);color:var(--s1)}
+button.on{background:var(--s1);border-color:var(--s1);color:#fff}
+button.on:hover{color:#fff}
+button:focus-visible{outline:2px solid var(--s3);outline-offset:2px}
+button.ghost{border-style:dashed;color:var(--ink-2);font-size:12px;padding:4px 10px}
+
+/* ---------- readouts ---------- */
+.reads{display:grid;grid-template-columns:repeat(auto-fit,minmax(115px,1fr));gap:9px;margin-top:12px}
+.read{background:var(--panel2);border-radius:8px;padding:9px 11px;text-align:center}
+.read .k{font-size:11px;color:var(--ink-2);margin-bottom:2px}
+.read .v{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  font-size:18px;font-weight:700;letter-spacing:-.02em}
+.read.hi .v{color:var(--s3)}
+.read.bad .v{color:var(--flag)}
+.verdict{margin-top:12px;font-size:14px;background:var(--panel2);border-radius:8px;
+  padding:10px 13px;line-height:1.55}
+.verdict b{color:var(--s1)}
+.legend{display:flex;flex-wrap:wrap;gap:14px;font-size:12px;color:var(--ink-2);margin:8px 0 0}
+.legend i{display:inline-block;width:16px;height:0;border-top-width:2.5px;
+  border-top-style:solid;vertical-align:middle;margin-right:5px}
+
+/* ---------- svg ---------- */
+svg{display:block;width:100%;height:auto;overflow:visible}
+.ax{stroke:var(--ink-3);stroke-width:1.2;fill:none}
+.gl{stroke:var(--ink-4);stroke-width:1;stroke-dasharray:3 3;fill:none}
+.axlab{fill:var(--ink-2);font-size:12px;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+.pt{fill:var(--ink-1)}
+.tick{fill:var(--ink-3);font-size:10.5px;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+.curvelab{font-size:12px;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-weight:700}
+.paneltitle{fill:var(--ink-2);font-size:11px;letter-spacing:.08em;text-transform:uppercase;font-weight:700}
+
+/* ---------- the four cards ---------- */
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:10px;margin-bottom:6px}
+.cd{border-radius:0 8px 8px 0;padding:11px 15px;font-size:14px;line-height:1.55}
+.cd b{display:block;font-size:10px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px}
+.cd.tk{border-left:4px solid var(--s1);background:var(--panel)}
+.cd.tk b{color:var(--s1)}
+.cd.pf{border-left:4px solid var(--flag);background:var(--flag-bg)}
+.cd.pf b{color:var(--flag)}
+.cd.wy{border-left:4px solid var(--s3);background:var(--ok-bg)}
+.cd.wy b{color:var(--s3)}
+.cd.hk{border-left:4px solid var(--gold);background:var(--gold-bg)}
+.cd.hk b{color:var(--gold)}
+
+/* ---------- stepper ---------- */
+.lanes{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:14px}
+.lane{text-align:center;font-size:11px;letter-spacing:.06em;text-transform:uppercase;
+  font-weight:700;color:var(--ink-3);background:var(--panel2);border-radius:7px;padding:7px 2px;
+  border:1.5px solid transparent;transition:.15s}
+.lane.act{color:#fff;background:var(--s1);border-color:var(--s1)}
+.stepbox{background:var(--panel2);border-radius:9px;padding:13px 16px;margin-bottom:12px;min-height:104px}
+.stepbox .n{font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);
+  font-weight:700;margin-bottom:5px}
+.stepbox .t{font-size:15px;font-weight:700;margin-bottom:5px;
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+.stepbox .b{font-size:14px;line-height:1.55;color:var(--ink-2)}
+.score{display:grid;grid-template-columns:repeat(5,1fr);gap:7px;margin-bottom:10px}
+.sc{background:var(--panel2);border-radius:8px;padding:9px 2px;text-align:center;transition:.2s}
+.sc.pending{opacity:.32}
+.sc .k{font-size:11px;color:var(--ink-2);font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;margin-bottom:2px}
+.sc .a{font-size:21px;font-weight:700;line-height:1}
+.sc .a.up{color:var(--s3)}
+.sc .a.down{color:var(--s2)}
+.pill{display:inline-block;font-size:11px;letter-spacing:.07em;text-transform:uppercase;
+  font-weight:700;border-radius:5px;padding:3px 9px;margin-bottom:10px}
+.pill.clear{background:var(--ok-bg);color:var(--s3);border:1px solid var(--s3)}
+.pill.sticky{background:var(--gold-bg);color:var(--gold);border:1px solid var(--gold)}
+
+/* ---------- tables & misc ---------- */
+table{width:100%;border-collapse:collapse;font-size:13.5px;margin:0 0 16px}
+th,td{text-align:left;padding:7px 9px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-2);
+  border-bottom:1.5px solid var(--ink-3)}
+td.up{color:var(--s3);font-weight:700}
+td.dn{color:var(--s2);font-weight:700}
+.note{font-size:13px;color:var(--ink-2);margin:0 0 14px}
+.warnbar{border-left:4px solid var(--flag);background:var(--flag-bg);padding:11px 15px;
+  font-size:14px;margin:0 0 16px;border-radius:0 8px 8px 0}
+.warnbar b{color:var(--flag)}
+footer{margin-top:40px;padding-top:18px;border-top:1px solid var(--line);
+  font-size:12.5px;color:var(--ink-3);line-height:1.6}
+@media (max-width:560px){
+  .score{grid-template-columns:repeat(5,1fr);gap:4px}
+  .sc .a{font-size:17px}
+  .sc .k{font-size:10px}
+  .lanes{grid-template-columns:repeat(2,1fr)}
+}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+
+<nav class="jump"><div class="inner">
+  <a href="#m1">1 · MPN</a>
+  <a href="#m2">2 · Labour</a>
+  <a href="#m3">3 · Money</a>
+  <a href="#m4">4 · Three markets</a>
+  <a href="#m5">5 · Shift/pivot</a>
+  <a href="#m6">6 · Taylor</a>
+  <a href="#m7">7 · FX</a>
+  <a href="#m8">8 · Gini</a>
+  <a href="#drill">Final drill</a>
+</div></nav>
+
+<div class="wrap">
+<header class="mast">
+  <h1>ECON 102 — Interactive Exam Trainer</h1>
+  <p class="sub">Eight mechanisms you can operate. Companion to the Master Visual Reference — same notation, same slide numbers.</p>
+</header>
+
+<div class="plan">
+  <b>How to use this in the last hour</b>
+  <ol>
+    <li><strong>Predict before you drag.</strong> Say the direction out loud, then move the slider. A wrong prediction is worth more than a correct read.</li>
+    <li><strong>Module 4 is the exam.</strong> Every comparative-static question is one of those five shocks. Step each one twice.</li>
+    <li><strong>Read the red card in every module.</strong> Those are the errors that actually cost marks.</li>
+    <li>Finish on the <a href="#drill" style="color:var(--s1)">final drill</a> — cold, out loud, no notes.</li>
+  </ol>
+</div>
+
+<!-- ================= MODULE 1 ================= -->
+<section class="mod" id="m1">
+  <div class="eyebrow">Reference part 2.1 · slides 67–75</div>
+  <h2>Production function and MPN</h2>
+  <p class="thesis">MPN is the <strong>slope</strong> of the curve, not the height of it. And the MPN curve <em>is</em> labour demand.</p>
+
+  <div class="widget">
+    <div class="ctrls">
+      <div class="ctrl">
+        <div class="lab"><span>Employment &nbsp;<span class="m">N</span></span><span class="val" id="m1n">40</span></div>
+        <input type="range" id="m1nS" min="5" max="100" value="40" step="1" aria-label="Employment N">
+      </div>
+      <div class="ctrl">
+        <div class="lab"><span>Productivity &nbsp;<span class="m">A</span></span><span class="val" id="m1a">1.00</span></div>
+        <input type="range" id="m1aS" min="0.6" max="1.4" value="1" step="0.05" aria-label="Total factor productivity A">
+      </div>
+    </div>
+
+    <svg viewBox="0 0 680 268" role="img" aria-label="Left panel: concave production function with a tangent line whose slope is the marginal product of labour. Right panel: the resulting downward-sloping MPN curve, which is labour demand.">
+      <text class="paneltitle" x="34" y="14">Production function</text>
+      <text class="paneltitle" x="382" y="14">MPN = labour demand</text>
+      <line class="ax" x1="46" y1="26" x2="46" y2="220"/>
+      <line class="ax" x1="46" y1="220" x2="316" y2="220"/>
+      <text class="axlab" x="26" y="30">Y</text>
+      <text class="axlab" x="308" y="240">N</text>
+      <path id="m1curve" fill="none" stroke="var(--s1)" stroke-width="2.6"/>
+      <line id="m1tan" stroke="var(--s2)" stroke-width="2.6"/>
+      <line id="m1glx" class="gl"/><line id="m1gly" class="gl"/>
+      <circle id="m1pt" class="pt" r="4.6"/>
+      <text class="curvelab" id="m1clab" fill="var(--s1)" x="196" y="46">Y = A·F(K,N)</text>
+
+      <line class="ax" x1="394" y1="26" x2="394" y2="220"/>
+      <line class="ax" x1="394" y1="220" x2="664" y2="220"/>
+      <text class="axlab" x="368" y="30">w</text>
+      <text class="axlab" x="656" y="240">N</text>
+      <path id="m1mpn" fill="none" stroke="var(--s2)" stroke-width="2.6"/>
+      <line id="m1wline" class="gl"/><line id="m1nline" class="gl"/>
+      <circle id="m1mpt" class="pt" r="4.6"/>
+      <text class="curvelab" fill="var(--s2)" x="560" y="196" id="m1mlab">N&#8202;ᴰ = MPN</text>
+      <text class="tick" id="m1wtick" x="366" y="0" text-anchor="end">w</text>
+    </svg>
+    <div class="legend">
+      <span><i style="border-color:var(--s1)"></i>output, Y</span>
+      <span><i style="border-color:var(--s2)"></i>slope of output = MPN</span>
+    </div>
+
+    <div class="reads">
+      <div class="read"><div class="k">Output <span class="m">Y</span></div><div class="v" id="m1y">—</div></div>
+      <div class="read hi"><div class="k">Slope <span class="m">MPN</span></div><div class="v" id="m1mpnv">—</div></div>
+      <div class="read"><div class="k">Real wage that hires this N</div><div class="v" id="m1w">—</div></div>
+    </div>
+    <div class="verdict" id="m1v">—</div>
+  </div>
+
+  <div class="cards">
+    <div class="cd tk"><b>Takeaway</b>The firm hires until <span class="m">MPN = w</span>. So the right-hand curve is not a separate object — labour demand simply <em>is</em> the MPN curve with the real wage read off the vertical axis.</div>
+    <div class="cd pf"><b>Pitfall</b>Reading MPN off the vertical axis of the left panel. That axis is <span class="m">Y</span>. MPN is steepness, not level. Second trap: changing <span class="m">N</span> moves you <em>along</em> the curve; changing <span class="m">A</span> or <span class="m">K</span> <em>shifts</em> it.</div>
+    <div class="cd wy"><b>Why it works this way</b>Capital <span class="m">K</span> is fixed in the short run. Each extra worker shares the same machines, so each adds less than the last. That is diminishing returns, and it is why the curve bends over and MPN falls.</div>
+    <div class="cd hk"><b>Hook</b>“Slope, not height.” And <span class="m">A</span> <em>multiplies</em>, so a productivity shock steepens the curve at <em>every</em> N — it never tilts just one end. That is exactly why <span class="m">N&#8202;ᴰ</span> shifts rather than pivots.</div>
+  </div>
+</section>
+
+<!-- ================= MODULE 2 ================= -->
+<section class="mod" id="m2">
+  <div class="eyebrow">Reference part 2.2 · slides 88, 106–109</div>
+  <h2>Labour market: market clearing vs sticky wage</h2>
+  <p class="thesis">Unemployment is the <strong>horizontal gap</strong> at the prevailing wage. Under market clearing that gap is zero <em>by construction</em> — so pick your framework before you draw.</p>
+
+  <div class="widget">
+    <div class="btnrow">
+      <button id="m2bc" class="on">Market clearing</button>
+      <button id="m2bs">Sticky wage</button>
+    </div>
+    <div class="ctrls">
+      <div class="ctrl">
+        <div class="lab"><span>Shock to labour demand</span><span class="val" id="m2sv">0</span></div>
+        <input type="range" id="m2sS" min="-48" max="24" value="0" step="4" aria-label="Shift labour demand left or right">
+      </div>
+      <div class="ctrl" id="m2wc" style="display:none">
+        <div class="lab"><span>Nominal wage is held at</span><span class="val" id="m2wv">20</span></div>
+        <input type="range" id="m2wS" min="14" max="28" value="20" step="1" aria-label="The wage the contract holds">
+      </div>
+    </div>
+
+    <svg viewBox="0 0 680 258" role="img" aria-label="Labour market with an upward supply curve and a downward demand curve. In sticky wage mode a horizontal line marks the held wage and a thick bar marks the unemployment gap.">
+      <line class="ax" x1="52" y1="18" x2="52" y2="216"/>
+      <line class="ax" x1="52" y1="216" x2="656" y2="216"/>
+      <text class="axlab" x="30" y="22">w</text>
+      <text class="axlab" x="648" y="236">N</text>
+      <line id="m2sup" stroke="var(--s1)" stroke-width="2.6"/>
+      <line id="m2dem0" stroke="var(--s2)" stroke-width="1.6" stroke-dasharray="5 4" opacity=".55"/>
+      <line id="m2dem" stroke="var(--s2)" stroke-width="2.6"/>
+      <line id="m2wl" stroke="var(--ink-2)" stroke-width="1.6" stroke-dasharray="4 4"/>
+      <line id="m2gap" stroke="var(--flag)" stroke-width="7" stroke-linecap="round"/>
+      <text id="m2gaplab" class="curvelab" fill="var(--flag)" text-anchor="middle"></text>
+      <circle id="m2p1" class="pt" r="4.6"/>
+      <circle id="m2p2" r="4.6" fill="var(--s2)"/>
+      <text class="curvelab" fill="var(--s1)" x="600" y="46">N&#8202;ˢ</text>
+      <text class="curvelab" fill="var(--s2)" id="m2dlab" x="596" y="200">N&#8202;ᴰ</text>
+    </svg>
+
+    <div class="reads">
+      <div class="read"><div class="k">Real wage</div><div class="v" id="m2rw">—</div></div>
+      <div class="read"><div class="k">Employed</div><div class="v" id="m2emp">—</div></div>
+      <div class="read" id="m2ubox"><div class="k">Unemployed</div><div class="v" id="m2u">—</div></div>
+    </div>
+    <div class="verdict" id="m2v">—</div>
+  </div>
+
+  <div class="cards">
+    <div class="cd tk"><b>Takeaway</b>Same shock, two frameworks, two different answers. Under clearing the wage absorbs it and <span class="m">U = 0</span> always. Under stickiness the wage refuses to fall and the shock lands on <em>employment</em> instead.</div>
+    <div class="cd pf"><b>Pitfall</b>Plotting <span class="m">N&#8202;ᴰ = 120 − 4w</span> as written. Price sits on the vertical axis, so you graph the <strong>inverse</strong>: <span class="m">w = 30 − N/4</span>. Second trap: wages stick only <em>above</em> <span class="m">w*</span> — push demand right and the wage rises normally. Try it.</div>
+    <div class="cd wy"><b>Why it works this way</b>A free wage arbitrages any gap away instantly. Unemployment therefore needs something that <em>stops</em> the wage falling: contracts, minimum wages, or efficiency wages paid deliberately above clearing to cut turnover and raise effort.</div>
+    <div class="cd hk"><b>Hook</b>“Gap equals unemployment.” If the question contains the word unemployment at all, the market-clearing model cannot answer it — that is a whole-question decision, not a partial-credit one.</div>
+  </div>
+</section>
+
+<!-- ================= MODULE 3 ================= -->
+<section class="mod" id="m3">
+  <div class="eyebrow">Reference part 4 · slides 174–180</div>
+  <h2>The money multiplier</h2>
+  <p class="thesis">Three actors, three dials: <span class="m">mm = (cu+1)/(cu+res)</span>. The central bank controls only one of them.</p>
+
+  <div class="widget">
+    <div class="btnrow">
+      <button id="m3p1">Q40 values</button>
+      <button id="m3p2">cu = 0 (textbook case)</button>
+      <button id="m3p3">Cash hoarding</button>
+    </div>
+    <div class="ctrls">
+      <div class="ctrl">
+        <div class="lab"><span><span class="m">cu</span> — the <strong>public</strong> holds cash</span><span class="val" id="m3cuv">0.67</span></div>
+        <input type="range" id="m3cu" min="0" max="3" value="0.67" step="0.01" aria-label="Currency to deposit ratio">
+      </div>
+      <div class="ctrl">
+        <div class="lab"><span><span class="m">res</span> — the <strong>banks</strong> hold reserves</span><span class="val" id="m3resv">0.30</span></div>
+        <input type="range" id="m3res" min="0.05" max="0.6" value="0.3" step="0.01" aria-label="Reserve to deposit ratio">
+      </div>
+      <div class="ctrl">
+        <div class="lab"><span><span class="m">BASE</span> — the <strong>central bank</strong> sets it</span><span class="val" id="m3basev">580,000</span></div>
+        <input type="range" id="m3base" min="100000" max="1000000" value="580000" step="10000" aria-label="Monetary base">
+      </div>
+    </div>
+
+    <svg viewBox="0 0 680 118" role="img" aria-label="Two proportional bars comparing the monetary base with the resulting money supply, the ratio between them being the multiplier.">
+      <text class="paneltitle" x="0" y="12">Monetary base</text>
+      <rect x="0" y="20" height="24" rx="4" fill="var(--s1)" id="m3bb"/>
+      <text class="axlab" id="m3bt" x="0" y="37" fill="#fff" font-weight="700"></text>
+      <text class="paneltitle" x="0" y="72">Money supply  =  base × mm</text>
+      <rect x="0" y="80" height="24" rx="4" fill="var(--s3)" id="m3mb"/>
+      <text class="axlab" id="m3mt" x="0" y="97" fill="#fff" font-weight="700"></text>
+    </svg>
+
+    <div class="reads">
+      <div class="read hi"><div class="k">Multiplier <span class="m">mm</span></div><div class="v" id="m3mm">—</div></div>
+      <div class="read"><div class="k">Money supply <span class="m">M</span></div><div class="v" id="m3m">—</div></div>
+      <div class="read"><div class="k">Deposits <span class="m">DEP</span></div><div class="v" id="m3dep">—</div></div>
+      <div class="read"><div class="k">Currency <span class="m">CU</span></div><div class="v" id="m3cuval">—</div></div>
+      <div class="read"><div class="k">Reserves <span class="m">RES</span></div><div class="v" id="m3resval">—</div></div>
+    </div>
+    <div class="verdict" id="m3v">—</div>
+  </div>
+
+  <div class="cards">
+    <div class="cd tk"><b>Takeaway</b><span class="m">M = BASE × mm</span>. Two of the three dials — <span class="m">cu</span> and <span class="m">res</span> — sit outside the central bank entirely, which is why the money supply is only partly a policy variable.</div>
+    <div class="cd pf"><b>Pitfall</b>Using <span class="m">1/res</span>. That is the special case <span class="m">cu = 0</span>. Watch the bottom line of the readout: at the Q40 values the shortcut gives <span class="m">3.33</span> against a true <span class="m">1.724</span>. Nearly double.</div>
+    <div class="cd wy"><b>Why it works this way</b>Cash in wallets has leaked out of the banking system and cannot be re-lent. Higher <span class="m">cu</span> means more leakage per round, so the deposit-creation chain dies sooner and the multiplier shrinks.</div>
+    <div class="cd hk"><b>Hook</b>Name the actor, not the letter: <strong>public</strong> · <strong>banks</strong> · <strong>central bank</strong>. Two shifts can look identical on the asset-market graph — you earn the marks by naming which actor moved.</div>
+  </div>
+</section>
+
+<!-- ================= MODULE 4 ================= -->
+<section class="mod" id="m4">
+  <div class="eyebrow">Reference part 5 · slides 212–220 · the analytical core</div>
+  <h2>The three-market engine</h2>
+  <p class="thesis">Every comparative static in this course is one of these five shocks. Step it through and watch the <strong>scorecard</strong> fill in — that scorecard is the answer format.</p>
+
+  <div class="widget">
+    <div class="btnrow" id="m4shocks"></div>
+    <div id="m4pill"></div>
+    <div class="lanes" id="m4lanes">
+      <div class="lane" data-lane="Labour">Labour</div>
+      <div class="lane" data-lane="Goods">Goods</div>
+      <div class="lane" data-lane="Prices">Prices</div>
+      <div class="lane" data-lane="Asset">Asset</div>
+    </div>
+    <div class="stepbox">
+      <div class="n" id="m4n">—</div>
+      <div class="t" id="m4t">—</div>
+      <div class="b" id="m4b">—</div>
+    </div>
+    <div class="btnrow">
+      <button id="m4prev">← Back</button>
+      <button id="m4next" class="on">Next step →</button>
+      <button id="m4all" class="ghost">Reveal all</button>
+      <button id="m4reset" class="ghost">Reset</button>
+    </div>
+    <div class="score" id="m4score"></div>
+    <div class="verdict" id="m4v">—</div>
+  </div>
+
+  <div class="cards">
+    <div class="cd tk"><b>Takeaway</b>One real interest rate must hold economy-wide. When a market gives you an ambiguous <span class="m">r</span>, you do not guess — you take the sign from whichever market pins it unambiguously, and the ambiguous market is <em>forced</em> to agree.</div>
+    <div class="cd pf"><b>Pitfall</b>Calling the labour-market move under <span class="m">G↑</span> a shift. It is a <strong>movement along</strong> <span class="m">N&#8202;ᴰ</span>: the nominal wage never moved, only <span class="m">P</span> did, so the real wage slid down an unchanged curve. Also: “temporary” kills the <span class="m">MPK&#8202;ᶠ</span> channel, so <span class="m">I&#8202;ᴰ</span> does not shift for that reason.</div>
+    <div class="cd wy"><b>Why it works this way</b>Under rigidity the price level does the job the nominal wage refuses to do. That single sentence is why money and fiscal policy have real effects here and none at all under market clearing.</div>
+    <div class="cd hk"><b>Hook</b>Two general rules, not five memorised rows. <strong>Clearing:</strong> <span class="m">P</span> moves <em>opposite</em> to output. <strong>Rigidity + demand shock:</strong> <span class="m">P</span> and <span class="m">Y</span> move <em>together</em>. Same direction ⇒ determinate; opposite ⇒ ambiguous.</div>
+  </div>
+
+  <table>
+    <thead><tr><th>Shock</th><th>Framework</th><th>N</th><th>wage</th><th>Y</th><th>r*</th><th>P</th></tr></thead>
+    <tbody>
+      <tr><td>A ↑ positive supply</td><td>clearing</td><td class="up">↑</td><td class="up">w* ↑</td><td class="up">↑</td><td class="dn">↓</td><td class="dn">↓</td></tr>
+      <tr><td>A ↓ negative supply</td><td>clearing</td><td class="dn">↓</td><td class="dn">w* ↓</td><td class="dn">↓</td><td class="up">↑</td><td class="up">↑</td></tr>
+      <tr><td>G ↑</td><td>sticky wage</td><td class="up">↑</td><td class="dn">W/P ↓</td><td class="up">↑</td><td class="up">↑</td><td class="up">↑</td></tr>
+      <tr><td>G ↓</td><td>sticky wage</td><td class="dn">↓</td><td class="up">W/P ↑</td><td class="dn">↓</td><td class="dn">↓</td><td class="dn">↓</td></tr>
+      <tr><td>M ↑</td><td>sticky wage</td><td class="up">↑</td><td class="dn">W/P ↓</td><td class="up">↑</td><td class="dn">↓</td><td class="up">↑</td></tr>
+    </tbody>
+  </table>
+  <p class="note"><strong>Note on the A↑ row.</strong> A rightward <span class="m">N&#8202;ᴰ</span> shift along an upward-sloping <span class="m">N&#8202;ˢ</span> must <em>raise</em> <span class="m">w*</span> — that is what the geometry gives and what the graph in the solutions shows. The Q47 answer text says it falls. Flag it if it comes up; do not memorise the contradiction.</p>
+</section>
+
+<!-- ================= MODULE 5 ================= -->
+<section class="mod" id="m5">
+  <div class="eyebrow">Reference part 9.1 · slides 99, 317</div>
+  <h2>Shift or pivot?</h2>
+  <p class="thesis">A variable in the <strong>intercept shifts</strong> the line. A variable in the <strong>slope pivots</strong> it. Taxes scale the wage, so taxes always pivot.</p>
+
+  <div class="widget">
+    <div class="btnrow">
+      <button id="m5b1" class="on">Wealth ↑</button>
+      <button id="m5b2">Income tax on workers</button>
+      <button id="m5b3">Payroll tax on firms</button>
+    </div>
+    <div class="ctrls">
+      <div class="ctrl">
+        <div class="lab"><span id="m5lab">Wealth</span><span class="val" id="m5val">+3</span></div>
+        <input type="range" id="m5s" min="0" max="8" value="3" step="1" aria-label="Size of the change">
+      </div>
+    </div>
+
+    <svg viewBox="0 0 680 262" role="img" aria-label="Labour supply and demand curves, with one curve either shifting parallel or pivoting about a fixed anchor point depending on the mode selected.">
+      <line class="ax" x1="52" y1="18" x2="52" y2="216"/>
+      <line class="ax" x1="52" y1="216" x2="656" y2="216"/>
+      <text class="axlab" x="30" y="22">w</text>
+      <text class="axlab" x="648" y="236">N</text>
+      <line id="m5s0" stroke="var(--s1)" stroke-width="1.6" stroke-dasharray="5 4" opacity=".5"/>
+      <line id="m5d0" stroke="var(--s2)" stroke-width="1.6" stroke-dasharray="5 4" opacity=".5"/>
+      <line id="m5sup" stroke="var(--s1)" stroke-width="2.6"/>
+      <line id="m5dem" stroke="var(--s2)" stroke-width="2.6"/>
+      <circle id="m5anch" r="6" fill="none" stroke="var(--s3)" stroke-width="2.4"/>
+      <text id="m5anchlab" class="curvelab" fill="var(--s3)"></text>
+      <circle id="m5eq" class="pt" r="4.6"/>
+      <text class="curvelab" fill="var(--s1)" id="m5slab" x="596" y="42">N&#8202;ˢ</text>
+      <text class="curvelab" fill="var(--s2)" id="m5dlab" x="560" y="204">N&#8202;ᴰ</text>
+    </svg>
+
+    <div class="reads">
+      <div class="read"><div class="k">Curve that moves</div><div class="v" id="m5which" style="font-size:15px">—</div></div>
+      <div class="read hi"><div class="k">Shift or pivot</div><div class="v" id="m5kind" style="font-size:15px">—</div></div>
+      <div class="read"><div class="k">Employment <span class="m">N*</span></div><div class="v" id="m5n">—</div></div>
+    </div>
+    <div class="verdict" id="m5v">—</div>
+  </div>
+
+  <div class="cards">
+    <div class="cd tk"><b>Takeaway</b>Look at where the new variable sits in the algebra, not at what it is called. Added to the equation ⇒ the intercept moves ⇒ parallel shift. Multiplied through ⇒ the slope changes ⇒ pivot about the anchor.</div>
+    <div class="cd pf"><b>Pitfall</b>Drawing an income tax as a parallel shift. <span class="m">N&#8202;ˢ = (1−t)w</span> multiplies the wage, so it rotates about the <strong>origin</strong>, which never moves. The payroll tax <span class="m">MPN = (1+τ)w</span> rotates labour demand about its <strong>N-intercept</strong> — set <span class="m">w = 0</span> and N stays at 120 for any τ.</div>
+    <div class="cd wy"><b>Why it works this way</b>A payroll tax raises the firm's cost of an hour of labour without touching what that hour produces. It hits marginal <em>cost</em>, not <span class="m">MPN</span> — which is exactly why the curve rotates instead of shifting bodily.</div>
+    <div class="cd hk"><b>Hook</b>“Add ⇒ slide. Multiply ⇒ rotate.” Then find the anchor: the point where the tax term does nothing. For workers that is <span class="m">w = 0</span> at the origin; for firms it is where <span class="m">w = 0</span> on the demand curve.</div>
+  </div>
+</section>
+
+<!-- ================= MODULE 6 ================= -->
+<section class="mod" id="m6">
+  <div class="eyebrow">Reference part 7.1 · slide 255</div>
+  <h2>The Taylor rule and why 1.5 matters</h2>
+  <p class="thesis">The number that does the work is <span class="m">∂i/∂π = 1.5 &gt; 1</span>. Drag it below 1 and watch the rule start feeding the inflation it was built to fight.</p>
+
+  <div class="widget">
+    <div class="ctrls">
+      <div class="ctrl">
+        <div class="lab"><span>Inflation &nbsp;<span class="m">π</span></span><span class="val" id="m6piv">4.0%</span></div>
+        <input type="range" id="m6pi" min="0" max="8" value="4" step="0.5" aria-label="Inflation rate">
+      </div>
+      <div class="ctrl">
+        <div class="lab"><span>Output gap &nbsp;<span class="m">y</span></span><span class="val" id="m6yv">0%</span></div>
+        <input type="range" id="m6y" min="-4" max="4" value="0" step="1" aria-label="Output gap">
+      </div>
+      <div class="ctrl">
+        <div class="lab"><span>Response to inflation &nbsp;<span class="m">∂i/∂π</span></span><span class="val" id="m6cv">1.5</span></div>
+        <input type="range" id="m6c" min="0.5" max="2" value="1.5" step="0.1" aria-label="Coefficient on inflation">
+      </div>
+    </div>
+
+    <svg viewBox="0 0 680 262" role="img" aria-label="The policy rate plotted against inflation. A reference line of slope one holds the real rate constant; the Taylor line of slope 1.5 pulls away from it above target, and the vertical gap between them is the extra real-rate response.">
+      <line class="ax" x1="56" y1="18" x2="56" y2="216"/>
+      <line class="ax" x1="56" y1="216" x2="656" y2="216"/>
+      <text class="axlab" x="34" y="22">i</text>
+      <text class="axlab" x="648" y="236">π</text>
+      <line id="m6ref" stroke="var(--ink-3)" stroke-width="1.8" stroke-dasharray="5 4"/>
+      <line id="m6rule" stroke="var(--s1)" stroke-width="2.8"/>
+      <line id="m6anchv" class="gl"/>
+      <line id="m6gap" stroke="var(--s3)" stroke-width="3"/>
+      <circle id="m6anch" r="5" fill="none" stroke="var(--ink-2)" stroke-width="2"/>
+      <circle id="m6pt" class="pt" r="5"/>
+      <text class="tick" x="52" y="234" text-anchor="middle">0</text>
+      <text class="tick" id="m6tk2" text-anchor="middle" y="234">2%</text>
+      <text class="curvelab" fill="var(--ink-3)" id="m6reflab" x="580" y="0">slope 1</text>
+      <text class="curvelab" fill="var(--s1)" id="m6rulelab" x="580" y="0">the rule</text>
+    </svg>
+    <div class="legend">
+      <span><i style="border-color:var(--ink-3);border-top-style:dashed"></i>slope 1 — real rate never moves</span>
+      <span><i style="border-color:var(--s1)"></i>the rule as set</span>
+    </div>
+
+    <div class="reads">
+      <div class="read"><div class="k">Nominal rate <span class="m">i</span></div><div class="v" id="m6i">—</div></div>
+      <div class="read" id="m6rbox"><div class="k">Real rate <span class="m">r = i − π</span></div><div class="v" id="m6r">—</div></div>
+      <div class="read"><div class="k">Stance vs neutral 2%</div><div class="v" id="m6st" style="font-size:15px">—</div></div>
+    </div>
+    <div class="verdict" id="m6v">—</div>
+  </div>
+
+  <div class="cards">
+    <div class="cd tk"><b>Takeaway</b>Only the <em>real</em> rate changes anyone's behaviour. Raising <span class="m">i</span> one-for-one with <span class="m">π</span> leaves <span class="m">r</span> exactly where it was — the central bank would have moved the lever and done nothing at all.</div>
+    <div class="cd pf"><b>Pitfall</b>Answering “it raises rates when inflation is high.” Every rule does that. The examinable property is that it raises them by <strong>more than one-for-one</strong>. Set the third slider to 0.9 and read the real rate: policy is now <em>loosening</em> into a boom.</div>
+    <div class="cd wy"><b>Why it works this way</b>Inflation erodes the real burden of a fixed nominal rate. To lean against a boom the bank must out-run that erosion, so the nominal rate has to climb faster than prices are climbing.</div>
+    <div class="cd hk"><b>Hook</b>“More than one-for-one.” Anchor check you can do in your head: <span class="m">π = 2</span>, <span class="m">y = 0</span> ⇒ <span class="m">i = 4</span>, so <span class="m">r = 2</span>. If your arithmetic does not land there, you dropped a term.</div>
+  </div>
+</section>
+
+<!-- ================= MODULE 7 ================= -->
+<section class="mod" id="m7">
+  <div class="eyebrow">Reference part 8.2 · slides 280–285</div>
+  <h2>Exchange rates: the direction trap</h2>
+  <p class="thesis"><span class="m">e_nom</span> = units of <strong>foreign</strong> currency per <strong>one CAD</strong>. Up means the CAD <em>strengthens</em>. Most outside material quotes the reciprocal — one inversion flips every FX answer you write.</p>
+
+  <div class="widget">
+    <div class="btnrow">
+      <button id="m7t1" class="on">Which way is up?</button>
+      <button id="m7t2">Nominal vs real</button>
+    </div>
+
+    <div id="m7p1">
+      <div class="ctrls"><div class="ctrl" style="flex-basis:100%">
+        <div class="lab"><span><span class="m">e_nom</span> — foreign currency per 1 CAD &nbsp;<span style="color:var(--ink-3)">(baseline 1.10)</span></span><span class="val" id="m7ev">1.25</span></div>
+        <input type="range" id="m7e" min="0.7" max="1.5" value="1.25" step="0.01" aria-label="Nominal exchange rate">
+      </div></div>
+      <div class="reads">
+        <div class="read hi"><div class="k">Her convention: <span class="m">e_nom</span></div><div class="v" id="m7a">—</div><div class="k" id="m7ad" style="margin-top:4px">—</div></div>
+        <div class="read bad"><div class="k">Reciprocal: <span class="m">1/e_nom</span></div><div class="v" id="m7b">—</div><div class="k" id="m7bd" style="margin-top:4px">—</div></div>
+      </div>
+      <div class="verdict" id="m7v1">—</div>
+    </div>
+
+    <div id="m7p2" style="display:none">
+      <div class="ctrls">
+        <div class="ctrl">
+          <div class="lab"><span>Nominal move in <span class="m">e_nom</span></span><span class="val" id="m7dv">+50%</span></div>
+          <input type="range" id="m7d" min="-50" max="100" value="50" step="5" aria-label="Percent change in the nominal exchange rate">
+        </div>
+        <div class="ctrl">
+          <div class="lab"><span>Canadian inflation</span><span class="val" id="m7pdv">50%</span></div>
+          <input type="range" id="m7pd" min="0" max="200" value="50" step="10" aria-label="Domestic inflation">
+        </div>
+        <div class="ctrl">
+          <div class="lab"><span>Foreign inflation</span><span class="val" id="m7pfv">200%</span></div>
+          <input type="range" id="m7pf" min="0" max="200" value="200" step="10" aria-label="Foreign inflation">
+        </div>
+      </div>
+      <div class="btnrow"><button id="m7q62" class="ghost">Load the Q62 numbers</button></div>
+      <div class="reads">
+        <div class="read"><div class="k">Nominal verdict</div><div class="v" id="m7nv" style="font-size:15px">—</div></div>
+        <div class="read hi"><div class="k">Change in real <span class="m">e</span></div><div class="v" id="m7rv">—</div></div>
+        <div class="read"><div class="k">Real verdict</div><div class="v" id="m7rvd" style="font-size:15px">—</div></div>
+      </div>
+      <div class="verdict" id="m7v2">—</div>
+    </div>
+  </div>
+
+  <div class="cards">
+    <div class="cd tk"><b>Takeaway</b>A nominal depreciation is <strong>not</strong> a real depreciation. Real competitiveness is <span class="m">e = e_nom × P/P_for</span> — if the depreciating country's inflation outruns its currency fall, its goods get relatively <em>dearer</em>.</div>
+    <div class="cd pf"><b>Pitfall</b>Importing the US convention. Write the definition at the top of your page before you touch an FX question. Second trap: one instrument cannot hit two targets — the Bank of Canada cannot push the exchange rate and inflation independently. Both answers are “no”.</div>
+    <div class="cd wy"><b>Why it works this way</b>What a buyer actually compares is two <em>price tags</em> converted into one currency. The exchange rate is only the converter; the price levels are the tags. Move the tags fast enough and the converter stops mattering.</div>
+    <div class="cd hk"><b>Hook</b>“Up means the dollar buys more.” For PPP: implied rate = foreign price ÷ domestic price. A Big Mac at 5,200 won and USD 5.58 implies <span class="m">932</span> won; the market charges <span class="m">1,274</span>, so the won is undervalued by about <span class="m">27%</span>.</div>
+  </div>
+</section>
+
+<!-- ================= MODULE 8 ================= -->
+<section class="mod" id="m8">
+  <div class="eyebrow">Reference part 6.3 · slides 238–243</div>
+  <h2>Lorenz curve and the Gini</h2>
+  <p class="thesis"><span class="m">Gini = A/(A+B)</span> — the sag below the 45° line as a share of the whole triangle. Zero is perfect equality. Compute it with trapezoids; it always comes out clean.</p>
+
+  <div class="widget">
+    <div class="btnrow">
+      <button id="m8p0">Perfect equality</button>
+      <button id="m8pa" class="on">Distribution A</button>
+      <button id="m8pb">Distribution B</button>
+      <button id="m8pc">Severe inequality</button>
+    </div>
+    <div class="ctrls">
+      <div class="ctrl"><div class="lab"><span>Poorest fifth</span><span class="val" id="m8q1v">5%</span></div><input type="range" id="m8q1" min="0" max="40" value="5" step="1" aria-label="Income share of the poorest quintile"></div>
+      <div class="ctrl"><div class="lab"><span>Second fifth</span><span class="val" id="m8q2v">10%</span></div><input type="range" id="m8q2" min="0" max="40" value="10" step="1" aria-label="Income share of the second quintile"></div>
+      <div class="ctrl"><div class="lab"><span>Third fifth</span><span class="val" id="m8q3v">15%</span></div><input type="range" id="m8q3" min="0" max="40" value="15" step="1" aria-label="Income share of the third quintile"></div>
+      <div class="ctrl"><div class="lab"><span>Fourth fifth</span><span class="val" id="m8q4v">25%</span></div><input type="range" id="m8q4" min="0" max="40" value="25" step="1" aria-label="Income share of the fourth quintile"></div>
+    </div>
+    <p class="note" style="margin:-4px 0 12px">Richest fifth takes the remainder: <span class="m" id="m8q5v" style="font-weight:700">45%</span></p>
+
+    <svg viewBox="0 0 680 268" role="img" aria-label="A Lorenz curve sagging below the 45 degree line of perfect equality. The shaded area between them is area A, used to compute the Gini coefficient.">
+      <line class="ax" x1="150" y1="18" x2="150" y2="230"/>
+      <line class="ax" x1="150" y1="230" x2="530" y2="230"/>
+      <text class="axlab" x="140" y="22" text-anchor="end">100</text>
+      <text class="axlab" x="140" y="234" text-anchor="end">0</text>
+      <text class="axlab" x="530" y="250" text-anchor="middle">100</text>
+      <text class="paneltitle" x="150" y="264" >cumulative % of population →</text>
+      <polygon id="m8area" fill="var(--s1)" opacity=".16"/>
+      <line class="gl" x1="150" y1="230" x2="530" y2="18" stroke="var(--ink-2)" stroke-dasharray="5 4" stroke-width="1.6"/>
+      <text class="curvelab" fill="var(--ink-2)" x="536" y="20">45° = equality</text>
+      <polyline id="m8lor" fill="none" stroke="var(--s1)" stroke-width="2.8"/>
+      <text class="curvelab" fill="var(--s1)" x="330" y="212">Lorenz</text>
+      <text class="curvelab" id="m8Alab" fill="var(--s1)" x="320" y="120" text-anchor="middle">A</text>
+    </svg>
+
+    <div class="reads">
+      <div class="read hi"><div class="k">Gini coefficient</div><div class="v" id="m8g">—</div></div>
+      <div class="read"><div class="k">Trapezoid sum</div><div class="v" id="m8s">—</div></div>
+      <div class="read"><div class="k">Area under 45° line</div><div class="v">5,000</div></div>
+    </div>
+    <div class="verdict" id="m8v">—</div>
+  </div>
+
+  <div class="cards">
+    <div class="cd tk"><b>Takeaway</b>The method, not the number: cumulate the shares, take strips of width 20, each strip is <span class="m">(height₁+height₂)/2 × 20</span>, sum them, then <span class="m">Gini = (5000 − sum)/5000</span>.</div>
+    <div class="cd pf"><b>Pitfall</b>Treating the Gini as the whole story. Press Distribution A then B — different distributions, <em>identical</em> Gini of 0.380. The companion trap: if the already-poor get poorer, the poverty <strong>rate does not move at all</strong>, because a headcount is blind to depth.</div>
+    <div class="cd wy"><b>Why it works this way</b>The 45° line is what the curve would be if every fifth of the population held exactly a fifth of the income. The further the curve sags away from it, the more income has pooled at the top — so the sag <em>is</em> the inequality.</div>
+    <div class="cd hk"><b>Hook</b>“Lower Gini, more equal.” The denominator is always 5,000 in these units, so the only thing you actually have to compute is the trapezoid sum.</div>
+  </div>
+</section>
+
+<!-- ================= FINAL DRILL ================= -->
+<section class="mod" id="drill">
+  <div class="eyebrow">Last twenty minutes</div>
+  <h2>Say these out loud, cold</h2>
+  <p class="thesis">Reading is not revision. If any line below is slow or wrong, go back to that module — the number tells you which one.</p>
+
+  <div class="warnbar"><b>Before you write anything in an FX question:</b> copy the definition at the top of your page. <span class="m">e_nom</span> = foreign currency per 1 CAD; up means the CAD strengthens.</div>
+
+  <table>
+    <thead><tr><th style="width:56%">Prompt</th><th>Module</th></tr></thead>
+    <tbody>
+      <tr><td>Is MPN the height of the production function or its slope?</td><td class="m">1</td></tr>
+      <tr><td>Why can the market-clearing model never answer an unemployment question?</td><td class="m">2</td></tr>
+      <tr><td>Wages stick above <span class="m">w*</span> or below it? What happens if demand shifts <em>right</em>?</td><td class="m">2</td></tr>
+      <tr><td>Write the multiplier. Now say which of the three actors sets each term.</td><td class="m">3</td></tr>
+      <tr><td>Negative supply shock, clearing: give N, w, Y, r*, P in that order.</td><td class="m">4</td></tr>
+      <tr><td>Under <span class="m">G↑</span>, is the labour-market move a shift or a movement along? Why?</td><td class="m">4</td></tr>
+      <tr><td>The asset market is ambiguous. What resolves it, and why are you allowed to do that?</td><td class="m">4</td></tr>
+      <tr><td>A <em>temporary</em> rise in MPK — what happens to <span class="m">I&#8202;ᴰ</span>?</td><td class="m">4</td></tr>
+      <tr><td>Income tax on workers: shift or pivot, and about which point?</td><td class="m">5</td></tr>
+      <tr><td>Why must the inflation coefficient exceed 1?</td><td class="m">6</td></tr>
+      <tr><td>Nominal depreciation with very high domestic inflation — cheaper in real terms?</td><td class="m">7</td></tr>
+      <tr><td>The already-poor get poorer. What happens to the poverty rate?</td><td class="m">8</td></tr>
+    </tbody>
+  </table>
+
+  <div class="cards">
+    <div class="cd tk"><b>Answering technique</b>Name the <em>mechanism</em>, not the direction. “A ↑ raises MPN at every N, so <span class="m">N&#8202;ᴰ</span> shifts right” earns the mark; “A ↑ increases demand” does not.</div>
+    <div class="cd pf"><b>Do not hedge</b>State the ambiguity, then commit. On a paper offering options, circle exactly one — unless “ambiguous” is itself one of the options, in which case it is the right answer.</div>
+    <div class="cd wy"><b>Arithmetic check</b>No calculators means the numbers are designed to come out clean. An ugly decimal is a signal you slipped, not a signal to round.</div>
+    <div class="cd hk"><b>The eight mantras</b>Divide by P · intercept shifts, slope pivots · clearing puts P opposite to Y · one r* economy-wide · same direction determinate, opposite ambiguous · divide by the <em>earlier</em> P · “temporary” never touches <span class="m">MPK&#8202;ᶠ</span> · cu, res, BASE.</div>
+  </div>
+</section>
+
+<footer>
+  <p>Built as a companion to the ECON 102 Master Visual Reference — same notation, same slide numbering, same conventions. Figures are schematics drawn to make the mechanism legible; where a figure here and the course slides disagree, the slides govern.</p>
+  <p>Two items flagged as unresolved in the reference remain unresolved here: the real exchange rate on slide 281 and the direction of <span class="m">w*</span> in the Q47 solution. Ask rather than memorise a contradiction.</p>
+</footer>
+</div>
+
+<script>
+"use strict";
+var $ = function(id){ return document.getElementById(id); };
+function on(el,fn){ el.addEventListener('input',fn); el.addEventListener('change',fn); }
+function money(n){ return Math.round(n).toLocaleString(); }
+function pick(list,el){ list.forEach(function(b){ b.classList.toggle('on', b===el); }); }
+
+/* ============ MODULE 1 — production function & MPN ============ */
+(function(){
+  var nS=$('m1nS'), aS=$('m1aS');
+  var X1=function(n){ return 46+(n/100)*265; }, Y1=function(y){ return 220-(Math.min(y,120)/120)*192; };
+  var X2=function(n){ return 394+(n/100)*265; }, Y2=function(w){ return 220-(Math.min(w,3)/3)*192; };
+  function draw(){
+    var N=+nS.value, A=+aS.value;
+    $('m1n').textContent=N; $('m1a').textContent=A.toFixed(2);
+    var Y=A*8*Math.sqrt(N), MPN=A*4/Math.sqrt(N);
+    var d='';
+    for(var n=1;n<=100;n+=1.5){ d+=(d?'L':'M')+X1(n).toFixed(1)+' '+Y1(A*8*Math.sqrt(n)).toFixed(1)+' '; }
+    $('m1curve').setAttribute('d',d);
+    var d2='';
+    for(var m=5;m<=100;m+=1.5){ d2+=(d2?'L':'M')+X2(m).toFixed(1)+' '+Y2(A*4/Math.sqrt(m)).toFixed(1)+' '; }
+    $('m1mpn').setAttribute('d',d2);
+    var a=Math.max(1,N-22), b=Math.min(100,N+22);
+    var t=$('m1tan');
+    t.setAttribute('x1',X1(a)); t.setAttribute('y1',Y1(Y+MPN*(a-N)));
+    t.setAttribute('x2',X1(b)); t.setAttribute('y2',Y1(Y+MPN*(b-N)));
+    $('m1pt').setAttribute('cx',X1(N)); $('m1pt').setAttribute('cy',Y1(Y));
+    var gx=$('m1glx'); gx.setAttribute('x1',46); gx.setAttribute('y1',Y1(Y)); gx.setAttribute('x2',X1(N)); gx.setAttribute('y2',Y1(Y));
+    var gy=$('m1gly'); gy.setAttribute('x1',X1(N)); gy.setAttribute('y1',Y1(Y)); gy.setAttribute('x2',X1(N)); gy.setAttribute('y2',220);
+    $('m1mpt').setAttribute('cx',X2(N)); $('m1mpt').setAttribute('cy',Y2(MPN));
+    var wl=$('m1wline'); wl.setAttribute('x1',394); wl.setAttribute('y1',Y2(MPN)); wl.setAttribute('x2',X2(N)); wl.setAttribute('y2',Y2(MPN));
+    var nl=$('m1nline'); nl.setAttribute('x1',X2(N)); nl.setAttribute('y1',Y2(MPN)); nl.setAttribute('x2',X2(N)); nl.setAttribute('y2',220);
+    $('m1wtick').setAttribute('y',Y2(MPN)+4);
+    $('m1y').textContent=Y.toFixed(1);
+    $('m1mpnv').textContent=MPN.toFixed(2);
+    $('m1w').textContent=MPN.toFixed(2);
+    $('m1v').innerHTML='At <b>N = '+N+'</b> the curve rises by <b>'+MPN.toFixed(2)+
+      '</b> for the next worker. That number is the height of the right-hand curve — and it is the highest real wage a firm would pay the '+N+
+      'th worker. Slide N right and the tangent visibly flattens: <b>diminishing returns</b>. Slide A and the tangent steepens at every N, which is a <b>shift</b> of labour demand, not a movement along it.';
+  }
+  on(nS,draw); on(aS,draw); draw();
+})();
+
+/* ============ MODULE 2 — labour market ============ */
+(function(){
+  var mode='clear', sS=$('m2sS'), wS=$('m2wS');
+  sS.max=20;
+  var X=function(n){ return 52+(Math.max(0,Math.min(70,n))/70)*596; };
+  var Y=function(w){ return 216-(Math.max(0,Math.min(35,w))/35)*196; };
+  function line(el,x1,y1,x2,y2){ el.setAttribute('x1',x1); el.setAttribute('y1',y1); el.setAttribute('x2',x2); el.setAttribute('y2',y2); }
+  function draw(){
+    var s=+sS.value, wbar=+wS.value;
+    $('m2sv').textContent=(s>0?'+':'')+s; $('m2wv').textContent=wbar;
+    $('m2wc').style.display = mode==='sticky' ? '' : 'none';
+    line($('m2sup'),X(0),Y(0),X(70),Y(35));
+    line($('m2dem0'),X(0),Y(30),X(70),Y(12.5));
+    $('m2dem0').style.display = s===0 ? 'none' : '';
+    line($('m2dem'),X(0),Y((120+s)/4),X(70),Y((50+s)/4));
+    $('m2dlab').setAttribute('y', Y((50+s)/4)-8);
+    var wStar=(120+s)/6, nStar=2*wStar;
+    var clears, w, emp, U;
+    if(mode==='clear'){ clears=true; }
+    else { clears = (120+s-4*wbar) >= 2*wbar; }
+    if(clears){ w=wStar; emp=nStar; U=0; }
+    else { w=wbar; emp=Math.max(0,120+s-4*wbar); U=2*wbar-emp; }
+    $('m2wl').style.display = (mode==='sticky') ? '' : 'none';
+    line($('m2wl'),52,Y(w),X(Math.max(emp,2*w))+18,Y(w));
+    $('m2p1').setAttribute('cx',X(emp)); $('m2p1').setAttribute('cy',Y(w));
+    $('m2p2').style.display = U>0 ? '' : 'none';
+    $('m2p2').setAttribute('cx',X(2*w)); $('m2p2').setAttribute('cy',Y(w));
+    $('m2gap').style.display = U>0 ? '' : 'none';
+    $('m2gaplab').style.display = U>0 ? '' : 'none';
+    if(U>0){
+      line($('m2gap'),X(emp),Y(w),X(2*w),Y(w));
+      $('m2gaplab').setAttribute('x',(X(emp)+X(2*w))/2);
+      $('m2gaplab').setAttribute('y',Y(w)-14);
+      $('m2gaplab').textContent='U = '+U.toFixed(0);
+    }
+    $('m2rw').textContent=w.toFixed(1);
+    $('m2emp').textContent=emp.toFixed(0);
+    $('m2u').textContent=U.toFixed(0);
+    $('m2ubox').className = U>0 ? 'read bad' : 'read';
+    var v;
+    if(mode==='clear'){
+      v='The wage moves to <b>'+w.toFixed(1)+'</b> and clears the market. Supply equals demand at every setting of this slider, so <b>unemployment is zero by construction</b> — there is no setting that produces a gap. That is not a result of the model; it is an assumption of it.';
+    } else if(clears && s>0){
+      v='Demand shifted <b>right</b>, so the wage is no longer stuck — rigidity only binds <b>above</b> w*. The wage rises to '+w.toFixed(1)+' and the market clears. This is the trap in the sticky-wage model: it is rigid <b>downward only</b>.';
+    } else if(clears){
+      v='At this wage supply and demand happen to match, so no gap opens. Push the demand slider <b>left</b> to strand the wage above the new clearing level.';
+    } else {
+      v='The wage is stranded at <b>'+w+'</b>, above the clearing level of '+wStar.toFixed(1)+
+        '. Firms want '+emp.toFixed(0)+' workers; '+(2*w).toFixed(0)+' want jobs. The horizontal gap of <b>'+U.toFixed(0)+
+        '</b> <em>is</em> the unemployment. Note the shock landed entirely on employment, because the wage refused to absorb it.';
+    }
+    $('m2v').innerHTML=v;
+  }
+  $('m2bc').onclick=function(){ mode='clear'; pick([$('m2bc'),$('m2bs')],this); draw(); };
+  $('m2bs').onclick=function(){ mode='sticky'; pick([$('m2bc'),$('m2bs')],this); draw(); };
+  on(sS,draw); on(wS,draw); draw();
+})();
+
+/* ============ MODULE 3 — money multiplier ============ */
+(function(){
+  var cu=$('m3cu'), res=$('m3res'), base=$('m3base');
+  cu.step=0.001; cu.value=0.667;
+  function draw(){
+    var c=+cu.value, r=+res.value, B=+base.value;
+    var mm=(c+1)/(c+r), M=B*mm, DEP=M/(1+c), CU=c*DEP, RES=r*DEP;
+    $('m3cuv').textContent=c.toFixed(3);
+    $('m3resv').textContent=r.toFixed(2);
+    $('m3basev').textContent=money(B);
+    $('m3mm').textContent=mm.toFixed(3);
+    $('m3m').textContent=money(M);
+    $('m3dep').textContent=money(DEP);
+    $('m3cuval').textContent=money(CU);
+    $('m3resval').textContent=money(RES);
+    var wM=660, wB=Math.max(6,660/mm);
+    $('m3mb').setAttribute('width',wM); $('m3bb').setAttribute('width',wB);
+    $('m3bt').setAttribute('x',wB+8); $('m3bt').setAttribute('fill','var(--ink-2)');
+    $('m3bt').textContent=money(B);
+    $('m3mt').setAttribute('x',10); $('m3mt').textContent=money(M);
+    var shortcut=1/r;
+    var err=Math.abs(shortcut-mm)/mm*100;
+    $('m3v').innerHTML='<b>mm = '+mm.toFixed(3)+'</b>. The shortcut <span class="m">1/res</span> would give <b>'+shortcut.toFixed(3)+
+      '</b> — off by '+err.toFixed(0)+'%. It is only right when <span class="m">cu = 0</span>. '+
+      'Cross-check the identity: <span class="m">BASE = CU + RES = '+money(CU)+' + '+money(RES)+' = '+money(CU+RES)+'</span> ✓';
+  }
+  $('m3p1').onclick=function(){ cu.value=0.667; res.value=0.3; base.value=580000; draw(); };
+  $('m3p2').onclick=function(){ cu.value=0; res.value=0.3; base.value=580000; draw(); };
+  $('m3p3').onclick=function(){ cu.value=2.5; res.value=0.3; base.value=580000; draw(); };
+  on(cu,draw); on(res,draw); on(base,draw); draw();
+})();
+
+/* ============ MODULE 4 — three-market engine ============ */
+(function(){
+  var SHOCKS={
+    aDown:{ btn:'A ↓  supply', fw:'clearing', wageKey:'w*',
+      verdict:'<b>Recessionary.</b> Output falls, prices rise. Money is neutral here — nothing the central bank does changes N or Y in this framework, which is precisely the first criticism levelled at real business cycle theory.',
+      dirs:{N:'down',w:'down',Y:'down',r:'up',P:'up'},
+      steps:[
+        {lane:'Labour',t:'A ↓ ⇒ MPN falls at every N',b:'Lower productivity means each worker adds less output, so the whole MPN curve drops — and since labour demand <em>is</em> the MPN curve, N&#8202;ᴰ shifts left. Both w* and N* fall. Note this is a genuine shift, not a movement along.',give:['N','w']},
+        {lane:'Labour',t:'Y* = A·F(K, N*) falls twice over',b:'Output takes the hit from both sides: A itself is lower, and the lower A has driven employment down as well. Full-employment output falls by more than the productivity change alone.',give:['Y']},
+        {lane:'Goods',t:'S&#8202;ᴰ = Y − C&#8202;ᴰ − G shifts left ⇒ r* ↑',b:'Lower income means less saving at every interest rate. Saving supply shifts left against an unchanged investment demand, so the real rate rises. <b>This market is unambiguous — r is pinned here.</b>',give:['r']},
+        {lane:'Asset',t:'Ambiguous alone — the goods market decides',b:'Output fell so supply is short of demand: P rises, M/P falls, which pushes r <em>up</em>. But Y fell so money demand L(·) shifts left, pushing r <em>down</em>. Two opposing forces. Because r* must be the same economy-wide and the goods market already pinned it upward, the M/P effect <b>must</b> dominate.',give:['P']}
+      ]},
+    aUp:{ btn:'A ↑  supply', fw:'clearing', wageKey:'w*',
+      verdict:'<b>Expansionary.</b> The mirror image throughout. Watch the price direction: output rose against an unchanged money supply, so P <em>falls</em>. Under market clearing, P always moves opposite to output.',
+      dirs:{N:'up',w:'up',Y:'up',r:'down',P:'down'},
+      steps:[
+        {lane:'Labour',t:'A ↑ ⇒ MPN rises at every N',b:'N&#8202;ᴰ shifts right along an upward-sloping N&#8202;ˢ, so N* rises and w* rises with it. (The Q47 solution text says w* falls; the geometry and its own graph say it rises. Flag it, do not memorise it.)',give:['N','w']},
+        {lane:'Labour',t:'Y* = A·F(K, N*) rises twice over',b:'Higher A, and higher N* as well. Output gains on both counts.',give:['Y']},
+        {lane:'Goods',t:'S&#8202;ᴰ shifts right ⇒ r* ↓',b:'More income means more saving at every rate. Saving supply shifts right, so the real rate falls — and investment rises by a <b>movement along</b> I&#8202;ᴰ, not a shift of it.',give:['r']},
+        {lane:'Asset',t:'Goods market pins it again',b:'More goods chasing the same money supply, so P falls and M/P rises, pushing r down. Y↑ shifts L(·) right, pushing r up. The goods market already signed r downward, so the M/P effect dominates.',give:['P']}
+      ]},
+    gUp:{ btn:'G ↑  fiscal', fw:'sticky', wageKey:'W/P',
+      verdict:'<b>Expansionary — and non-neutral.</b> Fiscal policy has real effects here only because the wage is rigid. Run the same shock under market clearing and employment would not move at all.',
+      dirs:{N:'up',w:'down',Y:'up',r:'up',P:'up'},
+      steps:[
+        {lane:'Goods',t:'G ↑ ⇒ S&#8202;ᴰ = Y − C − G shifts left ⇒ r* ↑',b:'The shock enters right here. Government spending subtracts directly from national saving at every interest rate, so the saving curve shifts left and the real rate rises. Nothing ambiguous about it.',give:['r']},
+        {lane:'Prices',t:'Aggregate demand exceeds supply ⇒ P ↑',b:'Demand has risen but output cannot jump instantly, so the price level does the adjusting. This is the demand-shock-plus-rigidity case, where P and Y end up moving in the <em>same</em> direction.',give:['P']},
+        {lane:'Asset',t:'P ↑ ⇒ M/P falls ⇒ r ↑ again',b:'The nominal money supply is unchanged but the price level rose, so real balances shrink. The real money supply curve shifts left, reinforcing the rate rise that the goods market already gave you.',give:[]},
+        {lane:'Labour',t:'W is stuck but P rose ⇒ W/P falls ⇒ N ↑',b:'This is the engine. The nominal wage is fixed by contract; prices rose; so the <b>real</b> wage fell without anyone renegotiating anything. Labour is now cheaper in real terms, so firms move <b>DOWN ALONG</b> an unchanged N&#8202;ᴰ. Employment rises, and Y rises with it.',give:['N','w','Y']},
+        {lane:'Labour',t:'Feedback — but it never overrides',b:'Higher Y now shifts L(·) right and pushes S&#8202;ᴰ partly back to the right. Both are genuine second-round effects and both are <em>partial</em>: neither reverses the original shift. Say this in an answer and you have shown you understand the sequence.',give:[]}
+      ]},
+    gDown:{ btn:'G ↓  fiscal', fw:'sticky', wageKey:'W/P',
+      verdict:'<b>Contractionary.</b> Every arrow is the mirror of G ↑. Same logic runs deflation with a stuck wage: falling P raises W/P, so employment falls — which is exactly why deflation is contractionary under rigidity.',
+      dirs:{N:'down',w:'up',Y:'down',r:'down',P:'down'},
+      steps:[
+        {lane:'Goods',t:'G ↓ ⇒ S&#8202;ᴰ shifts right ⇒ r* ↓',b:'Less government spending leaves more national saving at every rate. The saving curve shifts right and the real rate falls.',give:['r']},
+        {lane:'Prices',t:'Demand falls short of supply ⇒ P ↓',b:'Aggregate demand has dropped while output cannot instantly contract, so the price level falls.',give:['P']},
+        {lane:'Asset',t:'P ↓ ⇒ M/P rises ⇒ r ↓ again',b:'Real balances expand because prices fell. M/P shifts right, reinforcing the fall in the real rate.',give:[]},
+        {lane:'Labour',t:'W stuck but P fell ⇒ W/P RISES ⇒ N ↓',b:'The real wage rises even though no worker got a raise — prices fell underneath a fixed nominal wage. Labour is now more expensive in real terms, so firms move <b>UP ALONG</b> N&#8202;ᴰ and employment falls.',give:['N','w','Y']}
+      ]},
+    mUp:{ btn:'M ↑  monetary', fw:'sticky', wageKey:'W/P',
+      verdict:'<b>Expansionary — money is NOT neutral here.</b> This is the single sharpest contrast in the course: under market clearing this shock would change nothing real at all.',
+      dirs:{N:'up',w:'down',Y:'up',r:'down',P:'up'},
+      steps:[
+        {lane:'Asset',t:'M ↑ ⇒ M/P shifts right ⇒ r* ↓',b:'This is the one shock that enters through the asset market. More real balances at the existing price level, so the real money supply curve shifts right and the real rate falls immediately.',give:['r']},
+        {lane:'Goods',t:'Lower r ⇒ investment rises ALONG I&#8202;ᴰ',b:'Careful here: I&#8202;ᴰ does <b>not</b> shift. Nothing changed the user cost fundamentals or MPK&#8202;ᶠ — the cheaper rate simply moves you down an unchanged investment demand curve.',give:[]},
+        {lane:'Prices',t:'More money chasing goods ⇒ P ↑',b:'Higher demand pushes the price level up. In the short run it rises less than proportionally, because the stuck nominal wage anchors part of the cost structure.',give:['P']},
+        {lane:'Labour',t:'W stuck, P up ⇒ W/P falls ⇒ N ↑',b:'The same engine as the fiscal case. The real wage falls without renegotiation, firms move down along N&#8202;ᴰ, employment and output both rise. The nominal wage never moved — only the price level did.',give:['N','w','Y']}
+      ]}
+  };
+  var VARS=['N','w','Y','r','P'];
+  var cur='aDown', step=0;
+  var box=document.getElementById('m4shocks');
+  Object.keys(SHOCKS).forEach(function(k){
+    var b=document.createElement('button');
+    b.textContent=SHOCKS[k].btn; b.dataset.k=k;
+    b.onclick=function(){ cur=k; step=0; draw(); };
+    box.appendChild(b);
+  });
+  function draw(){
+    var S=SHOCKS[cur], n=S.steps.length;
+    step=Math.max(0,Math.min(n-1,step));
+    Array.prototype.forEach.call(box.children,function(b){ b.classList.toggle('on', b.dataset.k===cur); });
+    var isC = S.fw==='clearing';
+    $('m4pill').innerHTML='<span class="pill '+(isC?'clear':'sticky')+'">'+
+      (isC?'market clearing — U = 0 throughout':'sticky wage — the real wage is the engine')+'</span>';
+    var st=S.steps[step];
+    document.querySelectorAll('#m4lanes .lane').forEach(function(L){
+      L.classList.toggle('act', L.dataset.lane===st.lane);
+    });
+    $('m4n').textContent='Step '+(step+1)+' of '+n+' · '+st.lane.toLowerCase()+' market';
+    $('m4t').innerHTML=st.t;
+    $('m4b').innerHTML=st.b;
+    var known={};
+    for(var i=0;i<=step;i++){ S.steps[i].give.forEach(function(v){ known[v]=1; }); }
+    $('m4score').innerHTML=VARS.map(function(v){
+      var lab = v==='w' ? S.wageKey : (v==='r' ? 'r*' : v);
+      var d=S.dirs[v], has=known[v];
+      return '<div class="sc'+(has?'':' pending')+'"><div class="k">'+lab+'</div><div class="a '+d+'">'+
+        (has ? (d==='up'?'↑':'↓') : '·')+'</div></div>';
+    }).join('');
+    var done = step===n-1;
+    $('m4v').innerHTML = done ? S.verdict :
+      '<span style="color:var(--ink-2)">Predict the next arrow before you press Next. '+(n-1-step)+' step'+(n-1-step===1?'':'s')+' to go.</span>';
+    $('m4prev').disabled = step===0;
+    $('m4next').disabled = done;
+    $('m4next').classList.toggle('on', !done);
+  }
+  $('m4next').onclick=function(){ step++; draw(); };
+  $('m4prev').onclick=function(){ step--; draw(); };
+  $('m4all').onclick=function(){ step=SHOCKS[cur].steps.length-1; draw(); };
+  $('m4reset').onclick=function(){ step=0; draw(); };
+  draw();
+})();
+
+/* ============ MODULE 5 — shift vs pivot ============ */
+(function(){
+  var mode=1, s=$('m5s');
+  var X=function(n){ return 52+(Math.max(0,Math.min(130,n))/130)*596; };
+  var Y=function(w){ return 216-(Math.max(0,Math.min(35,w))/35)*196; };
+  function line(el,x1,y1,x2,y2){ el.setAttribute('x1',x1); el.setAttribute('y1',y1); el.setAttribute('x2',x2); el.setAttribute('y2',y2); }
+  function draw(){
+    var v=+s.value;
+    line($('m5s0'),X(0),Y(0),X(70),Y(35));
+    line($('m5d0'),X(0),Y(30),X(120),Y(0));
+    var Nstar, wstar, which, kind, txt, anch=null;
+    if(mode===1){
+      var sh=v;
+      $('m5lab').textContent='Wealth ↑'; $('m5val').textContent='+'+v;
+      line($('m5sup'),X(0),Y(sh/2),X(70-sh),Y(35));
+      line($('m5dem'),X(0),Y(30),X(120),Y(0));
+      Nstar=(30-sh/2)/0.75; wstar=(Nstar+sh)/2;
+      which='N&#8202;ˢ'; kind='SHIFT';
+      txt='Wealth enters the <b>intercept</b>, so the whole supply line slides <b>left</b> — parallel, slope unchanged. '+
+        'Direction matters: leisure is a normal good, so wealthier households supply <em>less</em> labour at any given wage. '+
+        'Result: N* falls to <b>'+Nstar.toFixed(1)+'</b> and w* rises to <b>'+wstar.toFixed(1)+'</b>.';
+    } else if(mode===2){
+      var t=v*0.05;
+      $('m5lab').textContent='Income tax t on workers'; $('m5val').textContent=t.toFixed(2);
+      line($('m5sup'),X(0),Y(0),X(70*(1-t)),Y(35));
+      line($('m5dem'),X(0),Y(30),X(120),Y(0));
+      Nstar=30/(1/(2*(1-t))+0.25); wstar=Nstar/(2*(1-t));
+      which='N&#8202;ˢ'; kind='PIVOT'; anch=[0,0];
+      txt='<span class="m">N&#8202;ˢ = (1−t)w</span> <b>multiplies</b> the wage, so supply rotates about the <b>origin</b> — the anchor never moves, however hard you drag. '+
+        'Firms now pay <b>'+wstar.toFixed(1)+'</b> while workers take home <b>'+((1-t)*wstar).toFixed(1)+'</b>, and employment falls to <b>'+Nstar.toFixed(1)+'</b>.';
+    } else {
+      var tau=v*0.05;
+      $('m5lab').textContent='Payroll tax τ on firms'; $('m5val').textContent=tau.toFixed(2);
+      line($('m5sup'),X(0),Y(0),X(70),Y(35));
+      line($('m5dem'),X(0),Y(30/(1+tau)),X(120),Y(0));
+      Nstar=30/((1+tau)/2+0.25); wstar=Nstar/2;
+      which='N&#8202;ᴰ'; kind='PIVOT'; anch=[120,0];
+      txt='<span class="m">MPN = (1+τ)w</span> multiplies the wage too, so demand rotates about its <b>N-intercept</b>. '+
+        'Set w = 0 and N stays at <b>120</b> for any τ — that is the anchor, and it is the giveaway that this is a pivot. '+
+        'Employment falls to <b>'+Nstar.toFixed(1)+'</b> and the wage workers receive falls to <b>'+wstar.toFixed(1)+'</b>.';
+    }
+    $('m5eq').setAttribute('cx',X(Nstar)); $('m5eq').setAttribute('cy',Y(wstar));
+    if(anch){
+      $('m5anch').style.display=''; $('m5anchlab').style.display='';
+      $('m5anch').setAttribute('cx',X(anch[0])); $('m5anch').setAttribute('cy',Y(anch[1]));
+      $('m5anchlab').setAttribute('x',X(anch[0])+ (anch[0]>60?-14:12));
+      $('m5anchlab').setAttribute('y',Y(anch[1])-12);
+      $('m5anchlab').setAttribute('text-anchor', anch[0]>60?'end':'start');
+      $('m5anchlab').textContent='anchor';
+    } else { $('m5anch').style.display='none'; $('m5anchlab').style.display='none'; }
+    $('m5which').innerHTML=which;
+    $('m5kind').textContent=kind;
+    $('m5n').textContent=Nstar.toFixed(1);
+    $('m5v').innerHTML=txt;
+  }
+  $('m5b1').onclick=function(){ mode=1; s.value=3; pick([$('m5b1'),$('m5b2'),$('m5b3')],this); draw(); };
+  $('m5b2').onclick=function(){ mode=2; s.value=3; pick([$('m5b1'),$('m5b2'),$('m5b3')],this); draw(); };
+  $('m5b3').onclick=function(){ mode=3; s.value=3; pick([$('m5b1'),$('m5b2'),$('m5b3')],this); draw(); };
+  on(s,draw); draw();
+})();
+
+/* ============ MODULE 6 — Taylor rule ============ */
+(function(){
+  var pi=$('m6pi'), y=$('m6y'), c=$('m6c');
+  var X=function(p){ return 56+(Math.max(0,Math.min(8,p))/8)*596; };
+  var Y=function(i){ return 216-(Math.max(0,Math.min(18,i))/18)*196; };
+  function line(el,x1,y1,x2,y2){ el.setAttribute('x1',x1); el.setAttribute('y1',y1); el.setAttribute('x2',x2); el.setAttribute('y2',y2); }
+  function draw(){
+    var P=+pi.value, G=+y.value, C=+c.value;
+    $('m6piv').textContent=P.toFixed(1)+'%';
+    $('m6yv').textContent=(G>0?'+':'')+G+'%';
+    $('m6cv').textContent=C.toFixed(1);
+    var rule=function(p){ return C*p + (4-2*C) + 0.5*G; };
+    var ref=function(p){ return p + 2 + 0.5*G; };
+    var pStart = rule(0) < 0 ? Math.min(8,(2*C-4-0.5*G)/C) : 0;
+    line($('m6rule'),X(pStart),Y(rule(pStart)),X(8),Y(rule(8)));
+    line($('m6ref'),X(0),Y(ref(0)),X(8),Y(ref(8)));
+    $('m6rulelab').setAttribute('y',Y(rule(7.4)));
+    $('m6reflab').setAttribute('y',Y(ref(7.4))+ (C>1?18:-8));
+    var i=rule(P), r=i-P;
+    $('m6pt').setAttribute('cx',X(P)); $('m6pt').setAttribute('cy',Y(i));
+    $('m6anch').setAttribute('cx',X(2)); $('m6anch').setAttribute('cy',Y(rule(2)));
+    line($('m6anchv'),X(2),Y(rule(2)),X(2),216);
+    $('m6tk2').setAttribute('x',X(2));
+    line($('m6gap'),X(P),Y(i),X(P),Y(ref(P)));
+    $('m6gap').style.display = Math.abs(P-2)<0.01 ? 'none' : '';
+    $('m6i').textContent=i.toFixed(1)+'%';
+    $('m6r').textContent=r.toFixed(1)+'%';
+    var neutral=2;
+    $('m6st').textContent = r>neutral+0.05 ? 'tightening' : (r<neutral-0.05 ? 'loosening' : 'neutral');
+    var bad = (C<1 && P>2) || (C<1 && P<2);
+    $('m6rbox').className = (C<1 ? 'read bad' : 'read hi');
+    var v;
+    if(C>1.001){
+      v='Response of <b>'+C.toFixed(1)+'</b> is greater than 1, so the rule <b>out-runs</b> inflation. At π = '+P.toFixed(1)+
+        '% it sets i = '+i.toFixed(1)+'%, leaving a real rate of <b>'+r.toFixed(1)+
+        '%</b>. The green gap is the extra real-rate response — that gap is the whole point of the rule.';
+    } else if(C<0.999){
+      v='<b>Response of '+C.toFixed(1)+' is below 1 — this rule is destabilising.</b> Inflation is '+P.toFixed(1)+
+        '% and the real rate is only '+r.toFixed(1)+'%. Above target the rule is now <em>cutting</em> the real rate as inflation climbs, which is pouring fuel on the fire. Nominal rates went up and policy still got looser.';
+    } else {
+      v='At exactly 1 the nominal rate tracks inflation one-for-one, so the real rate <b>never moves</b> — it sits at '+r.toFixed(1)+
+        '% whatever inflation does. The bank has been pulling the lever and achieving nothing. This is the knife edge the Taylor principle sits above.';
+    }
+    if(i<0) v+=' <b style="color:var(--flag)">The rule is asking for a negative nominal rate</b> — it cannot be delivered, because holding cash pays zero. This is the zero lower bound, and it is one of the effectiveness constraints on monetary policy.';
+    $('m6v').innerHTML=v;
+  }
+  on(pi,draw); on(y,draw); on(c,draw); draw();
+})();
+
+/* ============ MODULE 7 — exchange rates ============ */
+(function(){
+  var BASE=1.10;
+  $('m7t1').onclick=function(){ pick([$('m7t1'),$('m7t2')],this); $('m7p1').style.display=''; $('m7p2').style.display='none'; };
+  $('m7t2').onclick=function(){ pick([$('m7t1'),$('m7t2')],this); $('m7p1').style.display='none'; $('m7p2').style.display=''; };
+  var e=$('m7e');
+  function d1(){
+    var v=+e.value, rec=1/v, recB=1/BASE;
+    $('m7ev').textContent=v.toFixed(2);
+    $('m7a').textContent=v.toFixed(2);
+    $('m7b').textContent=rec.toFixed(2);
+    var up=v>BASE+0.001, dn=v<BASE-0.001;
+    $('m7ad').textContent = up?'CAD appreciating':(dn?'CAD depreciating':'unchanged');
+    $('m7bd').textContent = (rec>recB+0.001)?'this number rising':((rec<recB-0.001)?'this number falling':'unchanged');
+    $('m7v1').innerHTML = (up||dn) ?
+      'One event, two numbers moving in <b>opposite</b> directions. The CAD is '+(up?'stronger':'weaker')+
+      ' than baseline: 1 CAD now buys '+v.toFixed(2)+' foreign units instead of 1.10. Read the same event off the reciprocal and your instinct says the opposite — which is how a whole FX section gets inverted.' :
+      'Drag the slider. Watch both numbers: they always move in opposite directions for the same underlying event.';
+  }
+  on(e,d1); d1();
+
+  var dd=$('m7d'), pd=$('m7pd'), pf=$('m7pf');
+  function d2(){
+    var D=+dd.value, PD=+pd.value, PF=+pf.value;
+    $('m7dv').textContent=(D>0?'+':'')+D+'%';
+    $('m7pdv').textContent=PD+'%';
+    $('m7pfv').textContent=PF+'%';
+    var f=(1+D/100)*(1+PD/100)/(1+PF/100);
+    var ch=(f-1)*100;
+    $('m7nv').textContent = D>0?'CAD appreciated':(D<0?'CAD depreciated':'no change');
+    $('m7rv').textContent=(ch>0?'+':'')+ch.toFixed(1)+'%';
+    var realApp = ch>0.5, realDep = ch<-0.5;
+    $('m7rvd').textContent = realApp?'real appreciation':(realDep?'real depreciation':'roughly unchanged');
+    var clash = (D>0 && realDep) || (D<0 && realApp);
+    $('m7v2').innerHTML = (clash ?
+      '<b>The nominal and real answers disagree — this is the exam trap.</b> ' : '') +
+      'Real <span class="m">e = e_nom × P/P_for</span>, so the change is '+
+      '(1'+(D>=0?'+':'')+(D/100).toFixed(2)+') × '+(1+PD/100).toFixed(2)+' ÷ '+(1+PF/100).toFixed(2)+' = <b>'+f.toFixed(3)+'</b>. '+
+      (realDep ? 'Canadian goods got relatively <b>cheaper</b>: foreign inflation outran the currency move, so the foreign country is now more expensive in real terms even though its currency fell.' :
+       realApp ? 'Canadian goods got relatively <b>dearer</b> — real appreciation, so Canadian exporters lose competitiveness.' :
+       'Price levels and the currency move cancelled out — nominal change, no real change. This is the pure purchasing-power-parity case.');
+  }
+  $('m7q62').onclick=function(){ dd.value=50; pd.value=50; pf.value=200; d2(); };
+  on(dd,d2); on(pd,d2); on(pf,d2); d2();
+})();
+
+/* ============ MODULE 8 — Lorenz & Gini ============ */
+(function(){
+  var q=[$('m8q1'),$('m8q2'),$('m8q3'),$('m8q4')];
+  var qv=[$('m8q1v'),$('m8q2v'),$('m8q3v'),$('m8q4v')];
+  var X=function(p){ return 150+(p/100)*380; };
+  var Y=function(v){ return 230-(v/100)*212; };
+  function draw(){
+    var s=q.map(function(el){ return +el.value; });
+    var sum4=s[0]+s[1]+s[2]+s[3];
+    var q5=Math.max(0,100-sum4);
+    s.forEach(function(v,i){ qv[i].textContent=v+'%'; });
+    $('m8q5v').textContent=q5+'%';
+    var raw=s.concat([q5]);
+    var tot=raw.reduce(function(a,b){ return a+b; },0);
+    var adj = tot>0 && Math.abs(tot-100)>0.01;
+    var all=raw.map(function(x){ return tot>0 ? x/tot*100 : 20; });
+    var reordered = all.some(function(x,i){ return i>0 && x<all[i-1]-0.001; });
+    all.sort(function(a,b){ return a-b; });
+    var cum=[0], run=0;
+    for(var i=0;i<5;i++){ run+=all[i]; cum.push(Math.min(100,run)); }
+    var trap=0;
+    for(var j=1;j<6;j++){ trap += (cum[j-1]+cum[j])/2*20; }
+    var gini=(5000-trap)/5000;
+    var pts=[];
+    for(var k=0;k<6;k++){ pts.push(X(k*20).toFixed(1)+','+Y(cum[k]).toFixed(1)); }
+    $('m8lor').setAttribute('points',pts.join(' '));
+    $('m8area').setAttribute('points',pts.join(' ')+' '+X(100).toFixed(1)+','+Y(100).toFixed(1));
+    $('m8Alab').setAttribute('x',X(52)); $('m8Alab').setAttribute('y',Y(cum[3])-24);
+    $('m8Alab').style.display = gini>0.06 ? '' : 'none';
+    $('m8g').textContent=gini.toFixed(3);
+    $('m8s').textContent=money(trap);
+    var v='Cumulative income: <span class="m">'+cum.slice(1).map(function(x){return Math.round(x);}).join(', ')+
+      '</span>. Trapezoid sum = <b>'+money(trap)+'</b>, so Gini = (5000 − '+money(trap)+') ÷ 5000 = <b>'+gini.toFixed(3)+'</b>.';
+    if(gini<0.005) v+=' Perfect equality: the Lorenz curve lies exactly on the 45° line and area A vanishes.';
+    if(adj) v+=' <b style="color:var(--flag)">Shares rescaled to sum to 100%.</b>';
+    if(reordered) v+=' <b style="color:var(--flag)">Shares re-sorted poorest to richest</b> — a Lorenz curve is built on a population ranked by income, so it can only ever get steeper as you move right.';
+    $('m8v').innerHTML=v;
+  }
+  function set(a,b,cc,d,btn){
+    q[0].value=a; q[1].value=b; q[2].value=cc; q[3].value=d;
+    pick([$('m8p0'),$('m8pa'),$('m8pb'),$('m8pc')],btn); draw();
+  }
+  $('m8p0').onclick=function(){ set(20,20,20,20,this); };
+  $('m8pa').onclick=function(){ set(5,10,15,25,this); };
+  $('m8pb').onclick=function(){ set(6,9,14,26,this); };
+  $('m8pc').onclick=function(){ set(2,4,8,16,this); };
+  q.forEach(function(el){ on(el,function(){ pick([$('m8p0'),$('m8pa'),$('m8pb'),$('m8pc')],null); draw(); }); });
+  draw();
+})();
+</script>
+
+
+<a id="__rb-pill" href="coursework.html">&#8592; Coursework</a>
+<script>
+(function(){
+  var p=document.getElementById('__rb-pill'); if(!p) return;
+  var t=false;
+  function run(){ t=false;
+    p.classList.toggle('__on',(window.scrollY||document.documentElement.scrollTop)>420); }
+  function q(){ if(!t){ t=true; requestAnimationFrame(run); } }
+  addEventListener('scroll',q,{passive:true}); run();
+})();
+</script>
+</body>
+</html>

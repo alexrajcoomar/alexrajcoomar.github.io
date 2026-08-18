@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html lang="en-CA">
+<head>
+<meta charset="utf-8">
+<meta name="description" content="A primer on the business law an accountant needs, written to keep the Canadian and American positions distinct rather than blended.">
+<meta property="og:title" content="Business Law for Accountants — Canada and the United States">
+<meta property="og:description" content="A primer on the business law an accountant needs, written to keep the Canadian and American positions distinct rather than blended.">
+<meta property="og:type" content="article">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Business Law for Accountants: Canada and the United States</title>
+<style>
+:root{
+  --ink:#16181d; --ink-2:#3c4149; --ink-3:#5f6673;
+  --paper:#ffffff; --paper-2:#f7f8fa; --paper-3:#eef0f4;
+  --rule:#d8dce3; --rule-2:#e7eaef;
+  --ca:#a8202c; --ca-bg:#fdf3f3; --ca-rule:#e8c4c7;
+  --us:#1f3f74; --us-bg:#f2f5fb; --us-rule:#c3cee3;
+  --flag:#7a5a12; --flag-bg:#fdf8ea; --flag-rule:#e6d5a8;
+  --accent:#1f3f74;
+  --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,"Times New Roman",serif;
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --ink:#e6e8ec; --ink-2:#bcc2cc; --ink-3:#8f97a4;
+    --paper:#14161a; --paper-2:#1b1e24; --paper-3:#22262d;
+    --rule:#333943; --rule-2:#282d35;
+    --ca:#f08d96; --ca-bg:#241a1c; --ca-rule:#5a3237;
+    --us:#93b4e8; --us-bg:#171d29; --us-rule:#2e415f;
+    --flag:#e2c67a; --flag-bg:#241f14; --flag-rule:#544829;
+    --accent:#93b4e8;
+  }
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth; scroll-padding-top:1.5rem}
+body{
+  margin:0; background:var(--paper); color:var(--ink);
+  font-family:var(--serif); font-size:17px; line-height:1.62;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:1180px;margin:0 auto;padding:0 28px 96px}
+header.masthead{border-bottom:2px solid var(--ink);padding:56px 0 28px;margin-bottom:40px}
+header.masthead .kicker{font-family:var(--sans);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);margin-bottom:14px}
+header.masthead h1{font-size:2.5rem;line-height:1.15;margin:0 0 14px;font-weight:600;letter-spacing:-.015em}
+header.masthead p.standfirst{font-size:1.1rem;color:var(--ink-2);margin:0;max-width:62ch}
+header.masthead .meta{font-family:var(--sans);font-size:12.5px;color:var(--ink-3);margin-top:22px}
+
+.layout{display:grid;grid-template-columns:230px 1fr;gap:52px;align-items:start}
+@media (max-width:940px){.layout{grid-template-columns:1fr;gap:0}nav.toc{position:static!important;margin-bottom:44px;border:1px solid var(--rule);border-radius:8px;padding:20px 22px;background:var(--paper-2)}}
+nav.toc{position:sticky;top:24px;font-family:var(--sans);font-size:13px;line-height:1.45;max-height:calc(100vh - 48px);overflow-y:auto}
+nav.toc h2{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);margin:0 0 12px;font-weight:600}
+nav.toc ol{list-style:none;margin:0;padding:0;counter-reset:toc}
+nav.toc li{counter-increment:toc;margin-bottom:9px}
+nav.toc li a{color:var(--ink-2);text-decoration:none;display:block;padding-left:26px;position:relative}
+nav.toc li a::before{content:counter(toc) ".";position:absolute;left:0;color:var(--ink-3);font-variant-numeric:tabular-nums}
+nav.toc li a:hover{color:var(--accent)}
+
+main{min-width:0}
+section{margin-bottom:64px;scroll-margin-top:24px}
+h2.part{font-family:var(--sans);font-size:1.55rem;font-weight:650;letter-spacing:-.01em;margin:0 0 6px;padding-bottom:12px;border-bottom:1px solid var(--rule)}
+h2.part .num{color:var(--ink-3);font-variant-numeric:tabular-nums;margin-right:.5em;font-weight:500}
+p.deck{font-family:var(--sans);font-size:14.5px;color:var(--ink-3);margin:14px 0 26px;max-width:70ch;line-height:1.55}
+h3{font-family:var(--sans);font-size:1.06rem;font-weight:650;margin:36px 0 12px;letter-spacing:-.005em}
+h4{font-family:var(--sans);font-size:.9rem;font-weight:650;margin:26px 0 8px;color:var(--ink-2);letter-spacing:.01em}
+p{margin:0 0 16px;max-width:74ch}
+ul,ol{max-width:74ch;padding-left:22px;margin:0 0 18px}
+li{margin-bottom:8px}
+strong{font-weight:650}
+em{font-style:italic}
+code{font-family:var(--mono);font-size:.85em;background:var(--paper-3);padding:.12em .38em;border-radius:3px}
+a{color:var(--accent)}
+
+table{border-collapse:collapse;width:100%;margin:8px 0 26px;font-family:var(--sans);font-size:13.5px;line-height:1.5}
+caption{caption-side:top;text-align:left;font-family:var(--sans);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);padding-bottom:9px;font-weight:600}
+th,td{border:1px solid var(--rule-2);padding:11px 13px;vertical-align:top;text-align:left}
+thead th{background:var(--paper-3);font-weight:650;font-size:12.5px;letter-spacing:.02em}
+tbody th{background:var(--paper-2);font-weight:600;width:20%}
+th.ca,td.ca{background:var(--ca-bg);border-color:var(--ca-rule)}
+th.us,td.us{background:var(--us-bg);border-color:var(--us-rule)}
+thead th.ca{color:var(--ca)} thead th.us{color:var(--us)}
+@media (max-width:700px){table,thead,tbody,th,td,tr{display:block}caption{display:block;width:100%;letter-spacing:.05em}thead{display:none}tbody th{width:auto;border-bottom:none}td{border-top:none}tr{margin-bottom:18px;border:1px solid var(--rule);border-radius:6px;overflow:hidden}td::before{content:attr(data-l);display:block;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);margin-bottom:4px;font-weight:600}}
+
+.callout{border-left:3px solid var(--rule);background:var(--paper-2);padding:16px 20px;margin:0 0 24px;border-radius:0 5px 5px 0;max-width:74ch}
+.callout p:last-child{margin-bottom:0}
+.callout .label{font-family:var(--sans);font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;font-weight:700;color:var(--ink-3);display:block;margin-bottom:7px}
+.callout.flag{border-left-color:var(--flag);background:var(--flag-bg)}
+.callout.flag .label{color:var(--flag)}
+.callout.acct{border-left-color:var(--accent);background:var(--paper-2)}
+.callout.acct .label{color:var(--accent)}
+
+.case{font-family:var(--sans);font-size:13.5px;line-height:1.55;border:1px solid var(--rule);border-radius:6px;padding:15px 18px;margin:0 0 20px;max-width:74ch;background:var(--paper-2)}
+.case .cite{font-family:var(--serif);font-size:15px;font-weight:600;display:block;margin-bottom:6px}
+.case .cite i{font-style:italic}
+.case p{margin:0;max-width:none;font-size:13.5px}
+.case.ca{border-left:3px solid var(--ca)}
+.case.us{border-left:3px solid var(--us)}
+
+.pill{display:inline-block;font-family:var(--sans);font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:2px 7px;border-radius:3px;vertical-align:middle;margin-right:7px}
+.pill.ca{background:var(--ca-bg);color:var(--ca);border:1px solid var(--ca-rule)}
+.pill.us{background:var(--us-bg);color:var(--us);border:1px solid var(--us-rule)}
+
+.split{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin:0 0 26px}
+@media (max-width:760px){.split{grid-template-columns:1fr}}
+.split > div{border:1px solid var(--rule);border-radius:6px;padding:16px 18px;font-family:var(--sans);font-size:13.5px;line-height:1.55}
+.split > div.ca{background:var(--ca-bg);border-color:var(--ca-rule)}
+.split > div.us{background:var(--us-bg);border-color:var(--us-rule)}
+.split h5{margin:0 0 10px;font-size:11px;letter-spacing:.12em;text-transform:uppercase;font-weight:700}
+.split > div.ca h5{color:var(--ca)} .split > div.us h5{color:var(--us)}
+.split p{max-width:none;margin:0 0 10px;font-size:13.5px}
+.split p:last-child{margin-bottom:0}
+.split ul{padding-left:18px;margin:0}
+.split li{margin-bottom:6px}
+
+footer.end{border-top:1px solid var(--rule);margin-top:70px;padding-top:26px;font-family:var(--sans);font-size:12.5px;color:var(--ink-3);line-height:1.6}
+footer.end a{color:var(--ink-3)}
+.srcs{font-family:var(--sans);font-size:12.5px;line-height:1.65;columns:2;column-gap:36px}
+@media (max-width:760px){.srcs{columns:1}}
+.srcs li{break-inside:avoid;margin-bottom:7px}
+
+@media print{
+  nav.toc{display:none}.layout{grid-template-columns:1fr}
+  body{font-size:10.5pt}section{page-break-inside:auto}
+  h2.part{page-break-after:avoid}table{page-break-inside:avoid}
+  a{color:inherit;text-decoration:none}
+}
+</style>
+</head>
+<body>
+<!-- injected by the site build: a way back into the site from a standalone
+     piece. A static bar at the top, so it is visible on arrival, and a pill
+     that appears once you have scrolled past it, so there is always a way out.
+     Self-contained, because these pages do not load the site stylesheet. -->
+<style id="__rb-style">
+#__rb{
+  box-sizing:border-box;display:flex;flex-wrap:wrap;align-items:center;gap:.6rem 1.25rem;
+  padding:.6rem clamp(1rem,4vw,2rem);border-bottom:1px solid #ddd9cf;background:#faf9f6;
+  font:500 13px/1.35 InterVar,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  color:#55524a;
+}
+#__rb a{color:#14509b;text-decoration:none;display:inline-flex;align-items:center;gap:.4rem}
+#__rb a:hover{text-decoration:underline}
+#__rb .__rb-home{font-weight:640;color:#16150f}
+#__rb .__rb-home i{font-style:normal;font-weight:400;color:#6f6c63}
+#__rb .__rb-right{margin-left:auto;display:flex;gap:1.1rem;flex-wrap:wrap}
+#__rb .__mark{
+  display:inline-grid;place-items:center;width:1.2rem;height:1.2rem;flex:none;
+  background:#16150f;color:#faf9f6;font-size:.72rem;font-weight:700;
+}
+#__rb-pill{
+  position:fixed;left:14px;bottom:14px;z-index:2147483000;
+  display:inline-flex;align-items:center;gap:.45rem;padding:.58rem .9rem;
+  background:rgba(22,21,15,.93);color:#faf9f6;text-decoration:none;border-radius:99px;
+  font:600 12.5px/1 InterVar,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  border:1px solid rgba(255,255,255,.16);box-shadow:0 6px 22px rgba(0,0,0,.28);
+  opacity:0;transform:translateY(6px);pointer-events:none;
+  transition:opacity .2s ease,transform .2s ease;
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+}
+#__rb-pill.__on{opacity:1;transform:none;pointer-events:auto}
+#__rb-pill:hover{background:#16150f;color:#fff}
+@media (prefers-color-scheme:dark){
+  #__rb{background:#131310;border-bottom-color:#2c2b24;color:#c0bcb1}
+  #__rb .__rb-home{color:#f7f5ef}
+  #__rb .__rb-home i{color:#948f85}
+  #__rb a{color:#85adea}
+  #__rb .__mark{background:#f7f5ef;color:#131310}
+  #__rb-pill{background:rgba(247,245,239,.95);color:#131310;border-color:rgba(0,0,0,.2)}
+  #__rb-pill:hover{background:#fff;color:#000}
+}
+@media (prefers-reduced-motion:reduce){#__rb-pill{transition:none}}
+@media print{#__rb,#__rb-pill{display:none !important}}
+</style>
+<div id="__rb">
+  <a class="__rb-home" href="index.html"><span class="__mark" aria-hidden="true">A</span>Alex Rajcoomar <i>portfolio</i></a>
+  <span class="__rb-right"><a href="coursework.html">Coursework</a><a href="library.html">All work</a></span>
+</div>
+
+<div class="wrap">
+
+<header class="masthead">
+  <div class="kicker">Reference Primer &nbsp;·&nbsp; Prepared for an accounting student</div>
+  <h1>Business Law for Accountants:<br>Canada and the United States</h1>
+  <p class="standfirst">The legal machinery that sits underneath audit, tax, and advisory work in both countries, and the places where the two systems diverge enough to hurt you if you assume they match.</p>
+  <div class="meta">Canadian frame throughout. US law appears as the comparison, never as the default. Flagged items marked <strong>[VERIFY]</strong> are ones I could not confirm to a primary source in this session.</div>
+</header>
+
+<div class="layout">
+<nav class="toc" aria-label="Contents">
+  <h2>Contents</h2>
+  <ol>
+    <li><a href="#s1">How to read this</a></li>
+    <li><a href="#s2">Foundations</a></li>
+    <li><a href="#s3">Contract</a></li>
+    <li><a href="#s4">Tort and professional liability</a></li>
+    <li><a href="#s5">Business organizations</a></li>
+    <li><a href="#s6">Securities and reporting</a></li>
+    <li><a href="#s7">Insolvency</a></li>
+    <li><a href="#s8">Employment</a></li>
+    <li><a href="#s9">Tax law as law</a></li>
+    <li><a href="#s10">Regulation of the profession</a></li>
+    <li><a href="#s11">Procedure and litigation risk</a></li>
+    <li><a href="#s12">Translation table</a></li>
+    <li><a href="#s13">Where to look things up</a></li>
+    <li><a href="#s14">What is flagged</a></li>
+    <li><a href="#s15">Sources</a></li>
+  </ol>
+</nav>
+
+<main>
+
+<section id="s1">
+<h2 class="part"><span class="num">1</span>How to read this</h2>
+<p class="deck">What this document is for, and the one mental habit that will save you the most trouble.</p>
+
+<p>Accounting and law describe the same transactions in two different languages, and the accounting language is downstream. A lease is an asset and a liability because a contract gave the lessee a right of use that a court would enforce. Revenue is recognized when control transfers because a body of sales law defines when control transfers. An audit opinion carries risk because tort law lets someone who read it sue you. Every measurement question you will be asked eventually resolves into a legal question about who owes what to whom, and the accountant who cannot see that layer is guessing.</p>
+
+<p>The one habit worth building now: <strong>never assume a Canadian rule and an American rule match because the words match.</strong> "Audit committee," "fiduciary duty," "bankruptcy," and "wrongful dismissal" all exist in both countries and mean materially different things. The dangerous cases are not the obvious differences. They are the near-identical terms with different content, because those are the ones you will read past without noticing.</p>
+
+<p>A structural asymmetry runs through everything below. Canada centralizes at the top and decentralizes at the bottom: one Supreme Court sits over the whole country and one body of federal law governs banking, insolvency, and criminal matters, while contract, tort, corporate, and securities law sit with the provinces. The United States inverts this: it federalizes securities, insolvency, and antitrust, but leaves contract, tort, corporate, and professional regulation to fifty separate states with no single court to reconcile them. So when you ask "what is the American rule," the honest first answer is usually "in which state," and when you ask "what is the Canadian rule," it is usually "in which province, and does it matter."</p>
+
+<div class="callout acct">
+<span class="label">Register note</span>
+<p>Sections are ordered by how often the material will actually collide with your work, not by how a law school would sequence it. Tort and professional liability (section 4) is the section to read first if you read only one, because it is the body of law that decides whether you personally get sued.</p>
+</div>
+</section>
+
+
+<section id="s2">
+<h2 class="part"><span class="num">2</span>Foundations: where law comes from and who makes it</h2>
+<p class="deck">Sources of law, the two legal traditions, the constitutional division of powers, and the court structures. This is the skeleton every later section hangs on.</p>
+
+<h3>2.1 The four sources, in order of authority</h3>
+
+<p>Both countries build law from the same four layers, and the order matters because a lower layer that contradicts a higher one is void. The <strong>constitution</strong> sits on top and is hard to change. <strong>Statutes</strong> passed by a legislature come next; they can override judge-made law but not the constitution. <strong>Regulations and subordinate instruments</strong> made under a statute by a regulator or cabinet come third, and are valid only within the authority the statute delegated. <strong>Judge-made law</strong>, the common law and equity, fills every remaining space and interprets the layers above it.</p>
+
+<p>Two consequences follow that accountants get wrong. First, a regulator's guidance is not automatically law. A CRA interpretation bulletin, an OSC staff notice, or an IRS revenue ruling states the administrator's position, and a court can and does disagree with it. Second, the common law is not a fallback for gaps in legislation. It is a live body of binding rules in its own right, and a great deal of the law that governs your professional exposure, notably negligence, exists nowhere in any statute.</p>
+
+<h3>2.2 Common law, civil law, and the fact that both countries are mixed</h3>
+
+<p>The common law tradition, inherited from England, builds rules case by case from decided disputes, and treats prior decisions as binding on later courts through <em>stare decisis</em>. The civil law tradition, descended from Roman law through the French and German codes, starts from a comprehensive written code and reasons deductively from its articles; prior decisions are persuasive rather than binding. Nine Canadian provinces and three territories are common law jurisdictions. Forty-nine American states are common law jurisdictions.</p>
+
+<p>Each country has one exception, and they are not symmetric. <strong>Quebec</strong> applies the <em>Civil Code of Québec</em> to private law: contracts, property, obligations, civil liability, family, and succession. Public law in Quebec, including criminal law, constitutional law, and administrative law, remains common law. Canada is therefore genuinely <strong>bijural</strong>, and federal statutes that touch private law concepts have to be drafted to work in both traditions. The Department of Justice runs a harmonization programme for exactly this reason. <strong>Louisiana</strong> retains a civil-law-derived code for private law, but its procedure, commercial law, and constitutional structure are substantially common law, and the federal overlay is common law throughout.</p>
+
+<div class="callout acct">
+<span class="label">Why an accountant cares</span>
+<p>If you work on a Quebec client, security over assets is not a PPSA registration, it is a hypothec under the <em>Civil Code</em>, and the terminology in the credit agreement will not match the rest of the file. Lease, partnership, and mandate (agency) concepts also differ. Do not assume an Ontario template describes the Quebec position.</p>
+</div>
+
+<h3>2.3 Who has power over what</h3>
+
+<p>This is the single most important structural difference between the two systems, and it is an inversion.</p>
+
+<p><span class="pill ca">Canada</span> The <em>Constitution Act, 1867</em> enumerates federal powers in section 91 and provincial powers in section 92. Anything not assigned to either falls to the federal Parliament through the residual "peace, order and good government" power. Federal heads relevant to business include trade and commerce, banking, bankruptcy and insolvency, currency, interest, and criminal law. Provincial heads include <strong>property and civil rights in the province</strong> under section 92(13), which is the broadest and most consequential head in Canadian business law, along with the administration of justice and the incorporation of provincial companies. Both levels can tax, with the provinces limited to direct taxation within the province.</p>
+
+<p><span class="pill us">United States</span> The federal Constitution enumerates federal powers in Article I, section 8, and the Tenth Amendment reserves everything else to the states. The residual power runs to the states, not the centre. The workhorse federal head is the <strong>Commerce Clause</strong>, which has been read broadly enough to support the entire federal securities, labour, and environmental apparatus. The Supremacy Clause makes valid federal law override conflicting state law.</p>
+
+<table>
+<caption>Allocation of business-relevant law-making power</caption>
+<thead><tr><th>Subject</th><th class="ca">Canada</th><th class="us">United States</th></tr></thead>
+<tbody>
+<tr><th>Contract and tort</th><td class="ca" data-l="Canada">Provincial (s. 92(13)). Common law in nine provinces, <em>Civil Code</em> in Quebec.</td><td class="us" data-l="US">State. Fifty bodies of law, no federal general common law since <em>Erie</em>.</td></tr>
+<tr><th>Corporate law</th><td class="ca" data-l="Canada">Both. Federal CBCA and provincial statutes such as the OBCA coexist; incorporators choose.</td><td class="us" data-l="US">State only. No general federal incorporation statute. Delaware dominates by choice, not by law.</td></tr>
+<tr><th>Securities regulation</th><td class="ca" data-l="Canada">Provincial. No federal securities regulator.</td><td class="us" data-l="US">Federal (SEC) with a residual state layer ("blue sky" laws).</td></tr>
+<tr><th>Bankruptcy and insolvency</th><td class="ca" data-l="Canada">Federal (s. 91). But the security interests being enforced are provincial.</td><td class="us" data-l="US">Federal (Bankruptcy Code). But secured transactions are state law (UCC Article 9).</td></tr>
+<tr><th>Banking</th><td class="ca" data-l="Canada">Federal, exclusively.</td><td class="us" data-l="US">Split. National banks federal, state-chartered banks state, with a dual regulator system.</td></tr>
+<tr><th>Employment</th><td class="ca" data-l="Canada">Provincial, except federally regulated industries under the <em>Canada Labour Code</em>.</td><td class="us" data-l="US">State default, with a heavy federal statutory overlay (Title VII, FLSA, ERISA, ADA).</td></tr>
+<tr><th>Criminal law</th><td class="ca" data-l="Canada">Federal, exclusively. One <em>Criminal Code</em> for the country.</td><td class="us" data-l="US">Both. Fifty state criminal codes plus a federal code.</td></tr>
+<tr><th>Regulation of accountants</th><td class="ca" data-l="Canada">Provincial. CPA Ontario licenses public accounting in Ontario.</td><td class="us" data-l="US">State boards of accountancy, coordinated but not unified.</td></tr>
+</tbody>
+</table>
+
+<h3>2.4 Courts</h3>
+
+<p><span class="pill ca">Canada</span> One integrated hierarchy. Each province has a superior court of <strong>inherent jurisdiction</strong> that hears any matter, federal or provincial, unless a statute removes it, and an appellate court above it. The Supreme Court of Canada sits at the top of everything: criminal, civil, constitutional, common law, and Quebec civil law alike. Alongside this runs a small set of specialized federal courts, notably the Federal Court and Federal Court of Appeal for judicial review of federal decision-makers and intellectual property, and the <strong>Tax Court of Canada</strong>, which is where an income tax dispute with the CRA actually goes. There is one final word on the law of Canada.</p>
+
+<p><span class="pill us">United States</span> Two parallel systems that touch only at the top and only on federal questions. Federal district courts are courts of <strong>limited jurisdiction</strong> and can only hear a case if there is a federal question or if the parties are citizens of different states and the amount in controversy exceeds a statutory threshold ("diversity jurisdiction"). Above them sit thirteen circuit courts of appeal, which frequently disagree with each other, producing a "circuit split" that persists until the Supreme Court resolves it or does not. State courts run in parallel and their supreme courts are <strong>final</strong> on questions of state law; the US Supreme Court cannot correct a state supreme court's reading of its own state's contract law. Under the <em>Erie</em> doctrine, a federal court hearing a diversity case applies state substantive law, so a federal judge in Texas decides a Texas contract dispute by predicting what the Texas Supreme Court would do.</p>
+
+<div class="callout flag">
+<span class="label">The practical consequence</span>
+<p>Ask "what does Canadian law say about auditor liability to third parties" and you get one answer, from the Supreme Court of Canada, binding everywhere. Ask the same question about American law and there is no single answer: New York, California, New Jersey, and Texas apply materially different rules, and which one governs depends on where the plaintiff sues and which state's law the conflict-of-laws analysis selects. Any source that gives you "the US rule" without naming a state is either simplifying or wrong.</p>
+</div>
+
+<h3>2.5 Precedent and how to read a citation</h3>
+
+<p>Both systems bind lower courts to higher courts within the same hierarchy, and treat decisions from outside that hierarchy as persuasive only. In Canada, a Supreme Court decision binds every court in the country; an Ontario Court of Appeal decision binds Ontario courts and persuades everyone else. In the United States, a Second Circuit decision binds federal district courts within the Second Circuit and nobody else, and Delaware Chancery decisions carry enormous persuasive weight on corporate matters nationwide despite binding only Delaware.</p>
+
+<div class="split">
+<div class="ca">
+<h5>Reading a Canadian citation</h5>
+<p><em>Deloitte &amp; Touche v Livent Inc (Receiver of)</em>, 2017 SCC 63</p>
+<ul>
+<li><strong>2017</strong> year of decision</li>
+<li><strong>SCC</strong> the court (Supreme Court of Canada; ONCA, BCCA, FCA, TCC follow the same pattern)</li>
+<li><strong>63</strong> the 63rd decision that court released that year</li>
+</ul>
+<p>Older cases use reporter citations: <em>Hercules Managements Ltd v Ernst &amp; Young</em>, [1997] 2 SCR 165, meaning volume 2 of the 1997 Supreme Court Reports at page 165.</p>
+</div>
+<div class="us">
+<h5>Reading a US citation</h5>
+<p><em>Bily v Arthur Young &amp; Co</em>, 3 Cal. 4th 370 (1992)</p>
+<ul>
+<li><strong>3</strong> volume number</li>
+<li><strong>Cal. 4th</strong> the reporter (California Reports, fourth series), which tells you the court and therefore the jurisdiction</li>
+<li><strong>370</strong> first page; <strong>(1992)</strong> year</li>
+</ul>
+<p>Federal: <em>Ultramares Corp v Touche</em>, 255 N.Y. 170 (1931) is a New York state decision despite its fame. Statutes cite by title and section: 15 U.S.C. § 78j(b).</p>
+</div>
+</div>
+
+<p>Learn to read the court out of the citation before you read the holding. A case that says something useful is worth nothing to you if it comes from a court that does not bind your client's jurisdiction, and this is the most common error people make when they search American law from Canada.</p>
+</section>
+
+<section id="s3">
+<h2 class="part"><span class="num">3</span>Contract</h2>
+<p class="deck">The body of law that creates almost every asset and liability you will ever measure. Broadly convergent between the two countries, with a handful of divergences that matter.</p>
+
+<h3>3.1 Formation, in both countries</h3>
+
+<p>A contract requires an <strong>offer</strong>, an <strong>acceptance</strong> that matches it, <strong>consideration</strong> (something of value moving each way), an <strong>intention to create legal relations</strong>, <strong>capacity</strong>, and a <strong>lawful object</strong>. Both countries inherited this from English law and the elements are recognizably the same. Consideration is the one that generates most of the divergence, because it is the requirement that a bare promise, however sincere, is unenforceable unless the promisee gave something for it.</p>
+
+<div class="callout acct">
+<span class="label">Why an accountant cares</span>
+<p>Contract formation determines the date a performance obligation arises, which determines the period. If a purchase order was never accepted in a way the law recognizes, there is no contract, no enforceable right to consideration, and no revenue. Under IFRS 15 the first criterion is that the parties have approved the contract and are committed to perform, and that criterion is a legal question wearing accounting clothes.</p>
+</div>
+
+<h3>3.2 Where the two diverge</h3>
+
+<table>
+<caption>Contract law: points of real divergence</caption>
+<thead><tr><th>Issue</th><th class="ca">Canada</th><th class="us">United States</th></tr></thead>
+<tbody>
+<tr><th>Sale of goods</th><td class="ca" data-l="Canada">Provincial <em>Sale of Goods Acts</em>, descended from the English Act of 1893. Largely untouched for a century. Implied conditions as to title, description, merchantable quality, and fitness for purpose.</td><td class="us" data-l="US">Uniform Commercial Code Article 2, adopted in nearly every state, with state-by-state variations. Louisiana has not adopted Article 2. Substantially modernized relative to the Canadian statutes.</td></tr>
+<tr><th>Modifying an existing contract</th><td class="ca" data-l="Canada">Traditionally required fresh consideration. <em>Rosas v Toca</em>, 2018 BCCA 191, held a variation enforceable without fresh consideration absent duress, but that is a British Columbia appellate decision and its reception elsewhere is not uniform. <strong>[VERIFY]</strong> the position in your province before relying on it.</td><td class="us" data-l="US">UCC § 2-209 allows a good-faith modification of a goods contract with no new consideration. Outside goods, the common law pre-existing duty rule still generally applies.</td></tr>
+<tr><th>Firm (irrevocable) offers</th><td class="ca" data-l="Canada">An offer is revocable before acceptance unless the promise to hold it open is itself supported by consideration or under seal.</td><td class="us" data-l="US">UCC § 2-205 makes a signed written firm offer by a merchant irrevocable for a stated period without consideration.</td></tr>
+<tr><th>Good faith</th><td class="ca" data-l="Canada">Recognized as an organizing principle with a free-standing <strong>duty of honest performance</strong> from <em>Bhasin v Hrynew</em>, 2014 SCC 71, developed in <em>C.M. Callow v Zollinger</em>, 2020 SCC 45, and <em>Wastech</em>, 2021 SCC 7. Cannot be contracted out of.</td><td class="us" data-l="US">Longstanding: UCC § 1-304 and Restatement (Second) of Contracts § 205 imply good faith in performance and enforcement. Content varies by state.</td></tr>
+<tr><th>Cross-border goods sales</th><td class="ca" data-l="Canada">Party to the UN Convention on Contracts for the International Sale of Goods (CISG). It applies <strong>by default</strong> to commercial goods contracts with a party in another contracting state, displacing the provincial Sale of Goods Act unless expressly excluded.</td><td class="us" data-l="US">Also a party. The CISG likewise displaces UCC Article 2 by default on qualifying cross-border sales. Many contracts opt out expressly; many do not, by inadvertence.</td></tr>
+</tbody>
+</table>
+
+<div class="callout flag">
+<span class="label">The CISG trap</span>
+<p>A Canadian manufacturer selling to a US buyer is governed by the CISG unless the contract excludes it, and the CISG has no writing requirement, no perfect tender rule, and a different approach to when risk passes. If you are testing cut-off on cross-border shipments and the contract is silent on governing law, the transfer-of-control analysis may not follow the domestic rule anyone in the room assumed.</p>
+</div>
+
+<h3>3.3 Interpretation and limitation clauses</h3>
+
+<p>Canadian courts read commercial contracts as a whole in light of the surrounding circumstances, and the Supreme Court held in <em>Sattva Capital Corp v Creston Moly Corp</em>, 2014 SCC 53, that contractual interpretation is largely a question of mixed fact and law, which narrows appellate review. American courts vary by state on how much extrinsic evidence they will admit, with New York taking a notably strict four-corners approach and California a more permissive one.</p>
+
+<p>Limitation of liability and exclusion clauses matter to you directly, because they are the mechanism by which an accounting firm caps its exposure on a non-audit engagement. Canada applies the framework from <em>Tercon Contractors Ltd v British Columbia</em>, 2010 SCC 4: the clause is enforced if it applies on its terms, was not unconscionable at formation, and no overriding public policy defeats it. US enforceability varies by state, and several states restrict or void limitation clauses in professional engagements, particularly audits. <strong>[VERIFY]</strong> the state position before assuming a cap holds.</p>
+</section>
+
+
+<section id="s4">
+<h2 class="part"><span class="num">4</span>Tort and professional liability</h2>
+<p class="deck">The section that decides whether you get sued. Read this one twice.</p>
+
+<h3>4.1 The structure of a negligence claim</h3>
+
+<p>A plaintiff suing in negligence must establish five things in both countries: that the defendant owed a <strong>duty of care</strong>, that the defendant's conduct fell below the applicable <strong>standard of care</strong>, that the breach <strong>caused</strong> the loss, that the loss was not too <strong>remote</strong>, and that <strong>damage</strong> occurred. For a professional, the standard of care is that of a reasonably competent member of the profession, which in practice means compliance with the applicable professional standards (Canadian Auditing Standards in Canada, PCAOB standards for US issuer audits) is strong evidence of meeting the standard but is not automatically conclusive.</p>
+
+<p>Duty of care is where the systems part company. Canada uses a single structured test. The United States does not have one.</p>
+
+<div class="split">
+<div class="ca">
+<h5>Canada: the Anns/Cooper framework</h5>
+<p>From <em>Cooper v Hobart</em>, 2001 SCC 79, refining the English <em>Anns</em> test:</p>
+<ul>
+<li><strong>Stage one:</strong> is there sufficient <em>proximity</em> between the parties, and was the injury <em>reasonably foreseeable</em>? If yes, a prima facie duty arises.</li>
+<li><strong>Stage two:</strong> do residual policy considerations negate that duty? The dominant one for accountants is the spectre of <em>indeterminate liability</em>: liability in an indeterminate amount, for an indeterminate time, to an indeterminate class.</li>
+</ul>
+<p>Where a duty is already established by precedent, courts move straight to applying it.</p>
+</div>
+<div class="us">
+<h5>United States: no unified test</h5>
+<p>Duty is a question of law decided state by state, with several competing approaches in circulation:</p>
+<ul>
+<li>Foreseeability-driven analysis in the <em>Palsgraf</em> tradition</li>
+<li>Multi-factor balancing tests, of which California's <em>Rowland v Christian</em> factors are the best known</li>
+<li>Restatement (Third) of Torts formulations adopted in some states</li>
+</ul>
+<p>For pure economic loss from professional advice, the applicable rule is a specific line of authority in each state rather than a general duty test.</p>
+</div>
+</div>
+
+<h3>4.2 Negligent misrepresentation and pure economic loss</h3>
+
+<p>Financial statements cause economic loss, not physical injury, and courts in both countries have always been more restrictive about recovery for pure economic loss than for personal injury or property damage. The reason is the indeterminacy problem: a defective bridge injures the people who cross it, while a defective audit opinion can be read by every investor on earth.</p>
+
+<p>Canada recognizes negligent misrepresentation following <em>Hedley Byrne</em>, with the elements set out in <em>Queen v Cognos Inc</em>, [1993] 1 SCR 87: a duty of care based on a special relationship, an untrue or misleading representation, negligence in making it, reasonable reliance by the plaintiff, and resulting damage. The United States runs the equivalent claim through Restatement (Second) of Torts § 552 in most states, which is where the auditor cases live.</p>
+
+<h3>4.3 Auditor liability to third parties: the four cases that define the field</h3>
+
+<div class="case ca">
+<span class="cite"><i>Hercules Managements Ltd v Ernst &amp; Young</i>, [1997] 2 SCR 165</span>
+<p>Shareholders sued the auditors of two failed corporations, claiming they had relied on negligently prepared audited statements both in making further investments and in failing to protect existing ones. The Supreme Court found a prima facie duty at stage one, then negated it at stage two on indeterminate liability grounds. The reasoning that matters: the statutory purpose of an audit under corporate legislation is to allow shareholders <strong>as a collectivity</strong> to supervise management, not to guide individual investment decisions. Claims of the kind pleaded belonged to the corporation rather than to shareholders personally. The result is that an auditor's exposure is anchored to the purpose for which the audit was required, not to everyone who foreseeably read it.</p>
+</div>
+
+<div class="case ca">
+<span class="cite"><i>Deloitte &amp; Touche v Livent Inc (Receiver of)</i>, 2017 SCC 63</span>
+<p>The modern Canadian statement, and more important to practice than <em>Hercules</em>. Deloitte did two distinct pieces of work for Livent: comfort-letter and press-release assistance connected to a financing, and the 1997 statutory audit. The Court analyzed each separately against the <strong>scope of the undertaking</strong> the auditor had actually assumed. On the financing work, proximity existed but the loss claimed was not within the scope of what Deloitte undertook. On the statutory audit, the undertaking was to allow shareholders to scrutinize management, and the losses the company continued to incur while trading on a false picture fell inside it. Deloitte was liable on the 1997 audit and not on the rest, with damages fixed at roughly $40.4 million.</p>
+<p style="margin-top:9px"><strong>The practical lesson.</strong> What you undertake defines what you owe. An engagement letter is not paperwork; it is the document that sets the perimeter of your tort exposure. Scope creep on an engagement is legal exposure creep.</p>
+</div>
+
+<div class="case us">
+<span class="cite"><i>Ultramares Corp v Touche</i>, 255 N.Y. 170 (1931)</span>
+<p>Cardozo's decision, and the source of the phrase every accounting student eventually meets: liability "in an indeterminate amount for an indeterminate time to an indeterminate class." Accountants were held not liable in negligence to a lender who relied on a certified balance sheet, because the lender was not in privity or a relationship approaching privity. New York still applies a near-privity rule, refined into a three-part test in <em>Credit Alliance Corp v Arthur Andersen &amp; Co</em>, 65 N.Y.2d 536 (1985).</p>
+</div>
+
+<div class="case us">
+<span class="cite"><i>Bily v Arthur Young &amp; Co</i>, 3 Cal. 4th 370 (1992)</span>
+<p>The California Supreme Court surveyed the three available approaches (privity, Restatement § 552, and pure foreseeability) and split the difference. For <strong>general negligence</strong>, an auditor's liability is confined to the client. For <strong>negligent misrepresentation</strong>, third parties may recover under Restatement § 552, but only those who were specifically intended beneficiaries of the audit known to the auditor. Most American states land in this Restatement § 552 middle ground; a small minority historically applied a broader foreseeability rule.</p>
+</div>
+
+<table>
+<caption>Auditor exposure to third parties, compared</caption>
+<thead><tr><th>&nbsp;</th><th class="ca">Canada</th><th class="us">United States</th></tr></thead>
+<tbody>
+<tr><th>Governing rule</th><td class="ca" data-l="Canada">One national framework: Anns/Cooper as applied in <em>Hercules</em> and <em>Livent</em>.</td><td class="us" data-l="US">Determined state by state. Three competing rules in circulation.</td></tr>
+<tr><th>Controlling concept</th><td class="ca" data-l="Canada">Scope of the auditor's undertaking. Purpose of the engagement defines the perimeter.</td><td class="us" data-l="US">Relationship to the third party. Privity, known intended beneficiary, or foreseeability depending on the state.</td></tr>
+<tr><th>Strictest position</th><td class="ca" data-l="Canada">n/a. One rule.</td><td class="us" data-l="US">New York near-privity (<em>Credit Alliance</em>).</td></tr>
+<tr><th>Majority position</th><td class="ca" data-l="Canada">n/a.</td><td class="us" data-l="US">Restatement (Second) of Torts § 552, known and intended users.</td></tr>
+<tr><th>Predictability</th><td class="ca" data-l="Canada">High. One court settles the question for the country.</td><td class="us" data-l="US">Low. Conflict-of-laws analysis can decide the outcome before the merits are reached.</td></tr>
+</tbody>
+</table>
+
+<h3>4.4 Statutory liability sits on top of the tort claim</h3>
+
+<p>Do not stop at negligence. Securities legislation in both countries creates statutory causes of action against auditors that operate on different, and often easier, terms than a common law claim. Those are set out in section 6, because they are part of the securities architecture rather than of tort law. The point to carry forward is that a plaintiff suing an auditor will generally plead both, and the statutory claim is usually the stronger one.</p>
+
+<h3>4.5 What actually protects you</h3>
+
+<ul>
+<li><strong>The engagement letter.</strong> After <em>Livent</em>, it is the primary document defining the scope of the undertaking, which is the primary determinant of duty. Vague scope language is a liability position, not a client-service accommodation.</li>
+<li><strong>Third-party reliance letters.</strong> Where a lender or purchaser wants to rely on your work, the response is a negotiated reliance letter with defined terms, not silence. Silence in the United States can put you inside Restatement § 552 as a known intended user without any of the protections you would have negotiated.</li>
+<li><strong>Limitation of liability clauses.</strong> Available on non-assurance engagements, enforceable in Canada under <em>Tercon</em>, restricted in some US states. Independence rules constrain their use on audits.</li>
+<li><strong>Documentation.</strong> The standard of care is judged against professional standards, and unrecorded work is, in evidentiary terms, work that did not happen.</li>
+<li><strong>The firm structure.</strong> LLP status shields partners from liability for the negligence of other partners, but never for their own. See section 5.</li>
+</ul>
+</section>
+
+<section id="s5">
+<h2 class="part"><span class="num">5</span>Business organizations</h2>
+<p class="deck">Who owns the entity, who runs it, who is on the hook, and who the directors actually owe their duties to. The last question splits the two countries.</p>
+
+<h3>5.1 The forms</h3>
+
+<p>Both countries offer the same basic menu, and the tax and liability consequences drive the choice. A <strong>sole proprietorship</strong> has no separate legal existence and the owner bears unlimited personal liability. A <strong>general partnership</strong> arises automatically when two or more persons carry on business in common with a view to profit, whether or not anyone intended to form one, and each partner is liable for the firm's obligations without limit and can bind the firm as its agent. A <strong>limited partnership</strong> gives passive partners liability capped at their contribution, provided they stay out of management. A <strong>corporation</strong> is a separate legal person; shareholders risk their investment and no more.</p>
+
+<p>The professional form matters to you personally. Accounting and law firms in both countries typically operate as <strong>limited liability partnerships</strong>, which shield each partner from personal liability for the negligence of other partners while leaving them fully exposed for their own acts and for firm obligations generally. In Ontario the LLP is available to professions whose governing statute permits it. The one structural difference worth knowing: the United States has the <strong>limited liability company (LLC)</strong>, a flexible pass-through entity with no true Canadian equivalent. Canada has no LLC statute, and a US LLC is generally treated as a corporation for Canadian tax purposes, which creates recurring cross-border headaches around double taxation and treaty benefits. <strong>[VERIFY]</strong> the current CRA administrative position and treaty analysis before advising on any specific structure.</p>
+
+<h3>5.2 Where you incorporate</h3>
+
+<div class="split">
+<div class="ca">
+<h5>Canada</h5>
+<p>A genuine choice between the federal <em>Canada Business Corporations Act</em> and a provincial statute such as Ontario's <em>Business Corporations Act</em>. Federal incorporation gives name protection nationally and the right to carry on business in every province, subject to extra-provincial registration.</p>
+<p>The statutes are broadly similar in structure because most were drafted from the same 1970s model. Differences worth checking: Canadian-residency requirements for directors (present under the CBCA, removed in Ontario as of 2021 <strong>[VERIFY]</strong> the current requirement in each province before advising).</p>
+</div>
+<div class="us">
+<h5>United States</h5>
+<p>State incorporation only, and by strong convention rather than compulsion, <strong>Delaware</strong>. The reasons are a well-developed body of corporate case law, a specialist non-jury Court of Chancery, and a legislature that updates the General Corporation Law responsively. Many other states follow the Model Business Corporation Act.</p>
+<p>The <strong>internal affairs doctrine</strong> means the law of the state of incorporation governs the relationship among the corporation, its directors, and its shareholders, regardless of where the business actually operates. A California company incorporated in Delaware is governed by Delaware corporate law.</p>
+</div>
+</div>
+
+<h3>5.3 Directors' duties: the real divergence</h3>
+
+<p>Both countries impose two duties on directors: a <strong>fiduciary duty</strong> of loyalty and good faith, and a <strong>duty of care</strong> to exercise the care, diligence and skill of a reasonably prudent person. The divergence is in the answer to a single question: <em>to whom is the fiduciary duty owed?</em></p>
+
+<p><span class="pill ca">Canada</span> CBCA section 122(1)(a) requires directors to act honestly and in good faith <strong>with a view to the best interests of the corporation</strong>. The Supreme Court held in <em>BCE Inc v 1976 Debentureholders</em>, 2008 SCC 69, that this means the corporation itself, and not the shareholders. Directors may consider the interests of other stakeholders in deciding what the corporation's best interests are. Parliament codified this in 2019 by adding section 122(1.1), which lists factors directors may consider: shareholders, employees, retirees and pensioners, creditors, consumers, governments, the environment, and the long-term interests of the corporation. <em>Peoples Department Stores Inc (Trustee of) v Wise</em>, 2004 SCC 68, had earlier held that the fiduciary duty does not shift to creditors when a corporation approaches insolvency, though the duty of care may be owed to creditors.</p>
+
+<p><span class="pill us">United States</span> Delaware law places fiduciary duties of care and loyalty on directors, owed to <strong>the corporation and its shareholders</strong>. Shareholder wealth maximization is the orienting principle in a way it is not in Canada. Delaware layers on context-specific duties: <em>Revlon</em> duties to maximize immediate value once a sale of control becomes inevitable, <em>Unocal</em> proportionality review of defensive measures, and <em>Caremark</em> oversight obligations that make a sustained failure to monitor a breach of the duty of loyalty. Many states have adopted "constituency statutes" permitting consideration of other stakeholders, but Delaware has not.</p>
+
+<div class="callout acct">
+<span class="label">Why an accountant cares</span>
+<p>This shapes what a board will actually do when management proposes an aggressive accounting position, a large distribution, or a going-private transaction. A Canadian board can defend a decision that favoured creditors or employees over immediate shareholder value; a Delaware board in a sale-of-control situation has far less room. In an ESG or sustainability reporting context, the Canadian formulation gives directors a statutory hook that Delaware directors do not have.</p>
+</div>
+
+<h3>5.4 The business judgment rule</h3>
+
+<p>Both countries protect honest, informed business decisions from being second-guessed with hindsight. In Delaware the business judgment rule operates as a strong <strong>presumption</strong> that directors acted on an informed basis, in good faith, and in the honest belief the action was in the company's best interests, which a plaintiff must rebut before the court will examine the merits. Canadian courts apply a functionally similar deference, asking whether the decision fell within a range of reasonable alternatives, but Canadian formulations treat it as a standard of review rather than a formal burden-shifting presumption. The practical outcomes converge more than the doctrinal framing suggests.</p>
+
+<h3>5.5 Shareholder remedies</h3>
+
+<table>
+<caption>Where a minority shareholder or creditor goes for relief</caption>
+<thead><tr><th>Remedy</th><th class="ca">Canada</th><th class="us">United States</th></tr></thead>
+<tbody>
+<tr><th>Oppression remedy</th><td class="ca" data-l="Canada"><strong>The central remedy.</strong> CBCA s. 241 and provincial equivalents. Available to a wide class of "complainants" including shareholders, directors, officers, and, at the court's discretion, creditors. Triggered by conduct that is oppressive, unfairly prejudicial, or that unfairly disregards a complainant's interests. Remedies are open-ended.</td><td class="us" data-l="US">No general equivalent. Some states provide statutory relief for oppression in <strong>close corporations only</strong>. Delaware does not have a general oppression statute; minority claims run through fiduciary duty litigation.</td></tr>
+<tr><th>Derivative action</th><td class="ca" data-l="Canada">Available with leave of the court (CBCA s. 239). Used less than oppression because oppression is broader and easier.</td><td class="us" data-l="US">The principal vehicle. Subject to demand requirements and demand-futility analysis, which is a substantial procedural hurdle in Delaware.</td></tr>
+<tr><th>Dissent and appraisal</th><td class="ca" data-l="Canada">Statutory dissent rights on fundamental changes, with fair value determined by the court.</td><td class="us" data-l="US">Appraisal rights on mergers, with a well-developed Delaware valuation jurisprudence that has produced significant litigation.</td></tr>
+</tbody>
+</table>
+
+<h3>5.6 Piercing the corporate veil</h3>
+
+<p>Separate legal personality holds in both countries and courts disturb it rarely. Canadian courts, following the Ontario formulation in <em>Transamerica Life Insurance Co of Canada v Canada Life Assurance Co</em> (1996), generally require complete domination of the subsidiary plus conduct akin to fraud. American courts apply alter-ego or instrumentality tests that vary by state and are, in aggregate, somewhat more willing to pierce, particularly in closely held companies with disregarded formalities and commingled funds. In both countries the practical protection is the same: maintain separate books, separate bank accounts, arm's-length intercompany terms, and real corporate records. Those are all things an accountant controls.</p>
+</section>
+
+
+<section id="s6">
+<h2 class="part"><span class="num">6</span>Securities regulation and the reporting environment</h2>
+<p class="deck">The most consequential structural difference in the entire document, and the one that most directly governs the profession.</p>
+
+<h3>6.1 Who regulates</h3>
+
+<p><span class="pill ca">Canada</span> There is <strong>no federal securities regulator</strong>. Each of the ten provinces and three territories has its own securities legislation and its own commission, of which the Ontario Securities Commission is the largest, with the Autorité des marchés financiers in Quebec, the Alberta Securities Commission, and the British Columbia Securities Commission also significant. They coordinate through the <strong>Canadian Securities Administrators</strong>, an umbrella body with no independent legal authority of its own, which develops <strong>National Instruments</strong> that each jurisdiction then adopts as its own rule. A <strong>passport system</strong> lets a filer deal with a principal regulator and have the decision recognized elsewhere, though Ontario does not participate and instead applies an interface arrangement.</p>
+
+<p>This is not for want of trying. The Supreme Court struck down a proposed federal <em>Canadian Securities Act</em> in 2011 as exceeding the federal trade and commerce power. A subsequent Cooperative Capital Markets Regulatory System was held constitutional in a 2018 reference, but implementation work paused in 2021 and the system was never brought into force. <strong>[VERIFY]</strong> the current status if you need it for anything real; the file has been dormant rather than formally closed.</p>
+
+<p><span class="pill us">United States</span> Federal primacy through the <strong>Securities and Exchange Commission</strong>, created under the <em>Securities Exchange Act of 1934</em>. The <em>Securities Act of 1933</em> governs offerings and registration statements; the 1934 Act governs the secondary market, continuous reporting, and market conduct. State "blue sky" laws survive underneath, but the National Securities Markets Improvement Act of 1996 preempted much of their reach over covered securities. One regulator, one rulebook, one set of forms.</p>
+
+<h3>6.2 What issuers have to do</h3>
+
+<table>
+<caption>Reporting and governance obligations compared</caption>
+<thead><tr><th>Obligation</th><th class="ca">Canada</th><th class="us">United States</th></tr></thead>
+<tbody>
+<tr><th>Accounting framework</th><td class="ca" data-l="Canada"><strong>IFRS as adopted in Canada</strong> (CPA Canada Handbook Part I) for publicly accountable enterprises. Private enterprises may use <strong>ASPE</strong> (Part II).</td><td class="us" data-l="US"><strong>US GAAP</strong>, set by the FASB and recognized by the SEC. Foreign private issuers may file IFRS as issued by the IASB without reconciliation.</td></tr>
+<tr><th>Periodic filings</th><td class="ca" data-l="Canada">Annual and interim financial statements plus MD&amp;A under NI 51-102; annual information form. Filed on <strong>SEDAR+</strong>.</td><td class="us" data-l="US">Forms 10-K, 10-Q, and 8-K under the 1934 Act. Filed on <strong>EDGAR</strong>.</td></tr>
+<tr><th>CEO/CFO certification</th><td class="ca" data-l="Canada"><strong>NI 52-109.</strong> Officers certify they have designed disclosure controls and ICFR, and must disclose material weaknesses.</td><td class="us" data-l="US"><strong>SOX s. 302.</strong> Officers make explicit assertions on the effectiveness of controls.</td></tr>
+<tr><th>Auditor attestation on ICFR</th><td class="ca" data-l="Canada"><strong>Not required.</strong> There is no Canadian equivalent of SOX 404(b). Management certifies; the auditor does not attest.</td><td class="us" data-l="US"><strong>Required</strong> under SOX s. 404(b) for accelerated filers. Smaller reporting companies and non-accelerated filers are exempt.</td></tr>
+<tr><th>Audit committees</th><td class="ca" data-l="Canada"><strong>NI 52-110.</strong> Independence and financial literacy requirements, with accommodations for venture issuers.</td><td class="us" data-l="US"><strong>SOX s. 301</strong> plus exchange listing standards. Independence and at least one financial expert, or explain why not.</td></tr>
+<tr><th>Audit firm oversight</th><td class="ca" data-l="Canada"><strong>CPAB</strong>, the Canadian Public Accountability Board, inspects firms auditing reporting issuers. Not a government agency in the SOX sense.</td><td class="us" data-l="US"><strong>PCAOB</strong>, created by SOX and overseen by the SEC. Sets auditing standards for issuer audits and inspects registered firms.</td></tr>
+</tbody>
+</table>
+
+<div class="callout flag">
+<span class="label">Live file, August 2026</span>
+<p>The PCAOB's continued existence has been contested. A provision eliminating it and folding its functions into the SEC was included in the 2025 federal reconciliation bill and stripped out on a Byrd Rule ruling in the Senate. The SEC announced a new PCAOB chairman and board members on 30 January 2026, so the Board is operating, but the direction of travel on its mandate is unsettled. <strong>Check the current position before relying on any description of PCAOB authority.</strong></p>
+</div>
+
+<h3>6.3 Civil liability for misleading disclosure</h3>
+
+<p>This is where an auditor's statutory exposure lives, and the two regimes are built on opposite compromises.</p>
+
+<p><span class="pill us">United States</span> Under <strong>section 11 of the 1933 Act</strong>, an auditor who consents to the use of its report in a registration statement is liable to purchasers for material misstatements, with no requirement to prove reliance or scienter, subject to a <strong>due diligence defence</strong> the auditor must establish. Under <strong>section 10(b) and Rule 10b-5</strong> of the 1934 Act, secondary market plaintiffs must prove <em>scienter</em>, meaning intent or recklessness, but they get the benefit of the <strong>fraud-on-the-market</strong> presumption of reliance from <em>Basic Inc v Levinson</em> in an efficient market, which is what makes class certification achievable. The Private Securities Litigation Reform Act of 1995 tightened pleading standards and introduced proportionate liability for defendants who did not knowingly violate the securities laws.</p>
+
+<p><span class="pill ca">Canada</span> Prospectus liability under provincial legislation (in Ontario, section 130 of the <em>Securities Act</em>) is broadly analogous to section 11. Secondary market liability came much later, through <strong>Part XXIII.1 of the Ontario <em>Securities Act</em></strong>, in force 31 December 2005, with parallel provisions across the CSA jurisdictions. Its design is deliberately more restrictive than the American model:</p>
+
+<ul>
+<li><strong>Leave of the court is required</strong> before an action can be commenced. The plaintiff must show the action is brought in good faith and has a reasonable possibility of success at trial, on a paper record, before any discovery. The Supreme Court has described the screen as a "robust deterrent" to unmeritorious claims.</li>
+<li><strong>Statutory liability caps apply.</strong> For issuers, the greater of 5% of market capitalization or $1 million. For directors and officers, the greater of 50% of their aggregate compensation or $25,000. There is a separate cap for experts, including auditors, tied to the revenue earned from the issuer <strong>[VERIFY]</strong> the formula and figure directly in the statute before quoting it. The caps do not protect a defendant who authorized or acquiesced in a misrepresentation knowing it was false.</li>
+<li><strong>Statutory defences</strong> exist for reasonable investigation, reliance on an expert, and forward-looking information accompanied by cautionary language and stated risk factors.</li>
+<li><strong>Canadian courts have rejected fraud-on-the-market</strong> for the parallel common law negligent misrepresentation claims, so individual reliance must be proven, which limits what can be certified as a common issue.</li>
+<li>The limitation period runs to the earlier of three years from the misrepresentation and six months from the news release announcing that leave was granted, with the clock suspended while the leave motion is pending.</li>
+</ul>
+
+<div class="callout acct">
+<span class="label">The comparison in one line</span>
+<p>The United States lets a large class in the door easily and then fights about scienter and damages. Canada makes the plaintiff pass a merits screen and then caps what they can recover. American securities litigation is therefore a far larger tail risk for an audit firm than Canadian securities litigation, which is one reason global firms price and structure Canadian and US engagements differently.</p>
+</div>
+</section>
+
+<section id="s7">
+<h2 class="part"><span class="num">7</span>Insolvency and secured lending</h2>
+<p class="deck">Federal statutes in both countries, sitting on top of sub-national security law in both countries. The restructuring processes are built on different philosophies.</p>
+
+<h3>7.1 The statutes</h3>
+
+<div class="split">
+<div class="ca">
+<h5>Canada</h5>
+<p><strong><em>Bankruptcy and Insolvency Act</em> (BIA).</strong> Federal. Handles liquidation bankruptcies and the more procedural, rules-driven "proposal" route to restructuring. Used by individuals and by smaller corporate debtors.</p>
+<p><strong><em>Companies' Creditors Arrangement Act</em> (CCAA).</strong> Federal, short, and deliberately skeletal. Available where liabilities exceed $5 million. The vehicle for every large Canadian restructuring.</p>
+<p><strong>Security interests are provincial.</strong> Personal Property Security Acts in the common law provinces; the <em>Civil Code</em> hypothec regime in Quebec.</p>
+</div>
+<div class="us">
+<h5>United States</h5>
+<p><strong>Bankruptcy Code, Title 11.</strong> Federal and comprehensive. <strong>Chapter 7</strong> liquidates. <strong>Chapter 11</strong> reorganizes. <strong>Chapter 13</strong> handles individual repayment plans. <strong>Chapter 15</strong> handles cross-border recognition.</p>
+<p>Specialized federal bankruptcy courts hear these cases, with a developed bar and predictable procedure.</p>
+<p><strong>Security interests are state law</strong> under UCC Article 9, which is the direct ancestor of the Canadian PPSAs and shares most of its vocabulary.</p>
+</div>
+</div>
+
+<h3>7.2 CCAA versus Chapter 11</h3>
+
+<p>Both processes stay creditor enforcement, keep management in place, and require a plan approved by creditors and sanctioned by the court. The differences are in how much the statute dictates and who watches the debtor.</p>
+
+<table>
+<caption>Restructuring: CCAA and Chapter 11</caption>
+<thead><tr><th>Feature</th><th class="ca">CCAA (Canada)</th><th class="us">Chapter 11 (US)</th></tr></thead>
+<tbody>
+<tr><th>Statutory density</th><td class="ca" data-l="Canada">Skeletal. The court exercises broad discretion at each stage and shapes the process through orders.</td><td class="us" data-l="US">Detailed code with defined timelines, including exclusivity periods for filing and soliciting a plan.</td></tr>
+<tr><th>Eligibility</th><td class="ca" data-l="Canada">Debtor must be insolvent, with claims exceeding $5 million.</td><td class="us" data-l="US">No insolvency test. Filing a petition is sufficient.</td></tr>
+<tr><th>Stay of proceedings</th><td class="ca" data-l="Canada">Discretionary. The initial order is limited to 10 days; extensions require the debtor to show good faith and due diligence.</td><td class="us" data-l="US">Broad <strong>automatic</strong> stay on filing, with no fixed expiry.</td></tr>
+<tr><th>Independent oversight</th><td class="ca" data-l="Canada">The <strong>Monitor</strong>, a court-appointed licensed insolvency trustee. A neutral officer of the court who reports to all stakeholders. This is the defining feature.</td><td class="us" data-l="US">Debtor in possession, with an official <strong>creditors' committee</strong> representing unsecured creditors. Adversarial rather than neutral. A trustee or examiner only in unusual cases.</td></tr>
+<tr><th>Plan approval</th><td class="ca" data-l="Canada">Two-thirds in value and a majority in number, in each class.</td><td class="us" data-l="US">Two-thirds in value and a majority in number of those voting, in each class.</td></tr>
+<tr><th>Cram down</th><td class="ca" data-l="Canada"><strong>Not available.</strong> Every class must approve.</td><td class="us" data-l="US"><strong>Available.</strong> A plan can be confirmed over a dissenting class if at least one impaired class accepts and the plan is fair and equitable and does not unfairly discriminate.</td></tr>
+</tbody>
+</table>
+
+<div class="callout acct">
+<span class="label">Why an accountant cares, twice over</span>
+<p>First, the Monitor is almost always a licensed insolvency trustee working out of an accounting firm's restructuring practice. This is a live Canadian career path in a way that has no direct US analogue, because Chapter 11 has no neutral court officer of the same kind.</p>
+<p>Second, going-concern assessment under CAS 570 and IAS 1 turns on what the entity can actually do. An entity with access to Chapter 11 and its automatic stay is in a different position from one that must persuade a Canadian judge to grant and then repeatedly extend a discretionary stay. That difference belongs in the assessment, not just in the disclosure.</p>
+</div>
+</section>
+
+
+<section id="s8">
+<h2 class="part"><span class="num">8</span>Employment</h2>
+<p class="deck">The largest single divergence in day-to-day commercial consequence, and the one most likely to distort a cross-border model.</p>
+
+<h3>8.1 At-will and its absence</h3>
+
+<p><span class="pill us">United States</span> Employment is <strong>at will</strong> in nearly every state, meaning either party may end the relationship at any time, for any reason or no reason, without notice or payment. Montana is the recognized exception, having replaced at-will with a statutory good-cause regime. The at-will default is cut back by exceptions that vary by state, including public policy limits, implied contract from handbooks or conduct, and in some states an implied covenant of good faith. A federal statutory overlay prohibits discrimination on protected grounds (Title VII, ADEA, ADA), sets wage and hour rules (FLSA), and requires advance notice of mass layoffs (WARN).</p>
+
+<p><span class="pill ca">Canada</span> <strong>At-will employment does not exist.</strong> An indefinite-term employee dismissed without cause is entitled to <strong>reasonable notice</strong> of termination or pay in lieu. Two separate entitlements stack. Employment standards legislation, such as Ontario's <em>Employment Standards Act, 2000</em>, sets a statutory floor of notice and, above a threshold, severance pay. Above that floor, the common law implies a term of reasonable notice whose length is assessed on the <em>Bardal</em> factors: character of employment, length of service, age, and availability of similar employment. Long-service senior employees routinely receive notice periods measured in many months. A written contract can limit the entitlement to the statutory minimum, but Canadian courts read termination clauses strictly and strike them down readily, in which case the common law entitlement revives in full.</p>
+
+<p><strong>Just cause</strong> in Canada is a high bar reserved for misconduct that fundamentally repudiates the employment relationship, and an employer who alleges it and fails pays the full notice entitlement anyway. <strong>Constructive dismissal</strong> arises where the employer unilaterally makes a fundamental change to the terms of employment, which lets the employee treat the contract as terminated and claim notice.</p>
+
+<div class="callout acct">
+<span class="label">Why an accountant cares</span>
+<p>Terminating fifty employees in Ontario and fifty in Ohio produce completely different numbers. The Canadian restructuring provision under IAS 37 has to reflect statutory notice, statutory severance, and common law reasonable notice for anyone whose contract does not validly limit it; the Ohio provision may be close to nil absent a severance plan or WARN obligation. If you see a cross-border restructuring model applying one severance factor across both countries, that is an error, and it is usually a material one.</p>
+</div>
+
+<h3>8.2 Employee versus independent contractor</h3>
+
+<p>Both countries police this boundary hard because it drives payroll withholding, benefits, and employment protections, and both use multi-factor control-and-integration tests rather than the parties' label. Canada asks about control, ownership of tools, chance of profit and risk of loss, and integration into the business, and recognizes an intermediate <strong>dependent contractor</strong> category entitled to reasonable notice, which the United States does not have in the same form. The CRA and the IRS both apply their own tests for tax purposes that do not necessarily align with the employment-law characterization, so an individual can be a contractor for one purpose and an employee for another.</p>
+</section>
+
+
+<section id="s9">
+<h2 class="part"><span class="num">9</span>Tax law as law</h2>
+<p class="deck">You already know Canadian tax. This section is about the legal architecture around it, and about the American structure you have not been trained in.</p>
+
+<h3>9.1 Architecture</h3>
+
+<table>
+<caption>Tax systems compared, structurally</caption>
+<thead><tr><th>&nbsp;</th><th class="ca">Canada</th><th class="us">United States</th></tr></thead>
+<tbody>
+<tr><th>Primary statute</th><td class="ca" data-l="Canada"><em>Income Tax Act</em>; <em>Excise Tax Act</em> for GST/HST. Provincial statutes layered on, mostly administered federally.</td><td class="us" data-l="US">Internal Revenue Code, Title 26. No federal VAT or sales tax; state and local sales taxes instead.</td></tr>
+<tr><th>Administrator</th><td class="ca" data-l="Canada">Canada Revenue Agency. Revenu Québec administers separately in Quebec.</td><td class="us" data-l="US">Internal Revenue Service, plus fifty state revenue departments.</td></tr>
+<tr><th>Basis of liability</th><td class="ca" data-l="Canada"><strong>Residence.</strong> Residents taxed on worldwide income; non-residents on Canadian-source income.</td><td class="us" data-l="US"><strong>Citizenship and residence.</strong> US citizens and green card holders are taxed on worldwide income wherever they live. Nearly unique globally.</td></tr>
+<tr><th>Dispute path</th><td class="ca" data-l="Canada">Notice of objection to CRA Appeals, then <strong>Tax Court of Canada</strong>, then Federal Court of Appeal, then the Supreme Court with leave. Tax need not be paid first for most income tax disputes.</td><td class="us" data-l="US">Three forums. <strong>US Tax Court</strong> hears cases before payment. District court or the Court of Federal Claims hear refund suits after payment. Then the relevant circuit, then the Supreme Court.</td></tr>
+<tr><th>Administrative guidance</th><td class="ca" data-l="Canada">Income tax folios (which have replaced most interpretation bulletins), technical interpretations, advance income tax rulings. Persuasive, not binding on courts.</td><td class="us" data-l="US">Treasury Regulations (which do carry legal force), revenue rulings, revenue procedures, private letter rulings.</td></tr>
+</tbody>
+</table>
+
+<div class="callout flag">
+<span class="label">Terminology discipline</span>
+<p>Canadian and American tax vocabularies are false friends throughout. <strong>CCA</strong> is not depreciation and is not MACRS. A <strong>TFSA</strong> is not a Roth IRA and receives no treaty protection of the kind an RRSP does. <strong>GST/HST</strong> is a value-added tax and has no American analogue at all; a US sales tax is a single-stage retail tax with no input credit mechanism. Using the American term for a Canadian concept in an interview or on the CFE is a mistake that will register, so build the habit of naming the Canadian concept precisely now.</p>
+</div>
+
+<h3>9.2 Anti-avoidance: the two approaches</h3>
+
+<p>Both countries police the gap between the letter of the tax law and its purpose, and they reached the same destination by opposite routes. Canada legislated a general rule in 1988; the United States developed judicial doctrines first and codified one of them in 2010.</p>
+
+<p><span class="pill ca">Canada</span> The <strong>general anti-avoidance rule</strong> in section 245 of the <em>Income Tax Act</em> denies a tax benefit arising from an avoidance transaction that constitutes a misuse or abuse of the Act read as a whole. It was materially strengthened by amendments that received royal assent on 20 June 2024:</p>
+<ul>
+<li>An interpretive <strong>preamble</strong> was added, directing that GAAR applies to abusive avoidance while preserving legitimate planning.</li>
+<li>The avoidance transaction threshold moved from a transaction undertaken <em>primarily</em> for tax purposes to one where obtaining the tax benefit is <strong>one of the main purposes</strong>. This widens the net considerably.</li>
+<li>A transaction <strong>significantly lacking economic substance</strong> now tends to indicate abuse.</li>
+<li>A <strong>25% penalty</strong> on the additional tax was introduced, avoidable by disclosure under the mandatory disclosure rules or by voluntary disclosure by the filing deadline.</li>
+<li>The reassessment period is extended by <strong>three years</strong> for GAAR assessments absent prior disclosure.</li>
+</ul>
+<p>Most of the amendments apply to transactions occurring on or after 1 January 2024, with the preamble and penalty operating from royal assent. <strong>[VERIFY]</strong> the precise coming-into-force rule for any particular provision against the enacting legislation before applying it to a real file.</p>
+
+<p><span class="pill us">United States</span> No general anti-avoidance rule. Instead, a set of judicial doctrines: <strong>substance over form</strong>, <strong>step transaction</strong>, <strong>sham transaction</strong>, <strong>business purpose</strong>, and the <strong>economic substance doctrine</strong>. Congress codified the last of these in IRC § 7701(o), which requires that a transaction both change the taxpayer's economic position in a meaningful way apart from tax effects <em>and</em> serve a substantial non-tax purpose. The penalty structure under § 6662 is the aggressive part: 20% where the transaction was adequately disclosed, and <strong>40% on a strict liability basis</strong> where it was not, with no reasonable cause defence available for the 40% penalty. Litigation continues over the threshold question of when the doctrine is even "relevant" to a transaction, so this is an active area rather than a settled one.</p>
+
+<h3>9.3 Privilege: the difference that can end a career</h3>
+
+<p>This is the item on this page with the sharpest practical edge for an accountant, and it is the one most often misunderstood.</p>
+
+<div class="split">
+<div class="ca">
+<h5>Canada: there is no accountant-client privilege</h5>
+<p><strong>Solicitor-client privilege applies to lawyers only.</strong> An accountant's working papers, memos, planning notes, and emails to the client are producible to the CRA and to opposing parties in litigation. There is no professional privilege attaching to accountants as such.</p>
+<p>The narrow route to protection is for the client's <em>lawyer</em> to retain the accountant so that the accountant's work is done in aid of the provision of legal advice, which can bring it inside the lawyer's privilege. Structuring that properly matters and it is not achieved by copying a lawyer on an email. <strong>[VERIFY]</strong> the current state of the case law before relying on any specific arrangement.</p>
+</div>
+<div class="us">
+<h5>United States: a narrow statutory privilege</h5>
+<p>IRC <strong>§ 7525</strong> extends a confidentiality privilege to communications of <em>tax advice</em> between a taxpayer and a federally authorized tax practitioner, which includes CPAs and enrolled agents. It is materially narrower than it sounds:</p>
+<ul>
+<li>It does not apply in <strong>criminal</strong> tax matters, even where the communication began in a civil context</li>
+<li>It does not cover <strong>return preparation</strong>, only advice</li>
+<li>It does not apply to the promotion of <strong>tax shelters</strong></li>
+<li>It applies only in non-criminal matters before the IRS and in non-criminal federal proceedings, so it does not reach state proceedings or private third-party litigation</li>
+<li>It protects communications, not work product</li>
+</ul>
+</div>
+</div>
+
+<div class="callout flag">
+<span class="label">Working rule</span>
+<p>Write every file note, email, and memo on the assumption that a tax authority, an opposing litigant, and eventually a judge will read it. In Canada that assumption is simply accurate. In the United States it is accurate in every criminal matter and in most of the situations where it would actually matter to you.</p>
+</div>
+</section>
+
+
+<section id="s10">
+<h2 class="part"><span class="num">10</span>Regulation of the profession</h2>
+<p class="deck">Who lets you practise, who can take it away, and what obligations attach to the licence.</p>
+
+<h3>10.1 Licensing</h3>
+
+<p><span class="pill ca">Canada</span> Regulation is <strong>provincial</strong>. CPA Ontario, operating under Ontario legislation, admits members and separately licenses <strong>public accounting</strong>, which is a distinct authorization from the CPA designation itself. CPA Canada is a national body that supports the profession and, through the Accounting Standards Board and Auditing and Assurance Standards Board, oversees the standard-setting that populates the CPA Canada Handbook. It is not a regulator. Discipline, licensing, and practice inspection sit with the provincial body.</p>
+
+<p><span class="pill us">United States</span> Regulation is by <strong>state boards of accountancy</strong>, fifty of them plus territories, coordinated through NASBA and guided by the Uniform Accountancy Act. Licensure requires the Uniform CPA Examination plus state-specific education and experience requirements that are not uniform. <strong>CPA mobility</strong> provisions allow a licensee in good standing in one state to practise in another without a second licence, but the scope and conditions vary and the model has been under active legislative revision in several states. Standard setting is split: the FASB sets US GAAP, the AICPA's Auditing Standards Board sets standards for non-issuer audits, and the PCAOB sets them for issuer audits.</p>
+
+<div class="callout acct">
+<span class="label">If you are thinking about a US designation</span>
+<p>Canadian CPAs have historically been able to obtain a US CPA licence through the International Qualification Examination (IQEX) under a mutual recognition agreement, rather than sitting the full Uniform CPA Exam. Eligibility conditions and the participating state boards change, so treat any description of the pathway, including this one, as needing current confirmation from NASBA and the specific state board. <strong>[VERIFY]</strong></p>
+</div>
+
+<h3>10.2 Anti-money laundering obligations</h3>
+
+<p>Both countries impose AML duties on accountants, and in both cases the trigger is <em>handling or directing the movement of value</em>, not giving advice.</p>
+
+<p><span class="pill ca">Canada</span> Under the <em>Proceeds of Crime (Money Laundering) and Terrorist Financing Act</em> and its regulations, accountants and accounting firms become reporting entities to <strong>FINTRAC</strong> when they engage in, or give instructions on behalf of a client in respect of, receiving or paying funds or virtual currency, purchasing or selling securities, real property or business assets, or transferring funds, virtual currency or securities. Compensation is irrelevant to the trigger. <strong>Audit, review, and compilation engagements are excluded.</strong> Once captured, the obligations are a compliance programme, client identification and beneficial ownership verification, politically exposed person determinations, ongoing monitoring, record keeping, and reporting of suspicious transactions, terrorist property, and large cash or virtual currency transactions. Administrative monetary penalties follow non-compliance.</p>
+
+<p>The distinction between <em>advising</em> and <em>instructing</em> does the work. Recommending a course of action is advice. Directing the movement of the funds is an instruction, and it is what brings the firm inside the regime.</p>
+
+<p><span class="pill us">United States</span> The Bank Secrecy Act framework administered by FinCEN historically did not treat accountants as a covered financial institution in the way Canada does, and the obligations that reach accountants arrive indirectly, through client-side requirements, IRS Form 8300 cash reporting, and beneficial ownership reporting rules. <strong>[VERIFY]</strong> the current scope of US obligations, including the beneficial ownership reporting regime, which has changed repeatedly and is not a stable target.</p>
+</section>
+
+
+<section id="s11">
+<h2 class="part"><span class="num">11</span>Procedure and litigation risk</h2>
+<p class="deck">Two countries with similar substantive law generate litigation on different scales, because procedure decides who can afford to sue.</p>
+
+<table>
+<caption>Civil procedure: why American litigation risk is larger</caption>
+<thead><tr><th>Feature</th><th class="ca">Canada</th><th class="us">United States</th></tr></thead>
+<tbody>
+<tr><th>Costs</th><td class="ca" data-l="Canada"><strong>Loser pays.</strong> Costs follow the event. A successful party typically recovers a meaningful portion of actual legal costs on a partial indemnity scale, more on substantial indemnity. This is the single largest deterrent to speculative litigation in Canada.</td><td class="us" data-l="US"><strong>American rule.</strong> Each side bears its own costs, win or lose. A plaintiff with a weak claim faces little downside beyond their own fees, which are often contingent.</td></tr>
+<tr><th>Discovery</th><td class="ca" data-l="Canada">Narrow and proportional. Ontario limits examination for discovery to one representative per party and, in general, seven hours, absent leave.</td><td class="us" data-l="US">Broad. Multiple depositions as a matter of course, extensive document production, interrogatories. Discovery cost is itself a settlement lever.</td></tr>
+<tr><th>Civil juries</th><td class="ca" data-l="Canada">Rare. No constitutional right to a civil jury, courts retain discretion to strike a jury notice, and Quebec has no civil juries at all.</td><td class="us" data-l="US">Constitutional right to a jury in federal civil cases under the Seventh Amendment, and broadly available in state courts.</td></tr>
+<tr><th>Punitive damages</th><td class="ca" data-l="Canada">Rare and modest. <em>Whiten v Pilot Insurance</em>, 2002 SCC 18, is famous for a $1 million award precisely because it was exceptional.</td><td class="us" data-l="US">Common, and often a multiple of the compensatory award, subject to constitutional due process limits on the ratio.</td></tr>
+<tr><th>Class actions</th><td class="ca" data-l="Canada">Provincial class proceedings statutes. Ontario tightened its certification test effective 1 October 2020, adding express <strong>predominance</strong> and <strong>superiority</strong> requirements, and gave defendants a direct appeal to the Court of Appeal from certification.</td><td class="us" data-l="US">Federal Rule 23 plus state equivalents. Rule 23(b)(3) has long required predominance and superiority; Ontario's 2020 amendment moved toward that model.</td></tr>
+</tbody>
+</table>
+
+<div class="callout acct">
+<span class="label">Reading this as a risk model</span>
+<p>Substantively, the two countries' rules on auditor liability are not wildly far apart. The difference in expected litigation cost is driven mostly by the four rows above. Loser-pays plus narrow discovery plus no jury plus capped statutory damages compounds into a materially smaller tail. That is why a global firm's US practice carries insurance and risk-management overhead that its Canadian practice does not, and why the same audit failure produces a different loss distribution on either side of the border.</p>
+</div>
+</section>
+
+<section id="s12">
+<h2 class="part"><span class="num">12</span>Translation table</h2>
+<p class="deck">Terms that look interchangeable and are not. Learn these as pairs, not as synonyms.</p>
+
+<table>
+<caption>Canadian term to American term, with the trap</caption>
+<thead><tr><th class="ca">Canadian term</th><th class="us">Nearest US term</th><th>Why the translation is imperfect</th></tr></thead>
+<tbody>
+<tr><td class="ca" data-l="Canada">Reasonable notice</td><td class="us" data-l="US">(no equivalent)</td><td data-l="Trap">The US default is at-will termination. There is no implied notice entitlement to translate.</td></tr>
+<tr><td class="ca" data-l="Canada">Oppression remedy</td><td class="us" data-l="US">Minority oppression statute / derivative suit</td><td data-l="Trap">The Canadian remedy is far broader, available to creditors, and not limited to close corporations.</td></tr>
+<tr><td class="ca" data-l="Canada">Monitor (CCAA)</td><td class="us" data-l="US">Examiner / creditors' committee</td><td data-l="Trap">Neither is right. The Monitor is a neutral court officer with no Chapter 11 counterpart.</td></tr>
+<tr><td class="ca" data-l="Canada">PPSA registration</td><td class="us" data-l="US">UCC-1 financing statement</td><td data-l="Trap">Close cousins with shared vocabulary, but priority rules and registration mechanics differ, and Quebec uses hypothecs instead.</td></tr>
+<tr><td class="ca" data-l="Canada">CCA</td><td class="us" data-l="US">MACRS depreciation</td><td data-l="Trap">Different classes, rates, conventions, and recapture mechanics. Not a substitutable concept.</td></tr>
+<tr><td class="ca" data-l="Canada">GST/HST</td><td class="us" data-l="US">Sales tax</td><td data-l="Trap">A value-added tax with input credits versus a single-stage retail tax with none. Structurally different taxes.</td></tr>
+<tr><td class="ca" data-l="Canada">TFSA</td><td class="us" data-l="US">Roth IRA</td><td data-l="Trap">Superficially similar, but a TFSA generally has no US treaty protection and can create US reporting problems for a US person.</td></tr>
+<tr><td class="ca" data-l="Canada">Notice of objection</td><td class="us" data-l="US">Protest to IRS Appeals</td><td data-l="Trap">Similar function, different deadlines, different consequences of missing them, different downstream forums.</td></tr>
+<tr><td class="ca" data-l="Canada">SEDAR+</td><td class="us" data-l="US">EDGAR</td><td data-l="Trap">Functionally parallel filing systems. The closest true equivalence on this table.</td></tr>
+<tr><td class="ca" data-l="Canada">Reporting issuer</td><td class="us" data-l="US">Registrant / reporting company</td><td data-l="Trap">Status is acquired province by province in Canada, and federally once in the US.</td></tr>
+<tr><td class="ca" data-l="Canada">Chartered Professional Accountant</td><td class="us" data-l="US">Certified Public Accountant</td><td data-l="Trap">Provincial licence with a separate public accounting authorization, versus a state licence with mobility provisions.</td></tr>
+<tr><td class="ca" data-l="Canada">Superior court</td><td class="us" data-l="US">(depends)</td><td data-l="Trap">A Canadian superior court has inherent jurisdiction over everything. A US federal district court has limited jurisdiction. "Superior Court" is also the trial court name in some states and the appellate court name in others.</td></tr>
+</tbody>
+</table>
+</section>
+
+
+<section id="s13">
+<h2 class="part"><span class="num">13</span>Where to look things up</h2>
+<p class="deck">Free, authoritative, and worth bookmarking. Secondary summaries are for orientation; primary sources are for anything you will act on.</p>
+
+<div class="split">
+<div class="ca">
+<h5>Canada</h5>
+<ul>
+<li><strong>CanLII</strong> (canlii.org). Free full-text case law and legislation for every Canadian jurisdiction. The default starting point.</li>
+<li><strong>Justice Laws</strong> (laws-lois.justice.gc.ca). Consolidated federal statutes and regulations, including the <em>Income Tax Act</em> and the CBCA.</li>
+<li><strong>e-Laws</strong> (ontario.ca/laws). Consolidated Ontario statutes.</li>
+<li><strong>CRA</strong> income tax folios and technical interpretations, on canada.ca.</li>
+<li><strong>OSC</strong> (osc.ca) for Ontario securities rules and the National Instruments as adopted.</li>
+<li><strong>SEDAR+</strong> (sedarplus.ca) for issuer filings.</li>
+<li><strong>Supreme Court of Canada</strong> (decisions.scc-csc.ca) for judgments and case summaries.</li>
+</ul>
+</div>
+<div class="us">
+<h5>United States</h5>
+<ul>
+<li><strong>Cornell Legal Information Institute</strong> (law.cornell.edu). Free US Code, CFR, and Supreme Court decisions with usable annotations.</li>
+<li><strong>SEC EDGAR</strong> (sec.gov/edgar) for issuer filings, and sec.gov generally for rules and releases.</li>
+<li><strong>Delaware Courts</strong> (courts.delaware.gov) for Chancery and Supreme Court opinions, which is where corporate law is actually made.</li>
+<li><strong>IRS</strong> (irs.gov) for the Code, regulations, revenue rulings, and forms.</li>
+<li><strong>PCAOB</strong> (pcaobus.org) for auditing standards and inspection reports.</li>
+<li><strong>CourtListener</strong> (courtlistener.com) for free federal and state case law.</li>
+<li><strong>Your state's</strong> board of accountancy and secretary of state, both of which vary.</li>
+</ul>
+</div>
+</div>
+
+<div class="callout acct">
+<span class="label">A method that works</span>
+<p>Start with the statute, not the commentary. Read the actual section, then read the definitions section it depends on, and only then read a firm bulletin to find out how courts have interpreted it. Reversing that order is how people end up confidently repeating a summary that was accurate three amendments ago.</p>
+</div>
+</section>
+
+
+<section id="s14">
+<h2 class="part"><span class="num">14</span>What is flagged, and why</h2>
+<p class="deck">Everything in this document marked [VERIFY] in one place, so you can clear the list rather than hunt through the text.</p>
+
+<ol>
+<li><strong>Hercules, full reasons.</strong> Every access route to the full judgment was blocked in this session (CanLII by robots policy, the SCC site returned an error). The description in section 4.3 rests on secondary case summaries. The holding is well settled, but read the reasons yourself at <em>[1997] 2 SCR 165</em> before quoting the Court's language.</li>
+<li><strong><em>Rosas v Toca</em> outside British Columbia.</strong> Whether contract variation without fresh consideration is good law in Ontario or your province is not settled by a BC appellate decision.</li>
+<li><strong>Limitation of liability clauses in US professional engagements.</strong> State-by-state, and some states restrict them for audits specifically.</li>
+<li><strong>US LLCs for Canadian tax purposes.</strong> Treatment and treaty entitlement have been contested. Check the current CRA administrative position.</li>
+<li><strong>Director residency requirements.</strong> Ontario removed its Canadian-resident director requirement; the CBCA and other provinces differ. Confirm per jurisdiction.</li>
+<li><strong>Cooperative Capital Markets Regulatory System.</strong> Implementation paused in 2021 rather than formally terminated. Confirm the current position before describing it as dead.</li>
+<li><strong>PCAOB mandate.</strong> Its elimination was proposed in 2025 and removed from the bill on procedural grounds; a new chairman and board were named on 30 January 2026. The mandate is under active reconsideration.</li>
+<li><strong>Part XXIII.1 expert liability cap.</strong> I confirmed the issuer cap (greater of 5% of market capitalization or $1 million) and the director and officer cap (greater of 50% of compensation or $25,000) but not the formula for experts. Read section 138.1 and the liability limits provisions in the <em>Securities Act</em> (Ontario) directly.</li>
+<li><strong>GAAR coming-into-force detail.</strong> Different amendments in the 2024 package have different effective dates. Confirm per provision.</li>
+<li><strong>Privilege by lawyer retainer in Canada.</strong> Whether an accountant's work is protected when engaged through counsel depends on how the retainer is structured and the case law is fact-specific.</li>
+<li><strong>IQEX and US licensure for Canadian CPAs.</strong> Eligibility rules and participating boards change. Confirm with NASBA and the specific state board.</li>
+<li><strong>US AML scope for accountants.</strong> Including the beneficial ownership reporting regime, which has moved repeatedly.</li>
+</ol>
+
+<div class="callout flag">
+<span class="label">Standing caveat</span>
+<p>Nothing here is legal advice, and a primer is the wrong instrument for a live file. The statutory and regulatory positions described are current to August 2026 as best I could confirm them; securities rules, tax rules, and professional standards all change on their own schedules. Treat any figure, section number, or effective date in this document as a pointer to the primary source rather than as a substitute for it.</p>
+</div>
+</section>
+
+
+<section id="s15">
+<h2 class="part"><span class="num">15</span>Sources</h2>
+<p class="deck">Primary and secondary material consulted in preparing this document.</p>
+
+<ul class="srcs">
+<li><a href="https://www.canada.ca/en/intergovernmental-affairs/services/federation/distribution-legislative-powers.html">Government of Canada, The constitutional distribution of legislative powers</a></li>
+<li><a href="https://www.justice.gc.ca/eng/csj-sjc/harmonization/services_information/fundamentals-fondements.html">Department of Justice Canada, The Fundamentals of Bijuralism</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Canadian_securities_regulation">Canadian securities regulation (overview)</a></li>
+<li><a href="https://www.canlii.org/en/ca/scc/doc/1997/1997canlii345/1997canlii345.html"><i>Hercules Managements Ltd v Ernst &amp; Young</i>, 1997 CanLII 345 (SCC)</a></li>
+<li><a href="https://www.canlii.org/en/ca/scc/doc/2017/2017scc63/2017scc63.html"><i>Deloitte &amp; Touche v Livent Inc (Receiver of)</i>, 2017 SCC 63 (CanLII)</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Deloitte_%26_Touche_v_Livent_Inc_(Receiver_of)">Deloitte &amp; Touche v Livent Inc, case overview</a></li>
+<li><a href="https://law.justia.com/cases/california/supreme-court/4th/3/370.html"><i>Bily v Arthur Young &amp; Co</i>, 3 Cal. 4th 370 (1992), Justia</a></li>
+<li><a href="https://laws-lois.justice.gc.ca/eng/acts/C-44/section-122.html">Canada Business Corporations Act, s. 122, Justice Laws</a></li>
+<li><a href="https://blog.auditanalytics.com/canadian-controls-what-is-disclosed-and-what-is-not/">Audit Analytics, Canadian Controls: What is Disclosed and What is Not (NI 52-109 vs SOX 404)</a></li>
+<li><a href="https://www.osc.ca/en/securities-law/instruments-rules-policies/5/52-110/audit-committees-ni-52-110-audit-committees">OSC, National Instrument 52-110 Audit Committees</a></li>
+<li><a href="http://osler.com/wp-content/uploads/2024/06/Defending-Securities-Class-Actions-in-Canada.pdf">Osler, Defending Securities Class Actions in Canada</a></li>
+<li><a href="https://mcmillan.ca/insights/bears-v-bulls-secondary-market-securities-class-actions-in-ontario/">McMillan, Bears v Bulls: Secondary Market Securities Class Actions in Ontario</a></li>
+<li><a href="https://www.blakes.com/getmedia/7baa29c8-99e1-4b14-8a6c-30b3c7ca28b9/Chapter-11-CCAA-Comparison-July2022.pdf">Blakes, Chapter 11 and CCAA: A Cross-Border Comparison</a></li>
+<li><a href="https://www.doanegrantthornton.ca/insights/significant-changes-to-gaar/">Doane Grant Thornton, Significant changes to GAAR</a></li>
+<li><a href="https://www.ctf.ca/EN/en/newsletters/perspectives/2024/1/240101.aspx">Canadian Tax Foundation, GAAR in 2024 and Beyond</a></li>
+<li><a href="https://www.crowe.com/insights/tax-news-highlights/codified-economic-substance-5-things-to-know">Crowe, Codified Economic Substance: 5 Things to Know (IRC 7701(o), 6662)</a></li>
+<li><a href="https://www.eisneramper.com/insights/tax/7525-practitioner-confidentiality-1221/">EisnerAmper, IRC Sec. 7525 Federally Authorized Tax Practitioner Privilege</a></li>
+<li><a href="https://www.fasken.com/en/knowledge/2016/10/the-only-way-to-keep-tax-planning-confidential">Fasken, The Only Way to Keep Tax Planning Confidential (privilege in Canada)</a></li>
+<li><a href="https://fintrac-canafe.canada.ca/re-ed/accts-eng">FINTRAC, Accountants and accounting firms</a></li>
+<li><a href="https://www.sec.gov/newsroom/press-releases/2026-16-sec-appoints-new-chairman-board-members-pcaob">SEC, Press Release 2026-16: SEC Appoints New Chairman and Board Members of PCAOB</a></li>
+<li><a href="https://www.journalofaccountancy.com/news/2025/jun/elimination-of-pcaob-cant-remain-in-budget-bill-senate-official-rules/">Journal of Accountancy, Elimination of PCAOB can't remain in budget bill</a></li>
+<li><a href="https://www.blg.com/en/insights/2020/09/bill-161-sweeping-changes-to-ontarios-class-proceedings-act-take-effect-october-1">BLG, Bill 161: sweeping changes to Ontario's Class Proceedings Act</a></li>
+<li><a href="https://media.dwlaw.com/wp-content/uploads/2026/07/03153347/litigation-in-canadacanadian-us-litigation-differ-1.pdf">Dickinson Wright, Canadian and US Litigation Differences</a></li>
+<li><a href="https://www.airdberlis.com/insights/publications/publication/what-american-employers-should-know-about-canadian-employment-law">Aird &amp; Berlis, What American Employers Should Know About Canadian Employment Law</a></li>
+<li><a href="https://stikeman.com/en-ca/kh/canadian-ma-law/directors-duties-in-canada-six-key-concepts">Stikeman Elliott, Directors' Duties in Canada: Six Key Concepts</a></li>
+<li><a href="https://www.blakes.com/insights/bulletins/2019/cbca-amendments-codify-best-interests-consideratio">Blakes, CBCA Amendments Codify Best Interests Considerations</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Oppression_remedy_in_Canadian_corporate_law">Oppression remedy in Canadian corporate law (overview)</a></li>
+<li><a href="https://www.becker.com/blog/cpa/dual-certification-for-canadian-cpas-iqex-explained">Becker, Dual certification for Canadian CPAs: IQEX explained</a></li>
+<li><a href="https://cpab-ccrc.ca/">Canadian Public Accountability Board</a></li>
+</ul>
+</section>
+
+<footer class="end">
+<p>Prepared August 2026. Canadian frame throughout, per instruction. Twelve items are flagged for verification in section 14; the flags stay until you clear them against a primary source, not until someone restates the point more confidently.</p>
+</footer>
+
+
+</main>
+</div>
+</div>
+
+
+<a id="__rb-pill" href="coursework.html">&#8592; Coursework</a>
+<script>
+(function(){
+  var p=document.getElementById('__rb-pill'); if(!p) return;
+  var t=false;
+  function run(){ t=false;
+    p.classList.toggle('__on',(window.scrollY||document.documentElement.scrollTop)>420); }
+  function q(){ if(!t){ t=true; requestAnimationFrame(run); } }
+  addEventListener('scroll',q,{passive:true}); run();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8">
+<meta property="og:title" content="The Gartner Hype Cycle — The complete picture">
+<meta property="og:description" content="A visual walk through the hype cycle, phase by phase, with what each phase predicts and what it does not.">
+<meta property="og:type" content="article">
+<title>The Gartner Hype Cycle — The complete picture</title>
+<meta name="description" content="A visual walk through the hype cycle, phase by phase, with what each phase predicts and what it does not.">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  @page { size: Letter; margin: 0.38in 0.5in; }
+  *{ margin:0; padding:0; box-sizing:border-box; }
+  :root{ --ink:#0f172a; --body:#1e293b; --mut:#64748b; --line:#e2e8f0;
+    --violet:#5b3fa8; --violet-t:#f1ecfb; --teal:#0d9488; --amber:#b45309; --red:#dc2626; --red-t:#fef2f2; --green:#047857; }
+  body{ font-family:"Helvetica Neue",Arial,sans-serif; color:var(--body); font-size:8.4pt; line-height:1.32; }
+  b{ font-weight:700; } .ink{color:var(--ink);}
+  .head{ background:var(--violet); color:#fff; border-radius:8px; padding:10px 14px; }
+  .head h1{ font-size:16pt; font-weight:800; letter-spacing:-.2px; }
+  .head .s{ font-size:8.6pt; color:#e6def8; margin-top:1px; }
+  .idea{ background:var(--violet-t); border-left:5px solid var(--violet); border-radius:0 7px 7px 0; padding:7px 12px; margin:7px 0; font-size:8.8pt; }
+  .idea b{ color:var(--ink); }
+  .dia{ border:1px solid var(--line); border-radius:9px; padding:6px 10px 3px; background:#fcfcfe; margin:6px 0; }
+  .dia .t{ font-size:9.5pt; font-weight:800; color:var(--violet); margin-bottom:2px; }
+  svg{ width:100%; height:auto; display:block; }
+  .cap{ font-size:8.2pt; color:var(--mut); font-style:italic; margin-top:5px; line-height:1.45; }
+  .cap b{ color:var(--ink); font-style:normal; }
+  h2{ font-size:11pt; font-weight:800; color:var(--ink); margin:9px 0 4px; padding-bottom:2px; border-bottom:2px solid var(--violet); }
+  table{ width:100%; border-collapse:collapse; font-size:7.9pt; margin:5px 0; }
+  th{ background:var(--violet); color:#fff; text-align:left; padding:4px 7px; font-weight:700; }
+  td{ padding:3.5px 7px; border-bottom:1px solid var(--line); vertical-align:top; }
+  tr:nth-child(even) td{ background:var(--violet-t); }
+  td .k{ font-weight:800; color:var(--ink); }
+  .doit{ color:var(--green); font-weight:700; }
+  .trap{ background:var(--red-t); border:1.5px solid var(--red); border-radius:7px; padding:6px 12px; margin:7px 0; font-size:8.6pt; }
+  .trap b{ color:var(--red); }
+  .grid2{ display:grid; grid-template-columns:1fr 1fr; gap:9px; }
+  .box{ border:1px solid var(--line); border-left:4px solid var(--violet); border-radius:7px; padding:6px 10px; }
+  .box .h{ font-weight:800; color:var(--violet); font-size:9.2pt; margin-bottom:3px; }
+  .box p{ font-size:8.4pt; margin-bottom:3px; } .box p b{ color:var(--ink); }
+  .mem{ background:var(--ink); color:#fff; border-radius:8px; padding:9px 13px; margin-top:7px; font-size:8.8pt; }
+  .mem b{ color:#fcd34d; }
+  .p2{ break-before:page; }
+</style></head><body>
+<!-- injected by the site build: a way back into the site from a standalone
+     piece. A static bar at the top, so it is visible on arrival, and a pill
+     that appears once you have scrolled past it, so there is always a way out.
+     Self-contained, because these pages do not load the site stylesheet. -->
+<style id="__rb-style">
+#__rb{
+  box-sizing:border-box;display:flex;flex-wrap:wrap;align-items:center;gap:.6rem 1.25rem;
+  padding:.6rem clamp(1rem,4vw,2rem);border-bottom:1px solid #ddd9cf;background:#faf9f6;
+  font:500 13px/1.35 InterVar,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  color:#55524a;
+}
+#__rb a{color:#14509b;text-decoration:none;display:inline-flex;align-items:center;gap:.4rem}
+#__rb a:hover{text-decoration:underline}
+#__rb .__rb-home{font-weight:640;color:#16150f}
+#__rb .__rb-home i{font-style:normal;font-weight:400;color:#6f6c63}
+#__rb .__rb-right{margin-left:auto;display:flex;gap:1.1rem;flex-wrap:wrap}
+#__rb .__mark{
+  display:inline-grid;place-items:center;width:1.2rem;height:1.2rem;flex:none;
+  background:#16150f;color:#faf9f6;font-size:.72rem;font-weight:700;
+}
+#__rb-pill{
+  position:fixed;left:14px;bottom:14px;z-index:2147483000;
+  display:inline-flex;align-items:center;gap:.45rem;padding:.58rem .9rem;
+  background:rgba(22,21,15,.93);color:#faf9f6;text-decoration:none;border-radius:99px;
+  font:600 12.5px/1 InterVar,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  border:1px solid rgba(255,255,255,.16);box-shadow:0 6px 22px rgba(0,0,0,.28);
+  opacity:0;transform:translateY(6px);pointer-events:none;
+  transition:opacity .2s ease,transform .2s ease;
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+}
+#__rb-pill.__on{opacity:1;transform:none;pointer-events:auto}
+#__rb-pill:hover{background:#16150f;color:#fff}
+@media (prefers-color-scheme:dark){
+  #__rb{background:#131310;border-bottom-color:#2c2b24;color:#c0bcb1}
+  #__rb .__rb-home{color:#f7f5ef}
+  #__rb .__rb-home i{color:#948f85}
+  #__rb a{color:#85adea}
+  #__rb .__mark{background:#f7f5ef;color:#131310}
+  #__rb-pill{background:rgba(247,245,239,.95);color:#131310;border-color:rgba(0,0,0,.2)}
+  #__rb-pill:hover{background:#fff;color:#000}
+}
+@media (prefers-reduced-motion:reduce){#__rb-pill{transition:none}}
+@media print{#__rb,#__rb-pill{display:none !important}}
+</style>
+<div id="__rb">
+  <a class="__rb-home" href="index.html"><span class="__mark" aria-hidden="true">A</span>Alex Rajcoomar <i>portfolio</i></a>
+  <span class="__rb-right"><a href="coursework.html">Coursework</a><a href="library.html">All work</a></span>
+</div>
+
+
+<div class="head"><h1>The Gartner Hype Cycle — the complete picture</h1>
+<div class="s">AFM 241 · Weeks 6–7 · understand it (why) → apply it (when to move) → drop it on your sheet</div></div>
+
+<div class="idea"><b>The one insight most people miss:</b> the curve plots <b>expectations</b>, but the crash is caused by a <b>second, hidden line — actual maturity.</b> Early on, <b>hype races ahead of what the tech can really do</b>; that gap is what snaps back into the Trough. The recovery only comes when <b>real capability finally catches up</b>. See it below.</div>
+
+<!-- DIAGRAM A: WHY -->
+<div class="dia"><div class="t">A · WHY it happens — expectations outrun maturity, then reality catches up</div>
+<svg viewBox="0 0 720 350" xmlns="http://www.w3.org/2000/svg" font-family="Arial">
+  <line x1="64" y1="24" x2="64" y2="300" stroke="#94a3b8" stroke-width="1.5"/>
+  <line x1="64" y1="300" x2="706" y2="300" stroke="#94a3b8" stroke-width="1.5"/>
+  <text x="22" y="180" font-size="9" font-weight="bold" fill="#475569" transform="rotate(-90 22,180)">EXPECTATIONS / hype</text>
+  <text x="600" y="320" font-size="9" font-weight="bold" fill="#475569">TIME / maturity →</text>
+
+  <!-- maturity curve (dashed) -->
+  <path d="M86,290 C230,286 330,262 410,224 C500,182 600,150 700,138" stroke="#0d9488" stroke-width="2.4" stroke-dasharray="6,4" fill="none"/>
+  <text x="470" y="214" font-size="8.4" font-weight="bold" fill="#0d9488">actual capability (maturity)</text>
+
+  <!-- expectations curve (bold) -->
+  <path d="M86,268 C150,268 200,80 228,70 C262,59 352,250 398,262 C452,276 504,198 536,176 C600,146 656,138 700,134" stroke="#5b3fa8" stroke-width="3.4" fill="none"/>
+
+  <!-- the hype gap at the peak -->
+  <line x1="228" y1="74" x2="228" y2="286" stroke="#dc2626" stroke-width="1.4" stroke-dasharray="4,3"/>
+  <text x="236" y="150" font-size="8.6" font-weight="bold" fill="#dc2626">THE HYPE GAP</text>
+  <text x="236" y="162" font-size="7.8" fill="#dc2626">expectations ≫ maturity</text>
+  <text x="236" y="173" font-size="7.8" fill="#dc2626">→ this snaps back ↓</text>
+
+  <!-- convergence -->
+  <text x="556" y="120" font-size="8" font-style="italic" fill="#475569">expectations meet reality</text>
+  <text x="585" y="130" font-size="8" font-style="italic" fill="#475569">= durable value</text>
+
+  <!-- rise labels -->
+  <text x="120" y="186" font-size="8.4" font-style="italic" fill="#7c3aed">RISE 1 = HYPE</text>
+  <text x="446" y="244" font-size="8.4" font-style="italic" fill="#7c3aed">RISE 2 = real VALUE</text>
+
+  <!-- stage dots + labels -->
+  <circle cx="86" cy="268" r="3.5" fill="#5b3fa8"/><text x="70" y="288" font-size="8.4" font-weight="bold" fill="#5b3fa8">1 Trigger</text>
+  <circle cx="228" cy="70" r="3.5" fill="#5b3fa8"/><text x="150" y="58" font-size="8.6" font-weight="bold" fill="#5b3fa8">2 Peak of Inflated Expectations</text>
+  <circle cx="398" cy="262" r="3.5" fill="#5b3fa8"/><text x="338" y="284" font-size="8.4" font-weight="bold" fill="#5b3fa8">3 Trough</text>
+  <circle cx="536" cy="176" r="3.5" fill="#5b3fa8"/><text x="506" y="166" font-size="8.4" font-weight="bold" fill="#5b3fa8">4 Slope</text>
+  <circle cx="700" cy="134" r="3.5" fill="#5b3fa8"/><text x="648" y="124" font-size="8.4" font-weight="bold" fill="#5b3fa8">5 Plateau</text>
+</svg>
+<div class="cap"><b>Read it:</b> the purple line is what people <b>expect</b>; the dashed teal line is what the tech can <b>actually do</b>. At the Peak the gap is huge (hype far ahead of reality) → disappointment drags it into the <b>Trough</b>. Real value only appears once maturity catches up on the <b>Slope</b> and the two lines meet at the <b>Plateau</b>. That's why there are <b>two rises</b>: the first is powered by <b>hype</b>, the second by <b>maturity</b>.</div>
+</div>
+
+<h2>The 6 stages — what's happening, and what YOU should do</h2>
+<table>
+  <tr><th style="width:14%">Stage</th><th style="width:30%">What's happening</th><th style="width:24%">Example</th><th style="width:32%">What to do (apply it)</th></tr>
+  <tr><td><span class="k">1 · Trigger</span></td><td>A breakthrough/demo sparks buzz; <b>few real users</b>; out of the lab.</td><td>A new tech debut (e.g. Large Action Models)</td><td><span class="doit">Sense &amp; watch.</span> Don't buy yet unless you're aggressive with a strategic reason.</td></tr>
+  <tr><td><span class="k">2 · Peak</span></td><td>Hype crests; seen as a <b>"silver bullet"</b>; 30+ vendors; investor frenzy.</td><td>NFTs/crypto in 2021; "metaverse"</td><td><span class="doit">Resist FOMO.</span> Pilot only with clear OKRs; the hype is ahead of reality.</td></tr>
+  <tr><td><span class="k">3 · Trough</span></td><td>Reality hits; it <b>underdelivers</b>; press turns negative; shakeout.</td><td><b>GenAI now</b> (per course); = Moore's "chasm"</td><td><span class="doit">Don't quit if it truly fits.</span> Bargains live here; separate genuine fit from fad.</td></tr>
+  <tr><td><span class="k">4 · Slope</span></td><td>Survivors find <b>real uses</b>; best practices form; adoption <b>&lt;5% → 20–30%</b>.</td><td>Big Data/Hadoop; speech recognition</td><td><span class="doit">Adopt — sweet spot.</span> Value is proven and risk has dropped (Type B zone).</td></tr>
+  <tr><td><span class="k">5 · Plateau</span></td><td><b>Mainstream, proven, boring.</b> Out-of-the-box solutions.</td><td>Cloud computing; "Googling"</td><td><span class="doit">Safe, cheap adoption</span> — but no competitive edge left (Type C zone).</td></tr>
+  <tr><td><span class="k">6 · Beyond</span></td><td><b>Swamp</b> (still used, costs &gt; benefit) → <b>Cliff</b> (obsolete).</td><td>IBM mainframes (Swamp); Windows XP (Cliff)</td><td><span class="doit">Plan your exit.</span> Don't cling past usefulness ("hang on too long").</td></tr>
+</table>
+
+<!-- ============ PAGE 2 ============ -->
+<div class="p2"></div>
+<h2>B · HOW to use it — the 4 timing traps + who acts where</h2>
+<div class="dia"><div class="t">B · Apply it — where each trap and each organization type lives on the curve</div>
+<svg viewBox="0 0 720 340" xmlns="http://www.w3.org/2000/svg" font-family="Arial">
+  <defs><marker id="a" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><polygon points="0,0 7,3 0,6" fill="#dc2626"/></marker></defs>
+  <line x1="60" y1="20" x2="60" y2="276" stroke="#94a3b8" stroke-width="1.5"/>
+  <line x1="60" y1="276" x2="708" y2="276" stroke="#94a3b8" stroke-width="1.5"/>
+  <text x="20" y="160" font-size="8.6" font-weight="bold" fill="#475569" transform="rotate(-90 20,160)">EXPECTATIONS</text>
+
+  <!-- expectations curve -->
+  <path d="M84,244 C148,244 198,58 226,48 C260,37 350,228 396,240 C450,254 502,176 534,154 C598,124 654,116 700,112" stroke="#5b3fa8" stroke-width="3" fill="none"/>
+  <!-- beyond dashed tail -->
+  <path d="M700,112 C710,150 712,200 706,250" stroke="#5b3fa8" stroke-width="2" stroke-dasharray="5,4" fill="none"/>
+  <text x="650" y="262" font-size="7.6" fill="#5b3fa8">Beyond → Swamp → Cliff</text>
+
+  <!-- trough divider -->
+  <line x1="396" y1="56" x2="396" y2="276" stroke="#94a3b8" stroke-width="1" stroke-dasharray="3,3"/>
+  <text x="120" y="40" font-size="7.8" font-style="italic" fill="#64748b">PRE-TROUGH: "what's here we could use?"</text>
+  <text x="430" y="40" font-size="7.8" font-style="italic" fill="#64748b">POST-TROUGH: "what are we NOT using?"</text>
+
+  <!-- traps -->
+  <text x="150" y="92" font-size="8.4" font-weight="bold" fill="#dc2626">① ADOPT TOO EARLY</text>
+  <text x="168" y="103" font-size="7.4" fill="#dc2626">(bleeding edge)</text>
+  <line x1="214" y1="106" x2="224" y2="60" stroke="#dc2626" stroke-width="1.3" marker-end="url(#a)"/>
+  <text x="330" y="262" font-size="8.4" font-weight="bold" fill="#dc2626">② GIVE UP TOO SOON</text>
+  <line x1="392" y1="250" x2="396" y2="240" stroke="#dc2626" stroke-width="1.3" marker-end="url(#a)"/>
+  <text x="556" y="150" font-size="8.4" font-weight="bold" fill="#dc2626">③ ADOPT TOO LATE</text>
+  <line x1="636" y1="146" x2="676" y2="118" stroke="#dc2626" stroke-width="1.3" marker-end="url(#a)"/>
+  <text x="600" y="232" font-size="8.4" font-weight="bold" fill="#dc2626">④ HANG ON TOO LONG</text>
+  <line x1="650" y1="228" x2="706" y2="210" stroke="#dc2626" stroke-width="1.3" marker-end="url(#a)"/>
+
+  <!-- org-type zones -->
+  <rect x="150" y="286" width="150" height="16" rx="3" fill="#ede9fe"/><text x="225" y="297" font-size="7.6" font-weight="bold" fill="#5b3fa8" text-anchor="middle">Type A buys ~here</text>
+  <rect x="430" y="286" width="150" height="16" rx="3" fill="#ddd6fe"/><text x="505" y="297" font-size="7.6" font-weight="bold" fill="#5b3fa8" text-anchor="middle">Type B (slope)</text>
+  <rect x="600" y="286" width="108" height="16" rx="3" fill="#c4b5fd"/><text x="654" y="297" font-size="7.6" font-weight="bold" fill="#3b0764" text-anchor="middle">Type C (plateau)</text>
+</svg>
+<div class="cap"><b>Read it:</b> the 4 red arrows are the four ways to mis-time a technology. The dashed vertical line is the <b>Trough</b> — to its left ask <i>"what's here we could use?"</i>, to its right ask <i>"what are we not using?"</i> The purple boxes show where each <b>organization type</b> tends to buy in.</div>
+</div>
+
+<div class="trap"><b>⚠ The order trap (the #1 tested point):</b> the only valid sequence is <b>Trigger → Peak → Trough → Slope → Plateau</b>. The <b>Trough can NEVER come before the Peak</b> — you can't be disappointed before you were excited.</div>
+
+<div class="grid2">
+  <div class="box"><div class="h">The 4 timing traps + fixes</div>
+    <p><b>① Too early</b> — "bleeding edge," beta-testing for vendors. <i>Fix:</i> move early only for real competitive advantage.</p>
+    <p><b>② Give up too soon</b> — quit before value appears. <i>Fix:</i> set <b>OKRs</b> (Objectives &amp; Key Results) + exit criteria; ignore hype.</p>
+    <p><b>③ Too late</b> — rivals already moved (RIM, Barnes &amp; Noble).</p>
+    <p><b>④ Hang on too long</b> — miss the gains rivals get from the new tech.</p></div>
+  <div class="box"><div class="h">Who acts when (org types)</div>
+    <p><b>Type A — aggressive:</b> adopt early, accept risk for reward.</p>
+    <p><b>Type B — the majority:</b> adopt mid-curve (Slope); learn from A.</p>
+    <p><b>Type C — conservative:</b> adopt late at the Plateau, low risk.</p>
+    <p>Advice: be <b>"selectively aggressive."</b> <b class="ink">Type B's special danger = adopting too EARLY</b> (lured out by hype).</p></div>
+</div>
+
+<h2>Distinctions to nail (classic MC traps)</h2>
+<table>
+  <tr><th style="width:24%">Pair</th><th>The difference</th></tr>
+  <tr><td><span class="k">Swamp vs Cliff</span> (stage 6)</td><td><b>Swamp of Diminishing Returns</b> = still used daily, vendor milks recurring revenue (IBM mainframes). <b>Cliff of Obsolescence</b> = discontinued, resale-only (Windows XP). <i>Trap: "still used but costly" = Swamp, not Cliff.</i></td></tr>
+  <tr><td><span class="k">Hype Cycle vs Priority Matrix</span></td><td>Hype Cycle plots <b>hype × time</b> (when). The <b>Priority Matrix</b> plots <b>benefit × years-to-plateau</b> (what's worth funding) — it defends against pet-project decisions.</td></tr>
+  <tr><td><span class="k">Gartner vs Forrester</span></td><td>Gartner's vendor chart = <b>Magic Quadrant</b> (Ability to <b>Execute</b> × Completeness of <b>Vision</b>). Forrester's = the <b>Wave</b> (Offering × Strategy). <i>Trap: "Offering/Strategy" is Forrester, not Gartner.</i></td></tr>
+  <tr><td><span class="k">Trough = the "chasm"</span></td><td>The Trough lines up with Geoffrey Moore's <b>"Crossing the Chasm"</b> — the gap where most new tech dies before mainstream adoption.</td></tr>
+  <tr><td><span class="k">Phoenix vs rebrand</span></td><td>A <b>Phoenix</b> re-climbs the curve via a genuinely <b>new capability</b> (AI reborn on data + ML). A rename ("prunes"→"dried plums") is <b>not</b> a Phoenix.</td></tr>
+</table>
+
+<div class="mem"><b>MEMORIZE (the whole module in 3 lines):</b><br>
+1 · <b>Shape:</b> Trigger → Peak → Trough → Slope → Plateau → (Swamp → Cliff). Hype rises first, maturity rises second.<br>
+2 · <b>Why the crash:</b> at the Peak, <b>expectations ≫ real maturity</b> → the gap snaps back into the Trough.<br>
+3 · <b>Apply:</b> best time to adopt = <b>Slope</b> (proven, risk dropped). Avoid 4 traps: too early · give up too soon · too late · hang on too long.</div>
+
+
+
+<a id="__rb-pill" href="coursework.html">&#8592; Coursework</a>
+<script>
+(function(){
+  var p=document.getElementById('__rb-pill'); if(!p) return;
+  var t=false;
+  function run(){ t=false;
+    p.classList.toggle('__on',(window.scrollY||document.documentElement.scrollTop)>420); }
+  function q(){ if(!t){ t=true; requestAnimationFrame(run); } }
+  addEventListener('scroll',q,{passive:true}); run();
+})();
+</script>
+</body></html>

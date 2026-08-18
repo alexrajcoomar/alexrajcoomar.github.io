@@ -1,0 +1,14 @@
+{
+  "name": "AFM 291 Skill Forge",
+  "short_name": "Skill Forge",
+  "description": "Gamified AFM 291 practice: campaign, gauntlet, marker mode, recall forge. Fully offline.",
+  "display": "standalone",
+  "start_url": "./skill-forge.html",
+  "scope": "./",
+  "background_color": "#0d0d0d",
+  "theme_color": "#1a1a19",
+  "icons": [
+    { "src": "skill-forge-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "skill-forge-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}

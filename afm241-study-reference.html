@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8">
+<meta property="og:title" content="AFM 241 Exam Study Reference — Full course reference">
+<meta property="og:description" content="The complete study reference for AFM 241, built for the exam rather than for reading.">
+<meta property="og:type" content="article">
+<title>AFM 241 Exam Study Reference — Full course reference</title>
+<meta name="description" content="The complete study reference for AFM 241, built for the exam rather than for reading.">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  @page { size: Letter; margin: 0.6in 0.55in; }
+  @page { @bottom-right { content: "AFM 241 · Study Reference · p " counter(page) " / " counter(pages); font-family:Arial; font-size:7.5pt; color:#94a3b8; } }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  :root{
+    --ink:#1a1a1a; --muted:#475569; --line:#cbd5e1;
+    --found:#334155; --found-t:#eef2f6;
+    --disr:#0e7c86; --disr-t:#e4f3f4;
+    --ai:#1f7a44;   --ai-t:#e6f4ec;
+    --hype:#5b3fa8; --hype-t:#efe9fa;
+    --warn:#c0392b; --warn-t:#fbeae8;
+    --num:#b45309;
+  }
+  body{ font-family:"Helvetica Neue",Arial,sans-serif; color:var(--ink); font-size:9.4pt; line-height:1.42; }
+  b,strong{ font-weight:700; }
+  .num{ color:var(--num); font-weight:800; }
+
+  /* cover */
+  .cover{ border:2px solid var(--ink); border-radius:7px; padding:13px 16px; margin-bottom:14px; }
+  .cover h1{ font-size:20pt; font-weight:900; letter-spacing:-.4px; }
+  .cover .s{ font-size:9pt; color:var(--muted); font-weight:600; margin-top:2px; }
+  .cover .exam{ margin-top:8px; font-size:9pt; }
+  .cover .exam b{ color:var(--warn); }
+  .lens{ margin-top:9px; display:flex; flex-wrap:wrap; gap:6px; }
+  .lens .p{ font-size:8.4pt; font-weight:700; color:#fff; padding:3px 8px; border-radius:11px; }
+
+  /* section header */
+  .sec{ break-before:page; }
+  .sec.first{ break-before:auto; }
+  .sech{ color:#fff; font-size:14pt; font-weight:900; letter-spacing:.3px; padding:7px 12px; border-radius:6px 6px 0 0; }
+  .secband{ height:5px; border-radius:0 0 4px 4px; margin-bottom:12px; }
+  .subh{ font-size:11pt; font-weight:800; margin:14px 0 6px; padding-bottom:2px; border-bottom:2px solid var(--line); }
+
+  /* anchor box: "what it is" */
+  .anchor{ border-left:5px solid var(--c,#334155); background:var(--ct,#eef2f6); border-radius:0 6px 6px 0; padding:7px 11px; margin:7px 0; }
+  .anchor .lab{ font-size:7.4pt; font-weight:900; letter-spacing:1px; color:var(--c,#334155); text-transform:uppercase; }
+  .anchor .nm{ font-weight:800; }
+  .anchor p{ margin-top:1px; }
+  .anchor .why{ color:var(--muted); font-size:8.6pt; font-style:italic; margin-top:3px; }
+
+  /* comparison */
+  .cmp{ border:1.5px solid var(--c,#334155); border-radius:6px; overflow:hidden; margin:9px 0; }
+  .cmp .ch{ background:var(--c,#334155); color:#fff; font-weight:800; font-size:9.5pt; padding:5px 11px; }
+  .cmp .row{ display:grid; grid-template-columns:1fr 1fr; }
+  .cmp .cell{ padding:7px 11px; font-size:9pt; }
+  .cmp .cell.l{ border-right:1.5px solid var(--c,#334155); background:#fff; }
+  .cmp .cell .tag{ font-weight:800; color:var(--c,#334155); display:block; margin-bottom:1px; }
+
+  /* WATCH trap */
+  .watch{ display:flex; gap:8px; align-items:flex-start; background:var(--warn-t); border:2px solid var(--warn); border-radius:6px; padding:7px 11px; margin:8px 0; }
+  .watch .ic{ color:var(--warn); font-weight:900; font-size:11pt; line-height:1; }
+  .watch .tx{ font-size:9pt; } .watch .tx b{ color:var(--warn); }
+  .watch .tx .h{ font-weight:900; color:var(--warn); text-transform:uppercase; letter-spacing:.5px; font-size:8.2pt; }
+
+  /* tables */
+  table{ width:100%; border-collapse:collapse; margin:8px 0; font-size:8.8pt; }
+  th{ background:var(--c,#334155); color:#fff; font-weight:800; text-align:left; padding:5px 8px; }
+  td{ padding:5px 8px; border-bottom:1px solid var(--line); vertical-align:top; }
+  tr:nth-child(even) td{ background:var(--ct,#f5f7fa); }
+  td .k{ font-weight:800; }
+
+  /* misc */
+  .note{ font-size:9pt; margin:7px 0; }
+  .note .t{ font-weight:800; }
+  ul{ margin:5px 0 8px 18px; } li{ margin-bottom:3px; }
+  .cap{ font-size:8.4pt; color:var(--muted); font-style:italic; margin:3px 4px 12px; }
+  .cap b{ color:var(--ink); font-style:normal; }
+  .diagramwrap{ border:1px solid var(--line); border-radius:7px; padding:8px; margin-top:8px; background:#fdfdfe; }
+  svg{ width:100%; height:auto; display:block; }
+  .keybox{ border:1px solid var(--line); border-radius:6px; padding:8px 11px; background:#f8fafc; margin-bottom:6px; font-size:8.6pt; }
+  .keybox .t{ font-weight:900; font-size:8pt; letter-spacing:.5px; text-transform:uppercase; color:var(--muted); }
+  .pill{ display:inline-block; font-size:7.6pt; font-weight:800; padding:1px 6px; border-radius:9px; color:#fff; }
+</style></head><body>
+<!-- injected by the site build: a way back into the site from a standalone
+     piece. A static bar at the top, so it is visible on arrival, and a pill
+     that appears once you have scrolled past it, so there is always a way out.
+     Self-contained, because these pages do not load the site stylesheet. -->
+<style id="__rb-style">
+#__rb{
+  box-sizing:border-box;display:flex;flex-wrap:wrap;align-items:center;gap:.6rem 1.25rem;
+  padding:.6rem clamp(1rem,4vw,2rem);border-bottom:1px solid #ddd9cf;background:#faf9f6;
+  font:500 13px/1.35 InterVar,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  color:#55524a;
+}
+#__rb a{color:#14509b;text-decoration:none;display:inline-flex;align-items:center;gap:.4rem}
+#__rb a:hover{text-decoration:underline}
+#__rb .__rb-home{font-weight:640;color:#16150f}
+#__rb .__rb-home i{font-style:normal;font-weight:400;color:#6f6c63}
+#__rb .__rb-right{margin-left:auto;display:flex;gap:1.1rem;flex-wrap:wrap}
+#__rb .__mark{
+  display:inline-grid;place-items:center;width:1.2rem;height:1.2rem;flex:none;
+  background:#16150f;color:#faf9f6;font-size:.72rem;font-weight:700;
+}
+#__rb-pill{
+  position:fixed;left:14px;bottom:14px;z-index:2147483000;
+  display:inline-flex;align-items:center;gap:.45rem;padding:.58rem .9rem;
+  background:rgba(22,21,15,.93);color:#faf9f6;text-decoration:none;border-radius:99px;
+  font:600 12.5px/1 InterVar,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  border:1px solid rgba(255,255,255,.16);box-shadow:0 6px 22px rgba(0,0,0,.28);
+  opacity:0;transform:translateY(6px);pointer-events:none;
+  transition:opacity .2s ease,transform .2s ease;
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+}
+#__rb-pill.__on{opacity:1;transform:none;pointer-events:auto}
+#__rb-pill:hover{background:#16150f;color:#fff}
+@media (prefers-color-scheme:dark){
+  #__rb{background:#131310;border-bottom-color:#2c2b24;color:#c0bcb1}
+  #__rb .__rb-home{color:#f7f5ef}
+  #__rb .__rb-home i{color:#948f85}
+  #__rb a{color:#85adea}
+  #__rb .__mark{background:#f7f5ef;color:#131310}
+  #__rb-pill{background:rgba(247,245,239,.95);color:#131310;border-color:rgba(0,0,0,.2)}
+  #__rb-pill:hover{background:#fff;color:#000}
+}
+@media (prefers-reduced-motion:reduce){#__rb-pill{transition:none}}
+@media print{#__rb,#__rb-pill{display:none !important}}
+</style>
+<div id="__rb">
+  <a class="__rb-home" href="index.html"><span class="__mark" aria-hidden="true">A</span>Alex Rajcoomar <i>portfolio</i></a>
+  <span class="__rb-right"><a href="coursework.html">Coursework</a><a href="library.html">All work</a></span>
+</div>
+
+
+<!-- ============ COVER ============ -->
+<div class="cover">
+  <h1>AFM 241 — Exam Study Reference</h1>
+  <div class="s">Emerging Tech / Business IT · University of Waterloo · Weeks 1–7 (multiple-choice midterm)</div>
+  <div class="exam">Format: <b style="color:var(--ink)">90 multiple-choice</b> · covers all lectures, readings, tutorials · 1-page handwritten aid allowed. &nbsp;<b>The Business Model Canvas (BMC) is NOT tested.</b></div>
+  <div class="lens">
+    <span class="p" style="background:var(--found)">DECODE EVERY QUESTION ↓</span>
+    <span class="p" style="background:var(--disr)">value vs hype</span>
+    <span class="p" style="background:var(--disr)">sustaining vs disruptive</span>
+    <span class="p" style="background:var(--ai)">amplify vs abdicate</span>
+    <span class="p" style="background:var(--num)">marginal vs full cost</span>
+  </div>
+</div>
+
+<div class="keybox">
+  <div class="t">Acronym quick-key (each is also spelled out where it appears)</div>
+  <b>RPV</b> = Resources · Processes · Values &nbsp;|&nbsp; <b>RPA</b> = Robotic Process Automation &nbsp;|&nbsp; <b>ML</b> = Machine Learning &nbsp;|&nbsp; <b>GenAI</b> = Generative AI &nbsp;|&nbsp; <b>LLM</b> = Large Language Model &nbsp;|&nbsp; <b>DCF</b> = Discounted Cash Flow &nbsp;|&nbsp; <b>NPV</b> = Net Present Value &nbsp;|&nbsp; <b>ROI</b> = Return on Investment &nbsp;|&nbsp; <b>EPS</b> = Earnings Per Share &nbsp;|&nbsp; <b>SOC 2</b> = System &amp; Organization Controls 2 (a security-controls audit report) &nbsp;|&nbsp; <b>NFT</b> = Non-Fungible Token &nbsp;|&nbsp; <b>OKR</b> = Objectives &amp; Key Results &nbsp;|&nbsp; <b>JTBD</b> = Jobs-To-Be-Done &nbsp;|&nbsp; <b>BMC</b> = Business Model Canvas.
+</div>
+
+<!-- ============ SECTION 1: FOUNDATIONS ============ -->
+<div class="sec first" style="--c:var(--found); --ct:var(--found-t);">
+  <div class="sech" style="background:var(--found)">1 · Foundations — Innovation &amp; Digital Strategy <span style="font-weight:600;font-size:9pt;opacity:.85">(Week 1)</span></div>
+  <div class="secband" style="background:var(--found)"></div>
+
+  <div class="anchor">
+    <div class="lab">What it is</div>
+    <span class="nm">Innovation ≠ technology.</span>
+    <p>Innovation is <b>recombination applied with purpose</b> ("remixing" existing things into something new) — not lone genius or a sudden "Eureka." <i>Example:</i> Bitcoin = existing cryptography + networking recombined.</p>
+    <div class="why">Why it's here: sets up the whole course — most "what best explains this innovation?" answers are "recombination," not "a genius had an idea."</div>
+  </div>
+
+  <div class="anchor">
+    <div class="lab">Framework · what it is</div>
+    <span class="nm">Digital strategy = 4 levers for using emerging tech</span> <span style="color:var(--muted);font-size:8.4pt">(memory aid I coined: <b>D-P-C-L</b>)</span>
+    <p><b>D</b>ifferentiate (better product) · <b>P</b>roductivity (cut cost via automation) · <b>C</b>apital spending (invest wisely — only with profitable-growth foundations; "don't throw good money after bad") · <b>L</b>eadership (all leaders need tech literacy, not just the CTO).</p>
+    <div class="why">Key term: <b>strategic capital outlay</b> = rent capability instead of building it — Netflix runs on Amazon's cloud (AWS); Anthropic bought compute from SpaceX.</div>
+  </div>
+</div>
+
+<!-- ============ SECTION 2: DISRUPTION ============ -->
+<div class="sec" style="--c:var(--disr); --ct:var(--disr-t);">
+  <div class="sech" style="background:var(--disr)">2 · Disruption — Christensen &amp; the Innovator's Dilemma <span style="font-weight:600;font-size:9pt;opacity:.85">(Weeks 3–5) · highest-yield block</span></div>
+  <div class="secband" style="background:var(--disr)"></div>
+
+  <div class="anchor">
+    <div class="lab">What it is</div>
+    <span class="nm">The Innovator's Dilemma</span> (Clayton Christensen)
+    <p>The puzzle of <b>why successful, well-run companies get beaten by cheaper, "worse" products.</b> The answer: the same rational financial logic that makes them great at improving for their best customers <b>blinds them to disruption from below.</b></p>
+    <div class="why">Why it exists: explains incumbents' failure as <i>structural</i> (their metrics &amp; priorities), not "bad management." Most disruption MC questions test a piece of this.</div>
+  </div>
+
+  <div class="subh">2.1 · Why incumbents get disrupted — the causal chain</div>
+  <p class="note">Read this as one story (each step causes the next):</p>
+  <div class="diagramwrap">
+  <svg viewBox="0 0 520 70" xmlns="http://www.w3.org/2000/svg" font-family="Arial">
+    <defs><marker id="ar" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><polygon points="0,0 7,3 0,6" fill="#0e7c86"/></marker></defs>
+    <g font-size="9" font-weight="bold" text-anchor="middle">
+    <rect x="2" y="20" width="92" height="34" rx="4" fill="#e4f3f4" stroke="#0e7c86" stroke-width="1.5"/><text x="48" y="34">Marginal-cost</text><text x="48" y="45">trap</text>
+    <line x1="96" y1="37" x2="116" y2="37" stroke="#0e7c86" stroke-width="2" marker-end="url(#ar)"/>
+    <rect x="118" y="20" width="92" height="34" rx="4" fill="#e4f3f4" stroke="#0e7c86" stroke-width="1.5"/><text x="164" y="34">Parmenides'</text><text x="164" y="45">Fallacy</text>
+    <line x1="212" y1="37" x2="232" y2="37" stroke="#0e7c86" stroke-width="2" marker-end="url(#ar)"/>
+    <rect x="234" y="20" width="92" height="34" rx="4" fill="#e4f3f4" stroke="#0e7c86" stroke-width="1.5"/><text x="280" y="34">Metrics set</text><text x="280" y="45">RPV "Values"</text>
+    <line x1="328" y1="37" x2="348" y2="37" stroke="#0e7c86" stroke-width="2" marker-end="url(#ar)"/>
+    <rect x="350" y="20" width="78" height="34" rx="4" fill="#e4f3f4" stroke="#0e7c86" stroke-width="1.5"/><text x="389" y="34">Bias to</text><text x="389" y="45">sustaining</text>
+    <line x1="430" y1="37" x2="450" y2="37" stroke="#0e7c86" stroke-width="2" marker-end="url(#ar)"/>
+    <rect x="452" y="18" width="66" height="38" rx="4" fill="#0e7c86"/><text x="485" y="33" fill="#fff">GETS</text><text x="485" y="45" fill="#fff">DISRUPTED</text>
+    </g>
+  </svg>
+  </div>
+  <div class="cap"><b>What it shows:</b> the domino chain from financial habits to failure. <b>Why it matters:</b> "why did the incumbent fail?" questions want a link in <i>this</i> chain.</div>
+
+  <div class="subh">2.2 · The 3 financial "Innovation Killers" (HBR 2008)</div>
+  <div class="anchor"><div class="lab">Killer ①</div><span class="nm">Marginal / sunk cost thinking</span>
+    <p>Judging a new investment against the cheap <b>marginal cost</b> (extra cost) of reusing an existing asset, instead of the <b>full cost</b> of building the new capability. Makes the obsolete asset look better.</p></div>
+  <div class="anchor"><div class="lab">Killer ②</div><span class="nm">EPS focus</span> <span style="color:var(--muted);font-size:8.4pt">(EPS = Earnings Per Share = profit ÷ shares)</span>
+    <p>Chasing short-term EPS to prop up the share price — buybacks, even <b>sacrificing long-term value to smooth reported earnings.</b></p></div>
+  <div class="anchor"><div class="lab">Killer ③</div><span class="nm">The DCF trap</span> <span style="color:var(--muted);font-size:8.4pt">(DCF = Discounted Cash Flow valuation)</span>
+    <p><b>Problem 1 — Parmenides' Fallacy:</b> assuming the "do nothing" future = today's healthy status quo. Really it's a <b>non-linear decline.</b> &nbsp;<b>Problem 2:</b> early disruptive cash flows are underestimated. <b>Fix:</b> in disruption, judge <b>qualitatively</b>, not by DCF alone.</p></div>
+
+  <div class="cmp"><div class="ch">Worked example — Marginal vs Full cost (US Steel vs Nucor minimills)</div>
+    <div class="row">
+      <div class="cell l"><span class="tag">Reuse OLD plant (marginal cost)</span>Cost <span class="num">$50</span>/ton (just the extra cost) → invest only <span class="num">$60M</span> → <b>ROI <span class="num">400%</span></b>. <i>Looks amazing.</i></div>
+      <div class="cell"><span class="tag">Build NEW minimill (full cost)</span>Cost <span class="num">$270</span>/ton → invest <span class="num">$260M</span> → <b>ROI <span class="num">24.6%</span></b>. <i>The correct basis for a new capability.</i></div>
+    </div></div>
+  <div class="watch"><div class="ic">⚠</div><div class="tx"><span class="h">Trap</span> The exam dangles the <b>400% ROI</b> as the "smart" choice. It's the trap — a <b>new capability is costed at full cost (24.6%)</b>, and the do-nothing path is a decline, not the status quo.</div></div>
+
+  <div class="note"><span class="t">DCF terminal-value math (know the formula):</span> Terminal Value = <b>CF ÷ (r − g)</b> &nbsp;(r = discount rate, g = growth rate). Same business: conservative <span class="num">$175M ÷ 0.05 = $3.5B</span> vs actual <span class="num">$571M ÷ 0.05 = $11.4B</span> — small growth differences get magnified, so cautious DCF <b>systematically undervalues disruption.</b></div>
+
+  <div class="subh">2.3 · RPV — why a great firm structurally can't pivot</div>
+  <div class="anchor"><div class="lab">Framework · what it is</div>
+    <span class="nm">RPV = Resources · Processes · Values</span> — the three places a company's capabilities (and limits) live.
+    <table style="--c:var(--disr);--ct:var(--disr-t);margin-bottom:0">
+      <tr><th style="width:90px">Letter</th><th>What it means</th><th>Flexibility</th></tr>
+      <tr><td><span class="k">R — Resources</span></td><td>What you <b>have</b>: people, cash, tech, brand, relationships</td><td>Most flexible (can hire/buy)</td></tr>
+      <tr><td><span class="k">P — Processes</span></td><td>How you <b>work</b>: budgeting, hiring, market research — great at <i>recurring</i> tasks</td><td>Less flexible</td></tr>
+      <tr><td><span class="k">V — Values</span></td><td>What you'll <b>fund</b>: the priorities/standards for "is this worth it?"</td><td><b>Least flexible</b> — auto-rejects low-margin disruptors</td></tr>
+    </table></div>
+  <div class="note" style="color:var(--muted);font-style:italic"><b>Connection:</b> the financial metrics in 2.2 literally <i>become</i> the "Values" here — metrics → values → culture → blind spot.</div>
+
+  <div class="subh">2.4 · The disruptor's path (why "worse" products win)</div>
+  <div class="diagramwrap">
+  <svg viewBox="0 0 520 235" xmlns="http://www.w3.org/2000/svg" font-family="Arial">
+    <defs><marker id="ard" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><polygon points="0,0 8,3 0,6" fill="#c0392b"/></marker></defs>
+    <line x1="46" y1="18" x2="46" y2="200" stroke="#94a3b8" stroke-width="1.5"/>
+    <line x1="46" y1="200" x2="505" y2="200" stroke="#94a3b8" stroke-width="1.5"/>
+    <text x="14" y="120" font-size="9" font-weight="bold" fill="#475569" transform="rotate(-90 14,120)">PRODUCT PERFORMANCE →</text>
+    <text x="450" y="216" font-size="9" font-weight="bold" fill="#475569">TIME →</text>
+    <path d="M46,120 L505,58" stroke="#64748b" stroke-width="1.4" stroke-dasharray="5,3"/>
+    <text x="300" y="78" font-size="8.5" fill="#475569">need of HIGH-end customers</text>
+    <path d="M46,170 L505,128" stroke="#64748b" stroke-width="1.4" stroke-dasharray="5,3"/>
+    <text x="300" y="150" font-size="8.5" fill="#475569">need of MAINSTREAM customers</text>
+    <path d="M46,112 C170,70 340,44 505,30" stroke="#0e7c86" stroke-width="3" fill="none"/>
+    <text x="120" y="60" font-size="9.5" font-weight="bold" fill="#0e7c86">INCUMBENT (sustaining) — overshoots</text>
+    <path d="M46,193 C200,188 330,120 455,55" stroke="#c0392b" stroke-width="3" fill="none" marker-end="url(#ard)"/>
+    <text x="60" y="188" font-size="9.5" font-weight="bold" fill="#c0392b">DISRUPTOR — enters "good enough"</text>
+    <text x="300" y="105" font-size="9.5" font-weight="bold" fill="#c0392b">…climbs UP-MARKET ↗</text>
+  </svg>
+  </div>
+  <div class="cap"><b>What it shows:</b> the incumbent (teal) keeps improving until it <b>overshoots</b> what customers need; the disruptor (red) enters at the bottom serving overlooked customers, then climbs until it's good enough for everyone. <b>Why it matters:</b> the "worse" product wins because most customers were over-served and over-charged.</div>
+
+  <div class="subh">2.5 · Classifying disruption — sustaining vs low-end vs new-market</div>
+  <div class="anchor"><div class="lab">How to classify</div><span class="nm">Decide on WHO it targets, not how good it is.</span></div>
+  <div class="diagramwrap">
+  <svg viewBox="0 0 520 250" xmlns="http://www.w3.org/2000/svg" font-family="Arial">
+    <defs><marker id="art" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><polygon points="0,0 7,3 0,6" fill="#334155"/></marker></defs>
+    <g font-size="10">
+    <rect x="160" y="6" width="200" height="30" rx="6" fill="#334155"/><text x="260" y="25" fill="#fff" font-weight="bold" text-anchor="middle">Who does the product TARGET?</text>
+    <line x1="260" y1="36" x2="260" y2="52" stroke="#334155" stroke-width="2" marker-end="url(#art)"/>
+    <rect x="120" y="54" width="280" height="32" rx="6" fill="#fff" stroke="#334155" stroke-width="1.6"/><text x="260" y="74" text-anchor="middle">Your TOP / best-paying customers?</text>
+    <text x="405" y="64" font-size="9" font-weight="bold" fill="#1d4ed8">YES →</text>
+    <rect x="436" y="52" width="80" height="36" rx="6" fill="#1d4ed8"/><text x="476" y="74" fill="#fff" font-weight="bold" text-anchor="middle">SUSTAINING</text>
+    <line x1="260" y1="86" x2="260" y2="104" stroke="#334155" stroke-width="2" marker-end="url(#art)"/><text x="270" y="100" font-size="8.5" font-weight="bold">NO ↓</text>
+    <rect x="92" y="106" width="336" height="40" rx="6" fill="#fff" stroke="#334155" stroke-width="1.6"/><text x="260" y="123" text-anchor="middle">NON-consumers — people who couldn't</text><text x="260" y="137" text-anchor="middle">afford it / lacked the skill or access before?</text>
+    <text x="432" y="122" font-size="9" font-weight="bold" fill="#1f7a44">YES →</text>
+    <rect x="436" y="108" width="80" height="38" rx="6" fill="#1f7a44"/><text x="476" y="125" fill="#fff" font-weight="bold" text-anchor="middle">NEW-</text><text x="476" y="138" fill="#fff" font-weight="bold" text-anchor="middle">MARKET</text>
+    <line x1="260" y1="146" x2="260" y2="166" stroke="#334155" stroke-width="2" marker-end="url(#art)"/><text x="270" y="161" font-size="8.5" font-weight="bold">NO (just over-served) ↓</text>
+    <rect x="150" y="168" width="220" height="40" rx="6" fill="#b45309"/><text x="260" y="185" fill="#fff" font-weight="bold" text-anchor="middle">LOW-END DISRUPTION</text><text x="260" y="200" fill="#fff" font-size="8.5" text-anchor="middle">(over-served existing customers)</text>
+    </g>
+  </svg>
+  </div>
+  <div class="cap"><b>What it shows:</b> a 2-question test to label any example. <b>Memory hook:</b> Sustaining = aim <b>UP</b> (top customers) · Low-end = aim <b>DOWN</b> (the over-served bottom) · New-market = aim <b>OUT</b> (people outside the market).</div>
+
+  <table style="--c:var(--disr);--ct:var(--disr-t);">
+    <tr><th style="width:130px">Type</th><th>Targets</th><th>Goal</th><th>Examples</th></tr>
+    <tr><td><span class="k" style="color:#1d4ed8">Sustaining</span></td><td>Your most-demanding, top-paying customers</td><td>A <b>better</b> product (the norm — nothing wrong with it)</td><td>"cheaper-better-faster" vs rivals</td></tr>
+    <tr><td><span class="k" style="color:#b45309">Low-end</span></td><td><b>Over-served</b> existing customers</td><td>"Good enough" at lower cost / higher asset turnover</td><td>Walmart · Netflix · smartphone cameras</td></tr>
+    <tr><td><span class="k" style="color:#1f7a44">New-market</span></td><td><b>Non-consumers</b> (no money/skill/access before)</td><td>Worse on old metrics, better on new ones; new value network</td><td>Sony transistor radio · Southwest vs the car</td></tr>
+  </table>
+
+  <div class="cmp"><div class="ch">Sustaining vs Disruptive — the core split</div>
+    <div class="row">
+      <div class="cell l"><span class="tag">Sustaining</span>Improves the product for your <b>existing best customers.</b> Common &amp; healthy.</div>
+      <div class="cell"><span class="tag">Disruptive</span>Enters <b>below or outside</b> the market; "simple, accessible, affordable"; unfolds as a <b>process over time</b>, not a single event.</div>
+    </div></div>
+  <div class="watch"><div class="ic">⚠</div><div class="tx"><span class="h">Trap</span> A "breakthrough" or "ambitious hot startup" is <b>NOT</b> automatically disruptive — true disruption starts <b>cheap, simple, and accessible.</b></div></div>
+  <div class="watch"><div class="ic">⚠</div><div class="tx"><span class="h">Trap</span> <b>Walmart = low-end</b> (its customers already shopped retail; they were over-served), <b>not</b> new-market.</div></div>
+
+  <div class="subh">2.6 · Is it disruptive at all? — the Uber test</div>
+  <div class="anchor"><div class="lab">Case · why it matters</div><span class="nm">Uber is NOT disruptive</span> — the textbook "looks disruptive, isn't" case.
+    <p>Run 3 tests: ① <b>Low-end?</b> No — same/better quality than a cab. ② <b>New-market?</b> No — didn't serve non-consumers. ③ <b>Head-to-head with the incumbent?</b> <b>Yes</b> — and disruptors win by flying <i>under</i> the radar. → It's a <b>market-share grab</b>, won via <b>regulatory arbitrage</b> (skipping commercial insurance/licensing costs) + cheap investor money.</p>
+    <div class="why">A driverless model (Waymo) <i>would</i> be disruptive — it serves a price point cabs can't and removes the driver.</div></div>
+  <div class="watch"><div class="ic">⚠</div><div class="tx"><span class="h">Trap</span> "Uber disrupted taxis" is the seductive wrong answer. Taking share ≠ disruption.</div></div>
+
+  <div class="subh">2.7 · Fighting disruption (incumbent's defense — HBR 2012)</div>
+  <div class="anchor"><div class="lab">Term</div><span class="nm">Extendable core</span>
+    <p>The structural/technological advantage that lets a disruptor <b>keep its edge as it "creeps up-market."</b> If it has one, it's a real threat; if not, it's a "one-trick pony." <i>(Online universities have one but undermine the degree's scarcity → not a sure win.)</i></p></div>
+  <div class="anchor"><div class="lab">Framework · what it is</div><span class="nm">Jobs-To-Be-Done (JTBD)</span>
+    <p>Ask <b>why a customer "hires" a product</b> — the real job it does. <i>Milkshake:</i> morning commuters hire it to be thick, filling, one-handed; afternoon parents hire it as a quick kids' treat → <b>same product, opposite improvements.</b></p></div>
+  <div class="note"><span class="t">The 5 "moats" (barriers that keep customers with the incumbent):</span></div>
+  <table style="--c:var(--disr);--ct:var(--disr-t);">
+    <tr><th style="width:150px">Moat</th><th>What it means</th><th>Example</th></tr>
+    <tr><td><span class="k">Momentum</span></td><td>Habit — people stick with what they know</td><td>Google search · Excel · iMessage "blue bubble"</td></tr>
+    <tr><td><span class="k">Tech-implementation</span></td><td>Tech exists but is hard to deploy</td><td>Cloud vs on-premise servers · mobile wallets</td></tr>
+    <tr><td><span class="k">Ecosystem</span></td><td>The whole environment must change first</td><td>EV charging networks · CPA audit sign-off rules</td></tr>
+    <tr><td><span class="k">New-technologies</span></td><td>The needed tech doesn't exist yet</td><td>Human judgment &amp; accountability (courts)</td></tr>
+    <tr><td><span class="k">Business-model</span></td><td>Cost structure is hard to copy</td><td>Walmart/Costco squeezing suppliers</td></tr>
+  </table>
+  <div class="anchor"><div class="lab">Term</div><span class="nm">Innovation type → team type</span>
+    <p><b>Sustaining</b> work uses a <b>heavyweight</b> (co-located experts, e.g. Toyota Prius) or <b>lightweight</b> team. <b>Disruptive</b> work needs an <b>autonomous team</b> — a separate org with its own leadership &amp; metrics (a new RPV). <i>Toyota's Echo failed without one; HP's inkjet succeeded with one.</i></p></div>
+  <div class="note" style="color:var(--muted)"><b>Clarifications (HBR 2015):</b> disruptors build <i>different</i> business models — iTunes "reverse Gillette" (cheap songs sold the pricey iPod); the <b>Long Tail</b> (digital shelves serve niche tastes). Some disruptors fail (Pets.com); some non-disruptors win (Amazon, Uber). "Disrupt or be disrupted" is misleading — don't kill profitable lines, but be ready to cannibalize (Apple's iPhone ate its own iPod).</div>
+</div>
+
+<!-- ============ SECTION 3: AI TOOLS & RESPONSIBLE USE ============ -->
+<div class="sec" style="--c:var(--ai); --ct:var(--ai-t);">
+  <div class="sech" style="background:var(--ai)">3 · AI Tools, Security &amp; Fluency <span style="font-weight:600;font-size:9pt;opacity:.85">(Weeks 2–4, 7)</span></div>
+  <div class="secband" style="background:var(--ai)"></div>
+
+  <div class="subh">3.1 · What the technology actually is</div>
+  <div class="cmp"><div class="ch">Machine Learning (ML) vs Generative AI (GenAI)</div>
+    <div class="row">
+      <div class="cell l"><span class="tag">ML = Machine Learning</span>Software that <b>learns patterns from data</b> to make predictions (e.g. "is this a cat?", "will this customer churn?"). <b>Goal: predictive accuracy.</b></div>
+      <div class="cell"><span class="tag">GenAI = Generative AI</span>Built on <b>LLMs</b> (Large Language Models) using the <b>transformer</b> architecture (2017). <b>Creates new</b> text/images/code by predicting tokens. <b>Goal: output generation.</b></div>
+    </div></div>
+  <div class="watch"><div class="ic">⚠</div><div class="tx"><span class="h">Trap</span> GenAI's goal is <b>generation</b>, not prediction — <b>ML is the predictor.</b> "Hammers don't hallucinate" = unlike a fixed tool, a generative model can be confidently wrong.</div></div>
+  <div class="note" style="color:var(--muted)"><b>History anchors:</b> <b>Logic Theorist</b> (1955–56) = the first true AI · <b>IBM Watson</b> beat Jeopardy! champ Ken Jennings · <b>ChatGPT</b> hit 1M users in 5 days.</div>
+
+  <div class="subh">3.2 · Working with Claude — Skills &amp; prompting</div>
+  <div class="anchor"><div class="lab">What it is</div><span class="nm">A "Skill"</span>
+    <p>A <b>reusable instruction file</b> (<code>SKILL.md</code>, written in Markdown) that Claude loads <b>only when relevant</b> — turning a repeated task into a consistent, structured system. <i>"Progressive disclosure"</i> = it reads only what's needed, not everything every time.</p></div>
+  <div class="cmp"><div class="ch">Prompt vs Skill</div>
+    <div class="row">
+      <div class="cell l"><span class="tag">Prompt</span>A <b>single, one-off</b> request typed into the chat.</div>
+      <div class="cell"><span class="tag">Skill</span>A <b>reusable system</b>: description ≈ <span class="num">200</span> characters (says <b>what it does + when to use it</b>), cap &lt;1,024 chars, no XML brackets.</div>
+    </div></div>
+  <div class="watch"><div class="ic">⚠</div><div class="tx"><span class="h">Trap</span> "Longer description = better" is <b>wrong</b> — keep it ~200 chars. And "structured/repeatable" signals a <b>Skill</b>, not a prompt.</div></div>
+  <div class="anchor"><div class="lab">Framework · what it is</div><span class="nm">The 5-element prompt</span> (how to brief an AI like a new analyst)
+    <p><b>Role · Context · Instructions · Examples · Format.</b> Use <b>XML-style tags</b> to separate your data from your commands; <b>iterate</b> rather than expecting one perfect shot. The <b>Truth Protocol</b> = a 7-rule instruction set that makes Claude flag uncertainty instead of fabricating (covers sources, stats, quotes, code, etc.).</p>
+    <div class="why">Definitions: <b>Sycophancy</b> = an AI flattering you / telling you what you want to hear. <b>Hallucination</b> = a confident but <b>false</b> answer (fake citation, fake case).</div></div>
+  <div class="cmp"><div class="ch">RPA vs Claude (two kinds of automation)</div>
+    <div class="row">
+      <div class="cell l"><span class="tag">RPA = Robotic Process Automation</span>Bots that follow <b>fixed rules</b> on <b>structured</b> tasks (data entry, file transfers). Big <b>fixed cost</b> (~$11.8M / 3 yrs); built by developers.</div>
+      <div class="cell"><span class="tag">Claude (AI assistant)</span><b>Augments cognitive work</b> (analysis, drafting, research). <b>Variable cost</b> ($/seat + usage); <b>anyone</b> can build via natural language.</div>
+    </div></div>
+  <div class="watch"><div class="ic">⚠</div><div class="tx"><span class="h">Trap</span> "Automate the <b>analysis/judgment</b>" → that's <b>Claude.</b> RPA only handles structured, repetitive, rule-based steps.</div></div>
+
+  <div class="subh">3.3 · AI security — the 6 pillars</div>
+  <div class="anchor"><div class="lab">What it is</div><span class="nm">SOC 2 (System &amp; Organization Controls 2)</span>
+    <p>An <b>independent third-party audit report</b> confirming a software vendor actually runs strong security controls. It's the first evidence you ask for before trusting a vendor with client data. <b>Type 1</b> = controls are <b>designed</b> properly at one point in time (≈ a review). <b>Type 2</b> = controls <b>operated effectively over 6–12 months</b> (≈ an audit).</p></div>
+  <div class="watch"><div class="ic">⚠</div><div class="tx"><span class="h">Trap</span> "Tested <b>over time</b>" = <b>Type 2.</b> Type 1 is only a point-in-time design check.</div></div>
+  <table style="--c:var(--ai);--ct:var(--ai-t);">
+    <tr><th style="width:30px">#</th><th>Pillar — what it is</th><th>Accounting parallel</th></tr>
+    <tr><td>1</td><td><b>SOC 2 Type 2</b> — proven security perimeter (above)</td><td>An assurance engagement</td></tr>
+    <tr><td>2</td><td><b>Folder/Connector permissioning</b> — limit what data the AI can reach</td><td>Segregation of duties</td></tr>
+    <tr><td>3</td><td><b>Malicious-instruction refusal</b> — ignores hidden "ignore your rules" text (called <b>prompt injection</b>)</td><td>Professional skepticism</td></tr>
+    <tr><td>4</td><td><b>Administrative oversight</b> — who governs/owns the AI's use</td><td>Control environment / tone at top</td></tr>
+    <tr><td>5</td><td><b>Zero data retention</b> — vendor doesn't keep or train on your data</td><td>Client confidentiality</td></tr>
+    <tr><td>6</td><td><b>Audit logging</b> — a tamper-proof record of every action</td><td>The audit trail</td></tr>
+  </table>
+
+  <div class="subh">3.4 · Responsible use — Amplify vs Abdicate</div>
+  <div class="cmp"><div class="ch">Amplification vs Abdication</div>
+    <div class="row">
+      <div class="cell l"><span class="tag" style="color:var(--ai)">Amplification (good)</span>AI does the first draft (40 words → 400-word memo); <b>you verify and own it.</b></div>
+      <div class="cell"><span class="tag" style="color:var(--warn)">Abdication (bad)</span><b>Unverified reliance.</b> Lawyer Steven Schwartz cited 6 AI-invented fake cases vs Avianca → <span class="num">$5,000</span> fine.</div>
+    </div></div>
+  <div class="watch"><div class="ic">⚠</div><div class="tx"><span class="h">Trap</span> Trusting polished-looking AI output without checking = <b>abdication.</b> Human-in-the-loop matters for "all of the above": catch errors + accountability + judgment.</div></div>
+
+  <div class="subh">3.5 · The 4Ds of AI Fluency (Week 7)</div>
+  <div class="anchor"><div class="lab">Framework · what it is</div><span class="nm">AI Fluency = working with AI effectively, efficiently, ethically &amp; safely.</span> The 4Ds are its four skills (a cycle, not a checklist). Note: <i>using</i> AI ≠ being <i>skilled</i> with it.</div>
+  <table style="--c:var(--ai);--ct:var(--ai-t);">
+    <tr><th style="width:120px">The "D"</th><th>What it is (the question you answer)</th><th>Pro parallel</th></tr>
+    <tr><td><span class="k">Delegation</span></td><td>What should I hand to AI vs do myself? (why / why not)</td><td>Decide the split</td></tr>
+    <tr><td><span class="k">Description</span></td><td>Communicating the goal clearly — <b>prompting lives here</b></td><td>Brief it well</td></tr>
+    <tr><td><span class="k">Discernment</span></td><td>Can I trust this output? Evaluate it critically</td><td><b>Professional skepticism</b></td></tr>
+    <tr><td><span class="k">Diligence</span></td><td>Am I responsible for it? Own the final result</td><td><b>You sign the file</b></td></tr>
+  </table>
+  <div class="note" style="color:var(--muted)"><b>3 modes of use:</b> Automation (AI runs a defined task) → Augmentation (AI as thought partner) → Agency (AI takes multi-step action with loose supervision). <b>NPD reality (innovation rarely works):</b> ~60% of new products never reach market; 75% of new-product spend fails.</div>
+
+  <div class="anchor"><div class="lab">Reading · why it matters</div><span class="nm">Regulation is now a "tech-stack risk" (the "Fable 5" case)</span>
+    <p>A powerful AI model can be <b>pulled by government order almost overnight</b>, and strict data-retention terms can make it unusable for client data. Lesson for accountants: <b>"most capable ≠ most usable"</b> — governance and auditability decide adoption, so always keep a fallback (Plan B).</p></div>
+</div>
+
+<!-- ============ SECTION 4: HYPE CYCLE ============ -->
+<div class="sec" style="--c:var(--hype); --ct:var(--hype-t);">
+  <div class="sech" style="background:var(--hype)">4 · The Gartner Hype Cycle — judging &amp; timing new tech <span style="font-weight:600;font-size:9pt;opacity:.85">(Weeks 6–7)</span></div>
+  <div class="secband" style="background:var(--hype)"></div>
+
+  <div class="anchor"><div class="lab">What it is / why it exists</div>
+    <span class="nm">The Hype Cycle</span> (Gartner — a tech research firm)
+    <p>A graph of the <b>predictable emotional arc</b> every new technology goes through: over-excitement, a crash, then real durable value. It exists to help organizations <b>time their adoption</b> — invest too early and you pay for immature tech ("bleeding edge"); dismiss it as a fad and you miss the next big thing. The curve tracks <b>human expectations</b>, not the tech itself.</p></div>
+
+  <div class="diagramwrap">
+  <svg viewBox="0 0 520 245" xmlns="http://www.w3.org/2000/svg" font-family="Arial">
+    <line x1="48" y1="16" x2="48" y2="205" stroke="#94a3b8" stroke-width="1.5"/>
+    <line x1="48" y1="205" x2="508" y2="205" stroke="#94a3b8" stroke-width="1.5"/>
+    <text x="16" y="135" font-size="9" font-weight="bold" fill="#475569" transform="rotate(-90 16,135)">EXPECTATIONS / hype →</text>
+    <text x="410" y="222" font-size="9" font-weight="bold" fill="#475569">TIME / maturity →</text>
+    <path d="M60,182 C92,182 122,44 152,38 C188,31 214,168 250,182 C292,198 330,140 362,124 C424,100 474,96 502,92" stroke="#5b3fa8" stroke-width="3.2" fill="none"/>
+    <circle cx="60" cy="182" r="3.5" fill="#5b3fa8"/><text x="40" y="198" font-size="8.6" font-weight="bold" fill="#5b3fa8">1 Trigger</text>
+    <circle cx="152" cy="38" r="3.5" fill="#5b3fa8"/><text x="104" y="28" font-size="8.6" font-weight="bold" fill="#5b3fa8">2 Peak of Inflated Expectations</text>
+    <circle cx="250" cy="182" r="3.5" fill="#5b3fa8"/><text x="214" y="198" font-size="8.6" font-weight="bold" fill="#5b3fa8">3 Trough of Disillusionment</text>
+    <circle cx="362" cy="124" r="3.5" fill="#5b3fa8"/><text x="330" y="116" font-size="8.6" font-weight="bold" fill="#5b3fa8">4 Slope</text>
+    <circle cx="502" cy="92" r="3.5" fill="#5b3fa8"/><text x="455" y="84" font-size="8.6" font-weight="bold" fill="#5b3fa8">5 Plateau</text>
+    <text x="92" y="118" font-size="8" font-style="italic" fill="#7c3aed">rise 1 = HYPE</text>
+    <text x="300" y="150" font-size="8" font-style="italic" fill="#7c3aed">rise 2 = real VALUE</text>
+    <text x="396" y="188" font-size="7.6" fill="#475569">6 Beyond → Swamp → Cliff</text>
+  </svg>
+  </div>
+  <div class="cap"><b>What it shows:</b> expectations spike on hype, crash when reality disappoints, then climb again on real value. <b>Why it matters:</b> the exam tests the <b>order</b> — and that the <b>Trough never comes before the Peak</b> (you can't be disappointed before you're excited). In the Trough, genuine-fit adopters push on; hype-chasers bail.</div>
+
+  <div class="subh">4.1 · The 6 stages — what's actually happening at each</div>
+  <table style="--c:var(--hype);--ct:var(--hype-t);">
+    <tr><th style="width:150px">Stage</th><th>What's happening</th><th>Tell / example</th></tr>
+    <tr><td><span class="k">1 · Innovation Trigger</span></td><td>A breakthrough/demo sparks interest; <b>few real users.</b></td><td>Out of the lab; sold by a vendor, not just researched</td></tr>
+    <tr><td><span class="k">2 · Peak of Inflated Expectations</span></td><td>Hype crests; seen as a <b>"silver bullet"</b>; investor frenzy.</td><td>30+ vendors; jargon → a catchy name ("Wi-Fi")</td></tr>
+    <tr><td><span class="k">3 · Trough of Disillusionment</span></td><td>Reality hits; it underdelivers; press turns negative; shakeout.</td><td>GenAI is here now; = Moore's "chasm"</td></tr>
+    <tr><td><span class="k">4 · Slope of Enlightenment</span></td><td>Survivors find <b>real uses</b>; best practices form.</td><td>Adoption grows from &lt;5% → 20–30%</td></tr>
+    <tr><td><span class="k">5 · Plateau of Productivity</span></td><td><b>Mainstream, proven, boring.</b></td><td>Becomes everyday ("Googling")</td></tr>
+    <tr><td><span class="k">6 · Beyond</span></td><td><b>Swamp</b> (still used but costs &gt; benefit) → <b>Cliff</b> (obsolete).</td><td>IBM mainframes (Swamp); Windows XP (Cliff)</td></tr>
+  </table>
+  <div class="watch"><div class="ic">⚠</div><div class="tx"><span class="h">Trap</span> Any answer that puts the <b>Trough before the Peak</b> is wrong — hype always comes before the let-down.</div></div>
+
+  <div class="cmp"><div class="ch">Swamp of Diminishing Returns vs Cliff of Obsolescence</div>
+    <div class="row">
+      <div class="cell l"><span class="tag">Swamp of Diminishing Returns</span><b>Still in daily use</b>, but the vendor just milks <b>recurring revenue</b>; costs creep above benefits. <i>(IBM mainframes.)</i></div>
+      <div class="cell"><span class="tag">Cliff of Obsolescence</span><b>Discontinued</b> — only available on the <b>resale market</b>; a long slide to dead. <i>(Windows XP → 7.)</i></div>
+    </div></div>
+  <div class="watch"><div class="ic">⚠</div><div class="tx"><span class="h">Trap</span> "Still used daily but costly" = <b>Swamp</b>, not Cliff. Discontinued + resale-only = Cliff.</div></div>
+
+  <div class="subh">4.2 · Analyst tools — Gartner vs Forrester</div>
+  <div class="cmp"><div class="ch">Magic Quadrant (Gartner) vs Wave (Forrester)</div>
+    <div class="row">
+      <div class="cell l"><span class="tag">Gartner "Magic Quadrant"</span>A 2×2 chart rating tech <b>vendors</b> on <b>Ability to Execute</b> (can they deliver now — product, support, finances) × <b>Completeness of Vision</b> (do they understand where the market is going).</div>
+      <div class="cell"><span class="tag">Forrester "Wave"</span>Forrester's competing vendor-rating chart, scored on <b>Offering</b> × <b>Strategy</b>.</div>
+    </div></div>
+  <div class="watch"><div class="ic">⚠</div><div class="tx"><span class="h">Trap</span> The "<b>Offering × Strategy</b>" option belongs to <b>Forrester</b> — it's the decoy planted in a Gartner question. Gartner = <b>Execute × Vision.</b></div></div>
+
+  <div class="anchor"><div class="lab">Framework · what it is</div><span class="nm">The Priority Matrix</span> (Gartner's companion to the Hype Cycle)
+    <p>A chart that rates each innovation by <b>potential benefit</b> (Transformational &gt; High &gt; Moderate &gt; Low) × <b>years to mainstream ("plateau").</b> High-priority bets sit <b>top-left</b> (big impact, mature soon). Its real job: <b>defend against "personality-driven" decisions</b> — an exec pushing a pet project.</p></div>
+
+  <div class="subh">4.3 · Timing your move — traps &amp; organization types</div>
+  <table style="--c:var(--hype);--ct:var(--hype-t);">
+    <tr><th style="width:160px">Adoption trap</th><th>What goes wrong</th></tr>
+    <tr><td><span class="k">Adopting too early</span></td><td>"Bleeding edge" — you beta-test immature tech for the vendor</td></tr>
+    <tr><td><span class="k">Giving up too soon</span></td><td>No objective measures → quit before value appears (use <b>OKRs</b> = Objectives &amp; Key Results)</td></tr>
+    <tr><td><span class="k">Adopting too late</span></td><td>Competitors already moved (RIM/BlackBerry; Barnes &amp; Noble)</td></tr>
+    <tr><td><span class="k">Hanging on too long</span></td><td>Miss the productivity gains rivals get from the new tech</td></tr>
+  </table>
+  <div class="note"><span class="t">Organization types (risk appetite):</span> <b>Type A</b> = aggressive (adopt early) · <b>Type B</b> = the majority (middle) · <b>Type C</b> = conservative (adopt late). Advice: be <b>"selectively aggressive."</b></div>
+  <div class="watch"><div class="ic">⚠</div><div class="tx"><span class="h">Trap</span> <b>Type B's</b> special danger is <b>"adopting too early"</b> — pulled out of its comfort zone by hype + executive pressure.</div></div>
+
+  <div class="subh">4.4 · Phoenix pattern, maturity &amp; hype psychology</div>
+  <div class="cmp"><div class="ch">Phoenix pattern vs Rebranding</div>
+    <div class="row">
+      <div class="cell l"><span class="tag">Phoenix pattern</span>A technology <b>reborn</b> when recombination creates a <b>genuinely new capability</b> — e.g. AI revived by <b>large datasets + machine learning.</b></div>
+      <div class="cell"><span class="tag">Rebranding / patent tweak</span>Cosmetic only — renaming "prunes" as "dried plums." No new capability.</div>
+    </div></div>
+  <div class="watch"><div class="ic">⚠</div><div class="tx"><span class="h">Trap</span> A rename or minor patent tweak is <b>NOT</b> a Phoenix — Phoenix requires a real new capability.</div></div>
+  <div class="note"><span class="t">Innovation maturity (4 stages):</span> Embryonic → Emerging → Adolescent → Mainstream (MPEG → Rio MP3 player → iPod → iTunes). &nbsp;<span class="t">Time-to-Value risks</span> (memory aid I coined, <b>P-I-P-P</b>): <b>P</b>erformance · <b>I</b>ntegration · <b>P</b>enetration · <b>P</b>ayback.</div>
+  <div class="anchor"><div class="lab">Why hype happens</div><span class="nm">Irrational exuberance — 3 drivers</span>
+    <p><b>Novelty</b> (the new thing feels limitless — Railway Mania 1840s, Internet 1990s) · <b>Social contagion</b> (bandwagon — no one wants to miss out) · <b>Heuristics</b> (mental shortcuts — "manage by magazine," e.g. a Big Data pitch "must mention Hadoop").</p>
+    <div class="why">Applied case — <b>NFTs</b> (Non-Fungible Tokens, built on Ethereum's <b>ERC-721</b> standard): Beeple art sold for <span class="num">$69M</span>; market went <span class="num">$67M → $14B</span> (2018→2021) then crashed — a textbook ride into the <b>Trough.</b></div></div>
+</div>
+
+<!-- ============ SECTION 5: TRAP INDEX + SELF-TEST ============ -->
+<div class="sec" style="--c:var(--warn); --ct:var(--warn-t);">
+  <div class="sech" style="background:var(--warn)">5 · Trap Index — the wrong-answer patterns (highest-value page)</div>
+  <div class="secband" style="background:var(--warn)"></div>
+  <p class="note" style="margin-bottom:10px">Every red box from the sheet, in one place. Format: <b>concept → the seductive wrong answer → what's actually true.</b></p>
+
+  <table style="--c:var(--warn);--ct:var(--warn-t);">
+    <tr><th style="width:150px">Concept</th><th>✗ Wrong answer students pick</th><th>✓ Actually true</th></tr>
+    <tr><td><span class="k">Marginal vs full cost</span></td><td>"Reuse the old plant — 400% ROI"</td><td>A new capability is costed at <b>full cost (24.6%)</b>; that 400% is the trap</td></tr>
+    <tr><td><span class="k">Parmenides' Fallacy</span></td><td>"Do nothing → finances stay stable"</td><td>The do-nothing path is a <b>non-linear decline</b></td></tr>
+    <tr><td><span class="k">Sustaining vs disruptive</span></td><td>"A breakthrough / hot startup = disruptive"</td><td>Disruptive = <b>simple, accessible, affordable</b>; it's a process</td></tr>
+    <tr><td><span class="k">Low-end vs new-market</span></td><td>"Walmart = new-market disruption"</td><td>Walmart = <b>low-end</b> (existing, over-served customers)</td></tr>
+    <tr><td><span class="k">Uber</span></td><td>"Uber disrupted the taxi industry"</td><td>A <b>share grab</b> via regulatory arbitrage — not disruptive</td></tr>
+    <tr><td><span class="k">Hype Cycle order</span></td><td>"Trough comes before the Peak"</td><td>Impossible — <b>hype (Peak) precedes the let-down (Trough)</b></td></tr>
+    <tr><td><span class="k">Swamp vs Cliff</span></td><td>"Still used daily but costly = Cliff"</td><td>That's the <b>Swamp</b>; Cliff = discontinued, resale-only</td></tr>
+    <tr><td><span class="k">Gartner vs Forrester</span></td><td>"Magic Quadrant = Offering × Strategy"</td><td>That's <b>Forrester's Wave</b>; Gartner = <b>Execute × Vision</b></td></tr>
+    <tr><td><span class="k">Phoenix vs rebrand</span></td><td>"Renaming/patent tweak = Phoenix"</td><td>Phoenix needs a <b>genuinely new capability</b></td></tr>
+    <tr><td><span class="k">SOC 2 Type 1 vs 2</span></td><td>"Type 1 is tested over time"</td><td>Type 1 = point-in-time design; <b>Type 2 = over time</b></td></tr>
+    <tr><td><span class="k">ML vs GenAI</span></td><td>"GenAI's goal is prediction"</td><td>GenAI = <b>generation</b>; ML is the predictor</td></tr>
+    <tr><td><span class="k">Prompt vs Skill</span></td><td>"Longer skill description = better"</td><td><b>~200 chars</b> (cap &lt;1,024); "structured/repeatable" = a Skill</td></tr>
+    <tr><td><span class="k">RPA vs Claude</span></td><td>"RPA automates analysis/judgment"</td><td>That's <b>Claude</b>; RPA = structured, rule-based steps only</td></tr>
+    <tr><td><span class="k">Amplify vs abdicate</span></td><td>"Trust the polished AI output"</td><td>Unverified reliance = <b>abdication</b>; verify &amp; own it</td></tr>
+    <tr><td><span class="k">Org type B</span></td><td>"Type B's risk is adopting too late"</td><td>Type B's danger is <b>adopting too EARLY</b> (lured by hype)</td></tr>
+    <tr><td><span class="k">Sustaining innovation</span></td><td>"Sustaining innovation is the mistake"</td><td>It's fine/normal — the trap is <b>only</b> sustaining + ignoring disruption</td></tr>
+  </table>
+
+  <div class="subh" style="color:var(--ink)">Self-test — cover the page and answer aloud</div>
+  <table style="--c:var(--found);--ct:var(--found-t);">
+    <tr><th style="width:50%">Question</th><th>Quick answer</th></tr>
+    <tr><td>1. Recite the 5-link chain from "marginal-cost trap" to "disrupted."</td><td>marginal cost → Parmenides → RPV Values → bias to sustaining → disrupted</td></tr>
+    <tr><td>2. Classify &amp; justify: Walmart · Sony radio · Southwest · phone cameras.</td><td>low-end · new-market · new-market · low-end</td></tr>
+    <tr><td>3. Give the 3 tests that prove Uber isn't disruptive.</td><td>not low-end, not new-market, went head-to-head</td></tr>
+    <tr><td>4. List the 6 Hype Cycle stages in order; Swamp vs Cliff?</td><td>Trigger→Peak→Trough→Slope→Plateau→Beyond; Swamp=milked, Cliff=discontinued</td></tr>
+    <tr><td>5. Name the 6 LLM-security pillars + one accounting parallel; SOC 2 Type 1 vs 2?</td><td>see §3.3; Type 1 = point-in-time, Type 2 = over time</td></tr>
+    <tr><td>6. Name the 4Ds; which two = "professional skepticism" &amp; "you sign the file"?</td><td>Delegation/Description/Discernment/Diligence → Discernment &amp; Diligence</td></tr>
+  </table>
+  <div class="note" style="color:var(--muted);font-style:italic;margin-top:10px">Figures reproduced from the AFM 241 course materials (Weeks 1–7). Colour-coding: <span class="pill" style="background:var(--found)">Foundations</span> <span class="pill" style="background:var(--disr)">Disruption</span> <span class="pill" style="background:var(--ai)">AI tools</span> <span class="pill" style="background:var(--hype)">Hype Cycle</span> <span class="pill" style="background:var(--warn)">Traps</span>.</div>
+</div>
+
+
+
+<a id="__rb-pill" href="coursework.html">&#8592; Coursework</a>
+<script>
+(function(){
+  var p=document.getElementById('__rb-pill'); if(!p) return;
+  var t=false;
+  function run(){ t=false;
+    p.classList.toggle('__on',(window.scrollY||document.documentElement.scrollTop)>420); }
+  function q(){ if(!t){ t=true; requestAnimationFrame(run); } }
+  addEventListener('scroll',q,{passive:true}); run();
+})();
+</script>
+</body></html>

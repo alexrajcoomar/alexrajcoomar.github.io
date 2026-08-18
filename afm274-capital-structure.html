@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="description" content="Exam sheet for capital structure under perfect-market assumptions: the propositions, and what each one actually rules out.">
+<meta property="og:title" content="AFM 274 Chapter 17 — Capital structure in a perfect market">
+<meta property="og:description" content="Exam sheet for capital structure under perfect-market assumptions: the propositions, and what each one actually rules out.">
+<meta property="og:type" content="article">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AFM 274 · Chapter 17 — Capital Structure in a Perfect Market (Exam Sheet)</title>
+<style>
+  :root{
+    --ink:#15314b;        /* deep navy for headings/accents */
+    --accent:#7a2733;     /* muted burgundy for warnings/fallacies */
+    --text:#1a1a1a;
+    --muted:#4a4a4a;
+    --panel:#f3f2ed;      /* very light warm gray panels */
+    --panel2:#eceae3;
+    --line:#bdbab1;
+    --hair:#d9d6cd;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family:"Charter","Georgia","Iowan Old Style",serif;
+    color:var(--text);
+    background:#fff;
+    font-size:10.5pt;
+    line-height:1.32;
+    -webkit-print-color-adjust:exact;
+    print-color-adjust:exact;
+  }
+  .page{max-width:8.0in;margin:0 auto;padding:14px 16px 20px;}
+
+  /* ---------- Typography ---------- */
+  h1,h2,h3,.label,.tag,.qa b,th{
+    font-family:"Avenir Next","Avenir","Gill Sans","Gill Sans MT","Optima","Segoe UI",sans-serif;
+  }
+  h1{font-size:16pt;color:var(--ink);margin:0 0 2px;letter-spacing:.2px;}
+  .sub{font-size:9pt;color:var(--muted);font-family:"Avenir Next","Gill Sans",sans-serif;margin:0 0 8px;}
+  h2{
+    font-size:10.5pt;color:#fff;background:var(--ink);
+    margin:0 0 6px;padding:3px 8px;border-radius:3px;letter-spacing:.3px;
+    text-transform:uppercase;
+  }
+  h3{font-size:10pt;color:var(--ink);margin:0 0 3px;}
+  p{margin:0 0 5px;}
+  ul{margin:0 0 5px;padding-left:16px;}
+  li{margin:0 0 2px;}
+  b,strong{color:#000;}
+  .em{color:var(--ink);font-weight:bold;}
+  .small{font-size:9pt;}
+  .muted{color:var(--muted);}
+
+  /* ---------- Layout ---------- */
+  .cols{column-count:2;column-gap:14px;}
+  .card{
+    break-inside:avoid;
+    border:1px solid var(--line);
+    border-radius:4px;
+    padding:7px 9px;
+    margin:0 0 10px;
+    background:#fff;
+  }
+  .card.tint{background:var(--panel);}
+  .full{margin:0 0 10px;}
+
+  /* ---------- How to use banner ---------- */
+  .howto{
+    border:1.5px dashed var(--ink);border-radius:4px;
+    padding:6px 10px;margin:0 0 11px;background:var(--panel);
+    font-size:9.4pt;
+  }
+  .howto b{color:var(--ink);}
+
+  /* ---------- Checklist ---------- */
+  .check li{list-style:none;position:relative;padding-left:18px;margin-bottom:3px;}
+  .check{padding-left:0;}
+  .check li::before{
+    content:"";position:absolute;left:0;top:2px;width:10px;height:10px;
+    border:1.4px solid var(--ink);border-radius:2px;
+  }
+
+  /* ---------- Math (CSS-rendered, no external deps) ---------- */
+  .eq{font-family:"Charter","Georgia",serif;font-style:italic;text-align:center;margin:5px 0;font-size:11pt;}
+  .eqL{font-family:"Charter","Georgia",serif;font-style:italic;margin:3px 0;}
+  .f{display:inline-flex;flex-direction:column;text-align:center;vertical-align:middle;line-height:1.05;font-size:.84em;margin:0 .12em;font-style:italic;}
+  .f>.n{border-bottom:1px solid currentColor;padding:0 .32em;}
+  .f>.d{padding:0 .32em;}
+  var{font-style:italic;}
+  sub{font-size:.72em;}
+  .box{display:inline-block;border:1.6px solid var(--ink);border-radius:3px;padding:1px 7px;font-style:italic;background:var(--panel);}
+
+  /* ---------- Tables ---------- */
+  table{width:100%;border-collapse:collapse;font-size:9.3pt;margin:2px 0 4px;}
+  th{background:var(--ink);color:#fff;text-align:left;padding:3px 6px;font-size:8.6pt;text-transform:uppercase;letter-spacing:.2px;}
+  td{padding:3px 6px;border-bottom:1px solid var(--hair);vertical-align:top;}
+  tr:nth-child(even) td{background:var(--panel);}
+  .ftab td:first-child{font-family:"Charter","Georgia",serif;white-space:nowrap;}
+  .num{text-align:right;font-variant-numeric:tabular-nums;}
+
+  /* ---------- Fallacy cards ---------- */
+  .fal h3{color:var(--accent);}
+  .fal{border-color:var(--accent);}
+  .fal .x{color:var(--accent);font-weight:bold;}
+
+  /* ---------- Cheat sheet (prominent) ---------- */
+  .cheat{border:2px solid var(--ink);border-radius:5px;margin:2px 0 11px;overflow:hidden;break-inside:avoid;}
+  .cheat .bar{background:var(--ink);color:#fff;padding:4px 10px;font-family:"Avenir Next","Gill Sans",sans-serif;
+    text-transform:uppercase;letter-spacing:.6px;font-size:10.5pt;font-weight:bold;display:flex;justify-content:space-between;}
+  .cheat .bar span{font-weight:normal;font-size:8.5pt;letter-spacing:.2px;opacity:.92;}
+  .cheat .body{padding:8px 10px;columns:2;column-gap:16px;font-size:9.3pt;}
+  .cheat .blk{break-inside:avoid;margin:0 0 7px;}
+  .cheat .blk .t{font-family:"Avenir Next","Gill Sans",sans-serif;font-size:8.4pt;text-transform:uppercase;
+    letter-spacing:.3px;color:var(--ink);font-weight:bold;border-bottom:1px solid var(--hair);margin-bottom:2px;padding-bottom:1px;}
+
+  /* ---------- Visual aids ---------- */
+  .viz{text-align:center;}
+  .viz svg{max-width:100%;height:auto;}
+  .cap{font-size:8.6pt;color:var(--muted);margin-top:2px;font-style:italic;}
+  .hl{display:flex;gap:6px;align-items:stretch;font-size:8.8pt;}
+  .hl .b{flex:1;border:1px solid var(--line);border-radius:3px;padding:4px 6px;background:#fff;}
+  .hl .eqs{display:flex;align-items:center;font-size:15pt;color:var(--ink);font-weight:bold;}
+  .hl .b .h{font-family:"Avenir Next","Gill Sans",sans-serif;font-size:8pt;text-transform:uppercase;color:var(--ink);font-weight:bold;}
+  .pay{font-family:"Charter","Georgia",serif;font-style:italic;}
+
+  /* ---------- Active recall ---------- */
+  .qa{font-size:9.4pt;}
+  .qa .row{break-inside:avoid;margin-bottom:5px;padding-bottom:4px;border-bottom:1px dotted var(--hair);}
+  .qa b{color:var(--ink);}
+  .qa .a{color:var(--muted);}
+
+  /* ---------- Toolbar (screen only) ---------- */
+  .toolbar{position:fixed;top:10px;right:10px;}
+  .toolbar button{font-family:"Avenir Next","Gill Sans",sans-serif;font-size:9pt;background:var(--ink);color:#fff;
+    border:none;border-radius:4px;padding:6px 12px;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,.25);}
+
+  /* ---------- Print rules ---------- */
+  @page{size:Letter;margin:0.45in;}
+  @media print{
+    .toolbar{display:none;}
+    .page{max-width:none;margin:0;padding:0;}
+    body{font-size:9.8pt;}
+    h2{box-shadow:none;}
+    .card,.cheat,.qa .row,.viz svg{break-inside:avoid;}
+    h1,h2,h3{break-after:avoid;}
+  }
+</style>
+
+<style id="__mobile_fit">
+/* Added by the site build. These older documents pushed past the right edge of
+   a phone screen: long unbreakable strings widened the page, and a few wide
+   tables had no scroll container. This constrains both without touching the
+   layout on a laptop. */
+@media (max-width:48rem){
+  html,body{max-width:100%}
+  body{overflow-wrap:break-word}
+  table{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch;max-width:100%}
+  pre,code{overflow-x:auto;max-width:100%}
+  img,svg{max-width:100%;height:auto}
+}
+</style>
+</head>
+<body>
+<!-- injected by the site build: a way back into the site from a standalone
+     piece. A static bar at the top, so it is visible on arrival, and a pill
+     that appears once you have scrolled past it, so there is always a way out.
+     Self-contained, because these pages do not load the site stylesheet. -->
+<style id="__rb-style">
+#__rb{
+  box-sizing:border-box;display:flex;flex-wrap:wrap;align-items:center;gap:.6rem 1.25rem;
+  padding:.6rem clamp(1rem,4vw,2rem);border-bottom:1px solid #ddd9cf;background:#faf9f6;
+  font:500 13px/1.35 InterVar,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  color:#55524a;
+}
+#__rb a{color:#14509b;text-decoration:none;display:inline-flex;align-items:center;gap:.4rem}
+#__rb a:hover{text-decoration:underline}
+#__rb .__rb-home{font-weight:640;color:#16150f}
+#__rb .__rb-home i{font-style:normal;font-weight:400;color:#6f6c63}
+#__rb .__rb-right{margin-left:auto;display:flex;gap:1.1rem;flex-wrap:wrap}
+#__rb .__mark{
+  display:inline-grid;place-items:center;width:1.2rem;height:1.2rem;flex:none;
+  background:#16150f;color:#faf9f6;font-size:.72rem;font-weight:700;
+}
+#__rb-pill{
+  position:fixed;left:14px;bottom:14px;z-index:2147483000;
+  display:inline-flex;align-items:center;gap:.45rem;padding:.58rem .9rem;
+  background:rgba(22,21,15,.93);color:#faf9f6;text-decoration:none;border-radius:99px;
+  font:600 12.5px/1 InterVar,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  border:1px solid rgba(255,255,255,.16);box-shadow:0 6px 22px rgba(0,0,0,.28);
+  opacity:0;transform:translateY(6px);pointer-events:none;
+  transition:opacity .2s ease,transform .2s ease;
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+}
+#__rb-pill.__on{opacity:1;transform:none;pointer-events:auto}
+#__rb-pill:hover{background:#16150f;color:#fff}
+@media (prefers-color-scheme:dark){
+  #__rb{background:#131310;border-bottom-color:#2c2b24;color:#c0bcb1}
+  #__rb .__rb-home{color:#f7f5ef}
+  #__rb .__rb-home i{color:#948f85}
+  #__rb a{color:#85adea}
+  #__rb .__mark{background:#f7f5ef;color:#131310}
+  #__rb-pill{background:rgba(247,245,239,.95);color:#131310;border-color:rgba(0,0,0,.2)}
+  #__rb-pill:hover{background:#fff;color:#000}
+}
+@media (prefers-reduced-motion:reduce){#__rb-pill{transition:none}}
+@media print{#__rb,#__rb-pill{display:none !important}}
+</style>
+<div id="__rb">
+  <a class="__rb-home" href="index.html"><span class="__mark" aria-hidden="true">A</span>Alex Rajcoomar <i>portfolio</i></a>
+  <span class="__rb-right"><a href="coursework.html">Coursework</a><a href="library.html">All work</a></span>
+</div>
+
+
+<div class="toolbar"><button onclick="window.print()">⎙ Print / Save PDF</button></div>
+
+<div class="page">
+
+  <!-- ===== HEADER ===== -->
+  <div class="full">
+    <h1>AFM&nbsp;274 · Chapter 17 — Capital Structure in a Perfect Market</h1>
+    <p class="sub">Exam quick-reference sheet · Modigliani–Miller in a frictionless world</p>
+    <div class="howto">
+      <b>How to use this sheet (last-minute review):</b> Read the <b>Core Intuition</b> boxes once out loud — if you can explain MM I, MM II, and why WACC is flat in your own words, you're 80% there. Then drill the <b>Formulas</b> and <b>Cheat Sheet</b>, re-do the <b>Entrepreneur example</b> from a blank page, and finish with the <b>Active Recall</b> Qs (cover the grey answers). The two <span class="x" style="color:var(--accent);font-weight:bold;">Fallacies</span> are almost always tested.
+    </div>
+  </div>
+
+  <!-- ===== CHECKLIST + INTUITION (2-col flow) ===== -->
+  <div class="cols">
+
+    <div class="card tint">
+      <h3>Midterm Must-Know Checklist</h3>
+      <ul class="check small">
+        <li>State <b>MM I</b> via the Law-of-One-Price / cash-flow-identity argument.</li>
+        <li>Apply <b>MM II</b>: show <var>r<sub>E</sub></var> rises linearly with <var>D/E</var>.</li>
+        <li>Argue <b>WACC = r<sub>U</sub></b> is constant; explain the flat line.</li>
+        <li>Compute value, <var>E</var>, <var>r<sub>E</sub></var>, WACC — unlevered <i>and</i> levered.</li>
+        <li>Explain <b>homemade leverage</b> &amp; why firm leverage is irrelevant.</li>
+        <li>Build/read a <b>market-value balance sheet</b>; do a leveraged recap.</li>
+        <li><b>Lever &amp; unlever betas</b> (incl. shortcut when <var>β<sub>D</sub>=0</var>).</li>
+        <li>Use <b>net debt</b> (cash = negative debt) for EV &amp; asset beta.</li>
+        <li>Debunk the <b>two fallacies</b> (EPS, dilution) with numbers.</li>
+        <li>Know the <b>6 perfect-market assumptions</b>.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3>MM Proposition I — the core result</h3>
+      <div class="eq">V<sub>L</sub> = V<sub>U</sub> &nbsp;&nbsp;⟺&nbsp;&nbsp; E + D = U = A</div>
+      <p class="small"><b>Pizza intuition:</b> the assets generate a fixed cash-flow "pizza." Debt &amp; equity just slice it. More slices ≠ more pizza. <b>Proof:</b> (1) debt + equity payoffs = asset payoff in <i>every</i> state; (2) Law of One Price → identical cash flows must have equal price; so <var>E+D</var> = value of assets, whatever the split.</p>
+    </div>
+
+    <div class="card">
+      <h3>MM Proposition II — cost of equity</h3>
+      <div class="eq">r<sub>E</sub> = r<sub>U</sub> + <span class="f"><span class="n">D</span><span class="d">E</span></span>(r<sub>U</sub> − r<sub>D</sub>)</div>
+      <p class="small">Debt is paid first, so the same asset-cash-flow swings hit a smaller equity base → equity gets riskier → investors demand more. The rise in <var>r<sub>E</sub></var> <b>exactly offsets</b> putting more weight on cheap debt. <b>No free lunch.</b></p>
+    </div>
+
+    <div class="card">
+      <h3>Why WACC is constant (= r<sub>U</sub>)</h3>
+      <div class="eqL">r<sub>wacc</sub> = <span class="f"><span class="n">E</span><span class="d">E+D</span></span>r<sub>E</sub> + <span class="f"><span class="n">D</span><span class="d">E+D</span></span>r<sub>D</sub></div>
+      <p class="small">Sub MM II into this and the leverage terms cancel → <span class="box">r<sub>wacc</sub> = r<sub>U</sub> = r<sub>A</sub></span>. As leverage ↑, both <var>r<sub>E</sub></var> and <var>r<sub>D</sub></var> rise, but more weight shifts to cheaper debt — net effect zero. <b>Discount projects at r<sub>U</sub>, not r<sub>E</sub>.</b></p>
+    </div>
+
+    <div class="card">
+      <h3>Homemade leverage</h3>
+      <p class="small">Investors can <b>borrow/lend on personal account</b> to build any capital structure themselves (e.g., buy unlevered stock on margin). At the same interest rate, this perfectly substitutes for corporate leverage — so nobody pays extra for the firm to do it. ⟹ leverage is value-irrelevant.</p>
+    </div>
+
+    <div class="card">
+      <h3>Market-value balance sheet</h3>
+      <p class="small">All assets (incl. intangibles) and all securities at <b>current market value</b>; always balances. <span class="pay">MV Equity = MV Assets − MV Debt</span>. Key tool for the <b>leveraged recap</b>: borrow $X, buy back $X equity ⟹ assets &amp; debt move together, equity falls by $X, <b>price/share unchanged</b> (zero-NPV swap).</p>
+    </div>
+
+  </div>
+
+  <!-- ===== FORMULAS TABLE (full width) ===== -->
+  <div class="full">
+    <h2>Key Formulas — and When to Use Them</h2>
+    <table class="ftab">
+      <tr><th style="width:38%">Formula</th><th>Gives you / use it when</th></tr>
+      <tr><td><var>V = E + D</var></td><td><b>Firm value</b> (the "pizza"). Always market values.</td></tr>
+      <tr><td><var>V<sub>L</sub> = V<sub>U</sub></var></td><td><b>MM I</b> — value is independent of capital structure.</td></tr>
+      <tr><td>r<sub>U</sub> = <span class="f"><span class="n">E</span><span class="d">E+D</span></span>r<sub>E</sub> + <span class="f"><span class="n">D</span><span class="d">E+D</span></span>r<sub>D</sub></td><td><b>Asset / unlevered / pretax-WACC</b>. Same as WACC (no taxes). Discount rate for projects.</td></tr>
+      <tr><td>r<sub>E</sub> = r<sub>U</sub> + <span class="f"><span class="n">D</span><span class="d">E</span></span>(r<sub>U</sub> − r<sub>D</sub>)</td><td><b>Levered cost of equity (MM II)</b>. After a leverage change.</td></tr>
+      <tr><td>β<sub>U</sub> = <span class="f"><span class="n">E</span><span class="d">E+D</span></span>β<sub>E</sub> + <span class="f"><span class="n">D</span><span class="d">E+D</span></span>β<sub>D</sub></td><td><b>Unlever a beta</b> (isolate business risk of a comparable).</td></tr>
+      <tr><td>β<sub>E</sub> = β<sub>U</sub> + <span class="f"><span class="n">D</span><span class="d">E</span></span>(β<sub>U</sub> − β<sub>D</sub>)</td><td><b>Relever a beta</b> to a target structure. (Twin of MM II.)</td></tr>
+      <tr><td>β<sub>U</sub> = <span class="f"><span class="n">β<sub>E</sub></span><span class="d">1 + D/E</span></span></td><td><b>Shortcut</b> for β<sub>U</sub> <i>when β<sub>D</sub> = 0</i>.</td></tr>
+      <tr><td><var>r<sub>E</sub> = r<sub>f</sub> + β<sub>E</sub>(r<sub>M</sub> − r<sub>f</sub>)</var></td><td><b>CAPM</b> — estimate <var>r<sub>E</sub></var> (or <var>r<sub>U</sub></var> with <var>β<sub>U</sub></var>).</td></tr>
+      <tr><td><var>Net debt = D − Cash</var>; &nbsp;EV = E + Net debt</td><td><b>Cash = negative debt</b>. Use net-debt weights for β<sub>U</sub>.</td></tr>
+    </table>
+    <p class="small muted" style="margin-top:2px;">⚠ <b>Not this chapter:</b> the tax versions on your formula sheet — <var>V<sub>L</sub> = V<sub>U</sub> + PV(ITS)</var> and after-tax WACC with <var>(1−t<sub>c</sub>)</var> — belong to later chapters. In a perfect-markets question there are <b>no taxes</b>, so WACC = <var>r<sub>U</sub></var>.</p>
+  </div>
+
+  <!-- ===== VISUAL AIDS (2-col flow) ===== -->
+  <div class="cols">
+
+    <div class="card viz">
+      <h3 style="text-align:left;">The pizza (MM I)</h3>
+      <svg viewBox="0 0 250 110" xmlns="http://www.w3.org/2000/svg" aria-label="Two pies of equal size with different debt/equity slices">
+        <!-- pie 1 -->
+        <circle cx="55" cy="55" r="42" fill="none" stroke="#15314b" stroke-width="2"/>
+        <line x1="55" y1="55" x2="55" y2="13" stroke="#15314b" stroke-width="1.4"/>
+        <line x1="55" y1="55" x2="93" y2="74" stroke="#15314b" stroke-width="1.4"/>
+        <text x="74" y="48" font-size="10" font-family="sans-serif" fill="#7a2733" font-weight="bold">D</text>
+        <text x="40" y="70" font-size="11" font-family="sans-serif" fill="#15314b" font-weight="bold">E</text>
+        <!-- equals -->
+        <text x="108" y="60" font-size="18" font-family="sans-serif" fill="#15314b" font-weight="bold">=</text>
+        <!-- pie 2 (different slices, same size) -->
+        <circle cx="195" cy="55" r="42" fill="none" stroke="#15314b" stroke-width="2"/>
+        <line x1="195" y1="55" x2="195" y2="13" stroke="#15314b" stroke-width="1.4"/>
+        <line x1="195" y1="55" x2="153" y2="50" stroke="#15314b" stroke-width="1.4"/>
+        <text x="170" y="35" font-size="10" font-family="sans-serif" fill="#7a2733" font-weight="bold">D</text>
+        <text x="200" y="78" font-size="11" font-family="sans-serif" fill="#15314b" font-weight="bold">E</text>
+      </svg>
+      <div class="cap">Resize the slices (more/less debt) — the pizza (firm value) is the same size.</div>
+    </div>
+
+    <div class="card viz">
+      <h3 style="text-align:left;">WACC vs. leverage (Fig. 17.1)</h3>
+      <svg viewBox="0 0 250 150" xmlns="http://www.w3.org/2000/svg" aria-label="WACC flat, equity cost rising, debt cost low then rising as leverage increases">
+        <!-- axes -->
+        <line x1="34" y1="14" x2="34" y2="126" stroke="#1a1a1a" stroke-width="1.2"/>
+        <line x1="34" y1="126" x2="240" y2="126" stroke="#1a1a1a" stroke-width="1.2"/>
+        <!-- WACC flat (solid thick) -->
+        <line x1="34" y1="78" x2="238" y2="78" stroke="#000" stroke-width="2.4"/>
+        <!-- rE rising (long dash) -->
+        <path d="M34,78 Q150,66 238,30" fill="none" stroke="#15314b" stroke-width="1.8" stroke-dasharray="7 3"/>
+        <!-- rD low then rising (dotted) -->
+        <path d="M34,108 C120,107 185,103 238,78" fill="none" stroke="#444" stroke-width="1.8" stroke-dasharray="2 3"/>
+        <!-- labels -->
+        <text x="120" y="26" font-size="9.5" font-family="sans-serif" fill="#15314b" font-weight="bold">r_E</text>
+        <text x="150" y="74" font-size="9" font-family="sans-serif" fill="#000" font-weight="bold">WACC = r_U</text>
+        <text x="70" y="120" font-size="9.5" font-family="sans-serif" fill="#444" font-weight="bold">r_D</text>
+        <text x="36" y="12" font-size="7.5" font-family="sans-serif" fill="#444">cost of capital</text>
+        <text x="150" y="140" font-size="7.5" font-family="sans-serif" fill="#444">leverage D/(E+D) →</text>
+      </svg>
+      <div class="cap">Both costs rise, but weight shifts to cheap debt → WACC stays flat at r<sub>U</sub>.</div>
+    </div>
+
+    <div class="card">
+      <h3>Homemade leverage = firm leverage</h3>
+      <div class="hl">
+        <div class="b">
+          <div class="h">Firm leverage</div>
+          <div class="small">Buy <b>levered equity</b> for $500.</div>
+          <div class="pay small">Date&nbsp;1: <b>$875</b> / <b>$375</b></div>
+        </div>
+        <div class="eqs">=</div>
+        <div class="b">
+          <div class="h">Homemade</div>
+          <div class="small">Buy <b>$1000 unlevered</b> stock = $500 own + $500 borrowed @5%.</div>
+          <div class="pay small">Date&nbsp;1 (after repaying $525): <b>$875</b> / <b>$375</b></div>
+        </div>
+      </div>
+      <div class="cap" style="margin-top:3px;">Identical payoffs ⟹ same price (Law of One Price) ⟹ levered equity = $500.</div>
+    </div>
+
+  </div>
+
+  <!-- ===== ENTREPRENEUR EXAMPLE (full width) ===== -->
+  <div class="full">
+    <h2>Worked Example — The Entrepreneur's Project (know cold)</h2>
+    <div class="card" style="margin-bottom:6px;">
+      <p class="small"><b>Setup:</b> cost <b>$800</b> today; pays <b>$1,400</b> (strong) or <b>$900</b> (weak), 50/50. Risk-free 5%, risk premium 10% ⟹ <var>r<sub>U</sub></var> = <b>15%</b>.</p>
+      <table class="num" style="font-size:9pt;">
+        <tr><th style="text-align:left;width:34%">Security (Date 0)</th><th class="num">Value</th><th class="num">Strong $</th><th class="num">Weak $</th><th class="num">Strong %</th><th class="num">Weak %</th><th class="num">E[r]</th></tr>
+        <tr><td style="text-align:left;">Unlevered equity</td><td class="num">1,000</td><td class="num">1,400</td><td class="num">900</td><td class="num">+40%</td><td class="num">−10%</td><td class="num"><b>15%</b></td></tr>
+        <tr><td style="text-align:left;">Debt (borrow $500 @5%)</td><td class="num">500</td><td class="num">525</td><td class="num">525</td><td class="num">+5%</td><td class="num">+5%</td><td class="num"><b>5%</b></td></tr>
+        <tr><td style="text-align:left;">Levered equity</td><td class="num">500</td><td class="num">875</td><td class="num">375</td><td class="num">+75%</td><td class="num">−25%</td><td class="num"><b>25%</b></td></tr>
+        <tr><td style="text-align:left;"><b>Whole firm</b></td><td class="num"><b>1,000</b></td><td class="num"><b>1,400</b></td><td class="num"><b>900</b></td><td class="num">—</td><td class="num">—</td><td class="num"><b>15%</b></td></tr>
+      </table>
+      <p class="small" style="margin-top:3px;">
+        <b>NPV</b> = −800 + 1150/1.15 = −800 + 1000 = <b>+$200</b>. &nbsp;
+        <b>Levered equity:</b> E = V<sub>L</sub> − D = 1000 − 500 = <b>$500</b>; E[payoff] = ½(875)+½(375)=625 ⟹ r<sub>E</sub> = 625/500 − 1 = <b>25%</b>.
+        &nbsp;<b>Check MM II:</b> 15% + (500/500)(15%−5%) = <b>25% ✓</b>. &nbsp;
+        <b>Check WACC:</b> ½(25%)+½(5%) = <b>15% = r<sub>U</sub> ✓</b>.
+      </p>
+      <p class="small muted" style="margin-top:2px;">Debt + levered-equity rows sum to the firm row in every column — that cash-flow identity <i>is</i> MM I. Leverage widened equity's range (−10..+40 → −25..+75) and raised its return, but value and WACC didn't budge.</p>
+    </div>
+  </div>
+
+  <!-- ===== FALLACIES (2-col) ===== -->
+  <div class="cols">
+    <div class="card fal">
+      <h3>Fallacy 1 — "Leverage ↑ EPS, so price ↑"</h3>
+      <p class="small"><span class="x">Wrong:</span> EPS does rise, but leverage also raises <var>r<sub>E</sub></var> (MM II), lowering the P/E by the offsetting amount. <b>Price unchanged.</b></p>
+      <p class="small muted"><b>Levitron:</b> after recap EPS $1.00→$1.10, but <var>r<sub>E</sub></var> 13.33%→14.66%; price = EPS/r<sub>E</sub> = 1.10/0.1466 = <b>$7.50</b> (unchanged). Use EV/EBIT(DA), not P/E, to compare firms.</p>
+    </div>
+    <div class="card fal">
+      <h3>Fallacy 2 — "Issuing equity dilutes value"</h3>
+      <p class="small"><span class="x">Wrong:</span> sold at a <b>fair price</b>, new shares bring in matching assets — more shares <i>and</i> proportionally more assets ⟹ <b>value per share unchanged.</b></p>
+      <p class="small muted"><b>Jet Set Air:</b> $8B (500M×$16) + $1B raised = $9B over 562.5M shares = <b>$16</b>. Any gain/loss comes from the <b>NPV of what you buy</b>, not the issuance. <span class="x">Bonus:</span> "cheap debt lowers WACC" is also false — <var>r<sub>E</sub></var> rises to offset.</p>
+    </div>
+  </div>
+
+  <!-- ===== CHEAT SHEET (prominent) ===== -->
+  <div class="cheat">
+    <div class="bar">Condensed Cheat Sheet <span>perfect markets · no taxes · financing = zero-NPV repackaging of risk</span></div>
+    <div class="body">
+      <div class="blk">
+        <div class="t">Assumptions (6)</div>
+        <div class="small">No taxes · no transaction/issuance costs · fairly priced (no arbitrage) · borrow = lend at same rate · no signaling · homemade leverage available.</div>
+      </div>
+      <div class="blk">
+        <div class="t">Core results</div>
+        <div class="eqL small">V<sub>L</sub> = V<sub>U</sub> &nbsp; · &nbsp; E + D = U = A &nbsp; · &nbsp; <span class="box" style="font-size:.95em;">r<sub>wacc</sub> = r<sub>U</sub> = r<sub>A</sub></span></div>
+      </div>
+      <div class="blk">
+        <div class="t">MM II + beta twin</div>
+        <div class="eqL small">r<sub>E</sub> = r<sub>U</sub> + <span class="f"><span class="n">D</span><span class="d">E</span></span>(r<sub>U</sub>−r<sub>D</sub>)</div>
+        <div class="eqL small">β<sub>E</sub> = β<sub>U</sub> + <span class="f"><span class="n">D</span><span class="d">E</span></span>(β<sub>U</sub>−β<sub>D</sub>)</div>
+      </div>
+      <div class="blk">
+        <div class="t">Weighted averages (asset = WACC)</div>
+        <div class="eqL small">r<sub>U</sub> = <span class="f"><span class="n">E</span><span class="d">E+D</span></span>r<sub>E</sub> + <span class="f"><span class="n">D</span><span class="d">E+D</span></span>r<sub>D</sub></div>
+        <div class="eqL small">β<sub>U</sub> = <span class="f"><span class="n">E</span><span class="d">E+D</span></span>β<sub>E</sub> + <span class="f"><span class="n">D</span><span class="d">E+D</span></span>β<sub>D</sub> &nbsp;·&nbsp; (β<sub>D</sub>=0: β<sub>U</sub>=<span class="f"><span class="n">β<sub>E</sub></span><span class="d">1+D/E</span></span>)</div>
+      </div>
+      <div class="blk">
+        <div class="t">Multiple securities</div>
+        <div class="small">Weighted average of <b>all</b> security returns = <var>r<sub>U</sub></var> (add <span class="f" style="font-size:.78em;"><span class="n">W</span><span class="d">E+D+W</span></span>r<sub>W</sub> for a warrant, etc.).</div>
+      </div>
+      <div class="blk">
+        <div class="t">Net debt &amp; recap</div>
+        <div class="small"><b>Net debt</b> = D − Cash (can be &lt;0); EV = E + Net debt. <b>Leveraged recap</b> (borrow $X, buy back $X): assets ↑X then ↓X, debt ↑X, equity ↓X → <b>price/share unchanged</b>.</div>
+      </div>
+      <div class="blk">
+        <div class="t">As leverage ↑</div>
+        <div class="small"><var>r<sub>E</sub></var> ↑, <var>r<sub>D</sub></var> ↑ (eventually), <var>β<sub>E</sub></var> ↑, EPS/ROE ↑ — but <b>WACC flat at r<sub>U</sub></b>, <var>β<sub>U</sub></var> flat, <b>V flat</b>.</div>
+      </div>
+      <div class="blk">
+        <div class="t">Don't get fooled</div>
+        <div class="small"><b>EPS↑ ≠ price↑</b> (r<sub>E</sub> rises). <b>Fair-price equity issue ≠ dilution</b> of value. <b>Cheap debt ≠ lower WACC</b>. Discount projects at <var>r<sub>U</sub></var>, not <var>r<sub>E</sub></var>.</div>
+      </div>
+      <div class="blk">
+        <div class="t">One-line WACC proof</div>
+        <div class="small">Sub MM II into <var>r<sub>wacc</sub></var> = weighted(r<sub>E</sub>, r<sub>D</sub>) → leverage terms cancel → <var>r<sub>wacc</sub> = r<sub>U</sub></var>.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== ACTIVE RECALL (full width, 2-col) ===== -->
+  <div class="full">
+    <h2>Active Recall — Cover the Grey Answers</h2>
+    <div class="qa cols">
+      <div class="row"><b>1. State MM I + the proof.</b> <span class="a">V<sub>L</sub>=V<sub>U</sub>. Debt+equity payoffs = asset payoff every state; Law of One Price → equal price; so E+D = asset value regardless of split.</span></div>
+      <div class="row"><b>2. Why does r<sub>E</sub> rise with leverage (no bankruptcy)?</b> <span class="a">Senior fixed debt concentrates the same asset-cash-flow swings onto less equity → more volatile → higher required return (∝ D/E).</span></div>
+      <div class="row"><b>3. E=$600M, D=$400M, r<sub>E</sub>=18%, r<sub>D</sub>=7%. Find r<sub>U</sub>.</b> <span class="a">0.6(18%)+0.4(7%) = <b>13.6%</b>.</span></div>
+      <div class="row"><b>4. r<sub>U</sub>=12%, r<sub>D</sub>=6%, D/E=0.5. Find r<sub>E</sub> &amp; WACC.</b> <span class="a">r<sub>E</sub>=12%+0.5(6%)=<b>15%</b>; WACC=⅔(15%)+⅓(6%)=<b>12%</b>=r<sub>U</sub>.</span></div>
+      <div class="row"><b>5. β<sub>E</sub>=1.2, D/E=0.5, β<sub>D</sub>=0. β<sub>U</sub>? Relever to D/E=1.</b> <span class="a">β<sub>U</sub>=1.2/1.5=<b>0.8</b>; new β<sub>E</sub>=0.8+1(0.8)=<b>1.6</b>.</span></div>
+      <div class="row"><b>6. Borrow to buy back shares — does the price change?</b> <span class="a"><b>No.</b> Selling $X debt and buying $X equity is a zero-NPV swap; risk changes, value/share doesn't.</span></div>
+      <div class="row"><b>7. T/F: issuing equity adds supply, so price falls.</b> <span class="a"><b>False.</b> A fair-price issue brings in matching assets; price/share unchanged. Effects come from new info / NPV of use of funds.</span></div>
+      <div class="row"><b>8. Why is "debt is cheaper, so more debt lowers WACC" wrong?</b> <span class="a">Adding debt raises r<sub>E</sub> (MM II) by exactly enough to offset the heavier weight on cheap debt — WACC stays at r<sub>U</sub>.</span></div>
+    </div>
+  </div>
+
+  <p class="small muted" style="text-align:center;border-top:1px solid var(--hair);padding-top:5px;margin-top:4px;">
+    AFM&nbsp;274 Ch.&nbsp;17 quick sheet · perfect markets, no taxes · all numbers internally verified · tax/distress formulas belong to later chapters.
+  </p>
+
+</div>
+
+
+<a id="__rb-pill" href="coursework.html">&#8592; Coursework</a>
+<script>
+(function(){
+  var p=document.getElementById('__rb-pill'); if(!p) return;
+  var t=false;
+  function run(){ t=false;
+    p.classList.toggle('__on',(window.scrollY||document.documentElement.scrollTop)>420); }
+  function q(){ if(!t){ t=true; requestAnimationFrame(run); } }
+  addEventListener('scroll',q,{passive:true}); run();
+})();
+</script>
+</body>
+</html>

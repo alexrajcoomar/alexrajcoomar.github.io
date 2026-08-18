@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Case file — Aug 4–5, 1962</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800;900&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#E4DEC9; --card:#EFEADA; --card-light:#F7F4E9;
+    --ink:#1C2130; --ink-soft:#4E5468; --muted:#82806D;
+    --rule:#C7BE9F; --wire:#9C2B1D; --wire-deep:#6B1D12; --gold:#7A6330;
+    --solid:#1C2130; --contested:#7A6330; --thin:#9C2B1D;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:'IBM Plex Sans',sans-serif;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:920px;margin:0 auto;padding:0 24px 72px;}
+  :focus-visible{outline:2px solid var(--wire);outline-offset:2px;}
+
+  .masthead{padding:48px 0 24px;border-bottom:3px double var(--ink);text-align:center;}
+  .masthead .kicker{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--wire-deep);margin-bottom:12px;}
+  .masthead h1{font-family:'Playfair Display',serif;font-weight:900;font-size:clamp(30px,6vw,46px);margin:0 0 8px;line-height:1.05;}
+  .masthead .dek{font-family:'Playfair Display',serif;font-style:italic;font-size:15.5px;color:var(--ink-soft);max-width:600px;margin:0 auto;}
+
+  section{padding:44px 0 0;}
+  .sec-head{margin-bottom:20px;}
+  .sec-head .tag{font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:6px;}
+  .sec-head h2{font-family:'Playfair Display',serif;font-weight:800;font-size:24px;margin:0;}
+  .lede{color:var(--ink-soft);font-size:14px;line-height:1.6;max-width:640px;margin:8px 0 0;}
+
+  /* ---- twin timelines ---- */
+  .timelines{display:grid;grid-template-columns:1fr 1fr;gap:0;margin-top:26px;border:1px solid var(--ink);}
+  .col{padding:20px 20px 24px;}
+  .col.official{background:var(--card);border-right:1px dashed var(--rule);}
+  .col.doc{background:var(--card-light);}
+  .col-head{font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;padding-bottom:10px;margin-bottom:14px;border-bottom:1px solid var(--rule);}
+  .official .col-head{color:var(--ink-soft);}
+  .doc .col-head{color:var(--wire-deep);}
+  .step{position:relative;padding-left:20px;padding-bottom:18px;border-left:1.5px solid var(--rule);margin-left:4px;}
+  .step:last-child{padding-bottom:0;}
+  .step::before{content:'';position:absolute;left:-5px;top:2px;width:8px;height:8px;border-radius:50%;background:var(--ink);}
+  .doc .step::before{background:var(--wire);}
+  .step .time{font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:600;color:var(--ink);display:block;margin-bottom:3px;}
+  .step .desc{font-size:12.8px;line-height:1.5;color:var(--ink-soft);}
+  .verdict{margin-top:16px;padding-top:12px;border-top:1px solid var(--rule);font-size:12.5px;font-style:italic;color:var(--muted);}
+
+  /* ---- confidence ladder ---- */
+  .ladder{margin-top:24px;border:1px solid var(--ink);}
+  .rung{display:grid;grid-template-columns:150px 1fr;border-bottom:1px dashed var(--rule);}
+  .rung:last-child{border-bottom:none;}
+  .rung-label{padding:16px 16px;font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;display:flex;align-items:center;color:#fff;}
+  .rung-body{padding:14px 18px;background:var(--card-light);}
+  .rung-body .claim{font-family:'Playfair Display',serif;font-weight:700;font-size:14.5px;margin:0 0 4px;}
+  .rung-body p{margin:0;font-size:12.6px;line-height:1.55;color:var(--ink-soft);}
+  .r1 .rung-label{background:var(--solid);}
+  .r2 .rung-label{background:var(--contested);}
+  .r3 .rung-label{background:var(--thin);}
+  .r4 .rung-label{background:var(--muted);}
+
+  footer{margin-top:44px;padding-top:18px;border-top:1px solid var(--rule);font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--muted);text-align:center;}
+
+  @media (max-width:640px){
+    .timelines{grid-template-columns:1fr;}
+    .col.official{border-right:none;border-bottom:1px dashed var(--rule);}
+    .rung{grid-template-columns:1fr;}
+    .rung-label{padding:8px 16px;}
+  }
+  @media (prefers-reduced-motion:no-preference){.reveal{animation:rise .5s ease-out both;}}
+  @keyframes rise{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+</style>
+</head>
+<body>
+<!-- injected by the site build: a way back into the site from a standalone
+     piece. A static bar at the top, so it is visible on arrival, and a pill
+     that appears once you have scrolled past it, so there is always a way out.
+     Self-contained, because these pages do not load the site stylesheet. -->
+<style id="__rb-style">
+#__rb{
+  box-sizing:border-box;display:flex;flex-wrap:wrap;align-items:center;gap:.6rem 1.25rem;
+  padding:.6rem clamp(1rem,4vw,2rem);border-bottom:1px solid #ddd9cf;background:#faf9f6;
+  font:500 13px/1.35 InterVar,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  color:#55524a;
+}
+#__rb a{color:#14509b;text-decoration:none;display:inline-flex;align-items:center;gap:.4rem}
+#__rb a:hover{text-decoration:underline}
+#__rb .__rb-home{font-weight:640;color:#16150f}
+#__rb .__rb-home i{font-style:normal;font-weight:400;color:#6f6c63}
+#__rb .__rb-right{margin-left:auto;display:flex;gap:1.1rem;flex-wrap:wrap}
+#__rb .__mark{
+  display:inline-grid;place-items:center;width:1.2rem;height:1.2rem;flex:none;
+  background:#16150f;color:#faf9f6;font-size:.72rem;font-weight:700;
+}
+#__rb-pill{
+  position:fixed;left:14px;bottom:14px;z-index:2147483000;
+  display:inline-flex;align-items:center;gap:.45rem;padding:.58rem .9rem;
+  background:rgba(22,21,15,.93);color:#faf9f6;text-decoration:none;border-radius:99px;
+  font:600 12.5px/1 InterVar,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  border:1px solid rgba(255,255,255,.16);box-shadow:0 6px 22px rgba(0,0,0,.28);
+  opacity:0;transform:translateY(6px);pointer-events:none;
+  transition:opacity .2s ease,transform .2s ease;
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+}
+#__rb-pill.__on{opacity:1;transform:none;pointer-events:auto}
+#__rb-pill:hover{background:#16150f;color:#fff}
+@media (prefers-color-scheme:dark){
+  #__rb{background:#131310;border-bottom-color:#2c2b24;color:#c0bcb1}
+  #__rb .__rb-home{color:#f7f5ef}
+  #__rb .__rb-home i{color:#948f85}
+  #__rb a{color:#85adea}
+  #__rb .__mark{background:#f7f5ef;color:#131310}
+  #__rb-pill{background:rgba(247,245,239,.95);color:#131310;border-color:rgba(0,0,0,.2)}
+  #__rb-pill:hover{background:#fff;color:#000}
+}
+@media (prefers-reduced-motion:reduce){#__rb-pill{transition:none}}
+@media print{#__rb,#__rb-pill{display:none !important}}
+</style>
+<div id="__rb">
+  <a class="__rb-home" href="index.html"><span class="__mark" aria-hidden="true">A</span>Alex Rajcoomar <i>portfolio</i></a>
+  <span class="__rb-right"><a href="library.html">Library</a><a href="library.html">All work</a></span>
+</div>
+
+<div class="wrap">
+
+  <div class="masthead reveal">
+    <div class="kicker">Study aid · not a verdict</div>
+    <h1>The night of Aug 4–5, 1962</h1>
+    <p class="dek">Two accounts of the same hours, and how much weight the surrounding claims actually deserve.</p>
+  </div>
+
+  <section>
+    <div class="sec-head">
+      <div class="tag">Part I</div>
+      <h2>Competing timelines</h2>
+      <p class="lede">Same witnesses, same house — read as two different sequences depending on whose reconstruction you follow.</p>
+    </div>
+    <div class="timelines">
+      <div class="col official">
+        <div class="col-head">Official record</div>
+        <div class="step"><span class="time">≈ 3:00 am</span><span class="desc">Housekeeper Eunice Murray finds Monroe's bedroom door locked, grows concerned.</span></div>
+        <div class="step"><span class="time">3:30 am</span><span class="desc">Psychiatrist Ralph Greenson arrives, breaks a window, finds her dead.</span></div>
+        <div class="step"><span class="time">4:25 am</span><span class="desc">Paramedics and police arrive at the house.</span></div>
+        <div class="step"><span class="time">Later 1962</span><span class="desc">Coroner rules death a probable suicide by barbiturate overdose.</span></div>
+        <div class="verdict">The version entered into the actual investigative record.</div>
+      </div>
+      <div class="col doc">
+        <div class="col-head">Summers' reconstruction (Unheard Tapes)</div>
+        <div class="step"><span class="time">≈ 11:00 pm</span><span class="desc">Publicist Arthur Jacobs arrives — medical emergency already underway, hours earlier than the official account.</span></div>
+        <div class="step"><span class="time">Overnight</span><span class="desc">Ambulance called; Greenson allegedly rides with a comatose Monroe to a hospital.</span></div>
+        <div class="step"><span class="time">Overnight</span><span class="desc">She dies en route or at the hospital, by this account — not at home.</span></div>
+        <div class="step"><span class="time">Pre-dawn</span><span class="desc">Body reportedly returned home, arranged, and "discovered" to match a cleaner story.</span></div>
+        <div class="verdict">Summers' own interpretation of conflicting interview testimony — not a document or record.</div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <div class="tag">Part II</div>
+      <h2>How solid is each claim, actually</h2>
+      <p class="lede">The Kennedy-related claims from this whole thread, sorted by evidentiary weight rather than how dramatically they're told.</p>
+    </div>
+    <div class="ladder">
+      <div class="rung r1">
+        <div class="rung-label">Well corroborated</div>
+        <div class="rung-body">
+          <p class="claim">Monroe moved in the Kennedy social circle</p>
+          <p>Documented acquaintance through Peter Lawford's beach house and party circuit; multiple independent witnesses, contemporaneous photos.</p>
+        </div>
+      </div>
+      <div class="rung r2">
+        <div class="rung-label">Taken seriously, not proven</div>
+        <div class="rung-body">
+          <p class="claim">A brief affair with JFK</p>
+          <p>Most historians lean toward "likely" on accumulated circumstantial evidence. Summers himself: "there was an involvement... I come away feeling that is certain" — but no document or recording has ever surfaced.</p>
+        </div>
+      </div>
+      <div class="rung r3">
+        <div class="rung-label">Thin / single-source</div>
+        <div class="rung-body">
+          <p class="claim">An affair with RFK, RFK at her house that night, wiretap recordings</p>
+          <p>Rests on secondhand accounts (housekeeper, hairdresser) and one investigator's uncorroborated claim about surveillance tapes nobody has produced. The 1982 DA review found no credible evidence placing RFK at the scene.</p>
+        </div>
+      </div>
+      <div class="rung r4">
+        <div class="rung-label">Rejected by investigators</div>
+        <div class="rung-body">
+          <p class="claim">The Kennedys had her murdered</p>
+          <p>Even Summers explicitly rejects this. No official review — 1962 or 1982 — found evidence of foul play.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>For studying this thread's material · treat rungs 3–4 as narrative, not evidence</footer>
+
+</div>
+
+<a id="__rb-pill" href="library.html">&#8592; Library</a>
+<script>
+(function(){
+  var p=document.getElementById('__rb-pill'); if(!p) return;
+  var t=false;
+  function run(){ t=false;
+    p.classList.toggle('__on',(window.scrollY||document.documentElement.scrollTop)>420); }
+  function q(){ if(!t){ t=true; requestAnimationFrame(run); } }
+  addEventListener('scroll',q,{passive:true}); run();
+})();
+</script>
+</body>
+</html>

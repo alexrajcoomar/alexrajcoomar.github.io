@@ -1,0 +1,2298 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="description" content="A daily instrument for deliberate learning: log a prediction, work the spaced rotation, then score your own calibration.">
+<meta property="og:title" content="Daily Learning Cockpit — Prediction log, spaced rotation, calibration">
+<meta property="og:description" content="A daily instrument for deliberate learning: log a prediction, work the spaced rotation, then score your own calibration.">
+<meta property="og:type" content="article">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Daily Learning Cockpit</title>
+<link rel="manifest" href="daily-learning-cockpit.webmanifest">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Cockpit">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#f9f9f7">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0d0d0d">
+<link rel="apple-touch-icon" href="daily-learning-cockpit-192.png">
+<link rel="icon" type="image/png" href="daily-learning-cockpit-192.png">
+
+<style>
+/* ============ TOKENS: same design system as the Study System and Skill Forge ============ */
+:root{
+  color-scheme:light;
+  --page:#f9f9f7; --surface:#fcfcfb; --ink:#0b0b0b; --ink2:#52514e; --muted:#898781;
+  --grid:#e1e0d9; --line:#c3c2b7; --ring:rgba(11,11,11,.10);
+  --acc:#2a78d6; --t2:#eb6834; --t3:#1baf7a; --t4:#eda100; --t5:#e87ba4; --t7:#4a3aa7;
+  --good:#0ca30c; --goodtx:#006300; --warn:#fab219; --serious:#ec835a; --crit:#d03b3b;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+  --sans:system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:where(:not([data-theme="light"])){
+    color-scheme:dark;
+    --page:#0d0d0d; --surface:#1a1a19; --ink:#ffffff; --ink2:#c3c2b7; --muted:#898781;
+    --grid:#2c2c2a; --line:#383835; --ring:rgba(255,255,255,.10);
+    --acc:#3987e5; --t2:#d95926; --t3:#199e70; --t4:#c98500; --t5:#d55181; --t7:#9085e9;
+    --goodtx:#0ca30c;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --page:#0d0d0d; --surface:#1a1a19; --ink:#ffffff; --ink2:#c3c2b7; --muted:#898781;
+  --grid:#2c2c2a; --line:#383835; --ring:rgba(255,255,255,.10);
+  --acc:#3987e5; --t2:#d95926; --t3:#199e70; --t4:#c98500; --t5:#d55181; --t7:#9085e9;
+  --goodtx:#0ca30c;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+[hidden]{display:none!important}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--page);color:var(--ink);font:15px/1.5 var(--sans)}
+button,input,textarea,select{font-family:var(--sans)}
+button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible,a:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+
+/* ============ HEADER / DASHBOARD ============ */
+.hdr{position:sticky;top:0;z-index:40;display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+  padding:9px 14px;padding-top:max(9px,env(safe-area-inset-top));
+  background:color-mix(in srgb,var(--surface) 94%,transparent);
+  backdrop-filter:blur(8px);border-bottom:1px solid var(--grid)}
+.brand{font-weight:800;font-size:15px;white-space:nowrap;cursor:pointer;border:0;background:none;color:var(--ink);padding:0}
+.brand .logo{color:var(--acc)}
+.brand .sub{font-weight:500;color:var(--ink2);font-size:11.5px;margin-left:4px}
+.dash{display:flex;gap:6px;flex-wrap:wrap;margin-left:auto;align-items:center}
+.chip{display:inline-flex;align-items:center;gap:5px;border:1px solid var(--grid);
+  border-radius:999px;padding:4px 11px;font:700 12px var(--sans);background:var(--surface)}
+.chip .l{font-weight:600;color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.5px}
+.chip.due{color:var(--acc)} .chip.debt{color:var(--crit)} .chip.brier{color:var(--t7)} .chip.gap{color:var(--t3)}
+.chip.debt.zero{color:var(--goodtx)}
+.iconbtn{border:1px solid var(--line);background:var(--surface);color:var(--ink2);border-radius:999px;
+  width:34px;height:34px;cursor:pointer;font-size:15px;line-height:1}
+.iconbtn:hover{border-color:var(--acc);color:var(--acc)}
+.iconbtn.off{opacity:.45;text-decoration:line-through}
+
+/* ============ NAV ============ */
+.nav{display:flex;gap:4px;max-width:920px;margin:0 auto;padding:8px 14px 0;flex-wrap:wrap}
+.nav button{position:relative;flex:1;min-width:78px;border:1px solid var(--grid);background:var(--surface);color:var(--ink2);
+  border-radius:10px;padding:9px 6px;font:700 12.5px var(--sans);cursor:pointer;display:flex;
+  flex-direction:column;align-items:center;gap:2px;min-height:46px;justify-content:center}
+.nav button .ni{font-size:15px;line-height:1}
+.nav button:hover{border-color:var(--acc)}
+.nav button.on{border-color:var(--acc);color:var(--acc);background:color-mix(in srgb,var(--acc) 8%,var(--surface))}
+.nav button .nb{position:absolute;transform:translate(26px,-14px);background:var(--crit);color:#fff;
+  border-radius:999px;font:800 9.5px var(--sans);padding:1px 5px}
+
+main{max-width:920px;margin:0 auto;padding:12px 14px 90px}
+.screen{display:none}
+.screen.on{display:block;animation:in .18s ease-out}
+@keyframes in{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.screen.on{animation:none}*{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+
+h1{font-size:21px;margin:10px 0 4px}
+.tag{color:var(--ink2);font-size:13px;margin:0 0 16px}
+.sect{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.7px;color:var(--muted);
+  margin:20px 0 8px;display:flex;align-items:center;gap:8px}
+.sect .ct{background:var(--grid);color:var(--ink2);border-radius:999px;padding:1px 7px;font-size:10px}
+.sect .ct.hot{background:color-mix(in srgb,var(--crit) 16%,transparent);color:var(--crit)}
+.sect .hint{margin-left:auto;font:500 10.5px var(--sans);text-transform:none;letter-spacing:0;color:var(--muted)}
+
+/* ============ CARDS / QUEUE ITEMS ============ */
+.card{border:1px solid var(--grid);border-radius:13px;background:var(--surface);padding:14px}
+.qi{border:1px solid var(--grid);border-radius:12px;background:var(--surface);padding:12px 13px;margin-bottom:8px}
+.qi.over{border-left:3px solid var(--crit)}
+.qi.warnb{border-left:3px solid var(--warn)}
+.qi .qt{font-weight:650;font-size:14px;line-height:1.35;overflow-wrap:anywhere}
+.qi .qm{font-size:11.5px;color:var(--muted);margin-top:3px;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.qi .qm b{color:var(--ink2);font-weight:700}
+.acts{display:flex;gap:7px;margin-top:10px;flex-wrap:wrap}
+.acts .btn{flex:1 1 auto;min-width:96px;max-width:210px;min-height:42px}
+.pill{display:inline-flex;align-items:center;gap:4px;font:700 10px var(--sans);letter-spacing:.3px;
+  text-transform:uppercase;border-radius:999px;padding:2px 8px;border:1px solid var(--grid);color:var(--ink2)}
+.pill.p1{color:var(--acc);border-color:color-mix(in srgb,var(--acc) 45%,var(--grid))}
+.pill.p2{color:var(--t2);border-color:color-mix(in srgb,var(--t2) 45%,var(--grid))}
+.pill.p3{color:var(--t3);border-color:color-mix(in srgb,var(--t3) 45%,var(--grid))}
+.pill.p7{color:var(--t7);border-color:color-mix(in srgb,var(--t7) 45%,var(--grid))}
+.pill.pc{color:var(--crit);border-color:color-mix(in srgb,var(--crit) 45%,var(--grid))}
+
+.btn{font:700 13px var(--sans);padding:10px 16px;border:1px solid var(--line);border-radius:10px;
+  background:var(--surface);color:var(--ink);cursor:pointer;min-height:40px}
+.btn:hover:not(:disabled){border-color:var(--acc);color:var(--acc)}
+.btn.pri{background:var(--acc);border-color:var(--acc);color:#fff}
+.btn.pri:hover{color:#fff;filter:brightness(1.07)}
+.btn.ok{border-color:var(--good);color:var(--goodtx)}
+.btn.no{border-color:var(--crit);color:var(--crit)}
+.btn.ghost{border-color:transparent;color:var(--ink2)}
+.btn.sm{font-size:11.5px;padding:6px 11px;min-height:32px}
+.btn:disabled{opacity:.4;cursor:default}
+.btn.danger{border-color:var(--crit);color:var(--crit)}
+
+/* ============ QUICK ADD ============ */
+.qadd{display:grid;grid-template-columns:repeat(auto-fit,minmax(128px,1fr));gap:8px;margin:8px 0 4px}
+.qadd button{border:1px dashed var(--line);background:var(--surface);color:var(--ink2);border-radius:11px;
+  padding:11px 9px;cursor:pointer;font:700 12.5px var(--sans);text-align:left;min-height:48px}
+.qadd button:hover{border-style:solid;border-color:var(--acc);color:var(--acc)}
+.qadd button .qa{display:block;font-weight:500;font-size:10.5px;color:var(--muted);margin-top:2px}
+
+/* ============ EMPTY / DONE ============ */
+.done{border:1px solid color-mix(in srgb,var(--good) 45%,var(--grid));border-radius:14px;
+  background:color-mix(in srgb,var(--good) 7%,var(--surface));padding:20px;text-align:center}
+.done .dg{font-size:30px}
+.done h3{margin:6px 0 4px;font-size:16px}
+.done p{margin:0;color:var(--ink2);font-size:13px}
+.empty{border:1px dashed var(--line);border-radius:12px;padding:18px;text-align:center;color:var(--muted);font-size:13px}
+
+/* ============ FORMS ============ */
+.field{margin-bottom:12px}
+.field label{display:block;font:700 11.5px var(--sans);color:var(--ink2);margin-bottom:4px}
+.field .hlp{font:500 11px var(--sans);color:var(--muted);margin-top:4px;display:block}
+.field input[type=text],.field input[type=number],.field input[type=date],.field textarea,.field select{
+  width:100%;font:14px var(--sans);padding:10px 12px;border:1px solid var(--line);border-radius:9px;
+  background:var(--page);color:var(--ink);min-height:44px}
+.field textarea{min-height:78px;resize:vertical;line-height:1.5}
+.field input.mono{font-family:var(--mono)}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.segs{display:flex;gap:6px;flex-wrap:wrap}
+.segs button{flex:1;min-width:56px;border:1px solid var(--line);background:var(--page);color:var(--ink2);
+  border-radius:9px;padding:9px 6px;font:700 13px var(--mono);cursor:pointer;min-height:44px}
+.segs button:hover{border-color:var(--acc)}
+.segs button.on{background:var(--acc);border-color:var(--acc);color:#fff}
+.segs.small button{font-size:12px;min-width:44px}
+.errmsg{color:var(--crit);font:600 12px var(--sans);margin-top:6px}
+
+/* ============ OVERLAY / SHEET ============ */
+.overlay{position:fixed;inset:0;background:color-mix(in srgb,var(--ink) 38%,transparent);
+  display:none;align-items:center;justify-content:center;z-index:60;padding:16px}
+.overlay.on{display:flex}
+.sheet{background:var(--surface);border:1px solid var(--grid);border-radius:16px;padding:20px;
+  max-width:520px;width:100%;max-height:88vh;overflow-y:auto;animation:pop .2s ease-out}
+@keyframes pop{from{transform:scale(.95);opacity:0}to{transform:scale(1);opacity:1}}
+.sheet h2{margin:0 0 4px;font-size:17px}
+.sheet .sh{color:var(--ink2);font-size:12.5px;margin:0 0 14px}
+.sheetfoot{display:flex;gap:8px;justify-content:flex-end;margin-top:16px;flex-wrap:wrap}
+.sheetfoot .btn{min-width:96px}
+@media (max-width:560px){
+  .overlay{align-items:flex-end;padding:0}
+  .sheet{max-width:none;border-radius:16px 16px 0 0;max-height:92vh;padding-bottom:max(20px,env(safe-area-inset-bottom))}
+  .sheetfoot .btn{flex:1}
+}
+
+/* ============ REVIEW: TILES + CHARTS ============ */
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(136px,1fr));gap:9px;margin-bottom:16px}
+.tile{border:1px solid var(--grid);border-radius:12px;background:var(--surface);padding:12px 13px}
+.tile .tl{font:700 10px var(--sans);text-transform:uppercase;letter-spacing:.5px;color:var(--muted)}
+.tile .tv{font:800 25px/1.15 var(--sans);font-variant-numeric:tabular-nums;margin:3px 0 1px}
+.tile .ts{font-size:11.5px;color:var(--ink2)}
+.tile .tv.good{color:var(--goodtx)} .tile .tv.bad{color:var(--crit)} .tile .tv.mid{color:var(--t4)}
+.tile.na .tv{color:var(--muted);font-size:19px}
+
+figure.fig{margin:0;border:1px solid var(--grid);border-radius:12px;background:var(--surface);padding:13px 14px 10px}
+figure.fig figcaption{font:700 13px var(--sans);margin-bottom:2px}
+figure.fig .fsub{font-size:11.5px;color:var(--ink2);margin-bottom:10px}
+.figs{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px;align-items:start}
+.chart{width:100%;max-width:430px;height:auto;display:block;overflow:visible;margin:0 auto}
+.chart .grid line{stroke:var(--grid);stroke-width:1}
+.chart .axis{stroke:var(--line);stroke-width:1}
+.chart text{fill:var(--muted);font:10.5px var(--sans)}
+.chart text.lbl{fill:var(--ink2);font-weight:700}
+.chart .ref{stroke:var(--line);stroke-width:1.5}
+.chart .ln{fill:none;stroke:var(--acc);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.chart .dot{fill:var(--acc);stroke:var(--surface);stroke-width:2}
+.chart .hit{fill:transparent;cursor:pointer}
+.chart .bar{stroke:var(--surface);stroke-width:2}
+.legend{display:flex;gap:12px;flex-wrap:wrap;font-size:11.5px;color:var(--ink2);margin:2px 0 8px}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+.tt{position:fixed;z-index:80;pointer-events:none;background:var(--surface);border:1px solid var(--line);
+  border-radius:8px;padding:6px 9px;font:12px var(--sans);color:var(--ink);box-shadow:0 4px 14px var(--ring);
+  max-width:230px;display:none}
+.tt.on{display:block}
+.tt b{display:block;font-size:12.5px;margin-bottom:2px}
+.tbl{width:100%;border-collapse:collapse;font-size:12.5px;margin-top:4px}
+.tbl th{text-align:left;font:700 10.5px var(--sans);text-transform:uppercase;letter-spacing:.4px;
+  color:var(--muted);padding:5px 7px;border-bottom:1px solid var(--line)}
+.tbl td{padding:5px 7px;border-bottom:1px solid var(--grid);font-variant-numeric:tabular-nums}
+.tbl td.n,.tbl th.n{text-align:right;font-family:var(--mono);font-size:11.5px}
+.tbl tr:last-child td{border-bottom:0}
+details.tblwrap{margin-top:8px}
+details.tblwrap summary{font:600 11.5px var(--sans);color:var(--muted);cursor:pointer;padding:3px 0}
+details.tblwrap summary:hover{color:var(--acc)}
+
+.verdict{border:1px solid var(--acc);border-left-width:4px;border-radius:11px;
+  background:color-mix(in srgb,var(--acc) 7%,var(--surface));padding:13px 15px;margin:0 0 16px}
+.verdict h3{margin:0 0 5px;font-size:14px}
+.verdict p{margin:0;font-size:13px;color:var(--ink2)}
+.verdict.warn{border-color:var(--warn);background:color-mix(in srgb,var(--warn) 9%,var(--surface))}
+.verdict.crit{border-color:var(--crit);background:color-mix(in srgb,var(--crit) 8%,var(--surface))}
+
+/* ============ LOG ============ */
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.tabs button{border:1px solid var(--grid);background:var(--surface);color:var(--ink2);border-radius:999px;
+  padding:7px 14px;font:700 12px var(--sans);cursor:pointer;min-height:38px}
+.tabs button:hover{border-color:var(--acc)}
+.tabs button.on{background:var(--acc);border-color:var(--acc);color:#fff}
+.lrow{border:1px solid var(--grid);border-radius:11px;background:var(--surface);padding:11px 12px;margin-bottom:7px}
+.lrow .lt{font-weight:650;font-size:13.5px;line-height:1.35;overflow-wrap:anywhere}
+.lrow .lm{font-size:11.5px;color:var(--muted);margin-top:3px;display:flex;gap:7px;flex-wrap:wrap;align-items:center}
+.lrow .lx{overflow-wrap:anywhere;font-size:12px;color:var(--ink2);margin-top:6px;padding-top:6px;border-top:1px dashed var(--grid)}
+.lrow.res-y{border-left:3px solid var(--good)}
+.lrow.res-n{border-left:3px solid var(--crit)}
+.lrow.res-v{border-left:3px solid var(--line)}
+.rowacts{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+.filt{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:10px;align-items:center}
+.filt select,.filt input{font:12.5px var(--sans);padding:7px 10px;border:1px solid var(--line);
+  border-radius:8px;background:var(--page);color:var(--ink);min-height:38px}
+
+/* ============ DRILLS ============ */
+.drillbox{border:1px solid var(--grid);border-radius:13px;background:var(--surface);padding:16px}
+.scene{border:1px solid var(--grid);border-left:3px solid var(--acc);border-radius:9px;
+  background:color-mix(in srgb,var(--acc) 5%,var(--surface));padding:11px 13px;margin:0 0 14px;
+  font-size:13.5px;color:var(--ink2);line-height:1.55;overflow-wrap:anywhere}
+.scene b{color:var(--ink)}
+.askline{display:flex;gap:9px;align-items:center;flex-wrap:wrap;margin:9px 0}
+.askline label{font-size:13px;color:var(--ink2);flex:1;min-width:190px}
+.askline input{font:14px var(--mono);padding:9px 11px;width:130px;border:1px solid var(--line);
+  border-radius:8px;background:var(--page);color:var(--ink);min-height:44px}
+.askline input.right{border-color:var(--good);background:color-mix(in srgb,var(--good) 9%,var(--surface))}
+.askline input.wrong{border-color:var(--crit);background:color-mix(in srgb,var(--crit) 9%,var(--surface))}
+.askline .mk{font:800 14px var(--sans);width:16px}
+.askline .mk.y{color:var(--goodtx)} .askline .mk.n{color:var(--crit)}
+.tree{font:12.5px/1.7 var(--mono);background:color-mix(in srgb,var(--ink) 3%,transparent);
+  border-radius:9px;padding:11px 13px;margin:10px 0;white-space:pre-wrap;color:var(--ink2);overflow-x:auto}
+.tree b{color:var(--ink)}
+.fb{margin-top:13px;border-top:1px dashed var(--line);padding-top:12px;font-size:13px;color:var(--ink2)}
+.fb .vd{font-weight:800;font-size:13.5px;margin-bottom:5px}
+.fb .vd.y{color:var(--goodtx)} .fb .vd.n{color:var(--crit)}
+
+/* ============ MISC ============ */
+.note{font-size:11.5px;color:var(--muted);margin-top:24px;border-top:1px solid var(--grid);padding-top:10px;line-height:1.6}
+.banner{border:1px solid var(--warn);border-left-width:4px;border-radius:9px;
+  background:color-mix(in srgb,var(--warn) 10%,var(--surface));padding:10px 13px;margin:10px 0;font-size:12.5px}
+.banner.info{border-color:var(--acc);background:color-mix(in srgb,var(--acc) 8%,var(--surface))}
+.toolsrow{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}
+.toolsrow .btn{font-size:11.5px;padding:7px 12px;border-color:var(--grid);min-height:36px}
+.visuallyhidden{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);z-index:90;background:var(--ink);
+  color:var(--page);border-radius:10px;padding:10px 16px;font:600 13px var(--sans);box-shadow:0 6px 20px var(--ring);
+  max-width:92vw;text-align:center}
+.toast button{background:none;border:0;color:var(--t4);font:800 12px var(--sans);cursor:pointer;margin-left:10px;padding:2px 4px}
+@media (max-width:560px){
+  h1{font-size:19px}
+  .dash .chip .l{display:none}
+  .row2{grid-template-columns:1fr}
+  .nav button{min-width:0;font-size:11px}
+}
+
+/* ============ READING ROOM ============ */
+.shelfhead{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.spines{display:grid;gap:9px;margin-bottom:4px}
+.spine{border:1px solid var(--grid);border-radius:13px;background:var(--surface);padding:13px 15px;
+  cursor:pointer;text-align:left;font:inherit;color:var(--ink);width:100%;display:block}
+.spine:hover{border-color:var(--acc)}
+.spine .sk{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:5px}
+.spine .st{font:700 15px var(--serif);margin:0 0 3px}
+.spine .sd{font-size:12.5px;color:var(--ink2);line-height:1.5}
+.spine .sm{font-size:11px;color:var(--muted);margin-top:7px;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.spine .dotp{font-weight:800}
+.spine .dotp.read{color:var(--goodtx)} .spine .dotp.part{color:var(--t4)} .spine .dotp.un{color:var(--muted)}
+.pill.pe{color:var(--t7);border-color:color-mix(in srgb,var(--t7) 45%,var(--grid))}
+.pill.pb{color:var(--t2);border-color:color-mix(in srgb,var(--t2) 45%,var(--grid))}
+.pill.pf{color:var(--t3);border-color:color-mix(in srgb,var(--t3) 45%,var(--grid))}
+
+:root{--serif:Georgia,"Iowan Old Style",Charter,"Times New Roman",serif}
+.reader{max-width:660px;margin:0 auto}
+.rdrtop{display:flex;align-items:center;gap:10px;margin:2px 0 14px;flex-wrap:wrap}
+.rdrtop .btn{min-height:36px}
+.mvdots{display:flex;gap:5px;margin-left:auto;align-items:center}
+.mvdots i{width:7px;height:7px;border-radius:999px;background:var(--grid);display:inline-block}
+.mvdots i.on{background:var(--acc);transform:scale(1.25)}
+.mvdots i.seen{background:color-mix(in srgb,var(--acc) 45%,var(--grid))}
+.rkick{font:700 10.5px var(--sans);text-transform:uppercase;letter-spacing:.8px;color:var(--muted);margin:0 0 4px}
+.reader h2.rt{font:700 23px/1.25 var(--serif);margin:0 0 2px}
+.reader .rsub{font:italic 14px/1.5 var(--serif);color:var(--ink2);margin:0 0 18px}
+.reader h3.mv{font:700 17.5px/1.3 var(--serif);margin:26px 0 10px}
+.prose{font:16.5px/1.7 var(--serif);color:var(--ink)}
+.prose p{margin:0 0 1.05em}
+.prose b{font-weight:700}
+.prose .vox{display:block;margin:0 0 1.05em;padding-left:14px;border-left:3px solid var(--grid)}
+.prose .vox b:first-child{font-family:var(--sans);font-size:12px;letter-spacing:.6px}
+.rfoot{display:flex;gap:8px;margin:22px 0 6px;align-items:center;flex-wrap:wrap}
+.rfoot .spacer{flex:1}
+.rprog{font-size:11.5px;color:var(--muted)}
+.tenlines{font:12.5px/1.85 var(--mono);background:color-mix(in srgb,var(--ink) 3%,transparent);
+  border:1px solid var(--grid);border-radius:11px;padding:13px 15px;margin:14px 0 6px;white-space:pre-wrap;
+  color:var(--ink);overflow-x:auto}
+.tenlines b{color:var(--ink)}
+.tencap{font:600 11px var(--sans);text-transform:uppercase;letter-spacing:.6px;color:var(--muted);margin:18px 0 0}
+.tennote{font:12px var(--sans);color:var(--muted);line-height:1.55;margin:8px 0 0}
+.prov{font:11.5px var(--sans);color:var(--muted);border-top:1px solid var(--grid);margin-top:20px;padding-top:10px;line-height:1.6}
+.claimrows{margin:10px 0}
+.crow{display:flex;gap:10px;align-items:baseline;padding:7px 2px;border-bottom:1px dashed var(--grid);font:13.5px var(--sans)}
+.crow:last-child{border-bottom:0}
+.crow .cm{font:800 14px var(--sans);width:18px;flex:none;text-align:center}
+.crow .cm.y{color:var(--goodtx)} .crow .cm.n{color:var(--crit)}
+.crow .cw{color:var(--ink)}
+.crow .cw small{color:var(--muted);font-size:11.5px}
+.mtx{display:grid;grid-template-columns:auto 1fr 1fr;gap:6px;margin:12px 0;font:12.5px var(--sans)}
+.mtx .mh{font:700 11px var(--sans);text-transform:uppercase;letter-spacing:.4px;color:var(--muted);
+  display:flex;align-items:center;justify-content:center;text-align:center;padding:4px}
+.mtx .mhl{justify-content:flex-start;text-align:left}
+.mtx .mc{border:1px solid var(--grid);border-radius:9px;padding:10px 11px;background:var(--surface);line-height:1.45;color:var(--ink2)}
+.mtx .mc b{color:var(--ink)}
+.mtx .mc.hot{border-color:color-mix(in srgb,var(--crit) 50%,var(--grid));background:color-mix(in srgb,var(--crit) 6%,var(--surface))}
+.mtx .mc.cool{border-color:color-mix(in srgb,var(--good) 45%,var(--grid));background:color-mix(in srgb,var(--good) 6%,var(--surface))}
+.mtx .mc.ask{border-style:dashed;color:var(--muted);font-style:italic}
+.errstrip{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 2px}
+.errstrip span{border:1px solid color-mix(in srgb,var(--warn) 55%,var(--grid));border-radius:9px;
+  background:color-mix(in srgb,var(--warn) 9%,var(--surface));padding:7px 11px;font:600 12px var(--sans);color:var(--ink2)}
+.errstrip span b{color:var(--ink)}
+.libnote{font-size:11.5px;color:var(--muted);margin-top:22px;border-top:1px solid var(--grid);padding-top:10px;line-height:1.6}
+@media (max-width:560px){
+  .reader h2.rt{font-size:20px}
+  .prose{font-size:16px}
+  .mtx{font-size:11.5px;gap:5px}
+  .mtx .mc{padding:8px 9px}
+}
+
+</style>
+</head>
+<body>
+<noscript><div style="padding:20px;font-family:system-ui">This cockpit is built entirely in JavaScript. Enable JavaScript; it runs fully offline and nothing is loaded from the network.</div></noscript>
+<header class="hdr">
+  <button class="brand" id="homeBtn"><span class="logo">▸</span> Cockpit <span class="sub" id="brandSub">daily</span></button>
+  <div class="dash">
+    <span class="chip due" title="Items due today or overdue">◷ <b id="dDue">0</b><span class="l">due</span></span>
+    <span class="chip debt" id="chipDebt" title="Predictions past their resolution date. An unresolved log is a mood diary.">⚠ <b id="dDebt">0</b><span class="l">debt</span></span>
+    <span class="chip brier" title="Brier score on resolved predictions. Lower is better; 0.25 is what always guessing 50% scores.">◎ <b id="dBrier">—</b><span class="l">brier</span></span>
+    <span class="chip gap" title="Mean predicted-minus-actual score gap on your last 10 practice sessions">🎯 <b id="dGap">—</b><span class="l">gap</span></span>
+    <button class="iconbtn" id="thmBtn" title="Light / dark">◐</button>
+  </div>
+</header>
+<nav class="nav" id="nav">
+  <button data-scr="today" class="on"><span class="ni">◱</span>Today</button>
+  <button data-scr="log"><span class="ni">☰</span>Log</button>
+  <button data-scr="drills"><span class="ni">🧮</span>Drills</button>
+  <button data-scr="review"><span class="ni">📈</span>Review</button>
+  <button data-scr="lib"><span class="ni">❧</span>Read</button>
+</nav>
+<main>
+  <!-- ============ TODAY ============ -->
+  <section class="screen on" id="scr-today" aria-labelledby="todayH">
+    <h1 id="todayH">Today</h1>
+    <p class="tag" id="todayTag"></p>
+    <div id="todayBanners"></div>
+    <div id="queue"></div>
+    <div class="sect">Add to the instruments<span class="hint">each takes under a minute</span></div>
+    <div class="qadd" id="qadd"></div>
+    <p class="note" id="todayNote"></p>
+  </section>
+  <!-- ============ LOG ============ -->
+  <section class="screen" id="scr-log" aria-labelledby="logH">
+    <h1 id="logH">Log</h1>
+    <p class="tag">Everything you have recorded. The point of a log is that it gets resolved, not that it gets long.</p>
+    <div class="tabs" id="logTabs"></div>
+    <div id="logBody"></div>
+  </section>
+  <!-- ============ DRILLS ============ -->
+  <section class="screen" id="scr-drills" aria-labelledby="drillH">
+    <h1 id="drillH">Drills</h1>
+    <p class="tag">Two instruments that need repetition rather than logging: the frequency translation, and judging the same case twice.</p>
+    <div id="drillHost"></div>
+  </section>
+  <!-- ============ REVIEW ============ -->
+  <section class="screen" id="scr-review" aria-labelledby="revH">
+    <h1 id="revH">Weekly Review</h1>
+    <p class="tag" id="revTag"></p>
+    <div id="revBody"></div>
+  </section>
+  <!-- ============ READING ROOM ============ -->
+  <section class="screen" id="scr-lib" aria-labelledby="libH">
+    <h1 id="libH">Reading Room</h1>
+    <p class="tag" id="libTag"></p>
+    <div id="libBody"></div>
+  </section>
+</main>
+<div class="overlay" id="overlay"><div class="sheet" id="sheet" role="dialog" aria-modal="true"></div></div>
+<div class="tt" id="tt" role="status"></div>
+<script>
+"use strict";
+/* ==========================================================================
+   DAILY LEARNING COCKPIT
+   Instruments transcribed from the Phase 3 sections of six adversarial research
+   files. Each instrument carries the evidence grade its source file assigned it;
+   nothing here is upgraded by restatement.
+   ========================================================================== */
+
+/* ---- dates: LOCAL, not UTC. A daily app that rolls over at 8pm Toronto is broken. ---- */
+const pad2=n=>String(n).padStart(2,"0");
+const dstr=d=>{d=d||new Date();return d.getFullYear()+"-"+pad2(d.getMonth()+1)+"-"+pad2(d.getDate());};
+const dparse=s=>{const p=String(s).split("-").map(Number);return new Date(p[0],p[1]-1,p[2]);};
+const addDays=(s,n)=>{const d=dparse(s);d.setDate(d.getDate()+n);return dstr(d);};
+const dayDiff=(a,b)=>Math.round((dparse(b)-dparse(a))/864e5);
+const TODAY=()=>dstr();
+const isDue=s=>!!s&&s<=TODAY();
+const overdueBy=s=>Math.max(0,dayDiff(s,TODAY()));
+const humanDate=s=>{
+  if(!s)return "—";
+  const d=dayDiff(TODAY(),s);
+  if(d===0)return "today";
+  if(d===1)return "tomorrow";
+  if(d===-1)return "yesterday";
+  if(d<0)return Math.abs(d)+"d overdue";
+  if(d<7)return "in "+d+"d";
+  return dparse(s).toLocaleDateString("en-CA",{month:"short",day:"numeric"});
+};
+const shortDate=s=>s?dparse(s).toLocaleDateString("en-CA",{month:"short",day:"numeric"}):"—";
+const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,7);
+
+/* ---- dom ---- */
+const D=document,$=s=>D.querySelector(s),$$=s=>[...D.querySelectorAll(s)];
+function E(t,c,h){const e=D.createElement(t);if(c)e.className=c;if(h!=null)e.innerHTML=h;return e;}
+const esc=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const num=(v,dp)=>Number(v).toLocaleString("en-CA",{minimumFractionDigits:dp||0,maximumFractionDigits:dp||0});
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+function parseNum(s){
+  let t=String(s==null?"":s).trim().replace(/[\s $,%]/g,"").replace(/[−–—]/g,"-");
+  let neg=false;
+  if(/^\(.*\)$/.test(t)){neg=true;t=t.slice(1,-1);}
+  if(!/^-?\d*\.?\d+$/.test(t))return NaN;
+  const v=parseFloat(t);
+  return neg?-v:v;
+}
+
+/* ---- storage: guarded, visible when blocked ---- */
+const MEM={};let storageOk=true;
+const store={
+  get(k){try{const v=localStorage.getItem(k);return v===null?(MEM[k]??null):v;}catch(e){storageOk=false;return MEM[k]??null;}},
+  set(k,v){MEM[k]=v;try{localStorage.setItem(k,v);}catch(e){storageOk=false;}}
+};
+const ST_KEY="cockpit.v1";
+const FRESH=()=>({schema:1,created:TODAY(),theme:"",lastReview:"",
+  settings:{lastExport:"",firstGap:3,secondGap:10,maxGap:21},
+  streak:{last:"",days:0,best:0},acts:{},
+  preds:[],topics:[],sessions:[],journal:[],noise:[],
+  drills:{hist:[],next:""},rq:{},seen:{}});
+let ST=FRESH();
+try{const raw=store.get(ST_KEY);if(raw){const o=JSON.parse(raw);if(o&&typeof o==="object")ST=Object.assign(FRESH(),o);}}catch(e){}
+for(const k of["preds","topics","sessions","journal","noise"])if(!Array.isArray(ST[k]))ST[k]=[];
+if(!ST.drills||typeof ST.drills!=="object")ST.drills={hist:[],next:""};
+if(!Array.isArray(ST.drills.hist))ST.drills.hist=[];
+if(!ST.rq||typeof ST.rq!=="object")ST.rq={};
+if(!ST.acts||typeof ST.acts!=="object")ST.acts={};
+if(!ST.seen||typeof ST.seen!=="object")ST.seen={};
+if(!ST.settings)ST.settings={lastExport:"",firstGap:3,secondGap:10,maxGap:21};
+const save=()=>store.set(ST_KEY,JSON.stringify(ST));
+if(ST.theme)D.documentElement.dataset.theme=ST.theme;
+
+/* ---- substantive-action streak: attendance is not practice ---- */
+function act(n){
+  const t=TODAY();
+  ST.acts[t]=(ST.acts[t]||0)+(n||1);
+  if(ST.streak.last!==t){
+    ST.streak.days=(ST.streak.last===addDays(t,-1))?ST.streak.days+1:1;
+    ST.streak.last=t;
+    ST.streak.best=Math.max(ST.streak.best||0,ST.streak.days);
+  }
+  save();
+}
+
+/* ==========================================================================
+   RESEARCH-PROGRAM RETRIEVAL QUESTIONS
+   Verbatim from the Phase 4 sections of the six files. Answers are withheld BY
+   DESIGN in those files: the protocol is attempt closed-book, then send for
+   marking. This app schedules and records attempts; it does not mark them.
+   ========================================================================== */
+const RQ=[
+ {s:"Durable learning",q:"Roediger and Karpicke found repeated study beat repeated testing under one specific condition. What was the condition, and what does that tell you about when to schedule retrieval practice relative to an exam?"},
+ {s:"Durable learning",q:"State the strongest published objection to the testing effect, name the construct it turns on, and give the counter-objection that the construct's critics raise."},
+ {s:"Durable learning",q:"Rohrer concedes in print that the interleaving effect is confounded with another effect on the list. Which one, and why does the confound arise mechanically from how interleaved assignments are built?"},
+ {s:"Durable learning",q:"Why did the learning-styles literature fail to support the meshing hypothesis? Name the research design that was required and mostly absent, not just the conclusion."},
+ {s:"Durable learning",q:"Two findings predict that a strategy correct for you today will become incorrect as you improve at a topic. Name the effect that describes this and state what you should do differently at week 1 versus week 6 on a new standard."},
+ {s:"Durable learning II",q:"Rowland's meta-analysis reports an overall testing effect of roughly half a standard deviation, but two design choices each move it substantially. Name both, give the approximate effect size at each level of each, and state which of the two you are most likely to get wrong in your own practice."},
+ {s:"Durable learning II",q:"Cepeda et al. found there is no single optimal spacing interval. State the rule that replaced it. Then apply it: you have a cumulative final in 14 weeks. What revisit gap does the rule imply, and what is the honest uncertainty attached to that number?"},
+ {s:"Durable learning II",q:"Brunmair and Richter found that interleaving reverses sign for one class of learning material. Name the class, give the approximate effect size including its sign, and state what that implies for how you should organise a list of defined IFRS terms as against a set of lease-classification problems."},
+ {s:"Durable learning II",q:"State the expertise reversal effect in one sentence. Then name the observable signal that tells you to stop reading worked solutions on a given topic, and explain why continuing past that point is not merely neutral."},
+ {s:"Durable learning II",q:"Kornell and Bjork found a dissociation between what participants did and what they believed. Give both percentages and what each refers to. Then explain why a feeling of ease during review is evidence against durable learning rather than for it, and name the five-second habit that turns that feeling into a measurement."},
+ {s:"Judgment under uncertainty",q:"Name the three components of overconfidence and state which one survives the Erev, Wallsten and Budescu critique, with the reason."},
+ {s:"Judgment under uncertainty",q:"Grove et al. report mechanical prediction is about 10 percent more accurate. State the two conditions under which that advantage cannot be realised in a real decision."},
+ {s:"Judgment under uncertainty",q:"A test has 1 percent prevalence, 90 percent sensitivity and a 9 percent false positive rate. Give the posterior in natural frequencies out of 1,000, then say what Koehler would object to in calling the percentage-format failure a fallacy."},
+ {s:"Judgment under uncertainty",q:"Explain why the DellaVigna and Linos gap between 8.7 and 1.4 percentage points is evidence about the literature rather than about nudges."},
+ {s:"Judgment under uncertainty",q:"Miller and Sanjurjo reversed the hot hand finding without collecting new data. State the mechanism, then name one habit of your own that the same mechanism could corrupt."},
+ {s:"JDM panel",q:"Name the three components Moore and Healy separate under overconfidence, and state which one survived scrutiny and why the other two did not."},
+ {s:"JDM panel",q:"The Good Judgment Project reported that training improved calibration and resolution. What did the 2025 reanalysis claim about that result, and what part of the forecasting-skill literature is left standing?"},
+ {s:"JDM panel",q:"Give the two conditions Kahneman and Klein agreed must hold before an intuitive judgment can be trusted, and explain why weather forecasters satisfy both while equity analysts largely do not."},
+ {s:"JDM panel",q:"Explain why the hot hand case is a stronger win for the ecological rationality critic than the natural-frequencies case is."},
+ {s:"JDM panel",q:"A nudge meta-analysis reports d = 0.43. After publication-bias correction it is 0.04, and government nudge units average 1.4 percentage points. State the defensible conclusion, and state the two overclaims to avoid in either direction."},
+ {s:"Manias and capital cycles",q:"GHSS report a 45 percent three-year crisis probability in the business R-zone and state that 64 percent of crises were preceded by an R-zone event. Derive both error rates, name each one correctly, and say which error a regulator should weight more heavily than an investor should, and why."},
+ {s:"Manias and capital cycles",q:"Fama's criterion is that a bubble must have a predictable ending. Greenwood, Shleifer and You concede one half of his claim and reject the other. State precisely which half is conceded, then give the statistic that does the rejecting and the exact definition of crash it depends on."},
+ {s:"Manias and capital cycles",q:"Goetzmann finds post-doubling crashes are rare; GHSY find run-ups sharply raise crash probability. Name the three definitional differences that reconcile them without either being wrong, and say what this implies about the usefulness of the word bubble."},
+ {s:"Manias and capital cycles",q:"Canada in the 2000s had elevated household credit growth and rising house prices, and had no banking crisis. Using the three-way distinction (description / ex-ante risk / severity), explain what the Canadian case does and does not falsify, and name the variable that actually differed."},
+ {s:"Manias and capital cycles",q:"Baron and Xiong's result is treated as stronger evidence against market efficiency than any crash-probability result. Explain why, in terms of what is being predicted, not effect size. Then state the one limitation of that result that the file flags."},
+ {s:"Mania panel",q:"GSY report that a sharp industry price run-up does not predict unusually low average forward returns, yet also predicts a substantially higher probability of a crash. State precisely how both can be true of the same return distribution, and say what that implies about the difference between reducing position size and shorting."},
+ {s:"Mania panel",q:"Goetzmann finds that conditional on a market doubling over three years, roughly 4.6 percent crashed in the following year. GSY find crash probability rising from 20 to 53 percent conditional on a 100 percent two-year run-up. Reconcile these without claiming either is wrong, and name the specific feature of each research design that produces the difference."},
+ {s:"Mania panel",q:"Jordà, Schularick and Taylor argue credit separates dangerous bubbles from harmless ones. Rank these by expected severity of aftermath and justify: (a) an equity sector doubles with no aggregate credit growth; (b) an equity sector doubles alongside a large credit boom; (c) house prices rise sharply with flat mortgage credit; (d) house prices rise sharply alongside rapid mortgage credit growth."},
+ {s:"Mania panel",q:"Garber concludes none of the classic episodes qualify as bubbles, and Pástor and Veronesi conclude Nasdaq's 2000 peak required uncertainty that was high but plausible. State what each result does establish and what neither establishes. Then state what evidence would defeat the credit-cycle claim, and why neither paper supplies it."},
+ {s:"Mania panel",q:"You hold a position in a sector up 110 percent net of market over two years, sector IPO count at a five-year high, roughly three quarters of new issuers unprofitable, while aggregate private credit to GDP is flat and bank equity is at a high. Which features are firing and which are not, what does the combination imply about the shape of a bad outcome versus its severity, and what single action does the evidence support?"}
+];
+RQ.forEach((r,i)=>{r.id="rq"+i;});
+const rqState=id=>ST.rq[id]||(ST.rq[id]={n:0,next:"",last:"",attempts:[]});
+/* The user's own protocol: attempt at day 0, then 2, 7, 30. */
+const RQ_GAPS=[2,5,23,60];
+
+/* ==========================================================================
+   METRICS
+   ========================================================================== */
+const resolvedPreds=()=>ST.preds.filter(p=>p.res&&p.res.o!==null&&p.res.o!==undefined);
+const openPreds=()=>ST.preds.filter(p=>!p.res);
+const duePreds=()=>openPreds().filter(p=>isDue(p.due));
+const debtPreds=()=>openPreds().filter(p=>overdueBy(p.due)>0);
+
+function brier(list){
+  const r=(list||resolvedPreds());
+  if(!r.length)return null;
+  return r.reduce((s,p)=>s+Math.pow(p.p/100-p.res.o,2),0)/r.length;
+}
+/* Brier decomposes into calibration and resolution (Murphy). We show the
+   reliability table, which is the part a person can act on. */
+function calibBuckets(){
+  const B=[[0,10],[10,25],[25,40],[40,60],[60,75],[75,90],[90,101]];
+  const out=B.map(([a,b])=>({a,b,label:a===0?"0–9%":b===101?"90–100%":a+"–"+(b-1)+"%",n:0,hits:0,sum:0}));
+  for(const p of resolvedPreds()){
+    const i=out.findIndex(x=>p.p>=x.a&&p.p<x.b);
+    if(i<0)continue;
+    out[i].n++;out[i].hits+=p.res.o;out[i].sum+=p.p;
+  }
+  return out.filter(x=>x.n>0).map(x=>({...x,mean:x.sum/x.n,obs:x.hits/x.n*100}));
+}
+/* Doc 4's acceptance test: if you have never been wrong at 90%+, your questions
+   are too easy and the log is flattering you. */
+function everWrongHigh(){
+  return resolvedPreds().some(p=>(p.p>=90&&p.res.o===0)||(p.p<=10&&p.res.o===1));
+}
+function sessionStats(n){
+  const s=ST.sessions.filter(x=>x.pred!=null&&x.actual!=null).slice(-(n||10));
+  if(s.length<1)return null;
+  const gaps=s.map(x=>x.pred-x.actual);
+  return{n:s.length,
+    mean:gaps.reduce((a,b)=>a+Math.abs(b),0)/s.length,
+    bias:gaps.reduce((a,b)=>a+b,0)/s.length,
+    rows:s};
+}
+function errMix(){
+  const w={};
+  for(const s of ST.sessions){
+    if(!(s.errC>0||s.errE>0))continue;
+    const d=dparse(s.d),day=d.getDay(),mon=addDays(s.d,-((day+6)%7));
+    w[mon]=w[mon]||{wk:mon,c:0,e:0};
+    w[mon].c+=s.errC||0;w[mon].e+=s.errE||0;
+  }
+  return Object.values(w).sort((a,b)=>a.wk<b.wk?-1:1).slice(-8);
+}
+const topicDue=()=>ST.topics.filter(t=>!t.retired&&isDue(t.next));
+function rotaCompliance(){
+  let on=0,tot=0;
+  for(const t of ST.topics)for(const h of t.touches||[]){
+    if(h.sched){tot++;if(dayDiff(h.sched,h.d)<=1)on++;}
+  }
+  return tot?{pct:Math.round(on/tot*100),tot}:null;
+}
+/* A topic that fails at its gap twice is a concept problem, not a card problem. */
+/* A topic is struggling only if it is failing NOW: two or more failures inside its
+   last three retrievals. A topic that failed twice in September and has been clean
+   since is not a concept problem, and flagging it forever would train you to ignore
+   the flag. */
+function strugglers(){
+  return ST.topics.filter(t=>{
+    if(t.retired)return false;
+    const real=(t.touches||[]).filter(x=>x.r!=="learn");
+    const recent=real.slice(-3);
+    return recent.filter(x=>x.r==="fail").length>=2;
+  });
+}
+const dueJournal=()=>ST.journal.filter(j=>j.status==="open"&&isDue(j.review));
+const dueNoise=()=>ST.noise.filter(n=>n.v2==null&&isDue(n.due));
+const dueRQ=()=>RQ.filter(r=>{const s=ST.rq[r.id];return s&&s.next&&isDue(s.next);});
+const freshRQ=()=>RQ.filter(r=>!ST.rq[r.id]);
+const drillDue=()=>!!(ST.drills.next&&isDue(ST.drills.next));
+
+/* ---- the queue: what the app asks of you today, in priority order ---- */
+const MINS={pred:0.5,touch:8,rq:6,journal:3,noise:2,drill:4};
+function buildQueue(){
+  const q=[];
+  for(const s of ST.sessions.filter(x=>x.actual==null))q.push({k:"score",id:s.id,o:s,mins:1});
+  for(const p of duePreds().sort((a,b)=>a.due<b.due?-1:1))q.push({k:"pred",id:p.id,o:p,mins:MINS.pred});
+  for(const t of topicDue().sort((a,b)=>a.next<b.next?-1:1))q.push({k:"touch",id:t.id,o:t,mins:MINS.touch});
+  for(const r of dueRQ())q.push({k:"rq",id:r.id,o:r,mins:MINS.rq});
+  for(const n of dueNoise())q.push({k:"noise",id:n.id,o:n,mins:MINS.noise});
+  for(const j of dueJournal())q.push({k:"journal",id:j.id,o:j,mins:MINS.journal});
+  if(drillDue())q.push({k:"drill",id:"drill",o:null,mins:MINS.drill});
+  return q;
+}
+const queueMins=q=>Math.round(q.reduce((s,x)=>s+x.mins,0));
+
+/* ==========================================================================
+   FREQUENCY DRILL
+   The single largest intervention effect in the source files: restating a
+   conditional probability as counts out of 1,000 raised Bayesian accuracy by an
+   average of 37 percentage points across four problem structures [VERIFIED in
+   the judgment file]. Formula training decays in weeks; the format holds, which
+   is why a 5-week retention re-test is scheduled rather than a streak.
+   ========================================================================== */
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+const rnd=(a,b)=>a+Math.floor(Math.random()*(b-a+1));
+const DRILL_SCENES=[
+ {k:"audit",pop:"1,000 client files of this type",cond:"contains a material misstatement",
+  test:"the analytical review flags it",basePh:"of 1,000 files like this, how many actually contain a material misstatement",
+  posPh:"how many files does the review flag in total",hitPh:"of the flagged files, how many are true misstatements",
+  story:(b,s,f)=>"Your firm's analytical review flags files for detailed testing. Across engagements of this type, <b>"+b+"%</b> of files contain a material misstatement. The review flags <b>"+s+"%</b> of the files that do contain one, and also flags <b>"+f+"%</b> of the clean files. A file comes back flagged."},
+ {k:"credit",pop:"1,000 borrowers in this book",cond:"defaults within the year",
+  test:"the early-warning model downgrades them",basePh:"of 1,000 borrowers, how many actually default",
+  posPh:"how many borrowers get downgraded in total",hitPh:"of the downgraded borrowers, how many actually default",
+  story:(b,s,f)=>"A lender's early-warning model downgrades borrowers it believes will default. <b>"+b+"%</b> of this book defaults within a year. The model downgrades <b>"+s+"%</b> of the borrowers who go on to default, and also downgrades <b>"+f+"%</b> of those who pay in full. A borrower is downgraded."},
+ {k:"fund",pop:"1,000 funds in this category",cond:"beats its benchmark over 15 years",
+  test:"it shows a strong 3-year record",basePh:"of 1,000 funds, how many actually beat the benchmark over 15 years",
+  posPh:"how many funds show a strong 3-year record",hitPh:"of the funds with a strong record, how many actually beat the benchmark",
+  story:(b,s,f)=>"<b>"+b+"%</b> of funds in this category beat their benchmark over 15 years. Among the funds that do beat it, <b>"+s+"%</b> show a strong three-year record. Among those that do not beat it, <b>"+f+"%</b> still show a strong three-year record. A salesperson shows you a fund with a strong three-year record."},
+ {k:"med",pop:"1,000 people screened",cond:"has the condition",
+  test:"the test comes back positive",basePh:"of 1,000 people, how many actually have the condition",
+  posPh:"how many people test positive in total",hitPh:"of those who test positive, how many actually have the condition",
+  story:(b,s,f)=>"A screening test is offered to a population where <b>"+b+"%</b> have the condition. The test is positive for <b>"+s+"%</b> of those who have it, and also positive for <b>"+f+"%</b> of those who do not. One person tests positive."}
+];
+function makeDrill(){
+  const sc=pick(DRILL_SCENES);
+  const basePct=pick([0.5,1,2,4,5,8,10]);
+  const sens=pick([80,85,90,95]);
+  const fpr=pick([3,5,8,9,10,15]);
+  const sick=Math.round(1000*basePct/100);
+  const sickPos=Math.round(sick*sens/100);
+  const well=1000-sick;
+  const wellPos=Math.round(well*fpr/100);
+  const pos=sickPos+wellPos;
+  const post=pos?sickPos/pos*100:0;
+  return{sc,basePct,sens,fpr,sick,sickPos,well,wellPos,pos,post,
+    ask:[{label:sc.basePh,ans:sick,tol:0},
+         {label:sc.posPh,ans:pos,tol:1},
+         {label:sc.hitPh,ans:sickPos,tol:1}]};
+}
+function drillTree(d){
+  const s=d.sc;
+  return "1,000 "+s.pop.replace(/^1,000 /,"")+"\n"+
+   "├─ "+num(d.sick)+" "+s.cond+"\n"+
+   "│    ├─ <b>"+num(d.sickPos)+"</b> → "+s.test+"   ("+d.sens+"% of "+num(d.sick)+")\n"+
+   "│    └─ "+num(d.sick-d.sickPos)+" → missed\n"+
+   "└─ "+num(d.well)+" do not\n"+
+   "     ├─ <b>"+num(d.wellPos)+"</b> → "+s.test+" anyway   ("+d.fpr+"% of "+num(d.well)+")\n"+
+   "     └─ "+num(d.well-d.wellPos)+" → correctly not flagged\n\n"+
+   "Flagged in total: "+num(d.sickPos)+" + "+num(d.wellPos)+" = <b>"+num(d.pos)+"</b>\n"+
+   "True ones among them: "+num(d.sickPos)+" ÷ "+num(d.pos)+" = <b>"+d.post.toFixed(1)+"%</b>";
+}
+
+/* ==========================================================================
+   SHEETS + FORM HELPERS
+   ========================================================================== */
+let sheetSave=null,lastFocus=null;
+function openSheet(title,sub,build){
+  const sh=$("#sheet");sh.innerHTML="";
+  sh.appendChild(E("h2",null,esc(title)));
+  if(sub)sh.appendChild(E("p","sh",sub));
+  const body=E("div");sh.appendChild(body);
+  const foot=E("div","sheetfoot");
+  const cancel=E("button","btn","Cancel");
+  const ok=E("button","btn pri","Save");
+  foot.append(cancel,ok);sh.appendChild(foot);
+  const res=build(body,foot)||{};
+  if(res.submitLabel)ok.textContent=res.submitLabel;
+  if(res.hideCancel)cancel.hidden=true;
+  sheetSave=res.save||null;
+  cancel.onclick=closeSheet;
+  ok.onclick=()=>{if(!sheetSave||sheetSave()!==false)closeSheet();};
+  sh.onkeydown=e=>{
+    if(e.key==="Enter"&&e.target.tagName==="INPUT"&&e.target.type!=="file"){e.preventDefault();ok.click();}
+    if(e.key!=="Tab")return;
+    const f=[...sh.querySelectorAll('button,input:not([type=file]),textarea,select,[tabindex="0"]')].filter(x=>!x.disabled&&x.offsetParent!==null||x===D.activeElement);
+    if(!f.length)return;
+    const first=f[0],last=f[f.length-1];
+    if(e.shiftKey&&D.activeElement===first){e.preventDefault();last.focus();}
+    else if(!e.shiftKey&&D.activeElement===last){e.preventDefault();first.focus();}
+  };
+  lastFocus=D.activeElement;
+  $("#overlay").classList.add("on");
+  setTimeout(()=>{const f=res.focus||sh.querySelector("input,textarea,select,button");if(f)f.focus();},60);
+}
+function closeSheet(){
+  $("#overlay").classList.remove("on");sheetSave=null;
+  if(lastFocus&&lastFocus.focus)try{lastFocus.focus();}catch(e){}
+}
+$("#overlay").addEventListener("click",e=>{if(e.target===$("#overlay"))closeSheet();});
+D.addEventListener("keydown",e=>{
+  if(e.key==="Escape"&&$("#overlay").classList.contains("on"))closeSheet();
+});
+function field(label,el,hlp){
+  const w=E("div","field");
+  const id="f"+uid();
+  const isCtl=/^(INPUT|TEXTAREA|SELECT)$/.test(el.tagName);
+  const l=E("label",null,esc(label));
+  if(isCtl){el.id=id;l.setAttribute("for",id);}
+  else{l.id=id;el.setAttribute("role","group");el.setAttribute("aria-labelledby",id);}
+  w.append(l,el);
+  if(hlp){const h=E("span","hlp",hlp);w.appendChild(h);
+    if(isCtl){const hid="h"+uid();h.id=hid;el.setAttribute("aria-describedby",hid);}}
+  return w;
+}
+function inp(type,val,ph){
+  const e=E("input");e.type=type||"text";if(val!=null)e.value=val;if(ph)e.placeholder=ph;
+  if(type==="number")e.inputMode="decimal";
+  return e;
+}
+function ta(val,ph,rows){const e=E("textarea");if(val)e.value=val;if(ph)e.placeholder=ph;e.rows=rows||3;return e;}
+function segs(vals,def,fmt,cls){
+  const w=E("div","segs"+(cls?" "+cls:""));
+  let cur=def;
+  vals.forEach(v=>{
+    const b=E("button",null,fmt?fmt(v):String(v));
+    b.type="button";
+    if(v===def)b.classList.add("on");
+    b.onclick=()=>{cur=v;[...w.children].forEach(x=>x.classList.remove("on"));b.classList.add("on");};
+    w.appendChild(b);
+  });
+  w.get=()=>cur;
+  return w;
+}
+let toastT=null;
+function toast(msg,undo){
+  const old=$(".toast");if(old)old.remove();
+  if(toastT)clearTimeout(toastT);
+  const t=E("div","toast",esc(msg));t.setAttribute("role","status");
+  if(undo){
+    const b=E("button",null,"Undo");
+    b.onclick=()=>{undo();t.remove();paintAll();};
+    t.appendChild(b);
+  }
+  D.body.appendChild(t);
+  toastT=setTimeout(()=>t.remove(),undo?6000:2800);
+}
+
+/* ==========================================================================
+   ACTIONS
+   ========================================================================== */
+function addPrediction(){
+  openSheet("New prediction",
+    "A forecast without a probability, a date and a score is not a forecast. Write the claim so a stranger could resolve it.",
+    body=>{
+      const q=ta("","e.g. I receive a first-round response from firm X by Sept 30",3);
+      const p=segs([5,10,20,30,40,50,60,70,80,90,95],70,v=>v+"%","small");
+      const dt=inp("date",addDays(TODAY(),7));dt.min=TODAY();
+      const tg=E("select");
+      ["Career","Course","Investing","Life","Other"].forEach(o=>{const x=E("option",null,o);x.value=o;tg.appendChild(x);});
+      const err=E("div","errmsg");err.hidden=true;
+      body.append(
+        field("Claim",q,"Falsifiable, not directional. \"Looks undervalued\" is a mood; \"closes above $42 on Dec 31\" is a prediction."),
+        field("Probability it happens",p,"Use the bucket you actually believe. Spreading across buckets is what makes the reliability table readable."),
+        field("Resolution date",dt,"The date you will know. This is what puts it in your queue."),
+        field("Area",tg),err);
+      return{focus:q,save(){
+        if(!q.value.trim()){err.textContent="A claim is required.";err.hidden=false;q.focus();return false;}
+        if(!dt.value||dt.value<TODAY()){err.textContent="Resolution date must be today or later.";err.hidden=false;return false;}
+        ST.preds.push({id:uid(),q:q.value.trim(),p:p.get(),created:TODAY(),due:dt.value,tag:tg.value,res:null});
+        act();save();paintAll();toast("Prediction logged, resolves "+humanDate(dt.value));
+      }};
+    });
+}
+function resolvePred(id,o){
+  const p=ST.preds.find(x=>x.id===id);if(!p||p.res)return;
+  p.res={at:TODAY(),o};
+  act();save();paintAll();
+  const hit=(o===1&&p.p>=50)||(o===0&&p.p<50);
+  const msg=o===null?"Marked unresolvable, excluded from scoring"
+    :(hit?"Resolved. That one went your way.":"Resolved against you at "+p.p+"%. That is the log working.");
+  toast(msg,()=>{p.res=null;save();});
+}
+function pushPred(id,days){
+  const p=ST.preds.find(x=>x.id===id);if(!p)return;
+  const old=p.due;
+  p.due=addDays(TODAY(),days);p.pushed=(p.pushed||0)+1;
+  save();paintAll();
+  toast("Pushed to "+humanDate(p.due),()=>{p.due=old;p.pushed--;save();});
+}
+function addTopic(){
+  openSheet("New topic in the rota",
+    "Three touches: today, then day 3, then day 10. The gap is not a constant; it recalibrates from your own day-10 results.",
+    body=>{
+      const n=inp("text","","e.g. IFRS 16 lease classification");
+      const courses=[...new Set(ST.topics.map(t=>t.course).filter(Boolean))];
+      const c=inp("text","","e.g. AFM 291");
+      c.setAttribute("list","courselist");
+      const dl=E("datalist");dl.id="courselist";
+      courses.forEach(x=>{const o=E("option");o.value=x;dl.appendChild(o);});
+      const learned=E("select");
+      [["today","I am learning it today (day 0)"],["past","I already know it, start the rota now"]].forEach(([v,l])=>{
+        const o=E("option",null,l);o.value=v;learned.appendChild(o);});
+      const err=E("div","errmsg");err.hidden=true;
+      body.append(field("Topic",n,"Small enough to reconstruct on a blank page in ten minutes."),
+        field("Course or area",c),dl,field("Starting point",learned),err);
+      return{focus:n,save(){
+        if(!n.value.trim()){err.textContent="A topic name is required.";err.hidden=false;return false;}
+        const gap=ST.settings.firstGap;
+        ST.topics.push({id:uid(),name:n.value.trim(),course:c.value.trim(),created:TODAY(),
+          gap,next:addDays(TODAY(),gap),touches:learned.value==="today"?[{d:TODAY(),r:"learn",sched:TODAY()}]:[]});
+        act();save();paintAll();toast("In the rota. First retrieval "+humanDate(addDays(TODAY(),gap)));
+      }};
+    });
+}
+function touchTopic(id,r){
+  const t=ST.topics.find(x=>x.id===id);if(!t)return;
+  const prev={gap:t.gap,next:t.next,len:(t.touches||[]).length};
+  t.touches=t.touches||[];
+  const sched=t.next;
+  t.touches.push({d:TODAY(),r,sched});
+  const real=t.touches.filter(x=>x.r!=="learn");
+  const attempted=t.gap||ST.settings.firstGap;
+  let gap=attempted,why="";
+  if(r==="fail"){
+    gap=Math.max(2,Math.round(attempted/2));
+    why="Failed at "+attempted+"d, so the gap halves to "+gap+"d. Repeated failure is an encoding gap, not a scheduling one.";
+  }else if(r==="hint"){
+    gap=attempted;
+    why="A hint means it did not come back clean, so the gap holds at "+gap+"d rather than advancing.";
+  }else if(real.length<=1){
+    gap=ST.settings.secondGap;
+    why="First clean retrieval, so the rota steps out to "+gap+"d.";
+  }else{
+    const last2=real.slice(-2);
+    if(last2.length===2&&last2.every(x=>x.r==="clean")&&attempted<ST.settings.maxGap){
+      gap=Math.min(ST.settings.maxGap,attempted+(attempted>=10?7:4));
+      why="Two clean in a row, so the gap stretches to "+gap+"d.";
+    }else why="Next touch in "+gap+"d.";
+  }
+  t.gap=gap;t.next=addDays(TODAY(),gap);
+  act();save();paintAll();
+  toast((r==="clean"?"Clean. ":r==="hint"?"Logged. ":"Logged. ")+(why||"Next touch "+humanDate(t.next)),
+    ()=>{t.touches.pop();t.gap=prev.gap;t.next=prev.next;save();});
+}
+function startSession(){
+  openSheet("Start a practice session",
+    "Predict first, mark second. The prediction is the instrument; entering both at once measures nothing.",
+    body=>{
+      const l=inp("text","","e.g. AFM 291 Ch.7 problem set, 12 questions");
+      const p=segs([30,40,50,60,70,80,90,100],70,v=>v+"%","small");
+      const err=E("div","errmsg");err.hidden=true;
+      body.append(field("What are you about to do?",l),
+        field("Predicted score",p,"Write it before you see a single mark. This is the five-second habit that turns a feeling into a measurement."),err);
+      return{focus:l,submitLabel:"Start",save(){
+        if(!l.value.trim()){err.textContent="Give the session a label.";err.hidden=false;return false;}
+        ST.sessions.push({id:uid(),d:TODAY(),label:l.value.trim(),pred:p.get(),actual:null,errC:null,errE:null});
+        act();save();paintAll();toast("Predicted "+p.get()+"%. Score it when you finish.");
+      }};
+    });
+}
+function scoreSession(id){
+  const s=ST.sessions.find(x=>x.id===id);if(!s)return;
+  openSheet("Score: "+s.label,
+    "You predicted <b>"+s.pred+"%</b>. Enter what actually happened, then split the errors: choosing the wrong treatment is a different failure from executing the right one badly.",
+    body=>{
+      const a=inp("number","");a.min=0;a.max=100;a.placeholder="0–100";
+      const c=inp("number","");c.min=0;c.placeholder="0";
+      const e2=inp("number","");e2.min=0;e2.placeholder="0";
+      const nt=inp("text","","optional: what surprised you?");
+      const err=E("div","errmsg");err.hidden=true;
+      const r2=E("div","row2");
+      r2.append(field("Classification errors",c,"Wrong standard, wrong framework, wrong treatment chosen."),
+        field("Execution errors",e2,"Right treatment, arithmetic or presentation wrong."));
+      body.append(field("Actual score (%)",a),r2,field("Note",nt),err);
+      return{focus:a,save(){
+        const v=parseNum(a.value);
+        if(!isFinite(v)||v<0||v>100){err.textContent="Enter an actual score between 0 and 100.";err.hidden=false;return false;}
+        s.actual=Math.round(v);
+        s.errC=Math.max(0,parseNum(c.value)||0);
+        s.errE=Math.max(0,parseNum(e2.value)||0);
+        s.note=nt.value.trim();s.scored=TODAY();
+        act();save();paintAll();
+        const g=s.pred-s.actual;
+        toast("Gap "+(g>0?"+":"")+g+" points"+(Math.abs(g)<=5?". Well calibrated.":g>0?". You over-predicted.":". You under-predicted."));
+      }};
+    });
+}
+function addJournal(){
+  openSheet("Decision journal entry",
+    "The story is not the signal. The story tells you which single number to go and audit.",
+    body=>{
+      const t=ta("","e.g. I am taking AFM 341 with Cram because the seminar structure suits how I learn",2);
+      const f=ta("","e.g. midterm 1 mark below 65 would mean the format is not working for me",2);
+      const s=inp("text","","where that number is published, or how you will observe it");
+      const d=inp("date",addDays(TODAY(),30));d.min=TODAY();
+      const err=E("div","errmsg");err.hidden=true;
+      body.append(field("Thesis or decision",t),
+        field("Falsifier: the single number that would kill it",f,"If you cannot name one, the belief is not yet a thesis."),
+        field("Where that number comes from",s),
+        field("Review date",d),err);
+      return{focus:t,save(){
+        if(!t.value.trim()||!f.value.trim()){err.textContent="Both the thesis and its falsifier are required.";err.hidden=false;return false;}
+        ST.journal.push({id:uid(),d:TODAY(),thesis:t.value.trim(),falsifier:f.value.trim(),
+          source:s.value.trim(),review:d.value,status:"open",updates:[]});
+        act();save();paintAll();toast("Logged. Review "+humanDate(d.value));
+      }};
+    });
+}
+function reviewJournal(id){
+  const j=ST.journal.find(x=>x.id===id);if(!j)return;
+  openSheet("Review: has the number arrived?",
+    "<b>Thesis.</b> "+esc(j.thesis)+"<br><b>Falsifier.</b> "+esc(j.falsifier)+(j.source?"<br><b>Source.</b> "+esc(j.source):""),
+    body=>{
+      const n=ta("","What did the number actually say? What did you do about it?",3);
+      const st=E("select");
+      [["open","Still open, push the review out"],
+       ["confirmed","The number arrived and supported the thesis"],
+       ["broken","The number arrived and broke the thesis"],
+       ["void","No longer relevant, close it"]].forEach(([v,l])=>{const o=E("option",null,l);o.value=v;st.appendChild(o);});
+      const d=inp("date",addDays(TODAY(),30));d.min=TODAY();
+      const dw=field("Next review",d);
+      st.onchange=()=>{dw.hidden=st.value!=="open";};
+      body.append(field("What happened",n),field("Status",st),dw);
+      return{focus:n,save(){
+        j.updates=j.updates||[];
+        j.updates.push({d:TODAY(),note:n.value.trim(),to:st.value});
+        j.status=st.value;
+        if(st.value==="open")j.review=d.value||addDays(TODAY(),30);
+        act();save();paintAll();
+        toast(st.value==="broken"?"Thesis broken and recorded. That entry is the most valuable one in the log."
+          :st.value==="confirmed"?"Confirmed and closed.":st.value==="void"?"Closed.":"Pushed to "+humanDate(j.review));
+      }};
+    });
+}
+function addNoise(){
+  openSheet("Decide twice",
+    "Make the judgment now. The app hides it, asks again in a few days, and shows you the spread. Divergence on identical inputs is noise by definition.",
+    body=>{
+      const q=ta("","e.g. what mark will my AFM 291 case answer get out of 20?",2);
+      const u=inp("text","","unit, e.g. marks / % / $");
+      const v=inp("number","");v.placeholder="your number";
+      const g=segs([2,3,5,7],3,v2=>v2+"d","small");
+      const err=E("div","errmsg");err.hidden=true;
+      body.append(field("The judgment",q,"It must be a number, and the inputs must not change between the two passes."),
+        field("Unit",u),field("First answer",v),field("Ask again in",g),err);
+      return{focus:q,save(){
+        const n=parseNum(v.value);
+        if(!q.value.trim()||!isFinite(n)){err.textContent="A question and a numeric first answer are required.";err.hidden=false;return false;}
+        ST.noise.push({id:uid(),q:q.value.trim(),unit:u.value.trim(),v1:n,d1:TODAY(),v2:null,d2:null,due:addDays(TODAY(),g.get())});
+        act();save();paintAll();toast("Hidden until "+humanDate(addDays(TODAY(),g.get())));
+      }};
+    });
+}
+function secondPass(id){
+  const n=ST.noise.find(x=>x.id===id);if(!n||n.v2!=null)return;
+  openSheet("Second pass, blind",
+    "Answer from scratch. Your first answer stays hidden until you commit to this one.",
+    body=>{
+      body.appendChild(E("div","scene",esc(n.q)));
+      const v=inp("number","");v.placeholder="your number"+(n.unit?" ("+n.unit+")":"");
+      const err=E("div","errmsg");err.hidden=true;
+      body.append(field("Second answer",v),err);
+      return{focus:v,save(){
+        const x=parseNum(v.value);
+        if(!isFinite(x)){err.textContent="Enter a number.";err.hidden=false;return false;}
+        n.v2=x;n.d2=TODAY();
+        act();save();paintAll();
+        const spread=Math.abs(n.v1-n.v2);
+        const base=(Math.abs(n.v1)+Math.abs(n.v2))/2;
+        const pct=base?Math.round(spread/base*100):0;
+        setTimeout(()=>openSheet("Your own occasion noise",
+          "Same question, same inputs, "+dayDiff(n.d1,n.d2)+" days apart.",
+          b2=>{
+            b2.appendChild(E("div","scene","First pass: <b>"+num(n.v1,n.v1%1?2:0)+"</b>"+(n.unit?" "+esc(n.unit):"")+
+              "<br>Second pass: <b>"+num(n.v2,n.v2%1?2:0)+"</b>"+(n.unit?" "+esc(n.unit):"")+
+              "<br>Spread: <b>"+num(spread,spread%1?2:0)+"</b>"+(base?" ("+pct+"% of the average)":"")));
+            b2.appendChild(E("p","tag",spread===0
+              ?"Identical. Either the judgment is genuinely mechanical, or you remembered the first answer, which is the one failure mode this instrument has."
+              :"That gap is noise: variance across judgments that should agree. You cannot introspect it, only measure it. The remedy is mechanical, which is to average the two rather than to pick the one that feels right."));
+            return{submitLabel:"Done",hideCancel:true,save(){}};
+          }),120);
+      }};
+    });
+}
+function doRQ(id){
+  const r=RQ.find(x=>x.id===id);if(!r)return;
+  const s=rqState(id);
+  openSheet("Retrieval question",
+    "Closed book. Attempt it in full sentences, then save. Answers are withheld by design in the source files: the protocol is to attempt, then send the attempt to be marked.",
+    body=>{
+      body.appendChild(E("div","scene","<b>"+esc(r.s)+"</b><br>"+esc(r.q)));
+      const t=ta("","Your answer, from memory…",6);
+      if(s.attempts.length)body.appendChild(E("p","tag","Attempt "+(s.attempts.length+1)+". Your previous attempt is in the Log; it is deliberately not shown here."));
+      body.appendChild(field("Your attempt",t));
+      return{focus:t,save(){
+        s.attempts.push({d:TODAY(),text:t.value.trim()});
+        s.n=(s.n||0)+1;s.last=TODAY();
+        s.next=addDays(TODAY(),RQ_GAPS[Math.min(s.n-1,RQ_GAPS.length-1)]);
+        ST.rq[id]=s;
+        act();save();paintAll();
+        toast("Attempt saved. Next pass "+humanDate(s.next));
+      }};
+    });
+}
+function startRQ(){
+  const due=dueRQ(),fresh=freshRQ();
+  const r=due[0]||fresh[Math.floor(Math.random()*fresh.length)];
+  if(!r){toast("Every retrieval question is scheduled ahead. Nothing due.");return;}
+  doRQ(r.id);
+}
+
+/* ==========================================================================
+   TODAY
+   ========================================================================== */
+function qiHead(o,title,meta,cls){
+  const w=E("div","qi"+(cls?" "+cls:""));
+  w.appendChild(E("div","qt",title));
+  if(meta)w.appendChild(E("div","qm",meta));
+  return w;
+}
+function renderToday(){
+  const q=buildQueue();
+  const host=$("#queue");host.innerHTML="";
+  const bn=$("#todayBanners");bn.innerHTML="";
+  const debt=debtPreds().length;
+  const mins=queueMins(q);
+  $("#todayTag").innerHTML=q.length
+    ? "<b>"+q.length+"</b> item"+(q.length===1?"":"s")+" due, about <b>"+mins+" minutes</b>. "+
+      (mins>20?"That is over the daily cap. Do Resolve and Retrieve first: those two are time-sensitive, and the rest keeps for a day without costing you anything."
+              :"Clear the queue and stop; the cap is the feature.")
+    : "Nothing is due. This screen is meant to be empty most evenings.";
+  if(!storageOk)bn.appendChild(E("div","banner","Private browsing or blocked storage detected. Nothing you log here will survive closing the tab. Export from the Review screen if you need to keep it."));
+  if(debt>=3)bn.appendChild(E("div","banner","<b>"+debt+" predictions are past their resolution date.</b> Resolution debt is the one number that decides whether this whole log is worth keeping. Clear it before adding anything new."));
+  const pending=q.filter(x=>x.k==="score").map(x=>x.o);
+  const revAge=ST.lastReview?dayDiff(ST.lastReview,TODAY()):999;
+  if(revAge>=7&&(ST.preds.length+ST.sessions.length)>=4){
+    const rb=E("div","banner info");
+    rb.appendChild(E("div",null,"<b>Weekly review is due"+(ST.lastReview?", last read "+revAge+" days ago":"")+".</b> It is the only screen that tells you whether any of this is working. Two minutes."));
+    const go=E("button","btn sm","Open the review");
+    go.style.marginTop="8px";
+    go.onclick=()=>goScreen("review");
+    rb.appendChild(go);bn.appendChild(rb);
+  }
+  if(ST.settings.lastExport&&dayDiff(ST.settings.lastExport,TODAY())>30&&ST.preds.length>5)
+    bn.appendChild(E("div","banner info","It has been over a month since you exported. This data lives in one browser only."));
+
+  if(pending.length){
+    host.appendChild(E("div","sect",'Awaiting your mark<span class="ct">'+pending.length+"</span>"+
+      '<span class="hint">predicted, not yet scored</span>'));
+    for(const s of pending){
+      const w=qiHead(s,esc(s.label),'<span class="pill p7">predicted '+s.pred+"%</span><span>started "+shortDate(s.d)+"</span>","warnb");
+      const a=E("div","acts");
+      const b=E("button","btn pri","Enter the result");
+      b.onclick=()=>scoreSession(s.id);
+      const del=E("button","btn ghost sm","Discard");
+      del.onclick=()=>{const i=ST.sessions.indexOf(s);ST.sessions.splice(i,1);save();paintAll();
+        toast("Discarded",()=>{ST.sessions.splice(i,0,s);save();});};
+      a.append(b,del);w.appendChild(a);host.appendChild(w);
+    }
+  }
+  const virgin=!ST.preds.length&&!ST.topics.length&&!ST.sessions.length&&!ST.journal.length&&!ST.noise.length;
+  if(virgin){
+    const s0=E("div","done");
+    s0.innerHTML='<div class="dg">◷</div><h3>Two entries and this starts working.</h3>'+
+      '<p>Log one prediction with a resolution date, and put one topic into the rota. That is the whole setup. '+
+      'The rest of the instruments can wait until you have a reason for them, and this screen will stay quiet until something is actually due.</p>';
+    const a=E("div","acts");a.style.justifyContent="center";
+    const b1=E("button","btn pri","Log a prediction");b1.onclick=addPrediction;
+    const b2=E("button","btn","Add a topic");b2.onclick=addTopic;
+    a.append(b1,b2);s0.appendChild(a);
+    host.appendChild(s0);
+    renderQuickAdd();
+    $("#todayNote").innerHTML=noteText();
+    return;
+  }
+  if(!q.length){
+    const d=E("div","done");
+    const streak=ST.streak.days||0;
+    d.innerHTML='<div class="dg">◆</div><h3>Queue clear'+(streak>1?", "+streak+" days running":"")+'.</h3>'+
+      '<p>Stopping here is the correct move. Adding work because the screen is empty is how a daily instrument becomes a chore and then becomes abandoned.</p>';
+    const a=E("div","acts");a.style.justifyContent="center";
+    const b1=E("button","btn sm","Optional: one frequency drill");
+    b1.onclick=()=>{goScreen("drills");};
+    const b2=E("button","btn sm","Optional: a retrieval question");
+    b2.onclick=startRQ;
+    a.append(b1,b2);d.appendChild(a);
+    host.appendChild(d);
+  }
+  const groups=[["pred","Resolve","the date arrived, so the claim gets marked"],
+    ["touch","Retrieve","closed book first, then check"],
+    ["rq","Research retrieval","from your own six-file program"],
+    ["noise","Second pass","blind, then see your spread"],
+    ["journal","Thesis review","did the number arrive?"],
+    ["drill","Retention check","5 weeks since the last clean frequency run"]];
+  for(const [k,label,hint] of groups){
+    const items=q.filter(x=>x.k===k);
+    if(!items.length)continue;
+    const over=items.some(x=>x.k==="pred"&&overdueBy(x.o.due)>0);
+    host.appendChild(E("div","sect",esc(label)+'<span class="ct'+(over?" hot":"")+'">'+items.length+"</span>"+
+      '<span class="hint">'+hint+"</span>"));
+    for(const it of items){const el=renderQueueItem(it);if(el)host.appendChild(el);}
+  }
+  renderQuickAdd();
+  $("#todayNote").innerHTML=noteText();
+}
+function noteText(){
+  return "Every instrument here is transcribed from the Phase 3 sections of your six research files, and each carries the grade its file gave it. The two that carry the most weight are the cheapest: a probability with a resolution date, and a predicted score written before you mark. Effect sizes in those files are reported as moderate and heterogeneous, roughly half the laboratory figure once they meet a real course, so treat this as a way to see your own data rather than a promise of a result. Everything is stored in this browser only.";
+}
+function renderQueueItem(it){
+  const o=it.o;
+  if(it.k==="score")return null;
+  if(it.k==="pred"){
+    const od=overdueBy(o.due);
+    const w=qiHead(o,esc(o.q),'<span class="pill p1">you said '+o.p+'%</span><span class="pill">'+esc(o.tag||"—")+"</span>"+
+      "<span>due "+humanDate(o.due)+"</span>"+(o.pushed?"<span>pushed ×"+o.pushed+"</span>":""),od>0?"over":"");
+    const a=E("div","acts");
+    const y=E("button","btn ok","It happened");
+    y.onclick=()=>resolvePred(o.id,1);
+    const n=E("button","btn no","It did not");
+    n.onclick=()=>resolvePred(o.id,0);
+    const l=E("button","btn ghost","Not yet");
+    l.onclick=()=>openSheet("Not resolvable yet","Pushing is fine once. Pushing repeatedly means the claim was not written to be resolvable, which is the failure this instrument exists to catch.",b=>{
+      const r=E("div","acts");
+      [["Push 3 days",()=>pushPred(o.id,3)],["Push 7 days",()=>pushPred(o.id,7)],["Push 30 days",()=>pushPred(o.id,30)],
+       ["Cannot be resolved, void it",()=>resolvePred(o.id,null)]].forEach(([lb,fn])=>{
+        const x=E("button","btn",lb);x.onclick=()=>{fn();closeSheet();};r.appendChild(x);});
+      b.appendChild(r);
+      return{hideCancel:false,submitLabel:"Close",save(){}};
+    });
+    a.append(y,n,l);w.appendChild(a);
+    return w;
+  }
+  if(it.k==="touch"){
+    const real=(o.touches||[]).filter(x=>x.r!=="learn");
+    const last=real[real.length-1];
+    const w=qiHead(o,esc(o.name),
+      (o.course?'<span class="pill p3">'+esc(o.course)+"</span>":"")+
+      "<span>gap "+(o.gap||10)+"d</span><span>touch "+(real.length+1)+"</span>"+
+      (last?"<span>last: "+({clean:"clean",hint:"needed a hint",fail:"failed"}[last.r]||last.r)+"</span>":"<span>first retrieval</span>")+
+      (overdueBy(o.next)>0?"<span><b>"+overdueBy(o.next)+"d late</b></span>":""));
+    w.appendChild(E("div","qm","Blank page first: reconstruct it, then check the source and mark yourself."));
+    const a=E("div","acts");
+    [["Clean","clean","ok"],["Needed a hint","hint",""],["Failed","fail","no"]].forEach(([lb,r,cls])=>{
+      const b=E("button","btn "+cls,lb);b.onclick=()=>touchTopic(o.id,r);a.appendChild(b);});
+    w.appendChild(a);
+    return w;
+  }
+  if(it.k==="rq"){
+    const s=rqState(o.id);
+    const w=qiHead(o,esc(o.q.length>150?o.q.slice(0,150)+"…":o.q),
+      '<span class="pill p7">'+esc(o.s)+"</span><span>attempt "+((s.attempts||[]).length+1)+"</span>");
+    const a=E("div","acts");
+    const b=E("button","btn pri","Attempt closed book");
+    b.onclick=()=>doRQ(o.id);
+    const l=E("button","btn ghost","Later");
+    l.onclick=()=>{s.next=addDays(TODAY(),2);ST.rq[o.id]=s;save();paintAll();};
+    a.append(b,l);w.appendChild(a);
+    return w;
+  }
+  if(it.k==="noise"){
+    const w=qiHead(o,esc(o.q),'<span class="pill p2">decide twice</span><span>first pass '+shortDate(o.d1)+"</span>");
+    const a=E("div","acts");
+    const b=E("button","btn pri","Answer again, blind");
+    b.onclick=()=>secondPass(o.id);
+    a.append(b);w.appendChild(a);
+    return w;
+  }
+  if(it.k==="journal"){
+    const w=qiHead(o,esc(o.thesis),'<span class="pill p1">falsifier</span><span>'+esc(o.falsifier.slice(0,90))+"</span>");
+    const a=E("div","acts");
+    const b=E("button","btn pri","Review it");
+    b.onclick=()=>reviewJournal(o.id);
+    a.append(b);w.appendChild(a);
+    return w;
+  }
+  const w=qiHead(null,"Frequency translation, retention check",
+    '<span class="pill p3">5-week test</span><span>the format holds where the formula decays, so this is the check that matters</span>');
+  const a=E("div","acts");
+  const b=E("button","btn pri","Run it");
+  b.onclick=()=>goScreen("drills");
+  a.append(b);w.appendChild(a);
+  return w;
+}
+function renderQuickAdd(){
+  const g=$("#qadd");g.innerHTML="";
+  [["＋ Prediction","probability, date, score",addPrediction],
+   ["＋ Practice session","predict, then mark",startSession],
+   ["＋ Topic","into the 0 / 3 / 10 rota",addTopic],
+   ["＋ Decision","thesis plus its falsifier",addJournal],
+   ["＋ Decide twice","measure your own noise",addNoise],
+   ["＋ Retrieval question","from the six-file program",startRQ]].forEach(([t,s,fn])=>{
+    const b=E("button",null,esc(t)+'<span class="qa">'+esc(s)+"</span>");
+    b.onclick=fn;g.appendChild(b);
+  });
+}
+
+/* ==========================================================================
+   LOG
+   ========================================================================== */
+let logTab="preds",logFilter="all";
+function renderLog(){
+  const tabs=$("#logTabs");tabs.innerHTML="";
+  const defs=[["preds","Predictions",ST.preds.length],["topics","Rota",ST.topics.length],
+    ["sessions","Sessions",ST.sessions.length],["journal","Decisions",ST.journal.length],
+    ["noise","Noise",ST.noise.length],["rq","Retrieval",Object.keys(ST.rq).length]];
+  for(const [k,l,n] of defs){
+    const b=E("button",logTab===k?"on":"",esc(l)+(n?" "+n:""));
+    b.onclick=()=>{logTab=k;renderLog();};
+    tabs.appendChild(b);
+  }
+  const body=$("#logBody");body.innerHTML="";
+  const empty=m=>body.appendChild(E("div","empty",m));
+  if(logTab==="preds"){
+    const f=E("div","filt");
+    const sel=E("select");
+    [["all","All"],["open","Open"],["debt","Overdue"],["res","Resolved"]].forEach(([v,l])=>{
+      const o=E("option",null,l);o.value=v;if(logFilter===v)o.selected=true;sel.appendChild(o);});
+    sel.onchange=()=>{logFilter=sel.value;renderLog();};
+    f.append(sel);
+    const b=brier();
+    if(b!=null)f.appendChild(E("span","tag",'Brier '+b.toFixed(3)+" on "+resolvedPreds().length+" resolved. Always saying 50% scores 0.250."));
+    body.appendChild(f);
+    let list=ST.preds.slice().reverse();
+    if(logFilter==="open")list=list.filter(p=>!p.res);
+    if(logFilter==="debt")list=list.filter(p=>!p.res&&overdueBy(p.due)>0);
+    if(logFilter==="res")list=list.filter(p=>p.res);
+    if(!list.length)return empty("No predictions here yet. A forecast without a probability, a date and a score is not a forecast.");
+    for(const p of list){
+      const cls=p.res?(p.res.o===1?"res-y":p.res.o===0?"res-n":"res-v"):"";
+      const r=E("div","lrow "+cls);
+      r.appendChild(E("div","lt",esc(p.q)));
+      const m='<span class="pill p1">'+p.p+"%</span>"+
+        (p.res?"<span><b>"+(p.res.o===1?"happened":p.res.o===0?"did not happen":"void")+"</b> "+shortDate(p.res.at)+"</span>"
+              :"<span>due "+humanDate(p.due)+"</span>")+
+        "<span>"+esc(p.tag||"")+"</span>"+
+        (p.res&&p.res.o!==null?"<span>brier "+Math.pow(p.p/100-p.res.o,2).toFixed(3)+"</span>":"");
+      r.appendChild(E("div","lm",m));
+      const a=E("div","rowacts");
+      if(!p.res){
+        const y=E("button","btn sm ok","Happened");y.onclick=()=>resolvePred(p.id,1);
+        const n=E("button","btn sm no","Did not");n.onclick=()=>resolvePred(p.id,0);
+        a.append(y,n);
+      }else{
+        const u=E("button","btn sm ghost","Reopen");
+        u.onclick=()=>{p.res=null;save();paintAll();toast("Reopened. It is due "+humanDate(p.due)+" again.");};
+        a.append(u);
+      }
+      a.appendChild(delBtn("prediction",()=>{
+        const i=ST.preds.indexOf(p);ST.preds.splice(i,1);save();paintAll();
+        toast("Deleted",()=>{ST.preds.splice(i,0,p);save();});
+      }));
+      r.appendChild(a);
+      body.appendChild(r);
+    }
+    return;
+  }
+  if(logTab==="topics"){
+    if(!ST.topics.length)return empty("No topics in the rota. Add one the day you learn it; the schedule does the rest.");
+    for(const t of ST.topics.slice().reverse()){
+      const real=(t.touches||[]).filter(x=>x.r!=="learn");
+      const fails=real.filter(x=>x.r==="fail").length;
+      const r=E("div","lrow"+(fails>=2?" res-n":""));
+      r.appendChild(E("div","lt",esc(t.name)));
+      r.appendChild(E("div","lm",(t.course?'<span class="pill p3">'+esc(t.course)+"</span>":"")+
+        "<span>gap "+(t.gap||10)+"d</span><span>"+real.length+" retrievals</span>"+
+        (t.retired?"<span><b>retired</b></span>":"<span>next "+humanDate(t.next)+"</span>")+
+        (fails>=2?'<span class="pill pc">'+fails+" fails</span>":"")));
+      if(real.length)r.appendChild(E("div","lx",real.slice(-8).map(x=>
+        shortDate(x.d)+" "+({clean:"✓",hint:"≈",fail:"✗"}[x.r]||"·")).join("  ")));
+      const a=E("div","rowacts");
+      const tb=E("button","btn sm","Retrieve now");tb.onclick=()=>{t.next=TODAY();save();goScreen("today");};
+      const rb=E("button","btn sm ghost",t.retired?"Unretire":"Retire");
+      rb.onclick=()=>{t.retired=!t.retired;save();renderLog();paintDash();};
+      a.append(tb,rb,delBtn("topic",()=>{const i=ST.topics.indexOf(t);ST.topics.splice(i,1);save();paintAll();
+        toast("Deleted",()=>{ST.topics.splice(i,0,t);save();});}));
+      r.appendChild(a);
+      body.appendChild(r);
+    }
+    return;
+  }
+  if(logTab==="sessions"){
+    if(!ST.sessions.length)return empty("No sessions yet. Predict the score before you mark; that is the whole instrument.");
+    for(const s of ST.sessions.slice().reverse()){
+      const r=E("div","lrow");
+      r.appendChild(E("div","lt",esc(s.label)));
+      const g=s.actual!=null?s.pred-s.actual:null;
+      r.appendChild(E("div","lm","<span>"+shortDate(s.d)+"</span>"+
+        '<span class="pill p7">predicted '+s.pred+"%</span>"+
+        (s.actual!=null?'<span class="pill '+(Math.abs(g)<=5?"p3":g>0?"p2":"p1")+'">actual '+s.actual+"% · gap "+(g>0?"+":"")+g+"</span>":'<span class="pill pc">not yet scored</span>')+
+        (s.errC!=null?"<span>"+s.errC+" classification / "+s.errE+" execution</span>":"")));
+      if(s.note)r.appendChild(E("div","lx",esc(s.note)));
+      const a=E("div","rowacts");
+      if(s.actual==null){const b=E("button","btn sm pri","Score it");b.onclick=()=>scoreSession(s.id);a.append(b);}
+      a.appendChild(delBtn("session",()=>{const i=ST.sessions.indexOf(s);ST.sessions.splice(i,1);save();paintAll();
+        toast("Deleted",()=>{ST.sessions.splice(i,0,s);save();});}));
+      r.appendChild(a);
+      body.appendChild(r);
+    }
+    return;
+  }
+  if(logTab==="journal"){
+    if(!ST.journal.length)return empty("No decisions logged. Write the falsifier beside the story, with the date you will check it.");
+    for(const j of ST.journal.slice().reverse()){
+      const r=E("div","lrow"+(j.status==="broken"?" res-n":j.status==="confirmed"?" res-y":""));
+      r.appendChild(E("div","lt",esc(j.thesis)));
+      r.appendChild(E("div","lm",'<span class="pill '+(j.status==="open"?"p1":j.status==="broken"?"pc":"p3")+'">'+esc(j.status)+"</span>"+
+        "<span>logged "+shortDate(j.d)+"</span>"+(j.status==="open"?"<span>review "+humanDate(j.review)+"</span>":"")));
+      r.appendChild(E("div","lx","<b>Falsifier.</b> "+esc(j.falsifier)+(j.source?"<br><b>Source.</b> "+esc(j.source):"")+
+        (j.updates||[]).map(u=>"<br><b>"+shortDate(u.d)+".</b> "+esc(u.note||"(no note)")).join("")));
+      const a=E("div","rowacts");
+      if(j.status==="open"){const b=E("button","btn sm","Review now");b.onclick=()=>reviewJournal(j.id);a.append(b);}
+      a.appendChild(delBtn("entry",()=>{const i=ST.journal.indexOf(j);ST.journal.splice(i,1);save();paintAll();
+        toast("Deleted",()=>{ST.journal.splice(i,0,j);save();});}));
+      r.appendChild(a);
+      body.appendChild(r);
+    }
+    return;
+  }
+  if(logTab==="noise"){
+    if(!ST.noise.length)return empty("Nothing here yet. You cannot introspect your own inconsistency; you can only measure it.");
+    for(const n of ST.noise.slice().reverse()){
+      const r=E("div","lrow");
+      r.appendChild(E("div","lt",esc(n.q)));
+      const done=n.v2!=null;
+      const sp=done?Math.abs(n.v1-n.v2):null;
+      const base=done?(Math.abs(n.v1)+Math.abs(n.v2))/2:0;
+      r.appendChild(E("div","lm",done
+        ?"<span>"+num(n.v1,n.v1%1?2:0)+" then "+num(n.v2,n.v2%1?2:0)+" "+esc(n.unit||"")+"</span>"+
+         '<span class="pill '+(sp===0?"p3":"p2")+'">spread '+num(sp,sp%1?2:0)+(base?" ("+Math.round(sp/base*100)+"%)":"")+"</span>"+
+         "<span>"+dayDiff(n.d1,n.d2)+"d apart</span>"
+        :'<span class="pill p1">first pass hidden</span><span>second pass '+humanDate(n.due)+"</span>"));
+      const a=E("div","rowacts");
+      if(!done){
+        const b=E("button","btn sm"+(isDue(n.due)?" pri":""),"Second pass");b.onclick=()=>secondPass(n.id);
+        b.disabled=!isDue(n.due);a.append(b);
+      }
+      a.appendChild(delBtn("judgment",()=>{const i=ST.noise.indexOf(n);ST.noise.splice(i,1);save();paintAll();
+        toast("Deleted",()=>{ST.noise.splice(i,0,n);save();});}));
+      r.appendChild(a);
+      body.appendChild(r);
+    }
+    return;
+  }
+  const seen=RQ.filter(r=>ST.rq[r.id]);
+  const f=E("div","filt");
+  f.appendChild(E("span","tag",seen.length+" of "+RQ.length+" attempted. Answers are withheld in the source files by design: export your attempts and have them marked."));
+  const ex=E("button","btn sm","Export attempts as text");
+  ex.onclick=exportRQ;f.appendChild(ex);
+  body.appendChild(f);
+  if(!seen.length)return empty("No attempts yet. These are the questions your own research files withheld answers to.");
+  for(const r of seen){
+    const s=ST.rq[r.id];
+    const row=E("div","lrow");
+    row.appendChild(E("div","lt",esc(r.q)));
+    row.appendChild(E("div","lm",'<span class="pill p7">'+esc(r.s)+"</span><span>"+s.attempts.length+" attempt"+(s.attempts.length===1?"":"s")+"</span>"+
+      "<span>next "+humanDate(s.next)+"</span>"));
+    row.appendChild(E("div","lx",s.attempts.map(a=>"<b>"+shortDate(a.d)+".</b> "+esc(a.text||"(blank)")).join("<br><br>")));
+    body.appendChild(row);
+  }
+}
+/* Two-step delete everywhere: one click arms, the second commits, and the toast
+   still offers an undo. Nothing in this app should be one misclick from gone. */
+function delBtn(what,fn){
+  const b=E("button","btn sm ghost","Delete");
+  let armed=null;
+  b.onclick=()=>{
+    if(armed){clearTimeout(armed);armed=null;fn();return;}
+    b.textContent="Delete "+what+"?";b.classList.add("danger");
+    armed=setTimeout(()=>{armed=null;b.textContent="Delete";b.classList.remove("danger");},3500);
+  };
+  return b;
+}
+function exportRQ(){
+  const lines=["AFM / research-program retrieval attempts","Exported "+TODAY(),
+    "","Answers were withheld in the source files by design. These are closed-book attempts for marking.",""];
+  for(const r of RQ){
+    const s=ST.rq[r.id];if(!s||!s.attempts.length)continue;
+    lines.push("## ["+r.s+"] "+r.q);
+    for(const a of s.attempts)lines.push("["+a.d+"] "+(a.text||"(blank)"));
+    lines.push("");
+  }
+  if(lines.length<=5){toast("No attempts to export yet.");return;}
+  dl(new Blob([lines.join("\n")],{type:"text/plain"}),"retrieval-attempts-"+TODAY()+".txt");
+  toast("Exported. Send it for marking.");
+}
+function dl(blob,name){
+  try{
+    const a=E("a");a.href=URL.createObjectURL(blob);a.download=name;
+    D.body.appendChild(a);a.click();a.remove();
+    setTimeout(()=>URL.revokeObjectURL(a.href),2000);
+  }catch(e){
+    const rd=new FileReader();
+    rd.onload=()=>{const w=window.open("","_blank");
+      if(w){w.document.title=name;w.document.body.textContent=rd.result;}
+      else toast("Download blocked by this browser. Copy from the Log instead.");};
+    rd.readAsText(blob);
+  }
+}
+
+/* ==========================================================================
+   DRILLS
+   ========================================================================== */
+let curDrill=null,drillStat=null;
+function renderDrills(){
+  const host=$("#drillHost");host.innerHTML="";
+  const hist=ST.drills.hist||[];
+  const last20=hist.slice(-20);
+  const acc=last20.length?Math.round(last20.filter(x=>x.ok).length/last20.length*100):null;
+  if(drillDue())host.appendChild(E("div","banner","<b>Retention check due.</b> Five weeks since your last clean run. This is the observable that matters: the format holds where formula training decays, so a score now that matches your score then is the finding."));
+  const box=E("div","drillbox");
+  const stat=E("span","hint",acc==null?"not attempted yet":acc+"% of your last "+last20.length);
+  const sect=E("div","sect","Frequency translation");sect.appendChild(stat);
+  box.appendChild(sect);
+  drillStat=stat;
+  const intro=E("p","tag","Restating a conditional probability as counts out of 1,000 raised correct Bayesian answers by an average of 37 percentage points across four problem structures, which is the largest single intervention effect anywhere in your six files. It is verified against the primary abstract in the judgment file. Nothing else in those files buys that much for free.");
+  box.appendChild(intro);
+  const run=E("button","btn pri","New problem");
+  run.onclick=()=>newDrill(box);
+  box.appendChild(run);
+  const dh=E("div");dh.id="drillBody";box.appendChild(dh);
+  host.appendChild(box);
+
+  const nb=E("div","drillbox");nb.style.marginTop="14px";
+  nb.appendChild(E("div","sect","Decide twice"));
+  nb.appendChild(E("p","tag","Judge the same case twice, days apart, without looking at the first answer. Independent professionals judging identical cases disagree far more than they or their institutions expect; the widely quoted percentages for that circulate without a peer-reviewed home, but the decomposition itself is a theorem: error splits into bias and variance, so noise costs accuracy even when your average is right."));
+  const open=ST.noise.filter(n=>n.v2==null);
+  const done=ST.noise.filter(n=>n.v2!=null);
+  if(done.length){
+    const sp=done.map(n=>{const b=(Math.abs(n.v1)+Math.abs(n.v2))/2;return b?Math.abs(n.v1-n.v2)/b*100:0;});
+    const mean=Math.round(sp.reduce((a,b)=>a+b,0)/sp.length);
+    nb.appendChild(E("p","tag","<b>Your measured occasion noise: "+mean+"%</b> mean spread across "+done.length+" repeated judgment"+(done.length===1?"":"s")+". Someone who has not done this cannot state a number."));
+  }
+  const na=E("div","acts");
+  const nbtn=E("button","btn pri","Start a judgment");
+  nbtn.onclick=addNoise;
+  na.append(nbtn);
+  if(open.length){
+    const p=E("button","btn","Pending: "+open.length);
+    p.onclick=()=>{logTab="noise";goScreen("log");};
+    na.appendChild(p);
+  }
+  nb.appendChild(na);
+  host.appendChild(nb);
+}
+function newDrill(box){
+  curDrill=makeDrill();
+  const d=curDrill,host=$("#drillBody");host.innerHTML="";
+  const sc=E("div","scene",d.sc.story(d.basePct,d.sens,d.fpr));
+  host.appendChild(sc);
+  host.appendChild(E("p","tag","Answer in counts, not percentages. Translate first, reason second."));
+  const fields=[];
+  d.ask.forEach(a=>{
+    const line=E("div","askline");
+    const lab=E("label",null,esc(a.label)+"?");
+    const i=inp("number","");i.setAttribute("aria-label",a.label);
+    const mk=E("span","mk","");
+    lab.setAttribute("for",i.id="d"+uid());
+    line.append(lab,i,mk);host.appendChild(line);
+    fields.push({a,i,mk});
+    i.addEventListener("keydown",e=>{if(e.key==="Enter")check();});
+  });
+  const foot=E("div","acts");
+  const chk=E("button","btn pri","Check");
+  const nx=E("button","btn","New problem");
+  nx.onclick=()=>newDrill(box);
+  foot.append(chk,nx);host.appendChild(foot);
+  let graded=false;
+  function check(){
+    if(graded)return;graded=true;
+    let all=true;
+    for(const f of fields){
+      const v=parseNum(f.i.value);
+      const ok=isFinite(v)&&Math.abs(v-f.a.ans)<=(f.a.tol||0);
+      f.i.classList.add(ok?"right":"wrong");
+      f.mk.className="mk "+(ok?"y":"n");f.mk.textContent=ok?"✓":"✗";
+      f.i.disabled=true;
+      if(!ok)all=false;
+    }
+    chk.disabled=true;
+    const fb=E("div","fb");fb.setAttribute("aria-live","polite");
+    fb.appendChild(E("div","vd "+(all?"y":"n"),all?"All three right":"Not all three"));
+    fb.appendChild(E("div","tree",drillTree(d)));
+    const naive=d.sens;
+    fb.appendChild(E("p","tag","The intuition to beat: the test catches "+d.sens+"% of true cases, so a flag feels like roughly "+naive+"% certainty. In counts it is <b>"+d.post.toFixed(1)+"%</b>, because "+num(d.wellPos)+" of the "+num(d.pos)+" flags come from the "+num(d.well)+" that are fine. The base rate is doing the work, and the percentage format hides it."));
+    host.appendChild(fb);
+    ST.drills.hist=ST.drills.hist||[];
+    ST.drills.hist.push({d:TODAY(),ok:all});
+    if(drillStat){const h=ST.drills.hist.slice(-20);
+      drillStat.textContent=Math.round(h.filter(x=>x.ok).length/h.length*100)+"% of your last "+h.length;}
+    if(all)ST.drills.next=addDays(TODAY(),35);
+    act();save();paintDash();
+    if(all)fb.appendChild(E("p","tag","Retention check scheduled for "+humanDate(addDays(TODAY(),35))+". That five-week gap is the point: formula training decays within weeks while the frequency format holds, so the delayed score is the only one that tells you anything."));
+  }
+  chk.onclick=check;
+  setTimeout(()=>fields[0].i.focus(),50);
+}
+
+/* ==========================================================================
+   CHARTS
+   ========================================================================== */
+const NS="http://www.w3.org/2000/svg";
+function S(tag,at,txt){const e=D.createElementNS(NS,tag);for(const k in at)e.setAttribute(k,at[k]);if(txt!=null)e.textContent=txt;return e;}
+function bindTip(el,html){
+  const show=ev=>{const t=$("#tt");t.innerHTML=html;t.classList.add("on");move(ev);};
+  const move=ev=>{const t=$("#tt");
+    const x=(ev.clientX!=null?ev.clientX:0),y=(ev.clientY!=null?ev.clientY:0);
+    const r=t.getBoundingClientRect();
+    t.style.left=Math.min(Math.max(8,x+12),Math.max(8,innerWidth-r.width-8))+"px";
+    t.style.top=Math.max(8,y-r.height-12)+"px";};
+  const hide=()=>$("#tt").classList.remove("on");
+  el.addEventListener("pointerenter",show);
+  el.addEventListener("pointermove",move);
+  el.addEventListener("pointerleave",hide);
+  el.addEventListener("focus",ev=>{const b=el.getBoundingClientRect();show({clientX:b.left+b.width/2,clientY:b.top});});
+  el.addEventListener("blur",hide);
+  el.setAttribute("tabindex","0");
+  el.setAttribute("role","img");
+  el.setAttribute("aria-label",String(html).replace(/<br\s*\/?>/g," ").replace(/<[^>]+>/g,""));
+}
+function fig(title,sub,svg,table){
+  const f=E("figure","fig");
+  f.appendChild(E("figcaption",null,esc(title)));
+  if(sub)f.appendChild(E("div","fsub",sub));
+  f.appendChild(svg);
+  if(table){
+    const d=E("details","tblwrap");
+    d.appendChild(E("summary",null,"Show the numbers"));
+    d.appendChild(table);
+    f.appendChild(d);
+  }
+  return f;
+}
+function tableOf(head,rows){
+  const t=E("table","tbl");
+  const tr=E("tr");head.forEach((h,i)=>tr.appendChild(E("th",i?"n":null,h)));
+  t.appendChild(tr);
+  rows.forEach(r=>{const x=E("tr");r.forEach((c,i)=>x.appendChild(E("td",i?"n":null,c)));t.appendChild(x);});
+  return t;
+}
+/* Reliability curve: one series, so no legend box; the caption names it. */
+function chartReliability(bk){
+  const W=340,H=224,L=38,R=12,T=10,B=42;
+  const svg=S("svg",{viewBox:"0 0 "+W+" "+H,class:"chart",role:"group","aria-label":"Reliability curve"});
+  const x=v=>L+(v/100)*(W-L-R), y=v=>H-B-(v/100)*(H-T-B);
+  const g=S("g",{class:"grid"});
+  [0,25,50,75,100].forEach(v=>{
+    g.appendChild(S("line",{x1:L,x2:W-R,y1:y(v),y2:y(v)}));
+    svg.appendChild(S("text",{x:L-6,y:y(v)+3.5,"text-anchor":"end"},v+"%"));
+  });
+  svg.appendChild(g);
+  [0,25,50,75,100].forEach(v=>svg.appendChild(S("text",{x:x(v),y:H-B+15,"text-anchor":"middle"},v+"%")));
+  svg.appendChild(S("line",{x1:L,x2:W-R,y1:y(0),y2:y(0),class:"axis"}));
+  svg.appendChild(S("line",{x1:L,x2:L,y1:T,y2:y(0),class:"axis"}));
+  svg.appendChild(S("line",{x1:x(0),y1:y(0),x2:x(100),y2:y(100),class:"ref"}));
+  svg.appendChild(S("text",{x:(L+W-R)/2,y:H-6,"text-anchor":"middle"},"what you said →"));
+  const maxN=Math.max(...bk.map(b=>b.n),1);
+  for(const b of bk){
+    const r=5+4*Math.sqrt(b.n/maxN);
+    const c=S("circle",{cx:x(b.mean),cy:y(b.obs),r,class:"dot"});
+    svg.appendChild(c);
+    const hit=S("circle",{cx:x(b.mean),cy:y(b.obs),r:Math.max(14,r+6),class:"hit"});
+    bindTip(hit,"<b>"+b.label+"</b>"+b.n+" prediction"+(b.n===1?"":"s")+", mean "+b.mean.toFixed(0)+"%<br>"+
+      b.hits+" happened, so "+b.obs.toFixed(0)+"% observed<br>"+
+      (b.obs>b.mean+10?"You were more right than you claimed here.":b.obs<b.mean-10?"Over-confident in this bucket.":"Well calibrated here."));
+    svg.appendChild(hit);
+  }
+  return svg;
+}
+/* Running Brier: one series, endpoint direct-labelled. */
+function chartBrier(){
+  const r=resolvedPreds();
+  const W=340,H=170,L=38,R=26,T=12,B=26;
+  const svg=S("svg",{viewBox:"0 0 "+W+" "+H,class:"chart",role:"group","aria-label":"Running Brier score"});
+  const pts=[];let s=0;
+  r.forEach((p,i)=>{s+=Math.pow(p.p/100-p.res.o,2);pts.push({i:i+1,v:s/(i+1),p});});
+  const maxV=Math.max(0.3,...pts.map(p=>p.v));
+  const x=i=>L+((i-1)/Math.max(1,pts.length-1))*(W-L-R);
+  const y=v=>H-B-(v/maxV)*(H-T-B);
+  const g=S("g",{class:"grid"});
+  [0,0.125,0.25].concat(maxV>0.3?[maxV]:[]).forEach(v=>{
+    if(v>maxV)return;
+    g.appendChild(S("line",{x1:L,x2:W-R,y1:y(v),y2:y(v)}));
+    svg.appendChild(S("text",{x:L-6,y:y(v)+3.5,"text-anchor":"end"},v.toFixed(3).replace(/0$/,"")));
+  });
+  svg.appendChild(g);
+  svg.appendChild(S("line",{x1:L,x2:W-R,y1:y(0.25),y2:y(0.25),class:"ref"}));
+  svg.appendChild(S("text",{x:W-R,y:y(0.25)-6,class:"lbl","text-anchor":"end"},"always saying 50%"));
+  svg.appendChild(S("line",{x1:L,x2:L,y1:T,y2:H-B,class:"axis"}));
+  svg.appendChild(S("line",{x1:L,x2:W-R,y1:H-B,y2:H-B,class:"axis"}));
+  if(pts.length>1){
+    svg.appendChild(S("path",{d:pts.map((p,i)=>(i?"L":"M")+x(p.i)+" "+y(p.v)).join(" "),class:"ln"}));
+  }
+  pts.forEach(p=>{
+    if(pts.length<=40){
+      const c=S("circle",{cx:x(p.i),cy:y(p.v),r:pts.length>18?3:4.5,class:"dot"});
+      svg.appendChild(c);
+    }
+    const hit=S("circle",{cx:x(p.i),cy:y(p.v),r:12,class:"hit"});
+    bindTip(hit,"<b>After "+p.i+" resolved</b>Running Brier "+p.v.toFixed(3)+"<br>"+
+      esc(p.p.q.slice(0,70))+"<br>said "+p.p.p+"%, "+(p.p.res.o?"happened":"did not happen"));
+    svg.appendChild(hit);
+  });
+  const last=pts[pts.length-1];
+  if(last){
+    svg.appendChild(S("text",{x:W-R,y:Math.min(H-B-4,y(last.v)+15),class:"lbl","text-anchor":"end"},last.v.toFixed(3)));
+  }
+  svg.appendChild(S("text",{x:L,y:H-4},"resolutions in order →"));
+  return svg;
+}
+/* Session gap: one measure with polarity, so a diverging pair around a neutral zero. */
+function chartGaps(rows){
+  const W=340,H=170,L=34,R=12,T=14,B=30;
+  const svg=S("svg",{viewBox:"0 0 "+W+" "+H,class:"chart",role:"group","aria-label":"Predicted minus actual score by session"});
+  const gaps=rows.map(r=>r.pred-r.actual);
+  const m=Math.max(12,...gaps.map(g=>Math.abs(g)));
+  const y=v=>T+((m-v)/(2*m))*(H-T-B);
+  const bw=Math.min(30,(W-L-R)/Math.max(1,rows.length)-6);
+  const x=i=>L+(i+0.5)*((W-L-R)/Math.max(1,rows.length));
+  const g=S("g",{class:"grid"});
+  [m,m/2,0,-m/2,-m].forEach(v=>g.appendChild(S("line",{x1:L,x2:W-R,y1:y(v),y2:y(v)})));
+  svg.appendChild(g);
+  [m,0,-m].forEach(v=>svg.appendChild(S("text",{x:L-6,y:y(v)+3.5,"text-anchor":"end"},(v>0?"+":"")+Math.round(v))));
+  svg.appendChild(S("line",{x1:L,x2:W-R,y1:y(0),y2:y(0),class:"axis"}));
+  rows.forEach((r,i)=>{
+    const gp=r.pred-r.actual;
+    const h=Math.abs(y(gp)-y(0));
+    const rect=S("rect",{x:x(i)-bw/2,y:gp>=0?y(gp):y(0),width:bw,height:Math.max(1.5,h),rx:3,
+      fill:gp>=0?"var(--t2)":"var(--acc)",class:"bar"});
+    svg.appendChild(rect);
+    const hit=S("rect",{x:x(i)-bw/2-3,y:T,width:bw+6,height:H-T-B,class:"hit"});
+    bindTip(hit,"<b>"+esc(r.label.slice(0,44))+"</b>predicted "+r.pred+"%, scored "+r.actual+"%<br>gap "+(gp>0?"+":"")+gp+" points"+
+      (gp>0?" (over-predicted)":gp<0?" (under-predicted)":" (exact)"));
+    svg.appendChild(hit);
+  });
+  svg.appendChild(S("text",{x:L,y:H-4},"sessions, oldest first →"));
+  return svg;
+}
+function chartErrMix(weeks){
+  const W=340,H=180,L=34,R=12,T=14,B=32;
+  const svg=S("svg",{viewBox:"0 0 "+W+" "+H,class:"chart",role:"group","aria-label":"Error mix by week"});
+  const max=Math.max(...weeks.map(w=>w.c+w.e),1);
+  const y=v=>H-B-(v/max)*(H-T-B);
+  const bw=Math.min(34,(W-L-R)/Math.max(1,weeks.length)-8);
+  const x=i=>L+(i+0.5)*((W-L-R)/Math.max(1,weeks.length));
+  const g=S("g",{class:"grid"});
+  [0,max/2,max].forEach(v=>{g.appendChild(S("line",{x1:L,x2:W-R,y1:y(v),y2:y(v)}));
+    svg.appendChild(S("text",{x:L-6,y:y(v)+3.5,"text-anchor":"end"},Math.round(v)));});
+  svg.appendChild(g);
+  svg.appendChild(S("line",{x1:L,x2:W-R,y1:y(0),y2:y(0),class:"axis"}));
+  weeks.forEach((w,i)=>{
+    const tot=w.c+w.e;
+    if(w.c>0)svg.appendChild(S("rect",{x:x(i)-bw/2,y:y(tot),width:bw,height:Math.max(1,y(w.e)-y(tot)),rx:3,fill:"var(--t2)",class:"bar"}));
+    if(w.e>0)svg.appendChild(S("rect",{x:x(i)-bw/2,y:y(w.e),width:bw,height:Math.max(1,y(0)-y(w.e)),rx:3,fill:"var(--acc)",class:"bar"}));
+    svg.appendChild(S("text",{x:x(i),y:H-B+14,"text-anchor":"middle"},shortDate(w.wk)));
+    const share=tot?Math.round(w.c/tot*100):0;
+    const hit=S("rect",{x:x(i)-bw/2-3,y:T,width:bw+6,height:H-T-B,class:"hit"});
+    bindTip(hit,"<b>Week of "+shortDate(w.wk)+"</b>"+w.c+" classification, "+w.e+" execution<br>classification share "+share+"%");
+    svg.appendChild(hit);
+  });
+  return svg;
+}
+
+/* ==========================================================================
+   WEEKLY REVIEW
+   ========================================================================== */
+function tile(label,val,sub,cls){
+  const t=E("div","tile"+(val==="—"?" na":""));
+  t.appendChild(E("div","tl",esc(label)));
+  t.appendChild(E("div","tv"+(cls?" "+cls:""),val));
+  if(sub)t.appendChild(E("div","ts",sub));
+  return t;
+}
+function verdict(){
+  const debt=debtPreds().length,res=resolvedPreds(),ss=sessionStats(10),bk=calibBuckets(),str=strugglers();
+  const mix=errMix();
+  if(debt>=3)return{cls:"crit",h:"Clear the resolution debt first",
+    p:"<b>"+debt+" predictions are past their date.</b> Everything else on this screen is computed from resolved claims, so an unresolved log is not a slow log, it is a mood diary. Resolve them, even as void, before you add a single new one."};
+  if(ss&&ss.n>=5&&ss.bias>=8)return{cls:"warn",h:"You are over-predicting your own scores",
+    p:"Mean gap <b>+"+ss.bias.toFixed(0)+" points</b> across your last "+ss.n+" sessions. That is the fluency illusion showing up in your own data: the material feels more learned than it is. The move is not to try harder, it is to shift hours out of review and into closed-book retrieval, and to check which topics you overpredict on."};
+  if(ss&&ss.n>=5&&ss.bias<=-8)return{cls:"warn",h:"You are under-predicting your own scores",
+    p:"Mean gap <b>"+ss.bias.toFixed(0)+" points</b> across "+ss.n+" sessions. Your monitoring is pessimistic rather than uncalibrated. Trust the log over the nerves, and watch that you are not buying that accuracy with hours you did not need to spend."};
+  if(res.length>=10&&!everWrongHigh())return{cls:"warn",h:"Your questions are too easy",
+    p:"Ten or more resolved and you have never been wrong at 90% or above. That is the test your own judgment file sets: if after a month you cannot name a claim you held at 90% and got wrong, the log is flattering you. Predict things that could embarrass you."};
+  if(str.length)return{cls:"warn",h:"A topic is failing repeatedly, so it is a concept problem",
+    p:"<b>"+esc(str[0].name)+"</b>"+(str.length>1?" and "+(str.length-1)+" other"+(str.length>2?"s":""):"")+" failed retrieval twice or more. More repetitions will not fix an encoding gap. Go back to worked examples on that topic before it comes round again: retrieval attempted on material you never encoded is guessing, not desirable difficulty."};
+  if(mix.length>=3){
+    const first=mix[0],last=mix[mix.length-1];
+    const s1=first.c+first.e?first.c/(first.c+first.e):0, s2=last.c+last.e?last.c/(last.c+last.e):0;
+    if(s2>s1+0.05)return{cls:"warn",h:"Classification errors are rising as a share",
+      p:"You are increasingly choosing the wrong treatment rather than fumbling the right one. That is the error the exam is built to catch, and the fix is mixed practice where the first thing each problem demands is the classification, not the computation."};
+    if(s2<s1-0.05)return{cls:"",h:"The error mix is moving the right way",
+      p:"Classification errors are falling as a share of your total. Even if raw counts rose, that shift is the signal that mixed practice is doing its job. Keep the mix uncomfortable."};
+  }
+  if(res.length>=8&&bk.length>=3)return{cls:"",h:"The instruments are running",
+    p:"Enough resolved predictions to read the reliability curve below. Look at which buckets sit off the line rather than at the single Brier number: the direction of the miss is the actionable part."};
+  return{cls:"",h:"Not enough data yet, which is normal",
+    p:"The reliability curve needs roughly ten resolved predictions and the session gap needs about five scored sessions before either says anything. Keep logging; the first honest reading is the point at which this screen starts earning its place."};
+}
+function renderReview(){
+  const b=$("#revBody");b.innerHTML="";
+  const res=resolvedPreds(),bk=calibBuckets(),ss=sessionStats(10),br=brier(),rc=rotaCompliance();
+  const days=Object.keys(ST.acts).length||ST.streak.days||0;
+  $("#revTag").innerHTML="Read this once a week, not daily. It exists to change one thing, and the box below names it.";
+  const v=verdict();
+  const vd=E("div","verdict"+(v.cls?" "+v.cls:""));
+  vd.appendChild(E("h3",null,esc(v.h)));
+  vd.appendChild(E("p",null,v.p));
+  b.appendChild(vd);
+
+  const t=E("div","tiles");
+  t.appendChild(tile("Resolution debt",String(debtPreds().length),debtPreds().length?"predictions past their date":"nothing overdue",
+    debtPreds().length?"bad":"good"));
+  const nres=res.length;
+  t.appendChild(tile("Brier",nres<3?"—":br.toFixed(3),
+    nres<3?"needs 3 resolved, you have "+nres:(br<0.15?"sharp, on "+nres+" resolved":br<0.25?"better than a coin, on "+nres:"worse than always saying 50%, on "+nres),
+    nres<3?"":br<0.15?"good":br<0.25?"mid":"bad"));
+  t.appendChild(tile("Score gap",ss?((ss.bias>0?"+":"")+ss.bias.toFixed(0)):"—",ss?"mean over "+ss.n+" sessions, ±"+ss.mean.toFixed(0)+" absolute":"predict then mark to fill this",
+    ss?(Math.abs(ss.bias)<=5?"good":Math.abs(ss.bias)<=10?"mid":"bad"):""));
+  t.appendChild(tile("Rota on time",rc?rc.pct+"%":"—",rc?"of "+rc.tot+" scheduled retrievals":"no scheduled touches yet",
+    rc?(rc.pct>=80?"good":rc.pct>=60?"mid":"bad"):""));
+  t.appendChild(tile("Days logged",String(days),"streak "+(ST.streak.days||0)+", best "+(ST.streak.best||0)));
+  const dh=(ST.drills.hist||[]).slice(-20);
+  t.appendChild(tile("Frequency drill",dh.length?Math.round(dh.filter(x=>x.ok).length/dh.length*100)+"%":"—",
+    dh.length?"last "+dh.length+" attempts":"not attempted"));
+  b.appendChild(t);
+
+  const figs=E("div","figs");
+  if(bk.length&&res.length>=6){
+    const rows=bk.map(x=>[x.label,x.n,x.mean.toFixed(0)+"%",x.obs.toFixed(0)+"%",(x.obs-x.mean).toFixed(0)]);
+    figs.appendChild(fig("Reliability: what you said against what happened",
+      "Each dot is a confidence bucket. On the line means calibrated; below it means over-confident. Dot size is how many predictions sit in that bucket.",
+      chartReliability(bk),tableOf(["Bucket","n","Mean said","Observed","Gap"],rows)));
+  }
+  if(res.length>=2){
+    figs.appendChild(fig("Running Brier score","Lower is better. The reference line is 0.250, which is what you would score by saying 50% to everything. It moves slowly on purpose.",
+      chartBrier(),tableOf(["Claim","Said","Outcome","Brier"],
+        res.slice(-12).reverse().map(p=>[p.q.slice(0,44),p.p+"%",p.res.o?"happened":"did not",Math.pow(p.p/100-p.res.o,2).toFixed(3)]))));
+  }
+  if(ss&&ss.rows.length>=2){
+    const lg=E("div","legend");
+    lg.innerHTML='<span><i style="background:var(--t2)"></i>over-predicted</span><span><i style="background:var(--acc)"></i>under-predicted</span>';
+    const f=fig("Predicted minus actual, by session","Bars above the line are sessions where the material felt more learned than it was. A run of them on one side is the finding, not any single bar.",
+      chartGaps(ss.rows),tableOf(["Session","Predicted","Actual","Gap"],
+        ss.rows.slice().reverse().map(r=>[r.label.slice(0,40),r.pred+"%",r.actual+"%",(r.pred-r.actual>0?"+":"")+(r.pred-r.actual)])));
+    f.insertBefore(lg,f.querySelector("svg"));
+    figs.appendChild(f);
+  }
+  const mix=errMix();
+  if(mix.length>=2){
+    const lg=E("div","legend");
+    lg.innerHTML='<span><i style="background:var(--t2)"></i>classification (wrong treatment chosen)</span><span><i style="background:var(--acc)"></i>execution (right treatment, wrong arithmetic)</span>';
+    const f=fig("Error mix by week","Track the mix, not the count. Classification errors falling as a share is the signal that mixed practice is working, even in a week when total errors rise.",
+      chartErrMix(mix),tableOf(["Week of","Classification","Execution","Class. share"],
+        mix.slice().reverse().map(w=>[shortDate(w.wk),w.c,w.e,(w.c+w.e?Math.round(w.c/(w.c+w.e)*100):0)+"%"])));
+    f.insertBefore(lg,f.querySelector("svg"));
+    figs.appendChild(f);
+  }
+  if(figs.children.length)b.appendChild(figs);
+  const str=strugglers();
+  if(str.length){
+    b.appendChild(E("div","sect","Topics failing on repeat"));
+    for(const s of str){
+      const r=E("div","lrow res-n");
+      r.appendChild(E("div","lt",esc(s.name)));
+      r.appendChild(E("div","lm","<span>"+(s.touches||[]).filter(x=>x.r!=="learn").slice(-3).filter(x=>x.r==="fail").length+" of the last 3 failed</span><span>gap now "+s.gap+"d</span>"+
+        "<span>go back to worked examples before the next touch</span>"));
+      b.appendChild(r);
+    }
+  }
+  const openJ=ST.journal.filter(j=>j.status==="open").length;
+  const brokenJ=ST.journal.filter(j=>j.status==="broken").length;
+  if(ST.journal.length){
+    b.appendChild(E("div","sect","Decision journal"));
+    const p=E("p","tag",openJ+" open, "+brokenJ+" thesis"+(brokenJ===1?"":"es")+" broken and recorded. "+
+      (brokenJ?"A broken thesis you wrote down before the outcome is the most valuable entry in this app: it is the only kind that proves you are judging decisions by what you wrote rather than by how they turned out."
+             :"None broken yet. That is either luck or a sign your falsifiers are too loose to ever fire."));
+    b.appendChild(p);
+  }
+  renderTools(b);
+}
+function renderTools(b){
+  b.appendChild(E("div","sect","Data"));
+  b.appendChild(E("p","tag","This lives in one browser, on one device. Export is the only backup that exists."));
+  const row=E("div","toolsrow");
+  const ex=E("button","btn","Export everything");
+  ex.onclick=()=>{
+    ST.settings.lastExport=TODAY();save();
+    dl(new Blob([JSON.stringify(ST,null,1)],{type:"application/json"}),"cockpit-"+TODAY()+".json");
+    toast("Exported.");paintAll();
+  };
+  const imLbl=E("label","btn","Import");
+  const im=E("input");im.type="file";im.accept=".json,application/json";im.hidden=true;
+  im.onchange=()=>{
+    const f=im.files[0];if(!f)return;
+    const rd=new FileReader();
+    rd.onload=()=>{
+      try{
+        const o=JSON.parse(rd.result);
+        if(!o||typeof o!=="object"||!Array.isArray(o.preds))throw 0;
+        const merged=Object.assign(FRESH(),o);
+        const keep=["preds","topics","sessions","journal","noise"];
+        for(const k of keep)if(!Array.isArray(merged[k]))merged[k]=[];
+        for(const k of keep){
+          const seen=new Set(merged[k].map(x=>x.id));
+          for(const x of ST[k])if(!seen.has(x.id))merged[k].push(x);
+        }
+        merged.acts=Object.assign({},ST.acts,o.acts||{});
+        merged.rq=Object.assign({},ST.rq,o.rq||{});
+        merged.seen=Object.assign({},ST.seen,o.seen||{});
+        if(!merged.drills||typeof merged.drills!=="object")merged.drills={hist:[],next:""};
+        if(!Array.isArray(merged.drills.hist)||!merged.drills.hist.length)merged.drills.hist=ST.drills.hist;
+        if(!merged.drills.next)merged.drills.next=ST.drills.next;
+        ST=merged;save();paintAll();
+        toast("Imported and merged.");
+      }catch(e){toast("That file could not be read as a cockpit export.");}
+    };
+    rd.readAsText(f);im.value="";
+  };
+  imLbl.appendChild(im);
+  imLbl.onclick=e=>{if(e.target!==im)im.click();};
+  imLbl.tabIndex=0;
+  const set=E("button","btn","Rota gaps");
+  set.onclick=openSettings;
+  const rs=E("button","btn ghost","Reset all");
+  let arm=null;
+  rs.onclick=()=>{
+    if(arm===null){rs.textContent="Erase everything? Click again";rs.classList.add("danger");
+      arm=setTimeout(()=>{arm=null;rs.textContent="Reset all";rs.classList.remove("danger");},4000);return;}
+    clearTimeout(arm);arm=null;
+    const theme=ST.theme;ST=FRESH();ST.theme=theme;save();paintAll();toast("Cleared.");
+  };
+  row.append(ex,imLbl,set,rs);
+  b.appendChild(row);
+  b.appendChild(E("p","note","Provenance. Every instrument here is transcribed from the Phase 3 sections of six adversarial research files, and each keeps the grade its file assigned it. Three things those files insist on, which this app therefore refuses to hide: the classroom effect of spacing is roughly half its laboratory size and its confidence interval is wide; the claim that an hour of forecasting training raises accuracy is contested by a reanalysis of the tournament that produced it, so this app keeps the scored-log behaviour and drops the promise; and the well-known noise percentages for professional judgment circulate without a peer-reviewed home, which is why the decide-twice instrument measures your own spread instead of quoting anyone else's."));
+}
+function openSettings(){
+  openSheet("Rota gaps","The spacing literature gives you a function, not a number: the best gap scales with how long you need to remember. These are starting points that then recalibrate from your own results.",
+    body=>{
+      const a=segs([2,3,4,5],ST.settings.firstGap,v=>v+"d");
+      const b2=segs([7,10,14],ST.settings.secondGap,v=>v+"d");
+      const c=segs([14,21,30],ST.settings.maxGap,v=>v+"d");
+      body.append(field("First gap, after you learn it",a),
+        field("Second gap",b2),
+        field("Longest gap a topic can stretch to",c,"Stretching after two clean retrievals is a practical heuristic, not a research result: no source in your files specifies a growth rule, and expanding schedules tested no better than uniform ones."));
+      return{save(){
+        ST.settings.firstGap=a.get();ST.settings.secondGap=b2.get();ST.settings.maxGap=c.get();
+        save();paintAll();toast("Saved.");
+      }};
+    });
+}
+
+
+/* ==========================================================================
+   THE READING ROOM
+   Input for quiet days. The essay and the panel dialogue are embedded verbatim
+   from the manuscript file; each field note ends with its file's ten
+   handwrite-ready lines, verbatim from that file's Phase 4. Editorial framing
+   above the lines adds no new evidence and no new numbers: every figure drawn
+   here appears in the lines beneath it, carrying whatever grade its file
+   assigned. Nothing is upgraded by restatement.
+   ========================================================================== */
+const ESSAY=[{"t": "The Fourteenth Reading", "html": "<p>The experiment looked like nothing. In 2006, the psychologists Henry Roediger and Jeffrey Karpicke gave students a short scientific passage and split them into camps. One camp studied it the way conscientious people prepare for anything: they read it, then read it again, and again. The other camp read it far fewer times and spent the difference on a harsher exercise. The page went away, and they wrote down everything they could remember.</p><p>Five minutes after studying, the rereaders were winning, 81 percent to 75. If the experiment had ended there, it would have confirmed everything students already believe about hard work, and no one would remember it.</p><p>It did not end there. One week later, the groups were tested again, and the ranking had inverted. The students who practised retrieval now recalled 56 percent of the passage; the rereaders held 42. A companion experiment pushed the spread wider, 61 against 40, and produced the detail that deserves to follow you for the rest of your life: the losing students had read the passage roughly fourteen times. The winners had read it about three.</p><p>Then came the finding that turns a memory study into a warning. Before the delayed test, everyone predicted their own performance. The rereaders were the most confident people in the study. They finished last.</p><p>There are two exams hiding in that laboratory. The five-minute exam measures how learning feels. The one-week exam measures what learning is. They disagree, in a known direction, and the disagreement is silent: nothing in the warm ease of a fourteenth reading announces that what you feel is recognition, not possession.</p><p>This essay is about that gap, because it does not stay in the laboratory. It reappears, with the same shape, wherever a present feeling stands in for a delayed fact: in a student's highlighted textbook, in a manager's confident forecast, in an entire market's love affair with a story. And it has the same resolution everywhere, which is not to feel more carefully. It is to build instruments that score you later, in writing.</p>"}, {"t": "The Feeling of Knowing", "html": "<p>Ask university students how they study, and about 84 percent name rereading as a primary strategy; roughly one in ten reports testing themselves. That is not laziness. It is trust in a gauge that happens to be broken.</p><p>The gauge failure has been filmed in miniature. In 2008, Nate Kornell and Robert Bjork taught volunteers to recognize the styles of unfamiliar painters. For some painters, all the examples came bunched together; for others, the examples were spread out and mixed. Spread-out study won, and not narrowly: 85 percent of participants did at least as well or better under spacing. Then the researchers asked which method had worked, and 83 percent voted for the bunched-up version. The participants had just watched spacing win, on their own scores, and credited the loser. Fluency is data about the present, misread as a promise about the future. The literature keeps the two apart with a distinction worth engraving: performance is what you can measure now; learning can only be measured at a delay.</p><p>What does a student do about a broken gauge? Not repair it by willpower. Replace it with apparatus.</p><p>The first instrument is a blank page. When you finish studying a topic, close everything and reconstruct it from nothing: the definitions, the logic, the consequences, in your own hand. Then, and this is not optional, check the reconstruction against the source and mark it, because in the pooled evidence feedback nearly doubles the benefit of testing yourself. The blank page works because a test is not a thermometer, passively reading a temperature; the act of retrieval strengthens the thing retrieved. But this instrument fails in two specific ways, and the failures are on the record. It cannot retrieve what was never there: attempt a blank page on material you have not yet understood and you are guessing, which is why a brand-new topic starts with worked examples instead. And in mathematics, the one domain where a quantitative student most wants it, the technique is not established: when researchers pooled the mathematics studies, the average effect was small enough that its confidence interval crossed zero, and the reviewers finished their work divided over whether that marks a true boundary or a shelf of studies that tested recognition and called it retrieval. Use the blank page hard on concepts, criteria, and structure. Expect less from it on computation, and do not call the technique a failure when the computational half moves slowly.</p><p>The second instrument is a calendar. The spacing literature's central discovery is not a magic interval; it is a function. The best gap between study sessions scales with how long you need to remember, and the research declines, explicitly, to hand you your personal number. So the calendar calibrates itself. Touch a topic on day zero, day three, day ten. When the day-ten attempt fails, that is not a setback; that is the needle on the dial telling you your gap has outrun your retention, so you shorten it. And a consumer note, delivered by the evidence with something like satisfaction: sophisticated expanding-interval schedules, the kind sold by subscription, performed no better than a plain uniform rota; the difference was statistically indistinguishable from nothing. A dated sheet of paper is competitive with the app.</p><p>The third instrument is a shuffle. In one of the strongest classroom experiments on record, a pre-registered trial spanning 54 seventh-grade mathematics classrooms, some students practised problems in blocks, one skill at a time, while others got the same problems shuffled so that no two neighbours took the same method. A month after practice ended, on a test nobody knew was coming, the shuffled group scored 61 percent to the blocked group's 38. The mechanism is the discomfort: a shuffled set forces you to decide what kind of problem you are facing before you can solve it, which is precisely the decision the exam will demand and the one a blocked worksheet quietly makes for you. But carry the reversal with the rule, because it is sharp. For word-like material, vocabulary, defined terms, the effect flips: mixing hurts and blocking wins. So block your terminology and shuffle your problems, and notice what just happened: the technique dissolved into a principle. Practise the discrimination you will be tested on.</p><p>The fourth instrument is a switch. Worked examples, the full solutions you study before attempting problems, are the single best tool a novice has, and then, as competence arrives, they quietly become dead weight and finally drag; researchers call it the expertise reversal effect. The switch has an audible click. While solutions still produce the thought \"I would have done that differently,\" keep reading them. The day they produce only \"yes, that is what I did,\" stop; from that point the examples are costing you practice. There is a quiet dignity in this finding: the evidence itself instructs you to outgrow your instruction.</p><p>And beneath all four sits a substrate that students raid first. In a brain-imaging study of sleep deprivation, a single lost night degraded the next day's ability to encode new memories by roughly a fifth. Read the all-nighter's true invoice: it charges you once on the exam it was meant to serve, and again on everything you try to learn the following day. The durable advice is deliberately thin, and thin is what survives scrutiny: do not trade sleep for study hours.</p>"}, {"t": "The Weatherman's Secret", "html": "<p>Now raise the stakes from remembering to judging.</p><p>Some years ago, researchers asked roughly two thousand managers to state ranges they were 90 percent sure contained the truth, quantities from their own industries. Ranges built to catch the answer nine times in ten caught it somewhere between four and six times in ten, a figure that has travelled widely, though the research file reporting it grades it second-hand and asks that it be checked before it is repeated. That grading is worth pausing on, because it is the essay behaving the way it is about to ask you to behave.</p><p>The popular translation of results like this is that people are overconfident, and the popular translation turns out to be wrong in an instructive way. When psychologists took confidence apart, they found three separate things: overestimating your score, overrating your rank against others, and drawing your ranges too tight. The first two are not stable traits at all; they flip sign with task difficulty, so the sweeping claim was an average over a see-saw. Only the third, overprecision, survives scrutiny. Your convictions are not always inflated. Their error bars are.</p><p>Which makes the exception the most important character in the literature. Weather forecasters, of all people, are calibrated so well the research describes them with the word \"superb.\" When a good forecaster says 70 percent chance of rain, it rains about seven times in ten. Not because meteorology attracts the humble, but because the job is built like a laboratory instrument: thousands of forecasts, each resolving within a day, each scored against reality. Calibration turns out not to be a trait. It is a property of a person joined to an environment, and that may be the most hopeful sentence in the whole literature, because environments can be built. Almost no one's job resembles the forecaster's. Your instruments can.</p><p>Build the log first. A forecast without a probability, a date, and a score is not a forecast; it is a mood. Write predictions the way the forecaster is forced to: \"70 percent that I get the interview, resolves March 3,\" then score them when they resolve. The log is working when, within a month or two, you can name from your own records a specific claim you held at 90 percent and got wrong. If you cannot, your questions are too easy and the log is flattering you. One caution belongs in the same breath: the celebrated claim that a single hour of training measurably improves forecasting has been contested by a reanalysis of the same tournament that produced it, so keep the habit that survived the reanalysis, small frequent updates against a score, and hold the advertised improvement loosely.</p><p>Build the count second. Whenever a probability arrives wearing a percentage, translate it into people before reasoning about it. Not \"the test has a nine percent false-positive rate\" but \"out of a thousand people, ten are sick and nine of them test positive; of the healthy, about ninety also test positive.\" In a study of medical students facing exactly such problems, this translation alone, no training, no incentives, just counts instead of percentages, lifted correct reasoning by 37 percentage points on average. Formula training, meanwhile, decays within weeks; the count format holds. Theorists still argue about why it works. The practice is free either way.</p><p>Build the checklist third, and build it before you meet the case. Half a century after a psychologist named Paul Meehl first tallied the evidence, a meta-analysis of the accumulated contests between expert intuition and simple mechanical rules found the rule about 10 percent more accurate, and the advantage held across tasks, judges, and experience levels. Hold both truths at once: the experts often tied, so this is an edge, not an annihilation; and the edge is consistent, which compounds. The rule has boundaries stamped on it. It requires an outcome you can score and a world stable enough to score it in; where neither exists, there is nothing to be mechanical about. And it has a human failure mode crueller than either: in forecasting experiments, people who watched an algorithm make an error abandoned it, even when they had also watched it outperform them. The discipline is not building the checklist. It is keeping the checklist after it embarrasses you. There is a simple test for whether yours is real: if it never disagrees with your gut, it is decorative.</p><p>Build the second look last. Judge the same case twice, days apart, without consulting your first answer, and measure the spread, because professionals judging identical cases disagree with themselves and each other far more than they or their institutions expect. The phenomenon is well documented in settings from asylum adjudication to insurance, though the most famous percentages attached to it circulate without a peer-reviewed home, which is its own small lesson. You cannot introspect your own inconsistency. You can measure it, and once measured, the remedy is mechanical: average with yourself.</p>"}, {"t": "The Tulip Audit", "html": "<p>Here is where the story is supposed to widen into farce: the market as a lecture hall of rereaders, the mania as fluency at the scale of nations, tulip bulbs trading for houses. The research files refuse the script, and their refusal is the lesson.</p><p>Take the tulips. When the economist Peter Garber went to the seventeenth-century price records, the archetype of collective madness came apart in his hands: after the 1637 peak, prices of the celebrated rare bulbs fell about 32 percent a year, a pace he found not far from the ordinary depreciation of prized bulbs in later, calmer decades, as novelties became commonplace. What looked like civilization losing its mind was, on the bulb ledgers, roughly a flower behaving like a flower. Four centuries of writers have retold tulipmania without checking it, which means the most famous story about market delusion is itself a fluency artifact: a tale so retellable that nobody audits it.</p><p>Or take the folk rule, sell whatever has soared. When William Goetzmann assembled a century of national stock markets, he found that after a market doubled in real terms, it went on to double again over the next five years nearly twice as often as it went on to halve, roughly 26 percent of cases against 15. Booms, at the level of whole markets, are mostly not ticking bombs. A young investor who learns only this has already avoided the genre's oldest mistake.</p><p>So what does survive? Something narrower, stranger, and more useful, and it is best introduced through a country that did nothing wrong. In 2007, Germany's own credit gauges were quiet. No boom, no overheating; by its domestic numbers it deserved calm. But a third of the countries around it were deep inside what one team of economists calls the red zone, the condition where rapid credit growth and rapid asset-price growth arrive together, and Germany's banks were wired into all of them. The model gave Germany elevated odds anyway, on contagion alone. In 2008, its crisis arrived on schedule.</p><p>That red-zone result, built on 42 countries across seven decades, is the sturdiest thing the mania literature owns, and what makes it sturdy is not its power. It is that it publishes its own failures. A country in the zone faces roughly a 45 percent chance of financial crisis within three years for business credit, 37 for household, against a background rate of about 4 percent in a given year. Now read the failure rates in the same breath, because the authors do: most alarms are followed by no crisis at all, and roughly a third of crises arrive with no warning from the indicator, error rates the research file computes from the paper's own figures. The signal even survives the hindsight objection, the one that flattens most of this genre, because it still works when estimated only on data available at the time, ending before 2008. A warning system wrong more often than right, blind to a third of what it watches for, and still lifting three-year odds toward a coin flip: that is what the best macro-forecasting instrument in existence actually looks like. A regulator, whose errors are priced asymmetrically, should act on it. An investor who exits markets on it will be wrong more often than right and will pay in forgone returns, so for an individual it is a dial for attention and position size, never a date.</p><p>Inside a single sector the evidence sharpens, and it comes with a concession that should raise your trust rather than lower it. Researchers who tracked American industries back to the 1920s began by conceding, in as many words, that the great skeptic of bubbles, Eugene Fama, is right about averages: a sector that has soared does not, on average, go on to deliver unusually poor returns. What soaring changes is the tail. Define a crash as a 40 percent collapse within two years, and the background odds for any industry run about 14 percent; after a sector doubles against the market, those odds reach 53 percent; among run-ups half again as large, four of every five ended in a crash, though that last figure rests on just fifteen episodes in a century of data, small enough to treat as a direction rather than a law. Both findings are true of the same distribution: the average holds while the left tail fattens. Which dictates the only coherent response: reduce your size, never your direction; betting against the boom is how the boom's skeptics go broke. The practitioners' version is a dated note, written before the run-up matures, stating what you will do at each threshold. And the evidence grades the practice with unusual severity: if you quietly amend the note as the number approaches, the amendment is not a footnote to your experiment. It is the result.</p><p>One market instrument remains, and it is the one for stories. Every boom arrives narrated, and the narratives have no predictive power at all; new-era stories attend the booms that break and the booms that build the future, which is why their presence proves nothing. But a good story always rests its full weight on one number, and that number can be audited. In the railway mania of the 1840s, the number was the traffic forecasts, produced by surveyors called traffic takers, and the historian who studied the episode concluded that investors were operating under a serious delusion about those estimates' accuracy: checkable, and almost never checked. In the telecom boom of 2000, the number was the claim, repeated by a major executive, that internet traffic was doubling every hundred days, while measured traffic doubled about once a year. The story is not the signal. The story is the map to the audit: write the number your favourite narrative depends on beside the narrative, with the date you checked it.</p>"}, {"t": "The Keeper of the Score", "html": "<p>The research files this essay is built from share a strange feature, and it is time to tell you about it, because it is the most instructive thing in them.</p><p>Every claim they make carries a grade: verified against retrieved text, reported second-hand, inferred, or remembered and therefore suspect. Every file ends by ranking its own weakest claims, weakest first, like a captain logging the leaks. And one of them contains a small confession that outweighs any statistic in this essay. Its author, mid-project, went back to verify his most-used number, a figure about how much training improves forecasters, one he had already cited three times. The paper he had attributed it to did not contain it. He did not quietly delete it. He wrote the failure into the record, named the condition, secondary-sourced and load-bearing, \"the worst combination in this document,\" and left the wound visible for any future reader. Then he allowed himself a single generalization, carefully flagged as an inference from two instances: the most quotable numbers are the least verifiable ones.</p><p>That sentence deserves to scale, because the pattern it names is everywhere once you look. Fields correct themselves in their journals while the paperback keeps the original claim. Base-rate neglect narrowed into a finding about formats; overconfidence narrowed into overprecision; the nudge, celebrated at 8.7 percentage points in academic journals, shrank to 1.4 when governments ran the same interventions at national scale, and publication bias accounts for the entire gap. Meanwhile the learning pyramid, that tidy chart claiming we remember 10 percent of what we read and 90 percent of what we do, has circulated for some sixty years inside teacher training without either learning file being able to trace its percentages to any study at all. And belief in learning styles still runs near nine educators in ten, more than a decade after the definitive review found the required evidence absent. Fabrications persist because they are useful to repeat. The defence is not intelligence, which does not protect; in one survey, teachers with more general knowledge believed more educational myths, not fewer. The defence is a habit: ask where a number lives before you let it move you.</p><p>Sometimes the audit must point at the auditors, and the literature has supplied its own parable. For decades, the hot hand fallacy was a jewel of the field: basketball fans see streaks, the streaks are illusions, humans impose patterns on noise. Then two economists examined the canonical measure and found a subtle statistical bias inside it, and when they corrected the arithmetic, the study's longstanding conclusions reversed. The bias had been in the instrument, and the instrument belonged to the researchers; replications missed it for years because they reused the same measure. The field caught the error with its own tools and published the reversal, which is to its credit. But the direction of the lesson is permanent: before diagnosing the world's irrationality, check the measure, especially when the measure is you.</p><p>So carry a discount rule, distilled by one of the files' reviewers from a career of watching findings age: assume the effect is real, assume it is roughly half the advertised size in your setting, and assume the branded version has already drifted from the version that was tested. Then notice, and this is the essay auditing itself, that the rule applies here. \"The Delayed Test\" is a brand. The scenes you will remember from these pages are the packaging, and packaging is precisely how moderators get stripped and findings get inflated. The boundaries were fused into every sentence for that reason, but a memory keeps what it likes. Before you act on any number in this essay, find its source. Before you trust the source, find its grade.</p><p>What remains, after the discounting, is a relationship with error that the instruments quietly teach. The 90 percent claim that resolves false is not a humiliation; it is your log functioning. The alarm followed by no crisis is your watch file functioning. The failed day-ten recall is your calendar reporting your true retention, which you could not have learned any cheaper. And one habit supervises all the others, and it costs five seconds: before you mark any self-test, score any checklist, resolve any forecast, write down what you expect. Then mark, and keep both columns. That habit converts the oldest illusion in this essay into a number, yours, per topic, and it is the instrument that tells you whether the rest are working.</p>"}, {"t": "The Late Exam", "html": "<p>Everything worth having in these pages is scored late. Retention is scored at a week, not at the end of the study session. Calibration is scored at resolution, not in the glow of the confident forecast. Solvency is scored across the credit cycle, not at its top. The five-minute exam rewards the fourteenth reading, the tight interval, the story at the peak. The delayed exam rewards the blank page, the dated probability, the falsifier written beside the narrative. You do not get to choose which exam matters. You choose which one you practise for.</p><p>And the encouragement is earned, not asserted. Nothing here requires brilliance. A blank sheet. A dated rota. A log with probabilities and resolution dates. A count out of a thousand. Criteria written before the case. A sentence naming what would prove you wrong. The advantage these instruments confer is not intelligence; it is an earlier acquaintance with the truth. The students who read the passage three times beat the students who read it fourteen because reality was allowed to mark their work while the marking was still cheap. That is the whole method, at every scale this essay has visited. Invite the delayed test in early. Keep its scores in your own handwriting. And let the person who walks out of a decade of that be the one the late exams built.</p>"}];
+const PANEL_SEGS=[{"t": "The argument", "html": "<p>Before a word of the essay existed, its manuscript file staged the fight over what it was allowed to say. A storyteller argued for scenes; a scholar listed five ways the scenes would lie; a mentor brokered the compromise that became the essay's style guide. The exchange below is verbatim.</p><span class=\"vox\"><b>THE STORYTELLER:</b> The architecture writes itself. Open inside the 2006 lab, the confident rereaders losing at a week. Then one illusion in three costumes, student, professional, market, then the instruments, then the ethic of the people who keep them. Scenes carry it: the weather forecaster, the tulip ledgers, Germany in 2008, the Victorian traffic takers. I want the reader leaning forward, not taking notes.</span><span class=\"vox\"><b>THE SCHOLAR:</b> That outline is a machine for manufacturing overclaims, and I will list where it will fail. First, your \"three costumes\" symmetry implies markets are crowds gone mad at scale, and the mania files spend half their length refusing exactly that: the tulip story collapses on price data, and after a doubling, markets doubled again more often than they halved. Second, you will round \"40 to 60 percent\" into \"half the time\" and quietly promote a figure the file explicitly grades second-hand. Third, your triumphant retrieval-practice scene will run straight past the mathematics result, an effect whose confidence interval crosses zero, which the source panel itself could not resolve. Fourth, your dramatic 80 percent crash figure rests on fifteen episodes, twelve crashes. Fifteen. And fifth, the deepest one: a beautiful essay called The Delayed Test is precisely the branded, moderator-stripped artifact these files document destroying fields. You are proposing to build the next learning pyramid, with better prose.</span><span class=\"vox\"><b>THE STORYTELLER:</b> And your alternative is unreadable. You want \"element interactivity,\" \"overprecision,\" \"proper scoring rule,\" and a forest of hedges, and the nineteen-year-old we are writing for closes the tab by paragraph two, keeps rereading her notes, and fails the delayed test we both know is coming. Precision that goes unread has an effect size of zero. The files themselves reach for images when it matters: error rates printed on the casing, booms gone wrong, a train wreck looming. Your job is to make sure my images are true, not to replace them with jargon.</span><span class=\"vox\"><b>THE MENTOR:</b> Then here is the compromise, and both of you give something up. Every statistic gets a scene before it lands, but the Scholar writes the boundary into the same breath, not a footnote: the blank page arrives fused to the mathematics dispute, the crash number arrives holding its sample size, the second-hand figure is called second-hand inside the sentence, as an act of characterization rather than apology, because the files' own honesty is the most moving material we have. Effect-size notation stays out of the manuscript; it lives in Phase 1, and the prose says \"nearly doubles\" or \"indistinguishable from zero\" instead. Live disputes are staged as drama, two camps leaving a room unreconciled, because unresolved is more interesting than resolved, not less. And the Scholar's fifth objection is not answered; it is annexed. The final section turns the essay on itself and hands the reader the historian's discount rule, so the piece teaches its own depreciation schedule.</span><span class=\"vox\"><b>THE SCHOLAR:</b> Accepted, with one enforcement clause: attribution is woven but real. Named researchers where the files verify them, \"a figure that circulates without a peer-reviewed home\" where they do not, and no invented colour, no lab furniture, no named painters we cannot source.</span><span class=\"vox\"><b>THE STORYTELLER:</b> Accepted. Scenes built only from what the files verify.</span><span class=\"vox\"><b>Agreed blueprint, under the absolute rules without dissent:</b> five movements and a coda. The Fourteenth Reading (the 2006 crossover, the two-exams frame). The Feeling of Knowing (the student's illusion, then the memory instruments with fused boundaries). The Weatherman's Secret (the judgment illusion, the calibration reframe, the judgment instruments). The Tulip Audit (the trap sprung on the reader's expectations, then what the market evidence actually supports). The Keeper of the Score (the files' own conduct as the ethic, the self-turning ending). Coda: The Late Exam.</span>"}, {"t": "The essay grades itself", "html": "<p>The manuscript file ends the way every file in the program ends: by auditing its own weakest work. Verbatim, both entries.</p><p><b>Where prose came closest to oversimplifying, and how accuracy was held.</b> The tulip paragraph. \"Roughly a flower behaving like a flower\" compresses a genuine scholarly dispute into an image, and Garber's data concerns the rare bulbs specifically, over a defined 1637 to 1642 window, compared against later depreciation schedules; the sentence flirts with implying the whole episode is settled as rational. Accuracy was preserved by three deliberate anchors in the same passage: the figure (32 percent a year), the restriction to \"celebrated rare bulbs,\" and the comparison class (\"prized bulbs in later, calmer decades\"), plus the reframing of the paragraph's claim away from \"the market was rational\" toward the narrower, defensible target: the received story has gone unaudited. The parallel risk in the Goetzmann paragraph was handled by keeping the unit (\"national stock markets\") and the terms (\"in real terms\") inside the sentence, since the whole reconciliation with the sector-level crash evidence depends on them.</p><p><b>The concept requiring the most careful pacing, and an honest evaluation.</b> The red-zone conditional probabilities, which demand that a reader hold a base rate, two conditional rates, and two distinct error types (false alarms in the majority, a third of crises unwarned) without conflating them. The structural solution was to spend the Germany story first, so the reader meets the indicator as fate before meeting it as arithmetic, then deliver the rates in a single paragraph explicitly framed as reading the failure rates \"in the same breath,\" and close by splitting the regulator's payoff from the investor's so the numbers acquire a consequence. Evaluation: partially successful. The Germany scene carries the reader into the statistics, and the \"wrong more often than right, and still the best instrument in existence\" framing gives the error rates a memorable shape, but the paragraph remains the densest in the essay, and a reader skimming it will retain the 45 percent and drop the false-alarm majority, which is the exact asymmetric memory the essay warns about. A longer treatment would give the false alarm its own scene, a country that entered the zone and emerged unscathed, and the source file confirms such cases are the majority; the compression is the cost of pacing, and it is a real cost, acknowledged rather than hidden.</p>"}];
+const TEN={"dl1": ["1. Testing beats rereading only after a delay; at 5 minutes rereading wins (81% v 75%), at 1 week testing wins (61% v 40%).", "2. Retrieval works when success is possible. No schema, no retrieval: study worked examples first.", "3. Space it: 3 touches, day 0 / day 3 / day 10. Failure at day 10 means shorten the gap.", "4. Optimal gap scales with how long you need to remember it. Nobody can give you the number.", "5. Interleave so consecutive problems need different treatments. Part of the benefit is just spacing.", "6. Interleaving raises errors now and scores later. Watch the error mix, not the error count.", "7. Self-explain in two sentences: why this treatment, what fact would flip it.", "8. Worked examples help novices and stop helping experts. Fade them deliberately.", "9. Your confidence is the least reliable instrument you own. Predict, then mark, then compare.", "10. Learning styles, the learning pyramid, and mindset-as-lever: no."], "dl2": ["1.  Retrieve, don't review. Closed book, then check. Feedback nearly doubles it (g .73 vs .39).", "2.  It's a delayed-test effect (g .69 at 1+ day vs .41 same day). Free recall &gt; MCQ (.61 vs .29).", "3.  Space it. Optimal gap scales with time to exam: weeks for a term final, not days.", "4.  Expanding intervals ≈ uniform (g .034). A weekly rota is enough. Don't pay for schedules.", "5.  Interleave PROBLEMS so you must classify before you compute. That choice is the exam.", "6.  Block TERMINOLOGY. Interleaving reverses for word-like material (g −.39).", "7.  New topic: worked examples first. After 2 unaided problems, stop reading solutions.", "8.  Explain why each line follows before reading the next (g .55). Rule, not answer.", "9.  Sleep both sides. One lost night cuts next-day encoding ~19%. All-nighters cost 2 days.", "10. Fluency lies: 83% rated massing better after spacing beat it. Predict your score, then mark.", "", "— Two things I would add if the limit were twelve lines, and which you should hold anyway: classroom effects run roughly half of lab effects, and in computation-heavy domains the retrieval-versus-restudy edge is small and not established (g .18, CI through zero), so spacing and interleaving carry more of the load there than retrieval does."], "jdm": ["1. Overprecision is the surviving overconfidence result: 90 percent intervals hit near 50 percent.", "2. Simple mechanical rules beat holistic judgment by about 10 percent, consistently, across judges and tasks.", "3. People use base rates when information arrives as frequencies. The deficit is in the format, not only in the head.", "4. Outside view before inside view. Build the reference class before producing the number.", "5. A forecast without a probability, a date, and a score is not a forecast.", "6. Calibration training works, and it buys roughly 10 percent, not transformation.", "7. Noise is variance across identical cases; bias is the mean being wrong. Both raise error, only one is visible.", "8. Prospect theory's shape replicates; loss aversion's coefficient of about 2 does not.", "9. Nudges shrank from 8.7 points in journals to 1.4 at scale, and publication bias explains the gap.", "10. Any celebrated single-study finding statable in one sentence is a candidate for having failed to replicate.", "", "— Two notes on these ten, which are otherwise unchanged from checkpoint 1. Line 6 rests on a figure whose primary source I have not opened; see Verification Log row V2. Line 3 now has stronger support than when written: the best verified figure for the format effect is a 37 percentage point average improvement across four conditions, not the older 16-to-46 percent single-condition result."], "jdmp": ["1. A simple model with the right variables beats expert judgment by roughly 10%, not by a mile, and only where the environment is regular and feedback exists.", "2. Trust intuition in proportion to environment predictability multiplied by your opportunity to learn it. Confidence is not evidence of either.", "3. Of the three overconfidences, only overprecision survived. Your intervals are too tight; your self-ranking is unstable and reverses with difficulty.", "4. Calibration is trained by scored, resolving feedback. No resolution, no calibration, regardless of effort.", "5. Convert conditional probabilities to counts out of 1,000. Formula training decays in weeks; representation training holds.", "6. Noise is variance across judgments that should agree. Reduce it by aggregating independent judgments, including your own taken twice.", "7. Judge decisions from what you wrote before the outcome, never from the outcome.", "8. Incentives compress variance and raise effort. They do not repair a wrong model, and no replicated study has removed a rationality violation by raising stakes.", "9. Anchoring, hindsight, overprecision, and the actuarial advantage replicated. Ego depletion, choice overload, universal loss aversion, and social priming did not.", "10. When a finding says people are irrational, check whether the error is in the subjects or in the researcher's normative model. In the hot hand it was the researchers."], "man": ["1. Price level alone is not a signal. Goetzmann: after a real doubling, 26.4% chance of another double in 5 years, 15.3% chance of halving.", "2. The mean is efficient, the tail is not. GHSY: a 100% industry run-up lifts two-year crash odds from 20% to 53%; 150% lifts them to 80%; unconditional is 14%.", "3. Credit alone is weak; credit <b>interacted with</b> asset prices is strong. GHSS R-zone: 45% three-year crisis probability (business), 37% (household), 4% unconditional at one year.", "4. The same paper gives the error rates: ~55% of R-zone alarms are false, and ~36% of crises arrive with no R-zone warning. Both large. Neither fatal.", "5. GHSS survives the hindsight charge because thresholds are computable on an expanding backward-looking sample and results hold when the analysis stops before 2008.", "6. Only one in three credit booms ends in crisis (IMF). Composition sorts them: house-price boom plus rising loan-to-deposit ratio marks the dangerous kind (Richter/Schularick/Wachtel).", "7. Supply kills returns, not disappointed demand. Cooper/Gulen/Schill: highest-decile asset growth ~6% p.a., lowest ~26%, 1968 to 2003. Then apply McLean/Pontiff: 58% average post-publication decay.", "8. Leverage sets <b>severity</b>, not probability and not timing. Canada had the household credit boom (debt/income 1.07 to 1.60) and no banking crisis; the difference was intermediary leverage (18:1 capped at 20:1) and mortgage structure (5% nonprime, 25% securitised).", "9. Reported leverage is the manipulated variable. Lehman's Repo 105 moved ~$50bn off quarter-end balance sheets, net leverage 13.9 to 12.1.", "10. Campbell (2012) is the standing rebuttal: control for short-term dividend growth and railways were \"priced consistently with the non-railways throughout the entire episode.\" The founding case may need no behavioural explanation."], "manp": ["1. Credit growth predicts crises; price level alone predicts almost nothing. (Schularick-Taylor, 14 countries, 1870-2008.)", "2. Household debt to GDP predicts weaker growth <i>and</i> forecasters' errors in the same direction. (Mian-Sufi-Verner, 30 countries.)", "3. Run-ups do not lower average forward returns. They raise crash probability. Those are different claims.", "4. Base rate of a 40% industry drawdown in two years: 14%. After a 100% net-of-market run-up: 53%.", "5. What separates the crashes: rising volatility, rising issuance, <i>acceleration</i>, rising market P/E, young firms leading.", "6. Unit of analysis decides the argument. Indices say no bubble; sectors net of market say otherwise.", "7. Credit is what makes a bubble dangerous. Equity bubbles without credit mostly blow over; credit-financed housing does not.", "8. Panics follow bank losses; they do not cause them. Watch bank equity drawdown.", "9. Spending peaks after prices peak. The capacity table has a longer lead than the chart.", "10. Tulipmania is not evidence. Garber's bulb depreciation was 32% a year, which was normal."]};
+
+/* ---- figures: every number shown is present in the ten lines below it ---- */
+function figCrossover(){
+  const W=340,H=210,L=44,R=94,T=16,B=34;
+  const svg=S("svg",{viewBox:"0 0 "+W+" "+H,class:"chart",role:"group","aria-label":"The crossover: restudy wins at five minutes, retrieval wins at one week"});
+  const x=i=>L+i*(W-L-R), y=v=>H-B-((v-30)/60)*(H-T-B);
+  const g=S("g",{class:"grid"});
+  [40,60,80].forEach(v=>{g.appendChild(S("line",{x1:L,x2:W-R,y1:y(v),y2:y(v)}));
+    svg.appendChild(S("text",{x:L-6,y:y(v)+3.5,"text-anchor":"end"},v+"%"));});
+  svg.appendChild(g);
+  svg.appendChild(S("line",{x1:L,x2:L,y1:T,y2:H-B,class:"axis"}));
+  svg.appendChild(S("line",{x1:L,x2:W-R,y1:H-B,y2:H-B,class:"axis"}));
+  svg.appendChild(S("text",{x:x(0),y:H-B+15,"text-anchor":"middle"},"5 minutes"));
+  svg.appendChild(S("text",{x:x(1),y:H-B+15,"text-anchor":"middle"},"1 week"));
+  const series=[["restudy",[81,40],"var(--t2)"],["retrieval",[75,61],"var(--acc)"]];
+  for(const [name,pts,col] of series){
+    svg.appendChild(S("path",{d:"M"+x(0)+" "+y(pts[0])+" L"+x(1)+" "+y(pts[1]),class:"ln",style:"stroke:"+col}));
+    pts.forEach((v,i)=>{
+      const c=S("circle",{cx:x(i),cy:y(v),r:4.5,class:"dot",style:"fill:"+col});
+      svg.appendChild(c);
+      const hit=S("circle",{cx:x(i),cy:y(v),r:14,class:"hit"});
+      bindTip(hit,"<b>"+name+"</b>"+v+"% recalled at "+(i?"one week":"five minutes"));
+      svg.appendChild(hit);
+    });
+    svg.appendChild(S("text",{x:x(1)+9,y:y(pts[1])+3.5,class:"lbl"},name+" "+pts[1]+"%"));
+  }
+  svg.appendChild(S("text",{x:x(0)-7,y:y(81)-6,"text-anchor":"end"},"81"));
+  svg.appendChild(S("text",{x:x(0)-7,y:y(75)+14,"text-anchor":"end"},"75"));
+  return svg;
+}
+function figModerators(){
+  const rows=[["retrieval + feedback",.73,"retrieval, no feedback",.39],
+    ["tested a day or more later",.69,"tested same day",.41],
+    ["free recall",.61,"recognition",.29]];
+  const W=340,rowH=58,T=8,B=24,L=8,R=12,H=T+rows.length*rowH+46+B;
+  const svg=S("svg",{viewBox:"0 0 "+W+" "+H,class:"chart",role:"group","aria-label":"What moves the testing effect"});
+  const x=v=>L+((v+0.5)/1.4)*(W-L-R);
+  rows.forEach((r,i)=>{
+    const yy=T+i*rowH;
+    svg.appendChild(S("text",{x:x(0)+4,y:yy+11,class:"lbl"},r[0]+" · g "+r[1].toFixed(2)));
+    svg.appendChild(S("rect",{x:x(0),y:yy+16,width:x(r[1])-x(0),height:8,rx:4,fill:"var(--acc)",class:"bar"}));
+    svg.appendChild(S("rect",{x:x(0),y:yy+27,width:x(r[3])-x(0),height:8,rx:4,fill:"var(--line)",class:"bar"}));
+    svg.appendChild(S("text",{x:x(0)+4,y:yy+47},r[2]+" · "+r[3].toFixed(2)));
+    const hit=S("rect",{x:L,y:yy+2,width:W-L-R,height:rowH-4,class:"hit"});
+    bindTip(hit,"<b>"+r[0]+"</b>g = "+r[1].toFixed(2)+" against "+r[3].toFixed(2)+" for "+r[2]);
+    svg.appendChild(hit);
+  });
+  const yy=T+rows.length*rowH;
+  svg.appendChild(S("text",{x:x(0)+4,y:yy+11,class:"lbl"},"interleaving on vocabulary · g −0.39"));
+  svg.appendChild(S("rect",{x:x(-0.39),y:yy+16,width:x(0)-x(-0.39),height:8,rx:4,fill:"var(--crit)",class:"bar"}));
+  svg.appendChild(S("text",{x:x(0)+4,y:yy+38},"the one reversal: block terms, shuffle problems"));
+  const hit=S("rect",{x:L,y:yy+2,width:W-L-R,height:40,class:"hit"});
+  bindTip(hit,"<b>The reversal</b>Interleaving flips sign for word-like material: g = −0.39. Block terminology, shuffle problems.");
+  svg.appendChild(hit);
+  svg.appendChild(S("line",{x1:x(0),x2:x(0),y1:T,y2:yy+30,class:"axis"}));
+  svg.appendChild(S("text",{x:x(0),y:H-6,"text-anchor":"middle"},"0"));
+  return svg;
+}
+function figShrink(){
+  const W=340,H=196,L=44,R=16,T=18,B=40;
+  const svg=S("svg",{viewBox:"0 0 "+W+" "+H,class:"chart",role:"group","aria-label":"The nudge effect in journals against government trials"});
+  const y=v=>H-B-(v/10)*(H-T-B);
+  const g=S("g",{class:"grid"});
+  [0,2.5,5,7.5,10].forEach(v=>{g.appendChild(S("line",{x1:L,x2:W-R,y1:y(v),y2:y(v)}));
+    svg.appendChild(S("text",{x:L-6,y:y(v)+3.5,"text-anchor":"end"},v+"pp"));});
+  svg.appendChild(g);
+  svg.appendChild(S("line",{x1:L,x2:W-R,y1:y(0),y2:y(0),class:"axis"}));
+  const bars=[["academic journals",8.7,"var(--t2)"],["government units, at scale",1.4,"var(--acc)"]];
+  const bw=74;
+  bars.forEach((b,i)=>{
+    const cx=L+(i+0.5)*((W-L-R)/2);
+    svg.appendChild(S("rect",{x:cx-bw/2,y:y(b[1]),width:bw,height:y(0)-y(b[1]),rx:5,fill:b[2],class:"bar"}));
+    svg.appendChild(S("text",{x:cx,y:y(b[1])-7,class:"lbl","text-anchor":"middle"},b[1]+" points"));
+    svg.appendChild(S("text",{x:cx,y:H-B+16,"text-anchor":"middle"},b[0]));
+    const hit=S("rect",{x:cx-bw/2-6,y:T,width:bw+12,height:H-T-B,class:"hit"});
+    bindTip(hit,"<b>"+b[0]+"</b>average effect "+b[1]+" percentage points");
+    svg.appendChild(hit);
+  });
+  return svg;
+}
+function figRedZone(){
+  const W=340,H=200,L=44,R=16,T=18,B=42;
+  const svg=S("svg",{viewBox:"0 0 "+W+" "+H,class:"chart",role:"group","aria-label":"Crisis probability in and out of the red zone"});
+  const y=v=>H-B-(v/50)*(H-T-B);
+  const g=S("g",{class:"grid"});
+  [0,10,20,30,40,50].forEach(v=>{g.appendChild(S("line",{x1:L,x2:W-R,y1:y(v),y2:y(v)}));
+    svg.appendChild(S("text",{x:L-6,y:y(v)+3.5,"text-anchor":"end"},v+"%"));});
+  svg.appendChild(g);
+  svg.appendChild(S("line",{x1:L,x2:W-R,y1:y(0),y2:y(0),class:"axis"}));
+  const bars=[["R-zone, business credit",45,"3-year probability","var(--crit)"],
+    ["R-zone, household",37,"3-year probability","var(--t2)"],
+    ["unconditional base",4,"in any given year","var(--line)"]];
+  const bw=64;
+  bars.forEach((b,i)=>{
+    const cx=L+(i+0.5)*((W-L-R)/3);
+    svg.appendChild(S("rect",{x:cx-bw/2,y:y(b[1]),width:bw,height:Math.max(2,y(0)-y(b[1])),rx:5,fill:b[3],class:"bar"}));
+    svg.appendChild(S("text",{x:cx,y:y(b[1])-7,class:"lbl","text-anchor":"middle"},b[1]+"%"));
+    const words=b[0].split(", ");
+    words.forEach((w,k)=>svg.appendChild(S("text",{x:cx,y:H-B+15+k*12,"text-anchor":"middle"},w)));
+    const hit=S("rect",{x:cx-bw/2-5,y:T,width:bw+10,height:H-T-B,class:"hit"});
+    bindTip(hit,"<b>"+b[0]+"</b>"+b[1]+"% crisis probability, "+b[2]);
+    svg.appendChild(hit);
+  });
+  return svg;
+}
+function figCrashOdds(){
+  const W=340,H=196,L=44,R=16,T=18,B=40;
+  const svg=S("svg",{viewBox:"0 0 "+W+" "+H,class:"chart",role:"group","aria-label":"Two-year crash odds for an industry, base rate against post run-up"});
+  const y=v=>H-B-(v/60)*(H-T-B);
+  const g=S("g",{class:"grid"});
+  [0,20,40,60].forEach(v=>{g.appendChild(S("line",{x1:L,x2:W-R,y1:y(v),y2:y(v)}));
+    svg.appendChild(S("text",{x:L-6,y:y(v)+3.5,"text-anchor":"end"},v+"%"));});
+  svg.appendChild(g);
+  svg.appendChild(S("line",{x1:L,x2:W-R,y1:y(0),y2:y(0),class:"axis"}));
+  const bars=[["any industry, any time",14,"var(--line)"],["after a 100% net-of-market run-up",53,"var(--crit)"]];
+  const bw=88;
+  bars.forEach((b,i)=>{
+    const cx=L+(i+0.5)*((W-L-R)/2);
+    svg.appendChild(S("rect",{x:cx-bw/2,y:y(b[1]),width:bw,height:y(0)-y(b[1]),rx:5,fill:b[2],class:"bar"}));
+    svg.appendChild(S("text",{x:cx,y:y(b[1])-7,class:"lbl","text-anchor":"middle"},b[1]+"%"));
+    const words=i?["after a 100%","net-of-market run-up"]:["any industry,","any time"];
+    words.forEach((w,k)=>svg.appendChild(S("text",{x:cx,y:H-B+15+k*12,"text-anchor":"middle"},w)));
+    const hit=S("rect",{x:cx-bw/2-6,y:T,width:bw+12,height:H-T-B,class:"hit"});
+    bindTip(hit,"<b>40% drawdown within two years</b>"+b[1]+"% probability "+(i?"after the run-up":"as the base rate"));
+    svg.appendChild(hit);
+  });
+  return svg;
+}
+function figReplication(){
+  const w=E("div","claimrows");
+  const rows=[[1,"Anchoring"],[1,"Hindsight bias"],[1,"Overprecision"],[1,"The actuarial advantage"],
+    [0,"Ego depletion"],[0,"Choice overload"],[0,"Universal loss aversion"],[0,"Social priming"]];
+  for(const [ok,name] of rows){
+    const r=E("div","crow");
+    r.appendChild(E("span","cm "+(ok?"y":"n"),ok?"✓":"✗"));
+    r.appendChild(E("span","cw",esc(name)+" <small>"+(ok?"replicated":"did not")+"</small>"));
+    w.appendChild(r);
+  }
+  return w;
+}
+function figCreditMatrix(){
+  const w=E("div","mtx");
+  w.setAttribute("role","group");w.setAttribute("aria-label","What credit does to a boom");
+  w.appendChild(E("div","mh mhl",""));
+  w.appendChild(E("div","mh","credit flat"));
+  w.appendChild(E("div","mh","credit booming"));
+  w.appendChild(E("div","mh mhl","equity sector doubles"));
+  w.appendChild(E("div","mc cool","<b>Mostly blows over.</b> The file's line 7, in as many words."));
+  w.appendChild(E("div","mc ask","Rank it yourself — this cell is retrieval question 3, and its answer is withheld."));
+  w.appendChild(E("div","mh mhl","house prices surge"));
+  w.appendChild(E("div","mc ask","Also question 3. The app will not leak what your protocol withholds."));
+  w.appendChild(E("div","mc hot","<b>The dangerous kind.</b> Credit-financed housing does not blow over."));
+  return w;
+}
+
+/* ---- the shelf ---- */
+const LIB=[
+ {id:"essay",kind:"Essay",pill:"pe",title:"The Delayed Test",mins:26,
+  dek:"Five movements and a coda on the gap between how learning feels and what learning is — the fourteenth reading, the weatherman, the tulip audit. Written from the six files under their own rules, and it ends by auditing itself.",
+  segs:ESSAY.map(m=>({t:m.t,render(host){const p=E("div","prose",m.html);host.appendChild(p);}}))},
+ {id:"making",kind:"Backstage",pill:"pb",title:"Three Voices in a Room",mins:7,
+  dek:"How the essay was argued before it was written: a storyteller who wants you leaning forward, a scholar listing five ways the draft will lie, and the compromise that became its style guide. Then the finished essay grading its own weakest passages.",
+  segs:PANEL_SEGS.map(m=>({t:m.t,render(host){const p=E("div","prose",m.html);host.appendChild(p);}}))},
+ {id:"dl1",kind:"Field note",pill:"pf",title:"The Crossover",mins:5,sec:"Durable learning",go:["today","Open the rota"],
+  dek:"The 2006 experiment the whole program stands on, and the ten lines the first learning file wrote for your own hand.",
+  fig:()=>fig("Recall after five minutes, then after one week","Roediger and Karpicke, 2006 — the file's opening exhibit and its line 1. The rereaders were the most confident group in the study; they finished last.",figCrossover()),
+  intro:"<p>Every instrument in this app descends from one inversion. Reread a passage and you will beat the self-tester on a quiz five minutes later, 81 to 75 — and lose a week later, 61 to 40, having read the passage fourteen times to their three. The file this note distills put that crossover to a panel of adversarial advisors and asked what else survives thirty years of the same scrutiny.</p><p>What survived is short: retrieval, spacing, interleaving, self-explanation, faded worked examples — and the finding that your own confidence is the one gauge you must not read directly. What did not survive fills a graveyard the file names without ceremony in line 10.</p>",
+  after:"<p class=\"tennote\">The rota, the day-10 failure rule, and the predict-then-mark habit on the other screens are these lines, mechanized. The file's Phase 4b questions are in your queue as the five <b>Durable learning</b> retrieval questions.</p>"},
+ {id:"dl2",kind:"Field note",pill:"pf",title:"Half the Advertised Size",mins:6,sec:"Durable learning II",go:["review","Open the review"],
+  dek:"The second panel re-ran the first file's verdicts against the meta-analytic record. The findings held; the sizes moved. These are the moderators that decide whether a technique pays.",
+  fig:()=>fig("What moves the testing effect","Paired effect sizes from the file's lines 1 and 2; the reversal from line 6. Blue is the version of the practice worth having.",figModerators()),
+  intro:"<p>The second learning file is the first one cross-examined. Same questions, harsher panel, and a different kind of answer: not <i>does retrieval work</i> but <i>which retrieval</i>. With feedback nearly doubles without. Tested a day later nearly doubles tested the same day. Free recall doubles recognition. And on word-like material, interleaving does not shrink — it reverses.</p><p>The file's most useful honesty is in its addendum: classroom effects run roughly half of lab effects, and in computation-heavy domains the retrieval edge is small and not established, so spacing and interleaving carry more of the load there. That sentence is why the Review screen tracks your own gap instead of promising you a literature's.</p>",
+  after:"<p class=\"tennote\">Line 10 is the five-second habit the practice-session instrument enforces. The five <b>Durable learning II</b> questions in your queue are this file's, verbatim.</p>"},
+ {id:"jdm",kind:"Field note",pill:"pf",title:"Probability, Date, Score",mins:6,sec:"Judgment under uncertainty",go:["today","Log a prediction"],
+  dek:"The judgment file: what survived of overconfidence, what a checklist actually buys, and why effects shrink as they approach the reader.",
+  fig:()=>fig("The same intervention, measured twice","Line 9: nudge effects averaged 8.7 percentage points in journals and 1.4 when governments ran them at scale. The file's verdict: publication bias explains the gap.",figShrink()),
+  intro:"<p>The judgment file's through-line is subtraction. Overconfidence, taken apart, loses two of its three components and keeps only overprecision: your intervals are too tight even when your self-estimate is not inflated. The claimed superiority of expert intuition loses to any simple mechanical rule by about 10 percent — an edge, not an annihilation, and one that compounds. And the celebrated effects of the field shrink on approach: what is 8.7 points in the journals is 1.4 in production.</p><p>Its constructive half is the reason this app exists: base rates become usable when probabilities arrive as counts out of 1,000 — the frequency drill — and calibration is a property of a person joined to an environment that scores them, which is what the prediction log builds.</p>",
+  after:"<p class=\"tennote\">The file attaches two notes to its ten lines: line 6 rests on a figure whose primary source it had not opened, and line 3's best verified figure is the 37-point format effect the drill screen quotes. Both caveats travel with the lines.</p>"},
+ {id:"jdmp",kind:"Field note",pill:"pf",title:"What Survived",mins:5,sec:"JDM panel",go:["drills","Open decide-twice"],
+  dek:"The panel review's scoreboard: which judgment findings replicated, which collapsed, and the case where the error was in the researchers' own instrument.",
+  fig:()=>fig("The file's line 9, as a scoreboard","Four findings replicated; four celebrated ones did not. The panel's rule for reading it is line 10.",figReplication()),
+  intro:"<p>This file's job was demolition: take the judgment literature's conclusions and let an ecological-rationality critic attack until something falls. The scoreboard is what stayed standing. Its sharpest exhibit is the hot hand — a fallacy taught for thirty years until two economists found the bias was in the canonical measure itself, and correcting the arithmetic reversed the field's conclusion. The subjects were fine. The instrument was not.</p><p>Hence line 10, which is the closest thing the program has to a motto: before diagnosing the world's irrationality, check the measure, especially when the measure is you. The decide-twice instrument is that line pointed at your own consistency.</p>",
+  after:"<p class=\"tennote\">Line 7 — judge decisions from what you wrote before the outcome — is the decision journal's entire design. The five <b>JDM panel</b> questions in your queue are this file's.</p>"},
+ {id:"man",kind:"Field note",pill:"pf",title:"The Red Zone",mins:6,sec:"Manias and capital cycles",go:["today","Log a decision"],
+  dek:"The manias file: price level says almost nothing, credit interacted with prices says something real, and the best instrument in the genre publishes its own failure rates.",
+  fig:()=>fig("Three-year crisis probability, in and out of the zone","Lines 3 and 4: the R-zone conditionals against the unconditional base — with the error rates the file computes from the same paper printed beside them.",figRedZone()),
+  extra(host){
+    const s=E("div","errstrip");
+    s.appendChild(E("span",null,"<b>~55%</b> of R-zone alarms are false"));
+    s.appendChild(E("span",null,"<b>~36%</b> of crises arrive unwarned"));
+    s.appendChild(E("span",null,"both large · neither fatal — line 4"));
+    host.appendChild(s);
+  },
+  intro:"<p>The mania literature is where fluency goes to cost money, and this file's discipline is to refuse every retellable story that fails on the price data — tulips included, line 10. What survives is narrower and stranger: a market that doubled is more likely to double again than to halve; the danger signal is not price but credit growth arriving jointly extreme with it; and the sturdiest warning system in the genre is wrong more often than right, blind to a third of what it watches for, and still lifts three-year odds toward a coin flip.</p><p>The file prints the failure rates in the same breath as the hit rates because its authors do. That habit — the alarm followed by no crisis is the instrument functioning — is the temperament this whole app is trying to install.</p>",
+  after:"<p class=\"tennote\">Line 8 is the analytical-realism note for a portfolio reporting in USD with Canadian holdings: leverage location, not price level, set Canada apart. The five <b>Manias and capital cycles</b> questions are this file's.</p>"},
+ {id:"manp",kind:"Field note",pill:"pf",title:"Credit Decides",mins:6,sec:"Mania panel",go:["today","Write a falsifier"],
+  dek:"The mania panel concedes what the efficient-markets skeptic is owed — averages hold — and keeps the tail: run-ups do not lower expected returns, they raise crash probability. Different claims.",
+  fig:()=>fig("Odds of a 40% drawdown within two years","Line 4: the base rate against the rate after a sector doubles net of the market. The average return is not the thing that moved; the left tail is.",figCrashOdds()),
+  extra(host){
+    host.appendChild(E("p","tencap","What credit does to a boom — line 7"));
+    host.appendChild(figCreditMatrix());
+  },
+  intro:"<p>The final file stages the strongest version of the objection: bubbles are hindsight dressed as history, and averages vindicate the skeptic. The panel concedes the average and answers with the distribution — a doubled sector's expected return is roughly unchanged while its crash probability nearly quadruples, which is why the evidence supports reducing position size and never supports shorting the boom.</p><p>Its second verdict sorts booms by fuel. Equity manias without credit mostly blow over; credit-financed housing does not, and bank equity is the gauge that says which world you are in. Two cells of that matrix are stated in line 7. The other two are deliberately blank above, because ranking all four is retrieval question 3 and your protocol withholds answers until you attempt them.</p>",
+  after:"<p class=\"tennote\">Line 10 closes the program where the essay's Tulip Audit opens it. The five <b>Mania panel</b> questions in your queue are this file's.</p>"}
+];
+LIB.forEach(p=>{if(!p.segs)p.segs=[{t:"",render(){}}];});
+const LIBIX=Object.fromEntries(LIB.map(p=>[p.id,p]));
+
+let libOpen=null,libSeg=0;
+function seenState(id){return ST.seen[id]||null;}
+function libStatus(p){
+  const s=seenState(p.id);
+  if(!s)return{cls:"un",txt:"unread",dot:"○"};
+  if(s.done)return{cls:"read",txt:"read",dot:"●"};
+  return{cls:"part",txt:"part "+((s.seg||0)+1)+" of "+p.segs.length,dot:"◐"};
+}
+function renderLib(){
+  const host=$("#libBody");host.innerHTML="";
+  if(libOpen&&LIBIX[libOpen]){$("#libTag").innerHTML="";renderPiece(host,LIBIX[libOpen]);return;}
+  $("#libTag").innerHTML="Supply for the instruments. Nothing here is scored, nothing counts toward a streak — reading is input, and the other four screens are where it becomes practice.";
+  const groups=[["Essay",["essay"]],["Backstage",["making"]],["Field notes — one per research file",["dl1","dl2","jdm","jdmp","man","manp"]]];
+  for(const [label,ids] of groups){
+    host.appendChild(E("div","sect",esc(label)));
+    const g=E("div","spines");
+    for(const id of ids){
+      const p=LIBIX[id];const st=libStatus(p);
+      const b=E("button","spine");
+      b.appendChild(E("div","sk",'<span class="pill '+p.pill+'">'+esc(p.kind)+'</span><span class="dotp '+st.cls+'" aria-hidden="true">'+st.dot+"</span>"));
+      b.appendChild(E("div","st",esc(p.title)));
+      b.appendChild(E("div","sd",p.dek));
+      b.appendChild(E("div","sm","<span>~"+p.mins+" min</span><span>"+(p.segs.length>1?p.segs.length+" parts":"one sitting")+"</span><span>"+st.txt+"</span>"));
+      b.onclick=()=>{libOpen=p.id;libSeg=(seenState(p.id)&&!seenState(p.id).done)?(seenState(p.id).seg||0):0;renderLib();window.scrollTo({top:0,behavior:"instant"});};
+      g.appendChild(b);
+    }
+    host.appendChild(g);
+  }
+  host.appendChild(E("p","libnote","Provenance. The essay and the panel dialogue are verbatim from the manuscript file. Each field note's numbered lines are verbatim from its file's Phase 4 handwrite summary, keeping that file's evidence grades; the prose above the lines is editorial framing and adds no new numbers. Answers to all thirty retrieval questions remain withheld, here as everywhere: attempt first, export, have them marked."));
+}
+function renderPiece(host,p){
+  const rd=E("div","reader");
+  const top=E("div","rdrtop");
+  const back=E("button","btn sm","❮ Shelf");
+  back.onclick=()=>{libOpen=null;renderLib();window.scrollTo({top:0,behavior:"instant"});};
+  top.appendChild(back);
+  if(p.segs.length>1){
+    const dots=E("div","mvdots");
+    const s=seenState(p.id);
+    p.segs.forEach((sg,i)=>{
+      const d=E("i");
+      if(i===libSeg)d.className="on";
+      else if(s&&(s.done||i<(s.maxSeg??s.seg??0)))d.className="seen";
+      dots.appendChild(d);
+    });
+    top.appendChild(dots);
+  }
+  rd.appendChild(top);
+  rd.appendChild(E("p","rkick",esc(p.kind)+(p.segs.length>1?" · part "+(libSeg+1)+" of "+p.segs.length:"")));
+  rd.appendChild(E("h2","rt",esc(p.segs.length>1?p.segs[libSeg].t:p.title)));
+  if(p.segs.length>1)rd.appendChild(E("p","rsub",esc(p.title)));
+  else if(p.segs[0].t)rd.appendChild(E("p","rsub",esc(p.segs[0].t)));
+  const body=E("div");
+  if(p.intro){
+    body.appendChild(E("div","prose",p.intro));
+    if(p.fig)body.appendChild(p.fig());
+    if(p.extra)p.extra(body);
+    body.appendChild(E("p","tencap","The ten lines, verbatim — handwrite these"));
+    body.appendChild(E("div","tenlines",TEN[p.id].join("\n")));
+    if(p.after)body.appendChild(E("div",null,p.after));
+  }else{
+    p.segs[libSeg].render(body);
+  }
+  rd.appendChild(body);
+  const foot=E("div","rfoot");
+  const s0=seenState(p.id)||{};
+  const rec={seg:libSeg,maxSeg:Math.max(s0.maxSeg||0,libSeg),done:!!s0.done,at:TODAY()};
+  ST.seen[p.id]=rec;save();
+  if(p.segs.length>1){
+    if(libSeg>0){const pv=E("button","btn","❮ Previous");pv.onclick=()=>{libSeg--;renderLib();window.scrollTo({top:0,behavior:"instant"});};foot.appendChild(pv);}
+    foot.appendChild(E("span","spacer"));
+    foot.appendChild(E("span","rprog",(libSeg+1)+" / "+p.segs.length));
+    if(libSeg<p.segs.length-1){
+      const nx=E("button","btn pri","Next ❯");
+      nx.onclick=()=>{libSeg++;renderLib();window.scrollTo({top:0,behavior:"instant"});};
+      foot.appendChild(nx);
+    }else{
+      const dn=E("button","btn pri",rec.done?"Read again":"Finish");
+      dn.onclick=()=>{
+        if(!rec.done){ST.seen[p.id]={...rec,done:true};save();toast("Filed. It stays on the shelf.");libOpen=null;}
+        else{libSeg=0;}
+        renderLib();window.scrollTo({top:0,behavior:"instant"});
+      };
+      foot.appendChild(dn);
+    }
+  }else{
+    foot.appendChild(E("span","spacer"));
+    const dn=E("button","btn pri",s0.done?"Read again":"Done");
+    dn.onclick=()=>{
+      if(!s0.done){ST.seen[p.id]={seg:0,maxSeg:0,done:true,at:TODAY()};save();}
+      libOpen=null;renderLib();window.scrollTo({top:0,behavior:"instant"});
+    };
+    foot.appendChild(dn);
+  }
+  rd.appendChild(foot);
+  if(p.sec){
+    const acts=E("div","acts");
+    const rq=E("button","btn","Attempt one of its five questions");
+    rq.onclick=()=>startRQSection(p.sec);
+    acts.appendChild(rq);
+    if(p.go){
+      const gb=E("button","btn ghost",p.go[1]);
+      gb.onclick=()=>goScreen(p.go[0]);
+      acts.appendChild(gb);
+    }
+    rd.appendChild(acts);
+  }
+  if(p.id==="essay"&&libSeg===p.segs.length-1){
+    rd.appendChild(E("p","prov","The instruments this essay describes are the four screens beside this one: the blank page is the rota, the dated probability is the log, the count out of a thousand is the drill, the falsifier is the journal. The room where it was argued is on the shelf as Three Voices in a Room."));
+  }
+  rd.appendChild(E("p","prov",p.id==="essay"||p.id==="making"
+    ?"Verbatim from the manuscript file, including its evidence grades: second-hand figures are called second-hand inside the sentence, and the discount rule in The Keeper of the Score applies to this essay by its own instruction."
+    :"Source: the "+esc(p.sec)+" file. The numbered lines are its Phase 4, verbatim, with its grades; the answers to its five questions are withheld by design."));
+  host.appendChild(rd);
+}
+function startRQSection(sec){
+  const pool=RQ.filter(r=>r.s===sec);
+  const due=pool.filter(r=>{const s=ST.rq[r.id];return s&&s.next&&isDue(s.next);});
+  const fresh=pool.filter(r=>!ST.rq[r.id]);
+  const r=due[0]||fresh[Math.floor(Math.random()*fresh.length)]||null;
+  if(!r){toast("All five are attempted and scheduled ahead. They will come back through Today.");return;}
+  doRQ(r.id);
+}
+
+/* ==========================================================================
+   NAV + BOOT
+   ========================================================================== */
+let curScreen="today";
+function goScreen(s){
+  curScreen=s;
+  $$(".screen").forEach(x=>x.classList.remove("on"));
+  const el=$("#scr-"+s);el.classList.add("on");
+  $$("#nav button").forEach(b=>b.classList.toggle("on",b.dataset.scr===s));
+  if(s==="log")renderLog();
+  if(s==="drills")renderDrills();
+  if(s==="review"){ST.lastReview=TODAY();save();renderReview();}
+  if(s==="lib")renderLib();
+  if(s==="today")renderToday();
+  window.scrollTo({top:0,behavior:"instant"});
+  el.setAttribute("tabindex","-1");el.focus({preventScroll:true});
+}
+function paintDash(){
+  const q=buildQueue(),debt=debtPreds().length,br=brier(),ss=sessionStats(10);
+  $("#dDue").textContent=q.length;
+  $("#dDebt").textContent=debt;
+  $("#chipDebt").classList.toggle("zero",debt===0);
+  $("#dBrier").textContent=(br==null||resolvedPreds().length<3)?"—":br.toFixed(2);
+  $("#dGap").textContent=ss?((ss.bias>0?"+":"")+ss.bias.toFixed(0)):"—";
+  $("#brandSub").textContent=dparse(TODAY()).toLocaleDateString("en-CA",{weekday:"short",month:"short",day:"numeric"});
+  const nb=$$("#nav button").find(b=>b.dataset.scr==="today");
+  if(nb){
+    let dot=nb.querySelector(".nb");
+    const n=q.length;
+    if(n&&!dot){dot=E("span","nb");nb.appendChild(dot);}
+    if(dot){dot.textContent=n;dot.hidden=!n;}
+  }
+}
+function paintAll(){
+  paintDash();
+  if(curScreen==="today")renderToday();
+  else if(curScreen==="log")renderLog();
+  else if(curScreen==="review")renderReview();
+  else if(curScreen==="drills"&&!$("#drillBody"))renderDrills();
+  else if(curScreen==="lib")renderLib();
+}
+$$("#nav button").forEach(b=>b.onclick=()=>goScreen(b.dataset.scr));
+$("#homeBtn").onclick=()=>goScreen("today");
+$("#thmBtn").onclick=()=>{
+  const r=D.documentElement,cur=r.dataset.theme||"auto";
+  const nxt=cur==="auto"?"dark":cur==="dark"?"light":"";
+  if(nxt)r.dataset.theme=nxt;else delete r.dataset.theme;
+  ST.theme=nxt;save();
+};
+/* ---- day rollover: a daily app that sleeps past midnight must wake to the new day ---- */
+let dayShown=TODAY();
+function dayCheck(){if(TODAY()!==dayShown){dayShown=TODAY();paintAll();}}
+D.addEventListener("visibilitychange",()=>{if(!D.hidden)dayCheck();});
+addEventListener("focus",dayCheck);
+setInterval(dayCheck,60000);
+if("serviceWorker" in navigator&&location.protocol.startsWith("http")){
+  addEventListener("load",()=>{navigator.serviceWorker.register("./sw.js").catch(()=>{});});
+}
+paintDash();
+renderToday();
+
+</script>
+
+
+<a id="__rb-pill" href="research.html">&#8592; Research</a>
+<script>
+(function(){
+  var p=document.getElementById('__rb-pill'); if(!p) return;
+  var t=false;
+  function run(){ t=false;
+    p.classList.toggle('__on',(window.scrollY||document.documentElement.scrollTop)>420); }
+  function q(){ if(!t){ t=true; requestAnimationFrame(run); } }
+  addEventListener('scroll',q,{passive:true}); run();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,1339 @@
+<!DOCTYPE html>
+<html lang="en-CA">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Not Significant — An essay on the accounting of harm</title>
+<meta name="description" content="When a firm harms someone who does not trade with it, the share price moves 0.24 percent. Not significant. An essay on standing, externality, and the people who decide which losses count.">
+<meta name="color-scheme" content="light dark">
+
+<link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/inter-ui/4.1.1/variable/InterVariable.woff2" as="font" type="font/woff2" crossorigin>
+
+<style>
+@font-face{
+  font-family:"InterVar";
+  font-style:normal; font-weight:100 900; font-display:swap;
+  src:url("https://cdnjs.cloudflare.com/ajax/libs/inter-ui/4.1.1/variable/InterVariable.woff2") format("woff2");
+}
+
+/* ==================================================================
+   TOKENS.
+   Colour is the validated categorical/diverging set: blue is the
+   priced register, red is the harm, and the neutral ink carries
+   everything the ledger declines to write down. Nothing here is
+   eyeballed; the hexes are the validated steps for each surface.
+   ================================================================== */
+.viz-root{
+  color-scheme:light;
+  --paper:        #fbfaf7;
+  --surface-1:    #fcfcfb;
+  --text-primary: #14110c;
+  --text-secondary:#54514a;
+  --text-muted:   #8a8780;
+  --gridline:     #e4e1d8;
+  --baseline:     #c4c1b6;
+
+  --priced:   #2a78d6;   /* slot 1 blue — the second-party register */
+  --harm:     #e34948;   /* slot 8 red  — measured damage */
+  --public:   #1baf7a;   /* slot 3 aqua — public investment, §X */
+  --counted:  #14110c;   /* solid ink   — inside the boundary */
+
+  --rule-strong:#14110c;
+}
+@media (prefers-color-scheme:dark){
+  :root:where(:not([data-theme="light"])) .viz-root{
+    color-scheme:dark;
+    --paper:#0d0d0c; --surface-1:#1a1a19;
+    --text-primary:#fff; --text-secondary:#c3c2b7; --text-muted:#898781;
+    --gridline:#2c2c2a; --baseline:#383835;
+    --priced:#3987e5; --harm:#e66767; --public:#199e70; --counted:#fff;
+    --rule-strong:#fff;
+  }
+}
+:root[data-theme="dark"] .viz-root{
+  color-scheme:dark;
+  --paper:#0d0d0c; --surface-1:#1a1a19;
+  --text-primary:#fff; --text-secondary:#c3c2b7; --text-muted:#898781;
+  --gridline:#2c2c2a; --baseline:#383835;
+  --priced:#3987e5; --harm:#e66767; --public:#199e70; --counted:#fff;
+  --rule-strong:#fff;
+}
+
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth;scroll-padding-top:4.5rem}
+body{
+  margin:0; background:var(--paper); color:var(--text-primary);
+  /* Prose is set in a serif because this is an essay and reads as one.
+     Every chart label below is Inter: the drawing keeps the UI sans that
+     the palette specifies, the argument does not. */
+  font-family:"Iowan Old Style","Charter","Source Serif 4",Georgia,"Palatino Linotype","Book Antiqua",serif;
+  font-size:1.125rem; line-height:1.66;
+}
+.ui{font-family:"InterVar",ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+.wrap{max-width:74rem;margin:0 auto;padding:0 1.5rem 8rem}
+.col{max-width:36rem}
+p{margin:0 0 1.15rem;max-width:36rem}
+h1,h2,h3{line-height:1.15;margin:0;font-weight:600}
+a{color:inherit}
+strong{font-weight:650}
+em{font-style:italic}
+.sr-only{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip-path:inset(50%);white-space:nowrap;border:0}
+.num{font-variant-numeric:tabular-nums}
+
+/* ---------------------------- nav ---------------------------- */
+nav.rail{
+  position:sticky;top:0;z-index:20;background:var(--paper);
+  border-bottom:1px solid var(--gridline);
+  padding:.55rem 0; margin-bottom:0;
+}
+.rail-in{max-width:74rem;margin:0 auto;padding:0 1.5rem;display:flex;gap:1rem;align-items:center;justify-content:space-between}
+.rail-list{display:flex;gap:.1rem;list-style:none;margin:0;padding:0;overflow-x:auto;scrollbar-width:none}
+.rail-list::-webkit-scrollbar{display:none}
+.rail-list a{
+  display:block;padding:.28rem .5rem;font-size:.78rem;font-weight:600;
+  letter-spacing:.04em;color:var(--text-muted);text-decoration:none;
+  border-bottom:2px solid transparent;white-space:nowrap
+}
+.rail-list a:hover{color:var(--text-primary)}
+.rail-list a.here{color:var(--text-primary);border-bottom-color:var(--rule-strong)}
+.rail-list a:focus-visible{outline:2px solid var(--text-primary);outline-offset:2px}
+.themebtn{
+  font:inherit;font-size:.78rem;font-weight:600;color:var(--text-secondary);
+  background:none;border:1px solid var(--baseline);padding:.24rem .6rem;cursor:pointer;
+  white-space:nowrap;border-radius:2px
+}
+.themebtn:hover{color:var(--text-primary);border-color:var(--text-secondary)}
+.themebtn:focus-visible{outline:2px solid var(--text-primary);outline-offset:2px}
+.progress{position:absolute;left:0;bottom:-1px;height:2px;background:var(--rule-strong);width:0}
+
+/* -------------------------- masthead -------------------------- */
+header.mast{padding:5rem 0 2rem;border-bottom:1px solid var(--gridline);margin-bottom:3.5rem}
+.kicker{font-size:.76rem;letter-spacing:.11em;text-transform:uppercase;color:var(--text-secondary);margin:0 0 1.1rem;font-weight:650}
+h1{font-size:clamp(2.6rem,8vw,5.2rem);letter-spacing:-.035em;font-weight:640;max-width:14ch;line-height:1.02}
+.sub{font-size:clamp(1.05rem,2.4vw,1.3rem);color:var(--text-secondary);margin:1rem 0 0;max-width:34rem;font-style:italic}
+.lede{font-size:1.24rem;margin:2.5rem 0 0;max-width:34rem}
+.lede b{font-weight:640}
+.provenance{font-size:.86rem;color:var(--text-secondary);margin-top:2rem;max-width:34rem;padding-top:1rem;border-top:1px solid var(--gridline)}
+
+/* --------------------------- sections --------------------------- */
+section.part{padding:3.5rem 0 0;scroll-margin-top:4.5rem}
+.part-head{display:grid;grid-template-columns:4.5rem minmax(0,1fr);gap:0 1.25rem;margin-bottom:2rem;align-items:start}
+.roman{
+  font-size:1.1rem;font-weight:600;color:var(--text-muted);margin:0;
+  padding-top:.42rem;letter-spacing:.02em
+}
+h2{grid-column:2;font-size:clamp(1.6rem,3.6vw,2.3rem);letter-spacing:-.022em;max-width:22ch;font-weight:620}
+.part-body{display:grid;grid-template-columns:4.5rem minmax(0,1fr);gap:0 1.25rem}
+.part-body > *{grid-column:2}
+hr.rule{border:0;border-top:1px solid var(--gridline);margin:3.5rem 0 0}
+
+/* the sentence that carries the section. Set apart, never a pull-quote
+   of something already said — always the load-bearing line. */
+.turn{
+  grid-column:2;font-size:clamp(1.3rem,2.8vw,1.65rem);line-height:1.34;
+  letter-spacing:-.015em;margin:2rem 0 2rem;max-width:26ch;font-weight:520
+}
+.turn.wide{max-width:34ch}
+
+/* ---------------------------- figures ---------------------------- */
+figure.fig{margin:2.75rem 0;padding:0;grid-column:1/-1;position:relative}
+.fig-num{
+  font-family:"InterVar",sans-serif;font-size:.72rem;font-weight:700;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--text-muted);margin:0 0 .45rem
+}
+.fig-title{
+  font-family:"InterVar",sans-serif;font-size:1.06rem;font-weight:650;letter-spacing:-.012em;
+  margin:0 0 .4rem;max-width:38ch;line-height:1.3
+}
+.fig-look{
+  font-family:"InterVar",sans-serif;font-size:.9rem;color:var(--text-secondary);
+  margin:0 0 1.5rem;max-width:46ch;line-height:1.5
+}
+figcaption{
+  font-family:"InterVar",sans-serif;font-size:.82rem;color:var(--text-secondary);
+  margin-top:1.1rem;max-width:44rem;line-height:1.55
+}
+figcaption b{color:var(--text-primary);font-weight:640}
+.fig-body{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,15rem);gap:2rem;align-items:start}
+@media (max-width:60rem){ .fig-body{grid-template-columns:minmax(0,1fr)} }
+/* The drawing is never rescaled below the width its labels need. Past that
+   point the figure pans inside its own box rather than shrinking 11px type
+   to 6px — the one contained horizontal scroll in the piece. */
+.fig-scroll{overflow-x:auto;overscroll-behavior-x:contain;padding-bottom:.4rem}
+svg.draw{display:block;width:100%;height:auto;overflow:hidden;min-width:34rem}
+.side{font-family:"InterVar",sans-serif;font-size:.84rem;line-height:1.5;color:var(--text-secondary)}
+.side p{max-width:none;margin:0 0 .7rem}
+.side b{color:var(--text-primary);font-weight:650;display:block}
+.side hr{border:0;border-top:1px solid var(--gridline);margin:.9rem 0}
+
+/* chart ink */
+.tk{fill:var(--text-muted);font-size:11px;font-family:"InterVar",sans-serif;font-variant-numeric:tabular-nums}
+.tk-lab{fill:var(--text-secondary);font-size:12px;font-family:"InterVar",sans-serif}
+.tk-val{fill:var(--text-primary);font-size:13px;font-weight:650;font-family:"InterVar",sans-serif;font-variant-numeric:tabular-nums}
+.tk-big{fill:var(--text-primary);font-size:22px;font-weight:700;font-family:"InterVar",sans-serif;letter-spacing:-.02em}
+.gridln{stroke:var(--gridline);stroke-width:1}
+.axisln{stroke:var(--baseline);stroke-width:1}
+.zeroln{stroke:var(--rule-strong);stroke-width:1.5}
+.m-priced{fill:var(--priced)}
+.m-harm{fill:var(--harm)}
+.m-public{fill:var(--public)}
+.m-ink{fill:var(--text-secondary)}
+.m-solid{fill:var(--counted)}
+/* an absence, drawn at the size the quantity would occupy if it existed */
+.aperture{fill:none;stroke:var(--text-primary);stroke-width:1.5;stroke-dasharray:none}
+.leader{stroke:var(--text-secondary);stroke-width:1;fill:none}
+
+/* ------------------- the mark contract, declared once ------------------- */
+.contract{
+  display:grid;grid-template-columns:auto minmax(0,1fr);gap:.55rem 1rem;align-items:start;
+  font-family:"InterVar",sans-serif;font-size:.9rem;max-width:42rem;margin:0
+}
+.contract dt{display:flex;gap:.5rem;align-items:center;font-weight:650;white-space:nowrap}
+.contract dd{margin:0 0 .35rem;color:var(--text-secondary)}
+.chip{width:15px;height:15px;flex:none;border-radius:2px}
+.chip.solid{background:var(--counted)}
+.chip.open{background:none;border:2px solid var(--text-primary)}
+.chip.blue{background:var(--priced)}
+.chip.red{background:var(--harm)}
+
+/* ----------------------------- notes ----------------------------- */
+.note{
+  border-left:3px solid var(--baseline);padding:.15rem 0 .15rem 1.15rem;
+  margin:0 0 1.6rem;max-width:34rem;font-size:1rem
+}
+.note h3{
+  font-family:"InterVar",sans-serif;font-size:.76rem;letter-spacing:.09em;
+  text-transform:uppercase;color:var(--text-secondary);margin:0 0 .45rem;font-weight:700
+}
+.note p:last-child{margin-bottom:0}
+.note p{max-width:none}
+
+/* a verbatim quotation from a primary document */
+.verbatim{
+  font-family:"InterVar",sans-serif;font-size:.98rem;line-height:1.5;
+  border-top:1px solid var(--rule-strong);border-bottom:1px solid var(--gridline);
+  padding:1rem 0;margin:0 0 1.6rem;max-width:34rem
+}
+.verbatim q{quotes:"\201C" "\201D";font-style:normal}
+.verbatim cite{display:block;margin-top:.6rem;font-size:.8rem;font-style:normal;color:var(--text-secondary)}
+
+/* ----------------------------- tables ----------------------------- */
+details.tv{margin-top:1.25rem;border-top:1px solid var(--gridline);padding-top:.6rem;max-width:52rem}
+details.tv summary{
+  font-family:"InterVar",sans-serif;font-size:.82rem;font-weight:640;cursor:pointer;
+  padding:.2rem 0;color:var(--text-secondary);list-style:none;display:flex;gap:.45rem;align-items:center
+}
+details.tv summary::-webkit-details-marker{display:none}
+details.tv summary::before{content:"+";font-weight:700;width:.8em;display:inline-block}
+details.tv[open] summary::before{content:"\2212"}
+details.tv summary:hover{color:var(--text-primary)}
+details.tv summary:focus-visible{outline:2px solid var(--text-primary);outline-offset:3px}
+.tw{overflow-x:auto;margin-top:.7rem}
+table{border-collapse:collapse;font-family:"InterVar",sans-serif;font-size:.84rem;min-width:100%}
+caption{text-align:left;font-size:.82rem;color:var(--text-secondary);padding-bottom:.5rem}
+th,td{text-align:left;vertical-align:top;padding:.42rem .8rem .42rem 0;border-bottom:1px solid var(--gridline)}
+th{font-weight:660;white-space:nowrap;color:var(--text-primary)}
+td.n{font-variant-numeric:tabular-nums;white-space:nowrap}
+
+/* --------------------------- source spine --------------------------- */
+.spine{
+  font-family:"InterVar",sans-serif;font-size:.84rem;line-height:1.6;
+  color:var(--text-secondary);max-width:50rem
+}
+.spine b{color:var(--text-primary)}
+.spine dt{font-weight:700;color:var(--text-primary);margin-top:.8rem}
+.spine dd{margin:.15rem 0 0}
+
+/* ---------------------------- motion ---------------------------- */
+.js .rise{opacity:0;transform:translateY(12px);transition:opacity .55s ease,transform .55s ease}
+.js .rise.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){
+  .js .rise{opacity:1;transform:none;transition:none}
+  html{scroll-behavior:auto}
+}
+
+/* --------------------------- responsive --------------------------- */
+@media (max-width:46rem){
+  body{font-size:1.06rem}
+  .wrap{padding-left:1.1rem;padding-right:1.1rem}
+  .part-head,.part-body{grid-template-columns:minmax(0,1fr)}
+  .part-head > *,.part-body > *{grid-column:1}
+  .roman{padding-top:0;margin-bottom:.3rem;font-size:.9rem}
+  header.mast{padding-top:2.75rem}
+  .fig-body{gap:1.25rem}
+}
+
+/* ----------------------------- print ----------------------------- */
+@media print{
+  .viz-root{--paper:#fff;--surface-1:#fff;--text-primary:#000;--text-secondary:#333;
+            --text-muted:#666;--gridline:#ccc;--baseline:#999;--rule-strong:#000}
+  nav.rail{display:none}
+  body{font-size:10.5pt}
+  .wrap{max-width:none;padding:0}
+  .js .rise{opacity:1!important;transform:none!important}
+  figure.fig,section.part{break-inside:avoid}
+  details.tv[open] .tw{overflow:visible}
+  details.tv table{font-size:8pt;table-layout:fixed;width:100%}
+  .themebtn{display:none}
+}
+</style>
+</head>
+
+<body class="viz-root">
+<!-- injected by the site build: a way back into the site from a standalone
+     piece. A static bar at the top, so it is visible on arrival, and a pill
+     that appears once you have scrolled past it, so there is always a way out.
+     Self-contained, because these pages do not load the site stylesheet. -->
+<style id="__rb-style">
+#__rb{
+  box-sizing:border-box;display:flex;flex-wrap:wrap;align-items:center;gap:.6rem 1.25rem;
+  padding:.6rem clamp(1rem,4vw,2rem);border-bottom:1px solid #ddd9cf;background:#faf9f6;
+  font:500 13px/1.35 InterVar,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  color:#55524a;
+}
+#__rb a{color:#14509b;text-decoration:none;display:inline-flex;align-items:center;gap:.4rem}
+#__rb a:hover{text-decoration:underline}
+#__rb .__rb-home{font-weight:640;color:#16150f}
+#__rb .__rb-home i{font-style:normal;font-weight:400;color:#6f6c63}
+#__rb .__rb-right{margin-left:auto;display:flex;gap:1.1rem;flex-wrap:wrap}
+#__rb .__mark{
+  display:inline-grid;place-items:center;width:1.2rem;height:1.2rem;flex:none;
+  background:#16150f;color:#faf9f6;font-size:.72rem;font-weight:700;
+}
+#__rb-pill{
+  position:fixed;left:14px;bottom:14px;z-index:2147483000;
+  display:inline-flex;align-items:center;gap:.45rem;padding:.58rem .9rem;
+  background:rgba(22,21,15,.93);color:#faf9f6;text-decoration:none;border-radius:99px;
+  font:600 12.5px/1 InterVar,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  border:1px solid rgba(255,255,255,.16);box-shadow:0 6px 22px rgba(0,0,0,.28);
+  opacity:0;transform:translateY(6px);pointer-events:none;
+  transition:opacity .2s ease,transform .2s ease;
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+}
+#__rb-pill.__on{opacity:1;transform:none;pointer-events:auto}
+#__rb-pill:hover{background:#16150f;color:#fff}
+@media (prefers-color-scheme:dark){
+  #__rb{background:#131310;border-bottom-color:#2c2b24;color:#c0bcb1}
+  #__rb .__rb-home{color:#f7f5ef}
+  #__rb .__rb-home i{color:#948f85}
+  #__rb a{color:#85adea}
+  #__rb .__mark{background:#f7f5ef;color:#131310}
+  #__rb-pill{background:rgba(247,245,239,.95);color:#131310;border-color:rgba(0,0,0,.2)}
+  #__rb-pill:hover{background:#fff;color:#000}
+}
+@media (prefers-reduced-motion:reduce){#__rb-pill{transition:none}}
+@media print{#__rb,#__rb-pill{display:none !important}}
+</style>
+<div id="__rb">
+  <a class="__rb-home" href="index.html"><span class="__mark" aria-hidden="true">A</span>Alex Rajcoomar <i>portfolio</i></a>
+  <span class="__rb-right"><a href="research.html">Research</a><a href="library.html">All work</a></span>
+</div>
+
+
+<nav class="rail ui" aria-label="Sections">
+  <div class="rail-in">
+    <ul class="rail-list" id="navlist">
+      <li><a href="#s1">I · Silence</a></li>
+      <li><a href="#s2">II · Price</a></li>
+      <li><a href="#s3">III · Invoice</a></li>
+      <li><a href="#s4">IV · Tomorrow</a></li>
+      <li><a href="#s5">V · Machinery</a></li>
+      <li><a href="#s6">VI · Five Years</a></li>
+      <li><a href="#s7">VII · Standing</a></li>
+      <li><a href="#s8">VIII · Fifteen Cents</a></li>
+      <li><a href="#s9">IX · Counted</a></li>
+      <li><a href="#s10">X · And Yet</a></li>
+      <li><a href="#s11">XI · The Column</a></li>
+    </ul>
+    <button class="themebtn" type="button" id="themebtn" aria-pressed="false">Dark</button>
+  </div>
+  <div class="progress" id="progress" aria-hidden="true"></div>
+</nav>
+
+<div class="wrap">
+
+<header class="mast">
+  <p class="kicker ui">An essay &middot; the accounting of harm</p>
+  <h1>Not Significant</h1>
+  <p class="sub">On externality, standing, and the people who decide which losses count.</p>
+  <p class="lede">When a firm is punished for injuring someone who does not trade with it, the share price moves <b>0.24 percent</b>. Not significant &mdash; the technical phrase for <i>inside the noise</i>. When a firm lies to the people who bought its stock, reputation takes <b>more than seven and a half times</b> what the entire legal system does. The market is not indifferent to wrongdoing. It has an ear for one register and is deaf in the other.</p>
+  <p class="provenance ui">Every figure and quotation traces to an audited research dossier compiled 6&nbsp;August&nbsp;2026. No new research; no invented facts, names, quotations or events. Framing is mine; the specifics are not. Full source spine at the foot of the page.</p>
+</header>
+
+<!-- ============================ THE CONTRACT ============================ -->
+<section class="part" id="contract" style="padding-top:0">
+  <div class="part-head">
+    <p class="roman ui">&mdash;</p>
+    <h2>How to read the marks</h2>
+  </div>
+  <div class="part-body">
+    <p class="col">Every figure below obeys one rule, declared here and never varied: <strong>the boundary of the ledger is drawn as a boundary.</strong> Quantities the accounting system records are solid. Quantities that are real but appear on no invoice are drawn open, at the identical size they would occupy if anyone had written them down.</p>
+    <dl class="contract" style="margin-bottom:1.5rem">
+      <dt><span class="chip solid"></span> Counted</dt>
+      <dd>A quantity that enters someone&rsquo;s books. It has a payer, a payee, and standing.</dd>
+      <dt><span class="chip open"></span> Uncounted</dt>
+      <dd>A real quantity with no invoice. Drawn open at full size &mdash; never faded, never dropped. Fading it would concede the argument.</dd>
+      <dt><span class="chip blue"></span> Priced register</dt>
+      <dd>Measurements of what markets and courts <em>do</em> respond to: second-party wrongs, penalties, valuations.</dd>
+      <dt><span class="chip red"></span> Measured harm</dt>
+      <dd>Damage that has been quantified by researchers, whether or not it was ever charged to anyone.</dd>
+    </dl>
+    <p class="col">Where two quantities were measured in different units, they are <strong>not</strong> forced onto one axis. Several figures below are deliberately two panels rather than one chart, for that reason and stated each time.</p>
+  </div>
+</section>
+
+<hr class="rule">
+
+<!-- ================================ I ================================ -->
+<section class="part" id="s1">
+  <div class="part-head">
+    <p class="roman ui">I</p>
+    <h2>The Silence</h2>
+  </div>
+  <div class="part-body">
+    <p>There is a finding in this material I cannot put down, and it is not one of the large numbers.</p>
+    <p>When a firm is punished for a wrong done to someone who does not trade with it &mdash; a neighbour, a watershed, a person standing downwind &mdash; the share price moves by 0.24 percent. Not significant. Which is the technical way of saying: inside the noise. Inside the ordinary tremor of a Tuesday. The market has been informed that a company injured a stranger, and the market, listening with all its formidable attention, hears nothing.</p>
+    <p>Now hold that against its opposite. When a firm lies to the people who bought its stock, the reputational damage runs to more than seven and a half times everything the legal and regulatory system takes from it. Break the dollar down: for every dollar of value a company inflates by deception, it loses about thirty-six cents to penalties and two dollars seventy-one to reputation. The market is not indifferent to wrongdoing. It is exquisitely, expensively, almost vengefully sensitive to it.</p>
+
+    <!-- ---------------------------- F1 ---------------------------- -->
+    <figure class="fig rise" id="f1">
+      <p class="fig-num">Figure 1</p>
+      <p class="fig-title">Two wrongs, two registers, two different instruments</p>
+      <p class="fig-look">Left: what the market takes from a firm that deceived its own investors, per dollar of value inflated. Right: how the share price responds when the injured party never traded with the firm. <b>These are two different measurements and they are not plotted on one axis</b> &mdash; the point is the contrast in what each instrument was able to detect, not a shared quantity.</p>
+      <div class="fig-body">
+        <div class="fig-scroll">
+        <svg class="draw" viewBox="0 0 620 300" role="img" aria-labelledby="f1-t" aria-describedby="f1-d">
+          <title id="f1-t">Two panels comparing market response to second-party and third-party corporate wrongs</title>
+          <desc id="f1-d">Left panel: for each dollar of value inflated by misrepresentation, the firm loses 36 cents to legal and regulatory penalties and 2 dollars 71 cents to reputational loss, totalling 3 dollars 7 cents — a reputational penalty 7.53 times the legal one. Right panel: the abnormal share price reaction to a third-party wrong is plus 0.24 percent, statistically indistinguishable from zero, shown against a scale reaching 3 percent.</desc>
+
+          <!-- ---- PANEL A ---- -->
+          <text class="tk-lab" x="0" y="12" font-weight="650">Second-party wrong</text>
+          <text class="tk" x="0" y="28">Misrepresentation &middot; loss per $1 of value inflated</text>
+
+          <!-- scale: $0 at x=0, $3.20 at x=300  → 93.75px per dollar -->
+          <g>
+            <!-- gridlines -->
+            <line class="gridln" x1="0" y1="44" x2="0" y2="150"/>
+            <line class="gridln" x1="93.75" y1="44" x2="93.75" y2="150"/>
+            <line class="gridln" x1="187.5" y1="44" x2="187.5" y2="150"/>
+            <line class="gridln" x1="281.25" y1="44" x2="281.25" y2="150"/>
+            <text class="tk" x="0" y="164" text-anchor="middle">$0</text>
+            <text class="tk" x="93.75" y="164" text-anchor="middle">$1</text>
+            <text class="tk" x="187.5" y="164" text-anchor="middle">$2</text>
+            <text class="tk" x="281.25" y="164" text-anchor="middle">$3</text>
+
+            <!-- legal 0.36 → 33.75px -->
+            <rect class="m-solid" x="0" y="58" width="33.75" height="30" rx="3"/>
+            <!-- 2px surface gap between stacked segments -->
+            <rect class="m-priced" x="35.75" y="58" width="254.06" height="30" rx="3"/>
+
+            <!-- direct labels -->
+            <line class="leader" x1="16.9" y1="94" x2="16.9" y2="108"/>
+            <text class="tk-val" x="16.9" y="122" text-anchor="middle">$0.36</text>
+            <text class="tk" x="16.9" y="136" text-anchor="middle">legal</text>
+
+            <line class="leader" x1="162" y1="94" x2="162" y2="108"/>
+            <text class="tk-val" x="162" y="122" text-anchor="middle">$2.71</text>
+            <text class="tk" x="162" y="136" text-anchor="middle">reputational</text>
+
+            <text class="tk-lab" x="0" y="192">Reputation takes</text>
+            <text class="tk-big" x="0" y="218">7.53&times;</text>
+            <text class="tk" x="0" y="236">what law and regulators take</text>
+          </g>
+
+          <!-- divider between panels: these are separate instruments -->
+          <line class="gridln" x1="345" y1="0" x2="345" y2="270"/>
+
+          <!-- ---- PANEL B ---- -->
+          <g transform="translate(380,0)">
+            <text class="tk-lab" x="0" y="12" font-weight="650">Third-party wrong</text>
+            <text class="tk" x="0" y="28">Abnormal share-price reaction</text>
+
+            <!-- scale: 0% at x=0, 3% at x=210 → 70px per percentage point -->
+            <line class="gridln" x1="70" y1="44" x2="70" y2="150"/>
+            <line class="gridln" x1="140" y1="44" x2="140" y2="150"/>
+            <line class="gridln" x1="210" y1="44" x2="210" y2="150"/>
+            <text class="tk" x="0" y="164" text-anchor="middle">0%</text>
+            <text class="tk" x="70" y="164" text-anchor="middle">1%</text>
+            <text class="tk" x="140" y="164" text-anchor="middle">2%</text>
+            <text class="tk" x="210" y="164" text-anchor="middle">3%</text>
+
+            <!-- zero line -->
+            <line class="zeroln" x1="0" y1="44" x2="0" y2="150"/>
+
+            <!-- the measured effect: 0.24% → 16.8px. Drawn at true width. -->
+            <rect class="m-harm" x="0" y="58" width="16.8" height="30" rx="3"/>
+
+            <line class="leader" x1="16.8" y1="73" x2="52" y2="73"/>
+            <text class="tk-val" x="58" y="70">+0.24%</text>
+            <text class="tk" x="58" y="85">not significant</text>
+
+            <text class="tk-lab" x="0" y="192">The market was told a firm</text>
+            <text class="tk-lab" x="0" y="209">injured a stranger, and</text>
+            <text class="tk-big" x="0" y="238">heard nothing.</text>
+          </g>
+        </svg>
+        </div>
+        <div class="side">
+          <p><b>Second-party</b>Karpoff, Lee &amp; Martin, <i>JFQA</i> 2008. For each $1 of value inflated by misrepresentation: $0.36 in legal and regulatory penalties, $2.71 in reputational loss. Ratio 7.53&times;.</p>
+          <hr>
+          <p><b>Third-party</b>Armour, Mayer &amp; Polo. Wrongs against parties who do not transact with the firm produce an abnormal return of +0.24%, not statistically distinguishable from zero.</p>
+          <hr>
+          <p><b>Why two panels</b>One measures dollars of loss per dollar of gain; the other measures a percentage price move on an event date. A single axis would imply a comparison the underlying studies do not support. The asymmetry is real; the shared scale would not be.</p>
+        </div>
+      </div>
+      <details class="tv">
+        <summary>Table view, Figure 1</summary>
+        <div class="tw">
+        <table>
+          <caption>Figure 1. Every mark, its value, and its source.</caption>
+          <thead><tr><th scope="col">Mark</th><th scope="col">Quantity</th><th scope="col">Value</th><th scope="col">Source</th></tr></thead>
+          <tbody>
+            <tr><td>Solid ink segment</td><td>Legal and regulatory penalty per $1 inflated</td><td class="n">$0.36</td><td>Karpoff, Lee &amp; Martin, <i>JFQA</i> 2008</td></tr>
+            <tr><td>Blue segment</td><td>Reputational loss per $1 inflated</td><td class="n">$2.71</td><td>Karpoff, Lee &amp; Martin, <i>JFQA</i> 2008</td></tr>
+            <tr><td>Derived ratio</td><td>Reputational as a multiple of legal</td><td class="n">7.53&times;</td><td>2.71 &divide; 0.36; the essay states &ldquo;more than seven and a half times&rdquo;</td></tr>
+            <tr><td>Red segment</td><td>Abnormal return, third-party wrong</td><td class="n">+0.24%</td><td>Armour, Mayer &amp; Polo &mdash; reported not significant</td></tr>
+          </tbody>
+        </table>
+        </div>
+      </details>
+    </figure>
+
+    <p>It simply has an ear for one register and is deaf in the other.</p>
+    <p>This is not a scandal. It is a specification. A price is a tally of the people who showed up to bargain. It is the most efficient information-processing device our species has built, and its genius is precisely its boundary: it knows what someone was willing to pay, and what someone else was willing to refuse, and nothing whatsoever about anyone who was not in the room.</p>
+    <p class="turn">The person downwind was not in the room. She was never invited. Her lungs are not a counterparty.</p>
+    <p>Everything else in this essay follows from that one sentence.</p>
+  </div>
+</section>
+
+<hr class="rule">
+
+<!-- ================================ II ================================ -->
+<section class="part" id="s2">
+  <div class="part-head">
+    <p class="roman ui">II</p>
+    <h2>What a Price Knows</h2>
+  </div>
+  <div class="part-body">
+    <p>Begin small, with the most elegant formula in microeconomics.</p>
+    <p>The Lerner index says that a firm&rsquo;s markup over its own cost is the reciprocal of how easily you can walk away: <strong>L = (P &minus; MC)/P = 1/|&epsilon;|</strong>. If your demand elasticity is four &mdash; if a ten percent price rise sends four in ten of you elsewhere &mdash; the firm can hold a quarter of the price as margin. Marginal cost of seventy-five dollars becomes a price of a hundred.</p>
+    <p>Read it the other way and it stops being algebra. <em>Every price you have ever paid contains an estimate of how hard it would have been for you to leave.</em> Brand, loyalty programmes, switching costs, the ecosystem that makes your photographs hostage to a login &mdash; these are not marketing. They are capital expenditure on your immobility. A firm that lowers your elasticity has, in the most literal accounting sense, bought something.</p>
+    <p class="turn wide">Which raises the hinge of the entire field: when a company spends money making you unwilling to leave, is that a cost of production, or is it the product?</p>
+
+    <!-- ---------------------------- F2 ---------------------------- -->
+    <figure class="fig rise" id="f2">
+      <p class="fig-num">Figure 2</p>
+      <p class="fig-title">One database, four decades, two economies</p>
+      <p class="fig-look">The same firms and the same years, measured twice. The only difference between the two paths is which accounting line is treated as a variable input. <b>Nothing about the world changes between these two lines.</b> A classification does.</p>
+      <div class="fig-body">
+        <div class="fig-scroll">
+        <svg class="draw" viewBox="0 0 620 300" role="img" aria-labelledby="f2-t" aria-describedby="f2-d">
+          <title id="f2-t">Divergent markup estimates depending on cost classification</title>
+          <desc id="f2-d">Counting only cost of goods sold as the variable input, average US markups rise from 21 percent above marginal cost in 1980 to 61 percent in 2016. Counting selling and administrative expense as a variable input too, the increase largely disappears. Two subsequent studies question whether either path can be identified at all.</desc>
+
+          <!-- y: 0% at 235, 70% at 40 → 2.786 px per pp -->
+          <g>
+            <line class="gridln" x1="60" y1="235" x2="470" y2="235"/>
+            <line class="gridln" x1="60" y1="179.3" x2="470" y2="179.3"/>
+            <line class="gridln" x1="60" y1="123.6" x2="470" y2="123.6"/>
+            <line class="gridln" x1="60" y1="67.9" x2="470" y2="67.9"/>
+            <text class="tk" x="52" y="239" text-anchor="end">0%</text>
+            <text class="tk" x="52" y="183.3" text-anchor="end">20%</text>
+            <text class="tk" x="52" y="127.6" text-anchor="end">40%</text>
+            <text class="tk" x="52" y="71.9" text-anchor="end">60%</text>
+            <text class="tk-lab" x="60" y="22">Markup over marginal cost</text>
+
+            <line class="axisln" x1="60" y1="235" x2="470" y2="235"/>
+            <text class="tk" x="60" y="255" text-anchor="middle">1980</text>
+            <text class="tk" x="470" y="255" text-anchor="middle">2016</text>
+
+            <!-- shared origin: 21% at 1980 → y = 235 - 21*2.786 = 176.5 -->
+            <!-- path A: COGS only → 61% at 2016 → y = 235 - 61*2.786 = 65.1 -->
+            <path d="M60 176.5 L470 65.1" fill="none" stroke="var(--priced)" stroke-width="2.5" stroke-linecap="round"/>
+            <!-- path B: COGS + SG&A → "largely disappears" → flat -->
+            <path d="M60 176.5 L470 170.9" fill="none" stroke="var(--text-secondary)" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="7 4"/>
+
+            <!-- shared origin marker, 2px surface ring -->
+            <circle cx="60" cy="176.5" r="5" fill="var(--text-primary)" stroke="var(--surface-1)" stroke-width="2"/>
+            <circle cx="470" cy="65.1" r="5" fill="var(--priced)" stroke="var(--surface-1)" stroke-width="2"/>
+            <circle cx="470" cy="170.9" r="5" fill="var(--text-secondary)" stroke="var(--surface-1)" stroke-width="2"/>
+
+            <text class="tk-val" x="52" y="172" text-anchor="end">21%</text>
+            <text class="tk-val" x="480" y="61">61%</text>
+            <text class="tk" x="480" y="75">counting COGS only</text>
+            <text class="tk-val" x="480" y="167">&asymp; flat</text>
+            <text class="tk" x="480" y="181">counting COGS + SG&amp;A</text>
+
+            <!-- the gap is the finding -->
+            <path d="M455 65.1 L455 170.9" class="aperture" stroke-width="1"/>
+            <path d="M451 65.1 L459 65.1 M451 170.9 L459 170.9" class="aperture" stroke-width="1"/>
+            <text class="tk" x="447" y="120" text-anchor="end" transform="rotate(-90,447,120)" style="fill:var(--text-primary);font-weight:650">a classification</text>
+          </g>
+        </svg>
+        </div>
+        <div class="side">
+          <p><b>The blue path</b>De&nbsp;Loecker, Eeckhout &amp; Unger, <i>QJE</i> 2020. Treating cost of goods sold as the variable input: markups rise 21% (1980) &rarr; 61% (2016). Market power tripled; an economy captured.</p>
+          <hr>
+          <p><b>The grey path</b>Traina (2018). Add selling and administrative expense to the variable input and, in his words, &ldquo;the increase largely disappears.&rdquo;</p>
+          <hr>
+          <p><b>And then</b>Basu (<i>JEP</i> 2019): existing methods &ldquo;cannot determine whether markups have been stable or whether they have risen modestly.&rdquo; Benkard, Miller &amp; Yurukoglu (NBER WP 34513): the headline result is sensitive to unreported sample restrictions dropping 27% of observations.</p>
+        </div>
+      </div>
+      <figcaption>The two endpoints are not two measurements of a disputed world. They are one world, measured under two definitions of &ldquo;variable input.&rdquo; <b>The dashed path is drawn dashed because its endpoint is a characterisation &mdash; &ldquo;largely disappears&rdquo; &mdash; and not a published point estimate;</b> it is placed near the origin level rather than at a number the source did not give.</figcaption>
+    </figure>
+
+    <p>Sit with the shape of that. The difference between <em>an economy owned by monopolists</em> and <em>an economy that has barely changed</em> is a decision about which column a number goes in.</p>
+    <p>Marginal cost is not a thing you can walk up to and touch. It is an inference from an accounting category, and no accounting category is theory-free. The most consequential fight in industrial organisation is a classification dispute.</p>
+  </div>
+</section>
+
+<hr class="rule">
+
+<!-- ================================ III ================================ -->
+<section class="part" id="s3">
+  <div class="part-head">
+    <p class="roman ui">III</p>
+    <h2>The Cost That Is Real and Not on the Invoice</h2>
+  </div>
+  <div class="part-body">
+    <p>Now push the boundary outward and watch it break.</p>
+    <p>Economists have measured the air-pollution damage of coal-fired electricity generation and found it runs between eight-tenths and five-and-a-half times the industry&rsquo;s own value added. Not a rounding error against the industry. A multiple of it.</p>
+
+    <!-- ---------------------------- F3 ---------------------------- -->
+    <figure class="fig rise" id="f3">
+      <p class="fig-num">Figure 3</p>
+      <p class="fig-title">Damage as a multiple of the activity that produced it</p>
+      <p class="fig-look">Each bar is the measured environmental cost of an activity, expressed as a multiple of that activity&rsquo;s own economic contribution. The solid segment is the part that reaches an invoice. <b>The open segment is the rest &mdash; drawn at full size, because it is the same magnitude of real damage, merely unbilled.</b></p>
+      <div class="fig-body">
+        <div class="fig-scroll">
+        <svg class="draw" viewBox="0 0 620 270" role="img" aria-labelledby="f3-t" aria-describedby="f3-d">
+          <title id="f3-t">Environmental damage as a multiple of economic value</title>
+          <desc id="f3-d">Coal-fired electricity generation causes air-pollution damage estimated between 0.8 and 5.5 times the industry's own value added. Cattle ranching in South America generated 16.5 billion dollars of revenue against 312 billion dollars of environmental cost, a ratio of about 19 to 1. Neither cost appears on any invoice.</desc>
+
+          <!-- x: 1× at 130, 20× at 560 → 22.63px per multiple; 0 at x=130-22.63=107.4 -->
+          <g>
+            <line class="gridln" x1="107.4" y1="46" x2="107.4" y2="200"/>
+            <line class="gridln" x1="220.7" y1="46" x2="220.7" y2="200"/>
+            <line class="gridln" x1="334" y1="46" x2="334" y2="200"/>
+            <line class="gridln" x1="447.3" y1="46" x2="447.3" y2="200"/>
+            <line class="gridln" x1="560.6" y1="46" x2="560.6" y2="200"/>
+            <text class="tk" x="107.4" y="216" text-anchor="middle">0&times;</text>
+            <text class="tk" x="220.7" y="216" text-anchor="middle">5&times;</text>
+            <text class="tk" x="334" y="216" text-anchor="middle">10&times;</text>
+            <text class="tk" x="447.3" y="216" text-anchor="middle">15&times;</text>
+            <text class="tk" x="560.6" y="216" text-anchor="middle">20&times;</text>
+            <text class="tk-lab" x="107.4" y="240">Environmental damage &divide; the activity&rsquo;s own economic value</text>
+
+            <!-- row 1: coal, range 0.8 to 5.5 -->
+            <text class="tk-lab" x="98" y="72" text-anchor="end">Coal power</text>
+            <text class="tk" x="98" y="87" text-anchor="end">US air pollution</text>
+            <!-- range: 0.8× → x=125.5 ; 5.5× → x=231.9 -->
+            <rect class="aperture" x="125.5" y="58" width="106.4" height="26" rx="3"/>
+            <line x1="125.5" y1="58" x2="125.5" y2="84" class="aperture" stroke-width="2.5"/>
+            <line x1="231.9" y1="58" x2="231.9" y2="84" class="aperture" stroke-width="2.5"/>
+            <text class="tk-val" x="242" y="75">0.8&times; to 5.5&times;</text>
+
+            <!-- row 2: cattle, 18.9× -->
+            <text class="tk-lab" x="98" y="130" text-anchor="end">Cattle ranching</text>
+            <text class="tk" x="98" y="145" text-anchor="end">South America</text>
+            <!-- revenue is 1× by construction → solid to x=130 -->
+            <rect class="m-solid" x="107.4" y="116" width="22.6" height="26" rx="3"/>
+            <!-- uncounted damage: 18.9× → to x = 107.4 + 18.9*22.63 = 535.1 -->
+            <rect class="aperture" x="132" y="116" width="403.1" height="26" rx="3"/>
+            <text class="tk-val" x="545" y="134">18.9&times;</text>
+            <line class="leader" x1="119" y1="146" x2="119" y2="160"/>
+            <text class="tk" x="119" y="174" text-anchor="middle">$16.5 bn</text>
+            <text class="tk" x="119" y="187" text-anchor="middle">revenue</text>
+            <line class="leader" x1="333" y1="146" x2="333" y2="160"/>
+            <text class="tk" x="333" y="174" text-anchor="middle">$312 bn environmental cost &mdash; on no invoice</text>
+
+            <text class="tk-lab" x="107.4" y="22" font-weight="650">The steak is real. The revenue is real. The $312 billion is also real.</text>
+          </g>
+        </svg>
+        </div>
+        <div class="side">
+          <p><b>Coal</b>Muller, Mendelsohn &amp; Nordhaus, <i>AER</i> 2011. Air-pollution damage of coal-fired generation estimated at 0.8&times; to 5.5&times; the industry&rsquo;s value added. Drawn as a range, because it was published as one.</p>
+          <hr>
+          <p><b>Cattle</b>Trucost/TEEB (2013, using 2009 data). <em>A consultancy study, not peer-reviewed</em> &mdash; and I want you to hold both the number and its provenance. Its blunt finding: no high-impact region-sector generates sufficient profit to cover its environmental impacts.</p>
+          <hr>
+          <p><b>Why the coal bar has no solid segment</b>The source reports damage as a multiple of value added, not a split between billed and unbilled. Inventing a solid segment would be a claim the study does not make.</p>
+        </div>
+      </div>
+    </figure>
+
+    <p>This is the externality &mdash; marginal social cost exceeding marginal private cost &mdash; but the diagram in the textbook does it no justice, because the diagram makes it look like an error. It is not an error. It is the ledger doing exactly what a ledger does: recording transactions between parties. The atmosphere did not sign anything.</p>
+    <p>We know how to fix this in principle. Put a price on the damage and let it enter the arithmetic. The United States did the work: in November 2023 its environmental agency published a social cost of carbon of about a hundred and ninety dollars a tonne for 2020 emissions at a two percent discount rate. A real number, with real uncertainty, produced by real scientists.</p>
+
+    <div class="verbatim">
+      <q>&hellip;should not monetize the impacts from such emissions</q>, because <q>the uncertainties in performing monetized impacts quantifications are too great.</q>
+      <cite>US federal guidance to agencies, OMB M-25-27 (2025)</cite>
+    </div>
+
+    <p>I want to be scrupulous here, because the researchers were: this is an instruction not to monetise. It is not an instruction to write zero. But notice what uncertainty has been permitted to do. It did not widen the estimate. It deleted it.</p>
+    <p class="turn wide">And in an arithmetic, a number you decline to write behaves in every operation exactly like a zero &mdash; silently, and with a modest expression.</p>
+  </div>
+</section>
+
+<hr class="rule">
+
+<!-- ================================ IV ================================ -->
+<section class="part" id="s4">
+  <div class="part-head">
+    <p class="roman ui">IV</p>
+    <h2>How Much Is Tomorrow Worth</h2>
+  </div>
+  <div class="part-body">
+    <p>That phrase &mdash; <em>at a two percent discount rate</em> &mdash; is the quietest moral statement in economics, and I think it is the most beautiful.</p>
+    <p>A discount rate is a claim about the weight of the future. Lower it and your great-grandchildren move closer; raise it and they recede into rounding. Nothing in the mathematics tells you where to set it. You choose, and then the mathematics obeys, and then the choice comes back to you wearing the costume of a calculation.</p>
+    <p>Corporations make this choice too, and here the research delivers its strangest news. The textbook chain is clean: central bank cuts the policy rate, the cost of capital falls, the present value of every project rises, marginal projects flip positive, investment blooms.</p>
+
+    <!-- ---------------------------- F4 ---------------------------- -->
+    <figure class="fig rise" id="f4">
+      <p class="fig-num">Figure 4</p>
+      <p class="fig-title">The lever, the rod, and the hinge that rusted shut</p>
+      <p class="fig-look">One project paying $10 million a year, forever. What a one-percentage-point cut in the cost of capital is worth to it &mdash; on the textbook&rsquo;s arithmetic, and on the pass-through actually observed across thousands of firms in twenty countries.</p>
+      <div class="fig-body">
+        <div class="fig-scroll">
+        <svg class="draw" viewBox="0 0 620 260" role="img" aria-labelledby="f4-t" aria-describedby="f4-d">
+          <title id="f4-t">Present value of a perpetuity under textbook versus observed discount-rate pass-through</title>
+          <desc id="f4-d">A project paying 10 million dollars a year in perpetuity is worth 70.9 million at the mean reported hurdle rate of 14.1 percent. A one-point cut in the cost of capital should lift it to 76.3 million, a 7.6 percent gain, on textbook arithmetic. Using the observed pass-through of about a quarter of a point per point, it reaches only 72.2 million, a 1.8 percent gain.</desc>
+
+          <!-- x: $68m at 120, $78m at 540 → 42px per $m -->
+          <g>
+            <line class="gridln" x1="120" y1="36" x2="120" y2="182"/>
+            <line class="gridln" x1="204" y1="36" x2="204" y2="182"/>
+            <line class="gridln" x1="288" y1="36" x2="288" y2="182"/>
+            <line class="gridln" x1="372" y1="36" x2="372" y2="182"/>
+            <line class="gridln" x1="456" y1="36" x2="456" y2="182"/>
+            <line class="gridln" x1="540" y1="36" x2="540" y2="182"/>
+            <text class="tk" x="120" y="198" text-anchor="middle">$68m</text>
+            <text class="tk" x="204" y="198" text-anchor="middle">$70m</text>
+            <text class="tk" x="288" y="198" text-anchor="middle">$72m</text>
+            <text class="tk" x="372" y="198" text-anchor="middle">$74m</text>
+            <text class="tk" x="456" y="198" text-anchor="middle">$76m</text>
+            <text class="tk" x="540" y="198" text-anchor="middle">$78m</text>
+            <text class="tk-lab" x="120" y="222">Present value of $10m a year in perpetuity</text>
+            <text class="tk" x="120" y="240">Bars begin at $68m, not at zero &mdash; the differences are the subject, and the axis says so.</text>
+
+            <!-- baseline: 70.9 → x = 120 + 2.9*42 = 241.8 -->
+            <text class="tk-lab" x="112" y="60" text-anchor="end">At the hurdle rate</text>
+            <text class="tk" x="112" y="74" text-anchor="end">firms report: 14.1%</text>
+            <rect class="m-ink" x="120" y="46" width="121.8" height="26" rx="3"/>
+            <text class="tk-val" x="252" y="65">$70.9m</text>
+
+            <!-- textbook: 76.3 → x = 120 + 8.3*42 = 468.6 -->
+            <text class="tk-lab" x="112" y="110" text-anchor="end">Textbook, after a</text>
+            <text class="tk" x="112" y="124" text-anchor="end">1-point cut</text>
+            <rect class="m-priced" x="120" y="96" width="348.6" height="26" rx="3"/>
+            <text class="tk-val" x="478" y="115">$76.3m</text>
+            <text class="tk" x="478" y="129" style="fill:var(--priced);font-weight:650">+7.6%</text>
+
+            <!-- observed: 72.2 → x = 120 + 4.2*42 = 296.4 -->
+            <text class="tk-lab" x="112" y="160" text-anchor="end">Observed pass-through,</text>
+            <text class="tk" x="112" y="174" text-anchor="end">same 1-point cut</text>
+            <rect class="m-harm" x="120" y="146" width="176.4" height="26" rx="3"/>
+            <text class="tk-val" x="306" y="165">$72.2m</text>
+            <text class="tk" x="306" y="179" style="fill:var(--harm);font-weight:650">+1.8%</text>
+
+            <!-- the gap -->
+            <path d="M296.4 190 L468.6 190" class="aperture" stroke-width="1"/>
+            <path d="M296.4 186 L296.4 194 M468.6 186 L468.6 194" class="aperture" stroke-width="1"/>
+            <text class="tk" x="382" y="30" text-anchor="middle" style="fill:var(--text-primary);font-weight:650">the policy that did not arrive</text>
+            <line class="leader" x1="382" y1="34" x2="382" y2="42"/>
+          </g>
+        </svg>
+        </div>
+        <div class="side">
+          <p><b>Hurdle rates</b>Sharpe &amp; Suarez. Mean reported hurdle rate 14.1%, far above any plausible cost of capital. <b style="display:inline;font-weight:650">68%</b> of finance chiefs say no decline in interest rates would induce them to invest more; more than half had not moved their hurdle rate once in three years.</p>
+          <hr>
+          <p><b>Pass-through</b>Gormsen &amp; Huber, <i>AER</i> 2025. Across thousands of firms in twenty countries, discount rates absorb about <b style="display:inline;font-weight:650">0.25pp</b> per point of cost-of-capital movement, approaching one-for-one only after twelve years or more.</p>
+          <hr>
+          <p><b>The consequence</b>Modelling the widening wedge &mdash; roughly 3 points in 2002 to 5 by 2020 &mdash; dissolves a famous puzzle: a cumulative shortfall of about <b style="display:inline;font-weight:650">20% of the US capital stock</b>, investment that standard models said should exist and does not.</p>
+        </div>
+      </div>
+    </figure>
+
+    <p class="turn">Central banks pull a lever attached to a rod attached to a hinge that has quietly rusted shut.</p>
+    <p>The economy has been under-built. Not for want of money. For want of patience, priced.</p>
+    <p>Then the cycle turns the knife. Research and development is procyclical &mdash; firms invent in booms and cut in slumps &mdash; and the evidence suggests it is <em>too</em> procyclical, that they cut invention exactly when invention is cheapest. Across four thousand seven hundred public companies and three recessions, seventeen percent did not survive and about nine percent flourished. Of the four postures a firm can take into a downturn, the one that paired selective discipline with continued investment had the best odds of breaking away: thirty-seven percent, against twenty-one for pure retrenchment.</p>
+    <p>The better bet was known. It was known, and mostly not taken. That is not a fact about spreadsheets. It is a fact about fear.</p>
+  </div>
+</section>
+
+<hr class="rule">
+
+<!-- ================================ V ================================ -->
+<section class="part" id="s5">
+  <div class="part-head">
+    <p class="roman ui">V</p>
+    <h2>The Machinery</h2>
+  </div>
+  <div class="part-body">
+    <p>Fear has a shape inside a company, and it looks like a target.</p>
+    <p>At one American bank, leadership built what were internally called &ldquo;fifty-fifty plans&rdquo; &mdash; sales goals designed so that only half the regions could meet them. Managers called subordinates several times a day to check the numbers. Between January 2011 and March 2016, roughly five thousand three hundred employees were fired for sales-practice violations. About a million and a half deposit accounts were opened without authorisation, and some five hundred and sixty-five thousand credit cards. The board learned the number of firings from a regulatory settlement.</p>
+
+    <div class="verbatim">
+      Onerous sales goals and accompanying management pressure <q>led thousands of its employees to engage in unlawful conduct.</q>
+      <cite>United States Department of Justice (2020). Penalties: $185 million in 2016; $3 billion in 2020.</cite>
+    </div>
+
+    <p>Nobody in that story woke up wanting to commit fraud. They wanted to hit a number that had been engineered to be unhittable.</p>
+
+    <!-- ---------------------------- F5 ---------------------------- -->
+    <figure class="fig rise" id="f5">
+      <p class="fig-num">Figure 5</p>
+      <p class="fig-title">What 401 chief financial officers said they would do</p>
+      <p class="fig-look">Not what they were caught doing. What they volunteered, on a survey, about trade-offs between reported earnings and real economic value.</p>
+      <div class="fig-body">
+        <div class="fig-scroll">
+        <svg class="draw" viewBox="0 0 620 300" role="img" aria-labelledby="f5-t" aria-describedby="f5-d">
+          <title id="f5-t">CFO survey responses and the corporate fraud detection rate</title>
+          <desc id="f5-d">Of 401 chief financial officers surveyed, 78 percent would give up economic value to smooth reported earnings, 80 percent would cut spending on research, advertising and maintenance to hit a target, and 41 percent would decline a project with positive net present value if taking it meant missing the analyst consensus. Separately, roughly 10 percent of large public corporations commit alleged securities fraud in an average year, with a confidence interval of 7 to 14 percent, and only about one in three frauds is detected.</desc>
+
+          <!-- three proportion bars, 0-100% over 300px starting x=190 -->
+          <g>
+            <text class="tk-lab" x="0" y="14" font-weight="650">Graham, Harvey &amp; Rajgopal (2005) &middot; n = 401</text>
+
+            <!-- row 1 -->
+            <text class="tk-lab" x="182" y="48" text-anchor="end">Would sacrifice economic</text>
+            <text class="tk-lab" x="182" y="63" text-anchor="end">value to smooth earnings</text>
+            <rect x="190" y="38" width="300" height="24" rx="3" fill="var(--gridline)"/>
+            <rect class="m-priced" x="190" y="38" width="234" height="24" rx="3"/>
+            <text class="tk-val" x="500" y="55">78%</text>
+
+            <!-- row 2 -->
+            <text class="tk-lab" x="182" y="98" text-anchor="end">Would cut R&amp;D, advertising or</text>
+            <text class="tk-lab" x="182" y="113" text-anchor="end">maintenance to hit a target</text>
+            <rect x="190" y="88" width="300" height="24" rx="3" fill="var(--gridline)"/>
+            <rect class="m-priced" x="190" y="88" width="240" height="24" rx="3"/>
+            <text class="tk-val" x="500" y="105">80%</text>
+
+            <!-- row 3 -->
+            <text class="tk-lab" x="182" y="148" text-anchor="end">Would decline a positive-NPV</text>
+            <text class="tk-lab" x="182" y="163" text-anchor="end">project to meet consensus</text>
+            <rect x="190" y="138" width="300" height="24" rx="3" fill="var(--gridline)"/>
+            <rect class="m-harm" x="190" y="138" width="123" height="24" rx="3"/>
+            <text class="tk-val" x="500" y="155">41%</text>
+
+            <line class="gridln" x1="0" y1="192" x2="620" y2="192"/>
+
+            <!-- detection -->
+            <text class="tk-lab" x="0" y="216" font-weight="650">Dyck, Morse &amp; Zingales (<tspan font-style="italic">RAS</tspan> 2024) &middot; detection</text>
+            <text class="tk" x="0" y="234">In an average year ~10% of large public corporations commit alleged securities fraud (CI 7&ndash;14%).</text>
+            <text class="tk" x="0" y="249">The estimated probability that any given fraud is detected is about one in three.</text>
+
+            <!-- three squares: one solid (detected), two open (not) -->
+            <g transform="translate(0,258)">
+              <rect class="m-solid" x="0" y="0" width="28" height="28" rx="3"/>
+              <rect class="aperture" x="34" y="0" width="28" height="28" rx="3"/>
+              <rect class="aperture" x="68" y="0" width="28" height="28" rx="3"/>
+              <text class="tk-val" x="108" y="19">For every corporate fraud you have heard of, assume two you have not.</text>
+            </g>
+          </g>
+        </svg>
+        </div>
+        <div class="side">
+          <p><b>Read row three slowly</b>Only 59% said they would take a project with genuinely positive net present value if it caused them to miss the analyst consensus. Which means 41% of the people entrusted with a nation&rsquo;s capital said they would decline to make money in order to appear to have made money.</p>
+          <hr>
+          <p><b>The name for the process</b>Diane Vaughan, studying an organisation that talked itself into launching a shuttle, called it <em>the normalization of deviance</em>: &ldquo;a cultural drift in which circumstances classified as &lsquo;not okay&rsquo; are slowly reclassified as &lsquo;okay.&rsquo;&rdquo;</p>
+          <hr>
+          <p><b>The mark contract, again</b>The two open squares are not an estimate of specific undetected frauds. They are the size of the quantity the detection rate implies &mdash; drawn open because no one has counted them.</p>
+        </div>
+      </div>
+    </figure>
+
+    <p>Nobody crosses a line. The line is moved, an inch at a time, by people acting reasonably within a system that rewards the inch.</p>
+  </div>
+</section>
+
+<hr class="rule">
+
+<!-- ================================ VI ================================ -->
+<section class="part" id="s6">
+  <div class="part-head">
+    <p class="roman ui">VI</p>
+    <h2>Five Years</h2>
+  </div>
+  <div class="part-body">
+    <p>In November 1999, a safety panel reviewing a new painkiller counted seventy-nine patients out of four thousand who had suffered serious heart problems or died, against forty-one among those taking an older drug.</p>
+    <p>The medicine was withdrawn in September 2004.</p>
+
+    <!-- ---------------------------- F6 ---------------------------- -->
+    <figure class="fig rise" id="f6">
+      <p class="fig-num">Figure 6</p>
+      <p class="fig-title">The interval, and who the money went to</p>
+      <p class="fig-look">Above: the gap between the signal and the withdrawal, and what filled it. Below: how a headline penalty of &ldquo;over $2.5&nbsp;billion&rdquo; was actually apportioned &mdash; the largest share to the counterparties who had bought the aircraft.</p>
+      <div class="fig-body">
+        <div class="fig-scroll">
+        <svg class="draw" viewBox="0 0 620 345" role="img" aria-labelledby="f6-t" aria-describedby="f6-d">
+          <title id="f6-t">The Vioxx interval and the Boeing penalty apportionment</title>
+          <desc id="f6-d">A safety panel counted excess cardiac events in November 1999; the drug was withdrawn in September 2004, an interval of nearly five years during which an estimated 20 million Americans took it, with later Lancet estimates of 88,000 heart attacks and 38,000 deaths, and a 4.85 billion dollar settlement in 2007. Separately, of Boeing's over 2.5 billion dollar resolution, 1.77 billion went to airline customers as compensation, 243.6 million was the criminal penalty, and the remainder is not itemised in this record.</desc>
+
+          <!-- timeline -->
+          <g>
+            <text class="tk-lab" x="0" y="14" font-weight="650">The interval</text>
+            <line class="axisln" x1="30" y1="70" x2="560" y2="70"/>
+            <line class="zeroln" x1="30" y1="52" x2="30" y2="88"/>
+            <line class="zeroln" x1="560" y1="52" x2="560" y2="88"/>
+            <rect class="aperture" x="30" y="52" width="530" height="36"/>
+            <text class="tk-val" x="30" y="44">Nov 1999</text>
+            <text class="tk" x="30" y="106">79 of 4,000 with serious cardiac</text>
+            <text class="tk" x="30" y="119">events or death, against 41 on</text>
+            <text class="tk" x="30" y="132">the older drug</text>
+            <text class="tk-val" x="560" y="44" text-anchor="end">Sept 2004</text>
+            <text class="tk" x="560" y="106" text-anchor="end">Withdrawn</text>
+            <text class="tk-big" x="295" y="78" text-anchor="middle">4 years, 10 months</text>
+
+            <text class="tk" x="295" y="156" text-anchor="middle" style="fill:var(--text-primary);font-weight:650">~20 million Americans took it &middot; est. 88,000 heart attacks, 38,000 deaths &middot; $4.85 bn settled, 2007</text>
+
+            <line class="gridln" x1="0" y1="180" x2="620" y2="180"/>
+
+            <!-- boeing apportionment -->
+            <text class="tk-lab" x="0" y="204" font-weight="650">The apportionment</text>
+            <text class="tk" x="0" y="220">346 people died in two crashes less than five months apart.</text>
+            <text class="tk" x="0" y="233">Headline resolution: &ldquo;over $2.5 billion.&rdquo;</text>
+
+            <!-- 100% = 2.5bn over 560px from x=30 ; 2px surface gaps between segments -->
+            <rect class="m-priced" x="30" y="250" width="396.5" height="30" rx="3"/>
+            <rect class="m-ink" x="428.5" y="250" width="106.9" height="30" rx="3"/>
+            <rect class="m-harm" x="537.4" y="250" width="52.6" height="30" rx="3"/>
+
+            <line class="leader" x1="228" y1="282" x2="228" y2="294"/>
+            <text class="tk-val" x="228" y="308" text-anchor="middle">$1.77 bn</text>
+            <text class="tk" x="228" y="322" text-anchor="middle">to the airlines that bought the planes</text>
+            <text class="tk" x="228" y="335" text-anchor="middle" style="fill:var(--priced);font-weight:650">counterparties</text>
+
+            <line class="leader" x1="482" y1="282" x2="482" y2="294"/>
+            <text class="tk" x="482" y="308" text-anchor="middle">remainder</text>
+            <text class="tk" x="482" y="321" text-anchor="middle">not itemised here</text>
+
+            <line class="leader" x1="563" y1="246" x2="563" y2="238"/>
+            <text class="tk-val" x="590" y="234" text-anchor="end">$243.6 m</text>
+            <text class="tk" x="590" y="220" text-anchor="end" style="fill:var(--harm);font-weight:650">the criminal penalty &mdash; under a tenth</text>
+          </g>
+        </svg>
+        </div>
+        <div class="side">
+          <p><b>On the timeline</b>Five years is nothing in a product cycle. It is a long time in a life. I am not going to editorialise on that. The arithmetic of the gap is the editorial.</p>
+          <hr>
+          <p><b>On the apportionment</b>When the case was finally dismissed in November 2025, the judge said on the record that the deal &ldquo;fails to secure the necessary accountability to ensure the safety of the flying public&rdquo; &mdash; and then ruled that he could not stop it.</p>
+          <hr>
+          <p><b>A scruple</b>The record gives two components of the $2.5 bn. The third block is the arithmetic remainder and is labelled as such rather than given a name the source does not supply.</p>
+        </div>
+      </div>
+    </figure>
+
+    <p>Return to section one. The reputational penalty for deceiving investors runs over seven and a half times the legal penalty. The reputational penalty for a wrong to a third party is 0.24 percent, not significant.</p>
+    <p class="turn">The families of three hundred and forty-six people are not a counterparty. That is not a metaphor. It is the finding.</p>
+  </div>
+</section>
+
+<hr class="rule">
+
+<!-- ================================ VII ================================ -->
+<section class="part" id="s7">
+  <div class="part-head">
+    <p class="roman ui">VII</p>
+    <h2>Standing</h2>
+  </div>
+  <div class="part-body">
+    <p>The law knows this problem and has tried to legislate around it, and the attempt is worth studying closely, because it fails in an instructive way.</p>
+    <p>Delaware invented a corporate form &mdash; the public benefit corporation &mdash; whose directors <em>must</em>, by statute, balance shareholders&rsquo; financial interests against the interests of those materially affected by the company&rsquo;s conduct and against a stated public benefit. A genuine reform. Then read the next subsection: a director &ldquo;shall not&hellip; have any duty to any person on account of any interest of such person in the public benefit.&rdquo;</p>
+    <p class="turn">The duty exists. There is no one who may enforce it.</p>
+    <p>That is not a loophole someone slipped past a legislature at midnight. That is the statute, doing what corporate law consistently does: allocating <em>standing</em>. Standing is the legal name for the accounting boundary. It is the list of people whose losses are permitted to become a case.</p>
+    <p>Everything else in the doctrine follows the same line. Spend on stakeholders all you like, so long as it plausibly serves shareholders. Adopt a policy that openly declines to maximise value and a Delaware court will strike it down &mdash; &ldquo;The &lsquo;Inc.&rsquo; after the company name has to mean at least that.&rdquo; Sell the company and directors become, in the famous phrase, &ldquo;auctioneers.&rdquo;</p>
+
+    <div class="note">
+      <h3>The doctrine as cited is not the doctrine as written</h3>
+      <p>Even Milton Friedman, whose 1970 essay is quoted as the charter of the hard line, wrote something more careful than what gets quoted: there is one and only one social responsibility of business, to increase its profits, <em>&ldquo;so long as it stays within the rules of the game, which is to say, engages in open and free competition without deception or fraud&rdquo;</em> &mdash; and elsewhere, within the rules embodied &ldquo;both in law and in ethical custom.&rdquo; The qualifying clauses are routinely dropped.</p>
+    </div>
+
+    <p>R. Edward Freeman&rsquo;s counter-move, fourteen years later, is beautiful in its simplicity: he redefined a stakeholder as &ldquo;any group or individual who can affect or is affected by the achievement of the organization&rsquo;s objectives.&rdquo; He did not argue the boundary. He widened it by definition and dared the field to object.</p>
+    <p>And when the boundary was widened by proclamation rather than statute, we got to run the experiment. In August 2019, a hundred and eighty-one chief executives signed a statement redefining the purpose of a corporation to serve all stakeholders. Researchers wrote to the signatories and asked a single procedural question: did your board approve this?</p>
+
+    <!-- ---------------------------- F7 ---------------------------- -->
+    <figure class="fig rise" id="f7">
+      <p class="fig-num">Figure 7</p>
+      <p class="fig-title">Of forty-eight companies that answered, exactly one said yes</p>
+      <p class="fig-look">Each square is one company that responded to the researchers&rsquo; question about board approval of the 2019 Business Roundtable statement on corporate purpose.</p>
+      <div class="fig-body">
+        <div class="fig-scroll">
+        <svg class="draw" viewBox="0 0 620 190" role="img" aria-labelledby="f7-t" aria-describedby="f7-d">
+          <title id="f7-t">Board approval of the Business Roundtable statement</title>
+          <desc id="f7-d">181 chief executives signed the August 2019 Business Roundtable statement redefining corporate purpose. Of the 48 companies that responded to researchers asking whether their board had approved it, exactly one said yes.</desc>
+          <g id="f7-grid"></g>
+          <text class="tk-lab" x="0" y="14" font-weight="650">48 companies answered. 1 said the board approved.</text>
+          <text class="tk" x="0" y="176">181 chief executives signed. The scholars&rsquo; verdict: the statement was &ldquo;mostly for show.&rdquo;</text>
+        </svg>
+        </div>
+        <div class="side">
+          <p><b>The more interesting reading</b>The signatories were not lying. They were describing an aspiration in a language &mdash; corporate purpose &mdash; that has no enforcement mechanism attached to it, and everyone involved knew it.</p>
+          <hr>
+          <p><b>Source</b>Bebchuk &amp; Tallarita on the Business Roundtable statement of 19 August 2019.</p>
+        </div>
+      </div>
+    </figure>
+  </div>
+</section>
+
+<hr class="rule">
+
+<!-- ================================ VIII ================================ -->
+<section class="part" id="s8">
+  <div class="part-head">
+    <p class="roman ui">VIII</p>
+    <h2>Who Pays, and the Fifteen Cents</h2>
+  </div>
+  <div class="part-body">
+    <p>Zoom out to the largest scale and the same question is waiting.</p>
+    <p>A tariff is levied on an importer. That is who signs the cheque. Measured against actual import prices, nearly ninety percent of the burden of the 2025 American tariffs fell on US firms and consumers. The statutory payer and the economic bearer are different people, and the gap between them is a boundary drawn by physics of pass-through, not by legislation.</p>
+    <p>Even <em>how much</em> tariff exists depends on where you draw the line: one estimate puts the effective rate at 11.8 percent on a statutory basis, another at 7.2 percent measured as duties actually collected over imports, a third at 6.6 percent as a calendar-year average. None is wrong. They are three different questions wearing the same name.</p>
+    <p>In February 2026 the Supreme Court held, six to three, that the emergency statute under which the largest tranche had been imposed &ldquo;contains no reference to tariffs or duties.&rdquo; Over a hundred and sixty-six billion dollars had already been collected from more than three hundred and thirty thousand importers. And on the nineteenth of August 2026, under a provision never before invoked by a president, a fifty percent tariff falls on roughly twenty billion dollars of Canadian dairy, motor vehicles and alcohol.</p>
+    <p>Now shrink it back down to the size of a person, because this is where I want to leave you.</p>
+
+    <!-- ---------------------------- F8 ---------------------------- -->
+    <figure class="fig rise" id="f8">
+      <p class="fig-num">Figure 8</p>
+      <p class="fig-title">The same stock, the same dividend, two accounts</p>
+      <p class="fig-look">A Canadian holding an American dividend-paying stock. Nothing about the company, the payment, or the holder changes between these two rows. One clause of one treaty does.</p>
+      <div class="fig-body">
+        <div class="fig-scroll">
+        <svg class="draw" viewBox="0 0 620 200" role="img" aria-labelledby="f8-t" aria-describedby="f8-d">
+          <title id="f8-t">Withholding on US dividends in a Canadian RRSP versus TFSA</title>
+          <desc id="f8-d">A Canadian holding a US dividend-paying stock in a registered retirement savings plan keeps 100 percent of the dividend. The identical holding inside a tax-free savings account has 15 percent withheld at source, under Article 21 paragraph 2 of the 1980 Canada–US tax convention.</desc>
+          <g>
+            <!-- 100% = 380px from x=150 -->
+            <text class="tk-lab" x="142" y="48" text-anchor="end">Inside an RRSP</text>
+            <rect class="m-public" x="150" y="34" width="380" height="30" rx="3"/>
+            <text class="tk-val" x="542" y="53">100&cent;</text>
+            <text class="tk" x="340" y="54" text-anchor="middle" style="fill:#fff;font-weight:650">every cent of the dividend</text>
+
+            <text class="tk-lab" x="142" y="108" text-anchor="end">Inside a TFSA</text>
+            <rect class="m-public" x="150" y="94" width="321" height="30" rx="3"/>
+            <rect class="aperture" x="473" y="94" width="57" height="30" rx="3"/>
+            <text class="tk-val" x="542" y="113">85&cent;</text>
+            <line class="leader" x1="501.5" y1="126" x2="501.5" y2="140"/>
+            <text class="tk-val" x="501.5" y="155" text-anchor="middle">15&cent;</text>
+            <text class="tk" x="501.5" y="169" text-anchor="middle">withheld at source</text>
+
+            <text class="tk" x="150" y="185">Article XXI(2), Canada&ndash;US tax convention (1980). The corporate rate was cut 10% &rarr; 5% by a 1995 protocol; the consolidated text still prints the old number.</text>
+            <text class="tk-lab" x="0" y="14" font-weight="650">The difference is not economics.</text>
+          </g>
+        </svg>
+        </div>
+        <div class="side">
+          <p><b>The provenance joke that is not a joke</b>The published consolidated text of the treaty still prints the superseded rate, so anyone citing the source document appears to contradict the truth.</p>
+          <hr>
+          <p><b>Why this figure closes the section</b>Every other boundary in this essay is measured in billions. This one is measured in cents, and it is yours.</p>
+        </div>
+      </div>
+    </figure>
+
+    <p class="turn wide">An accounting boundary is not always an abstraction. Sometimes it is fifteen cents, and it is yours.</p>
+  </div>
+</section>
+
+<hr class="rule">
+
+<!-- ================================ IX ================================ -->
+<section class="part" id="s9">
+  <div class="part-head">
+    <p class="roman ui">IX</p>
+    <h2>What We Bothered to Count</h2>
+  </div>
+  <div class="part-body">
+    <p>Here is the asymmetry that reorganised my thinking about all of this.</p>
+    <p>There exists a public database of corporate misconduct containing more than seven hundred thousand civil and criminal cases from more than four hundred and fifty agencies, with total penalties exceeding one trillion dollars, running back to the year 2000. One hundred and twenty-seven parent companies have each paid over a billion. One bank appears in two hundred and twenty-five separate cases of a million dollars or more.</p>
+    <p>We built that. Deliberately, over a decade, with funding and methodology and version control.</p>
+
+    <!-- ---------------------------- F9 ---------------------------- -->
+    <figure class="fig rise" id="f9">
+      <p class="fig-num">Figure 9</p>
+      <p class="fig-title">The instrument we built, and the one we did not</p>
+      <p class="fig-look">Above: the record of corporate harm, at one mark per thousand cases. Below: the record of corporate forbearance &mdash; companies that voluntarily gave up profit to prevent harm &mdash; at one mark per instance the researchers could find. <b>Same page, same ink, same rule.</b></p>
+      <div class="fig-body">
+        <div class="fig-scroll">
+        <svg class="draw" viewBox="0 0 620 340" role="img" aria-labelledby="f9-t" aria-describedby="f9-d">
+          <title id="f9-t">Recorded corporate misconduct versus recorded corporate forbearance</title>
+          <desc id="f9-d">A public database records more than 700,000 civil and criminal misconduct cases from over 450 agencies since 2000, with penalties exceeding one trillion dollars. Searching for a comparable record of companies that voluntarily forwent profit to prevent harm, researchers found no database at all — only three stories, told mostly by the companies themselves.</desc>
+          <text class="tk-lab" x="0" y="14" font-weight="650">Corporate misconduct</text>
+          <text class="tk" x="0" y="30">Violation Tracker &middot; one mark = 1,000 cases &middot; 700 marks</text>
+          <g id="f9-grid"></g>
+
+          <!-- the boundary between the instrument we built and the one we did not -->
+          <line class="gridln" x1="0" y1="238" x2="620" y2="238"/>
+
+          <g transform="translate(0,262)">
+            <text class="tk-lab" x="0" y="0" font-weight="650">Corporate forbearance</text>
+            <text class="tk" x="0" y="16">No database exists &middot; one mark = 1 documented instance</text>
+            <rect class="aperture" x="0" y="30" width="15" height="15" rx="2"/>
+            <rect class="aperture" x="0" y="52" width="15" height="15" rx="2"/>
+            <rect class="aperture" x="234" y="30" width="15" height="15" rx="2"/>
+            <text class="tk" x="24" y="42">1982 &middot; 31m bottles recalled, &gt;$100m</text>
+            <text class="tk" x="24" y="64">2014 &middot; tobacco pulled, ~$2bn/yr forgone</text>
+            <text class="tk" x="258" y="42">1959 &middot; seatbelt patent given away</text>
+            <text class="tk-big" x="470" y="34">Three.</text>
+            <text class="tk-lab" x="470" y="56">Across seventy years.</text>
+          </g>
+        </svg>
+        </div>
+        <div class="side">
+          <p><b>What this does and does not prove</b>We do not know whether corporate forbearance is rare or whether we simply never built the instrument that would find it. Both readings survive the evidence.</p>
+          <hr>
+          <p><b>Why the right-hand marks are open</b>All three are told mostly by the companies themselves &mdash; a pharmaceutical recall, a pharmacy chain&rsquo;s press release, a manufacturer&rsquo;s own heritage page. Self-reported, and drawn as such.</p>
+          <hr>
+          <p><b>The three</b>1982: seven people killed in Chicago by cyanide placed in capsules by an outsider; the firm recalled 31 million bottles and spent over $100m, and Congress passed a tamper-proofing law the following year. 1&nbsp;Oct 2014: a pharmacy chain stopped selling tobacco in over 7,600 stores &mdash; &ldquo;The sale of tobacco products is inconsistent with our purpose.&rdquo; 1959: Nils Bohlin&rsquo;s three-point seatbelt patent, given to competitors without payment or claim.</p>
+        </div>
+      </div>
+      <figcaption>The upper field is <b>&gt;450 agencies, &gt;$1 trillion in penalties, 127 parent companies that have each paid over $1&nbsp;billion, and one bank appearing in 225 separate cases of $1&nbsp;million or more.</b> We built that deliberately, over a decade, with funding and methodology and version control. The lower field is what a comparable search for the opposite behaviour returned.</figcaption>
+    </figure>
+
+    <p class="turn wide">What a civilisation measures, it manages; what it declines to measure does not thereby cease to exist. It merely stops appearing in the minutes.</p>
+  </div>
+</section>
+
+<hr class="rule">
+
+<!-- ================================ X ================================ -->
+<section class="part" id="s10">
+  <div class="part-head">
+    <p class="roman ui">X</p>
+    <h2>And Yet</h2>
+  </div>
+  <div class="part-body">
+    <p>I have given you the machinery of harm. Now the other thing, which is true at the same time and which I find genuinely moving.</p>
+    <p>Every single one of the two hundred and ten new drugs approved by the American regulator between 2010 and 2016 was associated with published research funded by the National Institutes of Health. More than a hundred billion dollars of it. Over ninety percent was basic science on the biological target &mdash; not the pill, but the lock the pill was cut for.</p>
+    <p>The mRNA vaccines: at least thirty-one point nine billion dollars of American public investment, of which ninety-two percent took the form of advance purchase commitments &mdash; a government promising to buy a thing that did not yet exist, so that someone would build it.</p>
+
+    <!-- ---------------------------- F10 ---------------------------- -->
+    <figure class="fig rise" id="f10">
+      <p class="fig-num">Figure 10</p>
+      <p class="fig-title">The part that escaped</p>
+      <p class="fig-look">What a dollar invested in innovation returns to society, against the part a firm can invoice for. <b>The open portion is not waste.</b> It is the value that left the building and stayed in the world &mdash; and it is precisely why innovation is underprovided.</p>
+      <div class="fig-body">
+        <div class="fig-scroll">
+        <svg class="draw" viewBox="0 0 620 220" role="img" aria-labelledby="f10-t" aria-describedby="f10-d">
+          <title id="f10-t">Social versus private returns to innovation investment</title>
+          <desc id="f10-d">A dollar invested in innovation produces on the order of 13 dollars 30 cents in social benefit, with a deliberately conservative floor of 4 to 5 dollars. Gross social returns to corporate research are estimated at least twice the private returns. The gap between social and private return is value the investing firm cannot charge for.</desc>
+          <g>
+            <!-- $1 = 38px, from x=60 -->
+            <text class="tk-lab" x="52" y="52" text-anchor="end">$1 invested</text>
+            <rect class="m-solid" x="60" y="38" width="38" height="28" rx="3"/>
+
+            <text class="tk-lab" x="52" y="112" text-anchor="end">Social benefit</text>
+            <text class="tk" x="52" y="126" text-anchor="end">returned</text>
+            <!-- conservative floor 4.5 → 171px solid-ish; full 13.30 → 505.4px -->
+            <rect class="m-public" x="60" y="98" width="171" height="28" rx="3"/>
+            <rect class="aperture" x="233" y="98" width="332.4" height="28" rx="3"/>
+            <text class="tk-val" x="575" y="117">$13.30</text>
+
+            <line class="leader" x1="145" y1="128" x2="145" y2="142"/>
+            <text class="tk" x="145" y="156" text-anchor="middle">conservative floor</text>
+            <text class="tk" x="145" y="169" text-anchor="middle">$4&ndash;5</text>
+
+            <line class="leader" x1="399" y1="128" x2="399" y2="142"/>
+            <text class="tk" x="399" y="156" text-anchor="middle" style="fill:var(--text-primary);font-weight:650">the part a firm cannot invoice for</text>
+            <text class="tk" x="399" y="169" text-anchor="middle">&mdash; and therefore underprovides</text>
+
+            <line class="gridln" x1="0" y1="190" x2="620" y2="190"/>
+            <text class="tk" x="0" y="210">Jones &amp; Summers (NBER 2020). Bloom, Schankerman &amp; Van Reenen (<tspan font-style="italic">Econometrica</tspan> 2013) put gross social returns to corporate research at least twice the private returns.</text>
+            <text class="tk-lab" x="0" y="14" font-weight="650">The market failure and the miracle are the same phenomenon, viewed from two sides of the boundary.</text>
+          </g>
+        </svg>
+        </div>
+        <div class="side">
+          <p><b>Read it as a moral fact</b>The gap between thirteen dollars and whatever the firm managed to capture is not waste. It is the portion of the value that escaped into the world and stayed there. It is in the room with you. It was in the vial that reached your arm.</p>
+          <hr>
+          <p><b>Meanwhile the private engine strains</b>In pharmaceutical research the number of approvals per billion dollars of spending has halved roughly every nine years since 1950 &mdash; an eighty-fold decline in real terms. Which is precisely why the public share matters, and precisely what makes it strange that we argue about it as though it were charity.</p>
+        </div>
+      </div>
+    </figure>
+
+    <p>And the countervailing forces are not dead. In the 2025 fiscal year, one thousand two hundred and ninety-seven new whistleblower suits were filed under the False Claims Act &mdash; a record, against a previous high of nine hundred and eighty. About twenty-seven thousand tips reached the securities regulator. Twenty-seven thousand people decided that what they had seen was not going to remain merely a thing they had seen.</p>
+    <p>In March 2026, a Los Angeles jury found for the first time that social media applications should be treated as defective products, engineered to exploit developing brains. The award was six million dollars, which against these companies is nothing, and which is also a door coming off its hinges. The plaintiff had started using one of the platforms at six years old.</p>
+    <p>And this year, global investment in clean energy runs to roughly two point two trillion dollars against about one point two trillion for fossil fuels &mdash; nearly two to one &mdash; with some eighty gigawatts of new nuclear capacity under construction across fifteen countries. Whatever you think of the pace, capital at that scale is not moved by sentiment. Something is being priced.</p>
+  </div>
+</section>
+
+<hr class="rule">
+
+<!-- ================================ XI ================================ -->
+<section class="part" id="s11">
+  <div class="part-head">
+    <p class="roman ui">XI</p>
+    <h2>The Person Who Chooses the Column</h2>
+  </div>
+  <div class="part-body">
+    <p>Here is why I think this material is beautiful and not merely grim.</p>
+    <p class="turn">Every boundary in it was drawn by a person.</p>
+    <p>Not by physics. Not by nature. Someone decided whether advertising is a cost of production or the product itself, and that decision determined whether we believe monopoly power tripled or barely moved. Someone chose a two percent discount rate, and that choice determined whether a tonne of carbon costs a hundred and ninety dollars or nothing you are obliged to write down. Someone set a scope threshold at a thousand employees and four hundred and fifty million euros of turnover, and thereby decided what an entire continent is required to see. Someone drafted a subsection removing standing from every person whose interest the statute had just recognised. Someone typed <em>fifteen percent</em> into a treaty.</p>
+    <p>None of these people thought of themselves as moral philosophers. They thought of themselves as doing technical work. That is exactly the point, and it is the reason I would tell anyone learning this trade that they have wandered into something far larger than they were promised.</p>
+    <p>Accounting is not bookkeeping. It is the technology by which a society decides what it is willing to notice. Recognition &mdash; putting a number in a column, giving a thing a name and a place in a statement &mdash; is the smallest possible act of moral inclusion. Derecognition is its opposite, and it is quieter, and it is performed constantly, by decent people, in good faith, on ordinary afternoons.</p>
+    <p class="turn wide">The market did not hear the harm because we did not put the harm where the market listens.</p>
+    <p>That is the whole finding. It is also, if you turn it over, the whole hope, because a boundary drawn by a person can be drawn again by a person. Not easily. Not without a fight over which column, and whose losses, and who has standing to complain. But drawn again.</p>
+    <p>Nothing in that number was inevitable. Not the boundary, not the silence, not the 0.24 percent.</p>
+    <p>Someone drew that line, in a room, on an unremarkable day, with a pen.</p>
+    <p><strong>That is the bad news. It is also the only good news there is.</strong></p>
+  </div>
+</section>
+
+<hr class="rule">
+
+<!-- ============================ SOURCE SPINE ============================ -->
+<section class="part" id="spine">
+  <div class="part-head">
+    <p class="roman ui">&mdash;</p>
+    <h2>Source spine</h2>
+  </div>
+  <div class="part-body">
+    <p class="col" style="font-size:1rem">Every figure and quotation above comes from the audited dossier compiled 6&nbsp;August&nbsp;2026. No new research; no invented facts, names, quotations or events. Illustrative framing is mine; the specifics are not.</p>
+    <dl class="spine">
+      <dt>I</dt><dd>Karpoff, Lee &amp; Martin (<i>JFQA</i> 2008) on misrepresentation penalties; Armour, Mayer &amp; Polo on second- vs third-party wrongs; Karpoff, Lott &amp; Wehrly (<i>JLE</i> 2005) on environmental violations.</dd>
+      <dt>II</dt><dd>Lerner index (standard theory); worked example my arithmetic. De Loecker, Eeckhout &amp; Unger (<i>QJE</i> 2020) vs Traina (2018), Basu (<i>JEP</i> 2019), Benkard, Miller &amp; Yurukoglu (NBER WP 34513).</dd>
+      <dt>III</dt><dd>Muller, Mendelsohn &amp; Nordhaus (<i>AER</i> 2011); Trucost/TEEB (2013, 2009 data &mdash; a consultancy study, flagged); EPA social cost of greenhouse gases (Nov 2023); OMB M-25-27 (2025).</dd>
+      <dt>IV</dt><dd>Sharpe &amp; Suarez (Federal Reserve / <i>Management Science</i>); Gormsen &amp; Huber (<i>AER</i> 2025, via NBER Reporter); Barlevy (<i>AER</i> 2007); Gulati, Nohria &amp; Wohlgezogen (<i>HBR</i> 2010) &mdash; note the 9%-flourished and 37%/21% figures are two separate statistics, not one.</dd>
+      <dt>V</dt><dd>Wells Fargo independent directors&rsquo; report (2017), CFPB (2016), DOJ (2020); Graham, Harvey &amp; Rajgopal (2005); Vaughan (1996, quoted 2016); Dyck, Morse &amp; Zingales (<i>RAS</i> 2024).</dd>
+      <dt>VI</dt><dd>Vioxx timeline via NPR, <i>Lancet</i> estimates as reported there; Boeing via DOJ (2021), DOT OIG, and NPR (Nov 2025).</dd>
+      <dt>VII</dt><dd>DGCL &sect;&sect;365(a)&ndash;(b); <i>eBay v. Newmark</i> (Del. Ch. 2010); <i>Revlon</i> (Del. 1986); Friedman (<i>NYT Magazine</i>, 13 Sept 1970); Freeman (1984, p.&nbsp;46); Bebchuk &amp; Tallarita on the Business Roundtable statement.</dd>
+      <dt>VIII</dt><dd>New York Fed tariff incidence (Feb 2026); Yale Budget Lab / Penn Wharton / Tax Foundation effective-rate estimates; <i>Learning Resources v. Trump</i> (20 Feb 2026); Section 338 proclamation effective 19 Aug 2026; Canada&ndash;US tax convention Articles X(2) and XXI(2), Third Protocol 1995.</dd>
+      <dt>IX</dt><dd>Good Jobs First Violation Tracker; Tylenol via PBS; CVS press release (5 Feb 2014); Volvo Group heritage page (the company&rsquo;s own account of its own conduct).</dd>
+      <dt>X</dt><dd>Cleary et al. (<i>PNAS</i> 2018, via two agreeing secondary sources &mdash; primary page inaccessible); <i>BMJ</i> (2023) on mRNA public investment; Jones &amp; Summers (NBER 2020); Bloom, Schankerman &amp; Van Reenen (<i>Econometrica</i> 2013); Scannell et al. (<i>Nature Reviews Drug Discovery</i> 2012); DOJ False Claims Act FY2025; SEC whistleblower FY2025; Los Angeles jury verdict (25 Mar 2026, on appeal); IEA <i>World Energy Investment 2026</i>.</dd>
+    </dl>
+  </div>
+</section>
+
+</div>
+
+<script>
+(function(){
+"use strict";
+document.documentElement.classList.add("js");
+
+var reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+/* ------------------------- theme toggle -------------------------
+   The data-theme stamp must win in both directions, so it is written
+   explicitly rather than toggled against the OS preference. */
+var btn = document.getElementById("themebtn");
+function osDark(){ return window.matchMedia && matchMedia("(prefers-color-scheme: dark)").matches; }
+function currentDark(){
+  var t = document.documentElement.getAttribute("data-theme");
+  return t ? t === "dark" : osDark();
+}
+function paint(){
+  var d = currentDark();
+  btn.textContent = d ? "Light" : "Dark";
+  btn.setAttribute("aria-pressed", d ? "true" : "false");
+}
+btn.addEventListener("click", function(){
+  document.documentElement.setAttribute("data-theme", currentDark() ? "light" : "dark");
+  paint();
+});
+paint();
+
+/* ---------------------- reveal on scroll ---------------------- */
+var risers = [].slice.call(document.querySelectorAll(".rise"));
+if (reduce || !("IntersectionObserver" in window)) {
+  risers.forEach(function(n){ n.classList.add("in"); });
+} else {
+  var io = new IntersectionObserver(function(es){
+    es.forEach(function(e){ if (e.isIntersecting){ e.target.classList.add("in"); io.unobserve(e.target); } });
+  }, { rootMargin:"0px 0px -10% 0px", threshold:0.06 });
+  risers.forEach(function(n){ io.observe(n); });
+}
+
+/* -------------------- nav scrollspy + progress -------------------- */
+var links = [].slice.call(document.querySelectorAll("#navlist a"));
+var targets = links.map(function(a){ return document.querySelector(a.getAttribute("href")); });
+var bar = document.getElementById("progress");
+var ticking = false;
+function onScroll(){
+  var y = window.scrollY || window.pageYOffset;
+  var h = document.documentElement.scrollHeight - window.innerHeight;
+  bar.style.width = (h > 0 ? Math.min(100, (y / h) * 100) : 0) + "%";
+
+  var best = 0;
+  for (var i = 0; i < targets.length; i++){
+    if (targets[i] && targets[i].getBoundingClientRect().top <= 120) best = i;
+  }
+  links.forEach(function(a, i){ a.classList.toggle("here", i === best); });
+  var active = links[best];
+  /* keep the active chip in view on a narrow rail without hijacking the page */
+  if (active && active.parentNode.parentNode.scrollWidth > active.parentNode.parentNode.clientWidth){
+    var list = active.parentNode.parentNode;
+    var l = active.offsetLeft, w = active.offsetWidth;
+    if (l < list.scrollLeft || l + w > list.scrollLeft + list.clientWidth){
+      list.scrollTo({ left: Math.max(0, l - 16), behavior: reduce ? "auto" : "smooth" });
+    }
+  }
+  ticking = false;
+}
+window.addEventListener("scroll", function(){
+  if (!ticking){ ticking = true; requestAnimationFrame(onScroll); }
+}, { passive:true });
+onScroll();
+
+/* --------------- generated unit grids (F7 and F9) ---------------
+   Drawn in script because they are hundreds of identical marks and
+   the markup would otherwise dominate the file. Both have a text
+   equivalent in the figure's <desc>, so neither depends on script. */
+function svgEl(n, a){
+  var e = document.createElementNS("http://www.w3.org/2000/svg", n);
+  for (var k in a) if (Object.prototype.hasOwnProperty.call(a, k)) e.setAttribute(k, a[k]);
+  return e;
+}
+
+/* F7: 48 responding companies, 1 of which said the board approved. */
+(function(){
+  var g = document.getElementById("f7-grid"); if (!g) return;
+  var cols = 24, cell = 15, gap = 5, x0 = 0, y0 = 42;
+  for (var i = 0; i < 48; i++){
+    var cx = x0 + (i % cols) * (cell + gap);
+    var cy = y0 + Math.floor(i / cols) * (cell + gap);
+    /* the single yes is placed first so it is findable, and is the only
+       solid mark: the contract says solid means it entered the books */
+    g.appendChild(svgEl("rect", {
+      x:cx, y:cy, width:cell, height:cell, rx:2,
+      "class": i === 0 ? "m-priced" : "aperture"
+    }));
+  }
+  var lab = svgEl("text", { x:0, y:y0 + 2*(cell+gap) + 22, "class":"tk-val" });
+  lab.textContent = "1 yes";
+  g.appendChild(lab);
+  var lab2 = svgEl("text", { x:60, y:y0 + 2*(cell+gap) + 22, "class":"tk" });
+  lab2.textContent = "47 did not say yes";
+  g.appendChild(lab2);
+})();
+
+/* F9: 700 marks, one per thousand recorded misconduct cases. */
+(function(){
+  var g = document.getElementById("f9-grid"); if (!g) return;
+  var cols = 50, rows = 14, cell = 8, gap = 3, x0 = 0, y0 = 44;
+  for (var i = 0; i < cols * rows; i++){
+    g.appendChild(svgEl("rect", {
+      x: x0 + (i % cols) * (cell + gap),
+      y: y0 + Math.floor(i / cols) * (cell + gap),
+      width: cell, height: cell, rx:1.5, "class":"m-solid"
+    }));
+  }
+  var t = svgEl("text", { x:0, y:y0 + rows*(cell+gap) + 16, "class":"tk-val" });
+  t.textContent = "700,000+ cases since 2000";
+  g.appendChild(t);
+})();
+
+})();
+</script>
+
+<a id="__rb-pill" href="research.html">&#8592; Research</a>
+<script>
+(function(){
+  var p=document.getElementById('__rb-pill'); if(!p) return;
+  var t=false;
+  function run(){ t=false;
+    p.classList.toggle('__on',(window.scrollY||document.documentElement.scrollTop)>420); }
+  function q(){ if(!t){ t=true; requestAnimationFrame(run); } }
+  addEventListener('scroll',q,{passive:true}); run();
+})();
+</script>
+</body>
+</html>

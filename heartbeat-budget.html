@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="description" content="A small investigation into a popular claim, following the evidence rather than the headline.">
+<meta property="og:title" content="Does chronic caffeine spend your heartbeat budget faster? — A question taken seriously">
+<meta property="og:description" content="A small investigation into a popular claim, following the evidence rather than the headline.">
+<meta property="og:type" content="article">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Does caffeine spend your heartbeat budget?</title>
+<style>
+  :root {
+    color-scheme: light;
+    --plane:          #f9f9f7;
+    --surface-1:      #fcfcfb;
+    --text-primary:   #0b0b0b;
+    --text-secondary: #52514e;
+    --text-muted:     #898781;
+    --grid:           #e1e0d9;
+    --axis:           #c3c2b7;
+    --border:         rgba(11,11,11,0.10);
+    --series-1:       #2a78d6;   /* blue  */
+    --series-2:       #eb6834;   /* orange */
+    --series-red:     #e34948;
+    --context:        #b9b8b1;   /* de-emphasis gray */
+    --context-soft:   #dedcd4;
+    --good-text:      #006300;
+    --crit:           #d03b3b;
+    --tip-bg:         #17171a;
+    --tip-ink:        #ffffff;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) {
+      color-scheme: dark;
+      --plane:          #0d0d0d;
+      --surface-1:      #1a1a19;
+      --text-primary:   #ffffff;
+      --text-secondary: #c3c2b7;
+      --text-muted:     #898781;
+      --grid:           #2c2c2a;
+      --axis:           #383835;
+      --border:         rgba(255,255,255,0.10);
+      --series-1:       #3987e5;
+      --series-2:       #d95926;
+      --series-red:     #e66767;
+      --context:        #5c5b56;
+      --context-soft:   #37372f;
+      --good-text:      #0ca30c;
+      --crit:           #d03b3b;
+      --tip-bg:         #f2f2ee;
+      --tip-ink:        #0b0b0b;
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --plane:          #0d0d0d;
+    --surface-1:      #1a1a19;
+    --text-primary:   #ffffff;
+    --text-secondary: #c3c2b7;
+    --text-muted:     #898781;
+    --grid:           #2c2c2a;
+    --axis:           #383835;
+    --border:         rgba(255,255,255,0.10);
+    --series-1:       #3987e5;
+    --series-2:       #d95926;
+    --series-red:     #e66767;
+    --context:        #5c5b56;
+    --context-soft:   #37372f;
+    --good-text:      #0ca30c;
+    --crit:           #d03b3b;
+    --tip-bg:         #f2f2ee;
+    --tip-ink:        #0b0b0b;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--plane);
+    color: var(--text-primary);
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    font-size: 15px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 940px; margin: 0 auto; padding: 40px 24px 80px; }
+
+  /* ---------- header ---------- */
+  .topbar { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; }
+  .eyebrow {
+    font-size: 11px; letter-spacing: .1em; text-transform: uppercase;
+    color: var(--text-muted); font-weight: 600; margin: 0 0 10px;
+  }
+  h1 {
+    font-size: clamp(28px, 4.4vw, 40px); line-height: 1.15;
+    letter-spacing: -0.02em; margin: 0 0 14px; font-weight: 650;
+  }
+  .dek { font-size: 17px; color: var(--text-secondary); margin: 0 0 4px; max-width: 62ch; }
+  .toggle {
+    flex: none; background: var(--surface-1); color: var(--text-secondary);
+    border: 1px solid var(--border); border-radius: 999px;
+    padding: 7px 14px; font: inherit; font-size: 13px; cursor: pointer;
+  }
+  .toggle:hover { color: var(--text-primary); }
+
+  /* ---------- verdict / hero ---------- */
+  .verdict {
+    margin: 32px 0 0; padding: 26px 28px;
+    background: var(--surface-1); border: 1px solid var(--border); border-radius: 14px;
+    display: grid; grid-template-columns: minmax(0,auto) minmax(0,1fr); gap: 28px; align-items: center;
+  }
+  @media (max-width: 640px) { .verdict { grid-template-columns: 1fr; gap: 18px; } }
+  .hero-num {
+    font-size: clamp(46px, 9vw, 68px); font-weight: 650; letter-spacing: -0.03em;
+    line-height: 1; color: var(--text-primary); white-space: nowrap;
+  }
+  .hero-unit { font-size: 0.42em; font-weight: 550; color: var(--text-secondary); margin-left: 4px; }
+  .hero-sub { font-size: 12.5px; color: var(--text-muted); margin-top: 10px; }
+  .verdict p { margin: 0; font-size: 16px; color: var(--text-secondary); }
+  .verdict strong { color: var(--text-primary); font-weight: 600; }
+
+  /* ---------- chain ---------- */
+  .chain { margin: 40px 0 0; }
+  .chain-row {
+    display: grid; grid-template-columns: 26px minmax(0,1fr); gap: 14px;
+    padding: 14px 0; border-bottom: 1px solid var(--border);
+  }
+  .chain-row:first-of-type { border-top: 1px solid var(--border); }
+  .mark-x {
+    width: 22px; height: 22px; border-radius: 999px; display: grid; place-items: center;
+    background: color-mix(in srgb, var(--crit) 14%, transparent);
+    color: var(--crit); font-size: 13px; font-weight: 700; line-height: 1; margin-top: 2px;
+  }
+  .chain-claim { font-weight: 600; font-size: 14.5px; margin: 0 0 3px; }
+  .chain-why { margin: 0; font-size: 14px; color: var(--text-secondary); }
+
+  /* ---------- cards ---------- */
+  .card {
+    background: var(--surface-1); border: 1px solid var(--border);
+    border-radius: 14px; padding: 24px 26px 20px; margin: 26px 0 0;
+  }
+  .card-head { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; margin-bottom: 4px; }
+  .card h2 { font-size: 18px; margin: 0; font-weight: 620; letter-spacing: -0.01em; }
+  .card .sub { font-size: 13.5px; color: var(--text-secondary); margin: 6px 0 18px; max-width: 68ch; }
+  .card .note { font-size: 12.5px; color: var(--text-muted); margin: 14px 0 0; max-width: 74ch; }
+  .tbtn {
+    flex: none; background: transparent; color: var(--text-muted);
+    border: 1px solid var(--border); border-radius: 7px;
+    padding: 4px 10px; font: inherit; font-size: 12px; cursor: pointer;
+  }
+  .tbtn:hover { color: var(--text-primary); }
+  .plot { position: relative; width: 100%; }
+  .plot svg { display: block; width: 100%; height: auto; overflow: visible; }
+
+  /* ---------- legend ---------- */
+  .legend { display: flex; flex-wrap: wrap; gap: 18px; margin: 0 0 14px; font-size: 12.5px; color: var(--text-secondary); }
+  .legend span { display: inline-flex; align-items: center; gap: 7px; }
+  .swatch { width: 12px; height: 12px; border-radius: 3px; flex: none; }
+  .keyline { width: 16px; height: 2px; border-radius: 2px; flex: none; }
+
+  /* ---------- tables ---------- */
+  table { border-collapse: collapse; width: 100%; font-size: 13px; font-variant-numeric: tabular-nums; }
+  caption { text-align: left; font-size: 12.5px; color: var(--text-muted); padding-bottom: 8px; }
+  th, td { text-align: right; padding: 7px 10px; border-bottom: 1px solid var(--grid); }
+  th:first-child, td:first-child { text-align: left; font-variant-numeric: normal; }
+  thead th { color: var(--text-muted); font-weight: 600; font-size: 11.5px; text-transform: uppercase; letter-spacing: .05em; }
+  [hidden] { display: none !important; }
+
+  /* ---------- stat tiles ---------- */
+  .tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 1px; background: var(--border); border-radius: 10px; overflow: hidden; margin-top: 4px; }
+  .tile { background: var(--surface-1); padding: 16px 18px 18px; }
+  .tile .lab { font-size: 12.5px; color: var(--text-muted); margin-bottom: 7px; }
+  .tile .val { font-size: 27px; font-weight: 620; letter-spacing: -0.02em; line-height: 1.1; }
+  .tile .ci { font-size: 12px; color: var(--text-secondary); margin-top: 6px; font-variant-numeric: tabular-nums; }
+  .up { color: var(--good-text); }
+  .down { color: var(--crit); }
+
+  /* ---------- callout ---------- */
+  .callout {
+    margin-top: 18px; padding: 16px 18px; border-radius: 10px;
+    background: color-mix(in srgb, var(--crit) 8%, var(--surface-1));
+    border: 1px solid color-mix(in srgb, var(--crit) 24%, transparent);
+    font-size: 13.5px; color: var(--text-secondary);
+  }
+  .callout b { color: var(--text-primary); }
+
+  /* ---------- tooltip ---------- */
+  #tip {
+    position: fixed; z-index: 50; pointer-events: none; opacity: 0;
+    transition: opacity .09s ease; background: var(--tip-bg); color: var(--tip-ink);
+    border-radius: 9px; padding: 9px 12px; font-size: 12.5px; line-height: 1.45;
+    box-shadow: 0 6px 24px rgba(0,0,0,.22); max-width: 260px;
+  }
+  #tip .tv { font-size: 15px; font-weight: 640; letter-spacing: -0.01em; display: block; }
+  #tip .tl { opacity: .72; }
+  .hit { fill: transparent; cursor: default; }
+
+  h3.sect {
+    font-size: 12px; letter-spacing: .1em; text-transform: uppercase;
+    color: var(--text-muted); font-weight: 650; margin: 46px 0 0;
+  }
+
+  footer { margin-top: 52px; padding-top: 22px; border-top: 1px solid var(--border); font-size: 12.5px; color: var(--text-muted); }
+  footer a { color: var(--text-secondary); }
+  footer p { margin: 0 0 10px; }
+</style>
+</head>
+<body>
+<!-- injected by the site build: a way back into the site from a standalone
+     piece. A static bar at the top, so it is visible on arrival, and a pill
+     that appears once you have scrolled past it, so there is always a way out.
+     Self-contained, because these pages do not load the site stylesheet. -->
+<style id="__rb-style">
+#__rb{
+  box-sizing:border-box;display:flex;flex-wrap:wrap;align-items:center;gap:.6rem 1.25rem;
+  padding:.6rem clamp(1rem,4vw,2rem);border-bottom:1px solid #ddd9cf;background:#faf9f6;
+  font:500 13px/1.35 InterVar,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  color:#55524a;
+}
+#__rb a{color:#14509b;text-decoration:none;display:inline-flex;align-items:center;gap:.4rem}
+#__rb a:hover{text-decoration:underline}
+#__rb .__rb-home{font-weight:640;color:#16150f}
+#__rb .__rb-home i{font-style:normal;font-weight:400;color:#6f6c63}
+#__rb .__rb-right{margin-left:auto;display:flex;gap:1.1rem;flex-wrap:wrap}
+#__rb .__mark{
+  display:inline-grid;place-items:center;width:1.2rem;height:1.2rem;flex:none;
+  background:#16150f;color:#faf9f6;font-size:.72rem;font-weight:700;
+}
+#__rb-pill{
+  position:fixed;left:14px;bottom:14px;z-index:2147483000;
+  display:inline-flex;align-items:center;gap:.45rem;padding:.58rem .9rem;
+  background:rgba(22,21,15,.93);color:#faf9f6;text-decoration:none;border-radius:99px;
+  font:600 12.5px/1 InterVar,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  border:1px solid rgba(255,255,255,.16);box-shadow:0 6px 22px rgba(0,0,0,.28);
+  opacity:0;transform:translateY(6px);pointer-events:none;
+  transition:opacity .2s ease,transform .2s ease;
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+}
+#__rb-pill.__on{opacity:1;transform:none;pointer-events:auto}
+#__rb-pill:hover{background:#16150f;color:#fff}
+@media (prefers-color-scheme:dark){
+  #__rb{background:#131310;border-bottom-color:#2c2b24;color:#c0bcb1}
+  #__rb .__rb-home{color:#f7f5ef}
+  #__rb .__rb-home i{color:#948f85}
+  #__rb a{color:#85adea}
+  #__rb .__mark{background:#f7f5ef;color:#131310}
+  #__rb-pill{background:rgba(247,245,239,.95);color:#131310;border-color:rgba(0,0,0,.2)}
+  #__rb-pill:hover{background:#fff;color:#000}
+}
+@media (prefers-reduced-motion:reduce){#__rb-pill{transition:none}}
+@media print{#__rb,#__rb-pill{display:none !important}}
+</style>
+<div id="__rb">
+  <a class="__rb-home" href="index.html"><span class="__mark" aria-hidden="true">A</span>Alex Rajcoomar <i>portfolio</i></a>
+  <span class="__rb-right"><a href="research.html">Research</a><a href="library.html">All work</a></span>
+</div>
+
+<div class="wrap">
+
+  <div class="topbar">
+    <div>
+      <p class="eyebrow">Rate-of-living · metabolic scaling · caffeine</p>
+      <h1>Does chronic caffeine spend your heartbeat budget faster?</h1>
+      <p class="dek">The hypothesis needs four things to be true in sequence. Each one has been measured, and each one fails.</p>
+    </div>
+    <button class="toggle" id="themeBtn" type="button">Dark</button>
+  </div>
+
+  <section class="verdict">
+    <div>
+      <div class="hero-num">+0.40<span class="hero-unit">bpm</span></div>
+      <div class="hero-sub">95% CI −0.78 to 1.57 · p = 0.506 · I² = 0</div>
+    </div>
+    <p>Effect of 3–6 cups of coffee daily, for 2 to 24 weeks, on <strong>resting heart rate</strong>. Six randomised trials, 485 participants. The interval spans zero and includes a decrease. <strong>The input variable the whole hypothesis rests on is null</strong>: everything downstream is being multiplied by nothing.</p>
+  </section>
+
+  <h3 class="sect">Where the chain breaks</h3>
+  <div class="chain">
+    <div class="chain-row">
+      <div class="mark-x">✕</div>
+      <div>
+        <p class="chain-claim">Caffeine raises resting heart rate</p>
+        <p class="chain-why">Measured at +0.40 bpm, not significant. Adenosine antagonism raises blood pressure; the arterial baroreflex answers with increased vagal tone and heart rate stays flat. Tolerance to the pressor effect arrives within days.</p>
+      </div>
+    </div>
+    <div class="chain-row">
+      <div class="mark-x">✕</div>
+      <div>
+        <p class="chain-claim">A faster heart makes cells run faster</p>
+        <p class="chain-why">The causal arrow is reversed. Resting cardiac output is set by tissue metabolic demand, not the other way round. Local metabolites and endothelial signalling govern capillary perfusion; the heart supplies what the tissue beds draw. Pacing the heart faster without raising demand shortens diastolic filling and cuts stroke volume.</p>
+      </div>
+    </div>
+    <div class="chain-row">
+      <div class="mark-x">✕</div>
+      <div>
+        <p class="chain-claim">More throughput means more oxidative damage means shorter life</p>
+        <p class="chain-why">Mice deficient in both MnSOD and GPx-1 accumulated more oxidative damage and more pathology with <em>no reduction in longevity</em>. The last arrow fails under designed conditions.</p>
+      </div>
+    </div>
+    <div class="chain-row">
+      <div class="mark-x">✕</div>
+      <div>
+        <p class="chain-claim">Beats are a fixed budget you draw down</p>
+        <p class="chain-why">The mass-invariant heartbeat product is a consequence of two allometries, never a conserved quantity. Lower the number without changing the state underneath it, as ivabradine does, and nothing follows.</p>
+      </div>
+    </div>
+  </div>
+
+  <h3 class="sect">1 · The constant is not constant</h3>
+  <div class="card">
+    <div class="card-head">
+      <h2>Lifetime heartbeats, by species</h2>
+      <button class="tbtn" data-table="t1" type="button">Table</button>
+    </div>
+    <p class="sub">A "law" with a fourfold spread inside the class it is supposed to govern is a summary statistic. Birds break it further still, sustaining high rates alongside long lives.</p>
+    <div class="plot" id="c1"></div>
+    <div id="t1" hidden></div>
+    <p class="note">Rodent and mammalian-mean figures from Zhang &amp; Zhang, <em>Ageing Research Reviews</em>. The human bar is arithmetic, not a claim: 70 bpm × 80 years = 2.94 × 10⁹, consistent with the ~3 × 10⁹ the same review reports.</p>
+  </div>
+
+  <h3 class="sect">2 · What the budget model would have to predict</h3>
+  <div class="card">
+    <div class="card-head">
+      <h2>Years to spend 2.94 billion beats</h2>
+      <button class="tbtn" data-table="t2" type="button">Table</button>
+    </div>
+    <p class="sub">Take the budget literally and the curve below is your life expectancy as a function of resting heart rate. SIGNIFY ran the experiment: ivabradine, a pure funny-current inhibitor with no other haemodynamic action, slowed 19,102 patients by 9.9 bpm. The model says that buys 12.9 years.</p>
+    <div class="plot" id="c2"></div>
+    <div id="t2" hidden></div>
+    <div class="callout">
+      <b>What SIGNIFY actually measured:</b> cardiovascular death or myocardial infarction in 6.8% on ivabradine versus 6.4% on placebo, p = 0.20. Patients with CCS class ≥ 2 angina appeared <b>harmed</b> (p for interaction = 0.02). A 14% cut in beats per unit time bought nothing. The trial ran a few years rather than a lifetime, so it cannot exclude a small multi-decade effect, but the budget model predicts a large one, and none appeared.
+    </div>
+    <p class="note">At the coffee meta-analysis point estimate of +0.40 bpm, the same model charges you <strong>0.45 years</strong>. Propagate the confidence interval and the cost runs from a 0.90-year gain to a 1.75-year loss.</p>
+  </div>
+
+  <h3 class="sect">3 · What actually moves resting heart rate</h3>
+  <div class="card">
+    <div class="card-head">
+      <h2>Change in resting heart rate, by intervention</h2>
+      <button class="tbtn" data-table="t3" type="button">Table</button>
+    </div>
+    <p class="sub">Same units, same measure. Whiskers are 95% confidence intervals where reported, and the reported range across trials otherwise.</p>
+    <div class="legend" id="l3"></div>
+    <div class="plot" id="c3"></div>
+    <div id="t3" hidden></div>
+    <p class="note">Exercise is the awkward case for the budget model, not caffeine. Training lowers resting heart rate by a few bpm while the sessions themselves drive it to 150–180 for hours each week. Lifetime beats come out flat or higher, and exercise remains the best-supported lifespan intervention in humans. The model predicts the opposite sign.</p>
+  </div>
+
+  <h3 class="sect">4 · Rate-of-living, inverted</h3>
+  <div class="card">
+    <div class="card-head">
+      <h2>Mice by mass-adjusted metabolic intensity</h2>
+      <button class="tbtn" data-table="t4" type="button">Table</button>
+    </div>
+    <p class="sub">All three bars are percentage differences against the lowest-intensity quartile, so they share one axis. The high-metabolism mice burned more oxygen at rest and lived longer, with higher mitochondrial proton conductance through the adenine nucleotide translocase and UCP-3. The theory predicted the opposite sign.</p>
+    <div class="legend" id="l4"></div>
+    <div class="plot" id="c4"></div>
+    <div id="t4" hidden></div>
+    <p class="note">Speakman et al., <em>Aging Cell</em> 2004. The middle bar is arithmetic on rate-of-living's own premise, not a figure from the paper: if lifetime energy expenditure per gram were fixed, lifespan would scale as 1 ÷ 1.17, or −14.5%. Bats and birds show the same inversion, high mass-specific metabolic rates alongside exceptional longevity. Rate-of-living did not lose to hormesis; it lost on its own evidence.</p>
+  </div>
+
+  <h3 class="sect">5 · A marker, not a lever</h3>
+  <div class="card">
+    <div class="card-head">
+      <h2>All-cause mortality by resting heart rate</h2>
+      <button class="tbtn" data-table="t5" type="button">Table</button>
+    </div>
+    <p class="sub">40 studies, 1,246,203 participants, 78,349 deaths. The association is real and roughly linear. It indexes autonomic tone, fitness, inflammation and subclinical disease, which is why moving the number pharmacologically, as in SIGNIFY above, does not move the outcome.</p>
+    <div class="plot" id="c5"></div>
+    <div id="t5" hidden></div>
+    <p class="note">Zhang et al., <em>CMAJ</em> 2016. Relative risks versus the lowest heart-rate category; the per-10-bpm estimate is the pooled dose-response slope.</p>
+  </div>
+
+  <h3 class="sect">6 · Where the real cost sits</h3>
+  <div class="card">
+    <div class="card-head"><h2>CRAVE: 100 adults, randomised to coffee or abstention, 14 days</h2></div>
+    <p class="sub">Continuous ECG, wrist accelerometry and continuous glucose monitoring. Cardiovascular tolerance to caffeine is near-complete, which is why the resting-heart-rate signal is null. Tolerance across its other effects is not, and the gap is where a plausible cost actually lives.</p>
+    <div class="tiles">
+      <div class="tile"><div class="lab">Sleep duration</div><div class="val down">−36 min</div><div class="ci">95% CI 25–47 · p &lt; 0.001<br>≈1 hour in slow metabolisers</div></div>
+      <div class="tile"><div class="lab">Ventricular ectopy (PVCs)</div><div class="val down">≈ +50%</div><div class="ci">Doubled above 1 drink/day<br>Statistically significant</div></div>
+      <div class="tile"><div class="lab">Atrial ectopy (PACs)</div><div class="val">No change</div><div class="ci">Null in ITT and as-treated</div></div>
+      <div class="tile"><div class="lab">Daily steps</div><div class="val up">+1,058</div><div class="ci">95% CI 441–1,675 · p = 0.001</div></div>
+    </div>
+    <p class="note">Sleep displacement is the largest realistic route by which habitual caffeine could shorten a human life, and it operates entirely outside the heartbeat frame. The activity increase runs the other way.</p>
+  </div>
+
+  <div class="card">
+    <div class="card-head"><h2>What the population data show</h2></div>
+    <p class="sub">If caffeine were burning through a budget, mortality should climb monotonically with dose. Over the usual consumption range it does the opposite.</p>
+    <div class="tiles">
+      <div class="tile"><div class="lab">All-cause mortality, UK Biobank</div><div class="val up">HR 0.91</div><div class="ci">95% CI 0.88–0.93 · J-shaped by dose<br>498,158 people · 12.1 yr · 34,699 deaths</div></div>
+      <div class="tile"><div class="lab">Any arrhythmia, per extra cup</div><div class="val up">−3%</div><div class="ci">386,258 people · ~4 yr follow-up<br>Mendelian randomisation: null</div></div>
+      <div class="tile"><div class="lab">Mammalian metabolic scaling</div><div class="val">0.57 → 0.87</div><div class="ci">Local exponent across body sizes<br>Convex curvature; WBE predicts concave</div></div>
+    </div>
+    <p class="note">Both cohort figures are observational, so residual confounding and reverse causation (sick people quit coffee) stay live. The Mendelian randomisation is the useful part, because it partly breaks the confounding. The scaling exponent is from Kolokotrones et al., <em>Nature</em> 2010: the 3/4 power that generates the mass-invariant heartbeat product is an average taken through a curve, not a law.</p>
+  </div>
+
+  <h3 class="sect">What survives</h3>
+  <div class="card">
+    <p class="sub" style="margin-bottom:0">Not the budget, but three adjacent mechanisms hold up: <strong>sleep displacement</strong>; <strong>sustained blood-pressure elevation at very high chronic doses</strong>, an afterload mechanism with a large evidence base behind it; and <strong>arrhythmia triggering in people who already carry a substrate</strong>, which is what the CRAVE ventricular-ectopy signal points at. All three are dose- and phenotype-dependent, none of them count beats, and a fast CYP1A2 metaboliser drinking three cups before noon is in a different position from a slow metaboliser drinking six after 4pm.</p>
+  </div>
+
+  <footer>
+    <p><strong>Sources.</strong> Zhang &amp; Zhang, <a href="https://jontalle.web.engr.illinois.edu/uploads/410-NS.F22/HeartRateLifespanMortality.08.pdf">Heart rate, lifespan, and mortality risk</a> · Han et al. 2023, <a href="https://academic.oup.com/nutritionreviews/article-abstract/82/8/1046/7255958">coffee and heart rate meta-analysis</a>, <em>Nutrition Reviews</em> · <a href="https://www.acc.org/Latest-in-Cardiology/Clinical-Trials/2014/09/01/14/24/SIGNIFY">SIGNIFY</a> · <a href="https://www.mdpi.com/2077-0383/7/12/503">Exercise and resting heart rate</a>, 191 studies · <a href="https://pdodds.w3.uvm.edu/files/papers/others/2010/kolokotrones2010a.pdf">Kolokotrones et al., Curvature in metabolic scaling</a> · <a href="https://www.academia.edu/4682619/Uncoupled_and_surviving_individual_mice_with_high_metabolism_have_greater_mitochondrial_uncoupling_and_live_longer">Speakman et al. 2004</a> · <a href="https://pubmed.ncbi.nlm.nih.gov/19776219/">MnSOD/GPx-1 double-deficient mice</a> · <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC10374881">CRAVE trial</a> · <a href="https://link.springer.com/article/10.1186/s12916-022-02636-2">UK Biobank coffee and tea mortality</a> · <a href="https://www.ucsf.edu/news/2021/07/421086/coffee-doesnt-raise-your-risk-heart-rhythm-problems">Coffee and incident tachyarrhythmias</a> · <a href="https://www.cmaj.ca/content/188/3/E53">Resting heart rate and mortality</a>, <em>CMAJ</em> · <a href="https://pubmed.ncbi.nlm.nih.gov/19643206/">Bats and birds: longevity despite high metabolic rates</a></p>
+    <p>Every plotted value traces to one of the above. The 2.94 × 10⁹ budget and the years-to-exhaustion curve are arithmetic on a stated assumption (70 bpm, 80 years), labelled as such rather than sourced. Every chart carries a table view.</p>
+  </footer>
+</div>
+
+<div id="tip" role="status" aria-live="polite"></div>
+
+<script>
+(function () {
+  "use strict";
+
+  /* ---------------- theme ---------------- */
+  var btn = document.getElementById("themeBtn");
+  function currentDark() {
+    var t = document.documentElement.getAttribute("data-theme");
+    if (t) return t === "dark";
+    return window.matchMedia("(prefers-color-scheme: dark)").matches;
+  }
+  function syncBtn() { btn.textContent = currentDark() ? "Light" : "Dark"; }
+  btn.addEventListener("click", function () {
+    document.documentElement.setAttribute("data-theme", currentDark() ? "light" : "dark");
+    syncBtn(); renderAll();
+  });
+  window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", function () { syncBtn(); renderAll(); });
+  syncBtn();
+
+  var cs = function (name) { return getComputedStyle(document.documentElement).getPropertyValue(name).trim(); };
+
+  /* ---------------- tooltip ---------------- */
+  var tip = document.getElementById("tip");
+  function showTip(evt, value, label) {
+    tip.textContent = "";
+    var v = document.createElement("span"); v.className = "tv"; v.textContent = value;
+    var l = document.createElement("span"); l.className = "tl"; l.textContent = label;
+    tip.appendChild(v); tip.appendChild(l);
+    tip.style.opacity = "1";
+    moveTip(evt);
+  }
+  function moveTip(evt) {
+    var pad = 14, r = tip.getBoundingClientRect();
+    var x = evt.clientX + pad, y = evt.clientY - r.height - 10;
+    if (x + r.width > window.innerWidth - 8) x = evt.clientX - r.width - pad;
+    if (y < 8) y = evt.clientY + pad;
+    tip.style.left = x + "px"; tip.style.top = y + "px";
+  }
+  function hideTip() { tip.style.opacity = "0"; }
+  function bindTip(el, value, label) {
+    el.setAttribute("tabindex", "0");
+    el.setAttribute("role", "img");
+    el.setAttribute("aria-label", label + ": " + value);
+    el.addEventListener("pointerenter", function (e) { showTip(e, value, label); });
+    el.addEventListener("pointermove", moveTip);
+    el.addEventListener("pointerleave", hideTip);
+    el.addEventListener("focus", function () {
+      var b = el.getBoundingClientRect();
+      showTip({ clientX: b.left + b.width / 2, clientY: b.top }, value, label);
+    });
+    el.addEventListener("blur", hideTip);
+  }
+
+  /* ---------------- svg helpers ---------------- */
+  var NS = "http://www.w3.org/2000/svg";
+  /* typographic minus, never a hyphen */
+  function fmt(n) { return String(n).replace("-", "−"); }
+  function svgEl(tag, attrs) {
+    var e = document.createElementNS(NS, tag);
+    for (var k in attrs) if (attrs[k] !== undefined && attrs[k] !== null) e.setAttribute(k, attrs[k]);
+    return e;
+  }
+  function text(x, y, str, opts) {
+    opts = opts || {};
+    var t = svgEl("text", {
+      x: x, y: y,
+      "text-anchor": opts.anchor || "start",
+      "dominant-baseline": opts.baseline || "middle",
+      "font-size": opts.size || 12,
+      "font-weight": opts.weight || 400,
+      fill: opts.fill || cs("--text-muted"),
+      "font-family": "system-ui, -apple-system, sans-serif"
+    });
+    if (opts.tabular) t.setAttribute("style", "font-variant-numeric: tabular-nums");
+    t.textContent = str;
+    return t;
+  }
+  /* horizontal bar: square at baseline (left), 4px rounded data-end (right) */
+  function hBar(x0, y, w, h, fill, r) {
+    r = Math.min(r === undefined ? 4 : r, Math.max(0, w), h / 2);
+    var d = "M" + x0 + "," + y + "H" + (x0 + w - r) + "a" + r + "," + r + " 0 0 1 " + r + "," + r +
+            "V" + (y + h - r) + "a" + r + "," + r + " 0 0 1 " + (-r) + "," + r + "H" + x0 + "Z";
+    return svgEl("path", { d: d, fill: fill });
+  }
+  /* leftward bar for negative diverging values */
+  function hBarLeft(x0, y, w, h, fill, r) {
+    r = Math.min(r === undefined ? 4 : r, Math.max(0, w), h / 2);
+    var xe = x0 - w;
+    var d = "M" + x0 + "," + y + "H" + (xe + r) + "a" + r + "," + r + " 0 0 0 " + (-r) + "," + r +
+            "V" + (y + h - r) + "a" + r + "," + r + " 0 0 0 " + r + "," + r + "H" + x0 + "Z";
+    return svgEl("path", { d: d, fill: fill });
+  }
+  /* column: rounded cap on top, square at baseline */
+  function vCol(x, yTop, w, h, fill, r) {
+    r = Math.min(r === undefined ? 4 : r, w / 2, Math.max(0, h));
+    var yb = yTop + h;
+    var d = "M" + x + "," + yb + "V" + (yTop + r) + "a" + r + "," + r + " 0 0 1 " + r + "," + (-r) +
+            "H" + (x + w - r) + "a" + r + "," + r + " 0 0 1 " + r + "," + r + "V" + yb + "Z";
+    return svgEl("path", { d: d, fill: fill });
+  }
+  function mkSvg(host, w, h) {
+    host.textContent = "";
+    var s = svgEl("svg", { viewBox: "0 0 " + w + " " + h, width: w, height: h, role: "presentation" });
+    s.setAttribute("style", "max-width:100%;height:auto");
+    host.appendChild(s);
+    return s;
+  }
+  function width(host, min) { return Math.max(min || 300, host.clientWidth || 640); }
+  function isNarrow(W, at) { return W < (at || 560); }
+  /* row label: left gutter on wide, stacked above the bar on narrow */
+  function rowLabel(s, narrow, gutterX, rowTop, cy, name, sub) {
+    if (narrow) {
+      s.appendChild(text(0, rowTop + 11, name, { size: 12.5, weight: 600, fill: cs("--text-primary") }));
+      if (sub) s.appendChild(text(0, rowTop + 27, sub, { size: 11 }));
+    } else {
+      s.appendChild(text(gutterX, sub ? cy - 7 : cy, name,
+        { anchor: "end", size: 13, weight: 600, fill: cs("--text-primary") }));
+      if (sub) s.appendChild(text(gutterX, cy + 9, sub, { anchor: "end", size: 11.5 }));
+    }
+  }
+
+  /* ---------------- table builder ---------------- */
+  function buildTable(hostId, cap, headers, rows) {
+    var host = document.getElementById(hostId);
+    host.textContent = "";
+    var t = document.createElement("table");
+    var c = document.createElement("caption"); c.textContent = cap; t.appendChild(c);
+    var thead = document.createElement("thead"), tr = document.createElement("tr");
+    headers.forEach(function (h) { var th = document.createElement("th"); th.scope = "col"; th.textContent = h; tr.appendChild(th); });
+    thead.appendChild(tr); t.appendChild(thead);
+    var tb = document.createElement("tbody");
+    rows.forEach(function (r) {
+      var row = document.createElement("tr");
+      r.forEach(function (cell, i) {
+        var el = document.createElement(i === 0 ? "th" : "td");
+        if (i === 0) el.scope = "row";
+        el.textContent = cell; row.appendChild(el);
+      });
+      tb.appendChild(row);
+    });
+    t.appendChild(tb); host.appendChild(t);
+  }
+  document.querySelectorAll("[data-table]").forEach(function (b) {
+    b.addEventListener("click", function () {
+      var id = b.getAttribute("data-table"), el = document.getElementById(id);
+      var plot = el.previousElementSibling;
+      var open = !el.hidden;
+      el.hidden = open; plot.hidden = !open;
+      b.textContent = open ? "Table" : "Chart";
+    });
+  });
+
+  /* ---------------- legends ---------------- */
+  function legend(hostId, items) {
+    var h = document.getElementById(hostId);
+    h.textContent = "";
+    items.forEach(function (it) {
+      var s = document.createElement("span");
+      var k = document.createElement("i");
+      k.className = it.line ? "keyline" : "swatch";
+      k.style.background = it.color; k.style.display = "block";
+      s.appendChild(k);
+      s.appendChild(document.createTextNode(it.label));
+      h.appendChild(s);
+    });
+  }
+
+  /* =========================================================
+     CHART 1: lifetime heartbeats (emphasis: human)
+     ========================================================= */
+  var D1 = [
+    { name: "Mouse",           v: 0.70, ctx: true,  note: "≈550 bpm, 2–2.5 yr" },
+    { name: "Rat",             v: 0.70, ctx: true,  note: "≈370 bpm, 3–3.5 yr" },
+    { name: "Mammalian mean",  v: 1.00, ctx: true,  note: "pooled across species" },
+    { name: "Human",           v: 2.94, ctx: false, note: "70 bpm × 80 yr" }
+  ];
+  function chart1() {
+    var host = document.getElementById("c1");
+    var W = width(host, 300), nar = isNarrow(W);
+    var padL = nar ? 4 : 132, padR = nar ? 60 : 74, padT = 8;
+    var rowH = nar ? 62 : 46, barH = 22, barOff = nar ? 32 : (rowH - barH) / 2;
+    var H = padT + D1.length * rowH + 34;
+    var s = mkSvg(host, W, H);
+    var plotW = W - padL - padR, max = 3.2;
+    var x = function (v) { return padL + (v / max) * plotW; };
+
+    [0, 1, 2, 3].forEach(function (g) {
+      s.appendChild(svgEl("line", { x1: x(g), x2: x(g), y1: padT, y2: padT + D1.length * rowH,
+        stroke: g === 0 ? cs("--axis") : cs("--grid"), "stroke-width": 1 }));
+      s.appendChild(text(x(g), padT + D1.length * rowH + 16, String(g), { anchor: "middle", size: 11.5, tabular: true }));
+    });
+    s.appendChild(text(padL + plotW / 2, padT + D1.length * rowH + 32, "billion beats per lifetime",
+      { anchor: "middle", size: 11.5 }));
+
+    D1.forEach(function (d, i) {
+      var top = padT + i * rowH, y = top + barOff, cy = y + barH / 2;
+      var fill = d.ctx ? cs("--context") : cs("--series-1");
+      s.appendChild(hBar(x(0), y, x(d.v) - x(0), barH, fill));
+      rowLabel(s, nar, padL - 12, top, cy, d.name, nar ? null : null);
+      s.appendChild(text(x(d.v) + 10, cy, d.v.toFixed(2) + " bn",
+        { size: 12.5, weight: d.ctx ? 400 : 600, tabular: true, fill: d.ctx ? cs("--text-secondary") : cs("--text-primary") }));
+      var hit = svgEl("rect", { class: "hit", x: 0, y: top, width: W, height: rowH });
+      bindTip(hit, d.v.toFixed(2) + " billion beats", d.name + " · " + d.note);
+      s.appendChild(hit);
+    });
+    buildTable("t1", "Lifetime heartbeats by species.",
+      ["Species", "Beats (billions)", "Basis"],
+      D1.map(function (d) { return [d.name, d.v.toFixed(2), d.note]; }));
+  }
+
+  /* =========================================================
+     CHART 2: years to exhaust the budget vs resting HR
+     ========================================================= */
+  function chart2() {
+    var host = document.getElementById("c2");
+    var W = width(host, 300), nar = isNarrow(W);
+    var padL = 52, padR = 22, padT = 34, padB = 46;
+    var H = Math.max(300, Math.min(360, W * 0.46));
+    var s = mkSvg(host, W, H);
+    var x0 = 54, x1 = 92, y0 = 58, y1 = 106;
+    var X = function (v) { return padL + (v - x0) / (x1 - x0) * (W - padL - padR); };
+    var Y = function (v) { return padT + (1 - (v - y0) / (y1 - y0)) * (H - padT - padB); };
+
+    [60, 70, 80, 90, 100].forEach(function (t) {
+      s.appendChild(svgEl("line", { x1: padL, x2: W - padR, y1: Y(t), y2: Y(t), stroke: cs("--grid"), "stroke-width": 1 }));
+      s.appendChild(text(padL - 10, Y(t), String(t), { anchor: "end", size: 11.5, tabular: true }));
+    });
+    [55, 60, 65, 70, 75, 80, 85, 90].forEach(function (t) {
+      s.appendChild(text(X(t), H - padB + 18, String(t), { anchor: "middle", size: 11.5, tabular: true }));
+    });
+    s.appendChild(svgEl("line", { x1: padL, x2: W - padR, y1: H - padB, y2: H - padB, stroke: cs("--axis"), "stroke-width": 1 }));
+    s.appendChild(text(padL, padT - 16, "Years of life the budget model allows", { size: 11.5, weight: 600 }));
+    s.appendChild(text((padL + W - padR) / 2, H - padB + 38, "resting heart rate (bpm)", { anchor: "middle", size: 11.5 }));
+
+    var pts = [], hr;
+    for (hr = x0; hr <= x1 + 0.01; hr += 0.5) pts.push([X(hr), Y(5600 / hr)]);
+    s.appendChild(svgEl("path", {
+      d: "M" + pts.map(function (p) { return p[0].toFixed(2) + "," + p[1].toFixed(2); }).join("L"),
+      fill: "none", stroke: cs("--series-1"), "stroke-width": 2, "stroke-linejoin": "round", "stroke-linecap": "round"
+    }));
+
+    /* SIGNIFY pair */
+    var A = { hr: 70.6, y: 5600 / 70.6, lab: "Placebo, 70.6 bpm" };
+    var B = { hr: 60.7, y: 5600 / 60.7, lab: "Ivabradine, 60.7 bpm" };
+    s.appendChild(svgEl("line", { x1: X(B.hr), x2: X(B.hr), y1: Y(B.y), y2: Y(A.y), stroke: cs("--text-muted"), "stroke-width": 1 }));
+    s.appendChild(svgEl("line", { x1: X(B.hr), x2: X(A.hr), y1: Y(A.y), y2: Y(A.y), stroke: cs("--text-muted"), "stroke-width": 1 }));
+    var annY = (Y(A.y) + Y(B.y)) / 2;
+    s.appendChild(text(X(B.hr) + 9, annY, nar ? "+12.9 yr predicted" : "model predicts +12.9 yr",
+      { size: 12, weight: 600, fill: cs("--text-primary") }));
+    if (!nar) s.appendChild(text(X(B.hr) + 9, annY + 16, "measured: no benefit (p = 0.20)",
+      { size: 11.5, fill: cs("--text-secondary") }));
+
+    [A, B].forEach(function (p) {
+      s.appendChild(svgEl("circle", { cx: X(p.hr), cy: Y(p.y), r: 6, fill: cs("--series-1"),
+        stroke: cs("--surface-1"), "stroke-width": 2 }));
+      var hit = svgEl("circle", { class: "hit", cx: X(p.hr), cy: Y(p.y), r: 15 });
+      bindTip(hit, p.y.toFixed(1) + " years", p.lab + " · budget-model prediction");
+      s.appendChild(hit);
+    });
+
+    var rows = [];
+    [55, 60, 60.7, 65, 70, 70.4, 70.6, 75, 80, 85, 90].forEach(function (h) {
+      rows.push([String(h), (5600 / h).toFixed(1)]);
+    });
+    buildTable("t2", "Years to spend 2.94 × 10⁹ beats at a given resting heart rate. Budget = 70 bpm × 80 years.",
+      ["Resting HR (bpm)", "Years allowed"], rows);
+  }
+
+  /* =========================================================
+     CHART 3: Δ resting heart rate (diverging)
+     ========================================================= */
+  var D3 = [
+    { name: "Ivabradine (SIGNIFY)", v: -9.9, lo: null, hi: null, ev: "19,102 patients", kind: "down", ci: "point estimate; no interval reported here" },
+    { name: "Yoga", v: -5.35, lo: -5.5, hi: -5.2, ev: "21 trials", kind: "down", ci: "reported range −5.5 to −5.2" },
+    { name: "Endurance training", v: -4.25, lo: -5.8, hi: -2.7, ev: "121 trials", kind: "down", ci: "reported range −5.8 to −2.7" },
+    { name: "Chronic coffee, 3–6 cups", v: 0.40, lo: -0.78, hi: 1.57, ev: "6 RCTs, 485 people", kind: "null", ci: "95% CI −0.78 to 1.57" }
+  ];
+  function chart3() {
+    var host = document.getElementById("c3");
+    var W = width(host, 300), nar = isNarrow(W, 600);
+    var padL = nar ? 4 : 190, padR = nar ? 44 : 92, padT = 8;
+    var rowH = nar ? 68 : 48, barH = 22, barOff = nar ? 38 : (rowH - barH) / 2;
+    var H = padT + D3.length * rowH + 36;
+    var s = mkSvg(host, W, H);
+    var plotW = W - padL - padR, lo = -11, hi = 3;
+    var X = function (v) { return padL + (v - lo) / (hi - lo) * plotW; };
+
+    [-10, -8, -6, -4, -2, 0, 2].forEach(function (t) {
+      s.appendChild(svgEl("line", { x1: X(t), x2: X(t), y1: padT, y2: padT + D3.length * rowH,
+        stroke: t === 0 ? cs("--axis") : cs("--grid"), "stroke-width": t === 0 ? 1.5 : 1 }));
+      s.appendChild(text(X(t), padT + D3.length * rowH + 16, fmt(t), { anchor: "middle", size: 11.5, tabular: true }));
+    });
+    s.appendChild(text(padL + plotW / 2, padT + D3.length * rowH + 33, "change in resting heart rate (bpm)", { anchor: "middle", size: 11.5 }));
+
+    D3.forEach(function (d, i) {
+      var top = padT + i * rowH, y = top + barOff, cy = y + barH / 2;
+      var col = d.kind === "down" ? cs("--series-1") : (d.kind === "null" ? cs("--context") : cs("--series-red"));
+      if (d.v < 0) s.appendChild(hBarLeft(X(0), y, X(0) - X(d.v), barH, col));
+      else s.appendChild(hBar(X(0), y, X(d.v) - X(0), barH, col));
+
+      if (d.lo !== null) {
+        s.appendChild(svgEl("line", { x1: X(d.lo), x2: X(d.hi), y1: cy, y2: cy, stroke: cs("--text-secondary"), "stroke-width": 1.5 }));
+        [d.lo, d.hi].forEach(function (e) {
+          s.appendChild(svgEl("line", { x1: X(e), x2: X(e), y1: cy - 5, y2: cy + 5, stroke: cs("--text-secondary"), "stroke-width": 1.5 }));
+        });
+      }
+      rowLabel(s, nar, padL - 14, top, cy, d.name, d.ev);
+      var lneg = d.v < 0 && nar;
+      var lx = lneg ? X(0) + 10
+             : (d.v < 0 ? X(Math.min(d.v, d.lo === null ? d.v : d.lo)) - 10
+                        : X(Math.max(d.v, d.hi === null ? d.v : d.hi)) + 10);
+      s.appendChild(text(lx, cy, (d.v > 0 ? "+" : "") + fmt(d.v),
+        { anchor: (d.v < 0 && !nar) ? "end" : "start", size: 12.5, weight: 600, tabular: true, fill: cs("--text-primary") }));
+
+      var hit = svgEl("rect", { class: "hit", x: 0, y: top, width: W, height: rowH });
+      bindTip(hit, (d.v > 0 ? "+" : "") + fmt(d.v) + " bpm", d.name + " · " + d.ev + " · " + d.ci);
+      s.appendChild(hit);
+    });
+
+    legend("l3", [
+      { color: cs("--series-1"), label: "Lowers resting heart rate" },
+      { color: cs("--context"),  label: "No determined direction (interval crosses zero)" }
+    ]);
+    buildTable("t3", "Change in resting heart rate by intervention.",
+      ["Intervention", "Δ bpm", "Interval", "Evidence"],
+      D3.map(function (d) { return [d.name, (d.v > 0 ? "+" : "") + fmt(d.v), fmt(d.ci), d.ev]; }));
+  }
+
+  /* =========================================================
+     CHART 4: Speakman, indexed to lowest quartile = 100
+     ========================================================= */
+  var D4 = [
+    { name: "Resting oxygen consumption", sub: "measured, upper quartile", v: 17,    kind: "input",
+      src: "Speakman et al. 2004, measured" },
+    { name: "Lifespan, if rate-of-living held", sub: "1 ÷ 1.17, the theory's own premise", v: -14.5, kind: "theory",
+      src: "arithmetic on a fixed lifetime energy budget per gram" },
+    { name: "Lifespan", sub: "measured, upper quartile", v: 36, kind: "outcome",
+      src: "Speakman et al. 2004, measured" }
+  ];
+  function chart4() {
+    var host = document.getElementById("c4");
+    var W = width(host, 300), nar = isNarrow(W, 680);
+    var padL = nar ? 4 : 246, padR = nar ? 52 : 78, padT = 8;
+    var rowH = nar ? 68 : 50, barH = 22, barOff = nar ? 38 : (rowH - barH) / 2;
+    var H = padT + D4.length * rowH + 36;
+    var s = mkSvg(host, W, H);
+    var plotW = W - padL - padR, lo = -22, hi = 42;
+    var X = function (v) { return padL + (v - lo) / (hi - lo) * plotW; };
+
+    [-20, -10, 0, 10, 20, 30, 40].forEach(function (t) {
+      s.appendChild(svgEl("line", { x1: X(t), x2: X(t), y1: padT, y2: padT + D4.length * rowH,
+        stroke: t === 0 ? cs("--axis") : cs("--grid"), "stroke-width": t === 0 ? 1.5 : 1 }));
+      s.appendChild(text(X(t), padT + D4.length * rowH + 16, fmt(t), { anchor: "middle", size: 11.5, tabular: true }));
+    });
+    s.appendChild(text(padL + plotW / 2, padT + D4.length * rowH + 33,
+      "% difference vs the lowest-intensity quartile", { anchor: "middle", size: 11.5 }));
+
+    D4.forEach(function (d, i) {
+      var top = padT + i * rowH, y = top + barOff, cy = y + barH / 2;
+      var col = d.kind === "input" ? cs("--series-2") : (d.kind === "theory" ? cs("--context") : cs("--series-1"));
+      if (d.v < 0) s.appendChild(hBarLeft(X(0), y, X(0) - X(d.v), barH, col));
+      else s.appendChild(hBar(X(0), y, X(d.v) - X(0), barH, col));
+      rowLabel(s, nar, padL - 14, top, cy, d.name, d.sub);
+      var lx4 = (d.v < 0 && nar) ? X(0) + 10 : (d.v < 0 ? X(d.v) - 10 : X(d.v) + 10);
+      s.appendChild(text(lx4, cy, (d.v > 0 ? "+" : "") + fmt(d.v) + "%",
+        { anchor: (d.v < 0 && !nar) ? "end" : "start", size: 12.5, weight: 600, tabular: true, fill: cs("--text-primary") }));
+      var hit = svgEl("rect", { class: "hit", x: 0, y: top, width: W, height: rowH });
+      bindTip(hit, (d.v > 0 ? "+" : "") + fmt(d.v) + "%", d.name + " · " + d.src);
+      s.appendChild(hit);
+    });
+
+    legend("l4", [
+      { color: cs("--series-2"), label: "Measured input (metabolic rate)" },
+      { color: cs("--context"),  label: "What rate-of-living predicts" },
+      { color: cs("--series-1"), label: "Measured outcome (lifespan)" }
+    ]);
+    buildTable("t4", "Upper versus lowest quartile of mass-adjusted metabolic intensity in mice.",
+      ["Measure", "% difference", "Basis"],
+      D4.map(function (d) { return [d.name, (d.v > 0 ? "+" : "") + fmt(d.v) + "%", d.src]; }));
+  }
+
+  /* =========================================================
+     CHART 5: forest plot, RR of all-cause mortality
+     ========================================================= */
+  var D5 = [
+    { name: "Per 10 bpm higher", rr: 1.09, lo: 1.07, hi: 1.12, ev: "pooled dose-response slope" },
+    { name: "60–80 bpm", rr: 1.12, lo: 1.07, hi: 1.17, ev: "vs lowest heart-rate category" },
+    { name: "Above 80 bpm", rr: 1.45, lo: 1.34, hi: 1.57, ev: "vs lowest heart-rate category" }
+  ];
+  function chart5() {
+    var host = document.getElementById("c5");
+    var W = width(host, 300), nar = isNarrow(W, 620);
+    var padL = nar ? 4 : 196, padR = nar ? 50 : 96, padT = 8;
+    var rowH = nar ? 68 : 46, dotOff = nar ? 49 : rowH / 2;
+    var H = padT + D5.length * rowH + 36;
+    var s = mkSvg(host, W, H);
+    var plotW = W - padL - padR, lo = 0.98, hi = 1.62;
+    var X = function (v) { return padL + (v - lo) / (hi - lo) * plotW; };
+
+    [1.0, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6].forEach(function (t) {
+      s.appendChild(svgEl("line", { x1: X(t), x2: X(t), y1: padT, y2: padT + D5.length * rowH,
+        stroke: t === 1.0 ? cs("--axis") : cs("--grid"), "stroke-width": t === 1.0 ? 1.5 : 1 }));
+      s.appendChild(text(X(t), padT + D5.length * rowH + 16, t.toFixed(1), { anchor: "middle", size: 11.5, tabular: true }));
+    });
+    s.appendChild(text(padL + plotW / 2, padT + D5.length * rowH + 33, "relative risk of all-cause mortality", { anchor: "middle", size: 11.5 }));
+
+    D5.forEach(function (d, i) {
+      var top = padT + i * rowH, cy = top + dotOff;
+      s.appendChild(svgEl("line", { x1: X(d.lo), x2: X(d.hi), y1: cy, y2: cy, stroke: cs("--text-secondary"), "stroke-width": 1.5 }));
+      [d.lo, d.hi].forEach(function (e) {
+        s.appendChild(svgEl("line", { x1: X(e), x2: X(e), y1: cy - 5, y2: cy + 5, stroke: cs("--text-secondary"), "stroke-width": 1.5 }));
+      });
+      s.appendChild(svgEl("circle", { cx: X(d.rr), cy: cy, r: 5.5, fill: cs("--series-1"), stroke: cs("--surface-1"), "stroke-width": 2 }));
+      rowLabel(s, nar, padL - 14, top, cy, d.name, d.ev);
+      s.appendChild(text(X(d.hi) + 12, cy, d.rr.toFixed(2), { size: 12.5, weight: 600, tabular: true, fill: cs("--text-primary") }));
+      var hit = svgEl("rect", { class: "hit", x: 0, y: top, width: W, height: rowH });
+      bindTip(hit, "RR " + d.rr.toFixed(2), d.name + " · 95% CI " + d.lo.toFixed(2) + " to " + d.hi.toFixed(2));
+      s.appendChild(hit);
+    });
+    buildTable("t5", "Relative risk of all-cause mortality by resting heart rate. 40 studies, 1,246,203 participants.",
+      ["Category", "RR", "95% CI", "Comparator"],
+      D5.map(function (d) { return [d.name, d.rr.toFixed(2), d.lo.toFixed(2) + "–" + d.hi.toFixed(2), d.ev]; }));
+  }
+
+  /* ---------------- run ---------------- */
+  function renderAll() { chart1(); chart2(); chart3(); chart4(); chart5(); }
+  renderAll();
+  var rt;
+  window.addEventListener("resize", function () { clearTimeout(rt); rt = setTimeout(renderAll, 140); });
+})();
+</script>
+
+
+<a id="__rb-pill" href="research.html">&#8592; Research</a>
+<script>
+(function(){
+  var p=document.getElementById('__rb-pill'); if(!p) return;
+  var t=false;
+  function run(){ t=false;
+    p.classList.toggle('__on',(window.scrollY||document.documentElement.scrollTop)>420); }
+  function q(){ if(!t){ t=true; requestAnimationFrame(run); } }
+  addEventListener('scroll',q,{passive:true}); run();
+})();
+</script>
+</body>
+</html>

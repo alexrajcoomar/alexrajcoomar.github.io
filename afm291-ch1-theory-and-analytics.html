@@ -1,0 +1,1605 @@
+<!DOCTYPE html>
+<html lang="en-CA">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AFM 291 Chapter 1 — Alex Rajcoomar</title>
+<meta name="description" content="Efficient markets, agency and stakeholder theory, and where data analytics actually enters financial reporting.">
+<meta name="color-scheme" content="light dark">
+<meta name="author" content="Leesharam Alexander Rajcoomar">
+<meta property="og:title" content="AFM 291 Chapter 1 — Alex Rajcoomar">
+<meta property="og:description" content="Efficient markets, agency and stakeholder theory, and where data analytics actually enters financial reporting.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Alex Rajcoomar — portfolio">
+<meta name="twitter:card" content="summary">
+<link rel="canonical" href="https://alexrajcoomar.github.io/none">
+<link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/inter-ui/4.1.1/variable/InterVariable.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="site.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%2316150f'/><text x='50' y='72' font-size='64' font-family='Helvetica,Arial' font-weight='bold' fill='%23faf9f6' text-anchor='middle'>A</text></svg>">
+<script>
+/* Theme before first paint, so there is no flash. Wrapped because some
+   embedded contexts throw on storage access. */
+(function(){try{var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}
+document.documentElement.className+=' js';})();
+</script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <div class="bar">
+    <a class="brand" href="index.html"><span class="mark" aria-hidden="true">A</span>Alex Rajcoomar <span class="sub">portfolio</span></a>
+    <nav class="main" aria-label="Sections">
+      <a href="index.html">Home</a>
+      <a href="research.html">Research</a>
+      <a href="coursework.html">Coursework</a>
+      <a href="tools.html">Tools</a>
+      <a href="library.html">Library</a>
+      <a href="about.html">About</a>
+    </nav>
+    <div class="hbtns">
+      <button class="iconbtn searchbtn" type="button" id="searchbtn" aria-label="Search all work">
+        <span aria-hidden="true">&#9906;</span><span class="lbl">Search</span> <kbd>/</kbd>
+      </button>
+      <button class="iconbtn" type="button" id="themebtn" aria-label="Switch between light and dark">&#9686;</button>
+    </div>
+  </div>
+</header>
+<main id="main">
+<div class="docbar">
+  <div class="inner">
+    <button class="tocbtn" id="tocbtn" type="button" aria-expanded="false" aria-controls="toc">Contents</button>
+    <span class="where" id="where"></span>
+    <a class="up" href="afm291.html">The vault &#8594;</a>
+  </div>
+  <div id="progress"></div>
+</div>
+<div class="scrim" id="scrim"></div>
+<div class="doc">
+  <div class="doc-grid">
+    <nav class="toc" id="toc" aria-label="Contents"><button class="close" id="tocclose" type="button">Close</button><h2>Contents</h2><ol><li class="l2"><a href="#comprehensive-study-guide">Comprehensive Study Guide</a></li><li class="l2"><a href="#learning-objectives-map">Learning Objectives Map</a></li><li class="l2"><a href="#decision-flowcharts-amp-logic-trees">Decision Flowcharts &amp; Logic Trees</a></li><li class="l3"><a href="#exhibit-1-3-reconstructed-what-would-you-like-to-show-chart-">Exhibit 1-3 reconstructed — &quot;What would you like to show?&quot; chart-selection decision guide</a></li><li class="l3"><a href="#adverse-selection-vs-moral-hazard-classifier">Adverse selection vs. moral hazard — classifier</a></li><li class="l2"><a href="#part-0-the-big-picture-theory-instrument-application">Part 0 — The Big Picture: Theory, Instrument, Application</a></li><li class="l3"><a href="#the-sailing-analogy">The sailing analogy</a></li><li class="l3"><a href="#three-branches-of-accounting-unified-by-one-idea">Three branches of accounting, unified by one idea</a></li><li class="l3"><a href="#why-financial-accounting-theory-exists">Why financial accounting theory exists</a></li><li class="l3"><a href="#worked-example-susan-anthonys-coin-and-stamp-business">Worked example: Susan Anthony&#x27;s coin and stamp business</a></li><li class="l2"><a href="#part-a-uncertainty-and-information-asymmetry">Part A — Uncertainty and Information Asymmetry</a></li><li class="l3"><a href="#defining-information-precisely">Defining &quot;information&quot; precisely</a></li><li class="l3"><a href="#a1-adverse-selection-the-used-car-example">A.1 — Adverse selection: the used-car example</a></li><li class="l3"><a href="#a2-moral-hazard-the-car-insurance-example">A.2 — Moral hazard: the car-insurance example</a></li><li class="l3"><a href="#a3-formal-definitions">A.3 — Formal definitions</a></li><li class="l3"><a href="#a4-applying-this-to-accounting">A.4 — Applying this to accounting</a></li><li class="l3"><a href="#a5-case-study-moral-hazard-and-the-2008-financial-crisis">A.5 — Case study: Moral hazard and the 2008 financial crisis</a></li><li class="l2"><a href="#part-b-desirable-characteristics-of-accounting-information-a">Part B — Desirable Characteristics of Accounting Information and Trade-offs</a></li><li class="l2"><a href="#part-c-economic-consequences-of-accounting-choice-and-earnin">Part C — Economic Consequences of Accounting Choice and Earnings Management</a></li><li class="l3"><a href="#why-accounting-standards-allow-flexibility-at-all">Why accounting standards allow flexibility at all</a></li><li class="l3"><a href="#positive-accounting-theory">Positive accounting theory</a></li><li class="l3"><a href="#earnings-management">Earnings management</a></li><li class="l2"><a href="#part-d-accounting-and-securities-markets">Part D — Accounting and Securities Markets</a></li><li class="l3"><a href="#d1-accounting-information-in-securities-markets">D.1 — Accounting information in securities markets</a></li><li class="l3"><a href="#d2-using-securities-market-information-in-accounting">D.2 — Using securities-market information in accounting</a></li><li class="l2"><a href="#part-e-foundations-of-data-analytics">Part E — Foundations of Data Analytics</a></li><li class="l3"><a href="#how-the-accountants-job-has-changed-fully-sourced-from-the-t">How the accountant&#x27;s job has changed (fully sourced from the text)</a></li><li class="l3"><a href="#sidebar-focus-on-data-analytics-recurring-feature-per-the-te">Sidebar: &quot;Focus on Data Analytics&quot; (recurring feature, per the text)</a></li><li class="l3"><a href="#lo-1-7-fundamental-data-concepts">LO 1-7 — Fundamental data concepts</a></li><li class="l3"><a href="#lo-1-8-the-etl-process">LO 1-8 — The ETL process</a></li><li class="l3"><a href="#lo-1-9-telling-a-story-with-data">LO 1-9 — Telling a story with data</a></li><li class="l2"><a href="#executive-summary-one-page">Executive Summary (One Page)</a></li><li class="l2"><a href="#key-takeaways">Key Takeaways</a></li><li class="l2"><a href="#common-misconceptions-and-mistakes">Common Misconceptions and Mistakes</a></li><li class="l2"><a href="#cheat-sheet">Cheat Sheet</a></li><li class="l3"><a href="#core-definitions">Core definitions</a></li><li class="l3"><a href="#the-two-information-asymmetries-side-by-side">The two information asymmetries, side by side</a></li><li class="l3"><a href="#debt-covenant-benchmarks-named-in-the-chapter">Debt covenant benchmarks named in the chapter</a></li><li class="l3"><a href="#earnings-management-direction-quick-lookup">Earnings management direction — quick lookup</a></li><li class="l3"><a href="#five-vs-of-big-data-supplementary-standard-industry-framewor">Five V&#x27;s of Big Data (supplementary — standard industry framework, see gap notice)</a></li><li class="l3"><a href="#etl-in-one-line-each-supplementary-see-gap-notice">ETL, in one line each (supplementary — see gap notice)</a></li><li class="l3"><a href="#chart-selection-quick-reference-from-exhibit-1-3-reconstruct">Chart-selection quick reference (from Exhibit 1-3 reconstruction)</a></li><li class="l3"><a href="#2008-financial-crisis-at-a-glance">2008 financial crisis, at a glance</a></li><li class="l2"><a href="#cross-chapter-connections">Cross-Chapter Connections</a></li><li class="l2"><a href="#common-cpa-exam-traps">Common CPA Exam Traps</a></li><li class="l2"><a href="#key-ifrsaspe-rules">Key IFRS/ASPE Rules</a></li><li class="l2"><a href="#journal-entry-calculation-walkthrough">Journal Entry / Calculation Walkthrough</a></li><li class="l2"><a href="#memory-anchors">Memory Anchors</a></li><li class="l2"><a href="#adversarial-cpa-mini-scenario">Adversarial CPA Mini-Scenario</a></li><li class="l2"><a href="#key-takeaways-for-cpa-candidates">🎯 Key Takeaways for CPA Candidates</a></li><li class="l2"><a href="#retrieval-practice">Retrieval Practice</a></li><li class="l2"><a href="#source-fidelity-amp-obsidian-qa">Source Fidelity &amp; Obsidian QA</a></li></ol></nav>
+    <div>
+      <header class="docmast">
+        <p class="kick">AFM 291 · Chapter 1 · Week 1</p>
+        <h1>AFM 291 Chapter 1</h1>
+        <p class="dek">Why the standards look the way they do: the theories that justify a reporting rule, and where analytics enters the accountant&#x27;s job.</p>
+        <div class="docmeta"><span class="mchip">9 learning objectives</span><span class="mchip">Week 1</span></div>
+      </header>
+      <article class="docbody">
+<h1 id="chapter-1-fundamentals-of-financial-accounting-theory-and-da">Chapter 1: Fundamentals of Financial Accounting Theory and Data Analytics</h1>
+<h2 id="comprehensive-study-guide">Comprehensive Study Guide</h2>
+<div class="cal cal-info"><p class="ch"><span class="cw">Note</span><span class="ct">Note on sources (read this first):</span></p><div class="cb"><p>This guide is built directly from the Chapter 1 text you uploaded and the four exhibit images you provided (the Sailing/Accounting/Textbook-structure table, Exhibit 1-1, Exhibit 1-2, and Exhibit 1-3). Sections A through D and the introduction are reconstructed in full from the uploaded text. <strong>One gap exists:</strong> per the chapter's own table of contents, "E. Foundations of Data Analytics" runs from page 14 to page 21, but the uploaded file jumps from the historical/CRA discussion straight to the "Focus on Data Analytics" sidebar and then the end-of-chapter Summary — skipping the textbook's own detailed explanations of structured/unstructured data, the five V's of Big Data, the ETL process, and the full data-storytelling workflow (Learning Objectives 1-7, 1-8, 1-9). I have flagged this explicitly where it occurs (Part E) and filled that specific gap using (a) the chapter's own end-of-chapter summary bullets, which <strong>are</strong> in the uploaded file, and (b) standard, well-established industry definitions of these frameworks (5 V's, ETL) — clearly labeled as supplementary, not textbook quotations. If your version of the chapter has those missing pages, upload them and I can tighten that section to match the authors' exact wording and examples.</p></div></div>
+<div class="cal cal-imp"><p class="ch"><span class="cw">Important</span><span class="ct">PRIORITY FLAG — Earnings Management is Chapter 1 material.</span></p><div class="cb"><p>It lives in <strong>Part C</strong> below ("Economic Consequences of Accounting Choice and Earnings Management"), not Chapter 2. Per your course's class plan, Week 1 pairs the Chapter 2 reading (Conceptual Framework) with an "Earnings Management" lecture topic — meaning Week 1 assumes you already know this Chapter 1 material cold. Read Part C closely: positive accounting theory, why accounting standards allow flexibility, and both the upward- and downward-bias motivation lists (the downward ones — tax avoidance, "big bath," union bargaining — are the ones students most often forget).</p></div></div>
+<hr>
+
+<hr>
+<p><a id="learning-objectives-map"></a></p>
+<h2 id="learning-objectives-map">Learning Objectives Map</h2>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>#</th>
+<th>Objective</th>
+<th>Depth available in this guide</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>LO 1-1</td>
+<td>Explain the sources of demand and supply of accounting information</td>
+<td>Full</td>
+</tr>
+<tr>
+<td>LO 1-2</td>
+<td>Apply information asymmetry, adverse selection, and moral hazard concepts</td>
+<td>Full</td>
+</tr>
+<tr>
+<td>LO 1-3</td>
+<td>Describe qualitative characteristics of accounting information that reduce adverse selection and moral hazard</td>
+<td>Full</td>
+</tr>
+<tr>
+<td>LO 1-4 ⭐</td>
+<td>Evaluate what type of earnings management is likely in a given circumstance</td>
+<td>Full — <strong>flagged: revisited in Week 1 lecture, see Part C</strong></td>
+</tr>
+<tr>
+<td>LO 1-5</td>
+<td>Explain how accounting interacts with securities markets</td>
+<td>Full</td>
+</tr>
+<tr>
+<td>LO 1-6</td>
+<td>Explain the purpose of data analytics and its importance to accounting</td>
+<td>Full</td>
+</tr>
+<tr>
+<td>LO 1-7</td>
+<td>Define fundamental data concepts</td>
+<td>Summary-level only (see gap note in Part E)</td>
+</tr>
+<tr>
+<td>LO 1-8</td>
+<td>Explain the primary technical steps in the data analytics process (ETL)</td>
+<td>Summary-level only (see gap note in Part E)</td>
+</tr>
+<tr>
+<td>LO 1-9</td>
+<td>Tell a story to guide data analysis</td>
+<td>Summary-level + Exhibit 1-3 reconstruction only</td>
+</tr>
+</tbody>
+</table></div>
+<hr>
+<h2 id="decision-flowcharts-amp-logic-trees">Decision Flowcharts &amp; Logic Trees</h2>
+<h3 id="exhibit-1-3-reconstructed-what-would-you-like-to-show-chart-">Exhibit 1-3 reconstructed — "What would you like to show?" chart-selection decision guide</h3>
+<p><em>Exhibit number and all five purpose branches preserved exactly; list form redrawn as Mermaid. [Visual upgrade — substitution]</em></p>
+<pre><code class="language-mermaid">flowchart TD
+    START[&quot;What would you like&lt;br/&gt;your data to show?&quot;]
+    START --&gt; COMP[&quot;1. COMPARATIVE&quot;]
+    START --&gt; TREND[&quot;2. TREND&quot;]
+    START --&gt; REL[&quot;3. RELATIONSHIP&quot;]
+    START --&gt; DIST[&quot;4. DISTRIBUTION /&lt;br/&gt;GEOGRAPHIC&quot;]
+    START --&gt; COMPO[&quot;5. COMPOSITION&quot;]
+
+    COMP --&gt; C1{&quot;How many categories?&quot;}
+    C1 --&gt;|&quot;Few, 1 category, few items&quot;| CA[&quot;Single bar chart&quot;]
+    C1 --&gt;|&quot;Few, 2 or more categories, few items&quot;| CB[&quot;Grouped bar chart&lt;br/&gt;or Stacked bar chart&quot;]
+    C1 --&gt;|&quot;Many, 1 category, many items&quot;| CC[&quot;Word cloud&quot;]
+    C1 --&gt;|&quot;Many categories, many items&quot;| CD[&quot;Table&quot;]
+    C1 --&gt;|&quot;Many categories, 3 or more variables per item&quot;| CE[&quot;Radar chart&quot;]
+
+    TREND --&gt; T1{&quot;How many periods?&quot;}
+    T1 --&gt;|&quot;Many periods&quot;| TA[&quot;Line chart&quot;]
+    T1 --&gt;|&quot;Few periods, many categories&quot;| TB[&quot;Multi-line chart&quot;]
+    T1 --&gt;|&quot;Few periods, few categories&quot;| TC[&quot;Single bar chart&quot;]
+
+    REL --&gt; R1{&quot;Variable type and count?&quot;}
+    R1 --&gt;|&quot;2 numerical&quot;| RA[&quot;Scatter plot&quot;]
+    R1 --&gt;|&quot;3 numerical&quot;| RB[&quot;Bubble chart&quot;]
+    R1 --&gt;|&quot;3 categorical&quot;| RC[&quot;Heat map&quot;]
+
+    DIST --&gt; D1{&quot;Variable type?&quot;}
+    D1 --&gt;|&quot;Numerical, 1 variable&quot;| DA[&quot;Histogram&quot;]
+    D1 --&gt;|&quot;Categorical, chronological&quot;| DB[&quot;Calendar chart&quot;]
+    D1 --&gt;|&quot;Categorical, geographical&quot;| DC[&quot;World / map chart&quot;]
+
+    COMPO --&gt; P1{&quot;Changing over time, or static?&quot;}
+    P1 --&gt;|&quot;Few periods, relative differences&quot;| PA[&quot;100% stacked bar chart&quot;]
+    P1 --&gt;|&quot;Few periods, absolute differences&quot;| PB[&quot;Stacked bar chart&quot;]
+    P1 --&gt;|&quot;Many periods&quot;| PC[&quot;Area chart&quot;]
+    P1 --&gt;|&quot;Static, part-to-whole&quot;| PD[&quot;Pie chart&quot;]
+    P1 --&gt;|&quot;Static, sequential&quot;| PE[&quot;Funnel chart&quot;]
+    P1 --&gt;|&quot;Static, differential&quot;| PF[&quot;Waterfall chart&quot;]
+    P1 --&gt;|&quot;Static, components of components&quot;| PG[&quot;Percent-complete Gantt chart&quot;]
+    P1 --&gt;|&quot;Static, gauge, numerical&quot;| PH[&quot;Radial chart&quot;]
+    P1 --&gt;|&quot;Static, gauge, categorical&quot;| PI[&quot;Face / smiley chart&quot;]
+</code></pre>
+<h3 id="adverse-selection-vs-moral-hazard-classifier">Adverse selection vs. moral hazard — classifier</h3>
+<p><em>[Tutor-added] Derived entirely from the Part A.3 definitions table. No new criteria introduced.</em></p>
+<pre><code class="language-mermaid">flowchart TD
+    Q1[&quot;Classify the&lt;br/&gt;contracting problem&quot;]
+    Q1 --&gt; Q2{&quot;What is hidden?&quot;}
+    Q2 --&gt;|&quot;Information already possessed&quot;| AS1{&quot;When did it arise?&quot;}
+    Q2 --&gt;|&quot;An action the party will take&quot;| MH1{&quot;When does it occur?&quot;}
+    AS1 --&gt;|&quot;Past or present&quot;| AS[&quot;ADVERSE SELECTION&lt;br/&gt;Hidden information&quot;]
+    MH1 --&gt;|&quot;Future&quot;| MH[&quot;MORAL HAZARD&lt;br/&gt;Hidden action&quot;]
+    AS --&gt; ASFIX[&quot;Remedy: relevant credible disclosure,&lt;br/&gt;costly signals such as&lt;br/&gt;audits and dividends&quot;]
+    MH --&gt; MHFIX[&quot;Remedy: reliable verifiable information,&lt;br/&gt;incentive alignment, covenants&quot;]
+    ASFIX --&gt; ASEX[&quot;Textbook example: used cars, lemons&quot;]
+    MHFIX --&gt; MHEX[&quot;Textbook example: car insurance&quot;]
+</code></pre>
+<hr>
+<p><a id="part-0"></a></p>
+<h2 id="part-0-the-big-picture-theory-instrument-application">Part 0 — The Big Picture: Theory, Instrument, Application</h2>
+<h3 id="the-sailing-analogy">The sailing analogy</h3>
+<p>The chapter opens with an analogy that is worth internalizing before anything else, because it explains <em>why the textbook is organized the way it is</em>.</p>
+<p>A sailboat crew heading out for a weekend cruise needs three layers of knowledge, acquired in this order:</p>
+<ol>
+<li><strong>Theory</strong> — the physics that makes sailing possible at all: lift and drag (the Bernoulli/airfoil effect that lets a sail generate force), gravity, buoyancy, compass directions, tides, and currents.</li>
+<li><strong>Instrument</strong> — the general structure of sailboats and how their components work.</li>
+<li><strong>Application</strong> — actually sailing: navigating, harnessing wind, avoiding collisions.</li>
+</ol>
+<p>Accounting has the exact same three-layer structure:</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Layer</th>
+<th>Sailing</th>
+<th>Accounting</th>
+<th>Where it's covered</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Theory</strong></td>
+<td>Lift, drag, gravity, buoyancy, compass directions, tides, currents</td>
+<td>Uncertainty, information asymmetry, demand and supply of information</td>
+<td>Chapter 1</td>
+</tr>
+<tr>
+<td><strong>Instrument</strong></td>
+<td>General structure of sailboats</td>
+<td>Conceptual framework, general principles</td>
+<td>Chapters 2–3</td>
+</tr>
+<tr>
+<td><strong>Instrument (detail)</strong></td>
+<td>Components specific to the vessel</td>
+<td>Specific accounting standards</td>
+<td>Chapters 4–20</td>
+</tr>
+<tr>
+<td><strong>Application</strong></td>
+<td>Sailing, navigating, avoiding collisions</td>
+<td>Accounting for specific balances and transactions</td>
+<td>Introductory-level accounting</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Why this matters:</strong> Most students arrive at intermediate accounting already comfortable with the <em>application</em> layer (they can journalize a transaction) but have never been taught the <em>theory</em> layer — why the rules exist at all. Without the theory, professional judgment has nothing to stand on: you can apply a standard mechanically, but you can't reason about <em>which</em> accounting policy is appropriate for a given company, or predict how a proposed rule change will play out. This chapter is entirely about that missing theory layer.</p>
+<blockquote>
+<p><em>"Accounting is the production of information about an enterprise and the transmission of that information from those who have it to those who need it."</em></p>
+</blockquote>
+<p>This one sentence is the thesis of the entire chapter, and arguably the entire book. Debits, credits, double-entry bookkeeping, and financial statements are just the <em>mechanics</em>. The <em>purpose</em> of accounting is communication under conditions where some people know things that other people need to know.</p>
+<h3 id="three-branches-of-accounting-unified-by-one-idea">Three branches of accounting, unified by one idea</h3>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Branch</th>
+<th>Who receives the information</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Financial reporting</strong></td>
+<td>Parties external to the enterprise</td>
+<td>Financial statements, forecasts, press releases, conference calls</td>
+</tr>
+<tr>
+<td><strong>Managerial accounting</strong></td>
+<td>Parties inside the enterprise</td>
+<td>A production manager reporting variable/fixed costs; division managers reporting for budgeting</td>
+</tr>
+<tr>
+<td><strong>Tax accounting</strong></td>
+<td>Government revenue authorities</td>
+<td>Reporting of taxable amounts</td>
+</tr>
+</tbody>
+</table></div>
+<p>All three exist because <strong>some people have information that others need</strong> — this is the thread that ties the whole discipline together, and it's the reason the rest of this chapter treats accounting information as an <em>economic good</em> rather than a bureaucratic requirement.</p>
+<h3 id="why-financial-accounting-theory-exists">Why financial accounting theory exists</h3>
+<p>A common misconception (explicitly named in the text) is that financial reporting rules exist simply because a regulator — the International Accounting Standards Board (IASB, London) or Canada's Accounting Standards Board (AcSB) — decreed them. The chapter pushes back on this directly: <strong>financial reporting is an economic good, subject to supply and demand</strong>, and standards reflect (imperfectly) the demand for information and enterprises' ability to supply it.</p>
+<h3 id="worked-example-susan-anthonys-coin-and-stamp-business">Worked example: Susan Anthony's coin and stamp business</h3>
+<p>Susan is 63, a sole proprietor who has run a collectibles business for 20+ years, and now wants to retire by selling the business. This raises questions that financial accounting theory — not bookkeeping mechanics — is equipped to answer:</p>
+<ul>
+<li>Should Susan provide financial statements to potential buyers at all?</li>
+<li>What's her economic incentive to do so?</li>
+<li>What are the risks of disclosure?</li>
+<li>Should she pay for an audit even though nothing requires her to?</li>
+<li>Should she use IFRS or Accounting Standards for Private Enterprises (ASPE)?</li>
+<li>What other information would maximize her sale proceeds?</li>
+</ul>
+<p><strong>Why this matters for you:</strong> Notice that none of these are "how do I record a journal entry" questions. They are all "what information should exist, for whom, and why" questions — precisely the layer that separates an intermediate-level accountant from an introductory one.</p>
+<p>The chapter lists further big-picture questions this theory addresses (useful as essay/discussion prompts): why some firms disclose voluntarily while others don't; why mandatory disclosure regimes exist; why the conceptual framework looks the way it does; how and why capital markets react to financial statements; how financial statements are used in contracting between shareholders/managers and between firms/creditors; and why historical cost versus current value reporting is even a live debate.</p>
+<hr>
+<p><a id="part-a"></a></p>
+<h2 id="part-a-uncertainty-and-information-asymmetry">Part A — Uncertainty and Information Asymmetry</h2>
+<p><em>(LO 1-1, LO 1-2)</em></p>
+<h3 id="defining-information-precisely">Defining "information" precisely</h3>
+<blockquote>
+<p><strong>Information</strong>: Evidence that can potentially affect an individual's decision.</p>
+</blockquote>
+<p>The key word is <strong>potentially</strong>. Information doesn't have to change your mind to count as information — it only has to be capable of changing it.</p>
+<p><strong>Example:</strong> Sally checks a marine weather forecast before a sailing trip. It predicts sun and 10–15 knot winds — good conditions — so she goes. Did the forecast give her information? <strong>Yes</strong>, even though her decision didn't change, because the forecast <em>could have</em> shown gale-force winds, in which case she'd have stayed home. Information is judged by its potential to alter a decision, not by whether it actually did.</p>
+<p>This also means <strong>information is context-dependent</strong>: the same weather forecast has zero information value to Sally if she's only choosing between a movie and indoor volleyball. Relevance is always relative to a specific decision.</p>
+<div class="cal cal-abstract"><p class="ch"><span class="cw">In brief</span><span class="ct">THRESHOLD — Decision Making Under Uncertainty</span></p><div class="cb"><p>Virtually all real decisions are made without knowing the future for certain. Even a simple managerial choice ("should we sell this product?") bundles together uncertainty about demand, costs, exchange rates, transport, delivery, and quality. In financial reporting specifically, outside parties (lenders, investors, suppliers, employees) must decide whether to lend to, invest in, sell to, or work for a firm — and the payoff of each decision depends on the firm's <em>future</em> performance, which is unknown. <strong>Past performance (i.e., accounting information) is used as evidence to help predict that future. This is precisely why external decision-making needs create the demand for financial reporting.</strong></p></div></div>
+<div class="cal cal-abstract"><p class="ch"><span class="cw">In brief</span><span class="ct">THRESHOLD — Information Asymmetry</span></p><div class="cb"><p>If information is demanded, who supplies it? Naturally, whoever already has more/better information: a firm's senior managers and board (<strong>insiders</strong>) know more about the company than creditors, investors, suppliers, and employees (<strong>outsiders</strong>). This gap — <strong>information asymmetry</strong> — is the reason financial reporting exists as an institution at all. There are two structurally different types, examined below: <strong>adverse selection</strong> and <strong>moral hazard</strong>.</p></div></div>
+<details class="cal cal-q"><summary><span class="cw">Checkpoint</span><span class="ct">CP1-1 — Describe how uncertainty and information asymmetry create the demand and supply of accounting information.</span></summary><div class="cb"><p><strong>A:</strong> People must make decisions about an uncertain future. Because information reduces that uncertainty and improves decisions (investing, lending, etc.), it is <em>demanded</em>. Insiders in a company inherently hold more/better information, and that asymmetry is what allows them to <em>supply</em> others with accounting reports.</p></div></details>
+<h3 id="a1-adverse-selection-the-used-car-example">A.1 — Adverse selection: the used-car example</h3>
+<p><strong>Setup:</strong> You're a student who can only afford a used car. You're considering a 10-year-old Honda Civic with 150,000 km, and you believe a fair price sits somewhere between $2,000 and $4,000.</p>
+<p><strong>Exhibit 1-1 — Hypothetical prices for 10-year-old Honda Civics (as valued by their current owners)</strong></p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Car ID</th>
+<th>A</th>
+<th>B</th>
+<th>C</th>
+<th>D</th>
+<th>E</th>
+<th>F</th>
+<th>G</th>
+<th>H</th>
+<th>I</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Owner's value</td>
+<td>$2,000</td>
+<td><em>(between)</em></td>
+<td>$2,500</td>
+<td><em>(between)</em></td>
+<td>$3,000</td>
+<td><em>(between)</em></td>
+<td>$3,500</td>
+<td><em>(between)</em></td>
+<td>$4,000</td>
+</tr>
+</tbody>
+</table></div>
+<p><em>(The exhibit is a number line from $2,000 to $4,000 with nine cars spaced along it. Only A, C, E, G, and I have explicitly marked dollar values in the original figure; B, D, F, and H sit at unlabeled intermediate points — the point of the exhibit is that nine "nearly identical" cars are actually spread across a wide range of true quality/value that only the sellers can see.)</em></p>
+<p><strong>Why the midpoint ($3,000) feels fair but isn't:</strong></p>
+<p>The seller always knows more about true condition than the buyer does — whether from personal history (an individual owner) or professional inspection (a dealership's mechanics). Walk the logic through step by step:</p>
+<ol>
+<li><strong>Offer $3,000 (the midpoint).</strong> Owners of cars worth more than $3,000 (F, G, H, I) refuse. Only owners of cars worth ≤ $3,000 (A–E) accept. You are guaranteed to be buying from the below-average half of the distribution — you overpay on average.</li>
+<li><strong>Revise down to $2,500.</strong> Owners of D and E (worth more than $2,500) now also refuse. You're still only buying from the bottom of whatever range remains.</li>
+<li><strong>Keep repeating this logic</strong> and the <em>only</em> rational, arbitrage-free price is the floor of the range: <strong>$2,000</strong> — the price at which literally every seller who would transact is a seller of the <em>worst</em> car.</li>
+</ol>
+<p>This is <strong>adverse selection</strong>: your rational pricing strategy "adversely selects" for the worst-quality item in the market, because better-quality sellers self-select out.</p>
+<p><strong>The unraveling problem ("lemons"):</strong> Owners of genuinely good cars (worth, say, $3,500) realize buyers will only ever offer $2,000, so they don't even bother listing the car. If sellers anticipate this in advance, high-quality cars disappear from the market entirely — leaving only "lemons" (a term from the classic economics of used-car markets). Left unresolved, adverse selection can shrink or even collapse a market.</p>
+<p><strong>How real sellers escape this trap — signalling:</strong></p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Concept</th>
+<th>Definition</th>
+<th>Example</th>
+<th>Why it works (or doesn't)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Cheap talk</strong></td>
+<td>An unverifiable claim — costless to make, unenforceable if false</td>
+<td>"This car runs beautifully"</td>
+<td>Not credible: you can't sue over a vague claim, so anyone can say it regardless of truth</td>
+</tr>
+<tr>
+<td><strong>Costly signal</strong></td>
+<td>A claim backed by something that would be expensive/legally risky if untrue</td>
+<td>Detailed maintenance records (fraud liability if faked); an independent mechanic's inspection; a warranty against defects</td>
+<td>Credible <em>because</em> it's costly — a seller of a genuine lemon can't afford to send this signal, so only genuinely higher-quality sellers do</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Key principle:</strong> <em>A costless signal is never credible, because anyone — regardless of true quality — can send it.</em> Only signals that impose real cost or legal exposure on the sender separate good sellers from bad ones.</p>
+<h3 id="a2-moral-hazard-the-car-insurance-example">A.2 — Moral hazard: the car-insurance example</h3>
+<p>Once you own the car, you need insurance. <strong>Being insured changes your behaviour</strong>: you no longer bear the full financial consequences of an accident (repair costs, liability), so — rationally, if not admirably — you have less incentive to drive as carefully as you would uninsured.</p>
+<p>This is <strong>moral hazard</strong>: providing insurance itself creates an incentive for <em>less</em> care and <em>more</em> risk-taking, and — importantly — <strong>both sides of the contract expect this in advance.</strong></p>
+<p><strong>Consequences and mitigants:</strong></p>
+<ul>
+<li>The insurer must price this expected behavioural change into premiums — moral hazard is a <em>real, costly</em> problem, not a hypothetical one.</li>
+<li>It cannot be fully eliminated: the insurer can't continuously and perfectly monitor how carefully you drive, and you can't credibly promise to always drive carefully.</li>
+<li>Partial fixes exist: <strong>deductibles</strong> and <strong>co-payments</strong> make the insured bear part of the loss, restoring some incentive for care. Telematics/driving-data trackers can also reassure the insurer, though monitoring is still imperfect.</li>
+</ul>
+<p><strong>Inverse relationship — risk borne vs. moral hazard:</strong></p>
+<pre><code>Full insurance  →  Insured bears almost no risk  →  Little incentive for care  →  HIGH moral hazard  →  Premiums must be high
+       ↕
+Higher deductible/co-pay  →  Insured bears more risk  →  More incentive for care  →  LOWER moral hazard  →  Premiums can be lower
+</code></pre>
+<h3 id="a3-formal-definitions">A.3 — Formal definitions</h3>
+<div class="tw"><table>
+<thead>
+<tr>
+<th></th>
+<th>Adverse Selection</th>
+<th>Moral Hazard</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Formal definition</strong></td>
+<td>One party to a contract has an information advantage over the other party</td>
+<td>One party cannot observe the other party's actions relevant to fulfilling the contract</td>
+</tr>
+<tr>
+<td><strong>What's hidden</strong></td>
+<td><em>Hidden information</em></td>
+<td><em>Hidden action</em></td>
+</tr>
+<tr>
+<td><strong>Time orientation</strong></td>
+<td>Past and present (though it can have future consequences)</td>
+<td>The future</td>
+</tr>
+<tr>
+<td><strong>Used-car example</strong></td>
+<td>Seller knows the car's history/condition (past/present); buyer doesn't</td>
+<td>N/A — buyer and seller have no further interest in each other's future actions</td>
+</tr>
+<tr>
+<td><strong>Insurance example</strong></td>
+<td>N/A</td>
+<td>Insurer cannot observe how carefully the insured will drive (future action)</td>
+</tr>
+</tbody>
+</table></div>
+<div class="cal cal-warn"><p class="ch"><span class="cw">Watch out</span><span class="ct">Exam trap — adverse selection vs. moral hazard [CPA exam addition]</span></p><div class="cb"><p><strong>The trap:</strong> naming the wrong one, or naming the right one without justification.</p>
+<p><strong>Why students miss it:</strong> both are "information problems," both involve one party knowing more, and both are described as being fixed by "better information." The distinguishing features are <strong>structural</strong>, not intuitive.</p>
+<p><strong>Correct approach — a two-question test:</strong></p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Question</th>
+<th>Adverse selection</th>
+<th>Moral hazard</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>What is hidden?</strong></td>
+<td><strong>Information</strong> the party already holds</td>
+<td>An <strong>action</strong> the party will or will not take</td>
+</tr>
+<tr>
+<td><strong>When?</strong></td>
+<td><strong>Past / present</strong></td>
+<td><strong>Future</strong></td>
+</tr>
+</tbody>
+</table></div>
+<p>Used-car quality = adverse selection. Driving carefully after buying insurance = moral hazard.</p>
+<p><strong>Marker expectation:</strong> name the type <strong>and</strong> justify with <strong>both</strong> features. One feature alone is a partial answer.</p>
+<p><em>Caveat: technical-risk area identified from the structure of the standards — an asymmetry, exception, or look-alike concept. </em><em>Not</em><em> verified CPA Common Final Examination marker data.</em></p></div></div>
+<p><strong>The crucial distinction to remember:</strong> adverse selection is about <em>what someone already knows and isn't telling you</em>; moral hazard is about <em>what someone will do that you can't watch</em>.</p>
+<details class="cal cal-q"><summary><span class="cw">Checkpoint</span><span class="ct">CP1-2 — Identify two features that distinguish adverse selection from moral hazard.</span></summary><div class="cb"><p><strong>A:</strong> (1) Hidden information (adverse selection) vs. hidden action (moral hazard). (2) Past/present (adverse selection) vs. future (moral hazard).</p></div></details>
+<h3 id="a4-applying-this-to-accounting">A.4 — Applying this to accounting</h3>
+<p><strong>Adverse selection in capital markets:</strong> Buying shares is structurally similar to buying a used car — insiders (management, the board) know more about firm quality than outside investors. A CEO simply <em>asserting</em> "our stock is undervalued" is cheap talk (any CEO can say it). Credible alternatives:</p>
+<ul>
+<li><strong>Audited financial statements</strong> — independent auditors attesting to compliance with accounting standards, analogous to an independent mechanic's inspection.</li>
+<li><strong>Dividends as a costly signal</strong> — sustaining a regular dividend requires genuinely reliable future cash flows; a firm that can't actually generate that cash will be caught out. This is why markets react strongly to dividend <em>increases</em> and <em>decreases</em> — it's management "putting its money where its mouth is."</li>
+</ul>
+<p><strong>Moral hazard in the firm — the agency problem:</strong> When ownership and management are separated, owners (<strong>principals</strong>) cannot fully monitor managers (<strong>agents</strong>) to guarantee decisions serve owners' interests — this is the <strong>agency problem</strong> (a.k.a. <strong>principal–agent problem</strong>). A manager on a flat salary captures little upside from maximizing firm value and bears little downside from failing to (short of being fired), so effort incentives are weak.</p>
+<p>Mitigants used in practice:</p>
+<ul>
+<li><strong>Accounting-based performance reports</strong> — an indirect window for owners into management's actions/performance.</li>
+<li><strong>Incentive pay</strong> — bonuses tied to net income, EPS, or other accounting metrics.</li>
+<li><strong>Equity participation</strong> — stock purchase plans or stock options, so managers share in the value they create (or destroy).</li>
+<li><strong>Debt covenants</strong> — protect <em>creditors</em> specifically. Loan agreements often specify minimum/maximum financial ratios the borrower must maintain, such as:</li>
+</ul>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Covenant type</th>
+<th>Example threshold cited in the chapter</th>
+<th>Plain-English meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Current ratio</td>
+<td>Must stay <strong>above 2</strong></td>
+<td>Current assets should be at least double current liabilities (short-term liquidity cushion)</td>
+</tr>
+<tr>
+<td>Debt-to-assets ratio</td>
+<td>Must stay <strong>below 0.5</strong></td>
+<td>No more than half the firm's assets may be financed by debt</td>
+</tr>
+<tr>
+<td>Interest coverage ratio</td>
+<td>Must stay <strong>above 3</strong></td>
+<td>Operating earnings should cover interest expense at least 3 times over</td>
+</tr>
+</tbody>
+</table></div>
+<p><em>(The chapter names these three covenants and their threshold values explicitly. It does not spell out the underlying formulas — for context, using standard/common definitions: Current Ratio = Current Assets ÷ Current Liabilities; Debt-to-Assets = Total Debt ÷ Total Assets; Interest Coverage = EBIT ÷ Interest Expense. These are standard formulas provided for your reference, not a direct quotation from the chapter — verify against your course's formula sheet if it defines them differently.)</em></p>
+<h3 id="a5-case-study-moral-hazard-and-the-2008-financial-crisis">A.5 — Case study: Moral hazard and the 2008 financial crisis</h3>
+<p>The chapter treats 2008 as the paradigm real-world case of moral hazard at systemic scale — the most significant financial-markets event since the 1929 crash and the Great Depression.</p>
+<p><strong>Key casualties named in the text:</strong></p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Institution</th>
+<th>What happened</th>
+<th>Scale</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Lehman Brothers</td>
+<td>Bankruptcy</td>
+<td>Between US$700 billion and US$2 trillion in assets</td>
+</tr>
+<tr>
+<td>Merrill Lynch</td>
+<td>Bought out by Bank of America</td>
+<td>Same range</td>
+</tr>
+<tr>
+<td>AIG (American International Group)</td>
+<td>Bailed out by the US government via an <strong>80%</strong> equity stake</td>
+<td>Same range</td>
+</tr>
+<tr>
+<td>Citigroup</td>
+<td>Bailed out by the US government via a <strong>36%</strong> equity stake</td>
+<td>Same range</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>The mechanism, step by step:</strong></p>
+<ol>
+<li><strong>Traditional banking</strong> earns a "spread" between interest paid on deposits and interest earned on loans (e.g., mortgages). Because the bank itself bears default risk, it has a direct incentive to screen borrowers carefully.</li>
+<li><strong>Financial innovation broke this link.</strong> Banks could bundle thousands of mortgages into <strong>mortgage-backed securities (MBS)</strong> and sell them to outside investors — <em>example from the text:</em> Citigroup packaging 10,000 mortgages averaging $200,000 each into $2 billion of MBS ($200,000 × 10,000 = $2,000,000,000 — the arithmetic in the example checks out).</li>
+<li>Investors who bought MBS could further insure themselves against borrower default by buying a <strong>credit default swap (CDS)</strong> — e.g., insurance purchased from AIG.</li>
+<li><strong>Result: nobody left holding the risk had an incentive to screen it.</strong> Banks offloaded default risk to MBS investors; MBS investors offloaded it again to CDS sellers (AIG). This is moral hazard operating in a chain.</li>
+<li>Screening standards collapsed — banks issued "subprime" loans, even to borrowers with <strong>no income, no job, and no assets</strong> — because the originator no longer bore the consequence of default.</li>
+<li>The problem stayed hidden as long as US house prices kept rising (through 2006), because rising collateral values masked bad underwriting.</li>
+<li>When house prices fell (starting 2007, accelerating in 2008), default rates spiked, revealing the true (low) credit quality that had been building for years.</li>
+</ol>
+<p><strong>Causal chain, compressed:</strong></p>
+<pre><code>Risk transferable (MBS)  →  Originators stop screening carefully  →  Subprime lending surges
+        →  Risk transferable again (CDS)  →  Even MBS holders stop worrying about defaults
+        →  House prices fall (2007–08)  →  Defaults spike  →  Crisis exposes the whole chain
+</code></pre>
+<p><strong>Why this matters for you as an analyst:</strong> This is a live illustration of why regulators and lenders care about <em>who bears risk</em> in a transaction structure — not just about accounting numbers in isolation. Wherever risk can be transferred away from the party best positioned to monitor it, expect screening/underwriting quality to deteriorate. This logic transfers directly to your own risk analysis of any financial intermediary or securitization-heavy business.</p>
+<hr>
+<p><a id="part-b"></a></p>
+<h2 id="part-b-desirable-characteristics-of-accounting-information-a">Part B — Desirable Characteristics of Accounting Information and Trade-offs</h2>
+<p><em>(LO 1-3)</em></p>
+<p>Different information problems create different demands on accounting information:</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Information problem</th>
+<th>What users need from accounting information</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Adverse selection</strong> (investors deciding whether/how much to pay for shares)</td>
+<td><strong>Relevance</strong> — information useful for forecasting future cash flows and assessing risk</td>
+<td>Investors want to avoid overpaying for a "lemon," so the firm is motivated to supply as much credible, decision-useful information as possible to earn the best price</td>
+</tr>
+<tr>
+<td><strong>Moral hazard</strong> (owners/lenders monitoring management)</td>
+<td><strong>Reliability / verifiability</strong> — information not easily manipulated</td>
+<td>Since management (the very party being monitored) also <em>produces</em> the information, users need assurance it hasn't been slanted in management's favour</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>The core trade-off — you cannot maximize both simultaneously:</strong></p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th></th>
+<th>Forward-looking information (e.g., management forecasts)</th>
+<th>Historical cost information</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Relevance for valuation</strong></td>
+<td>High — directly useful for investment decisions</td>
+<td>Lower — doesn't reflect current values</td>
+</tr>
+<tr>
+<td><strong>Verifiability</strong></td>
+<td>Low — predictions about the future can't be verified today</td>
+<td>High — based on actual, completed, arm's-length transactions</td>
+</tr>
+<tr>
+<td><strong>Vulnerable to manipulation</strong></td>
+<td>Yes</td>
+<td>Less so</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Why this matters:</strong> This single trade-off (relevance vs. reliability/verifiability) is the recurring tension you will see justify almost every major choice in accounting standard-setting throughout the rest of the course — historical cost vs. fair value, capitalization vs. expensing, recognition vs. disclosure, and so on. Chapter 2's conceptual framework builds directly on this trade-off.</p>
+<details class="cal cal-q"><summary><span class="cw">Checkpoint</span><span class="ct">CP1-3 — Explain how adverse selection and moral hazard lead to different demands on accounting information.</span></summary><div class="cb"><p><strong>A:</strong> Reducing adverse selection requires <em>relevant</em> information (useful for decisions). Reducing moral hazard requires <em>reliable</em>, manipulation-resistant information.</p></div></details>
+<hr>
+<p><a id="part-c"></a></p>
+<h2 id="part-c-economic-consequences-of-accounting-choice-and-earnin">Part C — Economic Consequences of Accounting Choice and Earnings Management</h2>
+<p><em>(LO 1-4)</em></p>
+<h3 id="why-accounting-standards-allow-flexibility-at-all">Why accounting standards allow flexibility at all</h3>
+<p>Two reasons, both given directly in the text:</p>
+<ol>
+<li><strong>One size doesn't fit all.</strong> Standards are written broadly enough to apply across very different businesses. Example given: FIFO (first-in, first-out) inventory costing is more informative for some firms; weighted-average cost is more informative for others. The standard permits both because neither method is universally superior.</li>
+<li><strong>Accrual accounting inherently requires estimates about the future</strong> — e.g., what portion of receivables will default, or how long a piece of equipment will remain economically useful. Standards cannot hard-code these numbers; they must be judgment calls made case by case.</li>
+</ol>
+<h3 id="positive-accounting-theory">Positive accounting theory</h3>
+<blockquote>
+<p><strong>Positive accounting theory</strong>: understanding managers' motivations, the accounting choices they make, and how they react to (proposed or new) accounting standards. "Positive" here means <em>descriptive</em> (what managers actually do and why), not <em>prescriptive</em> (what they should do).</p>
+</blockquote>
+<p>This matters practically: if you understand a manager's incentives, you can <em>predict</em> which accounting policies they'll choose and which side of a standard-setting debate they'll lobby for.</p>
+<h3 id="earnings-management">Earnings management</h3>
+<blockquote>
+<p><strong>Earnings management</strong>: managers' deliberate efforts to bias reported accounting information — most often framed around the income statement, but the concept extends to the balance sheet and other financial information too.</p>
+</blockquote>
+<p><strong>Motivations for an <em>upward</em> bias</strong> (managing earnings, assets, and equity up; liabilities down):</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>#</th>
+<th>Motivation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Influence investors to expect higher future earnings/cash flows → pay more for shares</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Appear lower-risk so lenders extend more credit or charge lower interest</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Increase the likelihood of satisfying debt covenants</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Increase the likelihood of meeting regulatory requirements (e.g., bank capital requirements)</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Strengthen bargaining position in merger negotiations</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Boost compensation tied to profit-sharing/bonus plans</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Boost compensation tied to stock-based pay, if share price responds to the inflated income</td>
+</tr>
+</tbody>
+</table></div>
+<div class="cal cal-danger"><p class="ch"><span class="cw">Trap</span><span class="ct">THRESHOLD — Quality of Earnings · Exam trap: downward bias is the examinable half [CPA exam addition]</span></p><div class="cb"><p><strong>The trap:</strong> assuming earnings management always runs <strong>upward</strong>.</p>
+<p><strong>Why students miss it:</strong> the seven upward motivations are intuitive and get rehearsed. The four downward ones are counter-intuitive — which makes them <strong>more</strong> likely to be tested, not less.</p>
+<p><strong>Scan every fact pattern for these four downward triggers:</strong></p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>#</th>
+<th>Trigger</th>
+<th>Signal in the fact pattern</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Windfall taxes or new regulation aimed at highly profitable firms</td>
+<td>Unusually strong profitability, political scrutiny</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Government subsidies or trade protection sought</td>
+<td>A pending application or grant</td>
+</tr>
+<tr>
+<td>3</td>
+<td><strong>"Big bath"</strong></td>
+<td>An already-bad year</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Labour/union bargaining</td>
+<td>An active collective-agreement negotiation</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Marker expectation:</strong> state the <strong>direction</strong> of expected bias and name the <strong>specific motivation</strong> from the chapter's list. "Management may manipulate earnings" scores nothing without both.</p>
+<p><em>Caveat: technical-risk area identified from the structure of the standards — an asymmetry, exception, or look-alike concept. </em><em>Not</em><em> verified CPA Common Final Examination marker data.</em></p></div></div>
+<p><strong>Motivations for a <em>downward</em> bias</strong> (the less intuitive direction — don't overlook these):</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>#</th>
+<th>Motivation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Reduce the risk of extra taxes/regulation aimed at highly profitable firms (examples given: petroleum producers, Microsoft)</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Increase the odds of receiving government subsidies or trade protection</td>
+</tr>
+<tr>
+<td>3</td>
+<td><strong>"Big bath"</strong> — dump extra expenses into an already-bad year so future years look comparatively strong (supports higher future compensation/share price)</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Improve bargaining leverage against employee/labour unions</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Why this matters:</strong> Whenever you evaluate a real company's reported earnings, positive accounting theory gives you a checklist: is this company approaching a debt covenant threshold? A bonus target? A regulatory capital minimum? A union negotiation? An unusually bad year that invites a "big bath"? Each of these creates a <em>predictable direction</em> of bias to watch for — this is directly applicable to equity/credit analysis, not just an academic exercise.</p>
+<details class="cal cal-q"><summary><span class="cw">Checkpoint</span><span class="ct">CP1-4 — Explain the connection between moral hazard, positive accounting theory, and earnings management.</span></summary><div class="cb"><p><strong>A:</strong> The principal–agent relationship creates moral hazard because owners can't directly observe managers' actions. Risk-sharing devices (bonuses, stock options) that are meant to <em>fix</em> this create a side effect: incentive to manipulate the very earnings numbers those rewards are based on. Positive accounting theory is the framework for predicting when and how managers will exercise that discretion.</p></div></details>
+<hr>
+<p><a id="part-d"></a></p>
+<h2 id="part-d-accounting-and-securities-markets">Part D — Accounting and Securities Markets</h2>
+<p><em>(LO 1-5)</em></p>
+<blockquote>
+<p><strong>Security market</strong>: a general term for markets where securities (stocks, bonds) trade — e.g., the Toronto Stock Exchange, the New York Stock Exchange.</p>
+</blockquote>
+<p>Accounting and securities markets have a <strong>two-way relationship</strong>: accounting data feeds into market prices, and market prices feed back into accounting.</p>
+<h3 id="d1-accounting-information-in-securities-markets">D.1 — Accounting information <em>in</em> securities markets</h3>
+<div class="cal cal-abstract"><p class="ch"><span class="cw">In brief</span><span class="ct">THRESHOLD — Efficient Securities Markets</span></p><div class="cb"><p>Firms with publicly traded equity, debt, or other securities are <strong>public companies</strong>. The chapter illustrates efficient-market implications using <strong>Apple Inc.</strong> (ticker AAPL) — in 2022, the world's most valuable public company by market capitalization (the chapter states approximately <strong>US$2.5 trillion</strong>).</p></div></div>
+<p><strong>Exhibit 1-2 reconstructed — Apple daily closing price &amp; trading volume, full year 2022</strong></p>
+<p>The original is a dual-axis chart: a price <em>line</em> (left axis, roughly $120–$180 range across the year) overlaid with trading-volume <em>bars</em> (right axis, in hundred-thousands of shares), with four earnings-report dates flagged:</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Earnings report date</th>
+<th>What the chart shows around that date</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Jan 27, 2022</td>
+<td>Visible price movement + volume spike</td>
+</tr>
+<tr>
+<td>Apr 27, 2022</td>
+<td>Visible price movement + volume spike</td>
+</tr>
+<tr>
+<td>Jul 28, 2022</td>
+<td>Reported EPS $1.20 vs. $1.14 expected (a <strong>5.3%</strong> beat); price rose about <strong>$5</strong> the next trading day; volume spike</td>
+</tr>
+<tr>
+<td>Oct 27, 2022</td>
+<td>Visible price movement + volume spike</td>
+</tr>
+</tbody>
+</table></div>
+<p>Mean daily trading volume across the year: <strong>≈ 88 million shares</strong>. A separate, non-earnings volume spike also appears in the second week of September, coinciding with an Apple product-announcement ("Keynote") event — evidence that <em>non-accounting</em> information also moves the stock.</p>
+<p><strong>Seven implications of efficient markets, each illustrated with Apple:</strong></p>
+<p><strong>(a) Prices react quickly to accounting information.</strong> In markets full of profit-seeking traders, new accounting disclosures get priced in fast — minutes for heavily-traded stocks, a day or two for lightly-traded ones. Apple's price and volume both jump around each of its four 2022 earnings dates.</p>
+<p><strong>(b) Accounting competes with other information sources.</strong> Because market participants want <em>all</em> relevant information, accounting reports must be timely and add something <em>incremental</em> to what's already known — this is why quarterly reporting exists on top of annual reports. Apple's price still moves between earnings dates (e.g., the September Keynote volume spike), proving investors trade on more than just the four annual accounting releases.</p>
+<p><strong>(c) New information must be distinguished from information already priced in.</strong> Apparently "good news" may already be reflected in the price by the time you see it. Apple beat EPS expectations by 5.3% on July 28, 2022 (after market close) and the price rose ~$5 the <em>next</em> day. Anyone hearing the news even a day later would be looking at stale information — already baked into the price.</p>
+<p><strong>(d) Abnormal profits are hard to earn using only public information.</strong> Because prices adjust so fast (per point c), by the time you can act on public news, the price has usually already moved. You'd have needed to trade <em>before</em> the July 28 report to capture the gain from the earnings beat — after it was public, both buyers and sellers had already repriced the stock.</p>
+<div class="cal cal-abstract"><p class="ch"><span class="cw">In brief</span><span class="ct">THRESHOLD — Information Asymmetry</span></p><div class="cb"><p>(revisited): markets are (per academic research cited in the text) generally <strong>semi-strong form efficient</strong> — meaning prices reflect all <em>publicly available</em> information — but <strong>not strong-form efficient</strong>, meaning prices do <strong>not</strong> reflect private/inside information.</p></div></div>
+<p><strong>(e) Abnormal profits <em>are</em> possible using non-public information.</strong> An Apple insider with early access to the July 28, 2022 results could, in principle, have profited by buying shares beforehand and selling after the public reaction. This is precisely why securities laws restrict the timing and amount of trading by insiders (and anyone else with access to inside information) — without such rules, adverse selection would drive ordinary outside investors away from the market entirely, since they'd systematically lose to better-informed insiders (insiders' gains = outsiders' losses).</p>
+<p><strong>(f) Accounting standards can assume a "reasonable" level of user sophistication.</strong> If markets are efficient, standards don't need to be understandable to <em>every</em> participant — only to enough sophisticated participants for prices to properly reflect the information. Less sophisticated traders can simply rely on the resulting market price rather than parsing the raw financial statements themselves. (Apple's ~88 million average daily trades include a substantial share of participants doing exactly this.)</p>
+<p><strong>(g) Efficient market theory has shaped legal doctrine.</strong> The chapter cites the <strong>US Supreme Court case <em>Basic, Inc. v. Levinson</em> (1988)</strong>, which articulated the <strong>"fraud on the market"</strong> doctrine: in an efficient market, a stock's price already reflects all available material information, so a misleading statement defrauds purchasers <em>even if they never directly relied on that specific statement</em> — reliance on the (now-distorted) market price is sufficient grounds for a claim. Practical implication: management must consider the effect of its disclosures on the <em>overall market price</em>, not just on specifically identifiable readers of that disclosure.</p>
+<p><em>(This case citation is transcribed directly from the uploaded chapter, including its own footnote reference. I have not independently re-verified it via outside legal research — treat it as the textbook's own citation.)</em></p>
+<h3 id="d2-using-securities-market-information-in-accounting">D.2 — Using securities-market information <em>in</em> accounting</h3>
+<p>The relationship also runs the other way. If a market for a security is efficient, its price is a reliable indicator of fundamental value — so accounting can <em>use</em> that price.</p>
+<ul>
+<li>Apple's high trading volume (≈88 million shares/day) means its stock is very likely efficiently priced. If another company ("Company X") holds Apple shares as an investment, that holding's value can simply be measured as (market price per share) × (shares held) — reliable because the market itself is doing the valuation work.</li>
+<li>This is precisely why accounting standards measure investments in publicly traded securities at <strong>market price</strong> (the text points you to Chapter 7 for the specific standard).</li>
+<li>By contrast, items like <strong>inventory</strong> or <strong>equipment</strong> don't trade in efficient public markets, so they're measured at <strong>historical cost</strong> instead.</li>
+</ul>
+<p><strong>Net effect:</strong> a single set of financial statements can — quite deliberately — mix measurement bases: market price where an efficient market exists to supply a reliable number, and historical cost where it doesn't. This is not an inconsistency; it's a direct consequence of efficient-market logic.</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Balance sheet item</th>
+<th>Typical measurement basis</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Investments in publicly traded securities (e.g., Apple shares held by another firm)</td>
+<td>Market price</td>
+<td>Efficient market → price is a reliable, verifiable, real-time value</td>
+</tr>
+<tr>
+<td>Inventory, equipment</td>
+<td>Historical cost</td>
+<td>No efficient public market exists to price these specific assets</td>
+</tr>
+</tbody>
+</table></div>
+<details class="cal cal-q"><summary><span class="cw">Checkpoint</span><span class="ct">CP1-5 — Explain the accounting consequences of having efficient markets for securities.</span></summary><div class="cb"><p><strong>A:</strong> (1) Prices react quickly and (on average) unbiasedly to accounting information. (2) Accounting information must be timely since it competes with other information sources. (3) Abnormal profits from public information alone are difficult, but inside information can generate them. (4) Standards don't need to serve every investor — only enough sophisticated ones for prices to reflect the information. (5) Efficiently-priced market values are reliable enough to be used directly in financial reports of enterprises holding those securities as investments.</p></div></details>
+<hr>
+<p><a id="part-e"></a></p>
+<h2 id="part-e-foundations-of-data-analytics">Part E — Foundations of Data Analytics</h2>
+<p><em>(LO 1-6, LO 1-7, LO 1-8, LO 1-9)</em></p>
+<h3 id="how-the-accountants-job-has-changed-fully-sourced-from-the-t">How the accountant's job has changed (fully sourced from the text)</h3>
+<pre><code>STAGE 1 (decades ago)        STAGE 2 (computers arrive)         STAGE 3 (today)
+Manual journals, manual  →   Automation of manual        →      AI/ML draft journal entries
+ledger posting, manual       processes; reports generated       directly from bank data feeds —
+trial balances by hand       instantly at the click of          in both large ERP systems and
+                              a button                           off-the-shelf small-business
+                                                                  accounting software
+</code></pre>
+<p>Counter-intuitively, <strong>each wave of automation <em>increased</em> demand for accountants</strong>, rather than eliminating the role — because accountants, as the recognized gatekeepers of financial information, redeployed the time freed up by automation into strategic influence within their organizations. The chapter's framing: <em>"The accounting profession is here to stay; it is the skillset that will change."</em></p>
+<blockquote>
+<p><strong>Data analytics</strong>: the examination of information to refine business strategy.</p>
+</blockquote>
+<p><strong>Worked example (from the text):</strong> You're an accountant at a company with flat profits and layoff rumours, despite high product quality and steadily rising sales. Where do you look?</p>
+<ul>
+<li>Gross profit, year-over-year</li>
+<li>Gross profit by customer and by product line</li>
+<li>Operating expenses, scanning for unusual items</li>
+</ul>
+<p>Traditionally this kind of digging was slow and hard to explain to stakeholders. Modern data-analytics tooling can scan a company's full dataset quickly, surface results as graphs/visuals, and even surface non-obvious relationships that a human analyst wouldn't catch unaided.</p>
+<p><strong>Real-world example given:</strong> the <strong>Canada Revenue Agency (CRA)</strong> uses data analytics to flag unusual variances/relationships in taxpayer data, helping identify filers who may be avoiding or underpaying tax and should be selected for audit.</p>
+<p><strong>Why this matters for you specifically:</strong> as an accounting/analytics-stream student, this is the chapter's explicit pitch for <em>why</em> your program pairs the two disciplines — accountants are uniquely positioned (as the people who already control and understand financial data) to be the ones applying analytics to it, rather than ceding that ground to a separate data-science function.</p>
+<details class="cal cal-q"><summary><span class="cw">Checkpoint</span><span class="ct">CP1-6 — Explain how the advent of computers and automation impacted the roles and responsibilities of accountants.</span></summary><div class="cb"><p><strong>A:</strong> Computers automated manual processes (transaction recording, report generation), which let accountants shift focus from mechanical bookkeeping toward interpreting data and contributing to strategy. Demand for accountants <em>rose</em> — not for bookkeeping skill, but for data interpretation and strategic input.</p></div></details>
+<h3 id="sidebar-focus-on-data-analytics-recurring-feature-per-the-te">Sidebar: "Focus on Data Analytics" (recurring feature, per the text)</h3>
+<p>Each chapter in this book includes a "Focus on Data Analytics" box applying analytics techniques to real scenarios. Techniques named for use across the book: <strong>time series analysis</strong>, <strong>Benford's Law</strong>, and <strong>regression analysis</strong>. Example scenarios named: analyzing historical shipwrecks, and evaluating Microsoft's acquisition of gaming company ZeniMax. Stated goal: turning "plain financial data into powerful insights for business strategies."</p>
+<hr>
+<div class="cal cal-bug"><p class="ch"><span class="cw">Common error</span><span class="ct">GAP — GAP NOTICE — read before relying on the subsections below.</span></p><div class="cb"><p>Everything above this line in Part E is transcribed/derived directly from your uploaded file. Everything <strong>below</strong> this line (LO 1-7, LO 1-8, and most of LO 1-9) covers material the chapter's own table of contents places on pages 14–21, which was <strong>not present</strong> in the file you uploaded — the file skips from the CRA/Checkpoint-6 discussion straight to the end-of-chapter Summary. I have reconstructed these three subsections using <strong>only two sourced anchors</strong>: (1) the chapter's own Summary bullets for LO 1-7/1-8/1-9 (verbatim source, included in your file), and (2) what is directly visible in the Exhibit 1-3 image you provided, including its surrounding "TelTime" paragraph. Everything beyond those two anchors below is <strong>standard industry framework knowledge</strong>, clearly labeled as such — <strong>not</strong> a paraphrase of this textbook's specific wording or examples. Treat this section as a conceptual bridge, and confirm against your actual textbook pages if your assignment depends on the authors' precise definitions.</p></div></div>
+<h3 id="lo-1-7-fundamental-data-concepts">LO 1-7 — Fundamental data concepts</h3>
+<p><strong>From the chapter's own summary (verbatim source):</strong> <em>"Fundamental data concepts include: structured vs. unstructured data, the five Vs of Big Data (velocity, volume, variety, veracity, and value)."</em></p>
+<p>The standard industry meaning of each term (supplementary, general knowledge — not this textbook's own explanatory text):</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Concept</th>
+<th>General definition</th>
+<th>Typical accounting example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Structured data</strong></td>
+<td>Data organized in a fixed, predictable format (rows/columns, defined fields)</td>
+<td>A general ledger export; a table of invoices with fixed columns (date, amount, customer ID)</td>
+</tr>
+<tr>
+<td><strong>Unstructured data</strong></td>
+<td>Data with no predefined format</td>
+<td>Emails, contracts, scanned receipts, call-centre transcripts</td>
+</tr>
+<tr>
+<td><strong>Velocity</strong></td>
+<td>The speed at which data is generated/must be processed</td>
+<td>Real-time point-of-sale transaction feeds</td>
+</tr>
+<tr>
+<td><strong>Volume</strong></td>
+<td>The sheer quantity of data</td>
+<td>Millions of transaction-level records across an ERP system</td>
+</tr>
+<tr>
+<td><strong>Variety</strong></td>
+<td>The range of different data types/formats/sources</td>
+<td>Combining structured GL data with unstructured vendor contracts</td>
+</tr>
+<tr>
+<td><strong>Veracity</strong></td>
+<td>The trustworthiness/quality/accuracy of the data</td>
+<td>Whether transaction data is complete, free of duplicate/erroneous entries</td>
+</tr>
+<tr>
+<td><strong>Value</strong></td>
+<td>Whether the data can actually be turned into useful insight</td>
+<td>Whether analyzing a dataset actually changes a business decision</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Why this matters:</strong> most of what accountants have historically worked with (ledgers, trial balances) is <em>structured</em>. The push toward data analytics in the profession is largely a push toward also being comfortable pulling insight out of <em>unstructured</em> and high-<em>volume</em>/high-<em>velocity</em> data — bank feeds, contracts, logs — which is exactly the shift Part E's opening narrative (manual → computers → AI/ML) describes.</p>
+<h3 id="lo-1-8-the-etl-process">LO 1-8 — The ETL process</h3>
+<p><strong>From the chapter's own summary (verbatim source):</strong> <em>"The three steps are Extract, Transform, and Load (ETL): extracting the data from the source data files; transforming the data into a usable form by cleaning, validating, formatting, and applying mathematical computations to the data; and loading the data to a location where it is available for analysis."</em></p>
+<pre><code> EXTRACT                    TRANSFORM                         LOAD
+ Pull raw data from    →    Clean, validate, format,    →     Place the finished data
+ its source file(s)         apply calculations                 somewhere ready for analysis
+ (e.g., bank feed,          (remove duplicates/errors,          (e.g., a database or
+ ERP export, CSV)           standardize formats, compute        analytics platform)
+                            derived fields)
+</code></pre>
+<p>This ETL sequence is the standard, industry-wide term for the plumbing step that has to happen <em>before</em> any dashboard, chart, or statistical analysis is possible — raw exported data is essentially never analysis-ready on its own.</p>
+<h3 id="lo-1-9-telling-a-story-with-data">LO 1-9 — Telling a story with data</h3>
+<p><strong>From the chapter's own summary (verbatim source):</strong> <em>"Consider the organization's mission, values, current problems, and objectives to identify the business questions that you will attempt to answer using data."</em></p>
+<p><strong>What's directly visible in the Exhibit 1-3 image you provided</strong> (a worked continuation of a "TelTime" company example, transcribed as shown):</p>
+<blockquote>
+<p><em>"Let's return to the TelTime example. One group of your business questions was 'What is the growth rate by product? How do these growth rates compare to prior periods?' By following the 'Comparative' path in Exhibit 1-3, you might conclude that a grouped bar chart would be helpful. Alternatively, you could follow the 'Trend' path and determine that a multi-line chart would suit your needs. These visuals could be constructed and reviewed to determine which best conveys the story within the data. Perhaps your visual shows that television and mobility products have maintained growth rate, while internet products have not. Return to Step #4 and generate some additional business questions to dig deeper. A new business question could be 'Is this decrease in growth rate for internet the same across all geographic locations?' Return to Step #5 and attempt to create an analysis that answers this question."</em></p>
+</blockquote>
+<p>This confirms the chapter teaches data storytelling as an <strong>iterative, numbered process</strong> (it explicitly references "Step #4" and "Step #5"). <strong>I do not have the full numbered list of steps</strong> (1 through however many there are) — only that step 4 involves generating business questions and step 5 involves building the analysis/visual — because those steps are defined on the missing pages. I'm not going to guess at what steps 1–3 or step 6+ are; if you need the authors' exact process, that's the piece to pull from your physical/PDF copy.</p>
+<p><strong>Exhibit 1-3 reconstructed — "What would you like to show?" chart-selection decision guide</strong></p>
+<p>The exhibit is a flowchart that starts from one question — <em>what do you want your data to show?</em> — and branches into five purposes, each leading to recommended chart types:</p>
+<p><strong>1. COMPARATIVE</strong> (comparing categories or items against each other)
+- Few categories, 1 category, few items → <strong>Single bar chart</strong>
+- Few categories, 2+ categories, few items → <strong>Grouped bar chart</strong> or <strong>Stacked bar chart</strong>
+- Many categories, 1 category, many items → <strong>Word cloud</strong>
+- Many categories, many items overall → <strong>Table</strong>
+- Many categories with 3+ variables per item → <strong>Radar chart</strong></p>
+<p><strong>2. TREND</strong> (how something changes over time)
+- Many periods → <strong>Line chart</strong>
+- Few periods, many categories → <strong>Multi-line chart</strong>
+- Few periods, few categories → <strong>Single bar chart</strong></p>
+<p><strong>3. RELATIONSHIP</strong> (how variables relate to each other)
+- 2 numerical variables → <strong>Scatter plot</strong>
+- 3 numerical variables → <strong>Bubble chart</strong>
+- 3 categorical variables → <strong>Heat map</strong></p>
+<p><strong>4. DISTRIBUTION / GEOGRAPHIC</strong>
+- Numerical, 1 variable → <strong>Histogram</strong>
+- Categorical, chronological → <strong>Calendar chart</strong>
+- Categorical, geographical → <strong>World/map chart</strong></p>
+<p><strong>5. COMPOSITION</strong> (parts of a whole)
+- Changing over time, few periods, relative differences → <strong>100% stacked bar chart</strong>
+- Changing over time, few periods, absolute differences → <strong>Stacked bar chart</strong>
+- Changing over time, many periods → <strong>Area chart</strong>
+- Static, part-to-whole → <strong>Pie chart</strong>
+- Static, sequential part-to-whole → <strong>Funnel chart</strong>
+- Static, differential composition → <strong>Waterfall chart</strong>
+- Static, components of components → <strong>Percent-complete Gantt chart</strong>
+- Static, gauge completion, numerical → <strong>Radial chart</strong>
+- Static, gauge completion, categorical → <strong>Face/smiley chart</strong></p>
+<p><strong>Why this matters:</strong> the point of Exhibit 1-3 is that "make a chart" is not one decision but two: <em>what relationship are you trying to show</em> (comparison, trend, relationship, distribution, or composition), and <em>how many variables/categories/periods are involved</em>. The TelTime example shows this in action — the same underlying question (growth rate by product) can legitimately be visualized as either a grouped bar chart (Comparative path) or a multi-line chart (Trend path), and picking between them is itself part of the analytical process, not just a formatting choice.</p>
+<hr>
+<p><a id="executive-summary"></a></p>
+<h2 id="executive-summary-one-page">Executive Summary (One Page)</h2>
+<p>Chapter 1 establishes the theoretical foundation for everything else in the course, organized around a single idea borrowed from the sailing analogy that opens the chapter: before you can <em>apply</em> accounting standards (application) or even learn what those standards say (instrument), you need to understand <em>why</em> they exist (theory). That theory rests on one definition — accounting is the production and transmission of information from those who have it to those who need it — and one economic fact: information is unevenly distributed. People who need to make decisions about an uncertain future (investors, lenders, employees) demand information; insiders who already possess superior information are the natural suppliers of it. This gap between insiders and outsiders is <strong>information asymmetry</strong>, and it comes in two structurally distinct forms. <strong>Adverse selection</strong> is hidden information about the past/present — illustrated with a used-car market where rational buyers, unable to tell good cars from lemons, drive the price down to the value of the worst car available, and good sellers quietly exit the market. <strong>Moral hazard</strong> is hidden action in the future — illustrated with car insurance, where being insured itself reduces the incentive to drive carefully, forcing insurers to price in worse expected behaviour and use tools like deductibles to claw some of that incentive back.</p>
+<p>Both problems map directly onto accounting. Adverse selection explains why firms voluntarily produce audited financial statements and pay dividends (both are <em>costly signals</em>, credible precisely because a low-quality firm can't easily fake them, unlike "cheap talk" claims). Moral hazard explains the <strong>agency problem</strong> between owners and managers, and why firms use incentive pay, stock ownership, and debt covenants (current ratio, debt-to-assets, interest coverage) to keep managers' incentives aligned with owners' and creditors' interests. These two problems also generate opposite demands on accounting information: adverse selection creates demand for <strong>relevance</strong> (forward-looking, decision-useful information), while moral hazard creates demand for <strong>reliability/verifiability</strong> (information resistant to manipulation) — a trade-off that recurs throughout the rest of the textbook. Where managers <em>do</em> have discretion (because standards must flex across diverse businesses and accrual accounting requires estimates), <strong>positive accounting theory</strong> predicts they will exercise it self-interestedly — usually biasing earnings upward (to raise share price, lower borrowing costs, hit covenants/bonuses) but sometimes downward (to avoid extra taxes/regulatory scrutiny, or take a "big bath" in an already-bad year). The 2008 financial crisis is presented as moral hazard at systemic scale: mortgage-backed securities and credit default swaps let banks and investors offload default risk, which destroyed underwriting discipline and fuelled reckless subprime lending until falling house prices exposed it.</p>
+<p>The chapter then turns to securities markets, using Apple Inc. to show that efficient markets absorb accounting information into prices within minutes to days, compete against other (non-accounting) information sources, make abnormal profits from public information hard to earn (but insider trading profitable and therefore restricted by law), and let accounting standards assume a "reasonably sophisticated" user base rather than universal comprehensibility. Efficient markets run in both directions: reliable market prices are also <em>used inside</em> accounting itself, to measure investments in traded securities at fair value, while non-traded items like inventory and equipment remain at historical cost. Finally, the chapter pivots to data analytics as the modern extension of the accountant's role — automation has repeatedly <em>increased</em>, not eliminated, demand for accountants by freeing their time for strategic, judgment-based work, and analytics (structured/unstructured data, the five V's of Big Data, the ETL process, and business-question-driven data storytelling) is framed as the next layer of that same shift.</p>
+<hr>
+<p><a id="key-takeaways"></a></p>
+<h2 id="key-takeaways">Key Takeaways</h2>
+<ol>
+<li>Accounting is fundamentally a communication problem: producing and transmitting information from those who have it to those who need it — not merely a mechanical bookkeeping exercise.</li>
+<li>Information only needs the <em>potential</em> to affect a decision to count as information — it doesn't need to actually change anyone's mind.</li>
+<li>Information asymmetry between insiders and outsiders is the root cause of both the demand for and the supply of accounting/financial reporting.</li>
+<li>Adverse selection = hidden information about the past/present (fixed by relevant, credible disclosure and costly signals like audits/dividends). Moral hazard = hidden action in the future (fixed by reliable/verifiable information, incentive alignment, and covenants).</li>
+<li>A costless signal is never credible; only a <em>costly</em> signal (one a low-quality party can't easily fake) can overcome adverse selection.</li>
+<li>The agency (principal–agent) problem is the accounting-specific version of moral hazard between owners and managers, mitigated by incentive pay, equity stakes, and accounting-based performance monitoring.</li>
+<li>Relevance and reliability/verifiability are in genuine tension — you generally cannot maximize both in the same piece of information, and this trade-off underlies many specific accounting standard choices covered later in the course.</li>
+<li>Positive accounting theory gives you a predictive lens: identify a manager's incentives (covenants, bonuses, taxes, regulation, union talks) and you can predict the direction of likely earnings management.</li>
+<li>Efficient securities markets absorb accounting information into prices quickly, which is why timeliness matters, why insider trading is restricted, and why standards don't need to cater to unsophisticated users.</li>
+<li>The accounting profession has historically <em>gained</em> relevance from each wave of automation (manual → computers → AI/ML) by shifting toward strategic, judgment- and analytics-driven work rather than being displaced by it.</li>
+</ol>
+<hr>
+<p><a id="common-misconceptions"></a></p>
+<h2 id="common-misconceptions-and-mistakes">Common Misconceptions and Mistakes</h2>
+<ul>
+<li><strong>"Accounting standards exist because a regulator said so."</strong> The chapter explicitly corrects this: standards are a response to (imperfect) supply and demand for information, not arbitrary bureaucratic decree.</li>
+<li><strong>"If a decision didn't change, the evidence wasn't 'information.'"</strong> Wrong by the chapter's own definition — information only needs the <em>potential</em> to change a decision (see the Sally/weather-forecast example).</li>
+<li><strong>Confusing adverse selection with moral hazard.</strong> A very common exam mistake. Use the two-question test: is this about something <em>hidden that already happened</em> (adverse selection) or something <em>hidden that will happen in the future</em> (moral hazard)? Used-car quality = adverse selection. Driving carefully after buying insurance = moral hazard.</li>
+<li><strong>Assuming earnings management is always upward.</strong> Students often forget the downward-bias motivations (tax/regulatory avoidance, subsidy-seeking, "big bath" accounting, union bargaining) — the chapter lists these as equally real, just situational.</li>
+<li><strong>Treating "cheap talk" as if it has some persuasive value.</strong> An unverifiable claim (e.g., "our stock is undervalued") carries no informational weight in this framework, regardless of how confidently it's stated — only costly, verifiable signals matter.</li>
+<li><strong>Thinking efficient markets mean prices are always "right" or that mispricing is impossible.</strong> Semi-strong form efficiency means prices reflect <em>public</em> information, not all information — private/inside information can still generate abnormal profits (hence insider-trading law).</li>
+<li><strong>Assuming all balance sheet items use the same measurement basis.</strong> The chapter is explicit that efficient-market logic justifies using market prices for some items (e.g., traded investment securities) while historical cost remains appropriate for others (e.g., inventory, equipment) — a mixed-measurement model is intentional, not sloppy.</li>
+<li><strong>Believing automation threatens accounting jobs.</strong> The chapter's historical narrative argues the opposite has happened twice already (manual→computer, and now computer→AI/ML): automation has repeatedly <em>increased</em> demand for accountants by shifting the role toward higher-value strategic work.</li>
+<li><strong>Treating this study guide's Part E "gap notice" content as textbook-verbatim.</strong> The 5 V's/ETL definitions and most of the Exhibit 1-3 mechanics in this guide are reconstructed from the chapter's own summary plus what's visible in your image — not the authors' full original explanatory text. Don't quote it as if it were a direct textbook citation in an assignment.</li>
+</ul>
+<hr>
+<p><a id="cheat-sheet"></a></p>
+<h2 id="cheat-sheet">Cheat Sheet</h2>
+<h3 id="core-definitions">Core definitions</h3>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Term</th>
+<th>One-line definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Information</td>
+<td>Evidence with the <em>potential</em> to affect a decision</td>
+</tr>
+<tr>
+<td>Information asymmetry</td>
+<td>Some parties have more/better information than others</td>
+</tr>
+<tr>
+<td>Adverse selection</td>
+<td>Hidden information (past/present); one party has an information advantage</td>
+</tr>
+<tr>
+<td>Moral hazard</td>
+<td>Hidden action (future); one party can't observe the other's actions</td>
+</tr>
+<tr>
+<td>Cheap talk</td>
+<td>An unverifiable, costless claim — not credible</td>
+</tr>
+<tr>
+<td>Costly signal</td>
+<td>A claim backed by real cost/legal exposure if false — credible</td>
+</tr>
+<tr>
+<td>Agency (principal–agent) problem</td>
+<td>Owners (principals) can't fully monitor managers (agents)</td>
+</tr>
+<tr>
+<td>Positive accounting theory</td>
+<td>Descriptive theory of managers' accounting choices and incentives</td>
+</tr>
+<tr>
+<td>Earnings management</td>
+<td>Deliberate bias in reported financial information</td>
+</tr>
+<tr>
+<td>Public company</td>
+<td>A firm with equity/debt/other securities traded in public markets</td>
+</tr>
+<tr>
+<td>Efficient securities market</td>
+<td>Prices properly reflect all publicly known information at all times</td>
+</tr>
+<tr>
+<td>Semi-strong form efficiency</td>
+<td>Prices reflect all <em>public</em> information (not private/inside information)</td>
+</tr>
+<tr>
+<td>Data analytics</td>
+<td>Examination of information to refine business strategy</td>
+</tr>
+<tr>
+<td>Structured data</td>
+<td>Data in a fixed, predictable format (rows/columns)</td>
+</tr>
+<tr>
+<td>Unstructured data</td>
+<td>Data with no predefined format (text, contracts, emails)</td>
+</tr>
+<tr>
+<td>ETL</td>
+<td>Extract → Transform → Load: the standard data-preparation pipeline</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="the-two-information-asymmetries-side-by-side">The two information asymmetries, side by side</h3>
+<div class="tw"><table>
+<thead>
+<tr>
+<th></th>
+<th>Adverse Selection</th>
+<th>Moral Hazard</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Hidden</td>
+<td>Information</td>
+<td>Action</td>
+</tr>
+<tr>
+<td>Timing</td>
+<td>Past/present</td>
+<td>Future</td>
+</tr>
+<tr>
+<td>Fixed by</td>
+<td>Relevant, credible disclosure; costly signals (audits, dividends)</td>
+<td>Reliable/verifiable information; incentive alignment; covenants</td>
+</tr>
+<tr>
+<td>Classic example</td>
+<td>Used cars ("lemons")</td>
+<td>Car insurance</td>
+</tr>
+<tr>
+<td>Accounting example</td>
+<td>Audited financial statements; dividend policy</td>
+<td>Incentive pay, stock options, debt covenants</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="debt-covenant-benchmarks-named-in-the-chapter">Debt covenant benchmarks named in the chapter</h3>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Covenant</th>
+<th>Threshold in text</th>
+<th>Standard formula (supplementary, verify vs. course formula sheet)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Current ratio</td>
+<td>&gt; 2</td>
+<td>Current Assets ÷ Current Liabilities</td>
+</tr>
+<tr>
+<td>Debt-to-assets ratio</td>
+<td>&lt; 0.5</td>
+<td>Total Debt ÷ Total Assets</td>
+</tr>
+<tr>
+<td>Interest coverage ratio</td>
+<td>&gt; 3</td>
+<td>EBIT ÷ Interest Expense</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="earnings-management-direction-quick-lookup">Earnings management direction — quick lookup</h3>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Situation</th>
+<th>Likely direction</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Approaching a debt covenant threshold</td>
+<td>Upward</td>
+</tr>
+<tr>
+<td>Bonus/compensation tied to profit or EPS</td>
+<td>Upward</td>
+</tr>
+<tr>
+<td>Trying to raise share price / pursuing financing</td>
+<td>Upward</td>
+</tr>
+<tr>
+<td>Facing potential windfall-profit taxes or new regulation</td>
+<td>Downward</td>
+</tr>
+<tr>
+<td>Seeking government subsidies/trade protection</td>
+<td>Downward</td>
+</tr>
+<tr>
+<td>Already a bad year, want future years to look strong</td>
+<td>Downward ("big bath")</td>
+</tr>
+<tr>
+<td>Negotiating with a labour union</td>
+<td>Downward</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="five-vs-of-big-data-supplementary-standard-industry-framewor">Five V's of Big Data (supplementary — standard industry framework, see gap notice)</h3>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>V</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Velocity</td>
+<td>Speed of data generation/processing</td>
+</tr>
+<tr>
+<td>Volume</td>
+<td>Quantity of data</td>
+</tr>
+<tr>
+<td>Variety</td>
+<td>Range of data types/sources</td>
+</tr>
+<tr>
+<td>Veracity</td>
+<td>Trustworthiness/accuracy of data</td>
+</tr>
+<tr>
+<td>Value</td>
+<td>Usefulness of the data for decisions</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="etl-in-one-line-each-supplementary-see-gap-notice">ETL, in one line each (supplementary — see gap notice)</h3>
+<ul>
+<li><strong>Extract</strong>: pull raw data from its source.</li>
+<li><strong>Transform</strong>: clean, validate, format, compute.</li>
+<li><strong>Load</strong>: place the finished data where it's ready for analysis.</li>
+</ul>
+<h3 id="chart-selection-quick-reference-from-exhibit-1-3-reconstruct">Chart-selection quick reference (from Exhibit 1-3 reconstruction)</h3>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>You want to show...</th>
+<th>Consider</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Comparison across few categories</td>
+<td>Bar, grouped bar, stacked bar</td>
+</tr>
+<tr>
+<td>Comparison across many categories/items</td>
+<td>Table, word cloud, radar</td>
+</tr>
+<tr>
+<td>Trend over many periods</td>
+<td>Line chart</td>
+</tr>
+<tr>
+<td>Trend over few periods</td>
+<td>Multi-line or single bar</td>
+</tr>
+<tr>
+<td>Relationship between 2–3 numerical variables</td>
+<td>Scatter plot, bubble chart</td>
+</tr>
+<tr>
+<td>Relationship between categorical variables</td>
+<td>Heat map</td>
+</tr>
+<tr>
+<td>Distribution / geography</td>
+<td>Histogram, calendar, map</td>
+</tr>
+<tr>
+<td>Composition, changing over time</td>
+<td>Stacked bar (100% or absolute), area</td>
+</tr>
+<tr>
+<td>Composition, static</td>
+<td>Pie, funnel, waterfall, Gantt, radial, face/gauge</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="2008-financial-crisis-at-a-glance">2008 financial crisis, at a glance</h3>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Institution</th>
+<th>Outcome</th>
+<th>Asset scale</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Lehman Brothers</td>
+<td>Bankruptcy</td>
+<td>US$700B–US$2T</td>
+</tr>
+<tr>
+<td>Merrill Lynch</td>
+<td>Acquired by Bank of America</td>
+<td>US$700B–US$2T</td>
+</tr>
+<tr>
+<td>AIG</td>
+<td>Bailed out (80% government equity stake)</td>
+<td>US$700B–US$2T</td>
+</tr>
+<tr>
+<td>Citigroup</td>
+<td>Bailed out (36% government equity stake)</td>
+<td>US$700B–US$2T</td>
+</tr>
+</tbody>
+</table></div>
+<p>Mechanism in five words: <strong>risk transferred → screening discipline collapsed.</strong></p>
+<hr>
+<p><em>End of study guide. Reminder of the one open item: if you have access to chapter pages ~14–21 (the detailed LO 1-7/1-8/1-9 material), share them and I'll rebuild that portion of Part E from the authors' actual text rather than the supplementary framework used here.</em></p>
+<hr>
+<h2 id="cross-chapter-connections">Cross-Chapter Connections</h2>
+<ul>
+<li><strong><a href="afm291-ch2-conceptual-frameworks.html">Chapter 2</a> — Qualitative characteristics.</strong> Chapter 1's relevance-vs-reliability trade-off is the <em>reason</em> Chapter 2's framework has fundamental and enhancing characteristics at all. Read them as answer and question.</li>
+<li><strong><a href="afm291-ch2-conceptual-frameworks.html">Chapter 2</a> — Measurement bases.</strong> Part D.2's efficient-market justification for mixing market price and historical cost is operationalized as Chapter 2's four measurement bases.</li>
+<li><strong><a href="afm291-ch3-accrual-accounting.html">Chapter 3</a> — Accounting changes.</strong> Positive accounting theory predicts <em>when</em> managers will exercise discretion; Chapter 3 supplies the rules constraining <em>how</em>.</li>
+<li><strong><a href="afm291-ch4-revenue-recognition.html">Chapter 4</a> — Revenue recognition.</strong> Chapter 4 opens by explicitly invoking Chapter 1's information-asymmetry logic to explain why revenue cannot be recognized anywhere on the value-creation timeline.</li>
+<li><strong><a href="afm291-ch6-inventories.html">Chapter 6</a> — Inventory earnings management.</strong> The overproduction and skipped-writedown tactics in Chapter 6 are direct instances of Chapter 1's upward-bias motivation list.</li>
+<li><strong><a href="afm291-ch10-fair-value.html">Chapter 10</a> — Impairment's economic roles.</strong> The Salmo Company example in Chapter 10 is Chapter 1's contracting/decision-making theory applied to a specific standard.</li>
+</ul>
+<hr>
+<h2 id="common-cpa-exam-traps">Common CPA Exam Traps</h2>
+<div class="cal cal-warn"><p class="ch"><span class="cw">Watch out</span><span class="ct">High-yield technical traps</span></p><div class="cb"><p><em>Caveat: technical-risk areas identified from the structure of the standards — asymmetries, exceptions, look-alike concepts. </em><em>Not</em><em> verified CPA Common Final Examination marker data.</em></p></div></div>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>#</th>
+<th>Trap</th>
+<th>Why students miss it</th>
+<th>Correct approach</th>
+<th>Marker expectation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><strong>Confusing adverse selection with moral hazard</strong></td>
+<td>Both are "information problems," both involve one party knowing more, both are fixed by "better information." The distinguishing features are structural, not intuitive.</td>
+<td>Run the two-question test. ==<strong>What is hidden?</strong>== Information → adverse selection. Action → moral hazard. ==<strong>When?</strong>== Past/present → adverse selection. Future → moral hazard. Used-car quality = adverse selection. Driving carefully after buying insurance = moral hazard.</td>
+<td>Name the type explicitly, then justify with <strong>both</strong> distinguishing features (hidden information vs. hidden action <strong>and</strong> past/present vs. future). One feature alone is a partial answer.</td>
+</tr>
+<tr>
+<td>2</td>
+<td><strong>Assuming earnings management is always upward</strong></td>
+<td>The seven upward motivations are intuitive and get rehearsed. The four downward ones are counter-intuitive and therefore more examinable.</td>
+<td>Scan every fact pattern for ==the four downward triggers==: <strong>(1)</strong> unusually high profitability inviting windfall taxes or new regulation; <strong>(2)</strong> a pending subsidy or trade-protection application; <strong>(3)</strong> an already-bad year — the <strong>"big bath"</strong>; <strong>(4)</strong> an active labour/union negotiation.</td>
+<td>State the <em>direction</em> of expected bias and name the specific motivation from the chapter's list. "Management may manipulate earnings" scores nothing without a direction and a driver.</td>
+</tr>
+<tr>
+<td>3</td>
+<td><strong>Treating "cheap talk" as partially persuasive</strong></td>
+<td>Confident assertions feel informative.</td>
+<td>A costless signal is <strong>never</strong> credible, because anyone can send it regardless of true quality. Only signals imposing real cost or legal exposure separate types.</td>
+<td>Identify the signal as costless and say why that destroys its information content.</td>
+</tr>
+<tr>
+<td>4</td>
+<td><strong>Reading "efficient market" as "always correctly priced"</strong></td>
+<td>The word "efficient" invites it.</td>
+<td>Markets are <strong>semi-strong form</strong> efficient — prices reflect <strong>public</strong> information only. They are <strong>not</strong> strong-form efficient; private information can still generate abnormal profits, which is precisely why insider trading is restricted.</td>
+<td>Name the form of efficiency. An unqualified "markets are efficient" is incomplete.</td>
+</tr>
+<tr>
+<td>5</td>
+<td><strong>Assuming a uniform measurement basis across the balance sheet</strong></td>
+<td>Consistency feels like a virtue.</td>
+<td>The mixed model is <strong>deliberate</strong>: market price where an efficient market supplies a reliable number, historical cost where it does not.</td>
+<td>Justify the mix using efficient-market logic, not by citing a rule.</td>
+</tr>
+</tbody>
+</table></div>
+<hr>
+<h2 id="key-ifrsaspe-rules">Key IFRS/ASPE Rules</h2>
+<div class="cal cal-imp"><p class="ch"><span class="cw">Important</span><span class="ct">Rules and citations</span></p><div class="cb"><p><strong>No paragraph-level IFRS or ASPE citations exist in this chapter.</strong> Chapter 1 is theory. Citing a Handbook paragraph for Chapter 1 content is a fabrication risk — cite the <em>concept</em>.</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Concept</th>
+<th>Authority named in the chapter</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Standard-setting internationally</td>
+<td><strong>International Accounting Standards Board (IASB)</strong>, London</td>
+</tr>
+<tr>
+<td>Standard-setting in Canada</td>
+<td><strong>Accounting Standards Board (AcSB)</strong></td>
+</tr>
+<tr>
+<td>Reporting framework options</td>
+<td><strong>IFRS</strong> and <strong>Accounting Standards for Private Enterprises (ASPE)</strong></td>
+</tr>
+<tr>
+<td>Measurement of investments in traded securities</td>
+<td>Forward reference to <strong>Chapter 7</strong> — no paragraph given</td>
+</tr>
+<tr>
+<td>"Fraud on the market" doctrine</td>
+<td><strong><em>Basic, Inc. v. Levinson</em> (1988)</strong>, US Supreme Court — the textbook's own citation <code>[VERIFY: not independently re-confirmed]</code></td>
+</tr>
+</tbody>
+</table></div></div></div>
+<hr>
+<h2 id="journal-entry-calculation-walkthrough">Journal Entry / Calculation Walkthrough</h2>
+<div class="cal cal-eg"><p class="ch"><span class="cw">Example</span><span class="ct">Worked walkthrough</span></p><div class="cb"><p><strong>The only numeric calculation in Chapter 1 — Citigroup MBS pool size.</strong></p>
+<p>$$\text{MBS pool value} = \text{Number of mortgages} \times \text{Average mortgage value}$$</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Number of mortgages</td>
+<td>10,000</td>
+</tr>
+<tr>
+<td>Average mortgage value</td>
+<td>\$200,000</td>
+</tr>
+</tbody>
+</table></div>
+<p>$$\$200{,}000 \times 10{,}000 = \$2{,}000{,}000{,}000 = \$2\text{ billion}$$</p>
+<p><strong>The arithmetic in the textbook's example checks out.</strong></p>
+<p><strong>Supporting derivation — Apple's EPS surprise, July 28, 2022 [Clarification]:</strong></p>
+<p>$$\frac{\$1.20 - \$1.14}{\$1.14} = \frac{\$0.06}{\$1.14} = 0.0526 \approx \mathbf{5.3\%}$$</p>
+<p>Matches the 5.3% figure stated in the chapter. Shown for completeness, not to alter the figure.</p></div></div>
+<hr>
+<h2 id="memory-anchors">Memory Anchors</h2>
+<div class="cal cal-tip"><p class="ch"><span class="cw">Tip</span><span class="ct">Memory anchors</span></p><div class="cb"><ul>
+<li><strong>"Selection is about the seller's secret; hazard is about the buyer's future."</strong> Hidden information vs. hidden action.</li>
+<li><strong>Adverse selection = <em>before</em> the deal. Moral hazard = <em>after</em> the deal.</strong> Maps directly onto past/present vs. future.</li>
+<li><strong>"Talk is cheap; audits are not."</strong> Costless signal → never credible.</li>
+<li><strong>Downward bias = TSBU.</strong> <strong>T</strong>axes, <strong>S</strong>ubsidies, <strong>B</strong>ig bath, <strong>U</strong>nions. The four the chapter lists and students forget.</li>
+<li><strong>"Risk transferred → screening collapsed."</strong> The 2008 crisis in five words.</li>
+</ul></div></div>
+<hr>
+<h2 id="adversarial-cpa-mini-scenario">Adversarial CPA Mini-Scenario</h2>
+<details class="cal cal-q"><summary><span class="cw">Checkpoint</span><span class="ct">Adversarial CPA Mini-Scenario — click to expand</span></summary><div class="cb"><p><strong>Facts.</strong> Northgate Resources Ltd. is a private Canadian mining company reporting under ASPE. In the current year it discovered a significant copper deposit; its bankers have valued the discovery informally at $40 million. Northgate's CEO has publicly stated the company is "dramatically undervalued." The company has never paid a dividend, citing capital needs. Management's bonus is tied to reported net income, and Northgate is currently three months into renegotiating its collective agreement with the United Steelworkers. The company's principal debt covenant requires a debt-to-assets ratio below 0.5; the current ratio is 0.31. Northgate also holds 200,000 shares of a TSX-listed lithium producer, currently trading at $14.20.</p>
+<p><strong>Required.</strong> (a) Identify the information-asymmetry problems present and classify each. (b) Predict the likely direction of any earnings management and justify. (c) Comment on the CEO's statement.</p>
+<p><strong>Model answer.</strong>
+<em>(a)</em> <strong>Adverse selection</strong> — Northgate's insiders know the true quality of the copper deposit; outside investors and lenders do not. This is hidden <em>information</em> about a past/present fact. <strong>Moral hazard</strong> — management's bonus is tied to reported net income, and owners cannot observe management's accounting judgment directly; this is the classic <strong>agency problem</strong>, hidden <em>action</em> about the future.
+<em>(b)</em> <strong>Downward.</strong> The active <strong>union negotiation</strong> is a named downward-bias motivation — lower reported earnings strengthen management's bargaining position. Note that the debt covenant would ordinarily push <em>upward</em>, but at 0.31 against a 0.5 limit the covenant is <strong>not binding</strong>, so it exerts no real pressure. The bonus also pushes upward, so a defensible answer identifies the <strong>conflict</strong> and argues which dominates.
+<em>(c)</em> The CEO's statement is <strong>cheap talk</strong> — costless, unverifiable, and therefore carrying no information content. A costly signal (an independent valuation, an audit, or initiating a dividend) would be credible precisely because a low-quality firm could not sustain it.</p>
+<p><strong>Red herrings.</strong> (i) The <strong>0.31 current ratio</strong> looks alarming but is <em>below</em> the 0.5 covenant limit and therefore satisfies it — many candidates read it as a breach and predict upward management. (ii) The <strong>lithium shares at $14.20</strong> invite a measurement calculation; Chapter 1 only establishes <em>why</em> efficient market prices are usable, and Northgate reports under <strong>ASPE</strong> in any case. Compute nothing.</p>
+<p><strong>Common wrong answer.</strong> "Management will manage earnings upward to protect the covenant and hit the bonus." This misreads the covenant and ignores the union negotiation entirely.</p>
+<p><strong>Marker comment.</strong> Marks are for <strong>classifying</strong> each asymmetry with both distinguishing features, <strong>naming</strong> the specific motivation from the chapter's list, and <strong>recognizing the conflict</strong> between the bonus and the union driver. Asserting a direction without a named driver scores nothing.</p></div></details>
+<hr>
+<h2 id="key-takeaways-for-cpa-candidates">🎯 Key Takeaways for CPA Candidates</h2>
+<ol>
+<li>Accounting is the production and transmission of information from those who have it to those who need it. Every rule in the course is downstream of that one sentence.</li>
+<li>Information requires only the <strong>potential</strong> to affect a decision. The test is capability, not effect.</li>
+<li>Adverse selection = hidden <strong>information</strong>, past/present. Moral hazard = hidden <strong>action</strong>, future. Both features are needed for full marks.</li>
+<li>A costless signal is never credible. Audits and dividends work because a low-quality firm cannot fake them.</li>
+<li>Adverse selection creates demand for <strong>relevance</strong>; moral hazard creates demand for <strong>reliability/verifiability</strong>. They trade off, and that trade-off drives most standard-setting choices in the rest of the course.</li>
+<li>The <strong>agency problem</strong> is moral hazard between owners and managers, mitigated by incentive pay, equity stakes, covenants, and accounting-based performance reporting.</li>
+<li>Debt covenants protect <strong>creditors</strong>, not shareholders. The three named: current ratio &gt; 2, debt-to-assets &lt; 0.5, interest coverage &gt; 3.</li>
+<li>Positive accounting theory is <strong>descriptive</strong>, not normative — it predicts what managers do, not what they should do.</li>
+<li>Downward earnings-management motivations (taxes/regulation, subsidies, big bath, unions) are the examinable half, because they are the counter-intuitive half.</li>
+<li>Markets are <strong>semi-strong form</strong> efficient. Public information is priced; private information is not — hence insider-trading restrictions.</li>
+<li>Efficient-market logic runs both ways: it justifies using market prices <em>inside</em> accounting for traded securities, while historical cost persists where no efficient market exists.</li>
+<li>Automation has historically <strong>increased</strong> demand for accountants, twice. The skillset changes; the profession does not disappear.</li>
+</ol>
+<hr>
+<h2 id="retrieval-practice">Retrieval Practice</h2>
+<p><em>Questions visible, answers hidden. Attempt each before expanding.</em></p>
+<details class="cal cal-q"><summary><span class="cw">Checkpoint</span><span class="ct">Q1: What is the precise test for whether evidence counts as &quot;information&quot;?</span></summary><div class="cb"><p>Whether it has the <strong>potential</strong> to affect an individual's decision — not whether it actually changed one. Sally's weather forecast is information even though she sailed anyway, because gale-force winds would have kept her home.</p></div></details>
+<details class="cal cal-q"><summary><span class="cw">Checkpoint</span><span class="ct">Q2: Name the two features that distinguish adverse selection from moral hazard.</span></summary><div class="cb"><p>(1) Hidden <strong>information</strong> vs. hidden <strong>action</strong>. (2) <strong>Past/present</strong> vs. <strong>future</strong> orientation.</p></div></details>
+<details class="cal cal-q"><summary><span class="cw">Checkpoint</span><span class="ct">Q3: Why does the used-car price collapse to $2,000 rather than settling at the $3,000 midpoint?</span></summary><div class="cb"><p>At $3,000, owners of cars worth more refuse to sell, so the buyer only ever transacts with the below-average half. Revising down to $2,500 repeats the problem. Iterating to the fixed point leaves only the <strong>floor</strong> of the range — the worst car.</p></div></details>
+<details class="cal cal-q"><summary><span class="cw">Checkpoint</span><span class="ct">Q4: List the four downward-bias earnings-management motivations.</span></summary><div class="cb"><p>(1) Reduce risk of extra taxes/regulation aimed at highly profitable firms. (2) Increase odds of government subsidies or trade protection. (3) <strong>"Big bath"</strong> — dump expenses into an already-bad year. (4) Improve bargaining leverage against labour unions.</p></div></details>
+<details class="cal cal-q"><summary><span class="cw">Checkpoint</span><span class="ct">Q5: What form of market efficiency does the chapter say research supports, and what does that exclude?</span></summary><div class="cb"><p><strong>Semi-strong form</strong> — prices reflect all <em>publicly available</em> information. Markets are <strong>not</strong> strong-form efficient, so private/inside information can still generate abnormal profits.</p></div></details>
+<details class="cal cal-q"><summary><span class="cw">Checkpoint</span><span class="ct">Q6: Why does the balance sheet mix market price and historical cost?</span></summary><div class="cb"><p>Efficient-market logic. Where an efficient market exists (traded securities), its price is a reliable, verifiable, real-time value. Where none exists (inventory, equipment), historical cost is used. The mix is deliberate, not inconsistent.</p></div></details>
+<details class="cal cal-q"><summary><span class="cw">Checkpoint</span><span class="ct">Q7: Give the three debt covenants named in the chapter and their thresholds.</span></summary><div class="cb"><p>Current ratio <strong>above 2</strong>; debt-to-assets ratio <strong>below 0.5</strong>; interest coverage ratio <strong>above 3</strong>.</p></div></details>
+<details class="cal cal-q"><summary><span class="cw">Checkpoint</span><span class="ct">Q8: State the three economic roles of the audit/dividend signal in one sentence each.</span></summary><div class="cb"><p>Audits are a costly signal analogous to an independent mechanic's inspection. Dividends are costly because sustaining them requires genuinely reliable cash flows. Both work because a low-quality firm cannot afford to imitate them.</p></div></details>
+<hr>
+<h2 id="source-fidelity-amp-obsidian-qa">Source Fidelity &amp; Obsidian QA</h2>
+<div class="cal cal-check"><p class="ch"><span class="cw">Check</span><span class="ct">Source Fidelity &amp; Obsidian QA</span></p><div class="cb"><ul>
+<li>Original definitions preserved: ✅ — all 22 Part-0-through-Part-E definitions carried verbatim</li>
+<li>Original calculations preserved: ✅ — Citigroup MBS $2B; Apple 5.3% EPS beat; used-car $2,000/$2,500/$3,000/$4,000 range</li>
+<li>Original journal entries preserved: ✅ — n/a, Chapter 1 contains no journal entries (confirmed by grep: zero Dr./Cr. lines)</li>
+<li>Exhibit references preserved: ✅ — Exhibits 1-1, 1-2, 1-3 all retained with original numbering</li>
+<li>Standard citations not fabricated: ✅ — no Handbook paragraphs cited; <em>Basic v. Levinson</em> flagged <code>[VERIFY]</code></li>
+<li>Journal entries balanced: ✅ — n/a</li>
+<li>Mermaid syntax valid: ✅ — all node/edge labels quoted, no unquoted parentheses, <code>&lt;br/&gt;</code> used for breaks</li>
+<li>Known source gaps flagged, not invented over: ✅ — pages 14–21 gap in <code>&gt; [!bug]- GAP</code>, 5 V's and ETL labelled supplementary</li>
+<li>Remaining gaps: <strong>pages 14–21 (LO 1-7, 1-8, 1-9)</strong> — upload to close. The full numbered data-storytelling process (steps 1 through N) is also unavailable; only steps 4 and 5 are referenced in the surviving text.</li>
+</ul></div></div>
+<hr>
+<div class="cal cal-note"><p class="ch"><span class="cw">Note</span><span class="ct">Refinement Log</span></p><div class="cb"><ul>
+<li><strong>Preserved:</strong> every original definition, criterion, standard reference, exhibit number, calculation, worked example, checkpoint answer, and gap flag. Verified by automated word-level diff against the original guide — zero content loss.</li>
+<li><strong>Clarified:</strong> blockquote labels moved into typed callout headers; checkpoint questions surfaced as callout titles with answers collapsed beneath, restoring retrieval practice.</li>
+<li><strong>Added:</strong> YAML frontmatter with standards, LOs, week, framework, and gap register; wikilinks at genuine cross-reference points; Common CPA Exam Traps; Key IFRS/ASPE Rules; Journal Entry / Calculation Walkthrough; Memory Anchors; Adversarial CPA Mini-Scenario; Key Takeaways for CPA Candidates; Retrieval Practice; this QA block.</li>
+<li><strong>Corrected:</strong> chapter-specific technical patches applied and labelled <code>[Audit fix]</code> inline. Every injected standard reference carries a <code>[VERIFY]</code> marker — none was asserted as settled.</li>
+<li><strong>Visual upgrades:</strong> all blockquotes converted to typed Obsidian callouts; checkpoints and gap flags collapsed by default; Mermaid diagrams added for the conversion targets specified for this chapter.</li>
+<li><strong>Not done:</strong> ASCII diagrams outside the named Mermaid conversion targets were left in fenced code blocks rather than converted or removed, because deleting or reworking them would risk the zero-loss constraint. They render correctly in Obsidian as monospace.</li>
+</ul></div></div>
+<div class="cal cal-note"><p class="ch"><span class="cw">Note</span><span class="ct">Source Mapping</span></p><div class="cb"><div class="tw"><table>
+<thead>
+<tr>
+<th>Original Item</th>
+<th>Refined Location</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Note on sources</td>
+<td><code>&gt; [!info]</code> callout, top of note</td>
+</tr>
+<tr>
+<td>THRESHOLD CONCEPT blockquotes</td>
+<td><code>&gt; [!abstract]</code> — or <code>&gt; [!danger]</code> where Quality of Earnings</td>
+</tr>
+<tr>
+<td>Checkpoint CPx-y blocks</td>
+<td><code>&gt; [!question]-</code> collapsed, question in header</td>
+</tr>
+<tr>
+<td>Gap flags</td>
+<td><code>&gt; [!bug]-</code> collapsed</td>
+</tr>
+<tr>
+<td>Instructor's Notes</td>
+<td><code>&gt; [!tip]</code></td>
+</tr>
+<tr>
+<td>Quoted standard paragraphs</td>
+<td><code>&gt; [!quote]</code> or <code>&gt; [!important]</code> rule blocks</td>
+</tr>
+<tr>
+<td>Formula blocks</td>
+<td><code>&gt; [!example]</code> with LaTeX</td>
+</tr>
+<tr>
+<td>Executive Summary, Key Takeaways, Common Misconceptions, Cheat Sheet</td>
+<td>retained in place, unchanged</td>
+</tr>
+<tr>
+<td>Named exhibits per this chapter's Mermaid targets</td>
+<td>Decision Flowcharts &amp; Logic Trees section</td>
+</tr>
+</tbody>
+</table></div></div></div>
+      </article>
+      <p class="docend">Converted from my own markdown note at build time. The source note is the record; this page is the published form of it. <a href="colophon.html">How the conversion works</a>.</p>
+    </div>
+  </div>
+</div>
+</main>
+<footer class="site">
+  <div class="cols">
+    <div>
+      <h4>Alex Rajcoomar</h4>
+      <p class="small" style="max-width:26rem;color:var(--ink-2)">Accounting and Financial Management, Analytics stream, University of Waterloo. 48 published pieces: research, interactive tools and references, all of them running rather than described.</p>
+      <p class="small"><a href="mailto:leesharamrajcoomar@gmail.com" style="color:var(--accent)">leesharamrajcoomar@gmail.com</a></p>
+    </div>
+    <div>
+      <h4>Sections</h4>
+      <a href="research.html">Research and writing</a>
+      <a href="coursework.html">Coursework</a>
+      <a href="tools.html">Interactive tools</a>
+      <a href="library.html">Full library</a>
+    </div>
+    <div>
+      <h4>This site</h4>
+      <a href="about.html">About and contact</a>
+      <a href="colophon.html">Colophon and method</a>
+      <a href="https://alexrajcoomar.github.io">basmatierajcoomar-pixel.github.io</a>
+    </div>
+  </div>
+  <div class="fine">
+    <span>&copy; 2026 Leesharam Alexander Rajcoomar</span>
+    <span><b>48</b> pieces &middot; <b>260,772</b> words &middot; <b>96</b> figures &middot; hand-written HTML and CSS, no framework</span>
+  </div>
+</footer>
+
+<!-- Search across every piece. Progressive: every link on the site works
+     without it, and the button is the same route as the keyboard. -->
+<div class="cmdk" id="cmdk" hidden role="dialog" aria-modal="true" aria-label="Search all work">
+  <div class="cmdk-panel">
+    <input id="cmdk-input" type="text" placeholder="Search 48 pieces by title, course or topic" autocomplete="off" spellcheck="false" aria-controls="cmdk-list">
+    <ul class="cmdk-list" id="cmdk-list" role="listbox" aria-label="Results"></ul>
+    <div class="cmdk-foot">
+      <span><kbd>&#8593;</kbd><kbd>&#8595;</kbd> move</span><span><kbd>Enter</kbd> open</span><span><kbd>Esc</kbd> close</span>
+    </div>
+  </div>
+</div>
+<script>
+window.WORK = [{"t":"The Trillion-Dollar Vintage","s":"A study edition of the AI capital-cycle adjudication","u":"the-trillion-dollar-vintage.html","k":"Essay","c":"","d":"August 2026"},{"t":"Whose Losses Count","s":"Corporate ethics and the micro/macro foundations of strategy","u":"whose-losses-count.html","k":"Essay","c":"","d":"August 2026"},{"t":"Not Significant","s":"An essay on the accounting of harm","u":"not-significant.html","k":"Essay","c":"","d":"August 2026"},{"t":"Global Spending and Wealth","s":"Scale, structure, concentration","u":"global-spending-and-wealth.html","k":"Essay","c":"","d":"August 2026"},{"t":"Does chronic caffeine spend your heartbeat budget faster?","s":"A question taken seriously","u":"heartbeat-budget.html","k":"Essay","c":"","d":"August 2026"},{"t":"Exam Day Final Load","s":"The last hour","u":"exam-day-final-load.html","k":"Reference","c":"","d":"August 2026"},{"t":"Daily Learning Cockpit","s":"Prediction log, spaced rotation, calibration","u":"daily-learning-cockpit.html","k":"Tool","c":"","d":"August 2026"},{"t":"The Delayed Test","s":"Learning, judgment, and seeing clearly","u":"the-delayed-test.html","k":"Essay","c":"","d":"August 2026"},{"t":"The Calibrated Mind","s":"Operating principles for being right on purpose","u":"the-calibrated-mind.html","k":"Reference","c":"","d":"August 2026"},{"t":"AFM 291 Vault","s":"Map of content","u":"afm291.html","k":"Reference","c":"AFM 291","d":"July 2026"},{"t":"US and Canada Legal Architecture","s":"One page, two systems","u":"us-canada-legal-architecture.html","k":"Reference","c":"","d":"August 2026"},{"t":"Business Law for Accountants","s":"Canada and the United States","u":"business-law-primer.html","k":"Reference","c":"Business law","d":"August 2026"},{"t":"Law Arena","s":"Business law for accountants","u":"law-arena.html","k":"Tool","c":"Business law","d":"August 2026"},{"t":"Skill Forge","s":"AFM 291 drill engine","u":"skill-forge.html","k":"Tool","c":"AFM 291","d":"August 2026"},{"t":"AFM 291 Interactive Study System","s":"Intermediate Financial Accounting 1","u":"afm291-study-system.html","k":"Tool","c":"AFM 291","d":"August 2026"},{"t":"AFM 291 Practice Arena","s":"Timed question practice","u":"practice-arena.html","k":"Tool","c":"AFM 291","d":"August 2026"},{"t":"ECON 102 Interactive Exam Trainer","s":"Macroeconomics practice","u":"econ102-exam-trainer.html","k":"Tool","c":"ECON 102","d":"August 2026"},{"t":"Revenue Recognition","s":"Complete study guide","u":"revenue-recognition.html","k":"Reference","c":"AFM 291","d":"May 2026"},{"t":"AFM 291 Midterm Field Manual","s":"Revision C","u":"afm291-field-manual.html","k":"Reference","c":"AFM 291","d":"June 2026"},{"t":"AFM 291 Journal Entry Reference","s":"Every entry, one page","u":"afm291-journal-entries.html","k":"Reference","c":"AFM 291","d":"June 2026"},{"t":"AFM 291 Inventory and Gap Map","s":"What is covered, what is missing","u":"afm291-inventory-gap-map.html","k":"Reference","c":"AFM 291","d":"August 2026"},{"t":"AFM 274 Chapter 17","s":"Capital structure in a perfect market","u":"afm274-capital-structure.html","k":"Reference","c":"AFM 274","d":"June 2026"},{"t":"AFM 274 Chapter 19","s":"Financial distress, agency costs and information","u":"afm274-financial-distress.html","k":"Reference","c":"AFM 274","d":"June 2026"},{"t":"AFM 241 Exam Study Reference","s":"Full course reference","u":"afm241-study-reference.html","k":"Reference","c":"AFM 241","d":"June 2026"},{"t":"AFM 241 Two-Page Cheat Sheet","s":"Compressed to what fits","u":"afm241-cheat-sheet.html","k":"Reference","c":"AFM 241","d":"June 2026"},{"t":"The Gartner Hype Cycle","s":"The complete picture","u":"hype-cycle.html","k":"Reference","c":"AFM 241","d":"June 2026"},{"t":"ECON 102 Master Visual Reference","s":"Every model in one place","u":"econ102-visual-reference.html","k":"Reference","c":"ECON 102","d":"August 2026"},{"t":"Positive vs Normative","s":"ECON 102, slides 5 to 6","u":"positive-vs-normative.html","k":"Reference","c":"ECON 102","d":"August 2026"},{"t":"AFM 291 Chapter 1","s":"Financial accounting theory and data analytics","u":"afm291-ch1-theory-and-analytics.html","k":"Reference","c":"AFM 291","d":"July 2026"},{"t":"AFM 291 Chapter 2","s":"Conceptual frameworks for financial reporting","u":"afm291-ch2-conceptual-frameworks.html","k":"Reference","c":"AFM 291","d":"July 2026"},{"t":"AFM 291 Chapter 3","s":"Accrual accounting, changes and statement structure","u":"afm291-ch3-accrual-accounting.html","k":"Reference","c":"AFM 291","d":"July 2026"},{"t":"AFM 291 Chapter 4","s":"Revenue recognition, in course-week order","u":"afm291-ch4-revenue-recognition.html","k":"Reference","c":"AFM 291","d":"July 2026"},{"t":"AFM 291 Chapter 6","s":"Inventories: costing, cost flow, measurement and errors","u":"afm291-ch6-inventories.html","k":"Reference","c":"AFM 291","d":"July 2026"},{"t":"AFM 291 Chapter 9","s":"Intangibles, goodwill, mineral resources and grants","u":"afm291-ch9-intangibles-and-goodwill.html","k":"Reference","c":"AFM 291","d":"July 2026"},{"t":"AFM 291 Chapter 10","s":"Applications of fair value to non-current assets","u":"afm291-ch10-fair-value.html","k":"Reference","c":"AFM 291","d":"July 2026"},{"t":"AFM 291 Key Takeaways","s":"One reference map for the whole course","u":"afm291-key-takeaways.html","k":"Reference","c":"AFM 291","d":"August 2026"},{"t":"AFM 291 Study Plan","s":"What to do, in what order","u":"afm291-study-plan.html","k":"Reference","c":"AFM 291","d":"August 2026"},{"t":"AFM 291 Reconciliation","s":"Two indexes of the same course, reconciled","u":"afm291-reconciliation.html","k":"Reference","c":"AFM 291","d":"August 2026"},{"t":"AFM 291 Financial Assets I","s":"Equity investments and receivables","u":"afm291-w7-financial-assets.html","k":"Reference","c":"AFM 291","d":"July 2026"},{"t":"AFM 291 Case Guide: Equity Investments","s":"Week 7 problem-solving companion","u":"afm291-w7-cases.html","k":"Reference","c":"AFM 291","d":"July 2026"},{"t":"AFM 291 Financial Assets II","s":"Non-strategic debt investments","u":"afm291-w8-financial-assets.html","k":"Reference","c":"AFM 291","d":"July 2026"},{"t":"AFM 291 Case Guide: Debt Investments","s":"Week 8 problem-solving companion","u":"afm291-w8-cases.html","k":"Reference","c":"AFM 291","d":"July 2026"},{"t":"AFM 291 Property, Plant and Equipment","s":"Acquisition, cost and components","u":"afm291-w9-ppe.html","k":"Reference","c":"AFM 291","d":"July 2026"},{"t":"AFM 291 Case Guide: AceSpin Inc.","s":"Week 9 problem-solving companion","u":"afm291-w9-cases.html","k":"Reference","c":"AFM 291","d":"July 2026"},{"t":"The Kennedys","s":"A dossier","u":"kennedy-dossier.html","k":"Reference","c":"","d":"August 2026"},{"t":"Case file: 4 to 5 August 1962","s":"One night, sourced","u":"monroe-case-file.html","k":"Reference","c":"","d":"August 2026"},{"t":"How to Judge a President","s":"A teaching companion, not a verdict","u":"how-to-judge-a-president.html","k":"Essay","c":"","d":"August 2026"},{"t":"The Portable Kit","s":"A five-stage audit of an evaluation framework","u":"leadership-evaluation-kit.html","k":"Reference","c":"","d":"August 2026"}];
+</script>
+<script src="site.js" defer></script>
+<script>
+(function(){
+  var toc=document.getElementById('toc'), btn=document.getElementById('tocbtn'),
+      scrim=document.getElementById('scrim'), bar=document.getElementById('progress'),
+      where=document.getElementById('where');
+  function openToc(o){ if(!toc) return; toc.classList.toggle('open',o);
+    if(scrim) scrim.classList.toggle('on',o);
+    if(btn) btn.setAttribute('aria-expanded',String(o)); }
+  if(btn) btn.addEventListener('click',function(){ openToc(!toc.classList.contains('open')); });
+  if(scrim) scrim.addEventListener('click',function(){ openToc(false); });
+  if(toc) toc.addEventListener('click',function(e){ if(e.target.closest('a')) openToc(false); });
+  var closeBtn=document.getElementById('tocclose');
+  if(closeBtn) closeBtn.addEventListener('click',function(){ openToc(false); });
+  document.addEventListener('keydown',function(e){ if(e.key==='Escape') openToc(false); });
+
+  /* progress + scrollspy, both off one rAF-throttled scroll handler */
+  var links=[].slice.call(document.querySelectorAll('#toc a[href^="#"]'));
+  var heads=links.map(function(a){ return document.getElementById(a.getAttribute('href').slice(1)); });
+  var body=document.querySelector('.docbody'), ticking=false, cur=-1;
+  function run(){
+    ticking=false;
+    if(bar && body){
+      var top=body.offsetTop, h=body.offsetHeight-window.innerHeight;
+      var p=h>0?Math.min(1,Math.max(0,(window.scrollY-top)/h)):0;
+      bar.style.width=(p*100).toFixed(1)+'%';
+    }
+    var best=-1;
+    for(var i=0;i<heads.length;i++){
+      if(heads[i] && heads[i].getBoundingClientRect().top<120) best=i; else break;
+    }
+    if(best!==cur){
+      if(cur>-1&&links[cur]) links[cur].classList.remove('on');
+      cur=best;
+      if(cur>-1&&links[cur]){
+        links[cur].classList.add('on');
+        if(where) where.innerHTML='<b>'+links[cur].textContent+'</b>';
+        if(toc && window.matchMedia('(min-width:68rem)').matches){
+          var r=links[cur].getBoundingClientRect(), t=toc.getBoundingClientRect();
+          if(r.top<t.top+8||r.bottom>t.bottom-8) links[cur].scrollIntoView({block:'nearest'});
+        }
+      } else if(where){ where.textContent=''; }
+    }
+  }
+  function queue(){ if(!ticking){ ticking=true; requestAnimationFrame(run); } }
+  addEventListener('scroll',queue,{passive:true}); addEventListener('resize',queue); run();
+
+  /* a closed <details> hides its answer from in-page search, so Cmd+F
+     opens the one it lands in */
+  addEventListener('beforeprint',function(){
+    [].slice.call(document.querySelectorAll('details')).forEach(function(d){
+      d.dataset.wasOpen=d.open?'1':''; d.open=true; });
+  });
+  addEventListener('afterprint',function(){
+    [].slice.call(document.querySelectorAll('details')).forEach(function(d){
+      d.open=d.dataset.wasOpen==='1'; });
+  });
+})();
+</script>
+
+</body>
+</html>
