@@ -1,0 +1,61 @@
+# Rebuilds the site's index pages whenever content changes.
+#
+# Nothing here touches design. It reads content/pieces.json, measures any
+# piece whose file changed, regenerates the seven listing pages, and commits
+# the result back. The commit carries [skip ci] so it cannot set itself off
+# again.
+name: Rebuild site
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: rebuild
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Work out what needs measuring
+        id: plan
+        run: python3 build/measure_plan.py
+
+      # Opening pages in a real browser is the slow part, so it only happens
+      # when a piece's own file changed. Editing a title or reordering the
+      # list skips this entirely.
+      - name: Install a browser
+        if: steps.plan.outputs.needs == '1'
+        run: |
+          npm install --no-save playwright
+          npx playwright install --with-deps chromium
+
+      - name: Measure the pieces that changed
+        if: steps.plan.outputs.needs == '1'
+        run: node build/measure.js
+
+      - name: Rebuild the listing pages
+        run: python3 build/build_site.py
+
+      - name: Commit anything that changed
+        run: |
+          git config user.name  "site build"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "site already up to date"
+          else
+            git commit -m "Rebuild site [skip ci]"
+            git push
+          fi
