@@ -1110,3 +1110,229 @@ svg.draw{display:block;width:300px;height:auto}
 :root[data-theme="dark"] #fs-tv1{--anchor-a:#d95926;--anchor-b:#3987e5;--baseline:#383835;--gridline:#2c2c2a;--surface-1:#1a1a19;--text-muted:#a8a6a0;--text-primary:#ffffff;--text-secondary:#c3c2b7}
 @media (prefers-color-scheme:dark){:root:where(:not([data-theme="light"])) #fs-wlc{--gridline:#2f2f2c;--inside:#3987e5;--outside:#e66767;--text-primary:#ffffff;--text-secondary:#c7c5bd}}
 :root[data-theme="dark"] #fs-wlc{--gridline:#2f2f2c;--inside:#3987e5;--outside:#e66767;--text-primary:#ffffff;--text-secondary:#c7c5bd}
+
+/* ============================================================
+   Interaction layer
+   ------------------------------------------------------------
+   Added after the first published build. Nothing here changes
+   the page's structure, its type or its palette: it is the
+   behaviour that was missing around them. Every animation is
+   short, every one of them is switched off under
+   prefers-reduced-motion, and every state that a pointer can
+   reach is reachable from the keyboard.
+   ============================================================ */
+
+/* ---------------------------- cross-page transitions ---------
+   One declaration. Browsers that implement it cross-fade between
+   pages so the site reads as one surface rather than a sequence
+   of loads; the rest ignore it entirely and nothing is lost. */
+@view-transition{navigation:auto}
+::view-transition-old(root),::view-transition-new(root){animation-duration:.22s}
+/* The masthead is the one element common to every page, so it is
+   named and stays put while the body crossfades under it. */
+.brand{view-transition-name:brand}
+@media (prefers-reduced-motion:reduce){
+  @view-transition{navigation:none}
+}
+
+/* ---------------------------- the corpus figure --------------
+   Each document in the drawing is a link. Hovering or tabbing to
+   one lifts it out of the field and fills the readout in the
+   rail beside it. */
+.corpusfig .cf-row{cursor:pointer;outline:none}
+.corpusfig .cf-row rect:not(.cf-hit),
+.corpusfig .cf-row text{transition:opacity .18s ease,fill .18s ease}
+/* dim the field, not the row: the comparison is the point, so the
+   rest stays legible rather than disappearing */
+.corpusfig:has(.cf-row:hover) .cf-row:not(:hover) rect:not(.cf-hit),
+.corpusfig:has(.cf-row:focus-visible) .cf-row:not(:focus-visible) rect:not(.cf-hit){opacity:.3}
+.corpusfig:has(.cf-row:hover) .cf-row:not(:hover) text,
+.corpusfig:has(.cf-row:focus-visible) .cf-row:not(:focus-visible) text{opacity:.45}
+.corpusfig .cf-row:hover .cf-t,
+.corpusfig .cf-row:focus-visible .cf-t{fill:var(--accent);font-weight:640}
+.corpusfig .cf-row:hover .cf-v,
+.corpusfig .cf-row:focus-visible .cf-v{fill:var(--ink)}
+.corpusfig .cf-row:focus-visible .cf-hit{
+  fill:var(--selection);stroke:var(--accent);stroke-width:1
+}
+@supports (fill:color-mix(in srgb,red 10%,transparent)){
+  .corpusfig .cf-row:focus-visible .cf-hit{fill:color-mix(in srgb,var(--accent) 9%,transparent)}
+}
+
+.cf-read{
+  border-top:1px solid var(--rule);margin:1rem 0 .25rem;padding-top:.7rem;
+  min-height:5.4rem
+}
+.cf-rest{font-size:.8125rem;color:var(--ink-3);line-height:1.5}
+.cf-out .cf-name{display:block;font-size:.9375rem;font-weight:640;letter-spacing:-.01em;line-height:1.3}
+.cf-out .cf-meta{display:block;font-size:.8125rem;color:var(--ink-2);margin-top:.25rem;font-variant-numeric:tabular-nums}
+.cf-out .cf-share{display:block;font-size:.75rem;color:var(--ink-3);margin-top:.3rem;font-variant-numeric:tabular-nums}
+.cf-bar{display:block;height:3px;background:var(--panel-2);margin-top:.5rem;overflow:hidden}
+.cf-bar i{display:block;height:100%;width:0;background:var(--accent);transition:width .35s cubic-bezier(.22,1,.36,1)}
+
+/* ---------------------------- counted numerals ---------------
+   The oversized figures are the loudest thing on the page, so
+   they arrive rather than appear. They count once, on first
+   sight, and only when the reader has not asked for less motion. */
+.stats b.tnum{font-variant-numeric:tabular-nums}
+
+/* ---------------------------- rows ---------------------------
+   The arrow already moved on hover. The rule under a row now
+   draws itself in from the left, which is the editorial version
+   of a card lifting, and the title shifts by a hair so the whole
+   row feels like one object. */
+.row{position:relative}
+.row::after{
+  content:"";position:absolute;left:0;right:0;bottom:-1px;height:1px;
+  background:var(--ink);transform:scaleX(0);transform-origin:left;
+  transition:transform .28s cubic-bezier(.22,1,.36,1)
+}
+.row:hover::after,.row:focus-visible::after{transform:scaleX(1)}
+.row .title,.row .num{transition:transform .28s cubic-bezier(.22,1,.36,1),color .18s ease}
+.row:hover .num{color:var(--accent)}
+@media (hover:hover) and (min-width:48rem){
+  .row:hover .title{transform:translateX(3px)}
+}
+
+/* ---------------------------- sticky group heads -------------
+   On a list this long the reader loses which block they are in.
+   The head parks under the site header instead. */
+@media (min-width:48rem){
+  .grouphead{
+    position:sticky;top:var(--stick);z-index:5;
+    background:var(--paper);
+    padding-block:.7rem;margin-block:0
+  }
+  .grouphead::after{
+    content:"";position:absolute;left:0;right:0;bottom:0;height:1px;background:var(--rule)
+  }
+}
+
+/* ---------------------------- the sort control ---------------- */
+.sortset{display:flex;align-items:center}
+.sortset select{
+  font:inherit;font-size:.875rem;font-weight:520;color:var(--ink-2);
+  background:var(--paper);border:1px solid var(--edge);
+  padding:.45rem 1.9rem .45rem .65rem;cursor:pointer;
+  appearance:none;border-radius:0;
+  background-image:linear-gradient(45deg,transparent 50%,currentColor 50%),
+                   linear-gradient(135deg,currentColor 50%,transparent 50%);
+  background-position:calc(100% - 14px) 55%,calc(100% - 9px) 55%;
+  background-size:5px 5px,5px 5px;background-repeat:no-repeat
+}
+.sortset select:hover{color:var(--ink);border-color:var(--ink-2)}
+.sortset select:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+/* ---------------------------- search palette -----------------
+   Results are grouped by where the piece lives and the matched
+   run of characters is marked, so the reason a row is in the
+   list is visible rather than inferred. */
+.cmdk-list .cmdk-group{
+  padding:.55rem .9rem .3rem;font-size:.6875rem;font-weight:680;
+  letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);
+  position:sticky;top:0;background:var(--paper)
+}
+.cmdk-list mark{background:var(--selection);color:inherit;padding:0 .05em}
+@supports (background:color-mix(in srgb,red 10%,transparent)){
+  .cmdk-list mark{background:color-mix(in srgb,var(--accent) 18%,transparent)}
+}
+.cmdk-hint{
+  margin-left:auto;font-size:.6875rem;color:var(--ink-3);
+  border:1px solid var(--rule);padding:.05rem .3rem;white-space:nowrap
+}
+.cmdk-list li a{align-items:center}
+.cmdk-recent{font-size:.6875rem;color:var(--ink-3)}
+
+/* ---------------------------- shortcuts sheet ---------------- */
+.keys[hidden]{display:none}
+.keys{
+  position:fixed;inset:0;z-index:80;display:grid;place-items:center;
+  background:rgba(10,10,8,.55);
+  padding:1.5rem;backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px)
+}
+.keys-panel{
+  background:var(--paper);border:1px solid var(--ink);max-width:26rem;width:100%;
+  padding:1.25rem 1.4rem 1.4rem
+}
+.keys h2{font-size:1rem;margin:0 0 .8rem;letter-spacing:-.01em}
+.keys dl{display:grid;grid-template-columns:auto 1fr;gap:.5rem .9rem;margin:0;font-size:.875rem}
+.keys dt{margin:0}
+.keys dd{margin:0;color:var(--ink-2)}
+.keys kbd{
+  font:inherit;font-size:.75rem;border:1px solid var(--edge);background:var(--panel);
+  padding:.1rem .35rem;min-width:1.5rem;display:inline-block;text-align:center
+}
+.keys .close{
+  margin-top:1rem;font:inherit;font-size:.8125rem;font-weight:600;cursor:pointer;
+  border:1px solid var(--edge);background:none;color:var(--ink);padding:.4rem .8rem
+}
+.keys .close:hover{background:var(--panel)}
+
+/* ---------------------------- back to the top ---------------- */
+.totop{
+  position:fixed;right:14px;bottom:14px;z-index:40;
+  display:inline-flex;align-items:center;gap:.4rem;
+  font:inherit;font-size:.75rem;font-weight:620;letter-spacing:.02em;
+  background:var(--paper);color:var(--ink);border:1px solid var(--ink);
+  padding:.5rem .75rem;cursor:pointer;
+  opacity:0;transform:translateY(6px);pointer-events:none;
+  transition:opacity .2s ease,transform .2s ease
+}
+.totop.on{opacity:1;transform:none;pointer-events:auto}
+.totop:hover{background:var(--ink);color:var(--paper)}
+@media print{
+  .totop{display:none}
+  /* a heading that sticks on screen must not float over the page break */
+  .grouphead{position:static}
+  nav.main .navink{display:none}
+}
+
+/* ---------------------------- nav underline ------------------
+   The current-page rule slides between items instead of cutting. */
+nav.main{position:relative}
+nav.main .navink{
+  position:absolute;bottom:0;height:2px;background:var(--accent);
+  transition:transform .3s cubic-bezier(.22,1,.36,1),width .3s cubic-bezier(.22,1,.36,1);
+  pointer-events:none
+}
+nav.main a[aria-current="page"]{border-bottom-color:transparent}
+
+/* ---------------------------- anchored sections --------------
+   Arriving at a fragment marks the destination briefly, so a
+   deep link lands somewhere visible. */
+:target{animation:landed 1.6s ease}
+@keyframes landed{
+  0%,12%{background:var(--selection)}
+  100%{background:transparent}
+}
+
+/* ---------------------------- the theme button ---------------- */
+#themebtn{transition:transform .3s cubic-bezier(.22,1,.36,1),color .18s,border-color .18s}
+#themebtn:active{transform:rotate(180deg)}
+
+/* ---------------------------- feature tiles ------------------- */
+.feature{transition:background .2s ease,border-color .2s ease}
+.feature h3{transition:color .18s ease}
+.feature:hover h3{color:var(--accent)}
+
+/* ---------------------------- honour the setting --------------
+   One block, at the end, so it wins. Anything above that moves
+   is stilled here rather than merely shortened. */
+@media (prefers-reduced-motion:reduce){
+  .row::after,.row .title,.row .num,
+  .cf-bar i,.corpusfig .cf-row rect,.corpusfig .cf-row text,
+  nav.main .navink,#themebtn,.totop,.feature,.feature h3{
+    transition:none !important
+  }
+  :target{animation:none}
+  .totop{transition:opacity .01s}
+}
+
+/* A button that is a link in everything but mechanism. */
+.linkbtn{
+  font:inherit;font-size:inherit;color:var(--ink-2);background:none;border:0;padding:0;
+  cursor:pointer;text-decoration:underline;text-underline-offset:2px;
+  text-decoration-color:var(--rule-strong)
+}
+.linkbtn:hover{color:var(--accent);text-decoration-color:currentColor}
+.linkbtn:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
