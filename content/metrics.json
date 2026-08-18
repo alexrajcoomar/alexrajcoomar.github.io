@@ -108,7 +108,7 @@
   "details": 10
  },
  "afm291-study-system": {
-  "words": 14134,
+  "words": 14137,
   "figures": 6,
   "tables": 38,
   "details": 1
@@ -244,6 +244,18 @@
   "figures": 0,
   "tables": 0,
   "details": 0
+ },
+ "predictive-history": {
+  "words": 9606,
+  "figures": 11,
+  "tables": 14,
+  "details": 10
+ },
+ "predictive-history-archive": {
+  "words": 11697,
+  "figures": 17,
+  "tables": 19,
+  "details": 18
  },
  "revenue-recognition": {
   "words": 5323,

@@ -15,6 +15,44 @@
  },
  "pieces": [
   {
+   "slug": "predictive-history",
+   "t": "Predictive History",
+   "s": "The map, and the method that audits it",
+   "k": "Essay",
+   "surface": "independent",
+   "c": "",
+   "d": "August 2026",
+   "tags": [
+    "Adjudication",
+    "Provenance",
+    "Method audit"
+   ],
+   "blurb": "Fifteen systems and 148 couplings, annotated by an audit instrument that was run against its own falsification test and failed it. Every one of eighty claims carries the verdict three independent raters gave it, blind to the author, and a mark for whether its evidence can be retrieved at all.",
+   "demo": "The instrument reports the result that undermines its own headline: panel-to-author agreement is 78 per cent, which is 22 per cent divergence against a 20 per cent withdrawal threshold the project set for itself before it knew the answer. The finding is published in its narrow form rather than its strong one, and 4 of 9 adversarial mutations are documented as still uncaught.",
+   "featured": true,
+   "pwa": false,
+   "url": "predictive-history.html"
+  },
+  {
+   "slug": "predictive-history-archive",
+   "t": "Predictive History: the withdrawn first edition",
+   "s": "Kept uncorrected, with the divergence computed rather than described",
+   "k": "Reference",
+   "surface": "independent",
+   "c": "",
+   "d": "August 2026",
+   "tags": [
+    "Superseded",
+    "Version history",
+    "Provenance"
+   ],
+   "blurb": "The first edition, frozen at the point its numbers were withdrawn. Its banner computes the gap to the current panel rather than characterising it: dates read 100 per cent here against the panel's 60, the institutional row is missing entirely, and three further divergences are named row by row.",
+   "demo": "A project about the distance between confident presentation and the record, showing its own. Nothing below the banner is corrected, and both columns of the comparison are computed at build time, the left by parsing this frozen file and the right from the current ledger.",
+   "featured": false,
+   "pwa": false,
+   "url": "predictive-history-archive.html"
+  },
+  {
    "slug": "the-trillion-dollar-vintage",
    "t": "The Trillion-Dollar Vintage",
    "s": "A study edition of the AI capital-cycle adjudication",
