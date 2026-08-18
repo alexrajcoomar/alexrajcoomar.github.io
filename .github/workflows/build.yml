@@ -60,6 +60,10 @@ jobs:
         run: |
           git config user.name  "site build"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          # Installing the browser driver leaves a dependency cache behind.
+          # .gitignore keeps it out from now on; this untracks the copy an
+          # earlier run committed before that file existed.
+          git rm -r --cached --quiet node_modules package.json package-lock.json 2>/dev/null || true
           git add -A
           if git diff --cached --quiet; then
             echo "site already up to date"
