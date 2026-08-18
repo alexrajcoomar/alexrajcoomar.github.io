@@ -170,7 +170,7 @@ def foot():
   </div>
   <div class="fine">
     <span>&copy; {TODAY.year} {esc(NAME)}</span>
-    <span><b>{len(P)}</b> pieces &middot; <b>{TOTAL_WORDS:,}</b> words &middot; <b>{TOTAL_FIGS}</b> figures &middot; hand-written HTML and CSS, no framework</span>
+    <span><b>{len(P)}</b> pieces &middot; <b>{TOTAL_WORDS:,}</b> words &middot; <b>{TOTAL_FIGS}</b> figures &middot; hand-written HTML and CSS, no framework &middot; <button id="keysbtn" type="button" class="linkbtn">keyboard</button></span>
   </div>
 </footer>
 
@@ -183,6 +183,26 @@ def foot():
     <div class="cmdk-foot">
       <span><kbd>&#8593;</kbd><kbd>&#8595;</kbd> move</span><span><kbd>Enter</kbd> open</span><span><kbd>Esc</kbd> close</span>
     </div>
+  </div>
+</div>
+
+<!-- The keyboard routes, written down. A shortcut nobody can find is the
+     same as one that does not exist. Opened with ? or from the footer. -->
+<div class="keys" id="keysheet" hidden role="dialog" aria-modal="true" aria-labelledby="keystitle">
+  <div class="keys-panel">
+    <h2 id="keystitle">Keyboard</h2>
+    <dl>
+      <dt><kbd>/</kbd></dt><dd>Search every piece</dd>
+      <dt><kbd>&#8984;</kbd><kbd>K</kbd></dt><dd>The same search</dd>
+      <dt><kbd>g</kbd> <kbd>h</kbd></dt><dd>Home</dd>
+      <dt><kbd>g</kbd> <kbd>r</kbd></dt><dd>Research</dd>
+      <dt><kbd>g</kbd> <kbd>c</kbd></dt><dd>Coursework</dd>
+      <dt><kbd>g</kbd> <kbd>t</kbd></dt><dd>Tools</dd>
+      <dt><kbd>g</kbd> <kbd>l</kbd></dt><dd>Library</dd>
+      <dt><kbd>g</kbd> <kbd>a</kbd></dt><dd>About</dd>
+      <dt><kbd>?</kbd></dt><dd>This list</dd>
+    </dl>
+    <button class="close" type="button">Close</button>
   </div>
 </div>
 <script>
@@ -227,7 +247,9 @@ def row(n, p):
     tags = "".join(f'<span class="tag">{esc(t)}</span>' for t in p["tags"])
     hay = " ".join([p["t"], p["s"], p["blurb"], " ".join(p["tags"]), p["k"], p["c"],
                     SURF_LABEL[p["surface"]]]).lower()
-    return f"""      <li data-kind="{p['k'].lower()}" data-course="{esc(p['c'])}" data-surface="{p['surface']}" data-search="{esc(hay)}">
+    # words, figures and title travel with the row so the library can be
+    # reordered client-side without a second copy of the manifest
+    return f"""      <li data-kind="{p['k'].lower()}" data-course="{esc(p['c'])}" data-surface="{p['surface']}" data-search="{esc(hay)}" data-words="{p['words']}" data-figs="{p['figures']}" data-title="{esc(p['t'].lower())}">
         <a class="row" href="{p['url']}">
           <span class="num tnum">{n:02d}</span>
           <span>
@@ -404,7 +426,17 @@ def corpus_svg():
         p, key = a, b
         ty = yy + ROW / 2
         label = p["t"] if len(p["t"]) <= 34 else p["t"][:32].rstrip(" ,:") + "…"
-        out.append(f'<text class="cf-t" x="0" y="{ty+4:.1f}">{esc(label)}</text>')
+        # Each document is a link with its own name, so the figure is
+        # keyboard-navigable and a screen reader reads it as a list of
+        # documents rather than as one long alt text.
+        out.append(
+            f'<a class="cf-row" href="{p["url"]}" '
+            f'data-t="{esc(p["t"])}" data-w="{p["words"]}" data-k="{esc(p["k"])}" '
+            f'data-c="{esc(p["c"] or SURF_LABEL[p["surface"]])}" data-m="{p["mins"] or 0}" '
+            f'data-f="{p["figures"]}" data-b="{p["tables"]}" data-s="{key}">'
+            f'<title>{esc(p["t"])} &#183; {p["words"]:,} words</title>'
+            f'<rect class="cf-hit" x="0" y="{yy:.1f}" width="{w:.0f}" height="{ROW:.1f}" fill="transparent"/>'
+            f'<text class="cf-t" x="0" y="{ty+4:.1f}">{esc(label)}</text>')
         n_full = int(p["words"] // UNIT)
         frac   = (p["words"] % UNIT) / UNIT
         cy     = yy + (ROW - CELL) / 2
@@ -427,6 +459,7 @@ def corpus_svg():
                            f'fill="none" stroke="var(--cf-1)" stroke-width="1"/>')
         out.append(f'<text class="cf-v" x="{w:.0f}" y="{ty+4:.1f}" text-anchor="end">'
                    f'{p["words"]:,}</text>')
+        out.append('</a>')
     out.append('</svg>')
     return "\n".join(out)
 
@@ -541,6 +574,19 @@ def page_index():
       <h3>How to read it</h3>
       <p><b>One square is {figs.UNIT} words.</b> The square never rescales, so a long piece is
       long on the page.</p>
+      <!-- Populated on hover or keyboard focus of a row in the figure. It sits
+           in the flow with a resting state, so the rail does not jump when the
+           reader's pointer enters the drawing, and it is a live region so the
+           readout is announced rather than only seen. -->
+      <div class="cf-read" id="corpusread" aria-live="polite">
+        <div class="cf-rest">Point at a row, or tab into the drawing, to read the document it belongs to.</div>
+        <div class="cf-out" hidden>
+          <b class="cf-name"></b>
+          <span class="cf-meta"></span>
+          <span class="cf-bar" aria-hidden="true"><i></i></span>
+          <span class="cf-share"></span>
+        </div>
+      </div>
       <div class="key">
         <span><i aria-hidden="true"></i>Solid: independent work</span>
         <span><i class="half" aria-hidden="true"></i>Solid, lighter: personal interest</span>
@@ -853,6 +899,16 @@ def page_library():
       <button class="chip" type="button" data-f="essay" aria-pressed="false">Essays</button>
       <button class="chip" type="button" data-f="tool" aria-pressed="false">Tools</button>
       <button class="chip" type="button" data-f="reference" aria-pressed="false">References</button>
+    </div>
+    <div class="sortset">
+      <label class="sr" for="sort">Order</label>
+      <select id="sort">
+        <option value="default">Grouped, as published</option>
+        <option value="long">Longest first</option>
+        <option value="short">Shortest first</option>
+        <option value="figs">Most figures</option>
+        <option value="az">A to Z</option>
+      </select>
     </div>
   </div>
   <p class="resultnote" id="resultnote" role="status">Showing all {len(P)} pieces.</p>
