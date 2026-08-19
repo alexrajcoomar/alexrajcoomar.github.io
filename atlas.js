@@ -243,11 +243,14 @@
        in the middle of a hundred other marks. The ring is cut into slots and
        each slot keeps its single most forward-facing candidate, so the set is
        evenly spread by construction and two labels can never collide. */
-    var slots = W > 1180 ? 14 : W > 820 ? 11 : 8;
+    var slots = W > 1180 ? 16 : W > 820 ? 12 : 8;
     var best = new Array(slots);
     for (var i = 0; i < pts.length; i++) {
       var p = pts[i];
-      if (!p.on || p.sz < 0.12) continue;
+      /* only marks clearly on the near side get named: the ladder can place
+         a label for a mark at the horizon, but a name at a third opacity is
+         not a name anyone reads */
+      if (!p.on || p.sz < 0.26) continue;
       var dx = p.sx - cx, dy = p.sy - cy;
       var rr = Math.sqrt(dx * dx + dy * dy);
       if (rr < R * 0.34) continue;              /* too near the middle to aim */
@@ -263,42 +266,66 @@
        pass over one list, using the width the text will actually occupy, is the
        thing that cannot miss a case. */
     var font = labelFont();
-    var ring = [];
+    var cand2 = [];
     for (var j = 0; j < slots; j++) {
       if (!best[j]) continue;
       var b = best[j];
-      var lx = cx + Math.cos(b.ang) * (R + 22);
-      var ly = cy + Math.sin(b.ang) * (R + 18);
-      if (ly < 12 || ly > H - 12) continue;
-      b.p.lft = lx < cx;
-      b.p.lx = lx;
-      b.p.ly = ly;
       b.p.lw = Math.min(LABEL_MAX, measure(labelText(b.p), font) + 8);
-      ring.push(b);
+      b.y0 = cy + Math.sin(b.ang) * (R + 18);
+      b.lft = Math.cos(b.ang) < 0;
+      cand2.push(b);
     }
-    ring.sort(function (a, b2) { return b2.score - a.score; });
-    var out = [], boxes = [];
-    for (var k = 0; k < ring.length; k++) {
-      var c = ring[k].p;
-      var x0 = c.lft ? c.lx - c.lw : c.lx;
-      var box = [x0, c.ly - 10, x0 + c.lw, c.ly + 10];
-      if (box[0] < 2 || box[2] > W - 2) continue;
-      var clash = false;
-      for (var m = 0; m < boxes.length; m++) {
-        var o = boxes[m];
-        if (!(box[2] < o[0] - 8 || box[0] > o[2] + 8 ||
-              box[3] < o[1] - 4 || box[1] > o[3] + 4)) { clash = true; break; }
+
+    /* A ladder, not a ring. The stage is wider than it is tall, so laying the
+       labels on a circle crowds them at the left and right extremes where two
+       neighbouring slots sit at almost the same height: on a short window that
+       left four of fourteen standing and hid the rest. Each side instead gets
+       a column at a fixed distance from the sphere, and the labels are dealt
+       down it in the order their marks appear, spaced far enough apart that
+       they cannot touch. The leader line does the work of saying which mark
+       each one belongs to. */
+    var GAP = 23;
+    var Rx = Math.min(cx - 8, R + 30);
+    var out = [];
+    [true, false].forEach(function (side) {
+      var col = cand2.filter(function (c) { return c.lft === side; })
+                     .sort(function (a, b2) { return a.y0 - b2.y0; });
+      var room = Math.floor((H - 24) / GAP);
+      if (col.length > room) col = col.slice(0, room);
+      var top = 12, bottom = H - 12;
+      var y = top;
+      for (var k = 0; k < col.length; k++) {
+        y = Math.max(y, col[k].y0);
+        col[k].ly = y;
+        y += GAP;
       }
-      if (clash) continue;
-      boxes.push(box);
-      out.push(c);
-    }
+      /* if the column ran past the bottom, slide the whole thing up so it
+         stays inside the stage rather than losing its last entries */
+      var over = (col.length ? col[col.length - 1].ly : 0) - bottom;
+      if (over > 0) {
+        for (var m2 = col.length - 1; m2 >= 0; m2--) {
+          col[m2].ly = Math.max(top + m2 * GAP, col[m2].ly - over);
+        }
+      }
+      for (var n4 = 0; n4 < col.length; n4++) {
+        var c = col[n4];
+        if (c.ly < top || c.ly > bottom) continue;
+        c.p.lft = side;
+        c.p.lx = side ? cx - Rx : cx + Rx;
+        c.p.ly = c.ly;
+        out.push(c.p);
+      }
+    });
     return out;
   }
 
   function syncLabels(force) {
     var now = performance.now();
-    if (force || now - labelAt > 460) {
+    /* The ladder keeps labels apart however far the sphere has turned since
+       they were chosen, so the set can be left alone for longer. Refreshing
+       it twice a second made three names swap out every time and the page
+       read as restless. */
+    if (force || now - labelAt > 950) {
       labelAt = now;
       var want = pickLabels();
       var have = {};
@@ -362,7 +389,7 @@
         Math.round(ly) + "px)";
       L.hidden = clash;
       L.el.style.opacity = clash ? 0
-        : Math.max(0, Math.min(1, (L.p.sz - 0.02) * 3.2));
+        : Math.max(0, Math.min(1, (L.p.sz - 0.06) * 4.4));
       if (!clash) { kept.push(box); labelBoxes.push(box); }
     }
   }
