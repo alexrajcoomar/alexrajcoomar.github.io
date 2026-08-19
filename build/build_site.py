@@ -111,6 +111,7 @@ def head(title, desc, page, extra=""):
 <link rel="canonical" href="{SITE_URL}/{'' if page=='index.html' else page}">
 <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/inter-ui/4.1.1/variable/InterVariable.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="site.css">
+<link rel="stylesheet" href="figures.css">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%2316150f'/><text x='50' y='72' font-size='64' font-family='Helvetica,Arial' font-weight='bold' fill='%23faf9f6' text-anchor='middle'>A</text></svg>">
 <script>
 /* Theme before first paint, so there is no flash. Wrapped because some
@@ -557,6 +558,26 @@ def page_index():
         "The Trillion-Dollar Vintage",
         "Two ways of pricing the same vintage, 2.3 times apart, carried side by side to the end rather than averaged. The refused marker between them is the point: no instrument measured that value, so nothing is drawn there.",
         "the-trillion-dollar-vintage.html")}
+  </div>
+</section>
+
+<section class="band shell">
+  <div class="sechead">
+    <h2>And one that failed</h2>
+    <p class="note">The three above are the grammar. This is what happened when the same method was
+    turned on itself: the instrument was run against the falsification test it had specified for
+    itself before it knew the answer, and it did not pass. The figure is the reason the headline
+    finding is published in its narrow form.</p>
+    <span class="count">Method</span>
+  </div>
+  <div class="specs">
+{lifted("fs-ph1", "An interval that overlaps is not a difference",
+        "Predictive History",
+        "The obvious reading is that writing a verdict rubric lifted agreement from 53 per cent to 96. "
+        "It did not. Only the second and third rows hold the record constant, and between those two "
+        "the rubric is worth four points with the intervals overlapping. The other forty-three points "
+        "are the record and the number of raters, which is a different claim entirely.",
+        "predictive-history.html")}
   </div>
 </section>
 
@@ -1716,7 +1737,25 @@ def check_site():
             if icon.get("src") not in files:
                 problems.append(f"{f}: names icon {icon.get('src')}, which does not exist")
 
-    # 5. a converted document must carry exactly one top-level heading in its
+    # 5. a figure shown on a page must have its colour scope generated. A
+    # lifted figure inherits nothing from the page it lands on: registering it
+    # in figures.json and forgetting the variables renders it in default black,
+    # which is exactly what happened the first time a fourth one was added.
+    sheet = ""
+    fpath = os.path.join(OUT, "figures.css")
+    if os.path.exists(fpath):
+        sheet = open(fpath, encoding="utf-8").read()
+    for f in SHELL_PAGES:
+        path = os.path.join(OUT, f)
+        if not os.path.exists(path):
+            continue
+        text = open(path, encoding="utf-8", errors="ignore").read()
+        for fid in set(re.findall(r'id="(fs-[a-z0-9]+)"', text)):
+            if ("#" + fid) not in sheet:
+                problems.append(f"{f}: shows figure {fid}, which has no colour "
+                                f"scope in figures.css")
+
+    # 6. a converted document must carry exactly one top-level heading in its
     # body. More than one means the stylesheet's title-suppressing rule is
     # deleting section headings from the page, which is how eight of them
     # disappeared from one piece without anything failing.
@@ -1732,7 +1771,7 @@ def check_site():
             problems.append(f"{f}: {n} top-level headings in the document body; "
                             f"all but the first are hidden by the stylesheet")
 
-    # 6. every listed piece has a file behind it
+    # 7. every listed piece has a file behind it
     for x in P:
         if x["url"] not in files:
             problems.append(f"content/pieces.json: {x['slug']} points at {x['url']}, which does not exist")
@@ -1745,7 +1784,11 @@ def main():
              "coursework.html": page_coursework(), "tools.html": page_tools(),
              "library.html": page_library(), "about.html": page_about(),
              "colophon.html": page_colophon(), "404.html": page_404(),
-             "sitemap.xml": page_sitemap(), "robots.txt": page_robots()}
+             "sitemap.xml": page_sitemap(), "robots.txt": page_robots(),
+             "figures.css": ("/* Generated from build/figures.json. Do not edit: the next build\n"
+                             "   overwrites it. Each lifted figure keeps the colour variables and\n"
+                             "   class rules it was drawn against, scoped to its own id so nothing\n"
+                             "   leaks into the page around it. */\n" + strip_css() + "\n")}
     changed = []
     for name, text in pages.items():
         path = os.path.join(OUT, name)
