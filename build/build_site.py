@@ -1424,12 +1424,30 @@ def head_block(p):
 {THEME_JS}
 {_HEAD_END}"""
 
+# One tag, matched properly: [^>]* is wrong for any tag whose attribute value
+# can itself contain ">". The icon link is exactly that tag, because an SVG data
+# URL carries "<svg ...>" inside href, and a pattern that stopped at the first
+# ">" cut the tag in half and left the rest of the URL in the document as live
+# markup. _ATTRS swallows a quoted value whole, so the match ends at the ">"
+# that actually closes the tag.
+_ATTRS = r'(?:[^>"\']|"[^"]*"|\'[^\']*\')*'
+
 # the tags the build now owns, wherever an earlier converter left them
 _OWNED = re.compile(
-    r'\s*<link rel="canonical"[^>]*>'
-    r'|\s*<meta property="og:(?:title|description|type|url|site_name|image(?::\w+)?)"[^>]*>'
-    r'|\s*<meta name="twitter:(?:card|image)"[^>]*>'
-    r"|\s*<link rel=\"icon\"[^>]*>")
+    r'\s*<link rel="canonical"' + _ATTRS + r'>'
+    r'|\s*<meta property="og:(?:title|description|type|url|site_name|image(?::\w+)?)"' + _ATTRS + r'>'
+    r'|\s*<meta name="twitter:(?:card|image)"' + _ATTRS + r'>'
+    r'|\s*<link rel="icon"' + _ATTRS + r'>')
+
+# What the old pattern left behind on twenty-two pages, still sitting in their
+# <head>: the tail of the icon URL, reading as a real <rect> element. An
+# element that cannot appear in <head> ends the head there, so the canonical,
+# every Open Graph tag and the theme script landed in <body>, where a scraper
+# does not look and a link preview does not resolve. Removed only after _OWNED
+# has taken the intact icon links out, so this can never bite a good one: after
+# that pass, anything ending in </svg>"> is an orphan by construction.
+_ICON_DEBRIS = re.compile(
+    r"\s*<rect\b" + _ATTRS + r"/?>\s*<text\b" + _ATTRS + r">[^<]*</text>\s*</svg>\">")
 
 def normalise_head(path, p):
     """Replace whatever head metadata a piece carries with the generated block.
@@ -1445,7 +1463,10 @@ def normalise_head(path, p):
     i = text.lower().find("</head>")
     if i == -1:
         return False
-    text = text[:i] + head_block(p) + "\n" + text[i:]
+    # scoped to the head: that is where the orphan does its damage, and it is
+    # the only region where "</svg>\">" cannot be something a document meant
+    head_txt = _ICON_DEBRIS.sub("", text[:i])
+    text = head_txt + head_block(p) + "\n" + text[i:]
     if text != before:
         open(path, "w", encoding="utf-8").write(text)
     return True
@@ -1771,7 +1792,32 @@ def check_site():
             problems.append(f"{f}: {n} top-level headings in the document body; "
                             f"all but the first are hidden by the stylesheet")
 
-    # 7. every listed piece has a file behind it
+    # 7. the head has to hold. Every generated tag can be correct and still be
+    # useless if the browser has already closed <head> before reaching it: one
+    # stray element there ends the head, and the canonical and the Open Graph
+    # tags after it are parsed into <body>, where no scraper reads them. The
+    # tags are checked by name after quoted attribute values and comments are
+    # removed, so a "<" inside a data URL is not mistaken for markup.
+    HEAD_OK = {"html", "head", "meta", "link", "title", "/title", "script",
+               "/script", "style", "/style", "base", "noscript", "/noscript",
+               "!doctype", "/head"}
+    for f in sorted(os.listdir(OUT)):
+        if not f.endswith(".html"):
+            continue
+        text = open(os.path.join(OUT, f), encoding="utf-8", errors="ignore").read()
+        j = text.lower().find("</head>")
+        if j == -1:
+            problems.append(f"{f}: has no </head>")
+            continue
+        head_txt = re.sub(r"<!--.*?-->", "", text[:j], flags=re.S)
+        head_txt = re.sub(r'"[^"]*"', '""', head_txt)
+        head_txt = re.sub(r"'[^']*'", "''", head_txt)
+        for tag in set(re.findall(r"<(/?[A-Za-z!][A-Za-z0-9]*)", head_txt)):
+            if tag.lower() not in HEAD_OK:
+                problems.append(f"{f}: <{tag}> inside <head> ends the head early; "
+                                f"everything after it is parsed into the body")
+
+    # 8. every listed piece has a file behind it
     for x in P:
         if x["url"] not in files:
             problems.append(f"content/pieces.json: {x['slug']} points at {x['url']}, which does not exist")
