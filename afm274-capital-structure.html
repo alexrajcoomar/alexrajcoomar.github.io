@@ -269,7 +269,7 @@
 
   <!-- ===== HEADER ===== -->
   <div class="full">
-    <h1>AFM&nbsp;274 · Chapter 17 — Capital Structure in a Perfect Market</h1>
+    <h1 id="afm-274-chapter-17-capital-structure-in-a-perfec">AFM&nbsp;274 · Chapter 17 — Capital Structure in a Perfect Market</h1>
     <p class="sub">Exam quick-reference sheet · Modigliani–Miller in a frictionless world</p>
     <div class="howto">
       <b>How to use this sheet (last-minute review):</b> Read the <b>Core Intuition</b> boxes once out loud — if you can explain MM I, MM II, and why WACC is flat in your own words, you're 80% there. Then drill the <b>Formulas</b> and <b>Cheat Sheet</b>, re-do the <b>Entrepreneur example</b> from a blank page, and finish with the <b>Active Recall</b> Qs (cover the grey answers). The two <span class="x" style="color:var(--accent);font-weight:bold;">Fallacies</span> are almost always tested.
@@ -280,7 +280,7 @@
   <div class="cols">
 
     <div class="card tint">
-      <h3>Midterm Must-Know Checklist</h3>
+      <h3 id="midterm-must-know-checklist">Midterm Must-Know Checklist</h3>
       <ul class="check small">
         <li>State <b>MM I</b> via the Law-of-One-Price / cash-flow-identity argument.</li>
         <li>Apply <b>MM II</b>: show <var>r<sub>E</sub></var> rises linearly with <var>D/E</var>.</li>
@@ -296,30 +296,30 @@
     </div>
 
     <div class="card">
-      <h3>MM Proposition I — the core result</h3>
+      <h3 id="mm-proposition-i-the-core-result">MM Proposition I — the core result</h3>
       <div class="eq">V<sub>L</sub> = V<sub>U</sub> &nbsp;&nbsp;⟺&nbsp;&nbsp; E + D = U = A</div>
       <p class="small"><b>Pizza intuition:</b> the assets generate a fixed cash-flow "pizza." Debt &amp; equity just slice it. More slices ≠ more pizza. <b>Proof:</b> (1) debt + equity payoffs = asset payoff in <i>every</i> state; (2) Law of One Price → identical cash flows must have equal price; so <var>E+D</var> = value of assets, whatever the split.</p>
     </div>
 
     <div class="card">
-      <h3>MM Proposition II — cost of equity</h3>
+      <h3 id="mm-proposition-ii-cost-of-equity">MM Proposition II — cost of equity</h3>
       <div class="eq">r<sub>E</sub> = r<sub>U</sub> + <span class="f"><span class="n">D</span><span class="d">E</span></span>(r<sub>U</sub> − r<sub>D</sub>)</div>
       <p class="small">Debt is paid first, so the same asset-cash-flow swings hit a smaller equity base → equity gets riskier → investors demand more. The rise in <var>r<sub>E</sub></var> <b>exactly offsets</b> putting more weight on cheap debt. <b>No free lunch.</b></p>
     </div>
 
     <div class="card">
-      <h3>Why WACC is constant (= r<sub>U</sub>)</h3>
+      <h3 id="why-wacc-is-constant-r-u">Why WACC is constant (= r<sub>U</sub>)</h3>
       <div class="eqL">r<sub>wacc</sub> = <span class="f"><span class="n">E</span><span class="d">E+D</span></span>r<sub>E</sub> + <span class="f"><span class="n">D</span><span class="d">E+D</span></span>r<sub>D</sub></div>
       <p class="small">Sub MM II into this and the leverage terms cancel → <span class="box">r<sub>wacc</sub> = r<sub>U</sub> = r<sub>A</sub></span>. As leverage ↑, both <var>r<sub>E</sub></var> and <var>r<sub>D</sub></var> rise, but more weight shifts to cheaper debt — net effect zero. <b>Discount projects at r<sub>U</sub>, not r<sub>E</sub>.</b></p>
     </div>
 
     <div class="card">
-      <h3>Homemade leverage</h3>
+      <h3 id="homemade-leverage">Homemade leverage</h3>
       <p class="small">Investors can <b>borrow/lend on personal account</b> to build any capital structure themselves (e.g., buy unlevered stock on margin). At the same interest rate, this perfectly substitutes for corporate leverage — so nobody pays extra for the firm to do it. ⟹ leverage is value-irrelevant.</p>
     </div>
 
     <div class="card">
-      <h3>Market-value balance sheet</h3>
+      <h3 id="market-value-balance-sheet">Market-value balance sheet</h3>
       <p class="small">All assets (incl. intangibles) and all securities at <b>current market value</b>; always balances. <span class="pay">MV Equity = MV Assets − MV Debt</span>. Key tool for the <b>leveraged recap</b>: borrow $X, buy back $X equity ⟹ assets &amp; debt move together, equity falls by $X, <b>price/share unchanged</b> (zero-NPV swap).</p>
     </div>
 
@@ -327,7 +327,7 @@
 
   <!-- ===== FORMULAS TABLE (full width) ===== -->
   <div class="full">
-    <h2>Key Formulas — and When to Use Them</h2>
+    <h2 id="key-formulas-and-when-to-use-them">Key Formulas — and When to Use Them</h2>
     <table class="ftab">
       <tr><th style="width:38%">Formula</th><th>Gives you / use it when</th></tr>
       <tr><td><var>V = E + D</var></td><td><b>Firm value</b> (the "pizza"). Always market values.</td></tr>
@@ -347,7 +347,7 @@
   <div class="cols">
 
     <div class="card viz">
-      <h3 style="text-align:left;">The pizza (MM I)</h3>
+      <h3 id="the-pizza-mm-i" style="text-align:left;">The pizza (MM I)</h3>
       <svg viewBox="0 0 250 110" xmlns="http://www.w3.org/2000/svg" aria-label="Two pies of equal size with different debt/equity slices">
         <!-- pie 1 -->
         <circle cx="55" cy="55" r="42" fill="none" stroke="#15314b" stroke-width="2"/>
@@ -368,7 +368,7 @@
     </div>
 
     <div class="card viz">
-      <h3 style="text-align:left;">WACC vs. leverage (Fig. 17.1)</h3>
+      <h3 id="wacc-vs-leverage-fig-17-1" style="text-align:left;">WACC vs. leverage (Fig. 17.1)</h3>
       <svg viewBox="0 0 250 150" xmlns="http://www.w3.org/2000/svg" aria-label="WACC flat, equity cost rising, debt cost low then rising as leverage increases">
         <!-- axes -->
         <line x1="34" y1="14" x2="34" y2="126" stroke="#1a1a1a" stroke-width="1.2"/>
@@ -390,7 +390,7 @@
     </div>
 
     <div class="card">
-      <h3>Homemade leverage = firm leverage</h3>
+      <h3 id="homemade-leverage-firm-leverage">Homemade leverage = firm leverage</h3>
       <div class="hl">
         <div class="b">
           <div class="h">Firm leverage</div>
@@ -411,7 +411,7 @@
 
   <!-- ===== ENTREPRENEUR EXAMPLE (full width) ===== -->
   <div class="full">
-    <h2>Worked Example — The Entrepreneur's Project (know cold)</h2>
+    <h2 id="worked-example-the-entrepreneur-s-project-know-c">Worked Example — The Entrepreneur's Project (know cold)</h2>
     <div class="card" style="margin-bottom:6px;">
       <p class="small"><b>Setup:</b> cost <b>$800</b> today; pays <b>$1,400</b> (strong) or <b>$900</b> (weak), 50/50. Risk-free 5%, risk premium 10% ⟹ <var>r<sub>U</sub></var> = <b>15%</b>.</p>
       <table class="num" style="font-size:9pt;">
@@ -434,12 +434,12 @@
   <!-- ===== FALLACIES (2-col) ===== -->
   <div class="cols">
     <div class="card fal">
-      <h3>Fallacy 1 — "Leverage ↑ EPS, so price ↑"</h3>
+      <h3 id="fallacy-1-leverage-eps-so-price">Fallacy 1 — "Leverage ↑ EPS, so price ↑"</h3>
       <p class="small"><span class="x">Wrong:</span> EPS does rise, but leverage also raises <var>r<sub>E</sub></var> (MM II), lowering the P/E by the offsetting amount. <b>Price unchanged.</b></p>
       <p class="small muted"><b>Levitron:</b> after recap EPS $1.00→$1.10, but <var>r<sub>E</sub></var> 13.33%→14.66%; price = EPS/r<sub>E</sub> = 1.10/0.1466 = <b>$7.50</b> (unchanged). Use EV/EBIT(DA), not P/E, to compare firms.</p>
     </div>
     <div class="card fal">
-      <h3>Fallacy 2 — "Issuing equity dilutes value"</h3>
+      <h3 id="fallacy-2-issuing-equity-dilutes-value">Fallacy 2 — "Issuing equity dilutes value"</h3>
       <p class="small"><span class="x">Wrong:</span> sold at a <b>fair price</b>, new shares bring in matching assets — more shares <i>and</i> proportionally more assets ⟹ <b>value per share unchanged.</b></p>
       <p class="small muted"><b>Jet Set Air:</b> $8B (500M×$16) + $1B raised = $9B over 562.5M shares = <b>$16</b>. Any gain/loss comes from the <b>NPV of what you buy</b>, not the issuance. <span class="x">Bonus:</span> "cheap debt lowers WACC" is also false — <var>r<sub>E</sub></var> rises to offset.</p>
     </div>
@@ -492,7 +492,7 @@
 
   <!-- ===== ACTIVE RECALL (full width, 2-col) ===== -->
   <div class="full">
-    <h2>Active Recall — Cover the Grey Answers</h2>
+    <h2 id="active-recall-cover-the-grey-answers">Active Recall — Cover the Grey Answers</h2>
     <div class="qa cols">
       <div class="row"><b>1. State MM I + the proof.</b> <span class="a">V<sub>L</sub>=V<sub>U</sub>. Debt+equity payoffs = asset payoff every state; Law of One Price → equal price; so E+D = asset value regardless of split.</span></div>
       <div class="row"><b>2. Why does r<sub>E</sub> rise with leverage (no bankruptcy)?</b> <span class="a">Senior fixed debt concentrates the same asset-cash-flow swings onto less equity → more volatile → higher required return (∝ D/E).</span></div>

@@ -504,7 +504,7 @@ figure.lens .plot{opacity:var(--figlens,1);transition:opacity var(--dur)}
 
 <header class="mast"><div class="masthead-grid"><div>
   <p class="kicker">Fifteen systems · eighty adjudicated claims · one instrument that failed its own test</p>
-  <h1>The map, and the method that audits it</h1>
+  <h1 id="the-map-and-the-method-that-audits-it">The map, and the method that audits it</h1>
   <p class="sub">How the world's systems couple, written so that every claim about them carries the verdict an independent panel gave it, and the evidence it does or does not rest on.</p>
   <div class="status"><b>Status</b> Complete with stated limitations · rates provisional</div>
   <p class="byline"><span>18 August 2026</span><span>80 claims · 80 rated</span><span>15 systems · 148 couplings</span><span><button class="linkish" id="valBtn" type="button">validator: 123 checks, 0 failures, 5 known blind spots</button></span></p>
@@ -519,7 +519,7 @@ figure.lens .plot{opacity:var(--figlens,1);transition:opacity var(--dur)}
 <p class="lede">Most explanations of how the world works arrive with no method attached, which makes them indistinguishable from the confident commentary they were written to replace. <strong>This edition ships both.</strong> The map is the substance: fifteen systems, their couplings, six named transmission chains. The method is the annotation: every claim that touches a system carries the verdict three independent raters gave it, and a visible mark for whether its evidence can be retrieved at all.</p>
 
 
-<section class="blk narr"><div class="withrail"><div><p class="pnum">The subject</p><h2>A prophet with a scoreboard</h2>
+<section class="blk narr"><div class="withrail"><div><p class="pnum">The subject</p><h2 id="a-prophet-with-a-scoreboard">A prophet with a scoreboard</h2>
 
 <p>In May 2024, in a Beijing classroom, a former high-school teacher named Jiang Xueqin
 made three predictions on camera. Trump would win in November. Trump would start a war
@@ -573,7 +573,7 @@ not be read as a rank order.</p>
 <!-- ===================== PATH: MAP ===================== -->
 <div class="path on" id="p-map" role="tabpanel" aria-labelledby="tab-map">
 
-<section class="blk"><p class="pnum">The map</p><h2>Fifteen systems, and what moves between them</h2>
+<section class="blk"><p class="pnum">The map</p><h2 id="fifteen-systems-and-what-moves-between-them">Fifteen systems, and what moves between them</h2>
 
 <p>Systems are arranged by layer: substrate at the top, coordination and decision at the bottom. An edge means one system transmits into another through a named mechanism, not that they are vaguely related. <strong>Select a system</strong> to light its couplings, see the mechanism on every edge, and read the adjudicated claims that touch it.</p>
 
@@ -787,7 +787,7 @@ not be read as a rank order.</p>
 <p class="note">148 coupling edges across 15 systems, each naming its mechanism, bundled toward a vertical spine so the graph resolves at rest. Bundling is geometry only: no coupling weight is invented, because the data does not carry one. The declared cross-cutting key <code>cross_system</code> is not a system and is not drawn. Node counts read confirmed over resolved; an asterisk marks a system with fewer than 3 resolved claims, where the rate is shown but should not be read as a measurement.</p>
 </section>
 
-<section class="blk"><p class="pnum">The map</p><h2>Six chains worth knowing cold</h2>
+<section class="blk"><p class="pnum">The map</p><h2 id="six-chains-worth-knowing-cold">Six chains worth knowing cold</h2>
 <p>A chain is a sequence of couplings with a mechanism at each step. Chains are falsifiable; vibes are not. Each is stated with the link that would break it. Highlight any chain on the map above.</p>
 <div class="noncoup" style="border-color:var(--rule-2);border-left-color:var(--ink-3)"><div style="font-family:var(--sans);font-size:.63rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);margin-bottom:.35rem">Chain 1</div><div style="font-size:.95rem;font-weight:600;margin-bottom:.5rem">Gulf disruption → global liquidity</div><div style="font-family:var(--sans);font-size:.74rem;line-height:1.7;color:var(--ink-2);margin-bottom:.6rem"><b>Hormuz transit falls</b> <span class="arrow">→</span> <b>Japanese import costs rise</b> <span class="arrow">→</span> <b>yen weakens</b> <span class="arrow">→</span> <b>carry trade stress</b> <span class="arrow">→</span> <b>intervention</b> <span class="arrow">→</span> <b>cross-asset volatility</b> <span class="arrow">→</span> <b>risk asset repricing</b></div><div style="font-size:.82rem;color:var(--ink-3);line-height:1.5"><span class="chip ok">requires no coordination</span> <b style="color:var(--ink-2)">Breaks if:</b> Japan&#x27;s energy import intensity falls materially; the BoJ normalises gradually enough that the carry trade unwinds in an orderly fashion; or the carry position turns out to be smaller and less leveraged than estimated. <b style="color:var(--ink-2)">Watch:</b> the cross-currency basis, JGB yields, and Japanese LNG import cost.</div></div>
 <div class="noncoup" style="border-color:var(--rule-2);border-left-color:var(--ink-3)"><div style="font-family:var(--sans);font-size:.63rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);margin-bottom:.35rem">Chain 2</div><div style="font-size:.95rem;font-weight:600;margin-bottom:.5rem">Gas → nitrogen → next year&#x27;s harvest</div><div style="font-family:var(--sans);font-size:.74rem;line-height:1.7;color:var(--ink-2);margin-bottom:.6rem"><b>Gulf gas disruption</b> <span class="arrow">→</span> <b>ammonia/urea production falls</b> <span class="arrow">→</span> <b>fertiliser prices spike</b> <span class="arrow">→</span> <b>application rates fall in price-sensitive geographies</b> <span class="arrow">→</span> <b>yields fall in the following season</b> <span class="arrow">→</span> <b>food prices rise</b> <span class="arrow">→</span> <b>export restrictions</b> <span class="arrow">→</span> <b>further price rises</b></div><div style="font-size:.82rem;color:var(--ink-3);line-height:1.5"><b style="color:var(--ink-2)">Breaks if:</b> ex-Gulf nitrogen capacity (US Gulf Coast, Russia, North Africa) can be dispatched at scale within a season; or if the affected geographies have fertiliser stocks. <b style="color:var(--ink-2)">Watch:</b> urea benchmark prices, Indian and Brazilian application rates, and the count of active export restrictions.</div></div>
@@ -797,14 +797,14 @@ not be read as a rank order.</p>
 <div class="noncoup" style="border-color:var(--rule-2);border-left-color:var(--ink-3)"><div style="font-family:var(--sans);font-size:.63rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);margin-bottom:.35rem">Chain 6</div><div style="font-size:.95rem;font-weight:600;margin-bottom:.5rem">Compute capex → macro concentration → funding fragility</div><div style="font-family:var(--sans);font-size:.74rem;line-height:1.7;color:var(--ink-2);margin-bottom:.6rem"><b>AI capex boom</b> <span class="arrow">→</span> <b>a large share of investment and growth concentrates in a few firms and one supply chain</b> <span class="arrow">→</span> <b>valuations capitalise expected returns</b> <span class="arrow">→</span> <b>funding conditions tighten (possibly via Chain 1)</b> <span class="arrow">→</span> <b>capex is deferred</b> <span class="arrow">→</span> <b>growth contribution reverses</b></div><div style="font-size:.82rem;color:var(--ink-3);line-height:1.5"><b style="color:var(--ink-2)">Breaks if:</b> AI revenue growth validates the capex on the assumed timeline; or if the financing stays equity-funded. <b style="color:var(--ink-2)">Watch:</b> the share of AI infrastructure funded by debt and private credit rather than operating cash flow — the single most informative available indicator of whether this is a boom or a bubble, and one that is reported quarterly.</div></div>
 </section>
 
-<section class="blk"><p class="pnum">The map</p><h2>Three couplings people assert that do not hold</h2>
+<section class="blk"><p class="pnum">The map</p><h2 id="three-couplings-people-assert-that-do-not-hold">Three couplings people assert that do not hold</h2>
 <p>These are marked distinctly because asserting a coupling that is not there is the most common way a confident map goes wrong. The struck line is the assertion; beneath it is what the evidence supports instead.</p>
 <div class="noncoup"><div class="as">Interdependence prevents war.</div><div class="co">The 1990s formulation — that trade linkage makes conflict prohibitively costly — was substantially falsified by 2022. What interdependence actually does is raise the cost of conflict and change its form, shifting it toward economic coercion, chokepoint leverage and sub-threshold action. It does not prevent it. The corrected version is more useful than the original and is what §16&#x27;s shift from military to supply-chain leverage describes.</div></div>
 <div class="noncoup"><div class="as">Resource scarcity causes war.</div><div class="co">The empirical literature is much weaker than the intuition. Resource revenues correlate strongly with civil conflict (the resource curse); resource scarcity correlates weakly with interstate conflict, and shared-basin water disputes have historically produced far more treaties than wars. The mechanism that actually operates runs through state capacity and institutional quality, not through the resource — which means the intervening variable, not the resource, is what to watch.</div></div>
 <div class="noncoup"><div class="as">Migration surges are engineered.</div><div class="co">Sometimes they are — weaponised migration is a real instrument with documented cases. But the base rate strongly favours the boring generator: a legal change, an economic shock, a network effect, or a smuggling-price change. The Ceuta case is the specimen: a real, documented, US-linked political project to transfer the enclaves existed, and it did not cause the surge. Both facts are true. Holding them simultaneously is the entire skill. --- # PART IV · READING THE FUTURE</div></div>
 </section>
 
-<section class="blk"><p class="pnum">The join</p><h2>How the method annotates the map</h2>
+<section class="blk"><p class="pnum">The join</p><h2 id="how-the-method-annotates-the-map">How the method annotates the map</h2>
 <p>Selecting a system above lists the claims filed against it with their verdicts, so the map is not a set of assertions but a set of <em>adjudicated</em> assertions. The join is enforced in the data: every claim carries a <code>system</code> field, and the validator refuses to build if one fails to resolve against the registry.</p>
 <div class="pull key"><p>The single most useful thing to carry from the method into the map: <strong>claims that assert a checkable predicate confirm at 58%; claims that assert a conclusion built on one confirm at 12%.</strong> On this map, a mechanism is a predicate. An intent is a conclusion.</p></div>
 </section>
@@ -814,7 +814,7 @@ not be read as a rank order.</p>
 <div class="path" id="p-method" role="tabpanel" aria-labelledby="tab-method" hidden>
 
 
-<section class="blk narr"><div class="withrail"><div><p class="pnum">The subject</p><h2>What licence the subject gives</h2>
+<section class="blk narr"><div class="withrail"><div><p class="pnum">The subject</p><h2 id="what-licence-the-subject-gives">What licence the subject gives</h2>
 
 <p>A body of commentary is not a claim. It is a few hundred claims of five different
 kinds, delivered in one voice, and its truth value is not a single number. The first move
@@ -852,10 +852,10 @@ dismissive where it is confident about something true.</p></div>
 </div>
 </section>
 
-<section class="blk"><p class="pnum">The method</p><h2>The finding, in its narrow form</h2>
+<section class="blk"><p class="pnum">The method</p><h2 id="the-finding-in-its-narrow-form">The finding, in its narrow form</h2>
 <p>The instinct when auditing a confident source is to sort claims by subject. That instinct is wrong. What predicts whether a claim survives checking is not what it is about, but whether it asserts something a reader could look up, or something inferred from that.</p>
 <figure id="f-split">
-<div class="fnum">Figure 1</div><h3 class="ftitle">The result that survived every control</h3><p class="fq">Does confirmation track what a claim is <em>about</em>, or how it is <em>built</em>?</p>
+<div class="fnum">Figure 1</div><h3 id="the-result-that-survived-every-control" class="ftitle">The result that survived every control</h3><p class="fq">Does confirmation track what a claim is <em>about</em>, or how it is <em>built</em>?</p>
 <div class="fbody"><div class="plot"><svg viewBox="0 0 720 244" role="img" aria-label="Confirmation rate by claim structure">
 <text x="0" y="20" font-size="14" fill="var(--ink-2)" font-family="var(--sans)">Asserts only a checkable predicate</text>
 <rect x="0" y="30" width="560" height="30" fill="var(--plane)"/>
@@ -878,7 +878,7 @@ dismissive where it is confident about something true.</p></div>
 </section>
 
 
-<section class="blk narr"><div class="withrail"><div><p class="pnum">The subject</p><h2>The case at full strength</h2>
+<section class="blk narr"><div class="withrail"><div><p class="pnum">The subject</p><h2 id="the-case-at-full-strength">The case at full strength</h2>
 
 <p>A verdict that has not met the best version of the argument is not worth having, so
 here is the best version. Start with the thing he gets most right, which is also the thing
@@ -921,7 +921,7 @@ says what the document <em>means</em>, that fails.</p></div>
 </section>
 
 
-<section class="blk narr"><div class="withrail"><div><p class="pnum">The subject</p><h2>The signature the failures share</h2>
+<section class="blk narr"><div class="withrail"><div><p class="pnum">The subject</p><h2 id="the-signature-the-failures-share">The signature the failures share</h2>
 
 <p>The failures are not scattered. They have one shape, and naming it is more useful than
 counting them.</p>
@@ -969,10 +969,10 @@ separately rather than rating a man.</p></div>
 </div>
 </section>
 
-<section class="blk"><p class="pnum">The method</p><h2>The descent, and what it depends on</h2>
+<section class="blk"><p class="pnum">The method</p><h2 id="the-descent-and-what-it-depends-on">The descent, and what it depends on</h2>
 <p>The project's original headline was a monotone accuracy descent across five claim types. Under the independent panel that ordering survives, at <strong>60 → 45 → 36 → 22 → 9</strong>. Survival is not the whole answer, because the question is whether the ordering is a property of the corpus or of the instrument reading it.</p>
 <figure id="f-descent">
-<div class="fnum">Figure 2</div><h3 class="ftitle">The five-row descent depends on the instrument that measures it</h3><p class="fq">Does the accuracy ordering across claim types reproduce for raters who never saw the rubric?</p>
+<div class="fnum">Figure 2</div><h3 id="the-five-row-descent-depends-on-the-instrument-t" class="ftitle">The five-row descent depends on the instrument that measures it</h3><p class="fq">Does the accuracy ordering across claim types reproduce for raters who never saw the rubric?</p>
 <div class="fbody"><div class="plot"><svg viewBox="0 0 720 392" role="img" aria-label="Accuracy descent under four adjudications">
 <line x1="44" y1="314.0" x2="690" y2="314.0" stroke="var(--rule)"/>
 <text x="36" y="318.0" font-size="10.5" text-anchor="end" fill="var(--ink-3)" font-family="var(--sans)">0</text>
@@ -1025,10 +1025,10 @@ separately rather than rating a man.</p></div>
 <details class="data"><summary>Data behind this figure</summary><div class="tw"><table><thead><tr><th class="">Claim type</th><th class="n">All · rubric</th><th class="n">All · control</th><th class="n">Predicate-only · rubric</th><th class="n">Predicate-only · control</th></tr></thead><tbody><tr><td class="">Dates</td><td class="n">60</td><td class="n">70</td><td class="n">100</td><td class="n">92</td></tr><tr><td class="">Institutions</td><td class="n">45</td><td class="n">50</td><td class="n">80</td><td class="n">80</td></tr><tr><td class="">Documents</td><td class="n">36</td><td class="n">64</td><td class="n">50</td><td class="n">75</td></tr><tr><td class="">Quantities</td><td class="n">22</td><td class="n">28</td><td class="n">29</td><td class="n">36</td></tr><tr><td class="">Causes</td><td class="n">9</td><td class="n">12</td><td class="n">0</td><td class="n">0</td></tr></tbody></table></div></details></figure>
 <button class="replay" id="replayDescent" type="button">Replay the two arms</button>
 
-<h3>How precise are any of these numbers?</h3>
+<h3 id="how-precise-are-any-of-these-numbers">How precise are any of these numbers?</h3>
 <p>The argument above, and the control below it, are conducted on point estimates drawn from samples of nine to thirty-two. Before asking whether the ordering holds under one adjudication or another, it is worth asking whether it is resolved at all.</p>
 <figure id="f-intervals">
-<div class="fnum">Figure 3</div><h3 class="ftitle">Every adjacent pair in the descent overlaps</h3><p class="fq">The ordering is argued at length. Is it resolved between any two neighbouring rows?</p>
+<div class="fnum">Figure 3</div><h3 id="every-adjacent-pair-in-the-descent-overlaps" class="ftitle">Every adjacent pair in the descent overlaps</h3><p class="fq">The ordering is argued at length. Is it resolved between any two neighbouring rows?</p>
 <div class="fbody"><div class="plot"><svg viewBox="0 0 760 386" role="img" aria-label="Confirmation rate by claim type with 95 percent confidence intervals">
 <line x1="172.0" y1="26" x2="172.0" y2="320" stroke="var(--rule)"/>
 <text x="172.0" y="18" text-anchor="middle" font-size="10" fill="var(--ink-3)" font-family="var(--sans)">0%</text>
@@ -1102,7 +1102,7 @@ separately rather than rating a man.</p></div>
 <div class="pull bad"><p><strong>It is not.</strong> All 4 adjacent pairs overlap at 95%. The rows are separated by fifteen to twenty-three points and their intervals are around fifty points wide. On this evidence <strong>no two neighbouring rows are distinguishable</strong>, and the five-row rank order is not something the data can carry.</p></div>
 <p>The extremes do separate: dates at 31–83% against causal at 3–24%, and only because the causal row has n=32 where the others have nine to eleven. So the descent is not refuted. Its <em>resolution</em> is.</p>
 <figure id="f-twolevel">
-<div class="fnum">Figure 4</div><h3 class="ftitle">What the evidence does support at n=80</h3><p class="fq">If the five-row ordering is not resolved, what is?</p>
+<div class="fnum">Figure 4</div><h3 id="what-the-evidence-does-support-at-n-80" class="ftitle">What the evidence does support at n=80</h3><p class="fq">If the five-row ordering is not resolved, what is?</p>
 <div class="fbody"><div class="plot"><svg viewBox="0 0 760 200" role="img" aria-label="Two-level result with confidence intervals">
 <line x1="210.0" y1="26" x2="210.0" y2="132" stroke="var(--rule)"/>
 <text x="210.0" y="18" text-anchor="middle" font-size="10" fill="var(--ink-3)" font-family="var(--sans)">0%</text>
@@ -1140,7 +1140,7 @@ separately rather than rating a man.</p></div>
 <div class="pull warn"><p><strong>The five-row descent is rubric-conditional.</strong> Monotonic for 3 of 3 raters using the rubric and 0 of 2 without it. Reported as a headline about the corpus, it overstates what the evidence carries.</p>
 <p>What reproduces <em>without</em> the rubric is the descent inside predicate-only claims, <strong>100 → 80 → 50 → 29 → 0</strong>, monotonic for 2 of 2 control raters as well as 3 of 3 rubric raters. Its causal cell holds only two claims; the bottom of that gradient is the least established part of it.</p></div>
 <p class="note">Two thousand random permutations of the ledger's own verdicts across the same claims produced a monotonic descent 0.7% of the time, so the observed ordering is not a chance artifact.</p>
-<h3>The control that came from outside</h3>
+<h3 id="the-control-that-came-from-outside">The control that came from outside</h3>
 <p>Two reviewers, working independently and without access to each other, arrived at the same objection: <strong>claim type and claim structure may be nearly the same variable.</strong> If so, a rubric whose decisive test is <em>predicate or conclusion</em> would demote the causal row by construction, and the gradient would be an artifact of the instrument rather than a property of the source.</p>
 <p>The confound is real and measurable. 37 of 39 causal claims are conclusion-bearing (95%), against 2 of 9 quantity claims (22%). So the test runs the control: hold structure constant and recompute the descent within each stratum.</p>
 
@@ -1158,7 +1158,7 @@ separately rather than rating a man.</p></div>
 <p class="note">A third reviewer claim, that the retention from the pre-rubric figures is monotonic in the same direction as the descent and therefore signals a manufactured gradient, does not hold against the shipped ledger. It was computed against the author's superseded pass. Against the panel ledger the retention runs 67 / 67 / 56 / 50 / 64, which is not monotonic, and the causal row retains more than quantities or documents.</p>
 
 <figure id="f-verdicts">
-<div class="fnum">Figure 10</div><h3 class="ftitle">How the eighty claims resolved</h3><p class="fq">What did the independent panel actually find?</p>
+<div class="fnum">Figure 10</div><h3 id="how-the-eighty-claims-resolved" class="ftitle">How the eighty claims resolved</h3><p class="fq">What did the independent panel actually find?</p>
 <div class="fbody"><div class="plot"><svg viewBox="0 0 720 277" role="img" aria-label="Verdict distribution">
 <text x="0" y="22" font-size="11" fill="var(--ink-2)" font-family="var(--sans)">CONFIRMED</text>
 <rect x="190" y="11" width="107.5" height="15" fill="var(--v-conf)"/>
@@ -1194,7 +1194,7 @@ separately rather than rating a man.</p></div>
 <details class="data"><summary>Data behind this figure</summary><div class="tw"><table><thead><tr><th class="">Verdict</th><th class="n">Claims</th><th class="n">Share</th></tr></thead><tbody><tr><td class="">CONFIRMED</td><td class="n">20</td><td class="n">25.0%</td></tr><tr><td class="">CONFIRMED IN PART</td><td class="n">6</td><td class="n">7.5%</td></tr><tr><td class="">CORE INFERENCE</td><td class="n">17</td><td class="n">21.2%</td></tr><tr><td class="">PARTIAL</td><td class="n">2</td><td class="n">2.5%</td></tr><tr><td class="">UNRESOLVED</td><td class="n">5</td><td class="n">6.2%</td></tr><tr><td class="">NOT IN EVIDENCE</td><td class="n">3</td><td class="n">3.8%</td></tr><tr><td class="">CONTRADICTED TO DATE</td><td class="n">6</td><td class="n">7.5%</td></tr><tr><td class="">CONTRADICTED</td><td class="n">19</td><td class="n">23.8%</td></tr><tr><td class="">ANTECEDENT FAILED</td><td class="n">2</td><td class="n">2.5%</td></tr></tbody></table></div></details></figure>
 </section>
 
-<section class="blk"><p class="pnum">The method</p><h2>The ledger, as an instrument</h2>
+<section class="blk"><p class="pnum">The method</p><h2 id="the-ledger-as-an-instrument">The ledger, as an instrument</h2>
 <p>All 80 claims as the independent panel rated them. Filter, sort, and select any claim to open its record, its sources, the rubric clause that decided it, and <strong>the three raters' individual votes</strong>. The headline agreement figure is 95.8%, which is a summary; the ledger shows where it actually broke. <strong>The panel split on 5 of the 80 claims it voted on</strong>, and on those the shipped verdict is a majority rather than a consensus. <strong>The provenance dimmer</strong> fades each claim in proportion to how well its evidence is documented: drag it and watch most of the corpus disappear.</p>
 
 <div class="tools">
@@ -1300,9 +1300,9 @@ separately rather than rating a man.</p></div>
 <tr tabindex="0" data-id="ARGENTINA-FALKLANDS" data-v="CONTRADICTED_TO_DATE" data-t="causal" data-s="conclusion_bearing" data-p="1" data-sys="state_capacity" data-split="0" data-q=""><td>ARGENTINA-FALKLANDS</td><td><span class="mk solid"></span>Argentina reclaims the Falklands within a year</td><td><span class="vd CONTRADICTED_TO_DATE">CONTRADICTED TO DATE</span></td><td>Causes</td><td>conclusion</td><td><span class="pdot doc"></span>1 src</td><td><span class="cons unan" title="all three raters agreed"><i></i><i></i><i></i></span></td></tr></tbody></table></div>
 </section>
 
-<section class="blk"><p class="pnum">The method</p><h2>What the evidence actually rests on</h2>
+<section class="blk"><p class="pnum">The method</p><h2 id="what-the-evidence-actually-rests-on">What the evidence actually rests on</h2>
 <figure id="f-prov">
-<div class="fnum">Figure 5</div><h3 class="ftitle">The evidence base was asserted, and almost never documented</h3><p class="fq">How many claims carry a citation a reader could actually open?</p>
+<div class="fnum">Figure 5</div><h3 id="the-evidence-base-was-asserted-and-almost-never-" class="ftitle">The evidence base was asserted, and almost never documented</h3><p class="fq">How many claims carry a citation a reader could actually open?</p>
 <div class="fbody"><div class="plot"><svg viewBox="0 0 720 220" role="img" aria-label="Asserted versus documented provenance">
 <text x="176" y="16" font-size="10.5" fill="var(--clm)" font-family="var(--sans)">asserted by the original sweep</text>
 <text x="176" y="32" font-size="10.5" fill="var(--rec)" font-family="var(--sans)">documented, a source is on file</text>
@@ -1330,7 +1330,7 @@ separately rather than rating a man.</p></div>
 <div class="pull bad"><p><strong>65 of 80 claims carry no retrievable citation.</strong> 18 assert a source <em>tier</em> with no source recorded, which is unfalsifiable by construction.</p></div>
 <p>Every rater in every arm adjudicated against these evidence notes, so a wrong note produces a wrong verdict in all arms at once and no amount of inter-rater agreement can detect it. That effect was measured, not estimated: an independent audit found 9 notes non-responsive to their own claims, and repairing them moved three verdicts with the claim and the rubric held constant.</p>
 
-<h3>Quotations, which nothing was checking</h3>
+<h3 id="quotations-which-nothing-was-checking">Quotations, which nothing was checking</h3>
 <p>Rules 4 and 10 police the numbers and the verdicts. Until this edition nothing policed a <em>quotation</em>. A direct quotation attributed to a named living person is an assertion about the world of exactly the same kind as a percentage, and the build would ship one with nothing behind it and report no failures. Rule 14 now registers every quotation this project ships and resolves each one to its evidence.</p>
 
 <div class="pull bad"><p><strong>13 of 15 registered quotations resolve to no source at all.</strong> They are named in the ledger below with an open-outline quotation mark, and they are disclosed rather than deleted, because a quotation with nothing behind it is a finding about this evidence layer and not an embarrassment to be tidied away. Filter the ledger to <em>quoted, unsourced</em> to read them.</p></div>
@@ -1341,7 +1341,7 @@ separately rather than rating a man.</p></div>
 </section>
 
 
-<section class="blk narr"><div class="withrail"><div><p class="pnum">What you keep</p><h2>The single most important move</h2>
+<section class="blk narr"><div class="withrail"><div><p class="pnum">What you keep</p><h2 id="the-single-most-important-move">The single most important move</h2>
 
 <p>If nothing else here survives six months, let it be this. <strong>Split the claim from
 the register it arrives in. Then split the predicate from the inference.</strong></p>
@@ -1383,15 +1383,15 @@ path.</p>
 <!-- ===================== PATH: FAILED TEST ===================== -->
 <div class="path" id="p-test" role="tabpanel" aria-labelledby="tab-test" hidden>
 
-<section class="blk"><p class="pnum">The failed test</p><h2>What happened when the instrument was pointed at itself</h2>
+<section class="blk"><p class="pnum">The failed test</p><h2 id="what-happened-when-the-instrument-was-pointed-at">What happened when the instrument was pointed at itself</h2>
 <p class="lede">This project specified an inter-rater test that could destroy its own headline, ran it, and <strong>failed</strong>: a rater working blind diverged on 9 of 19 claims against a declared threshold of 4, and every divergence ran the same direction. This is not an appendix. It is the most defensible thing the project owns.</p>
 
-<h3>The six stages</h3>
+<h3 id="the-six-stages">The six stages</h3>
 <p><strong>One, the test.</strong> Twenty claims drawn by a stated deterministic hash. A second rater ruled from claim text alone, with the record, verdict, tags and type withheld. Sample, counting rules, contamination and the conclusion at each outcome band were written down before any claim was looked up.</p>
 <p><strong>Two, the missing instrument.</strong> Seven of nine divergences sat inside the CONFIRMED / CONFIRMED_IN_PART / PARTIAL / CORE_INFERENCE cluster. Eleven verdicts existed with no written procedure for choosing among them. The diagnostic was in the data: the verdict meaning <em>predicate verified, conclusion not</em> appeared 7 times in one claim type and 0 times in the other four.</p>
 <p><strong>Three, a prediction, and its refutation.</strong></p>
 <figure id="f-prereg">
-<div class="fnum">Figure 9</div><h3 class="ftitle">A prediction registered in advance, and refuted</h3><p class="fq">The audit predicted the descent would flatten and its ordering break. What happened?</p>
+<div class="fnum">Figure 9</div><h3 id="a-prediction-registered-in-advance-and-refuted" class="ftitle">A prediction registered in advance, and refuted</h3><p class="fq">The audit predicted the descent would flatten and its ordering break. What happened?</p>
 <div class="fbody"><div class="plot"><svg viewBox="0 0 720 298" role="img" aria-label="Preregistered prediction versus observed outcome">
 <text x="168" y="14" font-size="10.5" fill="var(--ink-3)" font-family="var(--sans)">0</text>
 <text x="588" y="14" font-size="10.5" text-anchor="end" fill="var(--ink-3)" font-family="var(--sans)">100%</text>
@@ -1435,10 +1435,10 @@ path.</p>
 <p><strong>Six, what survives.</strong> The narrow finding, the structure-controlled gradient, and the result below.</p>
 </section>
 
-<section class="blk"><p class="pnum">The failed test</p><h2>Did the repair work?</h2>
+<section class="blk"><p class="pnum">The failed test</p><h2 id="did-the-repair-work">Did the repair work?</h2>
 <p>The obvious way to answer is to put Test B next to the panel: a rater working blind agreed 53% of the time, three raters with the rubric are unanimous on 75 of 80 claims. Stated that way the rubric looks transformative. Stated that way it is also a confounded comparison, and this project exists to catch those.</p>
 <figure id="f-agree">
-<div class="fnum">Figure 6</div><h3 class="ftitle">Did the rubric raise agreement? Less than it looks</h3><p class="fq">The obvious before-and-after is Test B against the panel. What does it actually compare?</p>
+<div class="fnum">Figure 6</div><h3 id="did-the-rubric-raise-agreement-less-than-it-look" class="ftitle">Did the rubric raise agreement? Less than it looks</h3><p class="fq">The obvious before-and-after is Test B against the panel. What does it actually compare?</p>
 <div class="fbody"><div class="plot"><svg viewBox="0 0 760 294" role="img" aria-label="Inter-rater agreement by condition with confidence intervals">
 <line x1="246.0" y1="26" x2="246.0" y2="208" stroke="var(--rule)"/>
 <text x="246.0" y="18" text-anchor="middle" font-size="10" fill="var(--ink-3)" font-family="var(--sans)">0%</text>
@@ -1485,7 +1485,7 @@ path.</p>
 <p>Most of Test B's low agreement came from that rater not having the record, which is a finding about the evidence base rather than about the rubric.</p></div>
 <p>The rubric still earned its place, on a different measurement: raters with and without it agree on only 70.6% of claims, so it changes the output substantially even where it does not measurably tighten agreement. Doing work and raising agreement are different claims, and only the first is established.</p>
 
-<h3>Where the panel actually split</h3>
+<h3 id="where-the-panel-actually-split">Where the panel actually split</h3>
 <p>75 of 80 claims were unanimous and 5 were not. Those 5 are the most informative rows in the ledger, because they name which parts of the verdict vocabulary are still unstable.</p>
 <figure id="f-confusion">
 <div class="fnum">Figure 7</div><h3 class="ftitle">Where the panel actually split</h3><p class="fq">Which verdict boundaries are still unstable?</p>
@@ -1570,9 +1570,9 @@ path.</p>
 <div class="pull"><p><strong>3 of 5 dissents involve NOT_IN_EVIDENCE.</strong> The unstable boundary is not <em>how good is the evidence</em>, which is what the rubric was written to fix; it is <em>is there any evidence at all</em>. That is a different and more tractable problem, and it is the lead for the next rubric revision. Filter the ledger to <em>panel split</em> to read all 5.</p></div>
 </section>
 
-<section class="blk"><p class="pnum">The failed test</p><h2>The one result no adjudication dispute can touch</h2>
+<section class="blk"><p class="pnum">The failed test</p><h2 id="the-one-result-no-adjudication-dispute-can-touch">The one result no adjudication dispute can touch</h2>
 <figure id="f-inadm">
-<div class="fnum">Figure 8</div><h3 class="ftitle">45% of the forecasts were built so they could never have been wrong</h3><p class="fq">Before consulting any outcome, how many forecast statements can be scored at all?</p>
+<div class="fnum">Figure 8</div><h3 id="s-45-of-the-forecasts-were-built-so-they-could-nev" class="ftitle">45% of the forecasts were built so they could never have been wrong</h3><p class="fq">Before consulting any outcome, how many forecast statements can be scored at all?</p>
 <div class="fbody"><div class="plot"><svg viewBox="0 0 720 210" role="img" aria-label="Prediction admissibility">
 <text x="0" y="14" font-size="11" fill="var(--ink-3)" font-family="var(--sans)">Inadmissible before outcomes were consulted</text>
 <rect x="0.0" y="24" width="114.4" height="34" fill="var(--v-open)"/>
@@ -1609,7 +1609,7 @@ path.</p>
 <p>Of the 12 admissible, 3 resolved and all 3 were hits. That is not a skill estimate. A sample with no misses cannot distinguish a calibrated forecaster from an overconfident one, so the honest verdict on the prediction record is insufficient data.</p>
 </section>
 
-<section class="blk"><p class="pnum">The failed test</p><h2>What is validated, and what is not</h2>
+<section class="blk"><p class="pnum">The failed test</p><h2 id="what-is-validated-and-what-is-not">What is validated, and what is not</h2>
 <div class="tw"><table>
 <thead><tr><th>Result</th><th>Status</th><th>Established by</th></tr></thead><tbody>
 <tr><td>Verdicts on all 80 claims</td><td><span class="chip ok">Independent</span></td><td>Three raters blind to this project, the preregistration and the author's rulings. 95.8% pairwise agreement; majority resolved every claim with no ties.</td></tr>
@@ -1626,7 +1626,7 @@ path.</p>
 <p class="note">The 22% panel-to-author divergence is why every rate in this edition is labelled provisional rather than settled. By this project's own declared threshold, that figure is a fail.</p>
 
 <div class="gaps">
-<h4>Two gaps still open, stated rather than skipped</h4>
+<h4 id="two-gaps-still-open-stated-rather-than-skipped">Two gaps still open, stated rather than skipped</h4>
 <ol>
 <li><b>The extraction audit has not run.</b> It needs the raw L0 transcripts, which are not in this repository. Without it nobody can say whether these are the right 80 claims or whether any claim text is a misquote. It is also the only fix for the two deepest validator blind spots, a falsified record and a falsified claim, both of which pass a green build today.</li>
 <li><b>No rater from outside this model family has been on the panel.</b> Every rater, classifier and auditor here is an instance of the same family as the author. Same-family agreement cannot distinguish a correct adjudication from a shared prior. This is the single change that would let the rates move from provisional to settled.</li>
@@ -1674,7 +1674,7 @@ path.</p>
 </dialog>
 <div class="path" id="p-practice" role="tabpanel" aria-labelledby="tab-practice" hidden>
 
-<section class="blk"><p class="pnum">Practice</p><h2>The only path where you can be wrong</h2>
+<section class="blk"><p class="pnum">Practice</p><h2 id="the-only-path-where-you-can-be-wrong">The only path where you can be wrong</h2>
 <p class="lead">Three exercises. The first makes you a rater; the second lets you change the
 adjudication rule and watch the headline move; the third shows what the rubric actually did.
 None of them tell you anything the rest of the edition does not: they make you do it instead of
@@ -1682,7 +1682,7 @@ read it, which is the difference between knowing that adjudication is subjective
 </section>
 
 <section class="mod">
-<h3>1 · Adjudicate it yourself</h3>
+<h3 id="s-1-adjudicate-it-yourself">1 · Adjudicate it yourself</h3>
 <p class="lead">A claim and the record behind it, with both stored verdicts hidden. Rule on it, then
 compare against the original adjudicator and against the post-rubric ledger. Your own disagreement
 rate is the same measurement the project ran on itself and failed.</p>
@@ -1697,7 +1697,7 @@ rate is the same measurement the project ran on itself and failed.</p>
 </section>
 
 <section class="mod">
-<h3>2 · Rule lab, the descent under a rule you choose</h3>
+<h3 id="s-2-rule-lab-the-descent-under-a-rule-you-choose">2 · Rule lab, the descent under a rule you choose</h3>
 <p class="lead">Accuracy is <em>confirmed ÷ resolved</em>, and every term in that is a choice.
 Change the choices and the five-row descent recomputes from the ledger. The gradient below is the
 ratio of the top row to the bottom, the project's headline claim is that it is steep and ordered.</p>
@@ -1707,7 +1707,7 @@ ratio of the top row to the bottom, the project's headline claim is that it is s
 </section>
 
 <section class="mod">
-<h3>3 · What the rubric moved</h3>
+<h3 id="s-3-what-the-rubric-moved">3 · What the rubric moved</h3>
 <p class="lead">Every claim whose verdict changed when the rubric was applied, by claim type.
 Seventeen claims became <code>CORE_INFERENCE</code>, the verdict for a verified predicate carrying
 an unsupported conclusion. Where they came from is the whole story of the re-adjudication.</p>
