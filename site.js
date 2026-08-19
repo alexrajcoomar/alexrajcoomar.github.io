@@ -474,6 +474,12 @@
         if (t < 1) requestAnimationFrame(step); else paint(j, j.to);
       }
       requestAnimationFrame(step);
+      /* requestAnimationFrame is suspended while a tab is in the background,
+         so the animation alone cannot be trusted to leave the number behind.
+         A page opened in a background tab was showing 0 for every statistic.
+         The value is therefore also written on a plain timer, which keeps
+         running, and the animation is only the way it gets there. */
+      setTimeout(function () { paint(j, j.to); }, dur + 500);
     }
     var io = new IntersectionObserver(function (es) {
       es.forEach(function (e) {
