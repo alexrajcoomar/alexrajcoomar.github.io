@@ -81,8 +81,11 @@ def kwords(n):
     return f"{n/1000:.0f}k" if n >= 1000 else str(n)
 
 # ------------------------------------------------------------ shell ----
+import atlas as atlas_mod
+
 NAV = [("index.html","Home"),("research.html","Research"),("coursework.html","Coursework"),
-       ("tools.html","Tools"),("library.html","Library"),("about.html","About")]
+       ("tools.html","Tools"),("library.html","Library"),("atlas.html","Atlas"),
+       ("about.html","About")]
 
 def head(title, desc, page, extra=""):
     CUR = ' aria-current="page"'
@@ -501,6 +504,7 @@ def page_index():
     feats  = [p for p in P if p["featured"]][:6]
     gt = figs.group_totals()
     indep_share = round(gt["independent"] / (gt["independent"] + gt["course"] + gt["personal"]) * 100)
+    ATLAS_N, ATLAS_PTS, ATLAS_SHARED = atlas_teaser_bits()
 
     rail = "".join(f"""      <a href="{p['url']}">
         <div class="rt">{esc(p['t'])}</div>
@@ -627,6 +631,28 @@ def page_index():
     <summary>The numbers behind the figure</summary>
     {figs.corpus_table()}
   </details>
+</section>
+
+<section class="band shell" id="atlas-teaser">
+  <div class="sechead">
+    <h2>And the same corpus, named</h2>
+    <p class="note">The figure above counts the words. This one names the sections, and every mark opens the passage itself.</p>
+    <span class="count">{ATLAS_N} sections</span>
+  </div>
+  <div class="tease">
+    <div class="tease-fig">
+      <div class="tease-globe" id="atlasmini" data-pts="{ATLAS_PTS}" aria-hidden="true"></div>
+      <noscript><p class="note" style="text-align:center">The atlas needs a browser that runs scripts. The <a href="atlas.html" style="color:var(--accent)">full index</a> does not.</p></noscript>
+    </div>
+    <div class="tease-say">
+      <p>Every heading in every readable document, {ATLAS_N} of them, placed on a sphere by the
+      document it belongs to. A dense patch is a dense document. The {ATLAS_SHARED} headings that
+      turn up in more than one document sit between the two.</p>
+      <p>It is a table of contents you can turn over in your hands, and it works as a plain
+      list for anything that cannot draw it.</p>
+      <p><a class="linkbtn" href="atlas.html">Open the atlas <span aria-hidden="true">&#8594;</span></a></p>
+    </div>
+  </div>
 </section>
 
 <section class="band shell">
@@ -1522,7 +1548,7 @@ def add_returns_everywhere():
     every piece regardless, including the converted notes."""
     shell = {"index.html", "library.html", "about.html", "404.html", "research.html",
              "coursework.html", "tools.html", "reader.html", "colophon.html",
-             "admin.html"}
+             "admin.html", "atlas.html"}
     where, by_url = {}, {}
     for p in P:
         by_url[p["url"]] = p
@@ -1552,6 +1578,127 @@ def add_returns_everywhere():
 
 
 # --------------------------------------------------------------- write ----
+ATLAS_BODY = r"""<section class="band atlas-band">
+  <div class="shell atlas-grid">
+    <div class="atlas-side">
+      <p class="eyebrow accent">Atlas</p>
+      <h1 class="display atlas-h1">Every section of everything, on one sphere.</h1>
+      <p class="lede">{nsec} sections from {ndoc} documents. A document is a region, its
+      sections cluster around it, and the {shared} headings that appear in more than one
+      document sit between them. Click a mark to open the passage itself rather than the
+      front of the piece.</p>
+
+      <div class="atlas-controls">
+        <label class="sr" for="aq">Search {nsec} sections</label>
+        <input id="aq" type="search" placeholder="Search {nsec} sections" autocomplete="off" spellcheck="false">
+        <div class="atlas-modes" id="amodes" hidden>
+          <button type="button" id="aglobe" class="chip" aria-pressed="true">Globe</button>
+          <button type="button" id="alist" class="chip" aria-pressed="false">List</button>
+        </div>
+      </div>
+      <p class="atlas-count" id="acount" role="status">Showing all {nsec} sections.</p>
+
+      <div class="atlas-key" id="akey" hidden>
+        <h2>How to read it</h2>
+        <ul class="akey-list">
+          <li><i class="ak ak-ind"></i>Independent work</li>
+          <li><i class="ak ak-per"></i>Personal interest</li>
+          <li><i class="ak ak-cou"></i>Coursework, drawn as an outline</li>
+          <li><i class="ak ak-too"></i>Tools, one mark each</li>
+        </ul>
+        <p>One mark is one section, under the heading its author gave it. Marks cluster by
+        the document they belong to, so a dense patch is a dense document: the area a
+        document covers grows with the number of sections it holds, the same way one square
+        is five hundred words on the home page.</p>
+        <p class="akey-note">Nothing is sampled and nothing is capped. Every section of
+        every readable document is here, and every mark opens the passage it names.</p>
+      </div>
+    </div>
+
+    <div class="atlas-stage" id="astage" hidden>
+      <canvas id="acanvas" aria-hidden="true"></canvas>
+      <div class="atlas-labels" id="alabels" aria-hidden="true"></div>
+      <div class="atlas-card" id="acard" hidden aria-hidden="true"><p class="ac-t"></p><p class="ac-d"></p></div>
+      <p class="atlas-hint" id="ahint">Drag to turn it. Point at a mark to read the section, click to open it.</p>
+    </div>
+  </div>
+
+  <div class="shell">
+    <div class="atlas-list" id="atlaslist">
+{blocks}
+    </div>
+  </div>
+</section>
+"""
+
+# ------------------------------------------------------------------ atlas --
+# The globe is a view of this page, not a second copy of it. Every section is
+# written out as a real link inside a real list with its coordinates on the
+# element; the script reads those elements and draws them. Turn the script off
+# and the page is still the complete table of contents for the whole corpus,
+# which is also what a screen reader and a crawler get.
+ATLAS = {"points": [], "regions": []}
+
+SURF_NAME = {"independent": "Independent", "course": "Coursework",
+             "personal": "Personal interest"}
+
+def page_atlas():
+    pts, regs = ATLAS["points"], ATLAS["regions"]
+    by = {}
+    for q in pts:
+        by.setdefault(q["s"], []).append(q)
+
+    blocks = []
+    for r in sorted(regs, key=lambda x: (-len(by.get(x["s"], [])), x["t"])):
+        items = by.get(r["s"], [])
+        if not items:
+            continue
+        lis = "\n".join(
+            '        <li class="apt" data-p="%s,%s,%s"><a href="%s">%s</a></li>'
+            % (q["p"][0], q["p"][1], q["p"][2], q["u"], esc(q["t"]))
+            for q in items)
+        word = "section" if len(items) == 1 else "sections"
+        blocks.append(
+            '      <section class="areg" data-s="%s" data-k="%s" data-surface="%s"\n'
+            '        data-c="%s,%s,%s" data-t="%s" data-u="%s">\n'
+            '        <h2 class="areg-h"><a href="%s">%s</a>\n'
+            '          <span class="areg-n">%d %s</span>\n'
+            '          <span class="areg-k">%s</span></h2>\n'
+            '        <ol class="areg-l">\n%s\n        </ol>\n'
+            '      </section>'
+            % (r["s"], r["k"], r["surface"], r["p"][0], r["p"][1], r["p"][2],
+               esc(r["t"]), r["u"], r["u"], esc(r["t"]), len(items), word,
+               esc(r["c"] or SURF_NAME[r["surface"]]), lis))
+
+    nsec = len(pts)
+    ndoc = len([r for r in regs if by.get(r["s"])])
+    shared = len([q for q in pts if q["n"] > 1])
+
+    body = ATLAS_BODY.format(nsec=format(nsec, ","), ndoc=ndoc, shared=shared,
+                             blocks="\n".join(blocks))
+    return head("Atlas — " + SHORT,
+                "All %s sections of all %d documents on this site, placed on a "
+                "sphere by the document they belong to and linked to the passage "
+                "itself." % (format(nsec, ","), ndoc),
+                "atlas.html",
+                extra='<script src="atlas.js" defer></script>') + body + foot()
+
+def atlas_teaser_bits():
+    """The home page draws the same sphere small, so the payload is the same
+    positions and nothing else: no headings, no links, no second copy of the
+    data. Two decimals is a hundredth of the radius, which at teaser size is
+    well under a pixel, and it keeps the whole thing near six kilobytes over
+    the wire."""
+    code = {"independent": "i", "personal": "p", "course": "c"}
+    surf = {r["s"]: ("t" if r["k"] == "Tool" else code[r["surface"]])
+            for r in ATLAS["regions"]}
+    body = ";".join("%.2f,%.2f,%.2f,%s" % (q["p"][0], q["p"][1], q["p"][2],
+                                           surf[q["s"]])
+                    for q in ATLAS["points"])
+    return (format(len(ATLAS["points"]), ","), body,
+            format(len([q for q in ATLAS["points"] if q["n"] > 1]), ","))
+
+
 def page_404():
     """Generated like every other shell page, so its piece count and contact
     address cannot fall behind. It used to be the one page the build touched
@@ -1715,7 +1862,8 @@ def jsonld_person():
 
 
 SHELL_PAGES = ("index.html", "research.html", "coursework.html", "tools.html",
-               "library.html", "about.html", "colophon.html", "404.html")
+               "library.html", "atlas.html", "about.html", "colophon.html",
+               "404.html")
 
 # ------------------------------------------------------------- checks ----
 # The build guarantees what it generates. Everything it merely touches was
@@ -1847,7 +1995,36 @@ def check_site():
                 problems.append(f"{f}: <{tag}> inside <head> ends the head early; "
                                 f"everything after it is parsed into the body")
 
-    # 8. every listed piece has a file behind it
+    # 8. every mark on the atlas lands somewhere real. The globe is only worth
+    # having if a click opens the passage it names, and the passage is named by
+    # an anchor inside another document, which nothing else on the site checks.
+    # A heading renamed in a piece changes its generated id, and this is what
+    # notices before the mark starts pointing at nothing.
+    apath = os.path.join(OUT, "atlas.html")
+    if os.path.exists(apath):
+        atext = open(apath, encoding="utf-8", errors="ignore").read()
+        marks = re.findall(r'class="apt"[^>]*>\s*<a href="([^"]+)"', atext)
+        want = {}
+        for href in marks:
+            f, _, frag = href.partition("#")
+            want.setdefault(f, set()).add(frag)
+        for f, frags in sorted(want.items()):
+            fp = os.path.join(OUT, f)
+            if not os.path.exists(fp):
+                problems.append(f"atlas.html: {len(frags)} marks point into {f}, "
+                                f"which does not exist")
+                continue
+            have = set(re.findall(r'\bid="([^"]+)"',
+                                  open(fp, encoding="utf-8", errors="ignore").read()))
+            missing = sorted(x for x in frags if x and x not in have)
+            if missing:
+                problems.append(f"atlas.html: {len(missing)} mark(s) point at "
+                                f"anchors {f} does not carry, first is "
+                                f"#{missing[0]}")
+        if marks and not want:
+            problems.append("atlas.html: carries no marks")
+
+    # 9. every listed piece has a file behind it
     for x in P:
         if x["url"] not in files:
             problems.append(f"content/pieces.json: {x['slug']} points at {x['url']}, which does not exist")
@@ -1856,7 +2033,14 @@ def check_site():
 
 
 def main():
+    # First, because it writes anchor ids into the pieces themselves and every
+    # later pass reads those files. Giving a section a name is a content edit,
+    # so it happens once and then never again: an id already present is kept.
+    ATLAS["points"], ATLAS["regions"] = (lambda d: (d["points"], d["regions"]))(
+        atlas_mod.build(OUT, P)[0])
+
     pages = {"index.html": page_index(), "research.html": page_research(),
+             "atlas.html": page_atlas(),
              "coursework.html": page_coursework(), "tools.html": page_tools(),
              "library.html": page_library(), "about.html": page_about(),
              "colophon.html": page_colophon(), "404.html": page_404(),
