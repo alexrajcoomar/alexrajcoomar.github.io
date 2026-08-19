@@ -1336,6 +1336,30 @@ def strip_injected(text):
     return text
 
 
+_BODY_TAG = re.compile(r"<body\b[^>]*>", re.I)
+
+def _body_tag(text):
+    """The opening body tag, ignoring anything a comment has already claimed.
+    One piece explains in a head comment that "the one script sits at the end
+    of <body>", and a plain search for the tag matched that sentence. The
+    return bar was injected into the middle of the comment, which split it in
+    two: the head ended at the injected div, the canonical and the Open Graph
+    tags fell into the body, and the rest of the comment printed on the page
+    as text. Comment spans are skipped, so only a real tag can match."""
+    pos = 0
+    while True:
+        c = text.find("<!--", pos)
+        m = _BODY_TAG.search(text, pos, c if c != -1 else len(text))
+        if m:
+            return m
+        if c == -1:
+            return None
+        end = text.find("-->", c + 4)
+        if end == -1:
+            return None                      # unterminated: nothing to inject into
+        pos = end + 3
+
+
 def add_return(path, up="index.html", upname="Home", bar=True):
     """Give a standalone piece a way back into the site. Any earlier injection
     is stripped first, so a page never ends up carrying two."""
@@ -1349,7 +1373,7 @@ def add_return(path, up="index.html", upname="Home", bar=True):
     pill = RETURN_PILL.replace("__UP__", up).replace("__UPNAME__", upname)
     if bar:
         top = RETURN_BAR.replace("__UP__", up).replace("__UPNAME__", upname)
-        m = re.search(r"<body[^>]*>", text, flags=re.I)
+        m = _body_tag(text)
         text = (text[:m.end()] + top + text[m.end():]) if m else (top + text)
     i = text.lower().rfind("</body>")
     text = (text[:i] + pill + text[i:]) if i != -1 else (text + pill)
@@ -1809,7 +1833,13 @@ def check_site():
         if j == -1:
             problems.append(f"{f}: has no </head>")
             continue
-        head_txt = re.sub(r"<!--.*?-->", "", text[:j], flags=re.S)
+        # Style and script bodies go first. Their contents are not markup, and
+        # the quotes inside a stylesheet do not pair with the quotes in the
+        # tags around it: leaving them in let a run of CSS quotes swallow the
+        # very element this check exists to find.
+        head_txt = re.sub(r"<(script|style)\b[^>]*>.*?</\1>", "", text[:j],
+                          flags=re.S | re.I)
+        head_txt = re.sub(r"<!--.*?-->", "", head_txt, flags=re.S)
         head_txt = re.sub(r'"[^"]*"', '""', head_txt)
         head_txt = re.sub(r"'[^']*'", "''", head_txt)
         for tag in set(re.findall(r"<(/?[A-Za-z!][A-Za-z0-9]*)", head_txt)):
