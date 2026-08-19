@@ -160,6 +160,20 @@
                      .filter(function (r) { return r.s > 0; })
                      .sort(function (a, b) { return b.s - a.s; })
                      .slice(0, 9);
+      /* An empty box leads with what this reader opened last. These are
+         marked as their own band rather than folded into the kind groups,
+         where a recently opened tool would sink to the bottom. */
+      var recentSet = {};
+      if (!term) {
+        var rec = readRecent();
+        if (rec.length) {
+          var byUrl = {};
+          work.forEach(function (it) { byUrl[it.u] = it; });
+          var lead = rec.map(function (u) { return byUrl[u]; }).filter(Boolean)
+                        .map(function (it) { recentSet[it.u] = 1; return { it: it, s: 999 }; });
+          hits = lead.concat(hits.filter(function (r) { return !recentSet[r.it.u]; })).slice(0, 9);
+        }
+      }
       results.textContent = "";
       if (!hits.length) {
         var empty = el("li", "cmdk-empty");
@@ -174,17 +188,20 @@
          unescaped. textContent cannot be talked into becoming an element. */
       /* Grouped by what the piece is, so nine results read as three short
          lists rather than one undifferentiated one. */
-      var order = ["Essay", "Reference", "Tool"], seen = {}, n = 0;
-      order.concat([""]).forEach(function (kind) {
+      var order = ["Essay", "Reference", "Tool"], n = 0;
+      var bands = [["__recent", "Recently opened"], ["Essay", "Essays"],
+                   ["Reference", "References"], ["Tool", "Tools"], ["", "Other"]];
+      bands.forEach(function (pair) {
+        var kind = pair[0];
         var band = hits.filter(function (r) {
+          if (kind === "__recent") return recentSet[r.it.u];
+          if (recentSet[r.it.u]) return false;          // already shown above
           return kind ? r.it.k === kind : order.indexOf(r.it.k) === -1;
         });
         if (!band.length) return;
         var head = el("li", "cmdk-group");
         head.setAttribute("role", "presentation");
-        head.textContent = kind ? (kind === "Essay" ? "Essays"
-                                 : kind === "Tool" ? "Tools" : "References")
-                                : "Other";
+        head.textContent = pair[1];
         results.appendChild(head);
         band.forEach(function (r) {
           var it = r.it;
@@ -255,6 +272,27 @@
       if (top < box.scrollTop) box.scrollTop = top;
       else if (top + h > box.scrollTop + box.clientHeight) box.scrollTop = top + h - box.clientHeight;
     }
+    /* What the reader opened last, so an empty box is a shortcut rather
+       than an arbitrary first nine. Stored per browser, never sent
+       anywhere, and the list falls back to the ordinary ranking if the
+       browser refuses storage. */
+    var RECENT = "portfolio.recent";
+    function readRecent() {
+      try { return JSON.parse(localStorage.getItem(RECENT) || "[]"); }
+      catch (e) { return []; }
+    }
+    function noteRecent(u) {
+      try {
+        var r = readRecent().filter(function (x) { return x !== u; });
+        r.unshift(u);
+        localStorage.setItem(RECENT, JSON.stringify(r.slice(0, 5)));
+      } catch (e) {}
+    }
+    results.addEventListener("click", function (e) {
+      var a = e.target.closest("a[href]");
+      if (a) noteRecent(a.getAttribute("href"));
+    });
+
     function open() {
       lastFocus = document.activeElement;
       pal.hidden = false;
@@ -400,6 +438,47 @@
         c.setAttribute("aria-pressed", c === b ? "true" : "false");
       });
       run();
+    });
+
+    /* A tag that looks like a filter should behave like one. Clicking one
+       puts it in the search box, which is the control the reader already
+       understands, rather than inventing a second filtering state. */
+    groups.forEach(function (g) {
+      g.addEventListener("click", function (e) {
+        var tag = e.target.closest(".tag");
+        if (!tag || !qq) return;
+        e.preventDefault();
+        var word = tag.textContent.trim();
+        qq.value = (qq.value.trim().toLowerCase() === word.toLowerCase()) ? "" : word;
+        run();
+        qq.focus();
+        qq.setSelectionRange(qq.value.length, qq.value.length);
+      });
+    });
+
+    /* j and k walk the visible rows, matching the g-then-letter vocabulary
+       the rest of the site uses. Enter opens whichever row is marked. */
+    var here = -1;
+    document.addEventListener("keydown", function (e) {
+      var tag = (e.target.tagName || "").toLowerCase();
+      if (tag === "input" || tag === "textarea" || e.target.isContentEditable) return;
+      if (e.metaKey || e.ctrlKey || e.altKey) return;
+      var pal = document.getElementById("cmdk");
+      if (pal && !pal.hidden) return;
+      var vis = [];
+      sets.forEach(function (s) {
+        s.rows.forEach(function (li) { if (!li.hidden) vis.push(li); });
+      });
+      if (!vis.length) return;
+      if (e.key === "j" || e.key === "k") {
+        e.preventDefault();
+        if (here > -1 && vis[here]) vis[here].classList.remove("cursor");
+        here = e.key === "j" ? Math.min(vis.length - 1, here + 1) : Math.max(0, here - 1);
+        var li = vis[here];
+        li.classList.add("cursor");
+        var a = li.querySelector("a"); if (a) a.focus({ preventScroll: true });
+        li.scrollIntoView({ block: "center", behavior: reduced ? "auto" : "smooth" });
+      }
     });
 
     /* Reordering. The published order is a grouping, which is the right
@@ -561,6 +640,41 @@
       r.addEventListener("focus", function () { show(r); });
       r.addEventListener("mouseleave", clear);
       r.addEventListener("blur", clear);
+    });
+  })();
+
+  /* --------------------------------------------- linkable sections --
+     Every band on these pages is worth pointing someone at. The heading
+     gets an anchor that appears on hover or focus, gives the section an id
+     if the build did not, and copies the address rather than only moving
+     to it. */
+  (function () {
+    var heads = [].slice.call(document.querySelectorAll(".band .sechead h2, .hero .sechead h2"));
+    if (!heads.length) return;
+    heads.forEach(function (h) {
+      var sec = h.closest("section");
+      if (!sec) return;
+      if (!sec.id) {
+        sec.id = (h.textContent || "section").toLowerCase()
+          .replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 40);
+      }
+      var a = document.createElement("a");
+      a.className = "anchor";
+      a.href = "#" + sec.id;
+      a.setAttribute("aria-label", "Link to this section: " + (h.textContent || "").trim());
+      a.innerHTML = "&#167;";
+      a.addEventListener("click", function (e) {
+        /* the link still works as a link; the copy is the extra */
+        if (!navigator.clipboard) return;
+        e.preventDefault();
+        var url = location.href.split("#")[0] + "#" + sec.id;
+        navigator.clipboard.writeText(url).then(function () {
+          history.replaceState(null, "", "#" + sec.id);
+          a.classList.add("copied");
+          setTimeout(function () { a.classList.remove("copied"); }, 1400);
+        }, function () { location.hash = sec.id; });
+      });
+      h.appendChild(a);
     });
   })();
 

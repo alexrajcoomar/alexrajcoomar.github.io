@@ -1237,3 +1237,48 @@ nav.main a[aria-current="page"]{border-bottom-color:transparent}
 }
 .linkbtn:hover{color:var(--accent);text-decoration-color:currentColor}
 .linkbtn:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+
+/* ---------------------------- section anchors ----------------------
+   A band worth reading is a band worth linking to. The mark stays out
+   of the way until the heading is hovered or the link is tabbed to. */
+.sechead h2{position:relative}
+.sechead h2 .anchor{
+  margin-left:.45rem;font-size:.7em;font-weight:500;color:var(--ink-3);
+  text-decoration:none;opacity:0;transition:opacity .18s ease,color .18s ease;
+  vertical-align:.08em
+}
+.sechead h2:hover .anchor,.sechead h2 .anchor:focus-visible{opacity:1}
+.sechead h2 .anchor:hover{color:var(--accent)}
+.sechead h2 .anchor.copied{opacity:1;color:var(--tool)}
+.sechead h2 .anchor.copied::after{
+  content:"link copied";margin-left:.4rem;font-size:.62rem;letter-spacing:.06em;
+  text-transform:uppercase;font-weight:650
+}
+@media print{.sechead h2 .anchor{display:none}}
+
+/* ---------------------------- library keyboard cursor --------------- */
+.lgroup ol.index > li.cursor{background:var(--panel)}
+.lgroup ol.index > li.cursor .row::after{transform:scaleX(1)}
+
+/* a tag is a filter, so it looks like something you can press */
+.tag{cursor:pointer;transition:color .16s ease,border-color .16s ease}
+.tag:hover{color:var(--ink);border-color:var(--ink-2)}
+
+/* ---------------------------- specimen hover ------------------------
+   The lifted figures are stills of interactive documents. Hovering one
+   moves the whole block a fraction toward the reader without a shadow:
+   the rule above it darkens, the title takes the accent, the arrow
+   slides. Editorial, not a card. */
+.spec .frame{transition:border-top-color .22s ease}
+.spec:hover .frame{border-top-color:var(--accent)}
+.spec h3{transition:color .2s ease}
+.spec:hover h3{color:var(--accent)}
+.spec a.open .arrow,.spec a.open span[aria-hidden]{
+  display:inline-block;transition:transform .22s cubic-bezier(.22,1,.36,1)
+}
+.spec:hover a.open span[aria-hidden]{transform:translateX(4px)}
+
+@media (prefers-reduced-motion:reduce){
+  .sechead h2 .anchor,.tag,.spec .frame,.spec h3,
+  .spec a.open span[aria-hidden]{transition:none !important}
+}
