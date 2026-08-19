@@ -1,0 +1,110 @@
+/* Generated from build/figures.json. Do not edit: the next build
+   overwrites it. Each lifted figure keeps the colour variables and
+   class rules it was drawn against, scoped to its own id so nothing
+   leaks into the page around it. */
+#fs-ns1 svg.draw{display:block;width:100%;height:auto;overflow:hidden;min-width:34rem}
+#fs-ns1 /* chart ink */
+.tk{fill:var(--text-muted);font-size:11px;font-family:"InterVar",sans-serif;font-variant-numeric:tabular-nums}
+#fs-ns1 .tk-lab{fill:var(--text-secondary);font-size:12px;font-family:"InterVar",sans-serif}
+#fs-ns1 .tk-val{fill:var(--text-primary);font-size:13px;font-weight:650;font-family:"InterVar",sans-serif;font-variant-numeric:tabular-nums}
+#fs-ns1 .tk-big{fill:var(--text-primary);font-size:22px;font-weight:700;font-family:"InterVar",sans-serif;letter-spacing:-.02em}
+#fs-ns1 .gridln{stroke:var(--gridline);stroke-width:1}
+#fs-ns1 .zeroln{stroke:var(--rule-strong);stroke-width:1.5}
+#fs-ns1 .m-priced{fill:var(--priced)}
+#fs-ns1 .m-harm{fill:var(--harm)}
+#fs-ns1 .m-solid{fill:var(--counted)}
+#fs-ns1 .leader{stroke:var(--text-secondary);stroke-width:1;fill:none}
+#fs-ns2 svg.draw{display:block;width:100%;height:auto;overflow:hidden;min-width:34rem}
+#fs-ns2 /* chart ink */
+.tk{fill:var(--text-muted);font-size:11px;font-family:"InterVar",sans-serif;font-variant-numeric:tabular-nums}
+#fs-ns2 .tk-lab{fill:var(--text-secondary);font-size:12px;font-family:"InterVar",sans-serif}
+#fs-ns2 .tk-val{fill:var(--text-primary);font-size:13px;font-weight:650;font-family:"InterVar",sans-serif;font-variant-numeric:tabular-nums}
+#fs-ns2 .tk-big{fill:var(--text-primary);font-size:22px;font-weight:700;font-family:"InterVar",sans-serif;letter-spacing:-.02em}
+#fs-ns2 .gridln{stroke:var(--gridline);stroke-width:1}
+#fs-ns2 .axisln{stroke:var(--baseline);stroke-width:1}
+#fs-ns2 .zeroln{stroke:var(--rule-strong);stroke-width:1.5}
+#fs-ns2 .m-priced{fill:var(--priced)}
+#fs-ns2 .m-harm{fill:var(--harm)}
+#fs-ns2 .m-ink{fill:var(--text-secondary)}
+#fs-ns2 /* an absence, #fs-ns2 drawn at the size the quantity would occupy if it existed */
+.aperture{fill:none;stroke:var(--text-primary);stroke-width:1.5;stroke-dasharray:none}
+#fs-ns2 .leader{stroke:var(--text-secondary);stroke-width:1;fill:none}
+#fs-gs /* The drawing is never scaled: fixed px width, #fs-gs no percentage cap, #fs-gs because
+   a cap would quietly rescale the unit on a narrow screen. */
+svg.draw{display:block;width:300px;height:auto}
+#fs-gs svg.draw.hero{width:512px}
+#fs-gs .c-con{fill:var(--consumption)}
+#fs-gs /* household consumption, #fs-gs from F4 */
+.c-gov{fill:var(--government)}
+#fs-gs /* 3.12:1 light, #fs-gs 4.48:1 dark */
+.c-inv{fill:var(--investment)}
+#fs-gs i.c-con{background:var(--consumption)}
+#fs-gs i.c-gov{background:var(--government)}
+#fs-gs i.c-inv{background:var(--investment)}
+#fs-gs /* F5 and F6b are not lattice figures: position on a common scale is the
+   accurate encoding and the unit contract governs cells, #fs-gs not axes. */
+.dot{stroke:var(--surface-1);stroke-width:2}
+#fs-gs .grid{stroke:var(--gridline);stroke-width:1;fill:none}
+#fs-gs .grid.zero{stroke:var(--baseline);stroke-width:1.5}
+#fs-gs .axis{stroke:var(--baseline);stroke-width:1;fill:none}
+#fs-gs .tk{fill:var(--text-secondary);font-size:11px;font-variant-numeric:tabular-nums}
+#fs-gs .rowhit{fill:transparent}
+#fs-tv2 .axis{stroke:var(--baseline);stroke-width:1;fill:none}
+#fs-tv2 .gridl{stroke:var(--gridline);stroke-width:1;fill:none}
+#fs-tv2 .zero{stroke:var(--baseline);stroke-width:1.5;fill:none}
+#fs-tv2 .tk{fill:var(--text-muted);font-size:11px;font-variant-numeric:tabular-nums;
+    font-family:"InterVar","InterFallback",ui-sans-serif,system-ui,sans-serif}
+#fs-tv2 .lb-s{fill:var(--text-secondary);font-size:10.5px;
+    font-family:"InterVar","InterFallback",ui-sans-serif,system-ui,sans-serif}
+#fs-tv2 .lb-p{fill:var(--text-primary);font-size:11.5px;font-weight:640;
+    font-family:"InterVar","InterFallback",ui-sans-serif,system-ui,sans-serif}
+#fs-tv2 .val{fill:var(--text-primary);font-size:12px;font-weight:680;font-variant-numeric:tabular-nums;
+    font-family:"InterVar","InterFallback",ui-sans-serif,system-ui,sans-serif}
+#fs-tv2 .opened-a{fill:none;stroke:var(--anchor-a);stroke-width:2}
+#fs-tv2 .ringed{stroke:var(--surface-1);stroke-width:2}
+#fs-tv2 .band{fill:var(--text-primary);opacity:.055}
+#fs-tv2 .band-line{stroke:var(--text-primary);stroke-width:1;stroke-opacity:.35;fill:none}
+#fs-tv2 .leader{stroke:var(--text-secondary);stroke-width:1;fill:none}
+#fs-tv1 .axis{stroke:var(--baseline);stroke-width:1;fill:none}
+#fs-tv1 .gridl{stroke:var(--gridline);stroke-width:1;fill:none}
+#fs-tv1 .tk{fill:var(--text-muted);font-size:11px;font-variant-numeric:tabular-nums;
+    font-family:"InterVar","InterFallback",ui-sans-serif,system-ui,sans-serif}
+#fs-tv1 .lb-s{fill:var(--text-secondary);font-size:10.5px;
+    font-family:"InterVar","InterFallback",ui-sans-serif,system-ui,sans-serif}
+#fs-tv1 .lb-p{fill:var(--text-primary);font-size:11.5px;font-weight:640;
+    font-family:"InterVar","InterFallback",ui-sans-serif,system-ui,sans-serif}
+#fs-tv1 .val{fill:var(--text-primary);font-size:12px;font-weight:680;font-variant-numeric:tabular-nums;
+    font-family:"InterVar","InterFallback",ui-sans-serif,system-ui,sans-serif}
+#fs-tv1 .big{fill:var(--text-primary);font-size:26px;font-weight:720;letter-spacing:-.02em;
+    font-family:"InterVar","InterFallback",ui-sans-serif,system-ui,sans-serif}
+#fs-tv1 /* Rule 2 made literal: an open mark, #fs-tv1 at full size, #fs-tv1 never faded. */
+.opened{fill:none;stroke:var(--text-primary);stroke-width:2}
+#fs-tv1 .ringed{stroke:var(--surface-1);stroke-width:2}
+#fs-tv1 .dim{stroke:var(--text-primary);stroke-width:1.5;fill:none}
+#fs-wlc .gridl{stroke:var(--gridline);stroke-width:1;fill:none}
+#fs-wlc .rulel{stroke:var(--text-primary);stroke-width:2;fill:none}
+#fs-wlc .f-in{fill:var(--inside)}
+#fs-wlc .opened{fill:none;stroke:var(--text-primary);stroke-width:2}
+#fs-wlc .lb-s{fill:var(--text-secondary);font-size:10.5px}
+#fs-wlc .lb-p{fill:var(--text-primary);font-size:11.5px;font-weight:640}
+#fs-ns1{--counted:#14110c;--gridline:#ccc;--harm:#e34948;--priced:#2a78d6;--rule-strong:#000;--text-muted:#666;--text-primary:#000;--text-secondary:#333}
+#fs-ns2{--baseline:#999;--gridline:#ccc;--harm:#e34948;--priced:#2a78d6;--rule-strong:#000;--text-muted:#666;--text-primary:#000;--text-secondary:#333}
+#fs-gs{--baseline:#999;--consumption:#2a78d6;--government:#eb6834;--gridline:#ccc;--investment:#1baf7a;--surface-1:#fff;--text-secondary:#333}
+#fs-tv2{--anchor-a:#eb6834;--anchor-b:#2a78d6;--baseline:#999;--gridline:#ccc;--surface-1:#fff;--text-muted:#666;--text-primary:#000;--text-secondary:#333}
+#fs-tv1{--anchor-a:#eb6834;--anchor-b:#2a78d6;--baseline:#999;--gridline:#ccc;--surface-1:#fff;--text-muted:#666;--text-primary:#000;--text-secondary:#333}
+#fs-wlc{--gridline:#ccc;--inside:#2a78d6;--outside:#e34948;--text-primary:#000;--text-secondary:#333}
+#fs-ph1{--ink:#14140f;--ink-3:#6e6c63;--rec:#2c5f96;--rule:#dedbd1;--sans:ui-sans-serif,-apple-system,"Segoe UI",InterVar,Inter,Helvetica,Arial,sans-serif}
+@media (prefers-color-scheme:dark){:root:where(:not([data-theme="light"])) #fs-ns1{--counted:#fff;--gridline:#2c2c2a;--harm:#e66767;--priced:#3987e5;--rule-strong:#fff;--text-muted:#898781;--text-primary:#fff;--text-secondary:#c3c2b7}}
+:root[data-theme="dark"] #fs-ns1{--counted:#fff;--gridline:#2c2c2a;--harm:#e66767;--priced:#3987e5;--rule-strong:#fff;--text-muted:#898781;--text-primary:#fff;--text-secondary:#c3c2b7}
+@media (prefers-color-scheme:dark){:root:where(:not([data-theme="light"])) #fs-ns2{--baseline:#383835;--gridline:#2c2c2a;--harm:#e66767;--priced:#3987e5;--rule-strong:#fff;--text-muted:#898781;--text-primary:#fff;--text-secondary:#c3c2b7}}
+:root[data-theme="dark"] #fs-ns2{--baseline:#383835;--gridline:#2c2c2a;--harm:#e66767;--priced:#3987e5;--rule-strong:#fff;--text-muted:#898781;--text-primary:#fff;--text-secondary:#c3c2b7}
+@media (prefers-color-scheme:dark){:root:where(:not([data-theme="light"])) #fs-gs{--baseline:#383835;--consumption:#3987e5;--government:#d95926;--gridline:#2c2c2a;--investment:#199e70;--surface-1:#1a1a19;--text-secondary:#c3c2b7}}
+:root[data-theme="dark"] #fs-gs{--baseline:#383835;--consumption:#3987e5;--government:#d95926;--gridline:#2c2c2a;--investment:#199e70;--surface-1:#1a1a19;--text-secondary:#c3c2b7}
+@media (prefers-color-scheme:dark){:root:where(:not([data-theme="light"])) #fs-tv2{--anchor-a:#d95926;--anchor-b:#3987e5;--baseline:#383835;--gridline:#2c2c2a;--surface-1:#1a1a19;--text-muted:#a8a6a0;--text-primary:#ffffff;--text-secondary:#c3c2b7}}
+:root[data-theme="dark"] #fs-tv2{--anchor-a:#d95926;--anchor-b:#3987e5;--baseline:#383835;--gridline:#2c2c2a;--surface-1:#1a1a19;--text-muted:#a8a6a0;--text-primary:#ffffff;--text-secondary:#c3c2b7}
+@media (prefers-color-scheme:dark){:root:where(:not([data-theme="light"])) #fs-tv1{--anchor-a:#d95926;--anchor-b:#3987e5;--baseline:#383835;--gridline:#2c2c2a;--surface-1:#1a1a19;--text-muted:#a8a6a0;--text-primary:#ffffff;--text-secondary:#c3c2b7}}
+:root[data-theme="dark"] #fs-tv1{--anchor-a:#d95926;--anchor-b:#3987e5;--baseline:#383835;--gridline:#2c2c2a;--surface-1:#1a1a19;--text-muted:#a8a6a0;--text-primary:#ffffff;--text-secondary:#c3c2b7}
+@media (prefers-color-scheme:dark){:root:where(:not([data-theme="light"])) #fs-wlc{--gridline:#2f2f2c;--inside:#3987e5;--outside:#e66767;--text-primary:#ffffff;--text-secondary:#c7c5bd}}
+:root[data-theme="dark"] #fs-wlc{--gridline:#2f2f2c;--inside:#3987e5;--outside:#e66767;--text-primary:#ffffff;--text-secondary:#c7c5bd}
+@media (prefers-color-scheme:dark){:root:where(:not([data-theme="light"])) #fs-ph1{--ink:#fbfbfa;--ink-3:#98958d;--rec:#5b9fe3;--rule:#2e2e2b;--sans:ui-sans-serif,-apple-system,"Segoe UI",InterVar,Inter,Helvetica,Arial,sans-serif}}
+:root[data-theme="dark"] #fs-ph1{--ink:#fbfbfa;--ink-3:#98958d;--rec:#5b9fe3;--rule:#2e2e2b;--sans:ui-sans-serif,-apple-system,"Segoe UI",InterVar,Inter,Helvetica,Arial,sans-serif}
