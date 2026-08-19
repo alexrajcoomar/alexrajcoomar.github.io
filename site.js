@@ -738,3 +738,134 @@
     setTimeout(home, 0);
   })();
 })();
+
+  /* --------------------------------------------- the atlas, in miniature
+     The same sphere the atlas page draws, at a size where it is a picture
+     rather than an instrument: no labels, no hit testing, no second copy of
+     the headings. Only the positions travel, two decimals each, because that
+     is all a hundred-and-sixty-pixel radius can show. */
+  (function () {
+    var host = document.getElementById("atlasmini");
+    if (!host || !host.getAttribute("data-pts")) return;
+
+    /* This block sits outside the file's main closure, so it reads the motion
+       preference for itself rather than borrowing a variable that is not in
+       scope here. */
+    var reduced = window.matchMedia &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    var raw = host.getAttribute("data-pts").split(";");
+    var pts = [];
+    for (var i = 0; i < raw.length; i++) {
+      var f = raw[i].split(",");
+      if (f.length < 4) continue;
+      pts.push({ x: +f[0], y: +f[1], z: +f[2], k: f[3] });
+    }
+    if (pts.length < 8) return;
+
+    var cv = document.createElement("canvas");
+    cv.setAttribute("aria-hidden", "true");
+    host.appendChild(cv);
+    var ctx = cv.getContext && cv.getContext("2d");
+    if (!ctx) return;
+
+    var C = {};
+    function colours() {
+      var s = getComputedStyle(document.documentElement);
+      C.i = s.getPropertyValue("--accent").trim() || "#14509b";
+      C.c = s.getPropertyValue("--ink-3").trim() || "#6f6c63";
+      C.t = s.getPropertyValue("--tool").trim() || "#0f6b58";
+      C.r = s.getPropertyValue("--rule").trim() || "#ddd9cf";
+    }
+    colours();
+    new MutationObserver(colours).observe(document.documentElement,
+      { attributes: true, attributeFilter: ["data-theme"] });
+
+    function rgba(hex, a) {
+      var h = hex.replace("#", "");
+      if (h.length === 3) h = h[0] + h[0] + h[1] + h[1] + h[2] + h[2];
+      var n = parseInt(h, 16);
+      return "rgba(" + ((n >> 16) & 255) + "," + ((n >> 8) & 255) + "," +
+        (n & 255) + "," + a.toFixed(3) + ")";
+    }
+
+    var W = 0, H = 0, dpr = 1, R = 0, yaw = 0.5, pitch = -0.3;
+    function size() {
+      var r = host.getBoundingClientRect();
+      dpr = Math.min(2, window.devicePixelRatio || 1);
+      W = Math.max(160, r.width);
+      H = Math.max(160, r.height);
+      cv.width = Math.round(W * dpr);
+      cv.height = Math.round(H * dpr);
+      cv.style.width = W + "px";
+      cv.style.height = H + "px";
+      R = Math.min(W, H) * 0.44;
+    }
+
+    function paint() {
+      var cx = W / 2, cy = H / 2;
+      var cyaw = Math.cos(yaw), syaw = Math.sin(yaw);
+      var cpit = Math.cos(pitch), spit = Math.sin(pitch);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.clearRect(0, 0, W, H);
+      ctx.beginPath();
+      ctx.arc(cx, cy, R, 0, Math.PI * 2);
+      ctx.strokeStyle = rgba(C.r, 0.6);
+      ctx.lineWidth = 1;
+      ctx.stroke();
+      for (var i = 0; i < pts.length; i++) {
+        var p = pts[i];
+        var x1 = p.x * cyaw + p.z * syaw;
+        var z1 = -p.x * syaw + p.z * cyaw;
+        var y2 = p.y * cpit - z1 * spit;
+        var z2 = p.y * spit + z1 * cpit;
+        var t = (z2 + 1) / 2;
+        var a = 0.08 + 0.72 * t;
+        var rad = 0.7 + 1.5 * t;
+        ctx.beginPath();
+        ctx.arc(cx + x1 * R, cy - y2 * R, rad, 0, Math.PI * 2);
+        if (p.k === "c") {
+          ctx.strokeStyle = rgba(C.c, a);
+          ctx.lineWidth = 1;
+          ctx.stroke();
+        } else {
+          ctx.fillStyle = rgba(p.k === "t" ? C.t : C.i, p.k === "p" ? a * 0.55 : a);
+          ctx.fill();
+        }
+      }
+    }
+
+    var spinning = false, last = 0;
+    function step(now) {
+      if (!spinning) return;
+      yaw += Math.min(0.05, (now - last) / 1000) * 0.05;
+      last = now;
+      paint();
+      requestAnimationFrame(step);
+    }
+
+    size();
+    paint();
+    if (!reduced && "IntersectionObserver" in window) {
+      /* only turns while it is on screen: a globe spinning in a tab nobody is
+         looking at is a battery cost with no reader */
+      new IntersectionObserver(function (es) {
+        var vis = es[0] && es[0].isIntersecting;
+        if (vis && !spinning) {
+          spinning = true;
+          last = performance.now();
+          requestAnimationFrame(step);
+        } else if (!vis) {
+          spinning = false;
+        }
+      }, { threshold: 0.05 }).observe(host);
+    }
+    var t0;
+    window.addEventListener("resize", function () {
+      clearTimeout(t0);
+      t0 = setTimeout(function () { size(); paint(); }, 140);
+    });
+    host.addEventListener("click", function () {
+      window.location.href = "atlas.html";
+    });
+  })();
