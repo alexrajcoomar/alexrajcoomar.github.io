@@ -461,6 +461,7 @@ def facts(points, regions):
     if ec:
         top = max(ec, key=lambda k2: ec[k2])
         F["excTop"] = by[top]["t"]
+        F["excTopS"] = top
         F["excTopN"] = ec[top]
 
     # The small blob the renderer needs to stage each label. Points are keyed
@@ -513,11 +514,12 @@ def labels(F):
             "title": "Start with the largest independent work.",
             "stage": "flag",
             "body": [
-                "<b>{}</b> holds {} sections, the most of any independent "
+                "<b class=\"lw\" data-reg=\"{}\" tabindex=\"0\">{}</b> "
+                "holds {} sections, the most of any independent "
                 "work here, inside the drawn circle {}&deg; wide. Every "
                 "section is a mark and every mark opens its passage, not the "
                 "front of the piece: try <b>{}</b>, lit beside its name."
-                .format(_esc(F["flag"]["t"]), _n(F["flagN"]),
+                .format(F["flag"]["s"], _esc(F["flag"]["t"]), _n(F["flagN"]),
                         round(F["flagCap"]), _esc(F["flagOne"]["t"])),
                 "{} of the {} marks are headings somebody typed into a "
                 "document; the other {} are whole tools, placed as one mark "
@@ -531,11 +533,14 @@ def labels(F):
             "title": "Two essays share a vocabulary.",
             "stage": "pair",
             "body": [
-                "<i>{}</i> and <i>{}</i> are the closest pair on this sphere "
+                "<i class=\"lw\" data-reg=\"{}\" tabindex=\"0\">{}</i> and "
+                "<i class=\"lw\" data-reg=\"{}\" tabindex=\"0\">{}</i> are "
+                "the closest pair on this sphere "
                 "in the only sense it records: {} headings appear in these "
                 "two documents and nowhere else{}. Their centroids sit "
                 "{}&deg; apart, and the arc between them is drawn."
-                .format(_esc(pa["t"]), _esc(pb["t"]), _n(F["pairMidN"]),
+                .format(pa["s"], _esc(pa["t"]), pb["s"], _esc(pb["t"]),
+                        _n(F["pairMidN"]),
                         ", more than any other pair here" if F.get("pairTop")
                         else "", F["pairSep"]),
                 "Rather than being drawn twice, each of those {} headings is "
@@ -552,11 +557,12 @@ def labels(F):
             "title": "The coursework is the continent.",
             "stage": "big",
             "body": [
-                "{} holds {} sections, more than any other document here, "
+                "<span class=\"lw\" data-reg=\"{}\" tabindex=\"0\">{}</span> "
+                "holds {} sections, more than any other document here, "
                 "and its circle is drawn at the radius it was measured at: "
                 "{}&deg;. Around it runs the course shelf, {} marks from {} "
                 "documents, the reading that underwrites the rest."
-                .format(_esc(big["t"]), _n(F["bigN"]), F["capDeg"],
+                .format(big["s"], _esc(big["t"]), _n(F["bigN"]), F["capDeg"],
                         _n(F["couMarks"]), F["couD"]),
                 "A document's area grows with what it holds, so the same "
                 "circle around a short piece would be small. It also means "
@@ -604,7 +610,8 @@ def labels(F):
                 "in the order the library lists them, so the sphere took a "
                 "shelf order and the pattern followed."
                 .format(F["nExc"], F["excDocs"], F["excTopN"],
-                        _esc(F["excTop"]), F["indBelow"]),
+                        "<span class=\"lw\" data-reg=\"%s\" tabindex=\"0\">%s</span>"
+                        % (F["excTopS"], _esc(F["excTop"])), F["indBelow"]),
             ],
         },
         {
