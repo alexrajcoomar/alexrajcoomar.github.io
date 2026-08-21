@@ -87,6 +87,68 @@ NAV = [("index.html","Home"),("research.html","Research"),("coursework.html","Co
        ("tools.html","Tools"),("library.html","Library"),("atlas.html","Atlas"),
        ("about.html","About")]
 
+# Research, Coursework and Tools are one sequence and each said so on its
+# own -- "Section 01", "Section 02", "Section 03" -- without ever showing
+# the other two. The Atlas had the same problem with its six wall labels
+# and answered it with a guide that is progress, contents and skip control
+# at once. The same guide is reused here rather than restated.
+SECTIONS = [("research.html",   "Research and writing"),
+            ("coursework.html", "Coursework"),
+            ("tools.html",      "Interactive tools")]
+
+def section_guide(page):
+    """The Atlas sequence guide, carried to the three section pages.
+
+    aria-current is "page" rather than "step": the Atlas marks a position
+    in a tour, this marks a position in a site, and a screen reader should
+    hear the difference."""
+    items = "\n".join(
+        '        <li><a href="%s"%s><b>%02d</b> %s</a></li>'
+        % (u, ' aria-current="page"' if u == page else '', i, esc(t))
+        for i, (u, t) in enumerate(SECTIONS, 1))
+    return (f'  <nav class="guide sections" aria-label="The three sections">\n'
+            f'    <p class="guide-h">The sections '
+            f'<span class="guide-c">{len(SECTIONS)} in the sequence</span></p>\n'
+            f'    <ol>\n{items}\n    </ol>\n'
+            f'  </nav>')
+
+def section_eyebrow(page):
+    """The eyebrow keeps its class, which the Atlas page also uses, and
+    gains the total the plate index carries: 01 / 03 rather than 01."""
+    n = [u for u, _ in SECTIONS].index(page) + 1
+    return (f'<p class="eyebrow accent">Section '
+            f'<span class="tnum">{n:02d} / {len(SECTIONS):02d}</span></p>')
+
+
+# --------------------------------------------------------------- assets ----
+# A stylesheet and a script are cached by URL, and a reader who has been here
+# before keeps the copy they already have until it expires. That is fine while
+# the two agree, and it is not fine the moment one of them changes: the live
+# page ran yesterday's globe against today's markup for a good ten minutes
+# after a deploy. Each asset therefore carries a short digest of its own
+# contents in the query string, so a changed file is a different URL and can
+# never be served from a copy of the old one.
+ASSET_V = {}
+
+def asset(name):
+    v = ASSET_V.get(name)
+    return name + ("?v=" + v if v else "")
+
+def _digest(text):
+    return hashlib.sha1(text.encode("utf-8")).hexdigest()[:8]
+
+def stamp_assets(generated):
+    """generated: name -> the text this build is about to write. Anything not
+    generated is read from disk, because it is hand-written and already there."""
+    for name in ("site.css", "figures.css", "site.js", "atlas.js"):
+        if name in generated:
+            ASSET_V[name] = _digest(generated[name])
+            continue
+        path = os.path.join(OUT, name)
+        if os.path.exists(path):
+            ASSET_V[name] = _digest(open(path, encoding="utf-8",
+                                         errors="ignore").read())
+
 def head(title, desc, page, extra=""):
     CUR = ' aria-current="page"'
     nav = "\n      ".join(
@@ -112,9 +174,9 @@ def head(title, desc, page, extra=""):
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="{SITE_URL}/og-card.png">
 <link rel="canonical" href="{SITE_URL}/{'' if page=='index.html' else page}">
-<link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/inter-ui/4.1.1/variable/InterVariable.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="site.css">
-<link rel="stylesheet" href="figures.css">
+<link rel="preload" href="InterVariable-sub.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="{asset("site.css")}">
+<link rel="stylesheet" href="{asset("figures.css")}">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%2316150f'/><text x='50' y='72' font-size='64' font-family='Helvetica,Arial' font-weight='bold' fill='%23faf9f6' text-anchor='middle'>A</text></svg>">
 <script>
 /* Theme before first paint, so there is no flash. Wrapped because some
@@ -155,8 +217,8 @@ def foot():
   <div class="cols">
     <div>
       <h2>{esc(SHORT)}</h2>
-      <p class="small" style="max-width:26rem;color:var(--ink-2)">Accounting and Financial Management, Analytics stream, University of Waterloo. {len(P)} published pieces: research, interactive tools and references, all of them running rather than described.</p>
-      <p class="small"><a href="mailto:{EMAIL}" style="color:var(--accent)">{EMAIL}</a></p>
+      <p class="small fnote">Accounting and Financial Management, Analytics stream, University of Waterloo. {len(P)} published pieces: research, interactive tools and references, all of them running rather than described.</p>
+      <p class="small"><a class="inlink" href="mailto:{EMAIL}">{EMAIL}</a></p>
     </div>
     <div>
       <h2>Sections</h2>
@@ -212,7 +274,7 @@ def foot():
 <script>
 window.WORK = {WORKJSON};
 </script>
-<script src="site.js" defer></script>
+<script src="{asset("site.js")}" defer></script>
 </body>
 </html>
 """
@@ -241,7 +303,10 @@ def sig(p, with_surface=True):
         bits.append(", ".join(ap) if ap else "no figures")
         if p["density"]:
             bits.append(f'<span class="dens dens-{p["density"]}">{p["density"]}</span>')
-    line = '<i aria-hidden="true">/</i>'.join(f'<span>{b}</span>' for b in bits)
+    # The Atlas joins a metadata line with a middot and the .tag list on
+    # this page already did too. The slash was the only third separator
+    # on the site, so it goes.
+    line = '<i aria-hidden="true">&middot;</i>'.join(f'<span>{b}</span>' for b in bits)
     return f'<p class="sig">{line}{surf(p) if with_surface else ""}</p>'
 
 def kind_chip(p):
@@ -513,9 +578,18 @@ def page_index():
 
     body = f"""<div class="hero shell">
   <div class="hero-grid">
-    <div>
+    <div class="hero-head">
       <p class="eyebrow accent rise">Portfolio &middot; Waterloo AFM Analytics</p>
       <h1 class="display rise" style="transition-delay:60ms">I make arguments you can <em>audit</em>.</h1>
+    </div>
+    <div class="hero-globe rise" style="transition-delay:150ms">
+      <div class="tease-globe" id="atlasmini" data-pts="{ATLAS_PTS}" aria-hidden="true"></div>
+      <p class="globe-cap"><a class="inlink" href="atlas.html">Every section of everything, on one
+        sphere: {ATLAS_N} sections, every one a link <span aria-hidden="true">&#8594;</span></a></p>
+      <noscript><p class="note">The sphere needs a browser that runs scripts.
+        The <a class="inlink" href="atlas.html">full index</a> does not.</p></noscript>
+    </div>
+    <div class="hero-body">
       <p class="lede rise" style="transition-delay:120ms">
         I am Alex Rajcoomar, <span data-age="{BORN[0]}-{BORN[1]:02d}-{BORN[2]:02d}">{AGE}</span>, an Accounting
         and Financial Management student in the Analytics stream at the University of Waterloo.
@@ -530,8 +604,13 @@ def page_index():
         <div><b class="tnum">{TOTAL_TBLS}</b><span>tables, {CHECKPOINTS} checkpoint questions</span></div>
         <div><b class="tnum">{N_TOOLS}</b><span>interactive tools, {N_PWA} installable</span></div>
       </div>
+      <p class="hero-contact rise" style="transition-delay:220ms">
+        <a class="inlink" href="mailto:leesharamrajcoomar@gmail.com">leesharamrajcoomar@gmail.com</a>
+        <span aria-hidden="true">&middot;</span>
+        <a class="inlink" href="about.html">About me</a>
+      </p>
     </div>
-    <aside class="rail rise" style="transition-delay:240ms" aria-label="Most recent work">
+    <aside class="rail rise hero-rail" style="transition-delay:240ms" aria-label="Most recent work">
       <div class="railhead"><span class="dot" aria-hidden="true"></span>Most recent</div>
 {rail}
       <a class="allwork" href="library.html">All {len(P)} pieces <span aria-hidden="true">&#8594;</span></a>
@@ -541,47 +620,38 @@ def page_index():
 
 <section class="band shell">
   <div class="sechead">
-    <h2>Three marks, three rules</h2>
-    <p class="note">Each piece declares one rule for what its marks mean, states it once near the top,
-    and then holds it for the whole document. These three figures are lifted unchanged out of the
-    pieces they belong to, colour rules and all. A fourth rule sits further down this page: the corpus
-    figure borrows the fixed unit from <a href="global-spending-and-wealth.html">Global Spending and
-    Wealth</a>, where one square is one trillion dollars and never rescales.</p>
-    <span class="count">3 of {TOTAL_FIGS}</span>
+    <h2>Start here</h2>
+    <p class="note">The three sections, and what is in each. If you have ten minutes, open the first piece under research.</p>
+    <span class="count">3 sections</span>
   </div>
-  <div class="specs">
-{lifted("fs-wlc", "Blue is inside the number, red is outside",
-        "Whose Losses Count",
-        "Seven literatures making the same boundary decision, drawn on one vertical rule. Whatever falls to the right of it is real and appears on no ledger. Open outlines are results not distinguishable from zero, drawn at full size rather than shrunk away.",
-        "whose-losses-count.html")}
-{lifted("fs-ns1", "Solid reaches a ledger, open does not",
-        "Not Significant",
-        "Deceive an investor and the market takes 7.53 times what the law does. Injure a stranger who does not trade with you and the share price moves 0.24 per cent, which is not significant. The essay is built on that gap.",
-        "not-significant.html")}
-{lifted("fs-tv1", "The fork is never closed",
-        "The Trillion-Dollar Vintage",
-        "Two ways of pricing the same vintage, 2.3 times apart, carried side by side to the end rather than averaged. The refused marker between them is the point: no instrument measured that value, so nothing is drawn there.",
-        "the-trillion-dollar-vintage.html")}
+  <div class="features">
+      <a class="feature rise" href="research.html">
+        <span class="kindrow"><span class="kind">Research and writing</span></span>
+        <h3>Independent research</h3>
+        <p>Four data essays and a study edition, each with its own declared rule for what its marks mean, plus the method pieces on how the work gets built and audited.</p>
+        <span class="go">{N_INDEP} pieces <span class="arrow" aria-hidden="true">&#8594;</span></span>
+      </a>      <a class="feature rise" href="tools.html">
+        <span class="kindrow"><span class="kind">Interactive tools</span></span>
+        <h3>{N_TOOLS} things you can use</h3>
+        <p>Interactive trainers and daily instruments. {N_PWA} of them install to a phone home screen.</p>
+        <span class="go">{N_TOOLS} pieces <span class="arrow" aria-hidden="true">&#8594;</span></span>
+      </a>      <a class="feature rise" href="coursework.html">
+        <span class="kindrow"><span class="kind">Coursework</span></span>
+        <h3>Grouped by course</h3>
+        <p>Every reference and trainer, sorted into the {len(COURSES)} courses they were built for, with a coverage table.</p>
+        <span class="go">{N_COURSE} pieces <span class="arrow" aria-hidden="true">&#8594;</span></span>
+      </a>
   </div>
 </section>
 
 <section class="band shell">
   <div class="sechead">
-    <h2>And one that failed</h2>
-    <p class="note">The three above are the grammar. This is what happened when the same method was
-    turned on itself: the instrument was run against the falsification test it had specified for
-    itself before it knew the answer, and it did not pass. The figure is the reason the headline
-    finding is published in its narrow form.</p>
-    <span class="count">Method</span>
+    <h2>Selected work</h2>
+    <p class="note">Chosen because together they show the widest range: a study edition, an audited final, a negative result, a comparative primer, and the tools people actually use.</p>
+    <span class="count">{len(feats)} of {len(P)}</span>
   </div>
-  <div class="specs">
-{lifted("fs-ph1", "An interval that overlaps is not a difference",
-        "Predictive History",
-        "The obvious reading is that writing a verdict rubric lifted agreement from 53 per cent to 96. "
-        "It did not. Only the second and third rows hold the record constant, and between those two "
-        "the rubric is worth four points with the intervals overlapping. The other forty-three points "
-        "are the record and the number of raters, which is a different claim entirely.",
-        "predictive-history.html")}
+  <div class="features">
+{chr(10).join(feature(p, n*45) for n, p in enumerate(feats))}
   </div>
 </section>
 
@@ -623,72 +693,59 @@ def page_index():
       caption.</p>
       <p>Four of the drill engines are not drawn: they render a few hundred words and hold the
       rest in code, so a word count would understate them badly. They are counted on the
-      <a href="tools.html" style="color:var(--accent)">tools page</a> instead.</p>
-      <p><a href="colophon.html" style="color:var(--accent)">How every number here is measured &#8594;</a></p>
+      <a class="inlink" href="tools.html">tools page</a> instead.</p>
+      <p><a class="openlink" href="colophon.html">How every number here is measured &#8594;</a></p>
     </aside>
   </div>
-  <details class="tv" style="margin-top:1rem">
+  <details class="tv spaced">
     <summary>The numbers behind the figure</summary>
     {figs.corpus_table()}
   </details>
 </section>
 
-<section class="band shell" id="atlas-teaser">
+<section class="band shell">
   <div class="sechead">
-    <h2>And the same corpus, named</h2>
-    <p class="note">The figure above counts the words. This one names the sections, and every mark opens the passage itself.</p>
-    <span class="count">{ATLAS_N} sections</span>
+    <h2>Three marks, three rules</h2>
+    <p class="note">Each piece declares one rule for what its marks mean, states it once near the top,
+    and then holds it for the whole document. These three figures are lifted unchanged out of the
+    pieces they belong to, colour rules and all. A fourth rule sits with the corpus figure
+    above: it borrows the fixed unit from <a href="global-spending-and-wealth.html">Global Spending and
+    Wealth</a>, where one square is one trillion dollars and never rescales.</p>
+    <span class="count">3 of {TOTAL_FIGS}</span>
   </div>
-  <div class="tease">
-    <div class="tease-fig">
-      <div class="tease-globe" id="atlasmini" data-pts="{ATLAS_PTS}" aria-hidden="true"></div>
-      <noscript><p class="note" style="text-align:center">The atlas needs a browser that runs scripts. The <a href="atlas.html" style="color:var(--accent)">full index</a> does not.</p></noscript>
-    </div>
-    <div class="tease-say">
-      <p>Every heading in every readable document, {ATLAS_N} of them, placed on a sphere by the
-      document it belongs to. A dense patch is a dense document. The {ATLAS_SHARED} headings that
-      turn up in more than one document sit between the two.</p>
-      <p>It is a table of contents you can turn over in your hands, and it works as a plain
-      list for anything that cannot draw it.</p>
-      <p><a class="linkbtn" href="atlas.html">Open the atlas <span aria-hidden="true">&#8594;</span></a></p>
-    </div>
+  <div class="specs">
+{lifted("fs-wlc", "Blue is inside the number, red is outside",
+        "Whose Losses Count",
+        "Seven literatures making the same boundary decision, drawn on one vertical rule. Whatever falls to the right of it is real and appears on no ledger. Open outlines are results not distinguishable from zero, drawn at full size rather than shrunk away.",
+        "whose-losses-count.html")}
+{lifted("fs-ns1", "Solid reaches a ledger, open does not",
+        "Not Significant",
+        "Deceive an investor and the market takes 7.53 times what the law does. Injure a stranger who does not trade with you and the share price moves 0.24 per cent, which is not significant. The essay is built on that gap.",
+        "not-significant.html")}
+{lifted("fs-tv1", "The fork is never closed",
+        "The Trillion-Dollar Vintage",
+        "Two ways of pricing the same vintage, 2.3 times apart, carried side by side to the end rather than averaged. The refused marker between them is the point: no instrument measured that value, so nothing is drawn there.",
+        "the-trillion-dollar-vintage.html")}
   </div>
 </section>
 
 <section class="band shell">
   <div class="sechead">
-    <h2>Start here</h2>
-    <p class="note">The three sections, and what is in each. If you have ten minutes, open the first piece under research.</p>
-    <span class="count">3 sections</span>
+    <h2>And one that failed</h2>
+    <p class="note">The three above are the grammar. This is what happened when the same method was
+    turned on itself: the instrument was run against the falsification test it had specified for
+    itself before it knew the answer, and it did not pass. The figure is the reason the headline
+    finding is published in its narrow form.</p>
+    <span class="count">Method</span>
   </div>
-  <div class="features">
-      <a class="feature rise" href="research.html">
-        <span class="kindrow"><span class="kind">Research and writing</span></span>
-        <h3>Independent research</h3>
-        <p>Four data essays and a study edition, each with its own declared rule for what its marks mean, plus the method pieces on how the work gets built and audited.</p>
-        <span class="go">{N_INDEP} pieces <span class="arrow" aria-hidden="true">&#8594;</span></span>
-      </a>      <a class="feature rise" href="tools.html">
-        <span class="kindrow"><span class="kind">Interactive tools</span></span>
-        <h3>{N_TOOLS} things you can use</h3>
-        <p>Interactive trainers and daily instruments. {N_PWA} of them install to a phone home screen.</p>
-        <span class="go">{N_TOOLS} pieces <span class="arrow" aria-hidden="true">&#8594;</span></span>
-      </a>      <a class="feature rise" href="coursework.html">
-        <span class="kindrow"><span class="kind">Coursework</span></span>
-        <h3>Grouped by course</h3>
-        <p>Every reference and trainer, sorted into the {len(COURSES)} courses they were built for, with a coverage table.</p>
-        <span class="go">{N_COURSE} pieces <span class="arrow" aria-hidden="true">&#8594;</span></span>
-      </a>
-  </div>
-</section>
-
-<section class="band shell">
-  <div class="sechead">
-    <h2>Selected work</h2>
-    <p class="note">Chosen because together they show the widest range: a study edition, an audited final, a negative result, a comparative primer, and the tools people actually use.</p>
-    <span class="count">{len(feats)} of {len(P)}</span>
-  </div>
-  <div class="features">
-{chr(10).join(feature(p, n*45) for n, p in enumerate(feats))}
+  <div class="specs">
+{lifted("fs-ph1", "An interval that overlaps is not a difference",
+        "Predictive History",
+        "The obvious reading is that writing a verdict rubric lifted agreement from 53 per cent to 96. "
+        "It did not. Only the second and third rows hold the record constant, and between those two "
+        "the rubric is worth four points with the intervals overlapping. The other forty-three points "
+        "are the record and the number of raters, which is a different claim entirely.",
+        "predictive-history.html")}
   </div>
 </section>
 
@@ -702,9 +759,9 @@ def page_index():
 </section>
 """
     return head(f"{SHORT} — portfolio",
-                f"Research, interactive study tools and references built by Alex Rajcoomar, "
-                f"Accounting and Financial Management student at the University of Waterloo. "
-                f"{len(P)} published pieces, {TOTAL_WORDS:,} words, all of them running.",
+                f"Research, study tools and references by Alex Rajcoomar, Accounting "
+                f"and Financial Management at Waterloo. {len(P)} pieces, "
+                f"{TOTAL_WORDS:,} words, all of them running.",
                 "index.html", extra="\n" + jsonld_site()) + body + foot()
 
 # The specimen figure shown beside the lead belongs to one particular piece,
@@ -738,24 +795,25 @@ def page_research():
     for p in rest:
         demo = (f'<div class="demo"><b>What it demonstrates</b>{esc(p["demo"])}</div>'
                 if p["demo"] else "")
-        blocks.append(f"""    <article class="lead rise" style="border-top:1px solid var(--rule);padding-top:var(--gap)">
+        blocks.append(f"""    <article class="lead rise ruled">
       <div class="lt">
-        <span class="kindrow">{kind_chip(p)}<span class="tnum" style="color:var(--ink-3);font-size:.8125rem">{esc(p['d'])}</span></span>
+        <span class="kindrow">{kind_chip(p)}<span class="metadate">{esc(p['d'])}</span></span>
         <h3><a href="{p['url']}">{esc(p['t'])}</a></h3>
         <p class="sub">{esc(p['s'])}</p>
         <p class="blurb">{esc(p['blurb'])}</p>
         {sig(p, with_surface=False)}
       </div>
-      <div>{demo}<a class="open" style="font-size:.875rem;font-weight:560;color:var(--accent);text-decoration:none" href="{p['url']}">Open the piece <span aria-hidden="true">&#8594;</span></a></div>
+      <div>{demo}<a class="open" href="{p['url']}">Open the piece <span aria-hidden="true">&#8594;</span></a></div>
     </article>""")
 
-    body = f"""<div class="hero shell" style="padding-block:clamp(2.5rem,5vw,4rem) 1rem">
-  <p class="eyebrow accent">Section 01</p>
+    body = f"""<div class="hero tight shell">
+  {section_eyebrow("research.html")}
   <h1 class="h1">Research and writing</h1>
   <p class="lede">{len(items)} pieces where the argument is the point. Every one of them started because
   I did not believe a claim, or could not find two jurisdictions held apart properly, and the fastest
   way to find out was to build the thing. {gt['independent']:,} words, none of them assigned.</p>
-  <div class="stats" style="margin-top:2rem">
+{section_guide("research.html")}
+  <div class="stats">
     <div><b class="tnum">{len(items)}</b><span>independent pieces</span></div>
     <div><b class="tnum">{gt['independent']:,}</b><span>words</span></div>
     <div><b class="tnum">{sum(p['figures'] for p in items)}</b><span>figures, hand-built</span></div>
@@ -771,13 +829,13 @@ def page_research():
   </div>
   <article class="lead">
     <div class="lt">
-      <span class="kindrow">{kind_chip(lead)}{surf(lead)}<span style="color:var(--ink-3);font-size:.8125rem">{esc(lead['d'])}</span></span>
+      <span class="kindrow">{kind_chip(lead)}{surf(lead)}<span class="metadate">{esc(lead['d'])}</span></span>
       <h3><a href="{lead['url']}">{esc(lead['t'])}</a></h3>
       <p class="sub">{esc(lead['s'])}</p>
       <p class="blurb">{esc(lead['blurb'])}</p>
       <div class="demo"><b>What it demonstrates</b>{esc(lead['demo'])}</div>
       {sig(lead, with_surface=False)}
-      <a class="open" style="font-size:.9375rem;font-weight:600;color:var(--accent);text-decoration:none" href="{lead['url']}">Open the study edition <span aria-hidden="true">&#8594;</span></a>
+      <p class="plate-nav"><a class="pbtn pbtn-go" href="{lead['url']}">Open the study edition <span aria-hidden="true">&#8594;</span></a></p>
     </div>
     {leadfig}
   </article>
@@ -789,7 +847,7 @@ def page_research():
     <p class="note">Newest first. Each opens as a self-contained page.</p>
     <span class="count">{len(rest)} pieces</span>
   </div>
-  <div style="display:grid;gap:var(--gap)">
+  <div class="stack">
 {chr(10).join(blocks)}
   </div>
 </section>
@@ -809,6 +867,8 @@ def page_research():
     <p>The same discipline runs through this site: the corpus figure on the
     <a href="index.html#corpus">home page</a> declares its own unit, and the
     <a href="colophon.html">colophon</a> states how every number on the site is measured.</p>
+    <p class="plate-nav"><a class="pbtn" href="coursework.html">Coursework <span aria-hidden="true">&#8594;</span></a>
+    <a class="pbtn" href="tools.html">Interactive tools <span aria-hidden="true">&#8594;</span></a></p>
   </div>
 </section>
 """
@@ -819,13 +879,14 @@ def page_research():
 
 def page_tools():
     items = [p for p in P if p["k"] == "Tool"]
-    body = f"""<div class="hero shell" style="padding-block:clamp(2.5rem,5vw,4rem) 1rem">
-  <p class="eyebrow accent">Section 03</p>
+    body = f"""<div class="hero tight shell">
+  {section_eyebrow("tools.html")}
   <h1 class="h1">Interactive tools</h1>
   <p class="lede">{len(items)} things you use rather than read. {N_PWA} of them install to a phone home
   screen. Four are drill engines that hold their question banks in code, so they carry no reading
   time: a drill has no length, only a session. The other two render a full document on load and are
   measured like one.</p>
+{section_guide("tools.html")}
 </div>
 <section class="band shell">
   <div class="sechead"><h2>All {len(items)}</h2><p class="note">Each opens and runs in the browser. Nothing to install unless you want the home-screen icon.</p><span class="count">{len(items)} tools</span></div>
@@ -839,6 +900,8 @@ def page_tools():
     <p>On a phone, open the tool and choose <em>Add to Home Screen</em> from the share menu. It gets an
     icon and opens without browser chrome. Progress is stored in that browser only: nothing is
     uploaded, and clearing site data clears the progress with it.</p>
+    <p class="plate-nav"><a class="pbtn" href="coursework.html">&#8592; Coursework</a>
+    <a class="pbtn" href="library.html">The full library <span aria-hidden="true">&#8594;</span></a></p>
   </div>
 </section>
 """
@@ -873,21 +936,22 @@ def page_coursework():
 {chr(10).join(feature(p) for p in cs)}
   </div>""")
 
-    body = f"""<div class="hero shell" style="padding-block:clamp(2.5rem,5vw,4rem) 1rem">
-  <p class="eyebrow accent">Section 02</p>
+    body = f"""<div class="hero tight shell">
+  {section_eyebrow("coursework.html")}
   <h1 class="h1">Coursework</h1>
   <p class="lede">{len(items)} pieces across {len(COURSES)} courses, each one built while taking the course
   rather than afterwards. References are organised for retrieval under time pressure, not for reading
   front to back, which is why several of them are deliberately compressed to what fits on a page.</p>
+{section_guide("coursework.html")}
 </div>
 
 <section class="band shell">
   <div class="sechead"><h2>Coverage</h2><p class="note">What exists per course, counted from the files themselves.</p><span class="count">{len(items)} of {len(P)}</span></div>
-  <p class="note measure" style="margin-bottom:1rem">Word counts exclude the question banks inside the interactive
+  <p class="note measure prose">Word counts exclude the question banks inside the interactive
   tools, because those live in code rather than prose, so the tool-heavy courses read lower than they are.
   The remaining {len(P)-len(items)} pieces are not tied to one course: {N_INDEP} under
-  <a href="research.html" style="color:var(--accent)">research</a> and the {N_PERSONAL} read for
-  their own sake in the <a href="library.html" style="color:var(--accent)">library</a>.</p>
+  <a href="research.html">research</a> and the {N_PERSONAL} read for
+  their own sake in the <a href="library.html">library</a>.</p>
   <div class="tw"><table class="ctab">
     <thead><tr><th scope="col">Course</th><th scope="col" class="tnum">Interactive</th>
     <th scope="col" class="tnum">References</th><th scope="col" class="tnum">Total</th>
@@ -930,14 +994,14 @@ def page_library():
     </ol>
   </section>""")
 
-    body = f"""<div class="hero shell" style="padding-block:clamp(2.5rem,5vw,4rem) 1rem">
+    body = f"""<div class="hero tight shell">
   <p class="eyebrow accent">Library</p>
   <h1 class="h1">Everything, in one place.</h1>
   <p class="lede">All {len(P)} pieces, split by what asked for them. Every item carries how long it takes
   to read, how much apparatus it holds, and how dense that makes it. The
   <a href="colophon.html">colophon</a> gives the definitions.</p>
 </div>
-<section class="shell" style="padding-bottom:4rem">
+<section class="shell stack-end">
   <div class="tools-bar">
     <label class="sr" for="q">Search the library</label>
     <input id="q" type="search" placeholder="Search {len(P)} pieces" autocomplete="off" spellcheck="false">
@@ -970,16 +1034,14 @@ def page_library():
 def page_about():
     gt = figs.group_totals()
     indep_share = round(gt["independent"] / (gt["independent"] + gt["course"] + gt["personal"]) * 100)
-    body = f"""<div class="hero shell" style="padding-block:clamp(2.5rem,5vw,4rem) 1rem">
+    body = f"""<div class="hero tight shell">
   <p class="eyebrow accent">About</p>
   <div class="namerow">
     <h1 class="h1">{esc(NAME)}</h1>
-    <div class="affil" role="img" aria-label="University of Waterloo, School of Accounting and Finance">
-      <span class="affil-bar" aria-hidden="true"></span>
-      <span class="affil-txt">
-        <b>University of Waterloo</b>
-        <span>School of Accounting and Finance</span>
-      </span>
+    <div class="affil">
+      <img class="affil-logo" src="uw-logo.png" alt="University of Waterloo"
+        width="280" height="67" decoding="async">
+      <span class="affil-school">School of Accounting and Finance</span>
     </div>
   </div>
   <p class="lede">Alex, <span data-age="{BORN[0]}-{BORN[1]:02d}-{BORN[2]:02d}">{AGE}</span>, an Accounting
@@ -989,13 +1051,13 @@ def page_about():
 
 <section class="band shell">
   <div class="sechead"><h2>The short version</h2><span class="count">Facts</span></div>
-  <div class="facts measure" style="max-width:46rem">
+  <div class="facts measure wide">
     <div><b>Programme</b><span>Accounting and Financial Management, Analytics stream, University of Waterloo.</span></div>
     <div><b>Co-op</b><span>Preparing Canadian corporate and personal tax returns.</span></div>
     <div><b>Focus</b><span>Financial reporting under IFRS and ASPE, Canadian tax, and the analytics side of accounting.</span></div>
     <div><b>Standing interests</b><span>The science of learning, judgment under uncertainty, and capital cycles. Outside coursework, AI in medicine and commercial spaceflight.</span></div>
-    <div><b>Contact</b><span><a href="mailto:{EMAIL}" style="color:var(--accent)">{EMAIL}</a></span></div>
-    <div><b>This site</b><span><a href="{SITE_URL}" style="color:var(--accent)">{HOST}</a></span></div>
+    <div><b>Contact</b><span><a class="inlink" href="mailto:{EMAIL}">{EMAIL}</a></span></div>
+    <div><b>This site</b><span><a class="inlink" href="{SITE_URL}">{HOST}</a></span></div>
   </div>
 </section>
 
@@ -1007,17 +1069,17 @@ def page_about():
     <span class="count">Four things</span>
   </div>
   <div class="caps">
-    <div><h3>Evidence discipline</h3><p>Every figure carries the provenance tag it was published under.
+    <div><p class="plate-n"><b>01</b> <span>/ 04</span></p><h3>Evidence discipline</h3><p>Every figure carries the provenance tag it was published under.
     Derived numbers are labelled as derived. Two sources that disagree are reported separately instead of
     averaged. One essay reaches a negative result and reports it as one, and the largest piece corrects its
     own arithmetic in public where a later attribution changed the base.</p></div>
-    <div><h3>Financial reporting</h3><p>Intermediate financial accounting under IFRS, worked to the entry
+    <div><p class="plate-n"><b>02</b> <span>/ 04</span></p><h3>Financial reporting</h3><p>Intermediate financial accounting under IFRS, worked to the entry
     rather than the summary: revenue recognition through the five-step model, a journal entry reference
     built for retrieval under time pressure, and a coverage audit that records what is still missing.</p></div>
-    <div><h3>Canadian tax and law, kept Canadian</h3><p>Co-op work preparing Canadian corporate and personal
+    <div><p class="plate-n"><b>03</b> <span>/ 04</span></p><h3>Canadian tax and law, kept Canadian</h3><p>Co-op work preparing Canadian corporate and personal
     returns, and a primer that holds the Canadian and American legal positions apart at every point they
     diverge instead of blending them.</p></div>
-    <div><h3>Building the thing</h3><p>Hand-written HTML, CSS and JavaScript across {len(P)} pages and
+    <div><p class="plate-n"><b>04</b> <span>/ 04</span></p><h3>Building the thing</h3><p>Hand-written HTML, CSS and JavaScript across {len(P)} pages and
     {N_TOOLS} interactive tools, {N_PWA} of them installable. {TOTAL_FIGS} figures, all built by hand as
     static SVG so they render with JavaScript off. No framework, no build step on the reader's side,
     accessible in light and dark, and it prints.</p></div>
@@ -1053,7 +1115,8 @@ def page_about():
     not official solutions, and not a substitute for the standards themselves. Where a figure or a
     rule matters, check the primary source: the CPA Canada Handbook, the Income Tax Act, or the CRA.</p>
 
-    <p><a href="colophon.html">How this site is built, and how every number on it is measured &#8594;</a></p>
+    <p class="plate-nav"><a class="pbtn pbtn-go" href="colophon.html">How this site is built, and how it counts <span aria-hidden="true">&#8594;</span></a>
+    <a class="pbtn" href="library.html">The full library <span aria-hidden="true">&#8594;</span></a></p>
   </div>
 </section>
 """
@@ -1063,7 +1126,7 @@ def page_about():
 
 def page_colophon():
     gt = figs.group_totals()
-    body = f"""<div class="hero shell" style="padding-block:clamp(2.5rem,5vw,4rem) 1rem">
+    body = f"""<div class="hero tight shell">
   <p class="eyebrow accent">Colophon</p>
   <h1 class="h1">How this site is built, and how it counts.</h1>
   <p class="lede">Every number on this site is measured from the published files rather than estimated.
@@ -1454,10 +1517,14 @@ FAVICON = ("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='
 def head_block(p):
     url  = SITE_URL + "/" + p["url"]
     desc = (p.get("blurb") or p.get("s") or "").strip()
-    if len(desc) > 300:
-        desc = desc[:297].rsplit(" ", 1)[0] + "\u2026"
+    # 160, not 300: a search result shows about that much and the rest is cut
+    # mid-word by the engine rather than mid-sentence by us.
+    if len(desc) > 160:
+        desc = desc[:157].rsplit(" ", 1)[0].rstrip(",;:") + "\u2026"
     title = f'{p["t"]} \u2014 {SHORT}'
     return f"""{_HEAD_START}
+<meta name="color-scheme" content="{p.get('_scheme', 'light dark')}">
+<meta name="description" content="{esc(desc)}">
 <link rel="icon" href="{FAVICON}">
 <link rel="canonical" href="{url}">
 <meta property="og:title" content="{esc(title)}">
@@ -1487,7 +1554,9 @@ _OWNED = re.compile(
     r'\s*<link rel="canonical"' + _ATTRS + r'>'
     r'|\s*<meta property="og:(?:title|description|type|url|site_name|image(?::\w+)?)"' + _ATTRS + r'>'
     r'|\s*<meta name="twitter:(?:card|image)"' + _ATTRS + r'>'
-    r'|\s*<link rel="icon"' + _ATTRS + r'>')
+    r'|\s*<link rel="icon"' + _ATTRS + r'>'
+    r'|\s*<meta name="color-scheme"' + _ATTRS + r'>'
+    r'|\s*<meta name="description"' + _ATTRS + r'>')
 
 # What the old pattern left behind on twenty-two pages, still sitting in their
 # <head>: the tail of the icon URL, reading as a real <rect> element. An
@@ -1507,6 +1576,24 @@ def normalise_head(path, p):
     except Exception:
         return False
     before = text
+    # Declare what the document can actually do rather than what the site
+    # wishes it did. Six pieces carry a fixed light palette and no dark rules:
+    # a reader in dark mode was landing on a white page from a dark one, with
+    # the browser's own scrollbars and form controls painted for the wrong
+    # side. Saying "light" makes the browser agree with the page.
+    # Test the document's own CSS, not the blocks this build injects into it:
+    # the return bar carries its own dark rules, and the theme script mentions
+    # data-theme, so both would make every piece look dark-capable.
+    own = re.sub(r"<!--__rb-->.*?<!--/__rb-->", "", text, flags=re.S)
+    own = re.sub(r"<!--__meta-->.*?<!--/__meta-->", "", own, flags=re.S)
+    # A piece is dark-capable if it links the site stylesheet, which carries
+    # the dark palette, or if its own CSS answers the media query. Six do
+    # neither, and those are the ones that were flashing white at a reader who
+    # had asked the whole site for dark.
+    p["_scheme"] = ("light dark"
+                    if re.search(r'href="site\.css', own)
+                    or re.search(r"prefers-color-scheme\s*:\s*dark", own)
+                    else "light")
     text = re.sub(re.escape(_HEAD_START) + r".*?" + re.escape(_HEAD_END) + r"\n?",
                   "", text, flags=re.S)
     text = _OWNED.sub("", text)
@@ -1540,6 +1627,94 @@ def fix_stale_host(path):
     return False
 
 
+
+# The nav on a converted piece was copied by hand when the piece was written,
+# so it is frozen at whatever the site looked like that day. Thirty-one of them
+# still list six sections and cannot reach the Atlas at all, which means the
+# longest documents on the site have no route to the page built to index them.
+# Rewritten from NAV on every build, the same way the head metadata is.
+_NAV_BLOCK = re.compile(r'<nav class="main"[^>]*>.*?</nav>', re.S | re.I)
+
+def normalise_nav(path):
+    try:
+        text = open(path, encoding="utf-8", errors="ignore").read()
+    except Exception:
+        return False
+    want = ('<nav class="main" aria-label="Sections">\n      '
+            + "\n      ".join(f'<a href="{u}">{t}</a>' for u, t in NAV)
+            + "\n    </nav>")
+    fixed = _NAV_BLOCK.sub(lambda m: want, text)
+    if fixed != text:
+        os.chmod(path, 0o644)
+        open(path, "w", encoding="utf-8").write(fixed)
+        return True
+    return False
+
+
+
+# A diagram a screen reader cannot see is a diagram that is not there. Twenty
+# three figures across six documents carried no role and no label, so they were
+# announced as nothing at all. The name comes from the heading the figure sits
+# under, which is the only description the document actually contains, and it
+# is numbered when a heading governs more than one figure so the reader can
+# tell which of them they have reached.
+_SVG_OPEN = re.compile(r"<svg\b([^>]*)>", re.I)
+_HEADING = re.compile(r"<h[1-6]\b[^>]*>(.*?)</h[1-6]>", re.S | re.I)
+
+def label_figures(path):
+    try:
+        text = open(path, encoding="utf-8", errors="ignore").read()
+    except Exception:
+        return 0
+    # the favicon is an SVG inside an attribute, not an element on the page
+    # Blanked, not removed: every offset below indexes into `text`, so the
+    # masked copy has to stay the same length or the insertions land in the
+    # wrong place. Losing that is how the first version rewrote the same
+    # twenty-three figures on every run without ever inserting anything.
+    scan = re.sub(r'href="data:image/svg\+xml,[^"]*"',
+                  lambda m: " " * len(m.group(0)), text)
+    scan = re.sub(r"<(script|style)\b[^>]*>.*?</\1>", lambda m: " " * len(m.group(0)),
+                  scan, flags=re.S | re.I)
+
+    hits = [m for m in _SVG_OPEN.finditer(scan)
+            if "role=" not in m.group(1) and "aria-hidden" not in m.group(1)]
+    if not hits:
+        return 0
+
+    names = []
+    for m in hits:
+        heads = _HEADING.findall(scan[:m.start()])
+        raw = heads[-1] if heads else ""
+        # a space per tag boundary, or a numeral in a span glues to the word
+        # after it and the label reads "1The seven graphs"
+        txt = re.sub(r"\s+", " ", html.unescape(re.sub(r"<[^>]+>", " ", raw))).strip()
+        # a section number lives in its own span, so it arrives glued to the
+        # front of the name: "1 The seven graphs" is the numeral, not the title
+        txt = re.sub(r"^[0-9]{1,2}[.\u00b7)]?\s+(?=[A-Za-z])", "", txt)
+        names.append(txt or "Figure")
+
+    counts = {}
+    for n in names:
+        counts[n] = counts.get(n, 0) + 1
+    seen, out, n_done = {}, [], 0
+    for m, base in zip(hits, names):
+        if counts[base] > 1:
+            seen[base] = seen.get(base, 0) + 1
+            label = f"{base}, figure {seen[base]} of {counts[base]}"
+        else:
+            label = base
+        out.append((m, label))
+
+    for m, label in reversed(out):
+        ins = ' role="img" aria-label="%s"' % esc(label)
+        text = text[:m.start() + 4] + ins + text[m.start() + 4:]
+        n_done += 1
+    if n_done:
+        os.chmod(path, 0o644)
+        open(path, "w", encoding="utf-8").write(text)
+    return n_done
+
+
 def add_returns_everywhere():
     """Two things per standalone piece: the head metadata the build owns, and a
     way back into the site. The bar is skipped where a page already carries full
@@ -1561,7 +1736,33 @@ def add_returns_everywhere():
         else:
             where[p["url"]] = ("coursework.html", "Coursework")
     tools = {p["url"] for p in P if p["k"] == "Tool"}
-    n = heads = 0
+    n = heads = navs = figs_named = 0
+    # The nav runs over every hand-maintained page, including the two that
+    # carry their own navigation and are skipped below. A page the reader can
+    # land on and cannot leave for the Atlas is the defect being fixed, and
+    # reader.html is exactly such a page.
+    for f in sorted(os.listdir(OUT)):
+        if f.endswith(".html") and f not in SHELL_PAGES:
+            if normalise_nav(os.path.join(OUT, f)):
+                navs += 1
+            # The typeface is self-hosted: any page still preloading it from
+            # the CDN is rewritten to the local subset, so no request leaves
+            # the origin. Runs on every hand-maintained page, reader.html
+            # included, because the CDN preload was hand-copied the same way
+            # the nav was.
+            fp = os.path.join(OUT, f)
+            try:
+                _t = open(fp, encoding="utf-8", errors="ignore").read()
+            except Exception:
+                _t = ""
+            _t2 = re.sub(
+                r"https://cdnjs\.cloudflare\.com/ajax/libs/inter-ui/[0-9.]+/"
+                r"variable/InterVariable\.woff2",
+                "InterVariable-sub.woff2", _t)
+            if _t2 != _t:
+                os.chmod(fp, 0o644)
+                open(fp, "w", encoding="utf-8").write(_t2)
+
     for f in sorted(os.listdir(OUT)):
         if not f.endswith(".html") or f in shell:
             continue
@@ -1569,57 +1770,84 @@ def add_returns_everywhere():
         if f in by_url and normalise_head(path, by_url[f]):
             heads += 1
         fix_stale_host(path)
+        figs_named += label_figures(path)
         if 'class="docbar"' in open(path, encoding="utf-8", errors="ignore").read():
             continue                      # converted notes already carry full navigation
         up, upname = where.get(f, ("index.html", "Home"))
         add_return(path, up, upname, bar=f not in tools)
         n += 1
-    return n, heads
+    return n, heads, navs, figs_named
 
 
 # --------------------------------------------------------------- write ----
-ATLAS_BODY = r"""<section class="band atlas-band">
+ATLAS_BODY = r"""<section class="band atlas-band" id="atlas">
   <div class="shell atlas-grid">
     <div class="atlas-side">
       <p class="eyebrow accent">Atlas</p>
-      <h1 class="display atlas-h1">Every section of everything, on one sphere.</h1>
-      <p class="lede">{nsec} sections from {ndoc} documents. A document is a region, its
-      sections cluster around it, and the {shared} headings that appear in more than one
-      document sit between them. Click a mark to open the passage itself rather than the
-      front of the piece.</p>
+      <h1 class="atlas-h1">Every section of everything, on one sphere.</h1>
+      <p class="atlas-lede">{lede}</p>
 
-      <div class="atlas-controls">
-        <label class="sr" for="aq">Search {nsec} sections</label>
-        <input id="aq" type="search" placeholder="Search {nsec} sections" autocomplete="off" spellcheck="false">
-        <div class="atlas-modes" id="amodes" hidden>
-          <button type="button" id="aglobe" class="chip" aria-pressed="true">Globe</button>
-          <button type="button" id="alist" class="chip" aria-pressed="false">List</button>
+      <script type="application/json" id="afacts">{facts}</script>
+
+      <noscript><style>#aplates article[hidden]{{display:block !important}}</style></noscript>
+      <div class="plates" id="aplates">
+{plates}
+      </div>
+
+      <nav class="guide" id="aguide" aria-label="The six labels">
+        <p class="guide-h">The sequence <span class="guide-c">6 labels</span></p>
+        <ol>
+{guide}
+        </ol>
+      </nav>
+
+      <p class="plate-nav" id="anav">
+        <a class="pbtn" id="pprev" href="#label-1">&#8592; Back</a>
+        <a class="pbtn pbtn-go" id="pnext" href="#label-2">Next label &#8594;</a>
+        <a class="pskip" id="pskip" href="#atlaslist">Skip to the index</a>
+      </p>
+
+      <div class="freebar" id="afree" hidden>
+        <div class="atlas-controls">
+          <label class="sr" for="aq">Search {nsec} sections</label>
+          <input id="aq" type="search" placeholder="Search {nsec} sections" autocomplete="off" spellcheck="false">
+          <div class="atlas-modes" id="amodes">
+            <button type="button" id="aglobe" class="chip" aria-pressed="true">Globe</button>
+            <button type="button" id="alist" class="chip" aria-pressed="false">List</button>
+          </div>
         </div>
+        <p class="atlas-count" id="acount" role="status">Showing all {nsec} sections.</p>
+        <p class="atoday" id="atoday" hidden></p>
+        <div class="atlas-results" id="ares" hidden></div>
+        <div class="atlas-key">
+          <ul class="akey-list">
+            <li><i class="ak ak-ind"></i>Independent work</li>
+            <li><i class="ak ak-per"></i>Personal interest</li>
+            <li><i class="ak ak-cou"></i>Coursework, drawn as an outline</li>
+            <li><i class="ak ak-too"></i>Tools, one mark each, standing off the sphere: not headings</li>
+            <li class="akey-wide"><i class="ak ak-shr"></i>Headings carried by more than one document, standing off the surface by how many carry them</li>
+          </ul>
+          <p class="akey-note">Size follows heading level. A document's area grows with
+          the number of sections it holds. Nothing is sampled and nothing is capped.</p>
+        </div>
+        <p class="replay"><button type="button" id="preplay" class="linkbtn">Replay the six labels</button></p>
       </div>
-      <p class="atlas-count" id="acount" role="status">Showing all {nsec} sections.</p>
 
-      <div class="atlas-key" id="akey" hidden>
-        <h2>How to read it</h2>
-        <ul class="akey-list">
-          <li><i class="ak ak-ind"></i>Independent work</li>
-          <li><i class="ak ak-per"></i>Personal interest</li>
-          <li><i class="ak ak-cou"></i>Coursework, drawn as an outline</li>
-          <li><i class="ak ak-too"></i>Tools, one mark each</li>
-        </ul>
-        <p>One mark is one section, under the heading its author gave it. Marks cluster by
-        the document they belong to, so a dense patch is a dense document: the area a
-        document covers grows with the number of sections it holds, the same way one square
-        is five hundred words on the home page.</p>
-        <p class="akey-note">Nothing is sampled and nothing is capped. Every section of
-        every readable document is here, and every mark opens the passage it names.</p>
-      </div>
+      <div class="atlas-doc" id="adoc" hidden></div>
     </div>
 
-    <div class="atlas-stage" id="astage" hidden>
+    <div class="atlas-stage" id="astage">
       <canvas id="acanvas" aria-hidden="true"></canvas>
       <div class="atlas-labels" id="alabels" aria-hidden="true"></div>
       <div class="atlas-card" id="acard" hidden aria-hidden="true"><p class="ac-t"></p><p class="ac-d"></p></div>
-      <p class="atlas-hint" id="ahint">Drag to turn it. Point at a mark to read the section, click to open it.</p>
+      <div class="atlas-crumb" id="acrumb" hidden>
+        <button type="button" id="acrumbout" class="crumb-out">&#8592; All {ndoc} documents</button>
+        <span class="crumb-now" id="acrumbnow"></span>
+      </div>
+      <p class="atlas-hint" id="ahint">Drag to turn it, or press <kbd>&#8594;</kbd> for the next label.</p>
+      <p class="atlas-cap" id="acap"></p>
+      <button type="button" class="arestore" id="arestore" hidden>Restore the framing</button>
+      <div class="stagekey" id="astagekey" hidden></div>
     </div>
   </div>
 
@@ -1644,58 +1872,106 @@ SURF_NAME = {"independent": "Independent", "course": "Coursework",
 
 def page_atlas():
     pts, regs = ATLAS["points"], ATLAS["regions"]
+    F = atlas_mod.facts(pts, regs)
+    LABELS = atlas_mod.labels(F)
+
     by = {}
     for q in pts:
         by.setdefault(q["s"], []).append(q)
 
+    # Independent work first, then personal, then coursework, and by size
+    # inside each. The old order was section count alone, which opened the
+    # index on a course document and buried the writing the page exists for.
+    RANK = {"independent": 0, "personal": 1, "course": 2}
+    ordered = sorted((r for r in regs if by.get(r["s"])),
+                     key=lambda r: (RANK.get(r["surface"], 3),
+                                    -len(by[r["s"]]), r["t"]))
+
     blocks = []
-    for r in sorted(regs, key=lambda x: (-len(by.get(x["s"], [])), x["t"])):
-        items = by.get(r["s"], [])
-        if not items:
-            continue
+    for r in ordered:
+        items = by[r["s"]]
         lis = "\n".join(
-            '        <li class="apt" data-p="%s,%s,%s"><a href="%s">%s</a></li>'
-            % (q["p"][0], q["p"][1], q["p"][2], q["u"], esc(q["t"]))
+            '<li class="apt" data-p="%s,%s,%s" data-l="%d"%s><a href="%s">%s</a></li>'
+            % (q["p"][0], q["p"][1], q["p"][2], q["l"],
+               (' data-n="%d"' % q["n"]) if q["n"] > 1 else "",
+               q["u"], esc(q["t"]))
             for q in items)
         word = "section" if len(items) == 1 else "sections"
+        meta = " &#183; ".join(x for x in (
+            esc(r["k"]), esc(r["c"] or SURF_NAME[r["surface"]]), esc(r["d"])) if x)
         blocks.append(
             '      <section class="areg" data-s="%s" data-k="%s" data-surface="%s"\n'
             '        data-c="%s,%s,%s" data-t="%s" data-u="%s">\n'
             '        <h2 class="areg-h"><a href="%s">%s</a>\n'
-            '          <span class="areg-n">%d %s</span>\n'
-            '          <span class="areg-k">%s</span></h2>\n'
+            '          <span class="areg-n">%d %s</span></h2>\n'
+            '        <p class="areg-m">%s</p>\n'
             '        <ol class="areg-l">\n%s\n        </ol>\n'
             '      </section>'
             % (r["s"], r["k"], r["surface"], r["p"][0], r["p"][1], r["p"][2],
                esc(r["t"]), r["u"], r["u"], esc(r["t"]), len(items), word,
-               esc(r["c"] or SURF_NAME[r["surface"]]), lis))
+               meta, lis))
 
-    nsec = len(pts)
-    ndoc = len([r for r in regs if by.get(r["s"])])
-    shared = len([q for q in pts if q["n"] > 1])
+    plates, guide = [], []
+    for i, L in enumerate(LABELS, 1):
+        paras = "\n          ".join("<p>%s</p>" % b for b in L["body"])
+        plates.append(
+            '        <article class="plate" id="label-%d" data-stage="%s"%s>\n'
+            '          <p class="plate-n"><b>%02d</b> <span>/ %02d</span></p>\n'
+            '          <h2 class="plate-h">%s</h2>\n'
+            '          %s\n'
+            '        </article>' % (i, L["stage"], "" if i == 1 else " hidden",
+                                    i, len(LABELS), L["title"], paras))
+        guide.append(
+            '          <li><a href="#label-%d" data-step="%d">'
+            '<b>%02d</b> %s</a></li>' % (i, i, i, L["title"].rstrip(".")))
 
-    body = ATLAS_BODY.format(nsec=format(nsec, ","), ndoc=ndoc, shared=shared,
+    nsec, ndoc = len(pts), len(ordered)
+    body = ATLAS_BODY.format(nsec=format(nsec, ","), ndoc=ndoc,
+                             plates="\n".join(plates), guide="\n".join(guide),
+                             facts=json.dumps(F["js"], separators=(",", ":")).replace("</", "<\\/"),
+                             lede=("{} sections from {} documents: {} "
+                                   "independent works, {} personal "
+                                   "investigations, {} course references. "
+                                   "Every mark is a link into a passage."
+                                   .format(format(F["total"], ","), F["docs"],
+                                           F["indD"], F["perD"], F["couD"])),
                              blocks="\n".join(blocks))
     return head("Atlas — " + SHORT,
                 "All %s sections of all %d documents on this site, placed on a "
                 "sphere by the document they belong to and linked to the passage "
                 "itself." % (format(nsec, ","), ndoc),
                 "atlas.html",
-                extra='<script src="atlas.js" defer></script>') + body + foot()
+                extra='<script src="' + asset("atlas.js") + '" defer></script>') + body + foot()
+
+
+# Level 3 is what a heading is unless the document says otherwise: 743 of
+# the 1,247 points carry it. Writing it out on every point would cost 1,247
+# bytes to say "ordinary" 743 times, so it is the value a missing digit
+# means, and only the 504 points that differ pay for the difference.
+TEASER_DEFAULT_LEVEL = 3
 
 def atlas_teaser_bits():
     """The home page draws the same sphere small, so the payload is the same
     positions and nothing else: no headings, no links, no second copy of the
     data. Two decimals is a hundredth of the radius, which at teaser size is
     well under a pixel, and it keeps the whole thing near six kilobytes over
-    the wire."""
+    the wire.
+
+    The fourth field carries the kind letter and, when the heading is not a
+    third-level one, the level digit straight after it: "i" is an ordinary
+    heading in independent work, "i1" the same document's top-level heading.
+    The atlas draws a mark's radius from its heading level and the teaser
+    drew every mark the same size, so the home page and the atlas were
+    making different claims about the same 1,247 points."""
     code = {"independent": "i", "personal": "p", "course": "c"}
     surf = {r["s"]: ("t" if r["k"] == "Tool" else code[r["surface"]])
             for r in ATLAS["regions"]}
-    body = ";".join("%.2f,%.2f,%.2f,%s" % (q["p"][0], q["p"][1], q["p"][2],
-                                           surf[q["s"]])
-                    for q in ATLAS["points"])
-    return (format(len(ATLAS["points"]), ","), body,
+    out = []
+    for q in ATLAS["points"]:
+        lvl = min(4, max(1, int(q["l"])))
+        mark = surf[q["s"]] + ("" if lvl == TEASER_DEFAULT_LEVEL else str(lvl))
+        out.append("%.2f,%.2f,%.2f,%s" % (q["p"][0], q["p"][1], q["p"][2], mark))
+    return (format(len(ATLAS["points"]), ","), ";".join(out),
             format(len([q for q in ATLAS["points"] if q["n"] > 1]), ","))
 
 
@@ -1703,12 +1979,16 @@ def page_404():
     """Generated like every other shell page, so its piece count and contact
     address cannot fall behind. It used to be the one page the build touched
     but never rewrote, and it sat at 21 pieces and a stale email for months."""
-    body = f"""<div class="hero shell" style="padding-block:clamp(3rem,8vw,6rem) 2rem">
+    body = f"""<div class="hero lost shell">
   <p class="eyebrow accent">404</p>
-  <h1 class="display" style="font-size:clamp(2rem,5vw,3.4rem)">That page is not here.</h1>
+  <h1 class="display lost-h">That page is not here.</h1>
   <p class="lede">The address may have a typo, or the piece may have been renamed. The library holds
   all {len(P)} pieces, and pressing <kbd>/</kbd> searches them from anywhere.</p>
-  <p style="margin-top:1.5rem"><a href="library.html" style="color:var(--accent);font-weight:620">Open the library <span aria-hidden="true">&#8594;</span></a></p>
+  <p class="plate-nav">
+    <a class="pbtn pbtn-go" href="library.html">Open the library <span aria-hidden="true">&#8594;</span></a>
+    <a class="pbtn" href="index.html">&#8592; Home</a>
+    <a class="pskip" href="atlas.html">Or every section, on one sphere</a>
+  </p>
 </div>
 """
     return head("Page not found \u2014 " + SHORT,
@@ -2029,6 +2309,36 @@ def check_site():
         if x["url"] not in files:
             problems.append(f"content/pieces.json: {x['slug']} points at {x['url']}, which does not exist")
 
+    # 10. every character the pages show that Inter could render is in the
+    # self-hosted subset. A glyph outside the subset silently falls to the
+    # metric-matched fallback, which is exactly the mixed typography the
+    # self-hosting exists to prevent. When this fires, re-subset:
+    #   pyftsubset node_modules/inter-ui/variable/InterVariable.woff2
+    #     --unicodes-file=<updated set> --flavor=woff2 ...
+    try:
+        _sub = {int(x) for x in open(
+            os.path.join(HERE, "font-subset-cmap.txt")).read().split(",")}
+        _full = {int(x) for x in open(
+            os.path.join(HERE, "font-full-cmap.txt")).read().split(",")}
+        _missing = {}
+        for f in sorted(os.listdir(OUT)):
+            if not f.endswith(".html"):
+                continue
+            raw = open(os.path.join(OUT, f), encoding="utf-8",
+                       errors="ignore").read()
+            body = re.sub(r"<(script|style)\b[^>]*>.*?</\1>", "", raw,
+                          flags=re.S | re.I)
+            body = re.sub(r"<[^>]+>", "", body)
+            for ch in set(body):
+                cp = ord(ch)
+                if cp > 32 and cp in _full and cp not in _sub:
+                    _missing.setdefault(ch, f)
+        for ch, f in sorted(_missing.items()):
+            problems.append(
+                "font subset: U+%04X (%r) in %s renders in the fallback, "
+                "not Inter; re-subset InterVariable-sub.woff2" % (ord(ch), ch, f))
+    except FileNotFoundError:
+        problems.append("font subset: build/font-*-cmap.txt missing")
     return sorted(set(problems))
 
 
@@ -2039,16 +2349,23 @@ def main():
     ATLAS["points"], ATLAS["regions"] = (lambda d: (d["points"], d["regions"]))(
         atlas_mod.build(OUT, P)[0])
 
+    # The digests have to be known before any page is written, because every
+    # page prints them. figures.css is generated by this build, so it is
+    # stamped from the text about to be written rather than from the copy on
+    # disk, which is still the previous build's.
+    figures_css = ("/* Generated from build/figures.json. Do not edit: the next build\n"
+                   "   overwrites it. Each lifted figure keeps the colour variables and\n"
+                   "   class rules it was drawn against, scoped to its own id so nothing\n"
+                   "   leaks into the page around it. */\n" + strip_css() + "\n")
+    stamp_assets({"figures.css": figures_css})
+
     pages = {"index.html": page_index(), "research.html": page_research(),
              "atlas.html": page_atlas(),
              "coursework.html": page_coursework(), "tools.html": page_tools(),
              "library.html": page_library(), "about.html": page_about(),
              "colophon.html": page_colophon(), "404.html": page_404(),
              "sitemap.xml": page_sitemap(), "robots.txt": page_robots(),
-             "figures.css": ("/* Generated from build/figures.json. Do not edit: the next build\n"
-                             "   overwrites it. Each lifted figure keeps the colour variables and\n"
-                             "   class rules it was drawn against, scoped to its own id so nothing\n"
-                             "   leaks into the page around it. */\n" + strip_css() + "\n")}
+             "figures.css": figures_css}
     changed = []
     for name, text in pages.items():
         path = os.path.join(OUT, name)
@@ -2062,7 +2379,7 @@ def main():
         if os.path.exists(path):
             fit_mobile(path, css)
 
-    n, heads = add_returns_everywhere()
+    n, heads, navs, figs_named = add_returns_everywhere()
 
     # After the pieces, not before: the service worker's version is a digest of
     # the files it caches, and the pass above edits three of them. Generated
@@ -2075,6 +2392,11 @@ def main():
 
     print(f"{len(P)} pieces · {TOTAL_WORDS:,} words · {TOTAL_FIGS} figures · {TOTAL_TBLS} tables")
     print("rewrote: " + (", ".join(changed) if changed else "nothing, pages already current"))
+    if figs_named:
+        print(f"accessible names written on {figs_named} figures")
+    if navs:
+        print(f"section nav rewritten on {navs} "
+              f"{'piece' if navs == 1 else 'pieces'}")
     print(f"return navigation checked on {n} standalone pieces, "
           f"head metadata written on {heads}")
 
