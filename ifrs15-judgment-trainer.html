@@ -1,0 +1,915 @@
+<!doctype html>
+<html lang="en-CA">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>IFRS 15 Judgment Trainer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Spectral:ital,wght@0,400;0,500;0,600;1,400&display=swap">
+  <!--__meta-->
+<meta name="color-scheme" content="light dark">
+<meta name="description" content="A drill on revenue recognition under IFRS 15: 29 determinate items scored against the standard and 33 judgment items that show their reasoning, every answer…">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%2316150f'/><text x='50' y='72' font-size='64' font-family='Helvetica,Arial' font-weight='bold' fill='%23faf9f6' text-anchor='middle'>A</text></svg>">
+<link rel="canonical" href="https://alexrajcoomar.github.io/ifrs15-judgment-trainer.html">
+<meta property="og:title" content="IFRS 15 Judgment Trainer — Alex Rajcoomar">
+<meta property="og:description" content="A drill on revenue recognition under IFRS 15: 29 determinate items scored against the standard and 33 judgment items that show their reasoning, every answer…">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://alexrajcoomar.github.io/ifrs15-judgment-trainer.html">
+<meta property="og:site_name" content="Alex Rajcoomar — portfolio">
+<meta property="og:image" content="https://alexrajcoomar.github.io/og-card.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="IFRS 15 Judgment Trainer — Alex Rajcoomar">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://alexrajcoomar.github.io/og-card.png">
+<script>
+(function(){
+  var d=document.documentElement;
+  try{var t=localStorage.getItem('theme'); if(t) d.setAttribute('data-theme',t);}catch(e){}
+  new MutationObserver(function(){
+    try{
+      var v=d.getAttribute('data-theme');
+      if(v) localStorage.setItem('theme',v); else localStorage.removeItem('theme');
+    }catch(e){}
+  }).observe(d,{attributes:true,attributeFilter:['data-theme']});
+})();
+</script>
+<!--/__meta-->
+</head>
+  <body>
+
+<style>
+:root{
+  --paper:#F0F2EF;
+  --surface:#F7F8F6;
+  --surface-sunk:#E7EAE6;
+  --ink:#151A18;
+  --ink-2:#3E4744;
+  --ink-3:#6B7571;
+  --rule:#CDD3CE;
+  --rule-strong:#A9B2AC;
+  --accent:#2C6B5C;
+  --accent-soft:#DDE8E3;
+  --judgment:#8A6220;
+  --judgment-soft:#F0E6D5;
+  --miss:#9B3A31;
+  --miss-soft:#F2DEDB;
+  --focus:#1F5A97;
+
+  --f-display:"Spectral",Georgia,"Times New Roman",serif;
+  --f-ui:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+
+  --measure:62ch;
+  --s1:4px; --s2:8px; --s3:12px; --s4:16px; --s5:24px; --s6:32px; --s7:48px; --s8:72px;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#0F1413;
+    --surface:#161C1A;
+    --surface-sunk:#0A0E0D;
+    --ink:#E8EDEA;
+    --ink-2:#B4BDB9;
+    --ink-3:#7E8985;
+    --rule:#2A3331;
+    --rule-strong:#3E4A46;
+    --accent:#6FBFA8;
+    --accent-soft:#16302A;
+    --judgment:#D2A354;
+    --judgment-soft:#2E2413;
+    --miss:#DE8A80;
+    --miss-soft:#331B18;
+    --focus:#7FB2E8;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0F1413;
+  --surface:#161C1A;
+  --surface-sunk:#0A0E0D;
+  --ink:#E8EDEA;
+  --ink-2:#B4BDB9;
+  --ink-3:#7E8985;
+  --rule:#2A3331;
+  --rule-strong:#3E4A46;
+  --accent:#6FBFA8;
+  --accent-soft:#16302A;
+  --judgment:#D2A354;
+  --judgment-soft:#2E2413;
+  --miss:#DE8A80;
+  --miss-soft:#331B18;
+  --focus:#7FB2E8;
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--f-ui);
+  font-size:16px;
+  line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3{margin:0;text-wrap:balance;font-weight:600}
+p{margin:0}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+.label{
+  font-family:var(--f-ui);
+  font-size:11px;
+  font-weight:600;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  color:var(--ink-3);
+}
+.cite{font-family:var(--f-mono);font-size:13px;font-variant-numeric:tabular-nums}
+.num{font-variant-numeric:tabular-nums}
+
+/* ---------- shell ---------- */
+.wrap{max-width:1180px;margin:0 auto;padding:0 var(--s5)}
+.masthead{
+  border-bottom:1px solid var(--rule-strong);
+  padding:var(--s7) 0 var(--s5);
+  display:flex;flex-wrap:wrap;gap:var(--s5);align-items:flex-end;justify-content:space-between;
+}
+.masthead h1{
+  font-family:var(--f-display);
+  font-size:clamp(30px,4.4vw,46px);
+  line-height:1.05;
+  letter-spacing:-.015em;
+}
+.masthead .sub{
+  margin-top:var(--s3);
+  max-width:56ch;
+  color:var(--ink-2);
+  font-family:var(--f-display);
+  font-size:17px;
+  line-height:1.5;
+}
+.mast-meta{display:flex;flex-direction:column;gap:var(--s1);text-align:right}
+.mast-meta .cite{color:var(--ink-3)}
+
+.tabs{display:flex;gap:0;border-bottom:1px solid var(--rule);margin-top:var(--s6)}
+.tab{
+  background:none;border:0;border-bottom:2px solid transparent;
+  padding:var(--s3) var(--s4);cursor:pointer;
+  font-size:13px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-3);
+}
+.tab[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--accent)}
+.tab:hover{color:var(--ink)}
+
+.layout{display:grid;grid-template-columns:minmax(0,1fr) 268px;gap:var(--s7);padding:var(--s6) 0 var(--s8)}
+@media (max-width:900px){.layout{grid-template-columns:minmax(0,1fr);gap:var(--s6)}}
+
+/* ---------- item ---------- */
+.spread{display:grid;grid-template-columns:minmax(0,1fr) 186px;gap:var(--s7)}
+@media (max-width:1100px){.spread{grid-template-columns:minmax(0,1fr);gap:var(--s4)}}
+.margin{
+  display:flex;flex-direction:column;gap:var(--s3);align-items:flex-start;
+  border-left:1px solid var(--rule-strong);padding-left:var(--s4);
+  align-self:start;position:sticky;top:var(--s5);
+}
+@media (max-width:1100px){
+  .margin{
+    flex-direction:row;flex-wrap:wrap;align-items:center;gap:var(--s3);
+    border-left:0;padding-left:0;border-bottom:1px solid var(--rule);padding-bottom:var(--s4);margin-bottom:var(--s5);
+    position:static;
+  }
+}
+.margin .idline{font-family:var(--f-mono);font-size:13px;color:var(--ink-3);font-variant-numeric:tabular-nums}
+.stepline{font-family:var(--f-display);font-size:15px;font-style:italic;line-height:1.35;color:var(--ink-2)}
+.chip{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:3px 9px;border:1px solid var(--rule-strong);border-radius:2px;
+  font-size:11px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-2);
+  background:var(--surface);
+}
+.chip.judgment{color:var(--judgment);border-color:var(--judgment);background:var(--judgment-soft)}
+.chip.determinate{color:var(--accent);border-color:var(--accent);background:var(--accent-soft)}
+.chip.pending{color:var(--ink-3)}
+
+.scenario{
+  font-family:var(--f-display);
+  font-size:19px;line-height:1.62;
+  max-width:var(--measure);
+  color:var(--ink);
+}
+.prompt{
+  margin-top:var(--s5);padding:var(--s4) var(--s5);
+  background:var(--surface);border-left:2px solid var(--accent);
+  max-width:var(--measure);
+}
+.prompt.judgment{border-left-color:var(--judgment)}
+.prompt p{font-size:15px;color:var(--ink-2)}
+.prompt .label{display:block;margin-bottom:var(--s2)}
+
+textarea{
+  width:100%;max-width:var(--measure);margin-top:var(--s4);
+  min-height:104px;padding:var(--s3) var(--s4);
+  background:var(--surface);color:var(--ink);
+  border:1px solid var(--rule-strong);border-radius:2px;
+  font-family:var(--f-display);font-size:16px;line-height:1.55;resize:vertical;
+}
+textarea::placeholder{color:var(--ink-3)}
+
+.controls{display:flex;flex-wrap:wrap;gap:var(--s3);margin-top:var(--s5);align-items:center}
+.btn{
+  padding:9px 18px;border:1px solid var(--ink);border-radius:2px;
+  background:var(--ink);color:var(--paper);
+  font-size:14px;font-weight:600;cursor:pointer;
+}
+.btn:hover{opacity:.86}
+.btn.ghost{background:transparent;color:var(--ink);border-color:var(--rule-strong)}
+.btn.ghost:hover{border-color:var(--ink);opacity:1}
+.btn.good{background:var(--accent);border-color:var(--accent);color:var(--paper)}
+.btn.bad{background:transparent;color:var(--miss);border-color:var(--miss)}
+:root[data-theme="dark"] .btn.good,
+:root:not([data-theme="light"]) .btn.good{color:#0F1413}
+.hint{font-size:12px;color:var(--ink-3)}
+kbd{
+  font-family:var(--f-mono);font-size:11px;padding:1px 5px;
+  border:1px solid var(--rule-strong);border-radius:2px;background:var(--surface);color:var(--ink-2);
+}
+
+/* reveal */
+.reveal{margin-top:var(--s6);border-top:1px solid var(--rule-strong);padding-top:var(--s5)}
+.block{margin-bottom:var(--s6);max-width:var(--measure)}
+.block .label{display:block;margin-bottom:var(--s2)}
+.block p{font-family:var(--f-display);font-size:17px;line-height:1.6;color:var(--ink)}
+.block.trap p{color:var(--ink-2)}
+.trap-claim{
+  padding:var(--s3) var(--s4);background:var(--miss-soft);
+  border-left:2px solid var(--miss);margin-bottom:var(--s3);
+}
+.trap-claim p{font-style:italic}
+.authority{
+  display:flex;flex-wrap:wrap;gap:var(--s2);align-items:center;
+  padding:var(--s3) var(--s4);background:var(--surface-sunk);border-radius:2px;
+  max-width:var(--measure);
+}
+.authority .cite{color:var(--ink);line-height:1.5}
+.pendingnote{
+  margin-top:var(--s3);max-width:var(--measure);
+  font-size:13px;color:var(--ink-3);border-left:2px solid var(--rule-strong);padding-left:var(--s3);
+}
+.grade{border-top:1px solid var(--rule);margin-top:var(--s5);padding-top:var(--s5);max-width:var(--measure)}
+.toggle{
+  display:flex;align-items:flex-start;gap:var(--s3);padding:var(--s3) var(--s4);
+  border:1px solid var(--rule-strong);border-radius:2px;background:var(--surface);
+  cursor:pointer;text-align:left;width:100%;margin-bottom:var(--s2);font-size:14px;color:var(--ink-2);
+}
+.toggle[aria-pressed="true"]{border-color:var(--judgment);background:var(--judgment-soft);color:var(--ink)}
+.toggle .box{
+  flex:0 0 auto;width:16px;height:16px;margin-top:2px;
+  border:1px solid var(--rule-strong);border-radius:2px;background:var(--paper);
+}
+.toggle[aria-pressed="true"] .box{background:var(--judgment);border-color:var(--judgment)}
+
+.related{margin-top:var(--s6);border-top:1px solid var(--rule);padding-top:var(--s4);max-width:var(--measure)}
+.related ul{list-style:none;margin:var(--s2) 0 0;padding:0;display:flex;flex-direction:column;gap:var(--s2)}
+.related button{
+  background:none;border:0;padding:0;text-align:left;cursor:pointer;
+  font-size:14px;color:var(--ink-2);border-bottom:1px solid transparent;
+}
+.related button:hover{color:var(--ink);border-bottom-color:var(--accent)}
+.related .cite{color:var(--ink-3);margin-right:var(--s2)}
+
+/* interactions */
+.reveal{animation:rise .28s ease}
+@keyframes rise{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.linkbtn{background:none;border:0;padding:0;font-size:inherit;color:var(--accent);cursor:pointer;border-bottom:1px solid var(--rule-strong)}
+.linkbtn:hover{border-bottom-color:var(--accent)}
+.rowgo{background:none;border:0;padding:0;cursor:pointer}
+.rowgo .cite{color:var(--accent);border-bottom:1px solid transparent}
+.rowgo:hover .cite{border-bottom-color:var(--accent)}
+
+/* ---------- rail ---------- */
+.rail{display:flex;flex-direction:column;gap:var(--s6)}
+@media (max-width:900px){
+  .rail{
+    order:-1;flex-direction:row;flex-wrap:wrap;gap:var(--s4) var(--s5);align-items:flex-end;
+    border-bottom:1px solid var(--rule-strong);padding-bottom:var(--s4);
+  }
+  .rail .railsec{flex:1 1 132px;border-top:0;padding-top:0}
+  .rail .railsec:first-child{flex:1 1 100%}
+  .rail .railsec.keys{display:none}
+  .rail .rail-note{display:none}
+  .rail .queue{display:none}
+  .rail .metric .big{font-size:18px}
+  .rail .label{margin-bottom:var(--s2)}
+}
+.railsec{border-top:1px solid var(--rule-strong);padding-top:var(--s3)}
+.railsec .label{display:block;margin-bottom:var(--s3)}
+.score{display:flex;flex-direction:column;gap:var(--s4)}
+.metric{display:flex;flex-direction:column;gap:6px}
+.metric .top{display:flex;align-items:baseline;justify-content:space-between;gap:var(--s2)}
+.metric .big{font-family:var(--f-mono);font-size:22px;font-weight:500;letter-spacing:-.02em}
+.metric .cap{font-size:12px;color:var(--ink-3)}
+.rail-note{font-size:12px;color:var(--ink-3);line-height:1.45}
+.bar{height:3px;background:var(--surface-sunk);border-radius:2px;overflow:hidden}
+.bar span{display:block;height:100%;background:var(--accent);width:0}
+.bar.j span{background:var(--judgment)}
+
+select{
+  width:100%;padding:8px 10px;background:var(--surface);color:var(--ink);
+  border:1px solid var(--rule-strong);border-radius:2px;font:inherit;font-size:14px;
+}
+.queue{display:flex;flex-wrap:wrap;gap:3px;margin-top:var(--s2)}
+.pip{width:9px;height:9px;border:1px solid var(--rule-strong);border-radius:1px;background:transparent}
+.pip.done{background:var(--rule-strong);border-color:var(--rule-strong)}
+.pip.now{background:var(--accent);border-color:var(--accent)}
+.pip.miss{background:var(--miss);border-color:var(--miss)}
+
+/* ---------- reference table ---------- */
+.filters{display:flex;flex-wrap:wrap;gap:var(--s3);align-items:end;margin-bottom:var(--s5)}
+.filters .f{display:flex;flex-direction:column;gap:6px;min-width:190px}
+.tablewrap{overflow-x:auto;border-top:1px solid var(--rule-strong)}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th{
+  text-align:left;padding:var(--s3) var(--s3) var(--s3) 0;
+  font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);
+  border-bottom:1px solid var(--rule);white-space:nowrap;
+}
+td{padding:var(--s4) var(--s3) var(--s4) 0;border-bottom:1px solid var(--rule);vertical-align:top;color:var(--ink-2)}
+td.sc{color:var(--ink);font-family:var(--f-display);font-size:15px;line-height:1.5;min-width:320px}
+td .cite{color:var(--ink-3);white-space:nowrap}
+tr:hover td{background:var(--surface)}
+
+/* ---------- provenance ---------- */
+.prov{max-width:74ch}
+.prov h2{font-family:var(--f-display);font-size:24px;margin-bottom:var(--s3)}
+.prov h3{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);margin:var(--s6) 0 var(--s3)}
+.prov p{font-family:var(--f-display);font-size:17px;line-height:1.6;color:var(--ink-2);margin-bottom:var(--s3);max-width:var(--measure)}
+.prov strong{color:var(--ink);font-weight:600}
+.prov ul{margin:0 0 var(--s3);padding-left:1.1em;color:var(--ink-2);font-size:15px;line-height:1.6}
+.prov li{margin-bottom:6px}
+.prov a{color:var(--accent);text-decoration:none;border-bottom:1px solid var(--rule-strong)}
+.prov a:hover{border-bottom-color:var(--accent)}
+.caveat{border-left:2px solid var(--miss);background:var(--miss-soft);padding:var(--s4) var(--s5);margin-bottom:var(--s5)}
+.caveat p{color:var(--ink);margin-bottom:0}
+
+.foot{border-top:1px solid var(--rule-strong);padding:var(--s5) 0 var(--s7);font-size:12px;color:var(--ink-3);line-height:1.6}
+.hidden{display:none!important}
+</style>
+
+<div class="wrap">
+  <header class="masthead">
+    <div>
+      <h1>IFRS 15 Judgment Trainer</h1>
+      <p class="sub">Sixty-two items on revenue from contracts with customers. Every answer is tied to a paragraph or a numbered illustrative example, verified against Part I of the CPA Canada Handbook. The judgment calls are deliberately not scored.</p>
+    </div>
+    <div class="mast-meta">
+      <span class="label">Built</span>
+      <span class="cite">21 Aug 2026</span>
+      <span class="label" style="margin-top:8px">Verified against</span>
+      <span class="cite">Handbook Part I, 2026 Ed.</span>
+    </div>
+  </header>
+
+  <nav class="tabs" role="tablist" aria-label="Sections">
+    <button class="tab" role="tab" id="tab-drill" aria-selected="true" aria-controls="view-drill">Drill</button>
+    <button class="tab" role="tab" id="tab-ref" aria-selected="false" aria-controls="view-ref">Reference</button>
+    <button class="tab" role="tab" id="tab-prov" aria-selected="false" aria-controls="view-prov">Provenance</button>
+  </nav>
+
+  <!-- ============ DRILL ============ -->
+  <div id="view-drill" role="tabpanel" aria-labelledby="tab-drill">
+    <div class="layout">
+      <main id="stage" aria-live="polite"></main>
+
+      <aside class="rail">
+        <section class="railsec">
+          <span class="label">Scope</span>
+          <select id="scope" aria-label="Choose which items to drill"></select>
+          <div class="queue" id="queue" aria-hidden="true"></div>
+          <p class="rail-note" id="queuenote" style="margin-top:12px"></p>
+        </section>
+
+        <section class="railsec score">
+          <span class="label">Determinate items</span>
+          <div class="metric">
+            <div class="top"><span class="big" id="detScore">0 / 0</span><span class="cap" id="detPct">&mdash;</span></div>
+            <div class="bar"><span id="detBar"></span></div>
+            <p class="rail-note">Scored. One answer follows from the stated facts.</p>
+          </div>
+        </section>
+
+        <section class="railsec score">
+          <span class="label">Judgment items</span>
+          <div class="metric">
+            <div class="top"><span class="big" id="judScore">0 / 0</span><span class="cap">reasoned</span></div>
+            <div class="bar j"><span id="judBar"></span></div>
+            <p class="rail-note">Not scored right or wrong. Tracked on whether you cited the governing paragraph and named the fact that would flip the answer.</p>
+          </div>
+        </section>
+
+        <section class="railsec">
+          <span class="label">Requeued</span>
+          <div class="metric">
+            <div class="top"><span class="big num" id="reqCount">0</span><span class="cap">items</span></div>
+            <p class="rail-note">A missed item returns five items later. Miss it twice and it returns again.</p>
+          </div>
+        </section>
+
+        <section class="railsec" id="recSec" hidden>
+          <span class="label">On record</span>
+          <div class="metric">
+            <div class="top"><span class="big num" id="recCount">0</span><span class="cap">missed before</span></div>
+            <p class="rail-note">Items missed in earlier sessions, kept in this browser. Drill them with the Previously missed scope, or <button class="linkbtn" id="recClear">clear the record</button>.</p>
+          </div>
+        </section>
+
+        <section class="railsec keys">
+          <span class="label">Keys</span>
+          <p class="rail-note"><kbd>Space</kbd> reveal &nbsp; <kbd>1</kbd>/<kbd>2</kbd> got it / missed, or the two ticks &nbsp; <kbd>N</kbd> next</p>
+        </section>
+      </aside>
+    </div>
+  </div>
+
+  <!-- ============ REFERENCE ============ -->
+  <div id="view-ref" role="tabpanel" aria-labelledby="tab-ref" class="hidden">
+    <div style="padding:var(--s6) 0 var(--s8)">
+      <div class="filters">
+        <div class="f"><span class="label">Step</span><select id="fStep"></select></div>
+        <div class="f"><span class="label">Judgment point</span><select id="fPoint"></select></div>
+        <div class="f"><span class="label">Type</span><select id="fType"></select></div>
+        <div class="f" style="min-width:0;align-self:end"><span class="cite" id="refCount"></span></div>
+      </div>
+      <p class="hint" style="margin:0 0 var(--s4)">Click an item number to open that item in the drill.</p>
+      <div class="tablewrap">
+        <table>
+          <thead><tr><th>Item</th><th>Scenario</th><th>Authority</th><th>Type</th></tr></thead>
+          <tbody id="refBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ PROVENANCE ============ -->
+  <div id="view-prov" role="tabpanel" aria-labelledby="tab-prov" class="hidden">
+    <div class="prov" style="padding:var(--s6) 0 var(--s8)">
+      <h2>What was read, and what was not</h2>
+
+      <p>The governing text in Canada is IFRS 15 as adopted in <strong>Part I of the CPA Canada Handbook</strong>. On 21 August 2026 the whole of IFRS 15 in Part I, 2026 Edition, was read directly: the standard, Appendices A, B and C, and all sixty-five illustrative examples. The Standards and Guidance Collection was dated July 2026 at the time of reading.</p>
+
+      <p><strong>Every paragraph number, example number, figure and conclusion cited in this bank was checked against that text, and no discrepancy was found.</strong> The bank was built first from the AASB and IFRS Foundation reproductions of the IASB text, then verified against the Handbook rather than assumed to match it.</p>
+
+      <h3>Version relied on</h3>
+      <ul>
+        <li>Part I, 2026 Edition, the version presented as in effect on 1 January 2026.</li>
+        <li>Paragraph C1: effective for annual reporting periods beginning on or after 1 January 2018.</li>
+        <li>Paragraph C1A: IFRS 16, issued January 2016, amended paragraphs 5, 97, B66 and B70.</li>
+        <li>Paragraph C1B: Clarifications to IFRS 15, issued April 2016, amended paragraphs 26, 27, 29, B1, B34 to B38, B52 to B53, B58, C2, C5 and C7, deleted B57, and added B34A, B35A, B35B, B37A, B59A, B63A, B63B, C7A and C8A.</li>
+        <li>Appendices A, B and C only. There is no Appendix D in the Part I version.</li>
+      </ul>
+
+      <div class="caveat">
+        <p><strong>IFRS 18 is not in the version this bank reflects.</strong> IFRS 18, issued April 2024, makes consequential amendments to IFRS 15, but the string does not appear anywhere in the Part I text in effect on 1 January 2026. Part I keeps a separate section for standards issued but not yet effective, which was not opened. Anything dated from this bank should say which version it worked from.</p>
+      </div>
+
+      <h3>Two verification passes</h3>
+      <p>An independent agent re-checked eleven high-risk attributions against the free sources and found one real error: <strong>paragraph 62(c) has two limbs</strong>, a reason other than the provision of finance and a difference proportional to that reason. The original wording carried only the first, which overstates how easily 62(c) is met. The Handbook pass then confirmed the corrected wording, along with the sub-clause labels in paragraph 12, the single-uncertainty reading of paragraph 54 that makes Example 21 work, and the separate treatment of the CU900 credit in Example 5 Case B.</p>
+
+      <h3>Not covered</h3>
+      <p>Warranties, repurchase agreements, bill-and-hold, consignment, customer acceptance, breakage, non-cash consideration, loyalty programmes, renewal options, transition, and ASPE Section 3400. These are absent because the bank stopped, not because the source failed. No issuer disclosures appear anywhere: nothing was invented, approximated or reconstructed to fill that gap.</p>
+
+      <h3>One correction worth carrying</h3>
+      <p><strong>Control is not an Appendix A defined term.</strong> Appendix A defines nine terms and control is not among them. Control of an asset is described in paragraph 33, with the point-in-time indicators in paragraph 38. Checked in the Handbook itself.</p>
+
+      <h3>Other sources</h3>
+      <ul>
+        <li>Four <a href="https://www.ifrs.org/supporting-implementation/supporting-materials-by-ifrs-standards/ifrs-15/" target="_blank" rel="noopener">IFRS Interpretations Committee agenda decisions</a> read in full and cited as authority: January 2019, June 2019, March 2020 and May 2022.</li>
+        <li><a href="https://www.bcsc.bc.ca/-/media/PWS/New-Resources/Securities-Law/Instruments-and-Policies/Policy-5/51364-CSA-Staff-Notice-November-3-2022.pdf" target="_blank" rel="noopener">CSA Staff Notice 51-364</a> and <a href="https://www.bcsc.bc.ca/-/media/PWS/New-Resources/Securities-Law/Instruments-and-Policies/Policy-5/51365-CSA-Staff-Notice-November-7-2024.pdf" target="_blank" rel="noopener">51-365</a>, on revenue disclosure deficiencies found in Canadian continuous disclosure reviews.</li>
+        <li>Build-time text from the <a href="https://standards.aasb.gov.au/aasb-15-may-2022" target="_blank" rel="noopener">AASB 15 compiled standard</a> and the <a href="https://www.aasb.gov.au/admin/file/content105/c9/IFRS15_IE_1-22.pdf" target="_blank" rel="noopener">IFRS Foundation illustrative examples</a>.</li>
+      </ul>
+    </div>
+  </div>
+
+  <footer class="foot">
+    Judgment items are never scored right or wrong, because the standard permits a range on their stated facts. Items you miss are remembered in this browser, where it allows it, so the Previously missed scope can rebuild them on a later visit; scores and position reset on reload. Verified against CPA Canada Handbook Part I, 2026 Edition, on 21 August 2026.
+  </footer>
+</div>
+
+<script id="bank" type="application/json">{"meta":{"title":"IFRS 15 five-step trainer, item bank","built_on":"2026-08-21","built_for":"Alex Rajcoomar, personal study system","item_count":62,"type_split":{"determinate":29,"judgment":33},"scoring_rule":"Items typed 'determinate' resolve to one answer on the stated facts and may be scored right or wrong. Items typed 'judgment' must not be scored right or wrong: the standard permits a range on the stated facts, or the conclusion turns on a fact the item deliberately withholds (legal enforceability in a jurisdiction, whether activities significantly affect intellectual property, whether a shortfall is a price concession or a credit loss). Score judgment items on whether the reasoning cites the governing paragraph and identifies the fact that would flip the conclusion.","provenance_scheme":{"retrieved":"Every authority in this item was read from a source listed in the sources registry and confirmed against CPA Canada Handbook Part I, 2026 Edition, on 2026-08-21. No paragraph number, example number, figure or conclusion was written from memory.","supplied":"Reserved. Use for items built from text Alex pastes in later, in particular Illustrative Examples 27 to 63, which were not retrievable from any free source tried."},"source_text_caveat":"Superseded by verified_against_handbook. The bank was built from AASB 15, NZ IFRS 15 and the IFRS Foundation illustrative examples, then verified paragraph by paragraph against CPA Canada Handbook Part I. Items citing an illustrative example numbered 27 to 63 were written from the Handbook text directly, because those examples were not retrievable from any free source.","field_definitions":{"id":"Stable key. Do not renumber on insert.","step":"step_1_contract | step_2_performance_obligations | step_3_transaction_price | step_4_allocation | step_5_recognition | adjacent_contract_costs | adjacent_presentation_disclosure. The last two are not steps of the five-step model and are labelled so rather than forced into a step.","judgment_point":"Which of the nine judgment areas in the brief the item drills, or 'mechanics' where it drills a rule rather than a judgment.","scenario":"Self-contained fact pattern. Where an illustrative example covers the point, the facts are the example's facts.","answer":"The treatment, with the reasoning move that produces it.","authority":"Governing paragraph number, illustrative example number, or agenda decision.","distractor":"The most attractive wrong answer.","why_wrong":"Why the distractor fails, tied to the same authority.","type":"determinate | judgment. See scoring_rule.","tests":"The cognitive move the item is built to train.","disclosure_example":"Empty by instruction. Backfill from the issuer teardown. See the backfill ranking in the companion file.","provenance":"retrieved | supplied","source_ids":"Keys into the sources registry.","example_coverage_pending":"Non-null only where an illustrative example bears on the point and has not been worked into the item. All principal versus agent, licensing, allocation, contract cost, material right, presentation and significant financing component items are now anchored to their examples."},"verified_against_handbook":"Verified 21 Aug 2026 against IFRS 15 in Part I of the CPA Canada Handbook, 2026 Edition, the version presented as in effect on 1 January 2026, read on Knotia through the University of Waterloo library. The full standard, Appendices A to C and all 65 illustrative examples were read. Every paragraph number, example number, figure and conclusion cited in this bank was checked against that text. No discrepancy was found between the Handbook text and the AASB and IFRS Foundation sources used to build the bank."},"sources":[{"id":"S1","title":"Illustrative Examples accompanying IFRS 15 Revenue from Contracts with Customers","publisher":"IFRS Foundation, copyright date January 2022, hosted by the Australian Accounting Standards Board","url":"https://www.aasb.gov.au/admin/file/content105/c9/IFRS15_IE_1-22.pdf","retrieved":"2026-08-21","coverage_note":"The table of contents was retrieved in full and lists Examples 1 to 63. The body text retrieved terminates during Example 26. Every example cited in this bank is drawn from the retrieved body text, that is Examples 1 to 26 only."},{"id":"S2","title":"AASB 15 Revenue from Contracts with Customers, Recognition section, paragraphs 9 to 45","publisher":"Australian Accounting Standards Board, compiled standard","url":"https://standards.aasb.gov.au/node/2853","retrieved":"2026-08-21"},{"id":"S3","title":"AASB 15, Measurement section, paragraphs 46 to 90","publisher":"Australian Accounting Standards Board, compiled standard","url":"https://standards.aasb.gov.au/node/2854","retrieved":"2026-08-21"},{"id":"S4","title":"AASB 15, Contract costs section, paragraphs 91 to 104","publisher":"Australian Accounting Standards Board, compiled standard","url":"https://standards.aasb.gov.au/node/2855","retrieved":"2026-08-21"},{"id":"S5","title":"AASB 15, Presentation section, paragraphs 105 to 109","publisher":"Australian Accounting Standards Board, compiled standard","url":"https://standards.aasb.gov.au/node/2856","retrieved":"2026-08-21"},{"id":"S6","title":"AASB 15, Disclosure section, paragraphs 110 to 129","publisher":"Australian Accounting Standards Board, compiled standard","url":"https://standards.aasb.gov.au/node/2857","retrieved":"2026-08-21"},{"id":"S7","title":"AASB 15, Appendix A, Defined terms","publisher":"Australian Accounting Standards Board, compiled standard","url":"https://standards.aasb.gov.au/node/126","retrieved":"2026-08-21"},{"id":"S8","title":"AASB 15, Appendix B, Application guidance","publisher":"Australian Accounting Standards Board, compiled standard, page marked compilation 07-21 sourced from COMPmar20","url":"https://standards.aasb.gov.au/node/128","retrieved":"2026-08-21"},{"id":"S9","title":"NZ IFRS 15 Revenue from Contracts with Customers, standards navigator, paragraphs 1 to 129 and appendices","publisher":"External Reporting Board, New Zealand","url":"https://standards.xrb.govt.nz/standards-navigator/nz-ifrs-15/","retrieved":"2026-08-21","coverage_note":"Used as a second reading of paragraphs 9 to 38. This source returned an unreliable reading of Appendix B, so Appendix B in this bank rests on S8 alone."},{"id":"S10","title":"IFRS Interpretations Committee agenda decision, Costs to Fulfil a Contract (IFRS 15), June 2019","publisher":"IFRS Foundation","url":"https://www.ifrs.org/content/dam/ifrs/supporting-implementation/agenda-decisions/2019/ifrs-15-costs-to-fulfil-a-contract-june-2019.pdf","retrieved":"2026-08-21"},{"id":"S11","title":"IFRS Interpretations Committee agenda decision, Training Costs to Fulfil a Contract (IFRS 15), March 2020","publisher":"IFRS Foundation","url":"https://www.ifrs.org/content/dam/ifrs/supporting-implementation/agenda-decisions/2020/ifrs15-training-costs-to-fulfil-a-contract-mar-20.pdf","retrieved":"2026-08-21"},{"id":"S12","title":"IFRS Interpretations Committee agenda decision, Assessment of Promised Goods or Services (IFRS 15), January 2019","publisher":"IFRS Foundation","url":"https://www.ifrs.org/content/dam/ifrs/supporting-implementation/agenda-decisions/2019/ifrs-15-assessment-of-promised-goods-or-services-jan-19.pdf","retrieved":"2026-08-21"},{"id":"S13","title":"IFRS Interpretations Committee agenda decision, Principal versus Agent: Software Reseller (IFRS 15), May 2022","publisher":"IFRS Foundation","url":"https://www.ifrs.org/content/dam/ifrs/supporting-implementation/agenda-decisions/2022/principal-versus-agent-software-reseller-may-2022.pdf","retrieved":"2026-08-21","coverage_note":"The retrieval did not surface a printed date on the face of the document. The May 2022 date comes from the IFRS Foundation's own supporting materials listing, S19, and from the file name."},{"id":"S14","title":"CSA Staff Notice 51-364, Continuous Disclosure Review Program Activities for the fiscal years ended March 31, 2022 and March 31, 2021, published 3 November 2022","publisher":"Canadian Securities Administrators, copy hosted by the British Columbia Securities Commission","url":"https://www.bcsc.bc.ca/-/media/PWS/New-Resources/Securities-Law/Instruments-and-Policies/Policy-5/51364-CSA-Staff-Notice-November-3-2022.pdf","retrieved":"2026-08-21","coverage_note":"The retrieval located the IFRS 15 commentary under a Hot Topics heading within the financial statement deficiencies material and reported it at pages 5 to 7. The page range is the retrieval's report and is not independently confirmed."},{"id":"S15","title":"CSA Staff Notice 51-365, Continuous Disclosure Review Program Activities for the fiscal years ended March 31, 2024 and March 31, 2023, published 7 November 2024","publisher":"Canadian Securities Administrators, copy hosted by the British Columbia Securities Commission","url":"https://www.bcsc.bc.ca/-/media/PWS/New-Resources/Securities-Law/Instruments-and-Policies/Policy-5/51365-CSA-Staff-Notice-November-7-2024.pdf","retrieved":"2026-08-21","coverage_note":"No page numbers were captured for the revenue commentary."},{"id":"S16","title":"IFRS 15 Revenue from Contracts with Customers, standard page","publisher":"IFRS Foundation","url":"https://www.ifrs.org/issued-standards/list-of-standards/ifrs-15-revenue-from-contracts-with-customers/","retrieved":"2026-08-21"},{"id":"S17","title":"IFRS Accounting Standards application around the world, jurisdictional profile: Canada, profile dated 3 October 2023","publisher":"IFRS Foundation","url":"https://www.ifrs.org/content/dam/ifrs/publications/jurisdictions/pdf-profiles/canada-ifrs-profile.pdf","retrieved":"2026-08-21"},{"id":"S18","title":"Effective Dates, IFRS Accounting Standards, Part I of the CPA Canada Handbook","publisher":"FRAS Canada","url":"https://www.frascanada.ca/en/ifrsstandards/effective-dates","retrieved":"2026-08-21"},{"id":"S19","title":"IFRS 15 supporting material, including the list of IFRS Interpretations Committee agenda decisions","publisher":"IFRS Foundation","url":"https://www.ifrs.org/supporting-implementation/supporting-materials-by-ifrs-standards/ifrs-15/","retrieved":"2026-08-21"},{"id":"S20","title":"IFRS 15 Revenue from contracts with customers, CPA Canada Handbook Part I, 2026 Edition, IFRS Accounting Standards in effect on January 1, 2026, including Appendices A to C and the Illustrative Examples","publisher":"CPA Canada, read on Knotia through the University of Waterloo library proxy. The CPA Canada Standards and Guidance Collection was dated July 2026 at the time of reading","url":"https://edu-knotia-ca.proxy.lib.uwaterloo.ca/ (subscription, University of Waterloo library access)","retrieved":"2026-08-21","coverage_note":"The full standard, Appendices A to C and all 65 illustrative examples (1 to 63, including 46A and 48A) were read directly. This is the governing Canadian text. Where an item cites both S20 and an earlier source, the earlier source was the original retrieval and S20 confirmed it."}],"items":[{"id":"S1-01","step":"step_1_contract","judgment_point":"mechanics","scenario":"A real estate developer sells a building for CU1,000,000. The customer pays a non-refundable deposit of CU50,000 at inception and finances the remaining CU950,000 through a long-term loan from the developer. The loan is non-recourse, so on default the developer can repossess the building but cannot pursue the customer for any shortfall. The customer intends to open a restaurant in a market with high competition, has limited restaurant experience, and has no other income or assets to service the loan. The developer's cost is CU600,000. Control of the building passes at inception.","answer":"No contract exists for IFRS 15 purposes, because the collectability criterion in paragraph 9(e) is not met: the customer's repayment depends on income from a risky new venture, the customer has no other resources, and the non-recourse structure caps the developer's recovery. Since neither event in paragraph 15 has occurred, the CU50,000 is recognised as a liability under paragraph 16, not as revenue, and the developer keeps assessing under paragraph 14 whether the criteria are later met.","authority":"IFRS 15.9(e), .14, .15, .16; IE Example 1","distractor":"Recognise CU50,000 of revenue now, because the deposit is non-refundable and control of the building has passed.","why_wrong":"Paragraph 15 allows revenue for consideration received under a failed contract only where the entity has no remaining obligations and substantially all the consideration has been received and is non-refundable, or the contract has been terminated. Neither holds: CU950,000 remains outstanding and the contract is live. Paragraph 16 requires a liability.","type":"determinate","tests":"That failing paragraph 9 does not mean 'defer and forget'. It routes you to paragraphs 14 to 16, which have their own recognition gate.","disclosure_example":"","provenance":"retrieved","source_ids":["S1","S2","S20"],"example_coverage_pending":null},{"id":"S1-02","step":"step_1_contract","judgment_point":"variable_consideration_and_constraint","scenario":"An entity sells 1,000 units of a prescription drug to a new customer in a region in significant economic difficulty, for promised consideration of CU1,000,000. The entity does not expect to collect the full amount but expects the region to recover in two to three years, and it values the relationship for access to other customers in that region. It estimates it will be entitled to CU400,000.","answer":"A contract exists. The collectability test in paragraph 9(e) is applied to the consideration to which the entity expects to be entitled, not to the stated price. Because paragraphs 47 and 52(b) make the promised consideration variable where the entity expects to offer an implicit price concession, the transaction price is estimated at CU400,000, and it is probable the entity will collect that amount. Revenue of CU400,000 is recognised.","authority":"IFRS 15.9(e), .47, .52(b); IE Example 2","distractor":"Conclude that paragraph 9(e) fails because the entity does not expect to collect CU1,000,000, so no contract exists and nothing is recognised.","why_wrong":"Paragraph 9(e) asks about the consideration to which the entity will be entitled, and paragraph 52(b) makes clear that a shortfall the entity expects to grant is a price concession that reduces the transaction price rather than a collectability failure. Example 2 concludes 9(e) is met once the price concession is taken into account.","type":"judgment","tests":"Splitting an expected shortfall into price concession (transaction price, IFRS 15) versus credit loss (impairment, IFRS 9). The same cash outcome is reported in two different places depending on this call.","disclosure_example":"","provenance":"retrieved","source_ids":["S1","S2","S3","S20"],"example_coverage_pending":null},{"id":"S1-03","step":"step_1_contract","judgment_point":"variable_consideration_and_constraint","scenario":"A hospital provides emergency room services to an uninsured patient it has not treated before. Law requires it to treat the patient before assessing ability or intention to pay. The standard rate for the services is CU10,000. After treatment the hospital assigns the patient to a customer class and, using its collection history for that class, estimates it will be entitled to CU1,000.","answer":"At inception the paragraph 9 criteria are not met, because the hospital cannot assess the patient's commitment before treating. Under paragraph 14 it keeps assessing. Applying paragraphs 47 and 52(b), the promised consideration is variable and the transaction price is estimated at CU1,000, not the CU10,000 invoiced rate. On the collection history for that class it is probable CU1,000 will be collected, so 9(e) is met and revenue of CU1,000 is recognised.","authority":"IFRS 15.9, .14, .47, .52(b); IE Example 3","distractor":"Recognise revenue of CU10,000, the amount invoiced, and record a bad debt expense of CU9,000.","why_wrong":"The invoiced standard rate is not the transaction price where the entity expects to accept less. Paragraph 52(b) treats the expected shortfall as an implicit price concession, so it never enters revenue, rather than entering revenue and coming back out as an expense.","type":"judgment","tests":"That the gross-up choice is not cosmetic. Revenue and bad debt expense are different lines with different users, and the customer class evidence is what supports the call.","disclosure_example":"","provenance":"retrieved","source_ids":["S1","S2","S3","S20"],"example_coverage_pending":null},{"id":"S1-04","step":"step_1_contract","judgment_point":"mechanics","scenario":"An entity licenses a patent for a usage-based royalty. The criteria in paragraph 9 are met at inception, and for two years the entity recognises revenue as the customer reports usage. In year two the customer's finances deteriorate and it makes only nominal payments. In year three the customer loses its access to credit and its major customers, and the entity concludes it is unlikely to receive further payments.","answer":"The deterioration is a significant change in facts and circumstances, so under paragraph 13 the entity reassesses the paragraph 9 criteria and concludes 9(e) is no longer met. It recognises no further revenue for the customer's future usage. The receivable already recognised continues to be accounted for and impaired under IFRS 9.","authority":"IFRS 15.13, .9(e), B63; IE Example 4","distractor":"Reverse the revenue recognised in years one and two, because the paragraph 9 criteria are now shown to have failed.","why_wrong":"Paragraph 13 makes the reassessment prospective: it applies from the change in facts and circumstances. Example 4 stops future revenue and leaves the existing receivable to IFRS 9 impairment.","type":"determinate","tests":"That step 1 is a live test, reassessed only on a significant change, and that reassessment does not reach backwards.","disclosure_example":"","provenance":"retrieved","source_ids":["S1","S2","S8","S20"],"example_coverage_pending":null},{"id":"S1-05","step":"step_1_contract","judgment_point":"mechanics","scenario":"A software vendor signs a services agreement with no fixed duration. Either party may terminate at any time on 30 days' notice without compensating the other. At the reporting date the vendor has not begun performing and has received nothing.","answer":"There is no contract to account for. Paragraph 12 says a contract does not exist if each party has a unilateral enforceable right to terminate a wholly unperformed contract without compensating the other, and a contract is wholly unperformed when the entity has not transferred any promised goods or services and has not received, and is not entitled to receive, any consideration. Paragraph 11 also limits IFRS 15 to the period in which the parties have present enforceable rights and obligations, so once performance begins the accounting contract is that enforceable period, not the notional open-ended arrangement.","authority":"IFRS 15.10, .11, .12","distractor":"Account for the full expected life of the relationship, because both parties intend it to continue for several years and the entity's forecasts assume that.","why_wrong":"Paragraph 10 defines a contract by enforceable rights and obligations, determined by law, and paragraph 11 restricts the accounting to the period in which those rights exist. Expectation and intention do not create enforceability.","type":"judgment","tests":"Contract term as an enforceability question, not a commercial expectation. This drives the disclosure of remaining performance obligations under paragraph 120, which is one of the deficiencies CSA staff have called out.","disclosure_example":"","provenance":"retrieved","source_ids":["S2","S6","S14","S20"],"example_coverage_pending":null},{"id":"MOD-01","step":"step_1_contract","judgment_point":"contract_modifications","scenario":"An entity contracts to sell 120 products for CU12,000, that is CU100 each, over six months. Control of each product transfers at a point in time. After 60 products have been transferred, the parties agree to add 30 more identical products at CU95 each, which is the stand-alone selling price at the date of the modification.","answer":"The modification is a separate contract under paragraph 20, because the scope increased by distinct goods and the price increased by their stand-alone selling price. The original contract is untouched: the remaining 60 original products are still recognised at CU100 each, and the 30 added products at CU95 each.","authority":"IFRS 15.20; IE Example 5, Case A","distractor":"Blend the remaining consideration over the remaining 90 products at a single average price.","why_wrong":"Blending is the paragraph 21(a) outcome, which applies only where paragraph 20 is not met. Both conditions in paragraph 20 are satisfied here, so paragraph 21 never engages.","type":"determinate","tests":"Running paragraph 20 as a gate before paragraph 21, rather than reaching for the blended-price mechanic on sight of a modification.","disclosure_example":"","provenance":"retrieved","source_ids":["S1","S2","S20"],"example_coverage_pending":null},{"id":"MOD-02","step":"step_1_contract","judgment_point":"contract_modifications","scenario":"Same original contract: 120 products at CU100 each, 60 already transferred. While negotiating the sale of 30 additional products, the customer complains that the 60 products already delivered contained minor defects. The entity agrees a partial credit of CU15 per unit on those 60 units, a credit of CU900 in total, and a price of CU80 per unit for the 30 additional products. The parties agree the CU900 credit will be applied against the amount owed for the additional products, so the customer pays CU1,500 for them.","answer":"Two separate things happen. The CU900 credit relates to products already transferred and is a reduction of the transaction price, and therefore of revenue, for those units at the date of the modification. The remaining 90 units, being the 60 original units not yet transferred and the 30 added units, are accounted for prospectively under paragraph 21(a) at a blended price of CU93.33 each, computed as ((60 x CU100) + (30 x CU80)) divided by 90.","authority":"IFRS 15.20, .21(a), .87; IE Example 5, Case B","distractor":"Treat the whole modification as a separate contract at CU80 per unit, because the additional products are distinct and are priced at a negotiated arm's length amount.","why_wrong":"Paragraph 20 requires both that the added goods are distinct and that the price increase reflects their stand-alone selling price. CU80 is not the stand-alone selling price of the additional products, so paragraph 20(b) fails and paragraph 21(a) applies.","type":"determinate","tests":"Separating the price adjustment that belongs to past performance from the modification that belongs to future performance. Students routinely fold the CU900 into the blended price and lose both effects.","disclosure_example":"","provenance":"retrieved","source_ids":["S1","S2","S3","S20"],"example_coverage_pending":null},{"id":"MOD-03","step":"step_1_contract","judgment_point":"series_guidance","scenario":"An entity contracts to clean a customer's offices weekly for three years at CU100,000 per year. Each week of service is distinct, and the entity accounts for the promise as a single performance obligation under paragraph 22(b). At the end of year two, with the year three fee still unpaid, the parties modify the contract: the year three fee is cut to CU80,000 and the contract is extended for three further years at CU200,000 in total. The stand-alone selling price of the service at the start of year three is CU80,000 per year, so the stand-alone selling price of four years of service is CU320,000, against remaining consideration of CU280,000.","answer":"Account for the modification under paragraph 21(a), as a termination of the existing contract and the creation of a new one, because the remaining services are distinct from those already transferred. Revenue for the remaining four years is CU70,000 per year, being CU280,000 over four years.","authority":"IFRS 15.21(a), .22(b); IE Example 7","distractor":"Apply paragraph 21(b) and take a cumulative catch-up adjustment, because the cleaning services were accounted for as one single performance obligation and that obligation is only partially satisfied.","why_wrong":"Paragraph 21(b) applies where the remaining goods or services are not distinct and form part of a single partially satisfied performance obligation. Here each week of cleaning is distinct; the series guidance in paragraph 22(b) bundles distinct services into one performance obligation for measurement, and it does not make them non-distinct for the purposes of paragraph 21.","type":"determinate","tests":"The highest-yield modification trap. Accounting for a series as one performance obligation does not convert distinct services into non-distinct ones, so 21(a) not 21(b).","disclosure_example":"","provenance":"retrieved","source_ids":["S1","S2","S20"],"example_coverage_pending":null},{"id":"MOD-04","step":"step_1_contract","judgment_point":"contract_modifications","scenario":"An entity contracts to build a building on the customer's land for fixed consideration of CU1,000,000 plus a bonus of CU200,000 if the building is complete within 24 months. Expected costs are CU700,000. The bonus is excluded from the transaction price at inception because of the constraint. By the end of year one the entity has incurred CU420,000 of costs, is 60 per cent complete on a cost input method, and has recognised CU600,000 of revenue. Early in year two the parties change the floor plan: fixed consideration rises by CU150,000, expected costs rise by CU120,000, and the bonus deadline is extended by six months. The entity now concludes it is highly probable that including the bonus will not cause a significant revenue reversal, because the remaining work is interior and not exposed to weather.","answer":"The remaining goods and services are not distinct from those already transferred, so under paragraph 21(b) the modification is accounted for as part of the existing contract, with a cumulative catch-up adjustment. The transaction price becomes CU1,350,000, being CU1,150,000 fixed plus the CU200,000 bonus now included under paragraph 56. Total expected costs become CU820,000, so progress is 51.2 per cent, cumulative revenue is CU691,200, and the catch-up adjustment recognised at the modification date is CU91,200.","authority":"IFRS 15.21(b), .56, .27(b), .29, .87 to .90; IE Example 8","distractor":"Treat the modification prospectively as a new contract under paragraph 21(a), allocating the remaining CU750,000 of consideration to the remaining work.","why_wrong":"Paragraph 21(a) applies only where the remaining goods or services are distinct from those already transferred. A partially built building is a single performance obligation under paragraphs 27(b) and 29, so paragraph 21(b) and a cumulative catch-up apply.","type":"judgment","tests":"Two judgments stacked in one entry: whether remaining performance is distinct, which picks the modification mechanic, and whether the constraint has lifted, which changes the transaction price. Both feed one number.","disclosure_example":"","provenance":"retrieved","source_ids":["S1","S2","S3","S20"],"example_coverage_pending":null},{"id":"MOD-05","step":"step_1_contract","judgment_point":"contract_modifications","scenario":"A contractor agrees to build on the customer's land, and the contract requires the customer to provide access within 30 days. A storm damages the site after inception, and access is given 120 days late. The contract entitles the contractor to compensation for costs directly caused by a delay of this kind. The customer disputes the amount. At the reporting date the scope change is agreed but the price change is not.","answer":"Assess whether the claim is legally enforceable. If it is, account for it as a contract modification even though the price is not yet agreed, because paragraph 19 says a modification can exist where the parties have approved a change in scope but not the corresponding price change. The modification adds no distinct goods or services, so paragraph 21(b) applies. The price change is estimated as variable consideration under paragraphs 50 to 54 and constrained under paragraphs 56 to 58, and the measure of progress is updated.","authority":"IFRS 15.18, .19, .21(b), .50 to .54, .56 to .58; IE Example 9","distractor":"Recognise the claim as a receivable and other income when the claim is submitted, since the contract entitles the contractor to compensation.","why_wrong":"Paragraph 19 routes an unapproved or undetermined price change through the variable consideration requirements, including the constraint in paragraphs 56 to 58. It becomes part of the transaction price and therefore of revenue, and only to the extent a significant reversal is highly probable not to occur.","type":"judgment","tests":"Claims and variations. Enforceability is the gate, and once through it the amount is variable consideration, not a separate gain.","disclosure_example":"","provenance":"retrieved","source_ids":["S1","S2","S3","S20"],"example_coverage_pending":null},{"id":"PO-01","step":"step_2_performance_obligations","judgment_point":"distinct_and_separately_identifiable","scenario":"A contractor agrees to build a hospital. It is responsible for overall project management and for engineering, site clearance, foundation, procurement, construction of the structure, piping and wiring, equipment installation and finishing.","answer":"A single performance obligation. The individual goods and services are capable of being distinct under paragraph 27(a), because the customer could benefit from them on their own or with readily available resources. But the promise to transfer them is not separately identifiable under paragraph 27(b), because under paragraph 29(a) the contractor provides a significant service of integrating them into the combined output the customer contracted for.","authority":"IFRS 15.27(a), .27(b), .29(a); IE Example 10, Case A","distractor":"Each work package is a separate performance obligation, because the contractor sells engineering, procurement and construction services separately to other customers and each has an observable stand-alone selling price.","why_wrong":"Selling the components separately answers paragraph 27(a) only. Paragraph 27 requires both criteria, and paragraph 29(a) defeats the second one where the entity is providing a significant integration service.","type":"determinate","tests":"That 27(a) and 27(b) are conjunctive, and that the answer to 'do you sell it separately' does not settle the question.","disclosure_example":"","provenance":"retrieved","source_ids":["S1","S2","S20"],"example_coverage_pending":null},{"id":"PO-02","step":"step_2_performance_obligations","judgment_point":"series_guidance","scenario":"An entity contracts to manufacture multiple units of a highly complex, specialised device. It must establish the manufacturing process, procure materials, manage subcontractors, and perform manufacture, assembly and testing. The specifications are unique to this customer. Each completed unit functions independently.","answer":"A single performance obligation covering all the units. Each device is capable of being distinct under paragraph 27(a), since each unit works on its own. But the promises are not separately identifiable under paragraph 27(b), because the nature of the promise is a significant integration service and the entity's activities are highly interdependent and highly interrelated under paragraph 29.","authority":"IFRS 15.22(b), .27(a), .27(b), .29; IE Example 10, Case B","distractor":"A series of distinct goods under paragraph 22(b), accounted for as one performance obligation and measured with a single method of progress.","why_wrong":"The conclusion looks similar but the route matters. Paragraph 22(b) requires a series of goods or services that are distinct. Here paragraph 27(b) is not met, so the goods are not distinct and the series guidance is never reached. The difference shows up on modification, as in item MOD-03, and in how progress is measured.","type":"judgment","tests":"Two roads to 'one performance obligation' that behave differently later. Getting the same answer by the wrong route is the failure this item is built to catch.","disclosure_example":"","provenance":"retrieved","source_ids":["S1","S2","S20"],"example_coverage_pending":null},{"id":"PO-03","step":"step_2_performance_obligations","judgment_point":"distinct_and_separately_identifiable","scenario":"A software developer contracts to transfer a software licence, perform an installation service, and provide unspecified software updates and technical support for two years. It sells each of these separately. The installation is routine and can be performed by other providers. The software remains functional without the updates and support.","answer":"Four performance obligations: the licence, the installation service, the updates and the technical support. Paragraph 27(a) is met because the customer can benefit from each on its own or with readily available resources, and paragraph 27(b) is met because none of the paragraph 29 factors applies: there is no significant integration service, no significant modification or customisation, and the items are not highly interdependent or highly interrelated.","authority":"IFRS 15.27, .29; IE Example 11, Case A","distractor":"One performance obligation, because the customer bought a working software solution and would not have contracted for the licence without the installation and support.","why_wrong":"Paragraph 29 sets the test for separately identifiable, and none of its factors is present on these facts. Commercial packaging is not one of the factors.","type":"determinate","tests":"The baseline case, so the customisation case that follows has something to be contrasted against.","disclosure_example":"","provenance":"retrieved","source_ids":["S1","S2","S20"],"example_coverage_pending":null},{"id":"PO-04","step":"step_2_performance_obligations","judgment_point":"distinct_and_separately_identifiable","scenario":"Same facts as the previous item, except the installation service substantially customises the software, adding significant new functionality so that it interfaces with the customer's other customised applications. The developer still sells the licence, installation, updates and support separately.","answer":"Three performance obligations. The licence and the customised installation service are combined, because the entity is providing a significant service of integrating them into the combined output under paragraph 29(a) and the installation significantly modifies and customises the software under paragraph 29(b), so paragraph 27(b) is not met for the licence. The updates and the technical support remain distinct.","authority":"IFRS 15.27(b), .29(a), .29(b); IE Example 11, Case B","distractor":"Four performance obligations as in Case A, because the entity still sells the licence, the installation, the updates and the support separately, so each is capable of being distinct.","why_wrong":"Capable of being distinct is paragraph 27(a). The customisation is a paragraph 29 factor and therefore attacks paragraph 27(b), which is a separate and cumulative requirement.","type":"judgment","tests":"The single most useful contrast in step 2. Same product set, one changed fact, different unit of account. The examinable move is naming which paragraph 29 factor did the work.","disclosure_example":"","provenance":"retrieved","source_ids":["S1","S2","S20"],"example_coverage_pending":null},{"id":"PO-05","step":"step_2_performance_obligations","judgment_point":"distinct_and_separately_identifiable","scenario":"An entity sells equipment that is operational without any customisation, together with non-complex installation services that several other providers could perform. The contract requires the customer to use the entity's installation services.","answer":"Two performance obligations, the equipment and the installation. The contractual requirement to use the entity's installer does not change the analysis. The customer can benefit from the equipment on its own or with readily available resources under paragraph 27(a), and the promises are separately identifiable under paragraph 27(b), since none of the paragraph 29 factors applies.","authority":"IFRS 15.27, .28, .29; IE Example 11, Cases C and D","distractor":"One performance obligation, because the customer is contractually barred from obtaining the equipment without buying installation from this entity, so it cannot benefit from the equipment on its own.","why_wrong":"Paragraph 27(a) is assessed on the characteristics of the good or service and the resources readily available to the customer, not on contractual limits the parties have written into this contract. Example 11 Case D states the contractual requirement does not change the evaluation.","type":"judgment","tests":"That contractual restrictions do not shrink the unit of account. This is the recurring error in bundled hardware and services contracts.","disclosure_example":"","provenance":"retrieved","source_ids":["S1","S2","S20"],"example_coverage_pending":null},{"id":"PO-06","step":"step_2_performance_obligations","judgment_point":"distinct_and_separately_identifiable","scenario":"An entity sells off-the-shelf equipment together with specialised consumables that only it produces. The equipment cannot function without the consumables. The entity regularly sells the consumables separately, and the contract requires delivery of consumables at predetermined intervals over three years.","answer":"Two performance obligations, the equipment and the consumables. The consumables are readily available under paragraph 28 because the entity regularly sells them separately, so paragraph 27(a) is met for the equipment. Paragraph 27(b) is met because, although the customer can benefit from the consumables only after obtaining the equipment, neither significantly affects the other in the sense of paragraph 29(c): the entity can fulfil each promise independently of the other.","authority":"IFRS 15.27, .28, .29(c); IE Example 11, Case E","distractor":"One performance obligation, because the consumables are proprietary, the equipment is useless without them, and the two are therefore highly interdependent.","why_wrong":"Paragraph 29(c) asks whether each item significantly affects the other, not whether one is a functional precondition for the other. Example 11 Case E turns on the entity being able to fulfil each promise independently.","type":"judgment","tests":"The precise meaning of highly interdependent or highly interrelated, which is the paragraph 29 factor most often stretched to justify bundling.","disclosure_example":"","provenance":"retrieved","source_ids":["S1","S2","S20"],"example_coverage_pending":null},{"id":"PO-07","step":"step_2_performance_obligations","judgment_point":"distinct_and_separately_identifiable","scenario":"A manufacturer sells a product to a distributor for resale. Consider three variants. In variant one the contract explicitly promises free maintenance to any end customer who buys from the distributor. In variant two nothing is said about maintenance, but the manufacturer has always provided it and its customary practice has created a valid expectation. In variant three nothing is said, the manufacturer does not typically provide maintenance, and no practice or policy has created any expectation, but after the sale to the distributor and before any sale to an end customer the manufacturer decides to offer maintenance at no extra charge.","answer":"Variants one and two both give two performance obligations, the product and the maintenance, because paragraph 24 covers promises implied by customary business practices, published policies or specific statements where these create a valid expectation. In variant three there is no promise at contract inception, so maintenance is not a performance obligation and no transaction price is allocated to it. The obligation to provide the maintenance is accounted for under IAS 37.","authority":"IFRS 15.24, .27, .29; IE Example 12, Cases A, B and C","distractor":"Treat maintenance as a performance obligation in all three variants, because in each the manufacturer ends up providing the service at no separate charge.","why_wrong":"Paragraph 24 fixes the assessment at contract inception and requires the practice or statement to have created a valid expectation by then. A decision taken after inception does not retrospectively create a promise, and Example 12 Case C sends it to IAS 37.","type":"judgment","tests":"Implicit promises. The line is a valid expectation at inception, and getting it wrong moves an amount between revenue allocation and a provision.","disclosure_example":"","provenance":"retrieved","source_ids":["S1","S2","S20"],"example_coverage_pending":null},{"id":"PO-08","step":"step_2_performance_obligations","judgment_point":"distinct_and_separately_identifiable","scenario":"A stock exchange charges a non-refundable upfront fee for initial listing and an ongoing fee for continued listing. At or near contract inception it performs due diligence on the application, reviews it, issues a reference number and ticker, processes the admission, publishes the securities and issues dealing notices.","answer":"The exchange promises only one service, the service of being listed. The admission activities are required in order to transfer the listing service, but performing them does not itself transfer a service to the customer, so under paragraph 25 they are not a promised good or service. The non-refundable upfront fee is therefore an advance payment for the listing service and is recognised as that service is provided, consistent with paragraph B49.","authority":"IFRS 15.22, .24, .25, B49; IFRS Interpretations Committee agenda decision, Assessment of Promised Goods or Services (IFRS 15), January 2019; IE Example 53","distractor":"Treat the admission process as a distinct service satisfied at the point of listing, and recognise the non-refundable upfront fee immediately.","why_wrong":"Paragraph 25 excludes activities an entity must undertake to fulfil a contract unless they transfer a good or service. The Committee concluded that the exchange does not promise any good or service other than the service of being listed.","type":"judgment","tests":"Setup activities versus promised services. This is the pattern behind activation fees, onboarding fees and initial franchise fees, and it is where an agenda decision, not the standard text alone, settled market practice.","disclosure_example":"","provenance":"retrieved","source_ids":["S2","S8","S12","S20"],"example_coverage_pending":null},{"id":"PO-09","step":"step_2_performance_obligations","judgment_point":"series_guidance","scenario":"An entity contracts to provide weekly office cleaning for three years. Each week's service is distinct. The entity intends to use a time-based measure of progress throughout.","answer":"A single performance obligation under paragraph 22(b). The services are distinct, substantially the same, and have the same pattern of transfer, and paragraph 23 is satisfied because each distinct service would meet the paragraph 35 criteria to be satisfied over time and the same method under paragraphs 39 and 40 would be used to measure progress towards complete satisfaction.","authority":"IFRS 15.22(b), .23(a), .23(b), .35, .39, .40; IE Example 7","distractor":"The series guidance applies whenever a service is repetitive and delivered in substantially the same way each period.","why_wrong":"Paragraph 23 imposes two further conditions, both required: each distinct service must meet paragraph 35 for over-time recognition, and the same method of measuring progress must apply. Repetition alone is not enough.","type":"determinate","tests":"The two conditions in paragraph 23, which are usually skipped because the conclusion feels obvious.","disclosure_example":"","provenance":"retrieved","source_ids":["S1","S2","S20"],"example_coverage_pending":null},{"id":"TP-01","step":"step_3_transaction_price","judgment_point":"variable_consideration_and_constraint","scenario":"An entity contracts to build an asset for CU1,000,000. The contract imposes a penalty of CU100,000 if construction is not complete within three months of a specified date.","answer":"The promised consideration comprises a fixed amount of CU900,000 and a variable amount of CU100,000 arising from the penalty. The variable amount is estimated under paragraphs 50 to 54 and then tested against the constraint in paragraphs 56 to 58.","authority":"IFRS 15.50 to .54, .56 to .58; IE Example 20","distractor":"The transaction price is CU1,000,000 and the penalty is recognised as an expense or a provision if and when it is incurred.","why_wrong":"A penalty that reduces the consideration to which the entity is entitled makes the consideration variable under paragraphs 50 and 51. It is measured inside the transaction price, not outside it as a cost.","type":"determinate","tests":"Recognising a penalty clause as variable consideration rather than a contingent cost. The classification moves the amount between revenue and expense.","disclosure_example":"","provenance":"retrieved","source_ids":["S1","S3","S20"],"example_coverage_pending":null},{"id":"TP-02","step":"step_3_transaction_price","judgment_point":"variable_consideration_and_constraint","scenario":"An entity contracts to build a customised asset, a performance obligation satisfied over time, for CU2,500,000. The consideration increases or decreases by CU10,000 for each day the asset is completed before or after 31 March 20X7. In addition, a third party inspects the asset and assigns a rating; if specified criteria are met the entity receives an incentive bonus of CU150,000.","answer":"Estimate each source of variability with the method that better predicts entitlement for that source. The entity uses the expected value method under paragraph 53(a) for the daily penalty or incentive, because there is a range of possible outcomes, and the most likely amount under paragraph 53(b) for the bonus, because there are only two possible outcomes, CU150,000 or nil. It then applies the constraint in paragraphs 56 to 58 to the resulting estimates.","authority":"IFRS 15.53(a), .53(b), .54, .56 to .58; IE Example 21","distractor":"Choose one method and apply it to the whole contract, because paragraph 54 requires the method to be applied consistently.","why_wrong":"Paragraph 54 requires consistent application of the chosen method throughout the contract for the uncertainty it addresses, and consistent consideration of all reasonably available information. It does not require a single method for every source of variability, and Example 21 uses both methods in one contract.","type":"determinate","tests":"That method selection is per source of uncertainty, not per contract. A frequent CFE-style trap since paragraph 54 sounds like it says the opposite.","disclosure_example":"","provenance":"retrieved","source_ids":["S1","S3","S20"],"example_coverage_pending":null},{"id":"TP-03","step":"step_3_transaction_price","judgment_point":"variable_consideration_and_constraint","scenario":"An entity enters into 100 contracts, each to sell one product for CU100, so CU10,000 in total. The cost of each product is CU60. The entity's customary practice is to allow a full refund within 30 days for any unused product. It has significant experience with this product and estimates that three of the 100 products will be returned.","answer":"Revenue of CU9,700, being the expected value estimate under paragraph 53(a) of the consideration to which the entity expects to be entitled, is recognised. A refund liability of CU300 is recognised for the three products expected to be returned, and an asset of CU180 is recognised for the right to recover those products, measured by reference to the former carrying amount of CU60 each. The constraint in paragraphs 56 to 58 is satisfied because the entity has significant experience, the uncertainty resolves within 30 days, and the range of outcomes is narrow.","authority":"IFRS 15.53(a), .55, .56 to .58, B20 to B27; IE Example 22","distractor":"Recognise revenue of CU10,000 and a provision of CU300 for expected returns.","why_wrong":"Amounts expected to be refunded are not consideration to which the entity expects to be entitled, so they never enter revenue. Paragraph 55 and paragraphs B20 to B27 require a refund liability and a separate asset for the right to recover the products, not a provision against a gross revenue figure.","type":"determinate","tests":"The three-part entry for a right of return, including the asset that students forget, and the fact that returns are a revenue measurement matter rather than a provision.","disclosure_example":"","provenance":"retrieved","source_ids":["S1","S3","S8","S20"],"example_coverage_pending":null},{"id":"TP-04","step":"step_3_transaction_price","judgment_point":"variable_consideration_and_constraint","scenario":"On 1 December 20X7 an entity transfers 1,000 products to a customer at a list price of CU100 each, or CU100,000. Payment is due when the customer sells the products to end customers, typically within 90 days. Consider two variants. In variant one the entity has significant experience with this product, its historical price concessions have been about 20 per cent, and current market information supports the same figure. In variant two the product carries a high risk of obsolescence, pricing is volatile, historical concessions have ranged from 20 to 60 per cent, and current market information suggests a reduction of 15 to 50 per cent may be needed. The expected value estimate in variant two is a 40 per cent concession.","answer":"In variant one the entity recognises CU80,000, because the expected value estimate is supported by experience and current market data, the uncertainty resolves within a short period, and paragraph 56 is satisfied. In variant two the expected value estimate is CU60,000, but the constraint bites: paragraph 57 factors are present, since the amount is highly susceptible to factors outside the entity's influence and there is a broad range of possible outcomes. The entity recognises CU50,000, the amount for which it can conclude a significant revenue reversal is highly probable not to occur, and reassesses at each reporting date under paragraph 59.","authority":"IFRS 15.53(a), .56, .57, .59; IE Example 23, Cases A and B","distractor":"Recognise CU60,000 in variant two, since that is the expected value of the consideration and the expected value method is the one the entity has properly chosen.","why_wrong":"Paragraph 56 is a separate step after estimation. It caps the amount included in the transaction price at the amount for which a significant reversal is highly probable not to occur, which on these facts is below the expected value.","type":"judgment","tests":"That estimation and the constraint are two operations, and that the constraint can produce a number that is not any single estimate. The exact ceiling on facts like variant two is a judgment, so do not score the amount.","disclosure_example":"","provenance":"retrieved","source_ids":["S1","S3","S20"],"example_coverage_pending":null},{"id":"TP-05","step":"step_3_transaction_price","judgment_point":"variable_consideration_and_constraint","scenario":"On 1 January 20X8 an entity agrees to sell Product A at CU100 per unit. If the customer buys more than 1,000 units in the calendar year, the price for all units bought that year drops retrospectively to CU90. In the quarter to 31 March the customer buys 75 units, and on the entity's experience with this customer the threshold will not be met. In May the customer acquires another company and in the quarter to 30 June buys a further 500 units, so the entity now expects the threshold to be exceeded.","answer":"For the first quarter the entity recognises CU7,500, being 75 units at CU100, because on the paragraph 57 factors it was highly probable that no significant reversal would occur. In the second quarter the change in facts changes the estimate. The entity recognises CU45,000 for the 500 units at CU90 and a reduction of CU750 for the 75 units sold in the first quarter, a net CU44,250, under paragraphs 87 and 88.","authority":"IFRS 15.56, .57, .87, .88; IE Example 24","distractor":"Restate the first quarter to CU6,750, since the retrospective discount applies to those units and the earlier figure is now known to be wrong.","why_wrong":"Paragraphs 87 and 88 treat a change in the transaction price in the period in which it occurs, allocated on the same basis as at inception. It is a change in estimate, not an error, so there is no restatement.","type":"determinate","tests":"Change in estimate versus error, and the mechanics of a retrospective volume rebate in interim reporting.","disclosure_example":"","provenance":"retrieved","source_ids":["S1","S3","S20"],"example_coverage_pending":null},{"id":"TP-06","step":"step_3_transaction_price","judgment_point":"variable_consideration_and_constraint","scenario":"On 1 January 20X8 an asset manager contracts with a client for five years of investment management. It earns a quarterly management fee of 2 per cent of assets under management and a performance fee of 20 per cent of the fund's return in excess of an observable market index, measured over the five years. Assets under management at 31 March 20X8 are CU100,000,000.","answer":"The services are a single performance obligation under paragraph 22(b), a series of distinct services with the same pattern of transfer. Both fees are variable consideration. The performance fee is constrained under paragraphs 56 to 58, because it depends on the market and is therefore highly susceptible to factors outside the entity's influence, there is a large number and broad range of possible amounts, and the entity's experience has little predictive value for future market performance. The quarterly management fee is included as its uncertainty resolves at each quarter end. At 31 March 20X8 the fee is CU2,000,000, and it is allocated to the distinct services provided in that quarter under paragraphs 84(b) and 85, so CU2,000,000 of revenue is recognised for the quarter.","authority":"IFRS 15.22(b), .56 to .58, .84(b), .85; IE Example 25","distractor":"Constrain both fees, since both are variable and both ultimately depend on market levels the manager does not control.","why_wrong":"The constraint is applied to each uncertainty on its own facts. The management fee's uncertainty resolves at the end of each quarter, when assets under management for that quarter are known, so the amount for that quarter can be included.","type":"judgment","tests":"Applying the constraint at the level of the uncertainty rather than the contract, and the interaction between the constraint and the paragraph 85 allocation of variable consideration to a distinct service within a series.","disclosure_example":"","provenance":"retrieved","source_ids":["S1","S3","S20"],"example_coverage_pending":null},{"id":"TP-07","step":"step_3_transaction_price","judgment_point":"significant_financing_component","scenario":"An entity sells a product for CU121, payable 24 months after delivery. The cash selling price at the date of delivery is CU100, so the rate implicit in the arrangement is 10 per cent. Control transfers at inception. The customer may return the product within 90 days. The product is new, the entity has no relevant history of returns for it, and its cost is CU80.","answer":"Revenue is deferred until the return right lapses, because without relevant history the entity cannot conclude that a significant reversal is highly probable not to occur under paragraphs 56 to 58. On transfer the entity derecognises inventory of CU80 and recognises an asset for its right to recover the product. There is a significant financing component under paragraphs 60 to 62, given the difference between CU121 and the CU100 cash selling price, but no interest is recognised during the return period because no receivable or contract asset has been recognised. When the 90 days lapse the entity recognises revenue of CU100, a receivable of CU100 and cost of sales of CU80, and thereafter recognises interest at the implicit rate under paragraph 65.","authority":"IFRS 15.56 to .58, .60 to .62, .65, B20 to B27; IE Example 26","distractor":"Recognise revenue of CU100 immediately with a refund liability estimated at nil, because the entity has no evidence that any products will be returned.","why_wrong":"Absence of evidence is not evidence of no returns. Paragraphs 56 to 58 require a positive conclusion that a significant reversal is highly probable not to occur, and with a new product and no history the entity cannot reach it.","type":"judgment","tests":"Two overlays interacting: the constraint delays revenue, which in turn delays the financing component because there is no receivable to accrete against.","disclosure_example":"","provenance":"retrieved","source_ids":["S1","S3","S8","S20"],"example_coverage_pending":null},{"id":"TP-08","step":"step_3_transaction_price","judgment_point":"significant_financing_component","scenario":"A technology manufacturer sells a product and, at the same time, sells three years of global telephone technology support and repair coverage for an additional CU300. Customers who buy the service must pay the whole CU300 upfront; no monthly payment option exists. The firm sets a single upfront amount to maximise profitability given the risks of providing the service over three years, not to obtain finance from the customer.","answer":"No significant financing component. Paragraph 60 requires an adjustment only where the timing of payments gives the customer or the entity a significant benefit of financing, and paragraph 62(c) excludes a difference that arises for reasons other than the provision of finance where the difference is proportional to that reason. Both limbs of 62(c) must hold. The practical expedient in paragraph 63 does not rescue the analysis here, since the period runs to three years, so 62(c) is doing the work.","authority":"IFRS 15.60, .61, .62(c), .63, .64, .65; IE Example 30","distractor":"Impute interest, because the customer pays up to three years before the service is delivered and the practical expedient in paragraph 63 covers only periods of one year or less.","why_wrong":"Failing the paragraph 63 expedient does not create a financing component; it only removes the shortcut. Paragraph 62 must still be worked, and on these facts 62(c) applies.","type":"judgment","tests":"That paragraph 63 is a shortcut in one direction only. This is the error that produces phantom interest expense on advance-paid service contracts.","disclosure_example":"","provenance":"retrieved","source_ids":["S3","S20"],"example_coverage_pending":null},{"id":"TP-09","step":"step_3_transaction_price","judgment_point":"mechanics","scenario":"A consumer goods manufacturer enters a one-year contract with a large global retail chain. The retailer commits to buy at least CU15,000,000 of products during the year. The contract also requires the manufacturer to make a non-refundable payment of CU1,500,000 to the retailer at inception, to compensate the retailer for the changes it must make to its shelving to accommodate the manufacturer's products.","answer":"The CU1,500,000 reduces the transaction price. Paragraph 70 treats consideration payable to a customer as a reduction of the transaction price unless it is in exchange for a distinct good or service transferred to the entity. The manufacturer obtains no control of any rights to the retailer's shelves, so nothing distinct is received. The reduction is recognised under paragraph 72 at the later of when the related revenue is recognised and when the payment is promised.","authority":"IFRS 15.70, .71, .72; IE Example 32","distractor":"Recognise the CU1,500,000 as a marketing or slotting expense, because the manufacturer is paying for shelf presentation rather than granting a rebate on any unit sold.","why_wrong":"Paragraph 70 starts from a presumption that the payment reduces revenue. Only a distinct good or service, whose fair value can be reasonably estimated under paragraph 71, moves it into expense, and control of shelf rights is exactly what the manufacturer does not obtain.","type":"determinate","tests":"The default direction of travel for payments to customers, and that 'we got something for it' has to mean control of a distinct good or service.","disclosure_example":"","provenance":"retrieved","source_ids":["S3","S20"],"example_coverage_pending":null},{"id":"AL-01","step":"step_4_allocation","judgment_point":"mechanics","scenario":"An entity sells Products A, B and C to a customer for CU100 in total, satisfying the performance obligation for each product at a different point in time. It regularly sells Product A separately, so that stand-alone selling price is directly observable. The stand-alone selling prices of Products B and C are not directly observable.","answer":"Allocate on relative stand-alone selling prices under paragraph 74, determined at contract inception under paragraph 76. The observable price for A is the best evidence under paragraph 77. For B and C the entity must estimate under paragraph 78, maximising observable inputs, and paragraph 79 offers the adjusted market assessment approach, the expected cost plus a margin approach, and the residual approach. Example 33 uses adjusted market assessment for one product and expected cost plus a margin for the other. The residual approach in paragraph 79(c) is available only where the selling price is highly variable or uncertain.","authority":"IFRS 15.74, .76, .77, .78, .79(a), .79(b), .79(c), .80; IE Example 33","distractor":"Use the residual approach for both B and C, since their stand-alone selling prices are not directly observable and the transaction price is known.","why_wrong":"Paragraph 79(c) restricts the residual approach to goods or services whose selling price is highly variable or uncertain. Not directly observable is not the same as highly variable or uncertain, and Example 33 estimates both by other methods.","type":"determinate","tests":"That the residual approach is a narrow exception with its own entry condition, not the default for anything unobservable.","disclosure_example":"","provenance":"retrieved","source_ids":["S3","S20"],"example_coverage_pending":null},{"id":"AL-02","step":"step_4_allocation","judgment_point":"mechanics","scenario":"An entity regularly sells Products A, B and C individually, at stand-alone selling prices of CU40, CU55 and CU45, CU140 in total. It also regularly sells Products B and C together for CU60. It now contracts to sell all three products to one customer for CU100, satisfying each performance obligation at a different point in time.","answer":"The CU40 discount is allocated entirely to Products B and C, not proportionately across all three. Paragraph 81 requires proportionate allocation unless there is observable evidence that the discount relates to only some of the performance obligations, and paragraph 82 supplies that evidence here: the entity regularly sells each product separately and regularly sells B and C together at a discount that is substantially the same as the discount in this contract.","authority":"IFRS 15.81, .82, .83; IE Example 34","distractor":"Allocate the CU40 discount proportionately across A, B and C on relative stand-alone selling prices, since paragraph 81 makes that the required treatment.","why_wrong":"Paragraph 81 makes proportionate allocation the default, not the rule. Paragraph 82 displaces it where the entity's regular selling behaviour shows which obligations the discount belongs to, which is the case here.","type":"judgment","tests":"That a targeted discount allocation must be earned by observable selling behaviour, and that the evidence has to be the entity's regular pricing, not the parties' assertions.","disclosure_example":"","provenance":"retrieved","source_ids":["S3","S20"],"example_coverage_pending":null},{"id":"AL-03","step":"step_4_allocation","judgment_point":"variable_consideration_and_constraint","scenario":"An entity licenses two pieces of intellectual property to a customer. The contract states a fixed amount of CU800 for Licence X, and for Licence Y the consideration is three per cent of the customer's future sales of products that use Licence Y. The entity estimates those sales-based royalties at CU1,000.","answer":"Allocate the variable consideration entirely to Licence Y. Paragraph 85 permits this only where both criteria are met: the terms of the variable payment relate specifically to the entity's efforts to satisfy that performance obligation, and allocating the whole amount to it is consistent with the allocation objective in paragraph 73 when all the performance obligations and payment terms are considered. Example 35 concludes both are met.","authority":"IFRS 15.73, .84, .85(a), .85(b), .86; IE Example 35","distractor":"Add the CU1,000 estimate to the CU800 and allocate the CU1,800 across both licences on relative stand-alone selling prices.","why_wrong":"That ignores paragraph 84, which requires the entity first to identify what the variable amount relates to, and paragraph 85, which allocates it entirely to one performance obligation when both its criteria are met.","type":"judgment","tests":"The two limbs of paragraph 85. Contract drafting can satisfy 85(a) on its own, which is why 85(b) exists.","disclosure_example":"","provenance":"retrieved","source_ids":["S3","S20"],"example_coverage_pending":null},{"id":"REC-01","step":"step_5_recognition","judgment_point":"mechanics","scenario":"An entity provides monthly payroll processing services to a customer for one year.","answer":"The services are a single performance obligation under paragraph 22(b) and are satisfied over time under paragraph 35(a), because the customer simultaneously receives and consumes the benefits as the entity performs: another entity would not need substantially to re-perform the processing already completed. Revenue is recognised over time by measuring progress under paragraphs 39 to 45 and B14 to B19.","authority":"IFRS 15.22(b), .35(a), .39 to .45, B14 to B19; IE Example 13","distractor":"Recognise revenue at a point in time each month when the payroll report is delivered, since that is when the customer receives something.","why_wrong":"Paragraph 35(a) is met, so the obligation is satisfied over time. The test is whether another entity would need substantially to re-perform the work done to date, not whether a deliverable changes hands.","type":"determinate","tests":"The re-performance test that gives paragraph 35(a) its content.","disclosure_example":"","provenance":"retrieved","source_ids":["S1","S2","S8","S20"],"example_coverage_pending":null},{"id":"REC-02","step":"step_5_recognition","judgment_point":"mechanics","scenario":"A consulting firm agrees to produce a professional opinion specific to the customer's facts and circumstances. If the customer terminates for a reason other than the firm's failure to perform, the customer must compensate the firm for its costs incurred to date plus a 15 per cent margin, which approximates the firm's margin on similar contracts.","answer":"Satisfied over time under paragraph 35(c). Paragraph 35(a) is not met, because another firm would need substantially to re-perform the work and the customer receives the benefit only on delivery of the opinion. But the opinion has no alternative use to the firm under paragraphs 36 and B6 to B8, being specific to the customer's circumstances, and the firm has an enforceable right to payment for performance completed to date under paragraphs 37 and B9 to B13, since cost plus a reasonable margin qualifies.","authority":"IFRS 15.35(a), .35(c), .36, .37, B6 to B13; IE Example 14","distractor":"Recognise at a point in time on delivery of the opinion, because until then the customer has received nothing it can use.","why_wrong":"Paragraph 35 is satisfied if any one of its three criteria is met. Paragraph 35(c) is met here, so the obligation is satisfied over time regardless of 35(a) failing.","type":"judgment","tests":"That 35(a), (b) and (c) are alternatives, and that the compensation clause, not the deliverable, decides professional services contracts.","disclosure_example":"","provenance":"retrieved","source_ids":["S1","S2","S8","S20"],"example_coverage_pending":null},{"id":"REC-03","step":"step_5_recognition","judgment_point":"mechanics","scenario":"An entity builds specialised satellites. It contracts with a government agency for a satellite of a customer-specific design. The contract does not prohibit the entity from directing the completed satellite to another customer, but redirecting it would require significant rework of the design and function.","answer":"The satellite has no alternative use to the entity. Paragraph 36 makes the test both contractual and practical: an asset has no alternative use where the entity is either restricted contractually from readily directing it to another use, or limited practically from doing so. The customer-specific design limits the entity's practical ability to redirect it. The assessment is made at contract inception and is not revised unless the parties approve a modification that substantively changes the performance obligation.","authority":"IFRS 15.35(c), .36, B6 to B8; IE Example 15","distractor":"The satellite has an alternative use, because nothing in the contract prevents the entity from selling it to another customer.","why_wrong":"Paragraph 36 sets a practical limb alongside the contractual one. Significant rework costs are exactly the practical limitation the paragraph contemplates.","type":"judgment","tests":"The practical limb of no alternative use, which is where the judgment sits once the contract is silent.","disclosure_example":"","provenance":"retrieved","source_ids":["S1","S2","S8","S20"],"example_coverage_pending":null},{"id":"REC-04","step":"step_5_recognition","judgment_point":"mechanics","scenario":"An entity contracts to build a piece of equipment. The customer pays a non-refundable advance of 10 per cent at inception, non-refundable progress payments of 50 per cent during construction, and the final 40 per cent on completion and successful performance testing. If the customer terminates, the entity keeps the progress payments received but has no right to any further compensation. At various points during construction the cumulative payments received are not expected to correspond at least to the selling price of the work completed to date.","answer":"Satisfied at a point in time under paragraph 38. There is no enforceable right to payment for performance completed to date, because the cumulative amounts the entity is entitled to keep do not at least correspond to the selling price of the work performed. Paragraph 35(c) therefore fails, and the entity does not need to assess alternative use. Paragraphs 35(a) and 35(b) are also not met.","authority":"IFRS 15.35, .37, .38, B9 to B13; IE Example 16","distractor":"Recognise over time, because the customer is making substantial non-refundable progress payments throughout construction, which shows the customer is paying for work as it is performed.","why_wrong":"Paragraph 37 and B9 to B13 require a right to an amount that at least compensates for performance completed to date. Non-refundable progress payments on a schedule are not the same thing, and Example 16 turns on exactly this.","type":"determinate","tests":"That a payment schedule is not a right to payment for performance completed to date. This single point decides percentage-of-completion versus point-in-time in most construction and manufacturing contracts.","disclosure_example":"","provenance":"retrieved","source_ids":["S1","S2","S8","S20"],"example_coverage_pending":null},{"id":"REC-05","step":"step_5_recognition","judgment_point":"mechanics","scenario":"A developer is building a multi-unit residential complex. A customer signs a binding contract for a specified unit. Consider two variants. In variant one the customer pays a deposit that is refundable only if the developer fails to complete, pays the balance on completion when it takes possession, and on customer default the developer keeps only the deposit. In variant two the customer pays a non-refundable deposit and progress payments during construction, the contract has substantive terms preventing the developer from directing the unit to another customer, the customer cannot terminate unless the developer fails to perform, and on default the developer has an enforceable right to all the promised consideration if it continues to perform. Courts in that jurisdiction have upheld comparable rights.","answer":"Variant one is satisfied at a point in time under paragraph 38, because the developer has no right to payment for work completed to date, only the deposit. Variant two is satisfied over time under paragraph 35(c): the unit has no alternative use, since the contract precludes transferring the specified unit to another customer, and the developer has an enforceable right to payment for performance completed to date under paragraphs 37 and B9 to B13, supported by the contract terms and the practices of the legal jurisdiction.","authority":"IFRS 15.35(c), .36, .37, .38, B6 to B13; IE Example 17, Cases A and B","distractor":"Both variants are recognised the same way, since in both the developer is building an identified unit for an identified customer under a binding contract.","why_wrong":"Paragraph 35(c) has two limbs and variant one fails the second. Example 17 sets the two cases side by side precisely to show that the enforceable right to payment, not the identification of the unit, drives the answer.","type":"judgment","tests":"That the over-time conclusion for real estate is a legal question about remedies on default in a specific jurisdiction. That is a fact the item deliberately varies, so do not score the conclusion without the reasoning.","disclosure_example":"","provenance":"retrieved","source_ids":["S1","S2","S8","S20"],"example_coverage_pending":null},{"id":"REC-06","step":"step_5_recognition","judgment_point":"mechanics","scenario":"Same facts as variant two of the previous item, except that on customer default the developer may either require the customer to perform as the contract requires, or cancel the contract in exchange for the partially completed asset and a penalty equal to a proportion of the contract price.","answer":"Still satisfied over time. The developer has a right to payment for performance completed to date because it could choose to enforce its rights to full payment under the contract. The existence of a cancellation option that would limit the customer's obligation does not defeat that right, consistent with paragraph B11.","authority":"IFRS 15.35(c), .37, B11; IE Example 17, Case C","distractor":"Point in time, because the developer's realistic remedy on default is cancellation and a capped penalty, which is not payment for performance completed to date.","why_wrong":"The assessment looks at the rights the entity holds, and Example 17 Case C concludes the right survives because the entity could also choose to enforce full payment.","type":"judgment","tests":"Rights held versus remedies likely to be pursued. Practitioners collapse these two, and the standard does not.","disclosure_example":"","provenance":"retrieved","source_ids":["S1","S2","S8","S20"],"example_coverage_pending":null},{"id":"REC-07","step":"step_5_recognition","judgment_point":"mechanics","scenario":"A health club sells a customer one year of unlimited access to any of its facilities for CU100 per month. The customer uses the facilities heavily in January and not at all in February.","answer":"The promise is to make the clubs available as and when the customer wishes, so the customer simultaneously receives and consumes the benefit of that availability under paragraph 35(a). Revenue is recognised over time using a time-based measure of progress, CU100 per month, since the customer benefits evenly from availability regardless of actual use.","authority":"IFRS 15.35(a), .39 to .45, B14 to B19; IE Example 18","distractor":"Recognise revenue in proportion to actual usage, so that January carries more revenue than February.","why_wrong":"The performance obligation is stand-ready access, not the delivery of individual sessions, so the measure of progress must depict availability. Example 18 recognises straight-line.","type":"determinate","tests":"Stand-ready obligations and the matching measure of progress. Gym memberships, software support and unlimited-use contracts all sit here.","disclosure_example":"","provenance":"retrieved","source_ids":["S1","S2","S8","S20"],"example_coverage_pending":null},{"id":"REC-08","step":"step_5_recognition","judgment_point":"mechanics","scenario":"In November 20X2 an entity contracts to refurbish a three-storey building and install new elevators, for total consideration of CU5,000,000. Expected costs are CU4,000,000, comprising CU1,500,000 to procure the elevators and CU2,500,000 of other costs. The entity is the principal for the elevators. The customer obtains control of the elevators on delivery in December 20X2, although they are not installed until June 20X3. The refurbishment is a single performance obligation satisfied over time, measured by a cost input method. At 31 December 20X2 other costs incurred are CU500,000.","answer":"Under paragraph B19 the entity adjusts its input measure, because the cost of procuring the elevators is significant relative to total expected costs and including it would overstate performance. Progress is measured on the other costs: CU500,000 over CU2,500,000, or 20 per cent. Revenue is CU2,200,000, being 20 per cent of CU3,500,000 plus CU1,500,000, and cost of sales is CU2,000,000, being CU500,000 plus CU1,500,000. The elevators are recognised at a zero margin.","authority":"IFRS 15.39, .41, .43, B14 to B19, B19; IE Example 19","distractor":"Include the CU1,500,000 elevator cost in costs incurred, giving progress of CU2,000,000 over CU4,000,000, or 50 per cent, and revenue of CU2,500,000.","why_wrong":"Paragraph 39 sets the objective of depicting performance in transferring control, and paragraph B19 requires an adjustment where a cost incurred is not proportionate to progress, which is the case for uninstalled materials whose cost is significant relative to total expected costs.","type":"judgment","tests":"The uninstalled materials adjustment and the zero-margin outcome. The judgment is whether the cost is significant relative to total expected costs, which the standard does not quantify.","disclosure_example":"","provenance":"retrieved","source_ids":["S1","S2","S8","S20"],"example_coverage_pending":null},{"id":"REC-09","step":"step_5_recognition","judgment_point":"mechanics","scenario":"An entity has a performance obligation satisfied over time. Early in the contract it cannot reasonably measure the outcome, because the scope of remedial work on a heritage building is not yet established, but it expects to recover the costs it is incurring.","answer":"Paragraph 44 prohibits recognising revenue where the entity cannot reasonably measure its progress. Paragraph 45 then requires revenue to be recognised only to the extent of the costs incurred, until the entity can reasonably measure the outcome.","authority":"IFRS 15.44, .45","distractor":"Defer all revenue and all costs until the outcome can be measured, then recognise both.","why_wrong":"Paragraph 45 requires revenue to the extent of costs incurred where those costs are expected to be recovered. Costs are not deferred as a matter of course, and the contract costs requirements in paragraphs 95 to 98 govern which costs can be capitalised at all.","type":"determinate","tests":"The zero-margin recognition rule, which students often replace with full deferral.","disclosure_example":"","provenance":"retrieved","source_ids":["S2","S4","S20"],"example_coverage_pending":null},{"id":"PA-01","step":"step_5_recognition","judgment_point":"principal_versus_agent","scenario":"A software reseller distributes a manufacturer's standard licences under a distribution agreement. It gives customers pre-sale advice, has discretion over the price it charges, and places orders with the manufacturer once a customer commits. The manufacturer issues the licences directly to the customer, activates them and provides ongoing support. A customer that finds a licence unsuitable can reject it, and the reseller can neither return nor resell a rejected licence.","answer":"Work the assessment in the order paragraph B34A sets: first identify the specified good or service to be provided to the customer, which here is the standard software licence, then assess whether the entity controls that specified good or service before it is transferred. Pre-sale advice already delivered before the contract is not an implicit promise to transfer a good or service. Control is assessed under paragraphs B35 and B35A, and the indicators in paragraph B37, being primary responsibility, inventory risk and pricing discretion, support the control conclusion rather than replace it. Paragraph B37A adds that the relevance of individual indicators varies with the facts. The Committee concluded that IFRS Accounting Standards provide an adequate basis for the reseller to reach the conclusion, which means the answer is the reasoning, not a fixed outcome.","authority":"IFRS 15.B34, B34A, B35, B35A, B35B, B36, B37, B37A; IFRS Interpretations Committee agenda decision, Principal versus Agent: Software Reseller (IFRS 15), May 2022","distractor":"Conclude agent on a count of indicators: the manufacturer issues and supports the licence and the reseller never holds inventory, so two of the three paragraph B37 indicators point to agent.","why_wrong":"Paragraph B37 indicators support an assessment of control under paragraph B35; they are not a scorecard, and paragraph B37A says their relevance differs by contract. Skipping paragraph B34A, which requires identifying the specified good or service first, is what makes indicator counting look sufficient.","type":"judgment","tests":"The order of operations in principal versus agent. The specified good or service comes first, control second, indicators third and only as support. This is the most commonly inverted analysis in the standard.","disclosure_example":"","provenance":"retrieved","source_ids":["S8","S13","S20"],"example_coverage_pending":null},{"id":"PA-02","step":"step_5_recognition","judgment_point":"principal_versus_agent","scenario":"A travel platform sells hotel rooms. On its facts it concludes that it does not control the room before it is transferred to the traveller. It presents the full room rate as revenue and the amount remitted to the hotel as cost of sales, on the basis that gross versus net presentation is an accounting policy choice applied consistently.","answer":"It is not a policy choice. Paragraph B35B requires a principal to recognise revenue in the gross amount of consideration to which it expects to be entitled for the specified good or service, and paragraph B36 requires an agent to recognise a fee or commission, which may be the net amount retained after paying the other party. Having concluded it does not control the room, the platform is an agent and must present net. The illustrative examples follow the same mechanism: the marketplace in Example 45 recognises its commission, the voucher seller in Example 48 recognises its 30 per cent, and the ticket reseller in Example 47 recognises the gross amount.","authority":"IFRS 15.B35, B35B, B36; IE Examples 45, 47 and 48","distractor":"Gross presentation is acceptable as long as the entity discloses its policy and applies it consistently, since the cash flows and the profit are identical either way.","why_wrong":"Paragraphs B35B and B36 attach presentation to the principal or agent conclusion. Consistency and disclosure do not create an option, and the top line differs materially, which is why regulators look at it.","type":"determinate","tests":"That gross versus net follows the control conclusion mechanically. Identical profit is exactly why this gets rationalised as a choice.","disclosure_example":"","provenance":"retrieved","source_ids":["S8","S20"],"example_coverage_pending":null},{"id":"LIC-01","step":"step_5_recognition","judgment_point":"licences_right_to_use_versus_right_to_access","scenario":"A creator of comic strips licenses the images and names of the characters in three of its strips to a cruise ship operator for four years, for a fixed CU1,000,000 a year. New characters appear regularly and the images of the characters evolve over time. The operator may use the characters in shows and parades within reasonable guidelines, and the contract requires it to use the latest images.","answer":"A right to access, satisfied over time. The three criteria in paragraph B58 are met: the contract requires, and the customer reasonably expects, activities that significantly affect the intellectual property; the rights granted expose the customer directly to the effects of those activities, since it must use the latest images; and those activities do not themselves transfer a good or service as they occur. Paragraph B60 then requires over-time recognition, and Example 58 uses a time-based measure of progress because the licence gives unlimited use for a fixed term.","authority":"IFRS 15.B56, B58(a), B58(b), B58(c), B59, B59A, B60, .35(a), .39 to .45; IE Example 58","distractor":"A right to use, recognised at the point the licence is granted, because the customer can start using the characters immediately and the licensor owes no further deliverable.","why_wrong":"Paragraph B58 asks whether the entity's continuing activities significantly affect the intellectual property and whether the customer is exposed to them, not whether anything further is delivered. B58(c) is what stops those activities from being separate performance obligations.","type":"judgment","tests":"The B58 criteria applied to symbolic intellectual property, where the contractual requirement to use the latest images is the fact that decides it.","disclosure_example":"","provenance":"retrieved","source_ids":["S8","S20"],"example_coverage_pending":null},{"id":"LIC-02","step":"step_5_recognition","judgment_point":"licences_right_to_use_versus_right_to_access","scenario":"A record label licenses a 1975 recording of a classical symphony to a consumer products company for use in all its commercials in one country for two years, for a fixed CU10,000 per month under a non-cancellable contract. The label promises nothing else and undertakes no activities that change the recording.","answer":"A right to use, satisfied at a point in time. Criterion B58(a) fails because the label does not undertake activities that significantly affect the licensed recording, so the promise is to provide the intellectual property as it exists when granted. Revenue is recognised when the customer can direct the use of and obtain substantially all the remaining benefits from the licence, and paragraph B61 sets a floor: no revenue before the beginning of the period during which the customer can use and benefit from it. Because performance is at the start and payments run monthly for two years, the entity must also consider paragraphs 60 to 65 on a significant financing component.","authority":"IFRS 15.B58(a), B61, .38, .60 to .65; IE Example 59","distractor":"Recognise the CU10,000 monthly, because the fee is charged monthly and the customer uses the recording throughout the two years.","why_wrong":"The pattern of billing does not determine the pattern of transfer. The performance obligation is satisfied at the point the licence is granted, and the monthly payments then raise a financing question rather than a recognition one.","type":"determinate","tests":"Right to use versus right to access, plus the trap of letting the invoicing schedule set the revenue profile.","disclosure_example":"","provenance":"retrieved","source_ids":["S8","S20"],"example_coverage_pending":null},{"id":"LIC-03","step":"step_5_recognition","judgment_point":"licences_right_to_use_versus_right_to_access","scenario":"A movie distribution company licenses Movie XYZ to a cinema operator, which may screen it for six weeks. The distributor also agrees to provide memorabilia from the filming for display in the cinemas before the screening period and to sponsor radio advertisements for the movie throughout the six weeks. In exchange for the licence and those promotional goods and services, the distributor receives a share of ticket sales, that is a sales-based royalty.","answer":"The royalty is accounted for wholly under paragraph B63, because the licence is the predominant item to which it relates. Paragraph B63A limits the royalty requirement to royalties that relate only to a licence of intellectual property or where the licence is the predominant item, meaning the customer would ascribe significantly more value to the licence than to the other promised goods or services. Paragraph B63B then routes anything failing that test back to the general variable consideration requirements in paragraphs 50 to 59. Revenue is recognised at the later of the subsequent sale or usage occurring and the performance obligation to which the royalty is allocated being satisfied.","authority":"IFRS 15.B63, B63A, B63B, .50 to .59; IE Example 60","distractor":"Split the royalty across the licence, the memorabilia and the advertising on relative stand-alone selling prices and apply the general variable consideration requirements to each part.","why_wrong":"Paragraph B63A asks a single predominance question about the royalty as a whole, and paragraph B63B then applies one regime or the other to all of it. It is not apportioned between the two regimes.","type":"judgment","tests":"The predominance gate in B63A, which is the paragraph most often skipped, and the all-or-nothing consequence in B63B.","disclosure_example":"","provenance":"retrieved","source_ids":["S8","S3","S20"],"example_coverage_pending":null},{"id":"CC-01","step":"adjacent_contract_costs","judgment_point":"costs_to_obtain_and_fulfil","scenario":"A consulting firm wins a competitive bid to provide services to a new customer. It incurred external legal fees for due diligence of CU15,000, travel costs to deliver the proposal of CU25,000, and commissions to sales employees of CU10,000, CU50,000 in total. The firm also pays discretionary annual bonuses to sales supervisors, based on annual sales targets, the overall profitability of the firm and individual performance evaluations.","answer":"Recognise an asset for the CU10,000 of sales commissions only, because those are the costs the firm would not have incurred had the contract not been obtained and it expects to recover them. The legal fees and travel costs would have been incurred whether or not the bid succeeded, so paragraph 93 requires them to be expensed unless they are explicitly chargeable to the customer. The discretionary supervisor bonuses are not incremental costs of obtaining a contract, because they are not directly attributable to an identifiable contract.","authority":"IFRS 15.91, .92, .93, .94; IE Example 36","distractor":"Capitalise the full CU50,000, because every one of those costs was incurred in pursuit of this contract and the contract was won, so all of them will be recovered from it.","why_wrong":"Paragraph 92 sets the test against the counterfactual of not obtaining the contract, not against the outcome. Example 36 capitalises the CU10,000 commission alone and expenses the CU15,000 and CU25,000.","type":"determinate","tests":"The counterfactual in paragraph 92, and the separate reason discretionary pool bonuses fail: they cannot be traced to an identifiable contract.","disclosure_example":"","provenance":"retrieved","source_ids":["S4","S20"],"example_coverage_pending":null},{"id":"CC-02","step":"adjacent_contract_costs","judgment_point":"costs_to_obtain_and_fulfil","scenario":"An entity transfers control of goods to a customer over time and recognises revenue using an output method. It incurs construction costs relating to work already performed on the goods being transferred, and it wants to capitalise those costs as a contract fulfilment asset because they relate directly to the contract and it expects to recover them.","answer":"Expense them as incurred. Paragraph 95 permits an asset only where all three criteria are met, and paragraph 95(b) requires the costs to generate or enhance resources of the entity that will be used in satisfying performance obligations in the future. Costs relating to performance already delivered do not do this, and paragraph 98(c) requires costs relating to satisfied or partially satisfied performance obligations to be expensed as incurred. The Interpretations Committee reached this conclusion in its June 2019 agenda decision, reasoning from the paragraph 39 objective of depicting performance and from paragraph B15 on output methods.","authority":"IFRS 15.95(b), .98(c), .39, B15; IFRS Interpretations Committee agenda decision, Costs to Fulfil a Contract (IFRS 15), June 2019","distractor":"Capitalise the costs and amortise them over the remaining contract term, since they relate directly to an identifiable contract and recovery is expected, satisfying paragraphs 95(a) and 95(c).","why_wrong":"The three criteria in paragraph 95 are cumulative. Satisfying 95(a) and 95(c) is not enough where 95(b) fails, and 98(c) makes the required treatment explicit.","type":"judgment","tests":"That capitalising fulfilment costs is not a smoothing device for an output method that recognises revenue more slowly than costs are incurred. The agenda decision exists because this was market practice.","disclosure_example":"","provenance":"retrieved","source_ids":["S4","S10","S20"],"example_coverage_pending":null},{"id":"CC-03","step":"adjacent_contract_costs","judgment_point":"costs_to_obtain_and_fulfil","scenario":"An entity signs an outsourcing contract and incurs costs to train its employees on the customer's equipment and processes. It cannot control the future economic benefits of the training sufficiently to recognise an intangible asset, since employees may leave. The contract allows the entity to charge the customer for the initial training and for training new hires needed as operations expand.","answer":"Expense the training costs as incurred. Paragraph 95 applies only where the costs are not within the scope of another Standard, and IAS 38 brings training expenditure within its scope, with IAS 38 paragraph 69(b) requiring expenditure on training activities to be recognised as an expense when incurred. The ability to charge the customer does not change the answer. This is the March 2020 agenda decision.","authority":"IFRS 15.95, .96; IAS 38.69(b); IFRS Interpretations Committee agenda decision, Training Costs to Fulfil a Contract (IFRS 15), March 2020","distractor":"Capitalise the training costs, because they relate directly to the contract, they enhance the entity's ability to satisfy future performance obligations, and the contract makes them explicitly chargeable to the customer.","why_wrong":"The scope test comes first. Paragraph 95 hands training expenditure to IAS 38, which requires it to be expensed, so the paragraph 95 criteria are never reached, and chargeability is a paragraph 97 and 98(a) consideration that does not override scope.","type":"judgment","tests":"The scope gate at the front of paragraph 95, which is skipped by anyone who starts at the three criteria.","disclosure_example":"","provenance":"retrieved","source_ids":["S4","S11","S20"],"example_coverage_pending":null},{"id":"CC-04","step":"adjacent_contract_costs","judgment_point":"costs_to_obtain_and_fulfil","scenario":"An entity has capitalised CU600,000 of costs to obtain and fulfil a five-year contract. Two years in, the customer's expected volumes fall sharply. The entity holds inventory and equipment dedicated to the contract, and the contract cost asset sits in a cash-generating unit with other assets.","answer":"Amortise the asset on a systematic basis consistent with the transfer of the goods or services to which it relates, under paragraph 99, updating for significant changes in the expected timing of transfer as a change in accounting estimate under paragraph 100 and IAS 8. Test for impairment under paragraph 101: recognise a loss where the carrying amount exceeds the remaining consideration the entity expects to receive, less the costs that relate directly to providing those goods or services and that have not been recognised as expenses. Paragraph 102 requires that remaining consideration to be determined using the transaction price principles but without applying the constraint, and adjusted for the customer's credit risk. Paragraph 103 sets the order: impair assets under other Standards such as IAS 2, IAS 16 and IAS 38 first, then include the contract cost asset in the cash-generating unit test under IAS 36. Paragraph 104 permits reversal, capped at the carrying amount net of amortisation that would have existed had no impairment been recognised.","authority":"IFRS 15.99, .100, .101, .102, .103, .104","distractor":"Apply the constraint on variable consideration when measuring the remaining consideration for the impairment test, for consistency with the transaction price used to recognise revenue.","why_wrong":"Paragraph 102 explicitly requires the amount of consideration for the impairment test to be determined without applying the constraint, while adjusting for the customer's credit risk. Using the constrained amount would understate the recoverable amount and overstate the impairment.","type":"determinate","tests":"The two deliberate asymmetries in paragraph 102, no constraint but yes credit risk, and the sequencing rule in paragraph 103.","disclosure_example":"","provenance":"retrieved","source_ids":["S4","S20"],"example_coverage_pending":null},{"id":"PD-01","step":"adjacent_presentation_disclosure","judgment_point":"mechanics","scenario":"On 1 January 20X9 an entity contracts to transfer a product to a customer on 31 March 20X9. Consideration of CU1,000 is due in advance on 31 January 20X9. The customer pays on 1 March 20X9. Consider two variants: in the first the contract is cancellable, in the second it is non-cancellable.","answer":"Under the cancellable contract nothing is recognised until cash arrives: on 1 March the entity recognises cash of CU1,000 and a contract liability, and on 31 March it transfers the product and recognises revenue. Under the non-cancellable contract the entity has an unconditional right to the consideration on 31 January, so it recognises a receivable and a contract liability on that date under paragraphs 106 and 108, before any cash moves. A receivable is a right to consideration that is unconditional, and a contract asset is a right conditioned on something other than the passage of time, which is the distinction paragraph 109 requires to remain visible.","authority":"IFRS 15.105, .106, .107, .108, .109; Appendix A definitions of contract asset and contract liability; IE Example 38, Cases A and B","distractor":"Recognise nothing in either variant until the cash is received on 1 March, since no performance has occurred and the entity is not out of pocket.","why_wrong":"Enforceability, not cash, drives the entry. In the non-cancellable variant the right to consideration becomes unconditional on the due date, which is what paragraph 108 defines as a receivable.","type":"determinate","tests":"That cancellability changes the balance sheet before it changes revenue, and the receivable versus contract asset line that carries different risks into IFRS 9.","disclosure_example":"","provenance":"retrieved","source_ids":["S5","S7","S20"],"example_coverage_pending":null},{"id":"PD-02","step":"adjacent_presentation_disclosure","judgment_point":"mechanics","scenario":"A Canadian reporting issuer discloses revenue in a single line and directs readers to its segment note for any further breakdown. It does not disclose the aggregate transaction price allocated to unsatisfied performance obligations, on the grounds that the information is commercially sensitive.","answer":"Both positions fail. Paragraph 114 requires revenue to be disaggregated into categories depicting how the nature, amount, timing and uncertainty of revenue and cash flows are affected by economic factors, and paragraph 120 requires disclosure of the aggregate transaction price allocated to performance obligations that are unsatisfied or partially unsatisfied, with the practical expedients in paragraphs 121 and 122 available only in the circumstances they specify and with their use disclosed. CSA staff have named both as deficiencies: Staff Notice 51-364 states that some issuers do not disaggregate revenue into categories and that some do not disclose the aggregate transaction price allocated to unsatisfied performance obligations, and Staff Notice 51-365 states that reportable segment disclosure might not be sufficient and that IFRS 15 contains no exemption from a prescribed disclosure because the issuer regards it as commercially sensitive.","authority":"IFRS 15.110, .114, .120, .121, .122; CSA Staff Notice 51-364 (3 November 2022); CSA Staff Notice 51-365 (7 November 2024)","distractor":"Segment disclosure satisfies paragraph 114, and paragraph 120 can be omitted where the information would harm the issuer competitively.","why_wrong":"Paragraph 114 sets its own objective, which segments may not meet, and there is no commercial sensitivity exemption in the disclosure requirements. Both points are stated in the CSA staff notices.","type":"determinate","tests":"The two IFRS 15 disclosure failures Canadian regulators actually write up. This is the one place in the bank where the Canadian overlay changes what gets tested.","disclosure_example":"","provenance":"retrieved","source_ids":["S6","S14","S15","S20"],"example_coverage_pending":"Examples 41, 42 and 43 cover disaggregation and remaining performance obligations disclosure"},{"id":"DEF-01","step":"step_5_recognition","judgment_point":"mechanics","scenario":"A study guide states that IFRS 15 defines five terms in Appendix A: contract, performance obligation, transaction price, stand-alone selling price and control.","answer":"Four of the five are Appendix A defined terms. Appendix A defines contract, contract asset, contract liability, customer, income, performance obligation, revenue, stand-alone selling price and transaction price. Control is not among them. Control of an asset is described in paragraph 33, as the ability to direct the use of, and obtain substantially all of the remaining benefits from, the asset, including the ability to prevent others from doing so. Paragraph 38 then gives indicators of the transfer of control at a point in time.","authority":"IFRS 15 Appendix A; IFRS 15.33, .38","distractor":"Control is defined in Appendix A alongside the other terms, since the whole standard turns on it.","why_wrong":"The retrieved Appendix A list does not include control. The concept is developed in the body of the standard at paragraph 33, which matters because paragraph 33 is where the benefits limb and the ability to prevent others limb both sit.","type":"determinate","tests":"Knowing where the authority for control actually lives, since a citation to Appendix A for control would not survive a marker checking it. Note that the brief for this bank listed control as a defined term, which it is not.","disclosure_example":"","provenance":"retrieved","source_ids":["S7","S2","S20"],"example_coverage_pending":null},{"disclosure_example":"","provenance":"retrieved","example_coverage_pending":null,"id":"PA-03","step":"step_5_recognition","judgment_point":"principal_versus_agent","scenario":"An entity operates a website on which customers buy goods from a range of suppliers, who ship directly to the customer. Under its contracts with suppliers the entity is entitled to a commission of 10 per cent of the sales price. The website facilitates payment at prices set by the supplier. The entity requires payment from the customer before an order is processed, all orders are non-refundable, and after arranging for the goods to be provided the entity has no further obligation to the customer.","answer":"The entity is an agent and recognises revenue in the amount of its commission. Working paragraph B34A in order: the specified goods are the goods provided by the suppliers, and no other good or service is promised to customers. The entity does not control those goods before transfer, because it can neither direct them to anyone other than the customer nor prevent the supplier from transferring them, and it does not control the suppliers' inventory. The paragraph B37 indicators confirm rather than drive the conclusion: the supplier is primarily responsible for fulfilment, and the entity takes no inventory risk at any time.","authority":"IFRS 15.B34, B34A, B35, B35A, B36, B37; IE Example 45","distractor":"The entity is a principal, because it collects the full sales price from the customer before the order is processed, the orders are non-refundable, and the customer's whole commercial relationship is with the website.","why_wrong":"Collecting gross cash and owning the customer relationship are not control. Paragraph B35 defines the principal by control of the specified good before transfer, and Example 45 concludes the entity never has the ability to direct the use of those goods.","type":"determinate","tests":"That cash flow and customer-facing prominence are not inputs to the control test. This is the marketplace fact pattern that produces the largest gross-versus-net misstatements.","source_ids":["S8","S20"]},{"disclosure_example":"","provenance":"retrieved","example_coverage_pending":null,"id":"PA-04","step":"step_5_recognition","judgment_point":"principal_versus_agent","scenario":"An entity sells office maintenance services. It and the customer define and agree the scope and negotiate the price, and the entity is responsible for ensuring the services are performed in accordance with the contract. It invoices monthly. The entity regularly engages third-party providers to perform the work, and it enters into the contract with a provider only after it has won the customer contract, so it has mitigated its exposure to unsold capacity.","answer":"The entity is a principal. It is responsible for fulfilment regardless of who performs the work, and it has discretion in setting the price. It does not commit to obtain the services before obtaining the customer contract, so it has mitigated inventory risk, and the example says so expressly. It nonetheless concludes that it controls the services before they are provided, on the basis of the other evidence. Paragraph B37A is the reason this holds: the relevance of individual indicators varies with the facts, and different indicators are persuasive in different contracts.","authority":"IFRS 15.B34A, B35, B35A, B35B, B37, B37A; IE Example 46A","distractor":"The entity is an agent, because it takes no inventory risk: it never commits to a service provider until it has a customer, so one of the three paragraph B37 indicators points away from principal and the entity is merely arranging.","why_wrong":"Paragraph B37 lists indicators of control, not conditions for it, and paragraph B37A states that their relevance varies. Example 46A reaches principal while acknowledging that inventory risk has been mitigated.","type":"judgment","tests":"The clearest available refutation of indicator counting. One indicator points the other way and the conclusion does not move, because control is the test and the indicators only support it.","source_ids":["S8","S20"]},{"disclosure_example":"","provenance":"retrieved","example_coverage_pending":null,"id":"PA-05","step":"step_5_recognition","judgment_point":"principal_versus_agent","scenario":"Compare two resellers. The first negotiates with airlines to buy tickets at reduced rates, agrees to buy a specific number and must pay for them whether or not it resells them, sets the price at which it sells them on, and collects from the customer at purchase; the airline remains responsible for the flight itself. The second sells vouchers for discounted meals at specified restaurants, buys a voucher only once a customer requests it, never commits in advance, sets prices jointly with the restaurants, and is entitled to 30 per cent of the voucher price.","answer":"The ticket reseller is a principal and recognises the gross amount: it controls each specified right, the ticket, before transfer, having committed to pay for it before finding a customer, and it sets the price. The voucher seller is an agent and recognises its 30 per cent: the vouchers do not exist before they are transferred to customers, so it never has the ability to direct their use, and it has no inventory risk because it neither purchases nor commits to purchase before the sale.","authority":"IFRS 15.B34A, B35, B35A, B36, B37(b), B37(c); IE Examples 47 and 48","distractor":"Both are agents, since in each case a third party actually performs the service the end customer receives and the reseller only arranges access to it.","why_wrong":"Who performs the underlying service is not the test. Paragraph B35 asks whether the entity controls the specified good or service, and in Example 47 the specified good is the right conveyed by the ticket, which the entity controls before transfer.","type":"judgment","tests":"Naming the specified good or service precisely. Get it wrong, calling it the flight rather than the right to the flight, and the analysis collapses to agent every time.","source_ids":["S8","S20"]},{"disclosure_example":"","provenance":"retrieved","example_coverage_pending":null,"id":"PA-06","step":"step_5_recognition","judgment_point":"principal_versus_agent","scenario":"An entity sells services that help customers target recruits for open positions. It performs several services itself, including interviewing candidates and running background checks. As part of the same contract, the customer agrees to obtain a licence to access a third party's database of potential recruits. The entity arranges the licence, but the customer contracts directly with the database provider, which sets the price and is responsible for technical support and service credits. The entity collects payment for the licence as part of its overall invoicing.","answer":"Both roles in one contract. The entity is an agent in relation to the third party's database service, since it does not control that service and does not set its price, and it is a principal in relation to the recruitment services, which it performs itself with no other party involved. Paragraph B34A requires the specified goods or services to be identified and control assessed for each of them, so a single contract can carry both answers.","authority":"IFRS 15.B34, B34A, B35, B36, B37A; IE Example 48A","distractor":"Reach one conclusion for the contract as a whole, since it is one negotiated arrangement with one customer, invoiced together, and a single presentation basis is needed for the revenue line.","why_wrong":"Paragraph B34A frames the assessment at the level of each specified good or service, not the contract. Example 48A splits the contract precisely on that basis.","type":"determinate","tests":"The unit of account for the principal versus agent assessment. Contracts are assessed promise by promise, which also means the revenue line can be gross for one promise and net for another.","source_ids":["S8","S20"]},{"disclosure_example":"","provenance":"retrieved","example_coverage_pending":null,"id":"LIC-04","step":"step_2_performance_obligations","judgment_point":"licences_right_to_use_versus_right_to_access","scenario":"A pharmaceutical company licenses its patent rights to an approved drug compound to a customer for ten years and also promises to manufacture the drug. The drug is a mature product, so consistent with its customary practice the company will undertake no activities to support it. Consider two variants: in the first, no other entity can manufacture the drug because the process is highly specialised, so the licence cannot be purchased separately from the manufacturing; in the second, several other manufacturers could make it.","answer":"In the first variant the licence is not distinct: the customer cannot benefit from it without the manufacturing service, so paragraph 27(a) fails and the licence and the manufacturing are a single performance obligation, accounted for under paragraphs 31 to 38. In the second the licence is distinct, and only then does the right-to-access question arise. Because the company undertakes no activities that significantly affect the compound, paragraph B58 is not met and the licence is a right to use, satisfied at a point in time. In making the B58 assessment the company does not take into account its separate performance obligation to manufacture.","authority":"IFRS 15.27, .31 to .38, B54, B55, B56, B58, B61; IE Example 56, Cases A and B","distractor":"Because the company also manufactures the drug for the customer throughout the ten years, its continuing involvement means the licence gives a right to access, recognised over the licence term.","why_wrong":"Example 56 states that the B58 assessment excludes the separate performance obligation to provide the manufacturing service. Continuing involvement under another promise is not an activity that significantly affects the intellectual property.","type":"judgment","tests":"That distinctness comes before the access-versus-use question, and that activities belonging to a separate performance obligation cannot be borrowed to satisfy B58.","source_ids":["S2","S8","S20"]},{"disclosure_example":"","provenance":"retrieved","example_coverage_pending":null,"id":"LIC-05","step":"step_4_allocation","judgment_point":"licences_right_to_use_versus_right_to_access","scenario":"A franchisor grants a ten-year franchise licence giving the customer the right to use its trade name and sell its products, and also promises the equipment needed to operate a franchise store. Consideration is a sales-based royalty of five per cent of the customer's monthly sales, plus fixed consideration of CU150,000 for the equipment payable on delivery. The stand-alone selling price of the equipment is CU150,000 and the franchisor regularly licenses franchises in exchange for five per cent of customer sales. As franchisor it has a customary practice of undertaking activities such as analysing changes in consumer preferences.","answer":"Two performance obligations, the franchise licence and the equipment. They are separately identifiable: the licence is not a component of the equipment and does not significantly modify it, and the two are not highly interdependent, because the franchisor could fulfil each promise independently of the other. The transaction price comprises the CU150,000 fixed amount and the variable royalty, and the royalty is allocated entirely to the licence under paragraph 85, then recognised under paragraph B63.","authority":"IFRS 15.27, .29, .85, B63; IE Example 57","distractor":"Treat the licence and the equipment as one performance obligation, since a franchisee cannot operate the store without both and would never buy one without the other.","why_wrong":"Commercial necessity is not a paragraph 29 factor. Example 57 turns on the franchisor being able to fulfil each promise independently, which is what paragraph 29(c) actually asks.","type":"judgment","tests":"The franchise fact pattern end to end: unit of account, then allocation of a sales-based royalty, then the royalty recognition rule. Three requirements that are usually tested separately and applied together here.","source_ids":["S2","S3","S8","S20"]},{"disclosure_example":"","provenance":"retrieved","example_coverage_pending":null,"id":"CC-05","step":"adjacent_contract_costs","judgment_point":"costs_to_obtain_and_fulfil","scenario":"An entity signs a five-year contract to manage a customer's data centre, renewable for subsequent one-year periods. The average customer term is seven years. It pays an employee a CU10,000 sales commission on signing. Before providing the services it designs and builds a technology platform for its own internal use that interfaces with the customer's systems; the platform is not transferred to the customer. Setup costs are design services CU40,000, hardware CU120,000, software CU90,000, and migration and testing of the data centre CU100,000, CU350,000 in total.","answer":"Recognise an asset for the CU10,000 commission under paragraph 91 and amortise it over seven years under paragraph 99, not five, because the asset relates to services transferred during the five-year term and the two anticipated renewal periods. The setup costs relate to activities to fulfil the contract that do not transfer goods or services, and they are routed first by the scope test: hardware under IAS 16, software under IAS 38, and the remainder assessed against the three criteria in paragraph 95.","authority":"IFRS 15.91, .95, .96, .99, .100; IE Example 37","distractor":"Amortise the CU10,000 commission over the five-year contract term, since that is the enforceable period and the renewals are neither contracted nor certain.","why_wrong":"Paragraph 99 requires amortisation on a systematic basis consistent with the transfer of the goods or services to which the asset relates. Example 37 takes that to include the anticipated renewal periods, giving seven years.","type":"judgment","tests":"The one place in IFRS 15 where an expected renewal period legitimately extends past the enforceable contract term, which is the opposite of the paragraph 11 answer for the contract itself.","source_ids":["S4","S20"]},{"disclosure_example":"","provenance":"retrieved","example_coverage_pending":null,"id":"TP-10","step":"step_3_transaction_price","judgment_point":"significant_financing_component","scenario":"A contractor agrees to construct a building over three years, with scheduled milestone payments that coincide with its expected performance. The performance obligation is satisfied over time. The contract requires a specified percentage of each milestone payment to be retained by the customer throughout the arrangement and paid only when the building is complete.","answer":"No significant financing component. The milestone payments coincide with performance, and the retention is required for reasons other than the provision of finance, which is the paragraph 62(c) factor. The retainage protects the customer against the contractor failing to complete adequately, which is exactly the example paragraph 62(c) gives.","authority":"IFRS 15.60, .61, .62(c); IE Example 27","distractor":"A significant financing component exists on the retained amounts, because the contractor waits up to three years to be paid for work it has already performed and interest rates are not negligible.","why_wrong":"Paragraph 62(c) excludes a difference that arises for reasons other than finance where the difference is proportional to that reason. Retention as performance security is that reason, and Example 27 reaches exactly this conclusion.","type":"determinate","tests":"Retainage, which looks like deferred payment and is not. The same paragraph 62(c) analysis decides both this and the advance-payment case in TP-08, from opposite directions.","source_ids":["S3","S20"]},{"disclosure_example":"","provenance":"retrieved","example_coverage_pending":null,"id":"PO-10","step":"step_2_performance_obligations","judgment_point":"distinct_and_separately_identifiable","scenario":"An entity sells Product A for CU100 and, as part of the contract, gives the customer a voucher for 40 per cent off any future purchase up to CU100 made in the next 30 days. The entity intends to offer a 10 per cent discount on all sales during those 30 days as part of a seasonal promotion, and the 10 per cent cannot be used together with the voucher.","answer":"Only the incremental discount is a material right. Because every customer will receive 10 per cent during the period, the right that this customer would not have received without entering into the contract is the additional 30 per cent. The entity accounts for the promise to provide that incremental discount as a performance obligation and allocates part of the transaction price to it, estimating its stand-alone selling price by reference to the discount the customer would obtain and the likelihood the option is exercised.","authority":"IFRS 15.B39, B40, B42; IE Example 49","distractor":"Treat the whole 40 per cent voucher as the material right, since that is what the contract grants and the customer can use nothing better.","why_wrong":"Paragraph B40 makes a material right one that the customer would not receive without entering into that contract. A discount available to every customer in the period is not incremental, so only the extra 30 per cent qualifies.","type":"judgment","tests":"Measuring a material right against what the customer could have had anyway, not against the list price. The general promotion is the fact that does the work.","source_ids":["S8","S20"]},{"disclosure_example":"","provenance":"retrieved","example_coverage_pending":null,"id":"PO-11","step":"step_2_performance_obligations","judgment_point":"distinct_and_separately_identifiable","scenario":"A telecommunications entity contracts to provide a handset and monthly network service for two years. The service includes up to 1,000 call minutes and 1,500 text messages a month for a fixed monthly fee. The contract specifies the price of any additional minutes or texts the customer may choose to buy in a month, and those prices equal their stand-alone selling prices.","answer":"The option to buy additional minutes and texts is not a material right and is not a performance obligation. Under paragraph B41, where an option is priced at the stand-alone selling price of the additional goods or services, the entity has made a marketing offer rather than granted a right, and it accounts for the additional purchases only when the customer exercises the option. The handset and the network service remain separate performance obligations under paragraph 27.","authority":"IFRS 15.27, B40, B41; IE Example 50","distractor":"The option is a material right, because the customer obtains the ability to buy those additional minutes at a set price only by entering into this contract, and that certainty has value.","why_wrong":"Paragraph B41 makes stand-alone selling price the dividing line. Contractual certainty of price is not an incremental discount, so nothing is allocated to the option.","type":"determinate","tests":"The negative case for material rights, which is the more useful half of the pair, because the positive case is easy to spot and the negative one is where allocation errors start.","source_ids":["S2","S8","S20"]}]}</script>
+<script>
+(function(){
+"use strict";
+var BANK = JSON.parse(document.getElementById('bank').textContent);
+var ITEMS = BANK.items;
+ITEMS.forEach(function(it,i){it._ord=i;});
+
+var STEPS = {
+  step_1_contract:            "Step 1 · Identify the contract",
+  step_2_performance_obligations:"Step 2 · Identify the performance obligations",
+  step_3_transaction_price:   "Step 3 · Determine the transaction price",
+  step_4_allocation:          "Step 4 · Allocate the transaction price",
+  step_5_recognition:         "Step 5 · Recognise revenue",
+  adjacent_contract_costs:    "Contract costs · outside the five steps",
+  adjacent_presentation_disclosure:"Presentation and disclosure · outside the five steps"
+};
+var STEP_ORDER = ["step_1_contract","step_2_performance_obligations","step_3_transaction_price","step_4_allocation","step_5_recognition","adjacent_contract_costs","adjacent_presentation_disclosure"];
+var POINTS = {
+  mechanics:"Mechanics",
+  distinct_and_separately_identifiable:"Distinct and separately identifiable",
+  series_guidance:"The series guidance",
+  principal_versus_agent:"Principal versus agent",
+  variable_consideration_and_constraint:"Variable consideration and the constraint",
+  significant_financing_component:"Significant financing component",
+  licences_right_to_use_versus_right_to_access:"Licences: right to use versus right to access",
+  contract_modifications:"Contract modifications",
+  costs_to_obtain_and_fulfil:"Costs to obtain and fulfil"
+};
+
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+function el(id){return document.getElementById(id);}
+
+/* ---------- session state ---------- */
+var S = {
+  queue:[], pos:0, revealed:false, graded:false,
+  det:{right:0,done:0}, jud:{reasoned:0,done:0},
+  ticks:{auth:false,flip:false}, requeued:0, marks:{}, sessionMiss:{}
+};
+
+/* ---------- persistent record, best-effort ---------- */
+var REC = {stats:{}};
+function loadRec(){ try{ var r=localStorage.getItem('ifrs15-trainer-v1'); if(r){ var o=JSON.parse(r); if(o && o.stats) REC=o; } }catch(e){} }
+function saveRec(){ try{ localStorage.setItem('ifrs15-trainer-v1', JSON.stringify(REC)); }catch(e){} }
+function bump(id, missed){
+  var st=REC.stats[id]||(REC.stats[id]={seen:0,missed:0});
+  st.seen++; if(missed) st.missed++;
+  saveRec(); refreshMissScope();
+}
+function missedIds(){ return Object.keys(REC.stats).filter(function(k){ return REC.stats[k].missed>0; }); }
+function refreshMissScope(){
+  var n=missedIds().length;
+  var o=document.getElementById('optMissed');
+  if(o){ o.hidden = n===0; o.disabled = n===0; o.textContent='Previously missed ('+n+')'; }
+  var rc=document.getElementById('recCount'); if(rc) rc.textContent=n;
+  var rs=document.getElementById('recSec'); if(rs) rs.hidden = n===0;
+}
+
+function buildQueue(scope){
+  var pool = ITEMS.filter(function(i){
+    if(scope==='all') return true;
+    if(scope==='judgment') return i.type==='judgment';
+    if(scope==='determinate') return i.type==='determinate';
+    if(scope==='missed') return REC.stats[i.id] && REC.stats[i.id].missed>0;
+    if(scope.indexOf('step:')===0) return i.step===scope.slice(5);
+    if(scope.indexOf('point:')===0) return i.judgment_point===scope.slice(6);
+    return true;
+  });
+  // Step order, then the bank's own sequence, which runs basic to hard inside
+  // each step and keeps deliberate contrasts (a case and its counter-case) adjacent.
+  pool.sort(function(a,b){
+    var sa=STEP_ORDER.indexOf(a.step), sb=STEP_ORDER.indexOf(b.step);
+    if(sa!==sb) return sa-sb;
+    return a._ord-b._ord;
+  });
+  S.queue=pool; S.pos=0; S.revealed=false; S.graded=false; S.marks={}; S.sessionMiss={};
+  S.det={right:0,done:0}; S.jud={reasoned:0,done:0}; S.requeued=0;
+  render();
+}
+function buildQueueFromIds(ids){
+  var set={}; ids.forEach(function(i){ set[i]=1; });
+  var pool = ITEMS.filter(function(i){ return set[i.id]; });
+  pool.sort(function(a,b){
+    var sa=STEP_ORDER.indexOf(a.step), sb=STEP_ORDER.indexOf(b.step);
+    if(sa!==sb) return sa-sb;
+    return a._ord-b._ord;
+  });
+  S.queue=pool; S.pos=0; S.revealed=false; S.graded=false; S.marks={}; S.sessionMiss={};
+  S.det={right:0,done:0}; S.jud={reasoned:0,done:0}; S.requeued=0;
+  render();
+}
+
+function current(){return S.queue[S.pos];}
+
+function requeue(item){
+  var target = Math.min(S.pos+5, S.queue.length);
+  S.queue.splice(target,0,item);
+  S.requeued++;
+}
+
+/* ---------- rendering ---------- */
+function render(){
+  var it = current();
+  if(!it){ renderDone(); updateRail(); return; }
+  var isJ = it.type==='judgment';
+  var h = '';
+
+  var margin = '<aside class="margin">';
+  margin += '<span class="idline">'+esc(it.id)+'</span>';
+  margin += '<span class="stepline">'+esc(STEPS[it.step]||it.step)+'</span>';
+  margin += '<span class="chip '+(isJ?'judgment':'determinate')+'">'+(isJ?'Judgment':'Determinate')+'</span>';
+  if(it.judgment_point!=='mechanics') margin += '<span class="chip">'+esc(POINTS[it.judgment_point]||it.judgment_point)+'</span>';
+  if(it.example_coverage_pending) margin += '<span class="chip pending">Paragraph anchor only</span>';
+  margin += '</aside>';
+
+  h += '<div class="spread"><div class="col-main">';
+  h += '<p class="scenario">'+esc(it.scenario)+'</p>';
+
+  h += '<div class="prompt'+(isJ?' judgment':'')+'">';
+  if(isJ){
+    h += '<span class="label">Before you reveal</span>';
+    h += '<p>Do not answer with a conclusion. Name the paragraph that governs, and name the fact that would change the answer if it were different.</p>';
+  }else{
+    h += '<span class="label">Before you reveal</span>';
+    h += '<p>State the treatment and the paragraph it rests on. Commit to it before revealing: the attractive wrong answer is shown afterwards, so it cannot do the thinking for you.</p>';
+  }
+  h += '</div>';
+
+  h += '<textarea id="commit" placeholder="Optional. Writing it down first is the point."></textarea>';
+
+  h += '<div class="controls">';
+  h += '<button class="btn" id="btnReveal">Reveal</button>';
+  h += '<span class="hint">Item <span class="num">'+(S.pos+1)+'</span> of <span class="num">'+S.queue.length+'</span></span>';
+  h += '</div>';
+
+  h += '<div class="reveal hidden" id="reveal">';
+  h += '<div class="block"><span class="label">The treatment</span><p>'+esc(it.answer)+'</p></div>';
+  h += '<div class="block trap"><span class="label">The trap</span>';
+  h += '<div class="trap-claim"><p>'+esc(it.distractor)+'</p></div>';
+  h += '<p>'+esc(it.why_wrong)+'</p></div>';
+  h += '<div class="block"><span class="label">Authority</span><div class="authority"><span class="cite">'+esc(it.authority)+'</span></div>';
+  if(it.example_coverage_pending){
+    h += '<p class="pendingnote">Anchored to paragraph text only. '+esc(it.example_coverage_pending)+' would supersede this item once the example text is available.</p>';
+  }
+  h += '</div>';
+  h += '<div class="block"><span class="label">What this trains</span><p>'+esc(it.tests)+'</p></div>';
+
+  h += '<div class="grade" id="grade">';
+  if(isJ){
+    h += '<span class="label" style="display:block;margin-bottom:12px">Self-assessment, not a score</span>';
+    h += '<button class="toggle" id="tAuth" aria-pressed="false"><span class="box"></span><span>I cited the governing paragraph before revealing.</span></button>';
+    h += '<button class="toggle" id="tFlip" aria-pressed="false"><span class="box"></span><span>I named the fact that would flip the conclusion.</span></button>';
+    h += '<div class="controls"><button class="btn" id="btnNext">Next item</button>';
+    h += '<span class="hint">Tick neither and this item returns later.</span></div>';
+  }else{
+    h += '<span class="label" style="display:block;margin-bottom:12px">Did you get it</span>';
+    h += '<div class="controls"><button class="btn good" id="btnRight">Got it</button>';
+    h += '<button class="btn bad" id="btnWrong">Missed it</button>';
+    h += '<span class="hint">Missed items return five items later.</span></div>';
+  }
+  h += '</div>';
+
+  var rel = ITEMS.filter(function(o){return o.judgment_point===it.judgment_point && o.id!==it.id;}).slice(0,4);
+  if(rel.length){
+    h += '<div class="related"><span class="label">Same judgment point</span><ul>';
+    rel.forEach(function(o){
+      h += '<li><button data-goto="'+esc(o.id)+'"><span class="cite">'+esc(o.id)+'</span>'+esc(o.tests)+'</button></li>';
+    });
+    h += '</ul></div>';
+  }
+  h += '</div>';            // .reveal
+  h += '</div>' + margin + '</div>';  // .col-main, aside, .spread
+
+  el('stage').innerHTML = h;
+  wire(it);
+  updateRail();
+}
+
+function renderDone(){
+  window.__reveal = null;
+  var total = S.det.done + S.jud.done;
+  var missIds = Object.keys(S.sessionMiss);
+  var h = '<div class="block" style="max-width:var(--measure)">';
+  h += '<span class="label">Scope complete</span>';
+  if(!total){
+    h += '<p style="font-family:var(--f-display);font-size:20px;line-height:1.5;margin-top:12px">Nothing to drill in this scope yet. Pick another scope from the panel.</p>';
+  }else{
+    var parts=['You worked '+total+' item'+(total===1?'':'s')+'.'];
+    if(S.det.done){ parts.push('On the determinate ones you were right '+S.det.right+' of '+S.det.done+', which is '+Math.round(100*S.det.right/S.det.done)+' per cent.'); }
+    if(S.jud.done){ parts.push('On the judgment ones you reasoned your way to '+S.jud.reasoned+' of '+S.jud.done+'.'); }
+    h += '<p style="font-family:var(--f-display);font-size:22px;line-height:1.5;margin-top:12px">'+parts.join(' ')+'</p>';
+    if(S.jud.done){
+      h += '<p style="margin-top:16px;color:var(--ink-2);font-family:var(--f-display);font-size:17px;line-height:1.6">The judgment figure is not a score. It records whether you cited the governing paragraph and named the fact that would change the answer, which is the only thing the standard lets you be right about on those items.</p>';
+    }
+    if(missIds.length){
+      var byPoint={};
+      missIds.forEach(function(id){
+        var it=ITEMS.find(function(o){ return o.id===id; });
+        if(it){ var pt=POINTS[it.judgment_point]||it.judgment_point; byPoint[pt]=(byPoint[pt]||0)+1; }
+      });
+      h += '<div style="margin-top:24px;border-top:1px solid var(--rule);padding-top:16px">';
+      h += '<span class="label">Where the misses were</span><ul style="list-style:none;margin:8px 0 0;padding:0">';
+      Object.keys(byPoint).sort(function(a,b){ return byPoint[b]-byPoint[a]; }).forEach(function(pt){
+        h += '<li style="font-size:14px;color:var(--ink-2);padding:4px 0">'+esc(pt)+' &nbsp;<span class="cite">'+byPoint[pt]+'</span></li>';
+      });
+      h += '</ul></div>';
+    }
+  }
+  h += '<div class="controls">';
+  if(missIds.length){ h += '<button class="btn" id="btnMissed">Drill what you missed</button>'; }
+  h += '<button class="btn'+(missIds.length?' ghost':'')+'" id="btnRestart">Run the scope again</button>';
+  h += '</div></div>';
+  el('stage').innerHTML = h;
+  var bm=document.getElementById('btnMissed');
+  if(bm) bm.addEventListener('click', function(){ buildQueueFromIds(missIds); });
+  el('btnRestart').addEventListener('click', function(){ buildQueue(el('scope').value); });
+}
+
+function wire(it){
+  var isJ = it.type==='judgment';
+  el('btnReveal').addEventListener('click', doReveal);
+  el('stage').querySelectorAll('[data-goto]').forEach(function(b){
+    b.addEventListener('click', function(){ gotoItem(b.getAttribute('data-goto')); });
+  });
+
+  function doReveal(){
+    if(S.revealed) return;
+    S.revealed = true;
+    el('reveal').classList.remove('hidden');
+    el('btnReveal').setAttribute('disabled','');
+    el('btnReveal').classList.add('ghost');
+    el('btnReveal').textContent = 'Revealed';
+    el('grade').scrollIntoView({behavior:'smooth',block:'nearest'});
+    if(isJ){
+      el('tAuth').addEventListener('click', function(){ tog(this,'auth'); });
+      el('tFlip').addEventListener('click', function(){ tog(this,'flip'); });
+      el('btnNext').addEventListener('click', function(){ gradeJudgment(it); });
+    }else{
+      el('btnRight').addEventListener('click', function(){ gradeDet(it,true); });
+      el('btnWrong').addEventListener('click', function(){ gradeDet(it,false); });
+    }
+  }
+  window.__reveal = doReveal;
+}
+
+function gotoItem(id){
+  var idx=S.queue.findIndex(function(o){ return o.id===id; });
+  if(idx>-1){ S.pos=idx; }
+  else{
+    var it=ITEMS.find(function(o){ return o.id===id; });
+    if(!it) return;
+    var at=Math.min(S.pos+1, S.queue.length);
+    S.queue.splice(at,0,it); S.pos=at;
+  }
+  S.revealed=false; S.graded=false; S.ticks={auth:false,flip:false};
+  render(); window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function tog(btn,key){
+  var on = btn.getAttribute('aria-pressed')==='true';
+  btn.setAttribute('aria-pressed', on?'false':'true');
+  S.ticks[key] = !on;
+}
+
+function gradeDet(it,right){
+  if(S.graded) return; S.graded=true;
+  S.det.done++;
+  if(right){ S.det.right++; bump(it.id,false); }
+  else { requeue(it); S.marks[it.id]='miss'; S.sessionMiss[it.id]=(S.sessionMiss[it.id]||0)+1; bump(it.id,true); }
+  advance();
+}
+function gradeJudgment(it){
+  if(S.graded) return; S.graded=true;
+  S.jud.done++;
+  if(S.ticks.auth || S.ticks.flip){ S.jud.reasoned++; bump(it.id,false); }
+  else { requeue(it); S.marks[it.id]='miss'; S.sessionMiss[it.id]=(S.sessionMiss[it.id]||0)+1; bump(it.id,true); }
+  advance();
+}
+function advance(){
+  S.pos++; S.revealed=false; S.graded=false; S.ticks={auth:false,flip:false};
+  render(); window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function updateRail(){
+  el('detScore').textContent = S.det.right+' / '+S.det.done;
+  el('detPct').textContent = S.det.done? Math.round(100*S.det.right/S.det.done)+'%' : 'not yet';
+  el('detBar').style.width = (S.det.done? (100*S.det.right/S.det.done):0)+'%';
+  el('judScore').textContent = S.jud.reasoned+' / '+S.jud.done;
+  el('judBar').style.width = (S.jud.done? (100*S.jud.reasoned/S.jud.done):0)+'%';
+  el('reqCount').textContent = S.requeued;
+
+  var q = el('queue'); q.innerHTML='';
+  S.queue.slice(0,64).forEach(function(o,i){
+    var d=document.createElement('span');
+    d.className='pip'+(i<S.pos?(S.marks[o.id]==='miss'?' miss':' done'):(i===S.pos?' now':''));
+    q.appendChild(d);
+  });
+  el('queuenote').textContent = S.queue.length+' items in this scope'+(S.queue.length>64?', first 64 shown':'')+'.';
+}
+
+/* ---------- record ---------- */
+(function initRecord(){
+  loadRec();
+  var c=document.getElementById('recClear');
+  if(c) c.addEventListener('click', function(){ REC={stats:{}}; saveRec(); refreshMissScope(); });
+})();
+
+/* ---------- scope selector ---------- */
+(function initScope(){
+  var s = el('scope');
+  var opts = '<option value="all">Everything, in step order</option>';
+  opts += '<option value="determinate">Determinate items only</option>';
+  opts += '<option value="judgment">Judgment items only</option>';
+  opts += '<option value="missed" id="optMissed" hidden disabled>Previously missed</option>';
+  opts += '<optgroup label="By step">';
+  STEP_ORDER.forEach(function(k){
+    var n = ITEMS.filter(function(i){return i.step===k;}).length;
+    if(n) opts += '<option value="step:'+k+'">'+STEPS[k]+' ('+n+')</option>';
+  });
+  opts += '</optgroup><optgroup label="By judgment point">';
+  Object.keys(POINTS).forEach(function(k){
+    var n = ITEMS.filter(function(i){return i.judgment_point===k;}).length;
+    if(n) opts += '<option value="point:'+k+'">'+POINTS[k]+' ('+n+')</option>';
+  });
+  opts += '</optgroup>';
+  s.innerHTML = opts;
+  s.addEventListener('change', function(){ buildQueue(s.value); });
+})();
+
+/* ---------- reference table ---------- */
+(function initRef(){
+  var fS=el('fStep'), fP=el('fPoint'), fT=el('fType');
+  fS.innerHTML = '<option value="">All steps</option>'+STEP_ORDER.filter(function(k){return ITEMS.some(function(i){return i.step===k;});}).map(function(k){return '<option value="'+k+'">'+STEPS[k]+'</option>';}).join('');
+  fP.innerHTML = '<option value="">All judgment points</option>'+Object.keys(POINTS).map(function(k){return '<option value="'+k+'">'+POINTS[k]+'</option>';}).join('');
+  fT.innerHTML = '<option value="">Both types</option><option value="determinate">Determinate</option><option value="judgment">Judgment</option>';
+  function draw(){
+    var rows = ITEMS.filter(function(i){
+      return (!fS.value||i.step===fS.value) && (!fP.value||i.judgment_point===fP.value) && (!fT.value||i.type===fT.value);
+    });
+    el('refCount').textContent = rows.length+' of '+ITEMS.length+' items';
+    el('refBody').innerHTML = rows.map(function(i){
+      return '<tr><td><button class="rowgo" data-drill="'+esc(i.id)+'" title="Open in the drill"><span class="cite">'+esc(i.id)+'</span></button></td>'+
+        '<td class="sc">'+esc(i.scenario.length>210?i.scenario.slice(0,210)+'…':i.scenario)+'</td>'+
+        '<td><span class="cite">'+esc(i.authority)+'</span></td>'+
+        '<td><span class="chip '+i.type+'">'+(i.type==='judgment'?'Judgment':'Determinate')+'</span></td></tr>';
+    }).join('');
+  }
+  [fS,fP,fT].forEach(function(x){x.addEventListener('change',draw);});
+  el('refBody').addEventListener('click', function(ev){
+    var b = ev.target.closest ? ev.target.closest('button.rowgo') : null;
+    if(!b) return;
+    showTab('tab-drill');
+    gotoItem(b.getAttribute('data-drill'));
+  });
+  draw();
+})();
+
+/* ---------- tabs ---------- */
+var TABMAP = {'tab-drill':'view-drill','tab-ref':'view-ref','tab-prov':'view-prov'};
+function showTab(t){
+  Object.keys(TABMAP).forEach(function(o){
+    el(o).setAttribute('aria-selected', o===t?'true':'false');
+    el(TABMAP[o]).classList.toggle('hidden', o!==t);
+  });
+}
+Object.keys(TABMAP).forEach(function(t){
+  el(t).addEventListener('click', function(){ showTab(t); });
+});
+
+/* ---------- keys ---------- */
+document.addEventListener('keydown', function(e){
+  if(e.target && /^(TEXTAREA|INPUT|SELECT)$/.test(e.target.tagName)) return;
+  if(el('view-drill').classList.contains('hidden')) return;
+  if(e.key===' '){ e.preventDefault(); if(window.__reveal) window.__reveal(); }
+  if(!S.revealed) return;
+  var it = current(); if(!it) return;
+  if(e.key==='1'){ if(it.type==='determinate') gradeDet(it,true); else { var a=el('tAuth'); if(a) tog(a,'auth'); } }
+  if(e.key==='2'){ if(it.type==='determinate') gradeDet(it,false); else { var f=el('tFlip'); if(f) tog(f,'flip'); } }
+  if(e.key==='n'||e.key==='N'){ if(it.type==='judgment') gradeJudgment(it); }
+});
+
+refreshMissScope();
+buildQueue('all');
+})();
+</script>
+
+  
+<!--__rbp-->
+<a id="__rb-pill" href="research.html">&#8592; Research</a>
+<script>
+(function(){
+  var p=document.getElementById('__rb-pill'); if(!p) return;
+  var t=false;
+  function run(){ t=false;
+    p.classList.toggle('__on',(window.scrollY||document.documentElement.scrollTop)>420); }
+  function q(){ if(!t){ t=true; requestAnimationFrame(run); } }
+  addEventListener('scroll',q,{passive:true}); run();
+})();
+/* the trail, for the pages that carry only the pill (the tools) */
+(function(){
+  if(window.__trailed) return; window.__trailed=1;
+  try{
+    var k='atlas.trail';
+    var u=location.pathname.split('/').pop()||'index.html';
+    var t2=JSON.parse(localStorage.getItem(k)||'{}');
+    function put(key){
+      if(t2[key]||Object.keys(t2).length<500){
+        t2[key]=(t2[key]||0)+1;
+        localStorage.setItem(k,JSON.stringify(t2));
+      }
+    }
+    put(u+location.hash);
+    addEventListener('hashchange',function(){ put(u+location.hash); });
+  }catch(e){}
+})();
+</script>
+<!--/__rbp-->
+</body>
+</html>

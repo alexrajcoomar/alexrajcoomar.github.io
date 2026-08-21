@@ -1,0 +1,1026 @@
+<!doctype html>
+<html lang="en-CA">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Zakaria's Putin, Audited</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&family=Spectral:ital,wght@0,400;0,600;0,700;1,400&display=swap">
+
+<style>
+  :root {
+    --paper:        #F3F5F1;
+    --card:         #FFFFFF;
+    --card-2:       #FAFBF8;
+    --ink:          #161B19;
+    --ink-2:        #4E5854;
+    --ink-3:        #79837E;
+    --rule:         #D5DBD4;
+    --rule-soft:    #E6EAE4;
+    --accent:       #1D4845;
+    --accent-soft:  #E2EBE8;
+    --holds:        #2E6A44;
+    --holds-bg:     #E4EFE6;
+    --qual:         #8A6210;
+    --qual-bg:      #F4EBD6;
+    --gone:         #8F302A;
+    --gone-bg:      #F5E3E0;
+    --shadow:       0 1px 2px rgba(22,27,25,.05), 0 8px 24px -16px rgba(22,27,25,.28);
+
+    --f-display: "Spectral", Georgia, "Times New Roman", serif;
+    --f-body:    "IBM Plex Sans", -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+    --f-mono:    "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+
+    --measure: 66ch;
+    --pad: clamp(1.15rem, 4vw, 2.75rem);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper:       #101413;
+      --card:        #191F1D;
+      --card-2:      #1D2422;
+      --ink:         #E7EBE8;
+      --ink-2:       #A6B0AB;
+      --ink-3:       #7C8781;
+      --rule:        #2C3431;
+      --rule-soft:   #232A28;
+      --accent:      #79B0A9;
+      --accent-soft: #1E2A29;
+      --holds:       #77C08F;
+      --holds-bg:    #172A1E;
+      --qual:        #D6A845;
+      --qual-bg:     #2B2416;
+      --gone:        #E08479;
+      --gone-bg:     #2E1B19;
+      --shadow:      0 1px 2px rgba(0,0,0,.4), 0 10px 28px -18px rgba(0,0,0,.9);
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --paper:       #101413;
+    --card:        #191F1D;
+    --card-2:      #1D2422;
+    --ink:         #E7EBE8;
+    --ink-2:       #A6B0AB;
+    --ink-3:       #7C8781;
+    --rule:        #2C3431;
+    --rule-soft:   #232A28;
+    --accent:      #79B0A9;
+    --accent-soft: #1E2A29;
+    --holds:       #77C08F;
+    --holds-bg:    #172A1E;
+    --qual:        #D6A845;
+    --qual-bg:     #2B2416;
+    --gone:        #E08479;
+    --gone-bg:     #2E1B19;
+    --shadow:      0 1px 2px rgba(0,0,0,.4), 0 10px 28px -18px rgba(0,0,0,.9);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--f-body);
+    font-size: 16.5px;
+    line-height: 1.62;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 0 var(--pad) 5rem;
+  }
+
+  a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 2px; }
+  a:focus-visible, summary:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  h1, h2, h3 { font-family: var(--f-display); font-weight: 600; text-wrap: balance; margin: 0; }
+
+  .eyebrow {
+    font-family: var(--f-mono);
+    font-size: .68rem;
+    letter-spacing: .13em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    margin: 0;
+  }
+
+  /* ---------- masthead ---------- */
+
+  .masthead {
+    display: flex;
+    flex-direction: column;
+    gap: 1.4rem;
+    padding: clamp(2.5rem, 7vw, 4.5rem) 0 2rem;
+    border-bottom: 2px solid var(--ink);
+  }
+
+  .masthead h1 {
+    font-size: clamp(2.35rem, 6.2vw, 4rem);
+    line-height: 1.03;
+    letter-spacing: -.015em;
+  }
+
+  .masthead h1 em { font-style: italic; font-weight: 400; color: var(--accent); }
+
+  .dek {
+    font-family: var(--f-display);
+    font-size: clamp(1.08rem, 2.3vw, 1.32rem);
+    line-height: 1.5;
+    color: var(--ink-2);
+    max-width: 58ch;
+    margin: 0;
+  }
+
+  .slugline {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .45rem 1.6rem;
+    font-family: var(--f-mono);
+    font-size: .74rem;
+    color: var(--ink-3);
+    letter-spacing: .02em;
+  }
+  .slugline b { color: var(--ink-2); font-weight: 500; }
+
+  /* ---------- opinion block ---------- */
+
+  .opinion {
+    margin-top: 2.5rem;
+    background: var(--card);
+    border: 1px solid var(--rule);
+    border-left: 4px solid var(--accent);
+    border-radius: 3px;
+    padding: clamp(1.4rem, 3.6vw, 2.2rem);
+    box-shadow: var(--shadow);
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .opinion h2 { font-size: 1.06rem; letter-spacing: .01em; }
+  .opinion p { margin: 0; max-width: var(--measure); }
+  .opinion p + p { margin-top: -.15rem; }
+  .opinion strong { font-weight: 600; }
+
+  .tally {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(148px, 1fr));
+    gap: 1px;
+    background: var(--rule-soft);
+    border: 1px solid var(--rule-soft);
+    border-radius: 3px;
+    margin-top: .4rem;
+    overflow: hidden;
+  }
+  .tally div { background: var(--card-2); padding: .85rem 1rem; }
+  .tally .n {
+    font-family: var(--f-mono);
+    font-size: 1.5rem;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    display: block;
+    line-height: 1.2;
+  }
+  .tally .l {
+    font-family: var(--f-mono);
+    font-size: .66rem;
+    letter-spacing: .09em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+  }
+  .tally .t-holds .n { color: var(--holds); }
+  .tally .t-qual  .n { color: var(--qual); }
+  .tally .t-gone  .n { color: var(--gone); }
+
+  /* ---------- sections ---------- */
+
+  section { margin-top: clamp(3rem, 7vw, 4.75rem); }
+
+  .sec-head {
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+    padding-bottom: .9rem;
+    border-bottom: 1px solid var(--rule);
+    margin-bottom: 1.9rem;
+  }
+  .sec-head h2 {
+    font-size: clamp(1.5rem, 3.4vw, 2rem);
+    line-height: 1.15;
+    letter-spacing: -.01em;
+  }
+  .sec-head p {
+    margin: 0;
+    color: var(--ink-2);
+    max-width: var(--measure);
+    font-size: .96rem;
+  }
+
+  /* ---------- claim ledger ---------- */
+
+  .ledger { display: flex; flex-direction: column; gap: 1px; background: var(--rule-soft); border: 1px solid var(--rule); border-radius: 3px; overflow: hidden; }
+
+  .claim {
+    background: var(--card);
+    display: grid;
+    grid-template-columns: 152px 1fr;
+    gap: 0 1.75rem;
+    padding: 1.5rem clamp(1rem, 3vw, 1.75rem);
+  }
+  @media (max-width: 700px) {
+    .claim { grid-template-columns: 1fr; gap: .9rem; padding: 1.35rem 1.1rem; }
+  }
+
+  .rail { display: flex; flex-direction: column; gap: .55rem; align-items: flex-start; }
+  @media (max-width: 700px) { .rail { flex-direction: row; align-items: center; gap: .75rem; } }
+
+  .ref {
+    font-family: var(--f-mono);
+    font-size: .7rem;
+    letter-spacing: .08em;
+    color: var(--ink-3);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .chip {
+    font-family: var(--f-mono);
+    font-size: .64rem;
+    font-weight: 600;
+    letter-spacing: .09em;
+    text-transform: uppercase;
+    padding: .3rem .55rem;
+    border-radius: 2px;
+    white-space: nowrap;
+    border: 1px solid transparent;
+  }
+  .c-holds { color: var(--holds); background: var(--holds-bg); border-color: color-mix(in srgb, var(--holds) 26%, transparent); }
+  .c-qual  { color: var(--qual);  background: var(--qual-bg);  border-color: color-mix(in srgb, var(--qual) 30%, transparent); }
+  .c-gone  { color: var(--gone);  background: var(--gone-bg);  border-color: color-mix(in srgb, var(--gone) 28%, transparent); }
+  .c-wrong { color: var(--card); background: var(--gone); border-color: var(--gone); }
+
+  .body h3 {
+    font-size: 1.09rem;
+    line-height: 1.34;
+    margin-bottom: .5rem;
+  }
+  .body p { margin: 0 0 .65rem; max-width: var(--measure); font-size: .95rem; }
+  .body p:last-child { margin-bottom: 0; }
+
+  .quote {
+    font-family: var(--f-display);
+    font-style: italic;
+    color: var(--ink-2);
+    border-left: 2px solid var(--rule);
+    padding-left: .85rem;
+    margin: 0 0 .7rem;
+    font-size: .96rem;
+    max-width: var(--measure);
+  }
+
+  .flag {
+    display: inline-block;
+    font-family: var(--f-mono);
+    font-size: .63rem;
+    letter-spacing: .07em;
+    text-transform: uppercase;
+    color: var(--qual);
+    border: 1px dashed color-mix(in srgb, var(--qual) 45%, transparent);
+    padding: .1rem .35rem;
+    border-radius: 2px;
+    vertical-align: .08em;
+  }
+
+  /* ---------- timeline ---------- */
+
+  .timeline { display: flex; flex-direction: column; gap: 0; }
+
+  .tl-item {
+    display: grid;
+    grid-template-columns: 118px 1fr;
+    gap: 0 1.5rem;
+    padding: 1.05rem 0;
+    border-bottom: 1px solid var(--rule-soft);
+    position: relative;
+  }
+  .tl-item:last-child { border-bottom: 0; }
+  @media (max-width: 620px) {
+    .tl-item { grid-template-columns: 1fr; gap: .3rem; }
+  }
+
+  .tl-date {
+    font-family: var(--f-mono);
+    font-size: .74rem;
+    color: var(--accent);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: .01em;
+    padding-top: .18rem;
+    font-weight: 500;
+  }
+  .tl-body h4 {
+    font-family: var(--f-body);
+    font-size: .96rem;
+    font-weight: 600;
+    margin: 0 0 .18rem;
+  }
+  .tl-body p { margin: 0; font-size: .9rem; color: var(--ink-2); max-width: var(--measure); }
+
+  /* ---------- thesis cards ---------- */
+
+  .theses { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+  @media (max-width: 760px) { .theses { grid-template-columns: minmax(0, 1fr); } }
+
+  .thesis {
+    background: var(--card);
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    padding: 1.35rem 1.4rem;
+    display: flex;
+    flex-direction: column;
+    gap: .6rem;
+    border-top: 3px solid var(--verdict, var(--accent));
+  }
+  .thesis.t-holds { --verdict: var(--holds); }
+  .thesis.t-qual  { --verdict: var(--qual); }
+  .thesis.t-gone  { --verdict: var(--gone); }
+
+  .thesis h3 { font-size: 1.05rem; line-height: 1.32; }
+  .thesis p { margin: 0; font-size: .92rem; color: var(--ink-2); }
+  .thesis .verdict {
+    font-family: var(--f-mono);
+    font-size: .66rem;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--verdict);
+    font-weight: 600;
+  }
+
+  /* ---------- prose block ---------- */
+
+  .prose p { max-width: var(--measure); margin: 0 0 1rem; }
+  .prose p:last-child { margin-bottom: 0; }
+
+  .note {
+    background: var(--accent-soft);
+    border: 1px solid color-mix(in srgb, var(--accent) 22%, transparent);
+    border-radius: 3px;
+    padding: 1.15rem 1.3rem;
+    margin-top: 1.5rem;
+  }
+  .note p { margin: 0; font-size: .93rem; max-width: var(--measure); }
+  .note p + p { margin-top: .6rem; }
+  .note .eyebrow { margin-bottom: .45rem; color: var(--accent); }
+
+  /* ---------- sources ---------- */
+
+  details.sources {
+    background: var(--card);
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    padding: 1.1rem 1.3rem;
+  }
+  details.sources summary {
+    cursor: pointer;
+    font-family: var(--f-mono);
+    font-size: .72rem;
+    letter-spacing: .09em;
+    text-transform: uppercase;
+    color: var(--ink-2);
+  }
+  details.sources[open] summary { margin-bottom: .9rem; }
+  .srclist { margin: 0; padding-left: 1.15rem; display: flex; flex-direction: column; gap: .42rem; }
+  .srclist li { font-size: .86rem; color: var(--ink-2); }
+
+  footer {
+    margin-top: 3.5rem;
+    padding-top: 1.2rem;
+    border-top: 1px solid var(--rule);
+    font-family: var(--f-mono);
+    font-size: .72rem;
+    color: var(--ink-3);
+    line-height: 1.75;
+  }
+</style>
+
+<!--__meta-->
+<meta name="color-scheme" content="light dark">
+<meta name="description" content="CNN&#x27;s Inside the Mind of Vladimir Putin, audited claim by claim four years on: four claims hold, four are overstated or unverified, one is factually wrong…">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%2316150f'/><text x='50' y='72' font-size='64' font-family='Helvetica,Arial' font-weight='bold' fill='%23faf9f6' text-anchor='middle'>A</text></svg>">
+<link rel="canonical" href="https://alexrajcoomar.github.io/zakaria-putin-audited.html">
+<meta property="og:title" content="Zakaria&#x27;s Putin, Audited — Alex Rajcoomar">
+<meta property="og:description" content="CNN&#x27;s Inside the Mind of Vladimir Putin, audited claim by claim four years on: four claims hold, four are overstated or unverified, one is factually wrong…">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://alexrajcoomar.github.io/zakaria-putin-audited.html">
+<meta property="og:site_name" content="Alex Rajcoomar — portfolio">
+<meta property="og:image" content="https://alexrajcoomar.github.io/og-card.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Zakaria&#x27;s Putin, Audited — Alex Rajcoomar">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://alexrajcoomar.github.io/og-card.png">
+<script>
+(function(){
+  var d=document.documentElement;
+  try{var t=localStorage.getItem('theme'); if(t) d.setAttribute('data-theme',t);}catch(e){}
+  new MutationObserver(function(){
+    try{
+      var v=d.getAttribute('data-theme');
+      if(v) localStorage.setItem('theme',v); else localStorage.removeItem('theme');
+    }catch(e){}
+  }).observe(d,{attributes:true,attributeFilter:['data-theme']});
+})();
+</script>
+<!--/__meta-->
+</head>
+<body>
+<!--__rb-->
+<!-- injected by the site build: a way back into the site from a standalone
+     piece. A static bar at the top, so it is visible on arrival, and a pill
+     that appears once you have scrolled past it, so there is always a way out.
+     Self-contained, because these pages do not load the site stylesheet. -->
+<style id="__rb-style">
+#__rb{
+  box-sizing:border-box;display:flex;flex-wrap:wrap;align-items:center;gap:.6rem 1.25rem;
+  padding:.6rem clamp(1rem,4vw,2rem);border-bottom:1px solid #ddd9cf;background:#faf9f6;
+  font:500 13px/1.35 InterVar,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  color:#55524a;
+}
+#__rb a{color:#14509b;text-decoration:none;display:inline-flex;align-items:center;gap:.4rem}
+#__rb a:hover{text-decoration:underline}
+#__rb .__rb-home{font-weight:640;color:#16150f}
+#__rb .__rb-home i{font-style:normal;font-weight:400;color:#6f6c63}
+#__rb .__rb-right{margin-left:auto;display:flex;gap:1.1rem;flex-wrap:wrap}
+#__rb .__mark{
+  display:inline-grid;place-items:center;width:1.2rem;height:1.2rem;flex:none;
+  background:#16150f;color:#faf9f6;font-size:.72rem;font-weight:700;
+}
+#__rb-pill{
+  position:fixed;left:14px;bottom:14px;z-index:2147483000;
+  display:inline-flex;align-items:center;gap:.45rem;padding:.58rem .9rem;
+  background:rgba(22,21,15,.93);color:#faf9f6;text-decoration:none;border-radius:99px;
+  font:600 12.5px/1 InterVar,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  border:1px solid rgba(255,255,255,.16);box-shadow:0 6px 22px rgba(0,0,0,.28);
+  opacity:0;transform:translateY(6px);pointer-events:none;
+  transition:opacity .2s ease,transform .2s ease;
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+}
+#__rb-pill.__on{opacity:1;transform:none;pointer-events:auto}
+#__rb-pill:hover{background:#16150f;color:#fff}
+/* Dark has to answer to two things: the reader's system setting, and the
+   theme button on the page, which sets data-theme on <html>. Keyed to the
+   media query alone, the bar stayed paper-white across the top of an essay
+   the reader had just switched to dark, and read as a rendering fault. The
+   media query is scoped so an explicit light choice wins, and the attribute
+   selector is repeated so an explicit dark choice wins on a light system. */
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) #__rb{background:#131310;border-bottom-color:#2c2b24;color:#c0bcb1}
+  :root:not([data-theme="light"]) #__rb .__rb-home{color:#f7f5ef}
+  :root:not([data-theme="light"]) #__rb .__rb-home i{color:#948f85}
+  :root:not([data-theme="light"]) #__rb a{color:#85adea}
+  :root:not([data-theme="light"]) #__rb .__mark{background:#f7f5ef;color:#131310}
+  :root:not([data-theme="light"]) #__rb-pill{background:rgba(247,245,239,.95);color:#131310;border-color:rgba(0,0,0,.2)}
+  :root:not([data-theme="light"]) #__rb-pill:hover{background:#fff;color:#000}
+}
+:root[data-theme="dark"] #__rb{background:#131310;border-bottom-color:#2c2b24;color:#c0bcb1}
+:root[data-theme="dark"] #__rb .__rb-home{color:#f7f5ef}
+:root[data-theme="dark"] #__rb .__rb-home i{color:#948f85}
+:root[data-theme="dark"] #__rb a{color:#85adea}
+:root[data-theme="dark"] #__rb .__mark{background:#f7f5ef;color:#131310}
+:root[data-theme="dark"] #__rb-pill{background:rgba(247,245,239,.95);color:#131310;border-color:rgba(0,0,0,.2)}
+:root[data-theme="dark"] #__rb-pill:hover{background:#fff;color:#000}
+@media (prefers-reduced-motion:reduce){#__rb-pill{transition:none}}
+@media print{#__rb,#__rb-pill{display:none !important}}
+</style>
+<div id="__rb">
+  <a class="__rb-home" href="index.html"><span class="__mark" aria-hidden="true">A</span>Alex Rajcoomar <i>portfolio</i></a>
+  <span class="__rb-right"><a href="research.html">Research</a><a href="library.html">All work</a></span>
+</div>
+<script>
+/* the trail: which passages this browser has opened. The atlas reads it and
+   rings them; the record lives in localStorage and never leaves the machine. */
+(function(){
+  if(window.__trailed) return; window.__trailed=1;
+  try{
+    var k='atlas.trail';
+    var u=location.pathname.split('/').pop()||'index.html';
+    var t2=JSON.parse(localStorage.getItem(k)||'{}');
+    function put(key){
+      if(t2[key]||Object.keys(t2).length<500){
+        t2[key]=(t2[key]||0)+1;
+        localStorage.setItem(k,JSON.stringify(t2));
+      }
+    }
+    put(u+location.hash);
+    addEventListener('hashchange',function(){ put(u+location.hash); });
+  }catch(e){}
+})();
+</script>
+<!--/__rb-->
+
+<div class="wrap">
+
+  <header class="masthead">
+    <p class="eyebrow">Claim audit &middot; broadcast journalism</p>
+    <h1>Zakaria's Putin,<br><em>audited</em></h1>
+    <p class="dek">CNN's <i>Inside the Mind of Vladimir Putin</i> premiered 15 May 2022 and is circulating again this month. Its history holds up. Its present tense expired somewhere around 2023.</p>
+    <div class="slugline">
+      <span><b>Subject:</b> CNN Special Report, Fareed Zakaria</span>
+      <span><b>Aired:</b> 15 May 2022</span>
+      <span><b>Audited as at:</b> 21 August 2026</span>
+    </div>
+  </header>
+
+  <div class="opinion">
+    <h2 id="the-short-answer">The short answer</h2>
+    <p><strong>Watch it as history, not as briefing.</strong> Every claim about events before May 2022 survives in substance, with four overstatements and one outright error worth knowing about. Almost every claim the film frames in the present tense has been overtaken: the coup it called a fantasy happened thirteen months later, the opposition leader it called unsilenced died in an Arctic penal colony, the American president it called Putin's friend won the White House back, and the European energy dependence it called deepening is now legislated out of existence.</p>
+    <p>Zakaria's own closing thesis, that circumstances changed rather than the man, has aged far better than the film's promotional frame of a reckless, emotional, possibly unwell Putin. Four more years of grinding attritional war and price-responsive diplomacy look like the calculating operator the film said had disappeared.</p>
+    <div class="tally">
+      <div class="t-holds"><span class="n">4</span><span class="l">Still holds</span></div>
+      <div class="t-qual"><span class="n">4</span><span class="l">Overstated or unverified</span></div>
+      <div class="t-gone"><span class="n">1</span><span class="l">Factually wrong</span></div>
+      <div class="t-gone"><span class="n">9</span><span class="l">Overtaken by events</span></div>
+    </div>
+  </div>
+
+  <div class="note">
+    <p class="eyebrow">One thing to correct before you go further</p>
+    <p>"Is this still valid" bundles three different questions that need separate answers: whether the historical facts are accurate, whether the time-stamped facts are current, and whether the analytical judgment was sound. This audit answers them separately, because the film scores differently on each.</p>
+    <p>Also: the clip going around now is the original May 2022 broadcast, not a new cut. The CNN Press Room record dates the premiere to 15 May 2022, and I found no evidence of an updated version. If a re-edit exists, this audit does not cover it.</p>
+  </div>
+
+  <!-- ============ SECTION 1 ============ -->
+  <section>
+    <div class="sec-head">
+      <p class="eyebrow">Part one</p>
+      <h2 id="what-the-film-gets-right-and-stays-right">What the film gets right, and stays right</h2>
+      <p>The biographical and pre-2022 material is the strongest part of the documentary, and none of it has been overturned. Four items are true in substance but stated more strongly than the record supports, and one is simply wrong.</p>
+    </div>
+
+    <div class="ledger">
+
+      <article class="claim">
+        <div class="rail">
+          <span class="ref">1.1</span>
+          <span class="chip c-qual">Overstated</span>
+        </div>
+        <div class="body">
+          <h3 id="dresden-5-december-1989-the-mob-the-furnace-the-">Dresden, 5 December 1989: the mob, the furnace, the bluff</h3>
+          <p class="quote">"They are burning the secret files so fast that the furnace is blowing up."</p>
+          <p>The core is documented. Demonstrators stormed the Stasi district headquarters that evening, then moved on the KGB villa nearby on Angelikastraße, and Putin went out to confront them. Files were destroyed.</p>
+          <p>The dramatic detail is not independently documented. It traces to Putin's own 2000 interview book <i>First Person</i> and later Russian television retellings, in which, as German reporting notes, hundreds of demonstrators became "thousands" and Putin became a hero. The exploding furnace, the count of thousands of pages, and the exact wording of the threat are his account of himself. Treat the scene as substantially true and theatrically inflated.</p>
+        </div>
+      </article>
+
+      <article class="claim">
+        <div class="rail">
+          <span class="ref">1.2</span>
+          <span class="chip c-holds">Holds</span>
+        </div>
+        <div class="body">
+          <h3 id="the-kommunalka-the-judo-the-cornered-rat">The kommunalka, the judo, the cornered rat</h3>
+          <p>The Leningrad childhood in a communal flat, the working-class parents, the judo taken up to compensate for size, and the rat in the stairwell all come from <i>First Person</i> and are consistently reported. They are self-narrated rather than externally verified, which is worth knowing, but nothing contradicts them and biographers including Fiona Hill and Philip Short treat the Dresden and rat episodes as genuinely formative of Putin's anxiety about uncontrolled crowds.</p>
+        </div>
+      </article>
+
+      <article class="claim">
+        <div class="rail">
+          <span class="ref">1.3</span>
+          <span class="chip c-holds">Holds</span>
+        </div>
+        <div class="body">
+          <h3 id="yeltsin-resigned-on-31-december-1999-and-putin-s">Yeltsin resigned on 31 December 1999 and Putin's first decree protected him</h3>
+          <p>Uncontested, including the sequence: Putin, prime minister since August 1999, became acting president that day and signed the decree granting Yeltsin and his family immunity from prosecution immediately. The film's framing of it as a negotiated exit is the mainstream reading among Russia specialists.</p>
+        </div>
+      </article>
+
+      <article class="claim">
+        <div class="rail">
+          <span class="ref">1.4</span>
+          <span class="chip c-holds">Holds</span>
+        </div>
+        <div class="body">
+          <h3 id="munich-2007-as-the-turning-point-then-georgia-20">Munich 2007 as the turning point, then Georgia 2008 and Crimea 2014</h3>
+          <p>The chronology is accurate and the causal reading (Munich as portent, the muted Western response to Georgia as permission, Crimea as the template) is now close to consensus rather than one analyst's view. The "little green men" denials followed by public celebration are documented in Putin's own subsequent admissions.</p>
+        </div>
+      </article>
+
+      <article class="claim">
+        <div class="rail">
+          <span class="ref">1.5</span>
+          <span class="chip c-holds">Holds</span>
+        </div>
+        <div class="body">
+          <h3 id="the-2011-to-2012-protests-were-the-hinge-and-ros">The 2011 to 2012 protests were the hinge, and Rosgvardia was the answer</h3>
+          <p>This is the film's most durable analytical claim and the evidence has only accumulated. Putin created the National Guard on 5 April 2016 under Viktor Zolotov, his former bodyguard. It has roughly 370,000 personnel as of 2024, and in February 2026 Putin gave it its own General Staff covering intelligence, threat assessment and combat employment. A praetorian force built against domestic uprising has been growing continuously, not shrinking, for a decade.</p>
+        </div>
+      </article>
+
+      <article class="claim">
+        <div class="rail">
+          <span class="ref">1.6</span>
+          <span class="chip c-wrong">Wrong</span>
+        </div>
+        <div class="body">
+          <h3 id="under-the-direct-control-of-his-ministry-of-inte">"Under the direct control of his Ministry of Internal Affairs"</h3>
+          <p>This is the film's one clean factual error, and it inverts the point the film is making. Rosgvardia is <i>not</i> under the Interior Ministry. It was assembled out of MVD assets, the Internal Troops, OMON and SOBR, and then placed as an independent federal service reporting directly to the President, with its director a permanent member of the Security Council.</p>
+          <p>That distinction is the whole significance of the 2016 reform. A riot force inside a ministry answers to a minister and a chain of command. A riot force pulled out of that ministry and hung directly off the presidency is a personal instrument, which is exactly what the film's own thesis about fear of uprising would predict.</p>
+        </div>
+      </article>
+
+      <article class="claim">
+        <div class="rail">
+          <span class="ref">1.7</span>
+          <span class="chip c-qual">Overstated</span>
+        </div>
+        <div class="body">
+          <h3 id="the-greatest-geopolitical-tragedy-of-the-20th-ce">"The greatest geopolitical tragedy of the 20th century"</h3>
+          <p>Putin said something close to this in 2005, but not this. The Kremlin's own English text reads "a major geopolitical disaster of the century." The Associated Press rendered it "catastrophe." The definite article and the superlative are the documentary's, not Putin's, and the difference matters: "a major disaster" is a lament, "the greatest tragedy" is a programme. PolitiFact rated the stronger version Mostly True precisely because of that gap.</p>
+        </div>
+      </article>
+
+      <article class="claim">
+        <div class="rail">
+          <span class="ref">1.8</span>
+          <span class="chip c-qual">Overstated</span>
+        </div>
+        <div class="body">
+          <h3 id="s-92-do-not-trust-putin-the-highest-negative-ratin">"92% do not trust Putin, the highest negative rating Pew has ever recorded for a world leader"</h3>
+          <p>Two problems. The 92% is American respondents only, surveyed 21 to 27 March 2022, not a global figure. And Pew described it as the highest share it had ever recorded <i>for Putin</i>, not for any world leader. The film's phrasing converts a US-sample record about one man into a global all-time record.</p>
+          <p>It is also stale. Pew's survey of 8 February to 13 May 2026 puts the median across 37 countries at 65% expressing no confidence in Putin, with 10% of Americans expressing confidence. Views warmed slightly in Canada and the UK, and in India, Ghana and Sri Lanka.</p>
+        </div>
+      </article>
+
+      <article class="claim">
+        <div class="rail">
+          <span class="ref">1.9</span>
+          <span class="chip c-qual">Unverified</span>
+        </div>
+        <div class="body">
+          <h3 id="he-was-the-first-world-leader-to-call-the-white-">"He was the first world leader to call the White House that day"</h3>
+          <p><span class="flag">Flagged</span> Widely repeated, including in secondary fact-check material on this documentary, and consistent with the record that Putin reached Bush by phone on 11 September 2001. The "first" ranking is the part I could not confirm against a primary source in this pass. The substance of the claim, that Putin called immediately and then supplied intelligence, airspace access and support for the Northern Alliance, is solid; the ordinal is not, and should not be cited without a source.</p>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ============ SECTION 2 ============ -->
+  <section>
+    <div class="sec-head">
+      <p class="eyebrow">Part two</p>
+      <h2 id="what-has-been-overtaken">What has been overtaken</h2>
+      <p>These are the passages that make the film sound current when it is not. Each one was accurate in May 2022 and is now either wrong or describing a world that no longer exists.</p>
+    </div>
+
+    <div class="ledger">
+
+      <article class="claim">
+        <div class="rail">
+          <span class="ref">2.1</span>
+          <span class="chip c-gone">Overtaken</span>
+        </div>
+        <div class="body">
+          <h3 id="talk-of-a-coup-to-overthrow-vladimir-putin-is-a-">"Talk of a coup to overthrow Vladimir Putin is a fantasy"</h3>
+          <p class="quote">"Russian elites are dependent on Putin 100%. So I guess he's pretty safe for now."</p>
+          <p>Thirteen months after this aired, Yevgeny Prigozhin turned a Wagner column toward Moscow on 23 and 24 June 2023 and covered most of the distance without serious resistance. Two months to the day after the mutiny, on 23 August 2023, his aircraft fell out of the sky north of Moscow and he was confirmed dead.</p>
+          <p>Read carefully, the film was wrong on the specific and right on the general. An armed challenge to Putin was not a fantasy. But no elite faction defected to it, the regime absorbed the shock, and the challenger was dead inside a season. This is the single most instructive entry in the audit: the mechanism the film described (total elite dependence) turned out to be what defeated the coup rather than what prevented it.</p>
+        </div>
+      </article>
+
+      <article class="claim">
+        <div class="rail">
+          <span class="ref">2.2</span>
+          <span class="chip c-gone">Overtaken</span>
+        </div>
+        <div class="body">
+          <h3 id="not-every-voice-has-been-silenced">"Not every voice has been silenced"</h3>
+          <p>Alexei Navalny, the film's counter-example, died on 16 February 2024 in the IK-3 "Polar Wolf" penal colony at Kharp, above the Arctic Circle. The section of the documentary built around his survival and his second-place finish in Levada's 2020 "most inspiring person" poll now reads as an artefact.</p>
+          <p>What replaced it is harsher than the film's picture of repression. Human Rights Watch counted 1,217 political prisoners in Russia by early 2026, up from 805 at the end of 2024, roughly a 51% increase. Mikhail Khodorkovsky, whom the film introduces as a former prisoner turned critic, was added to Russia's terrorist and extremist list in November 2025 and charged in absentia with terrorism and attempted seizure of power alongside members of the Anti-War Committee, which prosecutors asked the Supreme Court to designate a terrorist organisation in February 2026.</p>
+        </div>
+      </article>
+
+      <article class="claim">
+        <div class="rail">
+          <span class="ref">2.3</span>
+          <span class="chip c-gone">Overtaken</span>
+        </div>
+        <div class="body">
+          <h3 id="putin-s-friend-would-end-up-losing-the-white-hou">"Putin's friend would end up losing the White House"</h3>
+          <p>Trump won in November 2024 and took office in January 2025. The American posture the film describes, a Biden administration rallying the world and flooding Ukraine with weapons, inverted. Washington stopped seeking new appropriations and moved to the Prioritised Ukraine Requirements List, announced 14 July 2025, under which NATO allies pay for US weapons rather than the US funding them. Britain and Germany took over leadership of the Ukraine Defence Contact Group.</p>
+          <p>The diplomatic channel runs through Steve Witkoff and Jared Kushner, who have met Putin repeatedly in Moscow through 2026, alongside the Alaska summit of August 2025. Whatever else it is, this is not the isolation the film describes.</p>
+        </div>
+      </article>
+
+      <article class="claim">
+        <div class="rail">
+          <span class="ref">2.4</span>
+          <span class="chip c-gone">Overtaken</span>
+        </div>
+        <div class="body">
+          <h3 id="europe-was-deepening-its-addiction-to-russian-en">"Europe was deepening its addiction to Russian energy"</h3>
+          <p>Reversed, and now written into law. The EU Council gave final approval on 26 January 2026 to a stepwise ban: Russian LNG from the start of 2027, pipeline gas from autumn 2027, with penalties up to €40 million or 3.5% of worldwide turnover for breaches. Russian oil had already fallen below 3% of EU imports in 2025, with legislation to end it by the close of 2027 proposed. The Nord Stream pipelines were sabotaged in September 2022, four months after the broadcast.</p>
+          <p>The trade did not disappear, it moved east. In July 2026 China took 43% of the revenue from Russia's five largest fossil fuel buyers (about €7.7 billion), India was second at €6.4 billion with crude at 87% of its purchases and at a record for the second month running, and the EU was down to just over 8%. Sanctioned "shadow" tankers carried 53% of Russia's seaborne crude that month.</p>
+          <p>The film treats European energy dependence as Putin's structural leverage. That specific leverage has a published expiry date. What replaced it is dependence in the other direction, on two buyers who set the terms.</p>
+        </div>
+      </article>
+
+      <article class="claim">
+        <div class="rail">
+          <span class="ref">2.5</span>
+          <span class="chip c-gone">Overtaken</span>
+        </div>
+        <div class="body">
+          <h3 id="he-s-even-made-nuclear-threats-should-americans-">"He's even made nuclear threats. Should Americans be afraid?"</h3>
+          <p>The threats in the film were rhetorical. The structural change since is not: New START expired on 5 February 2026 with no successor. For the first time since 1972 there is no treaty limiting American and Russian strategic nuclear arsenals, and no inspection regime attached to one. The film's nuclear passage is about Putin's temperament. The 2026 version of the question is about the absence of arms control, which is a different and more durable problem.</p>
+        </div>
+      </article>
+
+      <article class="claim">
+        <div class="rail">
+          <span class="ref">2.6</span>
+          <span class="chip c-gone">Overtaken</span>
+        </div>
+        <div class="body">
+          <h3 id="years-of-putin-s-efforts-to-divide-the-west-were">"Years of Putin's efforts to divide the West were undone in a matter of days"</h3>
+          <p>Half right, and the half that failed is the half that mattered. Putin's invasion did produce the opposite of his stated aim on NATO: Finland joined on 4 April 2023, doubling the alliance's land border with Russia, and Sweden followed on 7 March 2024.</p>
+          <p>But the fracture line moved rather than closed. It now runs across the Atlantic over burden-sharing and negotiating terms rather than inside Europe. Meanwhile Russia has been running a hybrid campaign against a dozen NATO members: Poland invoked Article 4 after roughly twenty Russian drones entered its airspace on 9 and 10 September 2025, and on 4 and 5 August 2026 an explosive-carrying quadcopter penetrated air defences at Leipzig/Halle, a NATO airlift hub, and struck a Ukrainian cargo aircraft. The IISS characterisation is worth borrowing: tactical successes for the Kremlin, strategic failure of allied air defence.</p>
+        </div>
+      </article>
+
+      <article class="claim">
+        <div class="rail">
+          <span class="ref">2.7</span>
+          <span class="chip c-gone">Overtaken</span>
+        </div>
+        <div class="body">
+          <h3 id="rebuilding-what-was-lost-in-1991">"Rebuilding what was lost in 1991"</h3>
+          <p>The imperial-restoration thesis lost its clearest supporting evidence outside Ukraine. The Assad regime fell in December 2024, and in August 2026 Damascus announced it was taking over the Hmeimim air base and the Tartus naval facility from Russia under a new memorandum. Russia's only Mediterranean warm-water port and its main power-projection platform outside the former Soviet space are gone.</p>
+          <p>A film arguing that Putin is reassembling an empire has to account for the fact that, outside the occupied Ukrainian oblasts, his footprint in 2026 is smaller than it was when the film aired.</p>
+        </div>
+      </article>
+
+      <article class="claim">
+        <div class="rail">
+          <span class="ref">2.8</span>
+          <span class="chip c-gone">Overtaken</span>
+        </div>
+        <div class="body">
+          <h3 id="s-22-long-years-in-office">"22 long years in office"</h3>
+          <p>Twenty-seven years next month, counting from his appointment as prime minister in August 1999, and twenty-six years and seven months since he first took the presidency. The 2020 constitutional amendments zeroed out his previous terms, and Putin was re-elected on 15 to 17 March 2024 with an official 87.28% on 77.49% turnout, in a contest the United States called a sham and Germany a pseudo-election, with the anti-war candidate Boris Nadezhdin barred over signature irregularities. The current term runs to 2030 and he is eligible again through 2036. He is 73.</p>
+        </div>
+      </article>
+
+      <article class="claim">
+        <div class="rail">
+          <span class="ref">2.9</span>
+          <span class="chip c-gone">Overtaken</span>
+        </div>
+        <div class="body">
+          <h3 id="to-putin-some-of-the-most-decadent-are-lgbtq-peo">"To Putin, some of the most decadent are LGBTQ people"</h3>
+          <p>The film describes rhetoric and the 2013 propaganda law. What followed is a different order of thing: on 30 November 2023 Russia's Supreme Court designated the "international LGBT movement" an extremist organisation, and the first criminal convictions under that ruling came in February 2024. Human Rights Watch also records charges against book publishers.</p>
+          <p>This matters for the film's framing rather than against it. Zakaria presents the anti-Western cultural line as posture and personal hypocrisy. By 2026 it is a criminal-law instrument being used to prosecute people, which is a stronger version of the film's own point.</p>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ============ SECTION 2B ============ -->
+  <section>
+    <div class="sec-head">
+      <p class="eyebrow">Part two, continued</p>
+      <h2 id="what-the-film-leaves-out">What the film leaves out</h2>
+      <p>Two omissions matter more than any single error, because both sit at load-bearing points in the argument.</p>
+    </div>
+    <div class="prose">
+      <p>The first is Chechnya. The documentary takes Putin from obscure prime minister in August 1999 to landslide president in March 2000 and attributes the jump to the Yeltsin family's need for a loyal successor. That explains the nomination. It does not explain the popularity. The apartment bombings of September 1999 in Buynaksk, Moscow and Volgodonsk, and the Second Chechen War Putin prosecuted in response, are what took him from single-digit name recognition to a governing majority. Leaving them out removes both the mechanism of his rise and the first instance of the pattern the film later identifies, which is that violence abroad buys authority at home.</p>
+      <p>The second is money. Khodorkovsky appears in the film as a critic who was imprisoned, which is true and incomplete. The Yukos case in 2003 was an expropriation as much as a prosecution, and it established the terms on which Russian wealth has been held ever since: at the president's discretion. That is the actual explanation for the elite dependence the film asserts in its coup section, and stating it would have made that section stronger, and would also have made its confidence look better after Prigozhin.</p>
+    </div>
+  </section>
+
+  <!-- ============ SECTION 3 ============ -->
+  <section>
+    <div class="sec-head">
+      <p class="eyebrow">Part three &middot; chronological</p>
+      <h2 id="the-four-years-the-film-could-not-see">The four years the film could not see</h2>
+      <p>Ordered by date, because the sequence carries the argument: the regime survived an armed challenge, buried its opposition, lost its Middle Eastern base, gained a friendlier Washington, and then got an oil windfall from a war it did not start.</p>
+    </div>
+
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-date">Sep–Oct 2022</div>
+        <div class="tl-body">
+          <h4 id="annexation-of-four-oblasts-and-nord-stream">Annexation of four oblasts, and Nord Stream</h4>
+          <p>Russia claims Donetsk, Luhansk, Zaporizhzhia and Kherson after staged referendums, committing itself to territory it does not fully control. The Nord Stream pipelines are sabotaged in September, ending the option of simply turning the gas back on.</p>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">17 Mar 2023</div>
+        <div class="tl-body">
+          <h4 id="icc-arrest-warrant">ICC arrest warrant</h4>
+          <p>Issued against Putin and children's commissioner Maria Lvova-Belova for the unlawful deportation of Ukrainian children. It constrains his travel to the roughly 125 states party to the Rome Statute without constraining his conduct of the war.</p>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">4 Apr 2023</div>
+        <div class="tl-body">
+          <h4 id="finland-joins-nato">Finland joins NATO</h4>
+          <p>The alliance's land border with Russia doubles. Sweden follows on 7 March 2024.</p>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">23–24 Jun 2023</div>
+        <div class="tl-body">
+          <h4 id="prigozhin-s-march-on-moscow">Prigozhin's march on Moscow</h4>
+          <p>The armed challenge the film ruled out. It collapses within a day, and Prigozhin dies in a plane crash two months later, on 23 August.</p>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">30 Nov 2023</div>
+        <div class="tl-body">
+          <h4 id="the-international-lgbt-movement-ruled-extremist">The "international LGBT movement" ruled extremist</h4>
+          <p>The Supreme Court converts a rhetorical position into a criminal one. First convictions follow in February 2024.</p>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">16 Feb 2024</div>
+        <div class="tl-body">
+          <h4 id="navalny-dies-at-ik-3-kharp">Navalny dies at IK-3, Kharp</h4>
+          <p>The film's evidence that dissent survived inside Russia is removed. Organised opposition becomes entirely an exile phenomenon.</p>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">Dec 2024</div>
+        <div class="tl-body">
+          <h4 id="assad-falls">Assad falls</h4>
+          <p>Russia begins drawing down in Syria. The handover of Hmeimim and Tartus to Damascus is announced in August 2026.</p>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">Jan 2025</div>
+        <div class="tl-body">
+          <h4 id="trump-returns-to-office">Trump returns to office</h4>
+          <p>US funding for Ukraine gives way to allied-financed purchases under PURL from July 2025. The Alaska summit follows in August 2025.</p>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">5 Feb 2026</div>
+        <div class="tl-body">
+          <h4 id="new-start-expires">New START expires</h4>
+          <p>No treaty limits on US and Russian strategic arsenals for the first time since 1972.</p>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">Late Feb 2026</div>
+        <div class="tl-body">
+          <h4 id="the-iran-war-and-putin-s-windfall">The Iran war, and Putin's windfall</h4>
+          <p>US and Israeli strikes on Iran lead Tehran to effectively close the Strait of Hormuz. Urals crude runs from roughly $45 before the conflict to about $125 at the April peak, against a Russian federal budget built on $59. February 2026 had been Russia's worst export month since the invasion, at about $9.5 billion.</p>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">Feb–Aug 2026</div>
+        <div class="tl-body">
+          <h4 id="talks-stall-fighting-continues">Talks stall, fighting continues</h4>
+          <p>Geneva ends without breakthrough in February. Moscow's position remains all of Donbas including Ukrainian-held ground; Kyiv refuses. A 32-hour Easter truce on 11 to 13 April collapses with hundreds of recorded violations. The Kremlin said in July there was no near-term prospect of resuming formal negotiations.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SECTION 4 ============ -->
+  <section>
+    <div class="sec-head">
+      <p class="eyebrow">Part four</p>
+      <h2 id="the-argument-scored">The argument, scored</h2>
+      <p>The factual audit is the easy part. The question that actually matters is whether the film's reading of Putin was right. It advances four claims about him, and they have not aged at the same rate.</p>
+    </div>
+
+    <div class="theses">
+      <div class="thesis t-holds">
+        <span class="verdict">Holds, strongly</span>
+        <h3 id="perhaps-what-changed-was-not-putin-but-the-circu">"Perhaps what changed was not Putin but the circumstances. When he could, he was aggressive."</h3>
+        <p>Zakaria's closing line is the most durable thing in the documentary, and 2026 supplied a clean natural experiment. When the Iran shock tripled Urals crude and refilled the war chest, Russia did not soften its terms. It held them. The pattern the film identifies, capability first and conduct second, predicted that. A psychological account of a man losing control did not.</p>
+      </div>
+
+      <div class="thesis t-holds">
+        <span class="verdict">Holds</span>
+        <h3 id="if-there-s-anything-that-animates-vladimir-putin">"If there's anything that animates Vladimir Putin's political moves, it's to stave off popular uprising."</h3>
+        <p>The budget is the cleanest evidence. Russia's 2026 federal budget cuts defence spending by about 4% while raising internal security by more than 11%, with the two together at 38% of total nominal expenditure. In the fifth year of a war he is not winning quickly, Putin is taking money off the front and putting it into the apparatus that polices Russians.</p>
+        <p>The rest follows: Rosgvardia keeps growing and now has a general staff of its own, and political prisoner counts rose by roughly half in a year. The tell is also in the polling. Putin's approval slipped to 66.9% in state pollster VTsIOM's 22 to 28 June 2026 survey, with independent Levada showing 74% in June against 79% in May, and the reporting attributes the drop to fuel shortages and internet blackouts rather than the war.</p>
+      </div>
+
+      <div class="thesis t-gone">
+        <span class="verdict">Has not held up</span>
+        <h3 id="now-we-see-a-different-vladimir-putin-reckless-e">"Now we see a different Vladimir Putin. Reckless, emotional, a gambler."</h3>
+        <p>This is the film's marketing frame and its weakest claim. Four years on, the behaviour looks like the earlier Putin the film says was replaced: a long attritional war fought at a rate his economy can just about carry, nuclear signalling that escalates in rhetoric and never in deployment, and a negotiating posture that tracks the oil price. The closing speculation about illness or a mental condition, which Zakaria to his credit declines to endorse, has produced nothing in four years.</p>
+      </div>
+
+      <div class="thesis t-qual">
+        <span class="verdict">Partly falsified</span>
+        <h3 id="he-s-backed-into-a-corner-he-s-more-dangerous-th">"He's backed into a corner. He's more dangerous than he has ever been."</h3>
+        <p>The cornered-rat metaphor carries an implied timeline, and the timeline did not deliver. What arrived instead was slower and worse: sustained hybrid attacks on NATO members, the end of arms control, and a war economy that is degrading rather than collapsing. Growth of roughly 0.4% forecast for 2026, a 14.25% key rate, inflation near 6%, a federal budget of 44.1 trillion roubles built on $59 oil and running a deficit close to 9% of planned spending: that is strain, not a cornering. Narrowing room for manoeuvre is not the same thing as being trapped, and the film's own logic says the difference is what governs his behaviour.</p>
+      </div>
+    </div>
+
+    <div class="note">
+      <p class="eyebrow">The asymmetry the film never anticipated</p>
+      <p>One development runs directly against the documentary's closing confidence in Ukraine as the West's "new Churchill" story. As of this week, Zelensky faces an anti-corruption investigation reaching into his own office, a former defence minister publicly demanding wartime elections, and a defence minister replaced on 19 August 2026. The film's implicit assumption, that Ukrainian cohesion is the stable variable and Russian cohesion the fragile one, is under more strain in 2026 than it was in 2022.</p>
+    </div>
+  </section>
+
+  <!-- ============ SECTION 5 ============ -->
+  <section>
+    <div class="sec-head">
+      <p class="eyebrow">Part five</p>
+      <h2 id="how-to-use-it-now">How to use it now</h2>
+    </div>
+    <div class="prose">
+      <p>The documentary remains a good primer on the formation of Putin's politics between 1989 and 2014, and its account of the 2011 to 2012 protests as the regime's turning point is better than most. Take the biography, take the Munich-to-Crimea chronology, and take Zakaria's closing paragraph, which is the analytical core.</p>
+      <p>Discard everything the film says in the present tense. Every "now," "today" and "currently" in it refers to a spring 2022 in which Prigozhin was an asset, Navalny was alive, Trump was out of office, Europe was buying Russian gas, Assad held Damascus, and New START was in force. None of those are true. A viewer who does not know the air date will come away with a confidently wrong picture of 2026.</p>
+      <p>Two cautions on sourcing. The Dresden scene, the 2005 quotation and the 92% figure are repeated across secondary coverage in the documentary's stronger form rather than the sourced one, so cite the Kremlin transcript and the Pew release directly rather than the film. And do not repeat the film's line that Rosgvardia sits under the Interior Ministry, which turns up in downstream summaries of the documentary as well; it reports to the President.</p>
+      <p>Two things the film omits are worth adding before using it as a teaching text: the 1999 apartment bombings and Second Chechen War, which are the actual engine of Putin's rise, and the Yukos expropriation, which is the actual engine of elite dependence.</p>
+    </div>
+  </section>
+
+  <!-- ============ SOURCES ============ -->
+  <section>
+    <details class="sources">
+      <summary>Sources consulted (21 August 2026)</summary>
+      <ul class="srclist">
+        <li><a href="https://cnnpressroom.blogs.cnn.com/2022/05/15/inside-the-mind-of-vladimir-putin-fareed-zakaria-hosts-new-cnn-special/">CNN Press Room, premiere date and interviewee list</a></li>
+        <li><a href="https://www.rferl.org/a/showdown-in-dresden-the-stasi-occupation-and-the-putin-myth/30302831.html">RFE/RL, "Showdown in Dresden: The Stasi Occupation And The Putin Myth"</a> and <a href="https://worldcrunch.com/in-the-news/putin39s-long-shadow-hangs-over-dresden/">Worldcrunch on the embellishment of the Dresden account</a></li>
+        <li><a href="https://www.politifact.com/factchecks/2014/mar/06/john-bolton/did-vladimir-putin-call-breakup-ussr-greatest-geop/">PolitiFact on the 2005 "geopolitical disaster" quotation</a></li>
+        <li><a href="https://www.pewresearch.org/short-reads/2022/03/30/zelenskyy-inspires-widespread-confidence-from-u-s-public-as-views-of-putin-hit-new-low/">Pew Research Center, March 2022 (the 92% figure)</a> and <a href="https://www.pewresearch.org/global/2026/07/06/nato-gets-high-marks-from-member-states/">Pew Research Center, 6 July 2026 (37-country update)</a></li>
+        <li><a href="https://www.aljazeera.com/news/2023/8/31/prigozhin-plane-crash-what-we-know-over-a-week-after-wagner-chiefs-death">Al Jazeera on the Prigozhin crash</a> and <a href="https://meduza.io/en/feature/2026/06/24/we-re-no-mutineers-three-years-after-yevgeny-prigozhin-s-march-on-moscow-wagner-veterans-still-can-t-agree-on-what-it-meant">Meduza, three years on</a></li>
+        <li><a href="https://en.wikipedia.org/wiki/Death_and_funeral_of_Alexei_Navalny">Navalny's death at IK-3, Kharp</a></li>
+        <li><a href="https://www.hrw.org/news/2026/02/04/russia-crackdown-on-dissent-escalates">Human Rights Watch, "Russia: Crackdown on Dissent Escalates," 4 February 2026</a></li>
+        <li><a href="https://www.themoscowtimes.com/2025/11/19/russia-adds-khodorkovsky-gudkov-to-terrorist-and-extremist-list-a91180">Moscow Times on Khodorkovsky's designation</a> and <a href="https://www.themoscowtimes.com/2026/02/13/prosecutors-office-asks-russian-supreme-court-to-designate-anti-war-committee-as-terrorist-organization-a91945">the Anti-War Committee case</a></li>
+        <li><a href="https://www.icc-cpi.int/news/situation-ukraine-icc-judges-issue-arrest-warrants-against-vladimir-vladimirovich-putin-and">ICC arrest warrants, 17 March 2023</a></li>
+        <li><a href="https://en.wikipedia.org/wiki/National_Guard_of_Russia">Rosgvardia's founding, command and chain of subordination</a></li>
+        <li><a href="https://www.hrw.org/news/2023/11/30/russia-supreme-court-bans-lgbt-movement-extremist">HRW on the Supreme Court "LGBT movement" extremism ruling</a> and <a href="https://www.hrw.org/news/2024/02/15/russia-first-convictions-under-lgbt-extremist-ruling">the first convictions under it</a></li>
+        <li><a href="https://energyandcleanair.org/july-2026-monthly-analysis-of-russian-fossil-fuel-exports-and-sanctions/">CREA, monthly analysis of Russian fossil fuel exports, July 2026</a></li>
+        <li><a href="https://www.osw.waw.pl/en/publikacje/osw-commentary/2025-12-09/russias-2026-budget-mounting-financial-challenges-and-economic">OSW on Russia's 2026 federal budget</a></li>
+        <li><a href="https://commonslibrary.parliament.uk/research-briefings/cbp-9574/">House of Commons Library on Finland and Sweden's accession</a></li>
+        <li><a href="https://www.consilium.europa.eu/en/press/press-releases/2026/01/26/russian-gas-imports-council-gives-final-greenlight-to-a-stepwise-ban/">EU Council, stepwise ban on Russian gas, 26 January 2026</a></li>
+        <li><a href="https://www.diplomatie.gouv.fr/en/french-foreign-policy/security-disarmament-and-non-proliferation/news/article/expiry-of-the-new-start-treaty-6-february-2026">Expiry of New START, February 2026</a></li>
+        <li><a href="https://www.chathamhouse.org/2026/04/iran-war-has-been-economic-gift-putin">Chatham House, "The Iran war has been an economic gift for Putin"</a> and <a href="https://discoveryalert.com.au/russian-oil-revenue-urals-crude-brent-discount-2026/">Urals price and budget-baseline data</a></li>
+        <li><a href="https://www.forbes.com/sites/natashalindstaedt/2026/07/13/russias-economy-is-slowly-sinking/">Forbes, Russian macro figures, July 2026</a></li>
+        <li><a href="https://www.themoscowtimes.com/2026/07/03/putins-job-approval-rating-sees-sharpest-weekly-drop-since-ukraine-invasion-vtsiom-a93161">Moscow Times on VTsIOM and Levada approval figures</a> and <a href="https://www.themoscowtimes.com/2026/02/12/putin-expands-rosgvardias-role-a91934">on Rosgvardia's expansion</a></li>
+        <li><a href="https://www.aljazeera.com/news/2026/2/18/russia-ukraine-talks-all-the-mediation-efforts-and-where-they-stand">Al Jazeera on the state of mediation</a> and <a href="https://www.themoscowtimes.com/2026/08/20/tear-down-the-wall-of-silence-around-negotiations-to-end-russia-ukraine-war-a93533">Moscow Times, 20 August 2026</a></li>
+        <li><a href="https://www.aljazeera.com/news/2026/8/11/new-level-of-danger-drone-incidents-scare-europe-amid-russia-ukraine-war">Al Jazeera on European drone incidents</a> and <a href="https://en.wikipedia.org/wiki/2025_Russian_drone_incursion_into_Poland">the September 2025 Poland incursion</a></li>
+        <li><a href="https://en.wikipedia.org/wiki/2024_Russian_presidential_election">2024 Russian presidential election results</a></li>
+        <li><a href="https://newscord.org/article/syria-takes-over-hmeimim-and-tartous-bases-from-russia-under-new-memorandum--Story_20260810_Damascusannouncesreaae98ed6f">Syria's takeover of Hmeimim and Tartus, August 2026</a></li>
+        <li><a href="https://www.globalsecurity.org/wmd/library/news/ukraine/2026/08/ukraine-260819-rferl01.htm">RFE/RL on Ukraine's political crisis, 19 August 2026</a></li>
+        <li><a href="https://www.criticalthreats.org/analysis/russian-offensive-campaign-assessment-august-12-2026">ISW Russian Offensive Campaign Assessment, 12 August 2026</a></li>
+      </ul>
+    </details>
+  </section>
+
+  <footer>
+    Audit compiled 21 August 2026 against the 15 May 2022 broadcast.<br>
+    Figures marked as approximate move daily; oil prices and polling in particular should be re-checked before use in written work.<br>
+    Verdicts on analytical claims are judgments, not facts, and are labelled as such.
+  </footer>
+
+</div>
+
+<!--__rbp-->
+<a id="__rb-pill" href="research.html">&#8592; Research</a>
+<script>
+(function(){
+  var p=document.getElementById('__rb-pill'); if(!p) return;
+  var t=false;
+  function run(){ t=false;
+    p.classList.toggle('__on',(window.scrollY||document.documentElement.scrollTop)>420); }
+  function q(){ if(!t){ t=true; requestAnimationFrame(run); } }
+  addEventListener('scroll',q,{passive:true}); run();
+})();
+/* the trail, for the pages that carry only the pill (the tools) */
+(function(){
+  if(window.__trailed) return; window.__trailed=1;
+  try{
+    var k='atlas.trail';
+    var u=location.pathname.split('/').pop()||'index.html';
+    var t2=JSON.parse(localStorage.getItem(k)||'{}');
+    function put(key){
+      if(t2[key]||Object.keys(t2).length<500){
+        t2[key]=(t2[key]||0)+1;
+        localStorage.setItem(k,JSON.stringify(t2));
+      }
+    }
+    put(u+location.hash);
+    addEventListener('hashchange',function(){ put(u+location.hash); });
+  }catch(e){}
+})();
+</script>
+<!--/__rbp-->
+</body>
+</html>

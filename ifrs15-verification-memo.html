@@ -1,0 +1,460 @@
+<!doctype html>
+<html lang="en-CA">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>IFRS 15 Item Bank: Verification and Backfill</title>
+<style>
+:root{
+  --paper:#faf9f6; --ink:#16150f; --ink2:#55524a; --ink3:#6f6c63;
+  --rule:#ddd9cf; --accent:#14509b; --panel:#f2f0e9;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#131310; --ink:#f7f5ef; --ink2:#c9c5ba; --ink3:#98948a;
+    --rule:#3a382f; --accent:#85adea; --panel:#1c1b16;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#131310; --ink:#f7f5ef; --ink2:#c9c5ba; --ink3:#98948a;
+  --rule:#3a382f; --accent:#85adea; --panel:#1c1b16;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);
+  font:16.5px/1.62 -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif}
+main{max-width:46rem;margin:0 auto;padding:2.5rem 1.25rem 5rem}
+h1{font-size:clamp(1.7rem,4.5vw,2.4rem);line-height:1.12;letter-spacing:-.015em;margin:.4rem 0 1rem}
+h2{font-size:1.28rem;margin:2.6rem 0 .8rem;padding-bottom:.4rem;border-bottom:1px solid var(--rule)}
+h3{font-size:1.05rem;margin:1.8rem 0 .5rem}
+p,li{color:var(--ink2);max-width:66ch}
+strong{color:var(--ink)}
+a{color:var(--accent)}
+code{font:.86em ui-monospace,Menlo,Consolas,monospace;background:var(--panel);
+  padding:.08em .3em;border-radius:0;color:var(--ink)}
+table{border-collapse:collapse;width:100%;margin:1rem 0;font-size:.9rem}
+th,td{border:1px solid var(--rule);padding:.5rem .65rem;text-align:left;vertical-align:top;color:var(--ink2)}
+th{color:var(--ink);background:var(--panel);font-weight:600}
+.tablewrap{overflow-x:auto}
+hr{border:0;border-top:1px solid var(--rule);margin:2.2rem 0}
+.lede{font-size:1.02rem;color:var(--ink2);border-left:3px solid var(--accent);
+  padding-left:.9rem;margin:0 0 1.5rem}
+.eyebrow{font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink3);margin:0}
+</style>
+<!--__meta-->
+<meta name="color-scheme" content="light dark">
+<meta name="description" content="What was actually read to build the trainer: the full standard and all 65 illustrative examples in Part I of the CPA Canada Handbook, the four IFRIC agenda…">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%2316150f'/><text x='50' y='72' font-size='64' font-family='Helvetica,Arial' font-weight='bold' fill='%23faf9f6' text-anchor='middle'>A</text></svg>">
+<link rel="canonical" href="https://alexrajcoomar.github.io/ifrs15-verification-memo.html">
+<meta property="og:title" content="IFRS 15 Item Bank: Verification and Backfill — Alex Rajcoomar">
+<meta property="og:description" content="What was actually read to build the trainer: the full standard and all 65 illustrative examples in Part I of the CPA Canada Handbook, the four IFRIC agenda…">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://alexrajcoomar.github.io/ifrs15-verification-memo.html">
+<meta property="og:site_name" content="Alex Rajcoomar — portfolio">
+<meta property="og:image" content="https://alexrajcoomar.github.io/og-card.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="IFRS 15 Item Bank: Verification and Backfill — Alex Rajcoomar">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://alexrajcoomar.github.io/og-card.png">
+<script>
+(function(){
+  var d=document.documentElement;
+  try{var t=localStorage.getItem('theme'); if(t) d.setAttribute('data-theme',t);}catch(e){}
+  new MutationObserver(function(){
+    try{
+      var v=d.getAttribute('data-theme');
+      if(v) localStorage.setItem('theme',v); else localStorage.removeItem('theme');
+    }catch(e){}
+  }).observe(d,{attributes:true,attributeFilter:['data-theme']});
+})();
+</script>
+<!--/__meta-->
+</head>
+<body>
+<!--__rb-->
+<!-- injected by the site build: a way back into the site from a standalone
+     piece. A static bar at the top, so it is visible on arrival, and a pill
+     that appears once you have scrolled past it, so there is always a way out.
+     Self-contained, because these pages do not load the site stylesheet. -->
+<style id="__rb-style">
+#__rb{
+  box-sizing:border-box;display:flex;flex-wrap:wrap;align-items:center;gap:.6rem 1.25rem;
+  padding:.6rem clamp(1rem,4vw,2rem);border-bottom:1px solid #ddd9cf;background:#faf9f6;
+  font:500 13px/1.35 InterVar,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  color:#55524a;
+}
+#__rb a{color:#14509b;text-decoration:none;display:inline-flex;align-items:center;gap:.4rem}
+#__rb a:hover{text-decoration:underline}
+#__rb .__rb-home{font-weight:640;color:#16150f}
+#__rb .__rb-home i{font-style:normal;font-weight:400;color:#6f6c63}
+#__rb .__rb-right{margin-left:auto;display:flex;gap:1.1rem;flex-wrap:wrap}
+#__rb .__mark{
+  display:inline-grid;place-items:center;width:1.2rem;height:1.2rem;flex:none;
+  background:#16150f;color:#faf9f6;font-size:.72rem;font-weight:700;
+}
+#__rb-pill{
+  position:fixed;left:14px;bottom:14px;z-index:2147483000;
+  display:inline-flex;align-items:center;gap:.45rem;padding:.58rem .9rem;
+  background:rgba(22,21,15,.93);color:#faf9f6;text-decoration:none;border-radius:99px;
+  font:600 12.5px/1 InterVar,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  border:1px solid rgba(255,255,255,.16);box-shadow:0 6px 22px rgba(0,0,0,.28);
+  opacity:0;transform:translateY(6px);pointer-events:none;
+  transition:opacity .2s ease,transform .2s ease;
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+}
+#__rb-pill.__on{opacity:1;transform:none;pointer-events:auto}
+#__rb-pill:hover{background:#16150f;color:#fff}
+/* Dark has to answer to two things: the reader's system setting, and the
+   theme button on the page, which sets data-theme on <html>. Keyed to the
+   media query alone, the bar stayed paper-white across the top of an essay
+   the reader had just switched to dark, and read as a rendering fault. The
+   media query is scoped so an explicit light choice wins, and the attribute
+   selector is repeated so an explicit dark choice wins on a light system. */
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) #__rb{background:#131310;border-bottom-color:#2c2b24;color:#c0bcb1}
+  :root:not([data-theme="light"]) #__rb .__rb-home{color:#f7f5ef}
+  :root:not([data-theme="light"]) #__rb .__rb-home i{color:#948f85}
+  :root:not([data-theme="light"]) #__rb a{color:#85adea}
+  :root:not([data-theme="light"]) #__rb .__mark{background:#f7f5ef;color:#131310}
+  :root:not([data-theme="light"]) #__rb-pill{background:rgba(247,245,239,.95);color:#131310;border-color:rgba(0,0,0,.2)}
+  :root:not([data-theme="light"]) #__rb-pill:hover{background:#fff;color:#000}
+}
+:root[data-theme="dark"] #__rb{background:#131310;border-bottom-color:#2c2b24;color:#c0bcb1}
+:root[data-theme="dark"] #__rb .__rb-home{color:#f7f5ef}
+:root[data-theme="dark"] #__rb .__rb-home i{color:#948f85}
+:root[data-theme="dark"] #__rb a{color:#85adea}
+:root[data-theme="dark"] #__rb .__mark{background:#f7f5ef;color:#131310}
+:root[data-theme="dark"] #__rb-pill{background:rgba(247,245,239,.95);color:#131310;border-color:rgba(0,0,0,.2)}
+:root[data-theme="dark"] #__rb-pill:hover{background:#fff;color:#000}
+@media (prefers-reduced-motion:reduce){#__rb-pill{transition:none}}
+@media print{#__rb,#__rb-pill{display:none !important}}
+</style>
+<div id="__rb">
+  <a class="__rb-home" href="index.html"><span class="__mark" aria-hidden="true">A</span>Alex Rajcoomar <i>portfolio</i></a>
+  <span class="__rb-right"><a href="research.html">Research</a><a href="library.html">All work</a></span>
+</div>
+<script>
+/* the trail: which passages this browser has opened. The atlas reads it and
+   rings them; the record lives in localStorage and never leaves the machine. */
+(function(){
+  if(window.__trailed) return; window.__trailed=1;
+  try{
+    var k='atlas.trail';
+    var u=location.pathname.split('/').pop()||'index.html';
+    var t2=JSON.parse(localStorage.getItem(k)||'{}');
+    function put(key){
+      if(t2[key]||Object.keys(t2).length<500){
+        t2[key]=(t2[key]||0)+1;
+        localStorage.setItem(k,JSON.stringify(t2));
+      }
+    }
+    put(u+location.hash);
+    addEventListener('hashchange',function(){ put(u+location.hash); });
+  }catch(e){}
+})();
+</script>
+<!--/__rb-->
+
+<main>
+<p class="eyebrow">Working paper &middot; companion to the IFRS 15 Judgment Trainer</p>
+<h1 id="ifrs-15-item-bank-verification-block-divergence-">IFRS 15 item bank: verification block, divergence notes, backfill list</h1>
+<p>Companion to <code>ifrs15_item_bank.json</code>. Free-source retrieval 21 August 2026. Handbook verification pass, same day, in Chrome on your machine.</p>
+<hr />
+<h2 id="s-1-what-governs-and-what-was-read">1. What governs, and what was read</h2>
+<p><strong>The bank has now been verified against the governing Canadian text.</strong></p>
+<p>On 21 August 2026 I read IFRS 15 in <strong>Part I of the CPA Canada Handbook, 2026 Edition</strong>, in the section presented as <em>IFRS Accounting Standards in effect on January 1, 2026</em>, through Knotia on your University of Waterloo access. The CPA Canada Standards and Guidance Collection was dated <strong>July 2026</strong> at the time of reading. The full standard, Appendices A, B and C, and all 65 illustrative examples were read.</p>
+<p><strong>No discrepancy was found.</strong> Every paragraph number, sub-clause label, example number, figure and conclusion cited in the bank matches the Handbook text. The AASB and IFRS Foundation sources used to build it reproduce the IASB text faithfully, which is what the IFRS Foundation's jurisdictional profile for Canada implies but does not prove; now it has been checked rather than assumed.</p>
+<p>Three things the Handbook pass changed:</p>
+<ol>
+<li><strong>The illustrative examples beyond 26 are now available</strong>, because Part I carries them. Eleven items were rewritten onto their real examples and ten new items were built from examples that no free source would serve. The bank went from 52 items to 62.</li>
+<li><strong>Paragraph C1B settles the amendment history</strong>, which I had previously flagged as my inference. See section 2.</li>
+<li><strong>IFRS 18 does not appear anywhere in the in-effect version.</strong> See section 2.</li>
+</ol>
+<p>Two build-time source problems, recorded because they shaped the bank and because the same traps will recur:</p>
+<ul>
+<li>The XRB standards navigator for NZ IFRS 15 returned an unreliable reading of Appendix B: it misstated the paragraph B58 criteria and inverted the paragraph B52 distinction. Nothing in the bank rests on it. Appendix B was built from the AASB page and is now confirmed against the Handbook.</li>
+<li>The IFRS Foundation's illustrative examples PDF returned its full contents list but only the body text through Example 26 on every free host tried. Where a summary appeared to describe a later example, its figures failed a control question. That is why the Handbook pass mattered.</li>
+</ul>
+<hr />
+<h2 id="s-2-version-and-effective-date-relied-on">2. Version and effective date relied on</h2>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Position</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Version relied on</td>
+<td>CPA Canada Handbook Part I, 2026 Edition, IFRS Accounting Standards in effect on 1 January 2026. Collection dated July 2026</td>
+<td>Knotia, read 21 Aug 2026</td>
+</tr>
+<tr>
+<td>Effective date</td>
+<td>Paragraph C1: annual reporting periods beginning on or after 1 January 2018, earlier application permitted with disclosure</td>
+<td>Part I, IFRS 15 Appendix C</td>
+</tr>
+<tr>
+<td>IFRS 16 consequential amendments</td>
+<td>Paragraph C1A: IFRS 16, issued January 2016, amended paragraphs 5, 97, B66 and B70</td>
+<td>Part I, IFRS 15 Appendix C</td>
+</tr>
+<tr>
+<td>Clarifications to IFRS 15</td>
+<td>Paragraph C1B: issued April 2016; amended paragraphs 26, 27, 29, B1, B34 to B38, B52 to B53, B58, C2, C5 and C7; deleted paragraph B57; added paragraphs B34A, B35A, B35B, B37A, B59A, B63A, B63B, C7A and C8A</td>
+<td>Part I, IFRS 15 Appendix C</td>
+</tr>
+<tr>
+<td>Appendices present</td>
+<td>A, B and C only. There is no Appendix D in the Part I version</td>
+<td>Part I contents</td>
+</tr>
+</tbody>
+</table></div>
+<p>This replaces the inference I flagged in the first version of this block. C1B is an authoritative list of what the Clarifications changed, and it confirmed every one of those paragraph numbers is present in the current text, with B57 shown as deleted. C1B addresses paragraphs, not illustrative examples, so it does not itself establish that Examples 46A and 48A arrived with the Clarifications; both are present in the current example set.</p>
+<h3 id="amendments-effective-after-the-version-relied-on">Amendments effective after the version relied on</h3>
+<ul>
+<li><strong>IFRS 18 Presentation and Disclosure in Financial Statements</strong>, issued April 2024, makes consequential amendments to IFRS 15 according to the IFRS Foundation's own standard page. <strong>The string "IFRS 18" does not appear anywhere in the Part I version in effect on 1 January 2026.</strong> Part I keeps a separate section for standards issued but not yet effective, which I did not open. So: the bank reflects the in-effect text, and the IFRS 18 consequential amendments sit outside it. If you date the piece, say which version you worked from.</li>
+<li>The IASB's post-implementation review of IFRS 15 is described as completed as of 2024. Its conclusions were not retrieved and nothing here reflects them.</li>
+<li>Beyond C1A and C1B, the Part I text records no further amendments to IFRS 15.</li>
+</ul>
+<hr />
+<h2 id="s-3-verification-table">3. Verification table</h2>
+<p>Every item in the JSON carries its own <code>authority</code> string and <code>source_ids</code>. All 62 items now carry <code>S20</code>, the Handbook read. This table is the aggregate.</p>
+<h3 id="s-3-1-standard-paragraphs">3.1 Standard paragraphs</h3>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Paragraph range</th>
+<th>Section</th>
+<th>Verified in</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>9, 9(e), 10, 11, 12, 13, 14, 15, 16</td>
+<td>Identifying the contract</td>
+<td>Part I, IFRS 15 Recognition</td>
+</tr>
+<tr>
+<td>17, 18, 19, 20, 21(a), 21(b), 21(c)</td>
+<td>Combination and modifications</td>
+<td>Part I, IFRS 15 Recognition</td>
+</tr>
+<tr>
+<td>22, 22(b), 23(a), 23(b), 24, 25, 26, 27, 28, 29, 30</td>
+<td>Identifying performance obligations</td>
+<td>Part I, IFRS 15 Recognition</td>
+</tr>
+<tr>
+<td>31, 32, 33, 34, 35, 36, 37, 38</td>
+<td>Satisfaction of performance obligations</td>
+<td>Part I, IFRS 15 Recognition</td>
+</tr>
+<tr>
+<td>39, 40, 41, 42, 43, 44, 45</td>
+<td>Measuring progress</td>
+<td>Part I, IFRS 15 Recognition</td>
+</tr>
+<tr>
+<td>46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59</td>
+<td>Variable consideration and the constraint</td>
+<td>Part I, IFRS 15 Measurement</td>
+</tr>
+<tr>
+<td>60, 61, 62, 62(c), 63, 64, 65</td>
+<td>Significant financing component</td>
+<td>Part I, IFRS 15 Measurement</td>
+</tr>
+<tr>
+<td>66 to 69, 70, 71, 72</td>
+<td>Non-cash consideration, consideration payable</td>
+<td>Part I, IFRS 15 Measurement</td>
+</tr>
+<tr>
+<td>73, 74, 76 to 86</td>
+<td>Allocation</td>
+<td>Part I, IFRS 15 Measurement</td>
+</tr>
+<tr>
+<td>87, 88, 89, 90</td>
+<td>Changes in the transaction price</td>
+<td>Part I, IFRS 15 Measurement</td>
+</tr>
+<tr>
+<td>91 to 104</td>
+<td>Contract costs</td>
+<td>Part I, IFRS 15 Contract costs</td>
+</tr>
+<tr>
+<td>105 to 109</td>
+<td>Presentation</td>
+<td>Part I, IFRS 15 Presentation</td>
+</tr>
+<tr>
+<td>110, 113, 114, 116, 119, 120, 121, 122, 123</td>
+<td>Disclosure</td>
+<td>Part I, IFRS 15 Disclosure</td>
+</tr>
+<tr>
+<td>Appendix A</td>
+<td>Nine defined terms, appendix stated to be an integral part of the Standard</td>
+<td>Part I, IFRS 15 Appendix A</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>The correction to your brief stands, and is now checked at source.</strong> Appendix A defines contract, contract asset, contract liability, customer, income, performance obligation, revenue, stand-alone selling price and transaction price. <strong>Control is not among them.</strong> Control of an asset is described in paragraph 33; the point-in-time indicators are in paragraph 38. Item <code>DEF-01</code> tests this.</p>
+<h3 id="s-3-2-appendix-b-paragraphs">3.2 Appendix B paragraphs</h3>
+<p>B3 to B13, B14 to B19, B20 to B27, B34, B34A, B35, B35A, B35B, B36, B37, B37A, B38, B39 to B43, B49, B52 to B63B, B64 to B76, B79 to B82. All present in Part I, with B57 shown as deleted, consistent with C1B.</p>
+<h3 id="s-3-3-illustrative-examples">3.3 Illustrative examples</h3>
+<p><strong>Examples 1 to 63, including 46A and 48A, sixty-five in all, read in Part I.</strong> The example numbers and headings match the IFRS Foundation document exactly.</p>
+<p>Cited in the bank: 1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 30, 32, 33, 34, 35, 36, 37, 38, 45, 46A, 47, 48, 48A, 49, 50, 53, 56, 57, 58, 59, 60.</p>
+<p>Not cited, and the topics they carry: 6 (change in transaction price after a modification), 28 and 29 (determining the discount rate), 31 (non-cash consideration), 39 and 40 (contract asset, receivable), 41 to 43 (disclosure), 44 (warranties), 46 (principal, integration service), 51 and 52 (renewal option, loyalty programme), 54 and 55 (right to use, licence of intellectual property), 61 (access), 62 (repurchase agreements), 63 (bill-and-hold).</p>
+<p>Examples are cited by <strong>number and case letter</strong>, not by IE paragraph number. The IE paragraph numbers exist in Part I and could be added if you want that level of pinpoint.</p>
+<h3 id="s-3-4-other-authorities">3.4 Other authorities</h3>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Authority</th>
+<th>Date</th>
+<th>Used in</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>IAS 38 paragraph 69(b)</td>
+<td>As cited within the March 2020 agenda decision, not read directly from IAS 38</td>
+<td>CC-03</td>
+</tr>
+<tr>
+<td>IFRIC agenda decision, Assessment of Promised Goods or Services (IFRS 15)</td>
+<td>January 2019</td>
+<td>PO-08</td>
+</tr>
+<tr>
+<td>IFRIC agenda decision, Costs to Fulfil a Contract (IFRS 15)</td>
+<td>June 2019</td>
+<td>CC-02</td>
+</tr>
+<tr>
+<td>IFRIC agenda decision, Training Costs to Fulfil a Contract (IFRS 15)</td>
+<td>March 2020</td>
+<td>CC-03</td>
+</tr>
+<tr>
+<td>IFRIC agenda decision, Principal versus Agent: Software Reseller (IFRS 15)</td>
+<td>May 2022, per the IFRS Foundation's supporting materials listing and the file name. No printed date was captured from the face of the document</td>
+<td>PA-01</td>
+</tr>
+<tr>
+<td>CSA Staff Notice 51-364</td>
+<td>3 November 2022</td>
+<td>PD-02</td>
+</tr>
+<tr>
+<td>CSA Staff Notice 51-365</td>
+<td>7 November 2024</td>
+<td>PD-02</td>
+</tr>
+</tbody>
+</table></div>
+<hr />
+<h2 id="s-4-known-divergence-and-clarification">4. Known divergence and clarification</h2>
+<h3 id="s-4-1-ifrs-interpretations-committee-agenda-decisi">4.1 IFRS Interpretations Committee agenda decisions</h3>
+<p>Eight are listed by the IFRS Foundation for IFRS 15: revenue recognition in a real estate contract (March 2018), right to payment for performance completed to date (March 2018), assessment of promised goods or services (January 2019), costs to fulfil a contract (June 2019), compensation for delays or cancellations (September 2019), training costs to fulfil a contract (March 2020), principal versus agent: software reseller (May 2022), recognition of revenue from tuition fees (April 2025).</p>
+<p><strong>Four were read in full</strong> and carry items: January 2019, June 2019, March 2020 and May 2022. The other four are leads, not authority. Decisions one and two bear directly on the real estate items <code>REC-05</code> and <code>REC-06</code>, and the April 2025 tuition fees decision is recent enough that a textbook may not reflect it.</p>
+<p>What the four settle:</p>
+<ul>
+<li><strong>Assessment of promised goods or services (January 2019).</strong> A stock exchange's admission activities are required in order to transfer the listing service but do not themselves transfer a service, so the exchange promises only the listing service. Paragraph 25 given teeth, and it governs activation, onboarding and initial listing fees generally. Example 53 reaches the same place for a nominal setup fee.</li>
+<li><strong>Costs to fulfil a contract (June 2019).</strong> Where revenue is recognised over time on an output method, costs relating to work already performed fail paragraph 95(b) and must be expensed under 98(c). The decision exists because capitalising them was being used to smooth the mismatch between an output method and cost incurrence.</li>
+<li><strong>Training costs to fulfil a contract (March 2020).</strong> Training expenditure is within the scope of IAS 38, which requires it to be expensed. The scope test at the front of paragraph 95 is reached before its three criteria, and a contractual right to recharge does not change the answer.</li>
+<li><strong>Principal versus Agent: Software Reseller (May 2022).</strong> The Committee declined to standard-set, concluding the Standards provide an adequate basis. The value is the order of the analysis: identify the specified good or service under B34A, assess control under B35 and B35A, use the B37 indicators as support, with B37A confirming their relevance varies. Example 46A is the sharpest illustration: one indicator points to agent and the conclusion is still principal.</li>
+</ul>
+<h3 id="s-4-2-canadian-securities-regulator-commentary">4.2 Canadian securities regulator commentary</h3>
+<p>Neither notice names an issuer.</p>
+<p><strong>CSA Staff Notice 51-364, 3 November 2022.</strong> Under a Hot Topics heading on IFRS 15, staff wrote that some issuers do not consider whether the promised consideration includes a variable amount, that some include estimated variable consideration without assessing whether a significant reversal is highly probable not to occur, that some do not disclose enough about the nature, amount, timing and uncertainty of revenue, and that some do not disaggregate revenue into categories. The retrieval reported this at pages 5 to 7; <strong>that page range is the retrieval's report and I have not confirmed it.</strong> Open the PDF before citing pages.</p>
+<p><strong>CSA Staff Notice 51-365, 7 November 2024.</strong> Staff wrote that reportable segment disclosure might not be sufficient, and that IFRS 15 contains no exemption from a prescribed disclosure because the issuer considers it commercially sensitive. No page numbers captured.</p>
+<p>The useful observation for your piece: the CSA is not disputing recognition analysis. It is saying issuers skip the constraint assessment and under-disclose. That is a different failure from the one a textbook trains you to avoid.</p>
+<h3 id="s-4-3-what-i-could-not-find">4.3 What I could not find</h3>
+<p>No Canadian source contesting or departing from the IASB treatment on any of the nine judgment points. Given that Part I reproduces the IASB text, that is expected, but it is recorded as "not found" rather than "does not exist". The OSC website returned 403 to every retrieval attempt, so both CSA notices were read from British Columbia Securities Commission copies.</p>
+<hr />
+<h2 id="s-5-remaining-gaps">5. Remaining gaps</h2>
+<ol>
+<li><strong>One item still carries <code>example_coverage_pending</code>:</strong> <code>PD-02</code>, the disclosure item, where Examples 41 to 43 would strengthen it. Everything else is anchored.</li>
+<li><strong>Topics with no items:</strong> warranties (B28 to B33, Example 44), repurchase agreements (B64 to B76, Example 62), bill-and-hold (B79 to B82, Example 63), consignment (B77 to B78), customer acceptance (B83 to B86), breakage and unexercised rights (B44 to B47), non-cash consideration (paragraphs 66 to 69, Example 31), customer loyalty programmes (Example 52), renewal options (Example 51). All of these are now reachable in Part I; they are absent because I stopped, not because the source failed.</li>
+<li><strong>Deliberately out of scope:</strong> transition, and ASPE Section 3400.</li>
+<li><strong><code>disclosure_example</code> is empty on all 62 items</strong> by your instruction. Nothing was invented to fill it.</li>
+<li><strong>IE paragraph numbers</strong> are not used as citations anywhere.</li>
+</ol>
+<hr />
+<h2 id="s-6-backfill-list-which-judgment-points-most-need-">6. Backfill list: which judgment points most need a real issuer disclosure</h2>
+<p>Unchanged by the Handbook pass, since it is about SEDAR+ rather than the standard. Ranked by how much a page-cited Canadian disclosure would add, not by how common the topic is. The reasoning is the same in each case: a disclosure is worth most where the standard requires the issuer to state a judgment, so the note shows the judgment being made rather than the mechanics being applied.</p>
+<ol>
+<li><strong>Principal versus agent.</strong> Highest value by a distance. Paragraph 123 requires disclosure of judgments that significantly affect the amount and timing of revenue, and gross versus net has the largest effect on the top line. Any marketplace, distributor, travel or logistics issuer will state its conclusion and reasons. The bank now has five items here, so a real note would have plenty to attach to.</li>
+<li><strong>Variable consideration and the constraint.</strong> Second because CSA staff have specifically written that issuers include estimated variable consideration without documenting the constraint assessment. A note that does it properly, set beside the staff notice saying most do not, is a better teaching object than either alone.</li>
+<li><strong>Licences, right to use versus right to access.</strong> Third because the disclosure is where the issuer commits to over time or point in time and says why. Software, media, franchising and pharmaceutical royalties are all findable on SEDAR+.</li>
+<li><strong>Distinct goods and services and the separately identifiable criterion.</strong> Fourth. Telecom and software issuers describe their performance obligations and their unbundling, and the interesting part is the boundary they drew.</li>
+<li><strong>Over-time versus point-in-time and the right to payment.</strong> Fifth. Engineering, construction and real estate issuers must explain the basis, and the enforceable right to payment analysis is jurisdiction-specific, which makes a Canadian issuer worth more here than an example.</li>
+<li><strong>Significant financing components.</strong> Sixth. Disclosure tends to be thin, often a single sentence electing the practical expedient.</li>
+<li><strong>Contract modifications.</strong> Seventh. Rarely disclosed as a discrete judgment outside construction.</li>
+<li><strong>Costs to obtain and fulfil a contract.</strong> Eighth. Paragraphs 127 and 128 require the judgments, amortisation method and balances, so the note is usually present but formulaic. <code>CC-05</code> is the exception worth hunting: an issuer that amortises over a period longer than the contract term has to say so.</li>
+<li><strong>The series guidance.</strong> Ninth. Issuers rarely name it, so a disclosure would demonstrate little the standard text does not.</li>
+</ol>
+<p>For all nine, the note number is a more durable citation than a page number. Page numbers move between the SEDAR+ filing and any other rendering of the same statements; note numbers do not.</p>
+<hr />
+<h2 id="s-7-verification-passes-run-on-this-bank">7. Verification passes run on this bank</h2>
+<p><strong>Pass one, independent agent, free sources.</strong> Eleven high-risk attributions re-checked against the AASB and IFRS Foundation sources by a separate agent working only from URLs, instructed to report NOT FOUND rather than fill gaps. All eleven verified. One substantive correction came out of it: <strong>paragraph 62(c) has two limbs</strong>, the reason other than finance and the proportionality of the difference. My original wording carried only the first, which overstates how easily 62(c) is met. Items <code>TP-08</code> and <code>TP-10</code> now carry both.</p>
+<p><strong>Pass two, Handbook, in Chrome.</strong> The whole of IFRS 15 in Part I read directly, including every illustrative example, and checked against the bank paragraph by paragraph. No discrepancy found. Specific confirmations worth recording:</p>
+<ul>
+<li>Paragraph 12's sub-clauses are labelled (a) and (b).</li>
+<li>Paragraph 54 requires one method applied consistently <strong>for the uncertainty being estimated</strong>, which is what makes Example 21's use of two methods in one contract correct. Item <code>TP-02</code> turns on this.</li>
+<li>Example 5 Case B: the CU900 credit is recognised as a reduction of the transaction price and of revenue <strong>for the initial 60 products</strong>, separately from the blended CU93.33 applied prospectively under 21(a). Item <code>MOD-02</code> states it that way.</li>
+<li>Example 8's cumulative catch-up of CU91,200 is described as additional revenue at 51.2 per cent of a CU1,350,000 modified transaction price.</li>
+<li>Appendix A carries no definition of control.</li>
+</ul>
+<hr />
+<h2 id="s-8-failure-condition-self-check">8. Failure-condition self-check</h2>
+<ul>
+<li><strong>Any item lacking an authority reference.</strong> None. Checked programmatically across all 62.</li>
+<li><strong>A judgment call scored as determinate.</strong> 33 items are typed <code>judgment</code> and are excluded from scoring by <code>meta.scoring_rule</code>. I typed as <code>judgment</code> only where the standard permits a range on the stated facts, or the conclusion turns on a fact deliberately withheld, not merely where the item is hard. Items where an illustrative example reaches one answer on its own facts are <code>determinate</code> even when the reasoning is difficult, because a trainer that scores nothing teaches nothing.</li>
+<li><strong>A scenario invented where an illustrative example already covers the point.</strong> This was the standing failure in the first version, at sixteen items. <strong>It is now resolved for fifteen of them</strong>: eleven items were rewritten onto the real example facts and ten new items were built directly from examples. One item, <code>PD-02</code>, still uses a constructed scenario where Examples 41 to 43 exist.</li>
+<li><strong>Issuer disclosures lacking page citations.</strong> No issuer disclosures are present. <code>disclosure_example</code> is empty on all 62 items and nothing was invented, approximated or reconstructed to fill it.</li>
+</ul>
+<hr>
+<p><a href="ifrs15-judgment-trainer.html">Open the IFRS 15 Judgment Trainer</a>, the drill this memo verifies.</p>
+</main>
+
+<!--__rbp-->
+<a id="__rb-pill" href="research.html">&#8592; Research</a>
+<script>
+(function(){
+  var p=document.getElementById('__rb-pill'); if(!p) return;
+  var t=false;
+  function run(){ t=false;
+    p.classList.toggle('__on',(window.scrollY||document.documentElement.scrollTop)>420); }
+  function q(){ if(!t){ t=true; requestAnimationFrame(run); } }
+  addEventListener('scroll',q,{passive:true}); run();
+})();
+/* the trail, for the pages that carry only the pill (the tools) */
+(function(){
+  if(window.__trailed) return; window.__trailed=1;
+  try{
+    var k='atlas.trail';
+    var u=location.pathname.split('/').pop()||'index.html';
+    var t2=JSON.parse(localStorage.getItem(k)||'{}');
+    function put(key){
+      if(t2[key]||Object.keys(t2).length<500){
+        t2[key]=(t2[key]||0)+1;
+        localStorage.setItem(k,JSON.stringify(t2));
+      }
+    }
+    put(u+location.hash);
+    addEventListener('hashchange',function(){ put(u+location.hash); });
+  }catch(e){}
+})();
+</script>
+<!--/__rbp-->
+</body>
+</html>
