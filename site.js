@@ -742,8 +742,16 @@
   /* --------------------------------------------- the atlas, in miniature
      The same sphere the atlas page draws, at a size where it is a picture
      rather than an instrument: no labels, no hit testing, no second copy of
-     the headings. Only the positions travel, two decimals each, because that
-     is all a hundred-and-sixty-pixel radius can show. */
+     the headings. Only the positions and the encoding travel, two decimals
+     each, because that is all a small radius can show.
+
+     Mark size follows heading level, as it does on the atlas. The two used
+     to disagree: the atlas said in its first wall label that size carries
+     level, and the home page drew all 1,247 marks the same size directly
+     underneath a paragraph making the same claim. The ratios below are the
+     atlas's own (atlas.js:448, `0.75 + (4 - level) * 0.3`), scaled so that
+     an ordinary third-level heading lands on the 0.7px radius this teaser
+     already used and nothing else has to move. */
   (function () {
     var host = document.getElementById("atlasmini");
     if (!host || !host.getAttribute("data-pts")) return;
@@ -754,14 +762,30 @@
     var reduced = window.matchMedia &&
       window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+    /* The fourth field is the kind letter, optionally followed by the
+       heading level. A missing digit means level 3, which is what 743 of
+       the points are, so the common case costs nothing on the wire. */
     var raw = host.getAttribute("data-pts").split(";");
     var pts = [];
     for (var i = 0; i < raw.length; i++) {
       var f = raw[i].split(",");
       if (f.length < 4) continue;
-      pts.push({ x: +f[0], y: +f[1], z: +f[2], k: f[3] });
+      var mark = f[3];
+      var lvl = mark.length > 1 ? +mark.charAt(1) : 3;
+      if (!(lvl >= 1 && lvl <= 4)) lvl = 3;
+      var P = { x: +f[0], y: +f[1], z: +f[2], k: mark.charAt(0), l: lvl };
+      /* the atlas stands its six tool marks off the sphere; the teaser
+         makes the same claim about the same points */
+      if (P.k === "t") { P.x *= 1.13; P.y *= 1.13; P.z *= 1.13; }
+      pts.push(P);
     }
     if (pts.length < 8) return;
+
+    /* atlas.js draws (0.75 + lv * 0.3) + 2.0 * depth, where lv is
+       4 - level. At teaser scale that whole ladder is multiplied by
+       0.7 / 1.05, the ratio that leaves a third-level heading exactly
+       where it was. Levels 1 to 4 land on 1.10, 0.90, 0.70 and 0.50. */
+    var LVL_R = [0, 1.10, 0.90, 0.70, 0.50];
 
     var cv = document.createElement("canvas");
     cv.setAttribute("aria-hidden", "true");
@@ -778,8 +802,9 @@
       C.r = s.getPropertyValue("--rule").trim() || "#ddd9cf";
     }
     colours();
-    new MutationObserver(colours).observe(document.documentElement,
-      { attributes: true, attributeFilter: ["data-theme"] });
+    new MutationObserver(function () { colours(); _cc = {}; paint(); })
+      .observe(document.documentElement,
+        { attributes: true, attributeFilter: ["data-theme"] });
 
     function rgba(hex, a) {
       var h = hex.replace("#", "");
@@ -793,6 +818,11 @@
     function size() {
       var r = host.getBoundingClientRect();
       dpr = Math.min(2, window.devicePixelRatio || 1);
+      /* The host is a real box now. It used to be styled by nothing at
+         all, so getBoundingClientRect returned a height of zero, this
+         floor caught it, and a 140px sphere was drawn in the middle of a
+         1,168px canvas. The floor stays as a floor and is no longer the
+         thing deciding the size. */
       W = Math.max(160, r.width);
       H = Math.max(160, r.height);
       cv.width = Math.round(W * dpr);
@@ -802,6 +832,21 @@
       R = Math.min(W, H) * 0.44;
     }
 
+    /* The depth alpha is quantised to twelve steps and the colour strings
+       cached, because building 1,247 rgba strings per frame was most of the
+       frame, and a twelfth of the alpha range is invisible at this size. */
+    var _cc = {};
+    function tone(k, q) {
+      var key = k + q;
+      var s = _cc[key];
+      if (s) return s;
+      var a = 0.08 + 0.72 * (q / 12);
+      s = k === "c" ? rgba(C.c, a)
+        : k === "t" ? rgba(C.t, a)
+        : k === "p" ? rgba(C.i, a * 0.55)
+        : rgba(C.i, a);
+      return (_cc[key] = s);
+    }
     function paint() {
       var cx = W / 2, cy = H / 2;
       var cyaw = Math.cos(yaw), syaw = Math.sin(yaw);
@@ -820,32 +865,46 @@
         var y2 = p.y * cpit - z1 * spit;
         var z2 = p.y * spit + z1 * cpit;
         var t = (z2 + 1) / 2;
-        var a = 0.08 + 0.72 * t;
-        var rad = 0.7 + 1.5 * t;
+        var q = (t * 12) | 0;
+        var rad = LVL_R[p.l] + 1.5 * t;
         ctx.beginPath();
         ctx.arc(cx + x1 * R, cy - y2 * R, rad, 0, Math.PI * 2);
         if (p.k === "c") {
-          ctx.strokeStyle = rgba(C.c, a);
+          ctx.strokeStyle = tone("c", q);
           ctx.lineWidth = 1;
           ctx.stroke();
         } else {
-          ctx.fillStyle = rgba(p.k === "t" ? C.t : C.i, p.k === "p" ? a * 0.55 : a);
+          ctx.fillStyle = tone(p.k, q);
           ctx.fill();
         }
       }
     }
 
-    var spinning = false, last = 0;
+    var spinning = false, last = 0, skip = false;
     function step(now) {
       if (!spinning) return;
       yaw += Math.min(0.05, (now - last) / 1000) * 0.05;
       last = now;
-      paint();
+      /* ambient drift at half rate: the eye cannot tell and the phone can */
+      skip = !skip;
+      if (!skip) paint();
       requestAnimationFrame(step);
     }
 
-    size();
-    paint();
+    /* First paint waits for an idle main thread: the home page is the LCP
+       surface and the sphere must not cost it. The box is sized by CSS, so
+       nothing shifts when the canvas fills in. */
+    function bootTeaser() {
+      size();
+      paint();
+      watch();
+    }
+    if ("requestIdleCallback" in window) {
+      requestIdleCallback(bootTeaser, { timeout: 1500 });
+    } else {
+      setTimeout(bootTeaser, 250);
+    }
+    function watch() {
     if (!reduced && "IntersectionObserver" in window) {
       /* only turns while it is on screen: a globe spinning in a tab nobody is
          looking at is a battery cost with no reader */
@@ -860,12 +919,39 @@
         }
       }, { threshold: 0.05 }).observe(host);
     }
+    }
     var t0;
     window.addEventListener("resize", function () {
       clearTimeout(t0);
       t0 = setTimeout(function () { size(); paint(); }, 140);
     });
+    /* Draggable where a mouse makes that cheap; on a touch screen at the
+       top of the page a drag surface would eat the scroll, so the sphere
+       turns by itself there and stays a link. */
+    var movedT = 0;
+    if (window.matchMedia && window.matchMedia("(pointer:fine)").matches) {
+      var dragT = false, lxT = 0, lyT = 0;
+      cv.addEventListener("pointerdown", function (e) {
+        dragT = true; movedT = 0; lxT = e.clientX; lyT = e.clientY;
+        spinning = false;
+        try { cv.setPointerCapture(e.pointerId); } catch (x) {}
+        host.style.cursor = "grabbing";
+      });
+      cv.addEventListener("pointermove", function (e) {
+        if (!dragT) return;
+        var dx = e.clientX - lxT, dy = e.clientY - lyT;
+        movedT += Math.abs(dx) + Math.abs(dy);
+        yaw += dx * 0.006;
+        pitch = Math.max(-1.2, Math.min(1.2, pitch + dy * 0.005));
+        lxT = e.clientX; lyT = e.clientY;
+        paint();
+      });
+      cv.addEventListener("pointerup", function () {
+        dragT = false; host.style.cursor = "grab";
+      });
+    }
     host.addEventListener("click", function () {
+      if (movedT > 8) { movedT = 0; return; }
       window.location.href = "atlas.html";
     });
   })();
