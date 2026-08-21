@@ -1377,6 +1377,25 @@ RETURN_BAR = """
   <a class="__rb-home" href="index.html"><span class="__mark" aria-hidden="true">A</span>Alex Rajcoomar <i>portfolio</i></a>
   <span class="__rb-right"><a href="__UP__">__UPNAME__</a><a href="library.html">All work</a></span>
 </div>
+<script>
+/* the trail: which passages this browser has opened. The atlas reads it and
+   rings them; the record lives in localStorage and never leaves the machine. */
+(function(){
+  try{
+    var k='atlas.trail';
+    var u=location.pathname.split('/').pop()||'index.html';
+    var t2=JSON.parse(localStorage.getItem(k)||'{}');
+    function put(key){
+      if(t2[key]||Object.keys(t2).length<500){
+        t2[key]=(t2[key]||0)+1;
+        localStorage.setItem(k,JSON.stringify(t2));
+      }
+    }
+    put(u+location.hash);
+    addEventListener('hashchange',function(){ put(u+location.hash); });
+  }catch(e){}
+})();
+</script>
 <!--/__rb-->
 """
 
@@ -1825,10 +1844,13 @@ ATLAS_BODY = r"""<section class="band atlas-band" id="atlas">
             <li><i class="ak ak-per"></i>Personal interest</li>
             <li><i class="ak ak-cou"></i>Coursework, drawn as an outline</li>
             <li><i class="ak ak-too"></i>Tools, one mark each, standing off the sphere: not headings</li>
-            <li class="akey-wide"><i class="ak ak-shr"></i>Headings carried by more than one document, standing off the surface by how many carry them</li>
+            <li class="akey-wide"><i class="ak ak-shr"></i>Headings carried by more than one document, standing off the surface by how many carry them; point at one and the fan to its documents is drawn</li>
+            <li class="akey-wide"><i class="ak ak-vis"></i>Passages this browser has opened, ringed. The record stays in this browser</li>
           </ul>
           <p class="akey-note">Size follows heading level. A document's area grows with
-          the number of sections it holds. Nothing is sampled and nothing is capped.</p>
+          the number of sections it holds. Nothing is sampled and nothing is capped.
+          Left alone, the camera surveys the shelf, holding each document for a time
+          proportional to its size; touch anything and it is yours.</p>
         </div>
         <p class="replay"><button type="button" id="preplay" class="linkbtn">Replay the six labels</button></p>
       </div>
@@ -1891,9 +1913,10 @@ def page_atlas():
     for r in ordered:
         items = by[r["s"]]
         lis = "\n".join(
-            '<li class="apt" data-p="%s,%s,%s" data-l="%d"%s><a href="%s">%s</a></li>'
+            '<li class="apt" data-p="%s,%s,%s" data-l="%d"%s%s><a href="%s">%s</a></li>'
             % (q["p"][0], q["p"][1], q["p"][2], q["l"],
                (' data-n="%d"' % q["n"]) if q["n"] > 1 else "",
+               (' data-o="%s"' % ",".join(q["o"])) if q.get("o") else "",
                q["u"], esc(q["t"]))
             for q in items)
         word = "section" if len(items) == 1 else "sections"
