@@ -42,6 +42,8 @@
 
   /* ------------------------------------------------- read the page ---- */
   var pts = [], regions = [], byUrl = {}, bySlug = {};
+  var TRAIL = {};
+  try { TRAIL = JSON.parse(localStorage.getItem("atlas.trail") || "{}"); } catch (e) {}
   [].forEach.call(list.querySelectorAll(".areg"), function (sec, ri) {
     var c = (sec.getAttribute("data-c") || "0,0,1").split(",").map(Number);
     var reg = {
@@ -69,6 +71,12 @@
         href: a.getAttribute("href"),
         lvl: +(li.getAttribute("data-l") || 3),
         shared: +(li.getAttribute("data-n") || 1),
+        /* the documents that actually carry a shared heading, so pointing at
+           one can draw the measured fan to its owners */
+        own: (li.getAttribute("data-o") || "").split(",").filter(Boolean),
+        /* passages this browser has opened; recorded by site.js, read here,
+           never sent anywhere */
+        seen: !!TRAIL[a.getAttribute("href")],
         r: reg,
         on: true, sx: 0, sy: 0, sz: 0
       };
@@ -724,6 +732,17 @@
       if (g.fan) drawFan(g.fan, g.to);
       if (g.arc) drawArc(g.arc, g.to, g.tick);
     });
+    /* pointing at a shared heading draws the measured fan to the documents
+       that carry it: the relationship the placement recorded, shown only
+       while it is asked about, and never inside an authored stop */
+    if (hover && hover.own && hover.own.length && !staged && !focus) {
+      var htg = [];
+      for (var ho = 0; ho < hover.own.length; ho++) {
+        var hg = bySlug[hover.own[ho]];
+        if (hg) htg.push(hg);
+      }
+      if (htg.length) drawFan([hover.x, hover.y, hover.z], htg);
+    }
 
     /* leaders under the marks */
     ctx.strokeStyle = rgba(C.strong, 0.9);
@@ -749,6 +768,11 @@
       if (!litFn && !p.on) boost = 0.14;
       if (filter && !litFn) boost = p.on ? 2.1 : 0.22;
       if (focus) boost = p.r === focus ? 2.1 : 0.34;
+      /* the survey: while it holds a document, that territory carries the
+         emphasis and the rest recedes a step, never below legibility */
+      if (svy.on && svy.r && !litFn && !filter && !focus) {
+        boost = p.r === svy.r ? 1.5 : 0.82;
+      }
       var a = (0.10 + 0.80 * t) * Math.min(2.4, boost);
       if (a < 0.02) continue;
       /* size follows heading level, which is what the first label claims */
@@ -789,6 +813,15 @@
            category: measured at the pixel, 4.4:1 on paper */
         ctx.fillStyle = rgba(C.ind, p.r.surface === "personal" ? a * 0.85 : a);
         ctx.fill();
+      }
+      if (!staged && p.seen) {
+        /* a passage this browser has opened, ringed: the reader's own
+           trail through the corpus, kept in this browser alone */
+        ctx.beginPath();
+        ctx.arc(p.sx, p.sy, rad + 2.6, 0, Math.PI * 2);
+        ctx.strokeStyle = rgba(C.ink, Math.min(0.55, 0.2 + 0.35 * t));
+        ctx.lineWidth = 1;
+        ctx.stroke();
       }
       if (isHover) {
         ctx.beginPath();
@@ -1123,6 +1156,11 @@
         if (filter) return r.sz > 0.5 && r.items.some(function (p) { return p.on; });
         return r.sz > 0.5 && r.n > 2;
       }).sort(function (a, b) {
+        /* the document the survey is holding is named first, always */
+        if (svy.on && svy.r) {
+          if (a === svy.r) return -1;
+          if (b === svy.r) return 1;
+        }
         /* captions are the only words on the sphere: the independent work
            outranks a bigger course reference for them */
         var ai = a.surface === "independent" ? 1 : 0;
@@ -1841,6 +1879,73 @@
     }, 120);
   });
 
+  /* ------------------------------------------------------- survey ----
+     Left alone in free view, the camera surveys the shelf: it flies from
+     document to document on a nearest-neighbour path and holds each one for
+     a time proportional to its section count, so the motion is the corpus
+     reading itself out, not an idle spin. Any input, anywhere, hands the
+     camera straight back and re-arms the clock. Off under reduced motion,
+     off on phones, off while the stage is off screen. */
+  var svy = { on: false, r: null, t1: 0, idle: 0, seq: [], i: 0 };
+  function svyStop() {
+    if (svy.t1) { clearTimeout(svy.t1); svy.t1 = 0; }
+    if (svy.on) { svy.on = false; svy.r = null; tween = null; invalidate(); }
+  }
+  function svyCancel() { svyStop(); svyArm(); }
+  function svyArm() {
+    clearTimeout(svy.idle);
+    if (reduced) return;
+    svy.idle = setTimeout(svyMaybe, 12000);
+  }
+  function svyMaybe() {
+    if (mode !== "free" || focus || narrow() || !visible || document.hidden) {
+      svyArm(); return;
+    }
+    /* the lap: start with whatever is front and centre, then always the
+       nearest territory not yet held */
+    var fv = [-Math.sin(cam.yaw) * Math.cos(cam.pitch),
+              Math.sin(cam.pitch),
+              Math.cos(cam.yaw) * Math.cos(cam.pitch)];
+    var left = regions.slice(), seq = [], cur = fv;
+    while (left.length) {
+      var bi = 0, bd = -2;
+      for (var i2 = 0; i2 < left.length; i2++) {
+        var g2 = left[i2];
+        var d2 = g2.x * cur[0] + g2.y * cur[1] + g2.z * cur[2];
+        if (d2 > bd) { bd = d2; bi = i2; }
+      }
+      var pick = left.splice(bi, 1)[0];
+      seq.push(pick);
+      cur = [pick.x, pick.y, pick.z];
+    }
+    svy.seq = seq; svy.i = 0; svy.on = true;
+    svyStep();
+  }
+  function svyStep() {
+    if (!svy.on) return;
+    if (svy.i >= svy.seq.length) {
+      /* one full lap, then rest; the clock re-arms and a still reader gets
+         another lap after the same quiet interval */
+      svyStop(); svyArm(); return;
+    }
+    var g = svy.seq[svy.i++];
+    svy.r = g;
+    var f = facing([g.x, g.y, g.z]);
+    flyTo({ yaw: f.yaw, pitch: f.pitch, zoom: 1 }, 1500);
+    /* dwell time is the one motion rate here, and it is data: milliseconds
+       proportional to the document's section count, as the key says */
+    svy.t1 = setTimeout(svyStep, 1500 + 1100 + g.n * 24);
+    invalidate();
+  }
+  document.addEventListener("pointerdown", svyCancel, true);
+  document.addEventListener("keydown", svyCancel, true);
+  document.addEventListener("wheel", svyCancel, true);
+  document.addEventListener("input", svyCancel, true);
+  document.addEventListener("visibilitychange", function () {
+    if (document.hidden) svyStop(); else svyCancel();
+  });
+  svyArm();
+
   /* Boot. A returning reader is not made to sit through the labels again, and
      a deep link to one of them wins over both.
 
@@ -1855,6 +1960,24 @@
     var hc0 = facing(FACTS.homeC);
     cam.yaw = hc0.yaw; cam.pitch = hc0.pitch;
   }
+  /* A reader who arrives from one of the documents finds that document
+     front and centre: the sphere orients around where they just were. */
+  var cameFrom = null;
+  try {
+    if (document.referrer) {
+      var ru = new URL(document.referrer);
+      if (ru.origin === location.origin) {
+        var rb = ru.pathname.split("/").pop();
+        for (var rf = 0; rf < regions.length; rf++) {
+          if (regions[rf].url === rb) { cameFrom = regions[rf]; break; }
+        }
+      }
+    }
+  } catch (e) {}
+  if (cameFrom) {
+    var cf0 = facing([cameFrom.x, cameFrom.y, cameFrom.z]);
+    cam.yaw = cf0.yaw; cam.pitch = cf0.pitch;
+  }
   var seen = false, wanted = -1;
   try { seen = localStorage.getItem("atlas.seen") === "1"; } catch (e) {}
   var m0 = /^#label-(\d)$/.exec(location.hash || "");
@@ -1865,7 +1988,13 @@
   setView(savedView ? savedView === "globe" : true);
 
   if (wanted >= 0) { toTour(wanted); }
-  else if (seen) { toFree(false); }
+  else if (seen) {
+    toFree(false);
+    if (cameFrom) {
+      hintEl.textContent = "You came from \u201c" + cameFrom.title +
+        "\u201d: its territory is front and centre. Drag to turn the rest.";
+    }
+  }
   else { toTour(0); }
   booted = true;
   invalidate();

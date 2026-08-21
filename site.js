@@ -955,3 +955,20 @@
       window.location.href = "atlas.html";
     });
   })();
+
+/* ------------------------------------------------------------ trail ----
+   Which passages this browser has opened. The atlas reads it and rings
+   them; the record lives in localStorage and never leaves the machine. */
+(function () {
+  try {
+    var k = "atlas.trail";
+    var u = location.pathname.split("/").pop() || "index.html";
+    if (u === "atlas.html" || u === "admin.html") return;
+    var t = JSON.parse(localStorage.getItem(k) || "{}");
+    var key = u + location.hash;
+    if (t[key] || Object.keys(t).length < 500) {
+      t[key] = (t[key] || 0) + 1;
+      localStorage.setItem(k, JSON.stringify(t));
+    }
+  } catch (e) {}
+})();

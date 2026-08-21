@@ -1568,6 +1568,7 @@ body.atlas-free .atlas-h1{font-size:clamp(1.2rem,1.7vw,1.42rem);max-width:24em;
 .ak-ind{background:var(--accent)}
 .ak-per{background:var(--accent);opacity:.62}
 .ak-cou{border:1.2px solid var(--ink-3)}
+.ak-vis{background:none;border:1px solid var(--ink-2)}
 .ak-too{background:var(--tool)}
 /* the stem swatch is the mark and its stalk, at the scale the sphere draws it */
 .ak-shr{width:.6rem;height:.75rem;border-radius:0;background:none;position:relative}
