@@ -3135,6 +3135,23 @@ if(D.readyState==="loading")D.addEventListener("DOMContentLoaded",boot);else boo
   function q(){ if(!t){ t=true; requestAnimationFrame(run); } }
   addEventListener('scroll',q,{passive:true}); run();
 })();
+/* the trail, for the pages that carry only the pill (the tools) */
+(function(){
+  if(window.__trailed) return; window.__trailed=1;
+  try{
+    var k='atlas.trail';
+    var u=location.pathname.split('/').pop()||'index.html';
+    var t2=JSON.parse(localStorage.getItem(k)||'{}');
+    function put(key){
+      if(t2[key]||Object.keys(t2).length<500){
+        t2[key]=(t2[key]||0)+1;
+        localStorage.setItem(k,JSON.stringify(t2));
+      }
+    }
+    put(u+location.hash);
+    addEventListener('hashchange',function(){ put(u+location.hash); });
+  }catch(e){}
+})();
 </script>
 <!--/__rbp-->
 </body>
