@@ -4,12 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Global Spending and Wealth: Scale, Structure, Concentration</title>
-<meta name="description" content="A fixed-unit data essay. One square is one trillion US dollars, declared once and never rescaled. Every number carries the provenance tag it was published under.">
-<meta name="color-scheme" content="light dark">
 
 <!-- Preloaded so the variable face arrives before first paint rather than
      swapping under the apparatus rail. Verified on cdnjs at 4.1.1. -->
-<link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/inter-ui/4.1.1/variable/InterVariable.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="InterVariable-sub.woff2" as="font" type="font/woff2" crossorigin>
 
 <!-- ============================================================
      CRITICAL CSS. Everything the first screen needs, in <head>.
@@ -24,7 +22,7 @@
   font-style:normal;
   font-weight:100 900;
   font-display:swap;
-  src:url("https://cdnjs.cloudflare.com/ajax/libs/inter-ui/4.1.1/variable/InterVariable.woff2") format("woff2");
+  src:url("InterVariable-sub.woff2") format("woff2");
 }
 /* Metric-matched fallback, so the apparatus rail does not reflow when the
    variable face lands. size-adjust brings Arial's x-height up to Inter's;
@@ -479,10 +477,12 @@ td.n{font-variant-numeric:tabular-nums;white-space:nowrap}
 }
 </style>
 <!--__meta-->
+<meta name="color-scheme" content="light dark">
+<meta name="description" content="A fixed-unit data essay: one square is one trillion US dollars, declared once and never rescaled, with every figure carrying the provenance tag it was…">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%2316150f'/><text x='50' y='72' font-size='64' font-family='Helvetica,Arial' font-weight='bold' fill='%23faf9f6' text-anchor='middle'>A</text></svg>">
 <link rel="canonical" href="https://alexrajcoomar.github.io/global-spending-and-wealth.html">
 <meta property="og:title" content="Global Spending and Wealth — Alex Rajcoomar">
-<meta property="og:description" content="A fixed-unit data essay: one square is one trillion US dollars, declared once and never rescaled, with every figure carrying the provenance tag it was published under.">
+<meta property="og:description" content="A fixed-unit data essay: one square is one trillion US dollars, declared once and never rescaled, with every figure carrying the provenance tag it was…">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://alexrajcoomar.github.io/global-spending-and-wealth.html">
 <meta property="og:site_name" content="Alex Rajcoomar — portfolio">
@@ -856,7 +856,7 @@ td.n{font-variant-numeric:tabular-nums;white-space:nowrap}
         <p class="a-note">one tick per five rows</p>
       </div>
       <div class="d-rail">
-        <svg class="draw" viewBox="0 0 300 968" width="300" id="f3-wealth-svg">
+        <svg role="img" aria-label="A ladder, at one unit, figure 1 of 6" class="draw" viewBox="0 0 300 968" width="300" id="f3-wealth-svg">
           <g data-pt="f3-wealth" role="graphics-object" tabindex="0"
              aria-label="Rung 1, personal wealth, a stock drawn as open cells: approximately 517.7 trillion US dollars, 2025, tagged derived and low confidence. 43 full rows of 12 cells, then one cell and seven tenths. It is 4.37 times world nominal GDP and 8.19 times annual world household consumption. Operation: the four UBS pyramid bands summed; no institution publishes a global total."
              data-tip-title="Personal wealth &asymp; $517.7 tn"
@@ -897,7 +897,7 @@ td.n{font-variant-numeric:tabular-nums;white-space:nowrap}
         <p class="a-note">World Bank, 2026-07-13</p>
       </div>
       <div class="d-rail">
-        <svg class="draw" viewBox="0 0 300 220" width="300">
+        <svg role="img" aria-label="A ladder, at one unit, figure 2 of 6" class="draw" viewBox="0 0 300 220" width="300">
           <g data-pt="f3-gdp" role="graphics-object" tabindex="0"
              aria-label="Rung 2, world GDP nominal, a flow drawn as solid cells: 118.35 trillion US dollars, 2025, verified and labelled an estimate by the source. Nine full rows of 12 cells, then ten cells and 0.35."
              data-tip-title="World GDP $118.35 tn"
@@ -929,7 +929,7 @@ td.n{font-variant-numeric:tabular-nums;white-space:nowrap}
         <p class="a-note">2025 is null for this series</p>
       </div>
       <div class="d-rail">
-        <svg class="draw" viewBox="0 0 300 66" width="300">
+        <svg role="img" aria-label="A ladder, at one unit, figure 3 of 6" class="draw" viewBox="0 0 300 66" width="300">
           <g data-pt="f3-gcf" role="graphics-object" tabindex="0"
              aria-label="Rung 3, gross capital formation, a flow drawn as solid aqua cells: 29.36 trillion US dollars in 2024, 26.29 per cent of world GDP, verified. This is the gross measure and includes inventories; gross fixed capital formation alone is 28.61 trillion, 25.62 per cent. The difference of 0.75 trillion, 0.67 per cent of world GDP, is derived. 2025 is null for this series."
              data-tip-title="Gross capital formation $29.36 tn"
@@ -963,7 +963,7 @@ td.n{font-variant-numeric:tabular-nums;white-space:nowrap}
         <p class="a-note">on 2025 GDP: &asymp; $43 to $45 tn</p>
       </div>
       <div class="d-rail">
-        <svg class="draw" viewBox="0 0 300 88" width="300">
+        <svg role="img" aria-label="A ladder, at one unit, figure 4 of 6" class="draw" viewBox="0 0 300 88" width="300">
           <g data-pt="f3-gov" role="graphics-object" tabindex="0"
              aria-label="Rung 4, general government expenditure, a flow drawn as solid orange cells: approximately 41 to 42 trillion US dollars in 2024, roughly 37 to 38 per cent of world GDP, tagged derived and low confidence. The hatched cell at the end is the top of the derived range. This is general government, not central government: that gap runs 13 to 25 points of GDP. Operation: income-group GDP weights times IMF expenditure ratios of 42, 32, 22 and 18 per cent. Applied to 2025 GDP the same ratio gives approximately 43 to 45 trillion."
              data-tip-title="General government &asymp; $41 to $42 tn"
@@ -995,7 +995,7 @@ td.n{font-variant-numeric:tabular-nums;white-space:nowrap}
         <p class="a-note">sits inside the rung above</p>
       </div>
       <div class="d-rail">
-        <svg class="draw" viewBox="0 0 300 22" width="300">
+        <svg role="img" aria-label="A ladder, at one unit, figure 5 of 6" class="draw" viewBox="0 0 300 22" width="300">
           <g data-pt="f3-mil" role="graphics-object" tabindex="0"
              aria-label="Rung 5, world military expenditure, a flow drawn as solid orange cells: 2.887 trillion US dollars in 2025, 2.5 per cent of world GDP, verified from SIPRI. Two cells and 0.887 of a third. It sits inside rung 4, not beside it."
              data-tip-title="Military spending $2.887 tn"
@@ -1024,7 +1024,7 @@ td.n{font-variant-numeric:tabular-nums;white-space:nowrap}
         <p class="a-note">&larr; 0.174 of one cell</p>
       </div>
       <div class="d-rail">
-        <svg class="draw" viewBox="0 0 300 22" width="300">
+        <svg role="img" aria-label="A ladder, at one unit, figure 6 of 6" class="draw" viewBox="0 0 300 22" width="300">
           <g data-pt="f3-aid" role="graphics-object" tabindex="0"
              aria-label="Rung 6, total DAC official development assistance, a flow drawn as a fraction of one solid orange cell: 174.3 billion US dollars in 2025, down 23.1 per cent in real terms, 0.15 per cent of world GDP, verified. Less than one fifth of a single cell. World military spending is 16.6 times this rung."
              data-tip-title="DAC aid $174.3 bn"
