@@ -118,6 +118,7 @@
     C.edge = v("--edge", "#8a847c");
     C.ink = v("--ink", "#16150f");
     C.paper = v("--paper", "#faf9f6");
+    _tc = {};
     invalidate();
   }
   readColours();
@@ -127,6 +128,17 @@
     var mqd = window.matchMedia("(prefers-color-scheme: dark)");
     (mqd.addEventListener ? mqd.addEventListener.bind(mqd, "change")
       : mqd.addListener.bind(mqd))(readColours);
+  }
+  /* The draw loop asks for the same few colours at nearly the same alphas
+     1,373 times a frame. Building the string each time was one allocation
+     per mark per frame; quantising alpha to 1/48ths (invisible at these
+     sizes) makes the strings cacheable, and the cache empties whenever the
+     theme swaps the palette under it. */
+  var _tc = {};
+  function tone2(hex, a) {
+    var q = (a * 48 + 0.5) | 0;
+    var k = hex + q;
+    return _tc[k] || (_tc[k] = rgba(hex, q / 48));
   }
   function rgba(hex, a) {
     var h = hex.replace("#", "");
@@ -773,6 +785,12 @@
       if (svy.on && svy.r && !litFn && !filter && !focus) {
         boost = p.r === svy.r ? 1.5 : 0.82;
       }
+      /* a document name under the pointer lights its territory; relative,
+         so an authored stop keeps its structure while the named cap comes
+         forward. The connection drawn is the one the data records. */
+      if (wlR && !focus) {
+        boost = p.r === wlR ? Math.max(boost, 1.7) : boost * 0.55;
+      }
       var a = (0.10 + 0.80 * t) * Math.min(2.4, boost);
       if (a < 0.02) continue;
       /* size follows heading level, which is what the first label claims */
@@ -793,25 +811,25 @@
       ctx.beginPath();
       ctx.arc(p.sx, p.sy, rad, 0, Math.PI * 2);
       if (tone === "warn" || tone === "hit") {
-        ctx.fillStyle = rgba(tone === "hit" ? C.ind : C.ref, a); ctx.fill();
+        ctx.fillStyle = tone2(tone === "hit" ? C.ind : C.ref, a); ctx.fill();
       } else if (tone === "ring") {
         /* counted by the label, so drawn as a ring a reader can point at */
-        ctx.strokeStyle = rgba(C.ref, Math.min(1, a));
+        ctx.strokeStyle = tone2(C.ref, Math.min(1, a));
         ctx.lineWidth = 1.4; ctx.stroke();
       } else if (tone === "field") {
         /* the receded corpus, at the non-text-contrast token */
-        ctx.fillStyle = rgba(C.edge, a); ctx.fill();
+        ctx.fillStyle = tone2(C.edge, a); ctx.fill();
       } else if (tone === "ind") {
-        ctx.fillStyle = rgba(C.ind, a); ctx.fill();
+        ctx.fillStyle = tone2(C.ind, a); ctx.fill();
       } else if (p.r.surface === "course") {
-        ctx.strokeStyle = rgba(C.cou, Math.min(1, a * 1.25));
+        ctx.strokeStyle = tone2(C.cou, Math.min(1, a * 1.25));
         ctx.lineWidth = 1.15; ctx.stroke();
       } else if (p.r.kind === "Tool") {
-        ctx.fillStyle = rgba(C.too, a); ctx.fill();
+        ctx.fillStyle = tone2(C.too, a); ctx.fill();
       } else {
         /* lighter accent, but not under the 3:1 floor for a keyed
            category: measured at the pixel, 4.4:1 on paper */
-        ctx.fillStyle = rgba(C.ind, p.r.surface === "personal" ? a * 0.85 : a);
+        ctx.fillStyle = tone2(C.ind, p.r.surface === "personal" ? a * 0.85 : a);
         ctx.fill();
       }
       if (!staged && p.seen) {
@@ -819,7 +837,7 @@
            trail through the corpus, kept in this browser alone */
         ctx.beginPath();
         ctx.arc(p.sx, p.sy, rad + 2.6, 0, Math.PI * 2);
-        ctx.strokeStyle = rgba(C.ink, Math.min(0.55, 0.2 + 0.35 * t));
+        ctx.strokeStyle = tone2(C.ink, Math.min(0.55, 0.2 + 0.35 * t));
         ctx.lineWidth = 1;
         ctx.stroke();
       }
@@ -1937,6 +1955,41 @@
     svy.t1 = setTimeout(svyStep, 1500 + 1100 + g.n * 24);
     invalidate();
   }
+  /* ------------------------------------------------- word-light ------
+     Prose that names a document is live: pointing at the name lights the
+     territory, and choosing it flies in. The words carry data-reg, written
+     at build time from the same slugs the placement uses. */
+  var wlR = null;
+  function wlSet(r) {
+    if (wlR === r) return;
+    wlR = r;
+    invalidate();
+  }
+  (function () {
+    var host = document.getElementById("aplates");
+    if (!host) return;
+    function regOf(e) {
+      var el = e.target && e.target.closest && e.target.closest(".lw");
+      return el ? bySlug[el.getAttribute("data-reg")] || null : null;
+    }
+    host.addEventListener("mouseover", function (e) { var r = regOf(e); if (r) wlSet(r); });
+    host.addEventListener("mouseout", function (e) { if (regOf(e)) wlSet(null); });
+    host.addEventListener("focusin", function (e) { var r = regOf(e); if (r) wlSet(r); });
+    host.addEventListener("focusout", function (e) { if (regOf(e)) wlSet(null); });
+    function go(e) {
+      var r = regOf(e);
+      if (!r) return;
+      e.preventDefault();
+      wlSet(null);
+      if (mode !== "free") toFree(true);
+      setFocus(r);
+    }
+    host.addEventListener("click", go);
+    host.addEventListener("keydown", function (e) {
+      if (e.key === "Enter" || e.key === " ") go(e);
+    });
+  })();
+
   document.addEventListener("pointerdown", svyCancel, true);
   document.addEventListener("keydown", svyCancel, true);
   document.addEventListener("wheel", svyCancel, true);
