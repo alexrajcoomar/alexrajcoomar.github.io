@@ -1569,6 +1569,10 @@ body.atlas-free .atlas-h1{font-size:clamp(1.2rem,1.7vw,1.42rem);max-width:24em;
 .ak-per{background:var(--accent);opacity:.62}
 .ak-cou{border:1.2px solid var(--ink-3)}
 .ak-vis{background:none;border:1px solid var(--ink-2)}
+/* prose that names a document is live: it lights the territory it names */
+.lw{cursor:pointer;border-bottom:1px dotted var(--rule-strong)}
+.lw:hover{color:var(--accent);border-bottom-color:var(--accent)}
+.lw:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .ak-too{background:var(--tool)}
 /* the stem swatch is the mark and its stalk, at the scale the sphere draws it */
 .ak-shr{width:.6rem;height:.75rem;border-radius:0;background:none;position:relative}
@@ -1576,6 +1580,12 @@ body.atlas-free .atlas-h1{font-size:clamp(1.2rem,1.7vw,1.42rem);max-width:24em;
   border-radius:50%;background:var(--ref);transform:translateX(-50%)}
 .ak-shr::after{content:"";position:absolute;left:50%;top:.36rem;width:1px;height:.36rem;
   background:var(--ref);transform:translateX(-50%)}
+/* the chord swatch is a shallow arc with its direction tick, as drawn */
+.ak-lnk{width:.85rem;height:.45rem;border-radius:0;background:none;position:relative}
+.ak-lnk::before{content:"";position:absolute;left:0;top:.08rem;width:100%;height:.6rem;
+  border-top:1px solid var(--ink-2);border-radius:50% 50% 0 0/100% 100% 0 0}
+.ak-lnk::after{content:"";position:absolute;right:.16rem;top:.02rem;width:1px;height:.24rem;
+  background:var(--ink-2)}
 /* the one entry that needs a sentence gets its own line and hangs its swatch */
 .akey-list li.akey-wide{flex:1 1 100%;align-items:flex-start}
 .akey-list li.akey-wide .ak{margin-top:-.05rem}

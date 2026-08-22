@@ -102,6 +102,27 @@
     FACTS = JSON.parse(document.getElementById("afacts").textContent);
   } catch (e) { FACTS = {}; }
 
+  /* Links the corpus records between documents, harvested at build time from
+     each document's own prose. One entry per linked pair, with the direction
+     kept, built once here so drawing them later allocates nothing. */
+  regions.forEach(function (g) { g.lk = []; });
+  (FACTS.lk || []).forEach(function (e) {
+    var a = bySlug[e[0]], b = bySlug[e[1]];
+    if (!a || !b) return;
+    var have = null;
+    for (var li = 0; li < a.lk.length; li++) {
+      if (a.lk[li].g === b) { have = a.lk[li]; break; }
+    }
+    if (have) { have.out = true; }
+    else { a.lk.push({ g: b, out: true, into: false }); }
+    var back = null;
+    for (var lj = 0; lj < b.lk.length; lj++) {
+      if (b.lk[lj].g === a) { back = b.lk[lj]; break; }
+    }
+    if (back) { back.into = true; }
+    else { b.lk.push({ g: a, out: false, into: true }); }
+  });
+
   /* ------------------------------------------------------- colours ---- */
   var C = {};
   function readColours() {
@@ -541,10 +562,13 @@
     if (a < 0.01) return;
     var lines = gridLines();
     ctx.save();
-    ctx.strokeStyle = rgba(C.edge, 0.5 * a);
+    ctx.strokeStyle = tone2(C.edge, 0.5 * a);
     ctx.lineWidth = 1;
     ctx.setLineDash([1, 3]);
     for (var g = 0; g < lines.length; g++) {
+      /* the equator is the reference the eye holds onto while the sphere
+         turns, so it alone is drawn solid, a second pass below */
+      if (g === 2) continue;
       var line = lines[g], started = false;
       ctx.beginPath();
       for (var i = 0; i < line.length; i++) {
@@ -558,6 +582,32 @@
       }
       ctx.stroke();
     }
+    ctx.setLineDash([]);
+    ctx.strokeStyle = tone2(C.edge, 0.7 * a);
+    var eq = lines[2], est = false;
+    ctx.beginPath();
+    for (var e2 = 0; e2 < eq.length; e2++) {
+      var ev = eq[e2];
+      var ex1 = ev[0] * _cy1 + ev[2] * _sy1;
+      var ez1 = -ev[0] * _sy1 + ev[2] * _cy1;
+      if (ev[1] * _sp1 + ez1 * _cp1 < 0.02) { est = false; continue; }
+      var esx = cx + ex1 * _r1, esy = cy - (ev[1] * _cp1 - ez1 * _sp1) * _r1;
+      if (!est) { ctx.moveTo(esx, esy); est = true; }
+      else ctx.lineTo(esx, esy);
+    }
+    ctx.stroke();
+    /* the poles, crosshair-marked when they face the reader: the fixed points
+       every meridian shares, which is exactly what makes them worth marking */
+    for (var pv = -1; pv <= 1; pv += 2) {
+      var pd = pv * _sp1; /* depth of the pole [0,pv,0] after rotation */
+      if (pd < 0.02) continue;
+      var psx = cx, psy = cy - (pv * _cp1) * _r1;
+      ctx.beginPath();
+      ctx.moveTo(psx - 5, psy); ctx.lineTo(psx + 5, psy);
+      ctx.moveTo(psx, psy - 5); ctx.lineTo(psx, psy + 5);
+      ctx.stroke();
+    }
+    ctx.setLineDash([1, 3]);
     ctx.restore();
   }
 
@@ -699,6 +749,52 @@
     ctx.restore();
   }
 
+  /* A chord between two documents the corpus links. Same great circle as the
+     ruler above, quieter, and its tick is directional: it sits at 0.72 of the
+     way toward the document being linked, perpendicular to the path, so a
+     mutual pair reads as one chord ticked at both ends. Drawn only while a
+     document is being pointed at, so it costs nothing at rest. */
+  function drawChord(a, b, tickAB, tickBA) {
+    var A = nrm([a.x, a.y, a.z]), B = nrm([b.x, b.y, b.z]);
+    var dot = Math.max(-1, Math.min(1, A[0] * B[0] + A[1] * B[1] + A[2] * B[2]));
+    var om = Math.acos(dot), so = Math.sin(om) || 1e-6;
+    ctx.save();
+    ctx.strokeStyle = tone2(C.ink, 0.34);
+    ctx.lineWidth = 1;
+    var started = false;
+    ctx.beginPath();
+    for (var i = 0; i <= 48; i++) {
+      var t = i / 48;
+      var k1 = Math.sin((1 - t) * om) / so, k2 = Math.sin(t * om) / so;
+      var s = screenOf([A[0] * k1 + B[0] * k2, A[1] * k1 + B[1] * k2,
+                        A[2] * k1 + B[2] * k2]);
+      if (s[2] < -0.02) { started = false; continue; }
+      if (!started) { ctx.moveTo(s[0], s[1]); started = true; }
+      else { ctx.lineTo(s[0], s[1]); }
+    }
+    ctx.stroke();
+    if (tickAB) chordTick(A, B, om, so, 0.72);
+    if (tickBA) chordTick(A, B, om, so, 0.28);
+    ctx.restore();
+  }
+  function chordTick(A, B, om, so, t) {
+    var k1 = Math.sin((1 - t) * om) / so, k2 = Math.sin(t * om) / so;
+    var k3 = Math.sin((1 - t - 0.02) * om) / so, k4 = Math.sin((t + 0.02) * om) / so;
+    var s = screenOf([A[0] * k1 + B[0] * k2, A[1] * k1 + B[1] * k2,
+                      A[2] * k1 + B[2] * k2]);
+    if (s[2] < -0.02) return;
+    var s2 = screenOf([A[0] * k3 + B[0] * k4, A[1] * k3 + B[1] * k4,
+                       A[2] * k3 + B[2] * k4]);
+    var dx = s2[0] - s[0], dy = s2[1] - s[1];
+    var dl = Math.sqrt(dx * dx + dy * dy) || 1;
+    var px = -dy / dl * 4, py = dx / dl * 4;
+    ctx.beginPath();
+    ctx.moveTo(s[0] - px, s[1] - py); ctx.lineTo(s[0] + px, s[1] + py);
+    ctx.strokeStyle = tone2(C.ink, 0.55);
+    ctx.lineWidth = 1.2;
+    ctx.stroke();
+  }
+
   /* great-circle arcs from one place to several, drawn dotted: the only lines
      on this sphere, and they are drawn only to show that the thing they
      connect is nowhere near what owns it */
@@ -754,6 +850,17 @@
         if (hg) htg.push(hg);
       }
       if (htg.length) drawFan([hover.x, hover.y, hover.z], htg);
+    }
+
+    /* pointing at a document draws the links its prose records: a chord to
+       each document it links or that links it, the tick nearer the linked
+       one. Asked-for like the fan, and gone the moment the pointer moves on */
+    var att = (hover && hover.r) || wlR;
+    if (att && att.lk && att.lk.length && !staged && !focus) {
+      for (var lc = 0; lc < att.lk.length; lc++) {
+        var lke = att.lk[lc];
+        drawChord(att, lke.g, lke.out, lke.into);
+      }
     }
 
     /* leaders under the marks */
