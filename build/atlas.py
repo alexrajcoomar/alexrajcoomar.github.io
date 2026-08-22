@@ -245,6 +245,32 @@ def build(out_dir, pieces):
     return {"points": points, "regions": regions}, wrote
 
 
+def edges(out_dir, pieces):
+    """Real links between documents: every <a> in a document's own text whose
+    target is another document on this site. The chrome is stripped first with
+    the same filter the harvest uses, and the injected pill besides, so
+    navigation the build wrote can never masquerade as a reference. What
+    remains is a link a reader could click in the prose itself. Directed,
+    deduped, and computed here at build time, so the sphere can only draw a
+    chord the corpus actually records."""
+    by_file = {p["url"]: p["slug"] for p in pieces
+               if p["url"].endswith(".html") and "/" not in p["url"]}
+    out = set()
+    for p in pieces:
+        if p["url"] not in by_file:
+            continue
+        path = os.path.join(out_dir, p["url"])
+        if not os.path.exists(path):
+            continue
+        t = _readable(open(path, encoding="utf-8", errors="ignore").read())
+        t = re.sub(r"<!--__rbp-->.*?<!--/__rbp-->", "", t, flags=re.S)
+        for href in re.findall(r'<a\b[^>]*\bhref="([^"#?]+\.html)', t):
+            h = href.lstrip("./")
+            if h in by_file and by_file[h] != p["slug"]:
+                out.add((p["slug"], by_file[h]))
+    return sorted(out)
+
+
 # ------------------------------------------------------------------ facts --
 # The six wall labels are written at build time, from the same placement pass
 # that draws the sphere, so a label cannot quote a number the picture does not
