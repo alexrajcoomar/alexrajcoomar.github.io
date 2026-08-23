@@ -1,0 +1,2272 @@
+<!doctype html>
+<html lang="en-CA">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The Brittle Network</title>
+
+<link rel="stylesheet" href="case-method.css">
+<style>
+/* ============================================================
+   TOKENS — light palette complete on bare :root
+   Registers encode evidence streams, not decoration:
+   verdigris = metals · lapis = network/maritime
+   gold = textual · ferrous = failure & the iron transition
+   ============================================================ */
+:root{
+  --paper:#faf9f6;
+  --surface:#f2f0e9;
+  --surface-2:#ebe8df;
+  --ink:#16150f;
+  --ink-2:#55524a;
+  --ink-3:#66625a;
+  --rule:#ddd9cf;
+  --rule-soft:#e8e5db;
+  --accent:#00705E;
+  --accent-ink:#00614F;
+  --accent-soft:#DCEDE8;
+  --ferrous:#A8451E;
+  --ferrous-soft:#F6E3D8;
+  --lapis:#3B5FC0;
+  --lapis-soft:#DFE5F8;
+  --gold:#7A6210;
+  --gold-soft:#F1EAD2;
+  --shadow:0 1px 2px rgba(15,22,20,.05), 0 8px 26px -18px rgba(15,22,20,.35);
+  --chart-surface:#f2f0e9;
+  --grid:#DFE4DF;
+
+  --f-display:"InterVar",ui-sans-serif,system-ui,sans-serif;
+  --f-body:"InterVar",ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  --f-mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+
+  --rail-w:268px;
+  --measure:68ch;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#131310;
+    --surface:#1b1a16;
+    --surface-2:#23221d;
+    --ink:#f7f5ef;
+    --ink-2:#c0bcb1;
+    --ink-3:#948f85;
+    --rule:#2c2b24;
+    --rule-soft:#26251f;
+    --accent:#18A48D;
+    --accent-ink:#3FC3AB;
+    --accent-soft:#0F2E29;
+    --ferrous:#CE6A3A;
+    --ferrous-soft:#33200F;
+    --lapis:#5C7EDA;
+    --lapis-soft:#171F3A;
+    --gold:#9A7F1E;
+    --gold-soft:#2A2410;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 10px 30px -20px rgba(0,0,0,.8);
+    --chart-surface:#1b1a16;
+    --grid:#2c2b24;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#131310;
+  --surface:#1b1a16;
+  --surface-2:#23221d;
+  --ink:#f7f5ef;
+  --ink-2:#c0bcb1;
+  --ink-3:#948f85;
+  --rule:#2c2b24;
+  --rule-soft:#26251f;
+  --accent:#18A48D;
+  --accent-ink:#3FC3AB;
+  --accent-soft:#0F2E29;
+  --ferrous:#CE6A3A;
+  --ferrous-soft:#33200F;
+  --lapis:#5C7EDA;
+  --lapis-soft:#171F3A;
+  --gold:#9A7F1E;
+  --gold-soft:#2A2410;
+  --shadow:0 1px 2px rgba(0,0,0,.4), 0 10px 30px -20px rgba(0,0,0,.8);
+  --chart-surface:#1b1a16;
+  --grid:#2c2b24;
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--f-body);
+  font-size:17px;
+  line-height:1.62;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+}
+::selection{background:var(--accent-soft);color:var(--ink)}
+a{color:var(--accent-ink);text-decoration:none;border-bottom:1px solid color-mix(in oklab,var(--accent) 40%,transparent)}
+a:hover{border-bottom-color:var(--accent)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:2px}
+
+/* ============================================================ SHELL */
+.shell{display:grid;grid-template-columns:var(--rail-w) minmax(0,1fr);min-height:100vh}
+
+/* ============================================================ RAIL — a stratigraphic column:
+   the argument has strata, and scroll depth is excavation depth */
+.rail{
+  position:sticky;top:0;height:100vh;overflow-y:auto;overscroll-behavior:contain;
+  border-right:1px solid var(--rule);background:var(--surface);
+  padding:26px 0 40px;
+}
+.rail-head{padding:0 22px 18px;border-bottom:1px solid var(--rule-soft)}
+.rail-mark{font-family:var(--f-mono);font-size:.62rem;letter-spacing:.17em;text-transform:uppercase;color:var(--ink-3)}
+.rail-title{font-family:var(--f-display);font-size:1.18rem;font-weight:600;line-height:1.22;margin:.42rem 0 .3rem;letter-spacing:-.01em}
+.rail-sub{font-size:.74rem;color:var(--ink-3);line-height:1.45}
+.strata{list-style:none;margin:0;padding:14px 0 0}
+.stratum{position:relative}
+.stratum > a{
+  display:grid;grid-template-columns:34px 1fr;align-items:baseline;gap:6px;
+  padding:8px 20px 8px 12px;border:0;color:var(--ink-2);font-size:.82rem;line-height:1.32;
+  border-left:3px solid transparent;transition:background .15s,color .15s,border-color .15s;
+}
+.stratum > a:hover{background:var(--surface-2);color:var(--ink)}
+.stratum > a .sn{font-family:var(--f-mono);font-size:.68rem;color:var(--ink-3);letter-spacing:.04em}
+.stratum.on > a{background:var(--accent-soft);color:var(--ink);border-left-color:var(--accent);font-weight:600}
+.stratum.on > a .sn{color:var(--accent-ink)}
+.stratum.sub > a{padding-left:24px;font-size:.775rem;color:var(--ink-3)}
+.stratum.sub.on > a{color:var(--ink)}
+.rail-band{
+  margin:16px 20px 4px;padding-top:12px;border-top:1px solid var(--rule-soft);
+  font-family:var(--f-mono);font-size:.62rem;letter-spacing:.15em;text-transform:uppercase;color:var(--ink-3);
+  display:flex;align-items:center;gap:8px;
+}
+.rail-band::before{content:"";width:9px;height:9px;border-radius:2px;background:var(--bandc,var(--ink-3))}
+.rail-foot{margin:22px 20px 0;padding-top:14px;border-top:1px solid var(--rule-soft);font-size:.72rem;color:var(--ink-3);line-height:1.5}
+.progress{position:fixed;left:0;top:0;width:3px;height:0;background:var(--accent);z-index:60;transition:height .08s linear}
+
+/* ============================================================ PROSE GRID */
+main{min-width:0}
+.prose{
+  display:grid;row-gap:1.05rem;padding:0 0 120px;
+  grid-template-columns:
+    [full-start] minmax(20px,1fr)
+    [wide-start] minmax(0,120px)
+    [text-start] minmax(0,var(--measure))
+    [text-end] minmax(0,120px)
+    [wide-end] minmax(20px,1fr)
+    [full-end];
+}
+.prose > *{grid-column:text}
+.prose > .wide{grid-column:wide}
+.prose > .note-block{grid-column:wide}
+.prose > .full{grid-column:full}
+
+/* ============================================================ HERO */
+.hero{
+  grid-column:full;padding:74px 0 46px;margin-bottom:26px;
+  border-bottom:1px solid var(--rule);
+  display:grid;
+  grid-template-columns:
+    [full-start] minmax(20px,1fr)
+    [wide-start] minmax(0,120px)
+    [text-start] minmax(0,var(--measure))
+    [text-end] minmax(0,120px)
+    [wide-end] minmax(20px,1fr)
+    [full-end];
+  background:
+    linear-gradient(to bottom,color-mix(in oklab,var(--accent) 5%,transparent),transparent 62%),
+    var(--paper);
+}
+.hero-in{grid-column:text}
+.eyebrow{
+  font-family:var(--f-mono);font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--accent-ink);display:flex;flex-wrap:wrap;gap:10px;align-items:center;
+}
+.eyebrow .dot{width:5px;height:5px;border-radius:50%;background:var(--accent);display:inline-block}
+h1{
+  font-family:var(--f-display);font-weight:600;letter-spacing:-.028em;line-height:1.02;
+  font-size:clamp(2.7rem,6.4vw,4.6rem);margin:.28em 0 .16em;text-wrap:balance;
+}
+h1 em{font-style:italic;font-weight:400;color:var(--accent-ink)}
+.dek{
+  font-family:var(--f-display);font-size:clamp(1.15rem,2.1vw,1.42rem);line-height:1.46;
+  color:var(--ink-2);max-width:52ch;margin:0 0 1.6rem;text-wrap:pretty;
+}
+.hero-meta{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:0;
+  border-top:1px solid var(--rule);margin-top:30px;
+}
+.hero-meta div{padding:14px 20px 12px 0;border-right:1px solid var(--rule-soft)}
+.hero-meta div:last-child{border-right:0}
+.hero-meta dt{font-family:var(--f-mono);font-size:.63rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);margin-bottom:3px}
+.hero-meta dd{margin:0;font-size:.88rem;font-weight:500}
+
+/* ============================================================ TYPE */
+h2{
+  font-family:var(--f-display);font-weight:600;letter-spacing:-.02em;line-height:1.1;
+  font-size:clamp(1.95rem,3.4vw,2.7rem);margin:2.9rem 0 .1rem;text-wrap:balance;
+}
+h3{
+  font-family:var(--f-display);font-weight:600;letter-spacing:-.012em;line-height:1.22;
+  font-size:1.42rem;margin:2.1rem 0 .1rem;text-wrap:balance;
+}
+h4{
+  font-family:var(--f-body);font-weight:600;font-size:1.01rem;letter-spacing:-.005em;
+  margin:1.5rem 0 -.35rem;
+}
+.kicker{
+  font-family:var(--f-mono);font-size:.66rem;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--ink-3);margin:0 0 -.6rem;display:flex;align-items:center;gap:9px;
+}
+.kicker::before{content:"";width:16px;height:1px;background:var(--rule);flex:none}
+.phase-head{grid-column:wide;margin-top:4.6rem;padding-top:2.2rem;border-top:2px solid var(--ink)}
+.phase-head .pn{
+  font-family:var(--f-mono);font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;color:var(--accent-ink);
+}
+.phase-head h2{margin-top:.4rem;font-size:clamp(2.1rem,4vw,3rem)}
+.phase-head .obj{color:var(--ink-2);max-width:62ch;margin:.85rem 0 0;font-size:1.02rem}
+p{margin:0}
+strong{font-weight:600}
+em{font-style:italic}
+.lead{font-size:1.1rem;line-height:1.58;color:var(--ink-2)}
+code, .m{
+  font-family:var(--f-mono);font-size:.86em;
+  background:var(--surface-2);border-radius:3px;padding:.08em .34em;
+  border:1px solid var(--rule-soft);
+}
+ul,ol{margin:.1rem 0;padding-left:1.25rem}
+li{margin:.34rem 0}
+li::marker{color:var(--ink-3)}
+ul.tight li{margin:.2rem 0}
+blockquote{
+  margin:.6rem 0;padding:1rem 1.3rem;border-left:3px solid var(--accent);
+  background:var(--accent-soft);border-radius:0 6px 6px 0;
+  font-family:var(--f-display);font-size:1.06rem;line-height:1.5;color:var(--ink);
+}
+hr{border:0;border-top:1px solid var(--rule);margin:2.2rem 0}
+
+/* ============================================================ NOTATION BLOCK */
+.note-block{
+  font-family:var(--f-mono);font-size:.855rem;line-height:1.7;
+  background:var(--surface);border:1px solid var(--rule);border-left:3px solid var(--accent);
+  border-radius:0 6px 6px 0;padding:.95rem 1.1rem;overflow-x:auto;white-space:pre;
+  color:var(--ink);
+}
+
+/* ============================================================ CALLOUTS */
+.call{
+  border:1px solid var(--rule);border-left:3px solid var(--c,var(--accent));
+  background:var(--cbg,var(--surface));border-radius:0 7px 7px 0;padding:1rem 1.2rem;
+  display:grid;gap:.5rem;
+}
+.call .ct{
+  font-family:var(--f-mono);font-size:.64rem;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--c,var(--accent-ink));font-weight:600;
+}
+.call p{font-size:.95rem}
+.call.correction{--c:var(--ferrous);--cbg:var(--ferrous-soft)}
+.call.falsify{--c:var(--accent);--cbg:var(--accent-soft)}
+.call.textual{--c:var(--gold);--cbg:var(--gold-soft)}
+.call.network{--c:var(--lapis);--cbg:var(--lapis-soft)}
+
+/* ============================================================ TABLES */
+.tablewrap{overflow-x:auto;border:1px solid var(--rule);border-radius:8px;background:var(--surface);box-shadow:var(--shadow)}
+table{border-collapse:collapse;width:100%;font-size:.855rem;line-height:1.48;font-variant-numeric:tabular-nums}
+thead th{
+  text-align:left;font-family:var(--f-mono);font-size:.63rem;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--ink-3);font-weight:500;padding:11px 14px;border-bottom:1px solid var(--rule);
+  background:var(--surface-2);white-space:nowrap;position:sticky;top:0;
+}
+tbody td{padding:11px 14px;border-bottom:1px solid var(--rule-soft);vertical-align:top}
+tbody tr:last-child td{border-bottom:0}
+tbody tr:hover{background:color-mix(in oklab,var(--accent) 5%,transparent)}
+tbody td:first-child{font-weight:600;color:var(--ink)}
+table code,table .m{font-size:.8em}
+.tcap{font-size:.76rem;color:var(--ink-3);margin-top:-.5rem;font-family:var(--f-body)}
+
+/* ============================================================ FIGURES */
+figure{margin:0;display:grid;gap:.7rem}
+.fig{
+  background:var(--surface);border:1px solid var(--rule);border-radius:9px;
+  padding:20px 20px 16px;box-shadow:var(--shadow);
+}
+.fig svg{display:block;max-width:100%;height:auto;color:var(--ink-2)}
+figcaption{font-size:.79rem;color:var(--ink-3);line-height:1.5;max-width:62ch}
+figcaption b{color:var(--ink-2);font-weight:600}
+.fignum{
+  font-family:var(--f-mono);font-size:.63rem;letter-spacing:.15em;text-transform:uppercase;
+  color:var(--accent-ink);font-weight:600;
+}
+
+/* ============================================================ REGISTER KEY */
+.registers{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;background:var(--rule);border:1px solid var(--rule);border-radius:8px;overflow:hidden}
+.reg{background:var(--surface);padding:13px 15px}
+.reg .sw{width:22px;height:4px;border-radius:2px;display:block;margin-bottom:8px;background:var(--rc)}
+.reg .rt{font-family:var(--f-mono);font-size:.63rem;letter-spacing:.13em;text-transform:uppercase;color:var(--ink-2);font-weight:600}
+.reg .rd{font-size:.76rem;color:var(--ink-3);line-height:1.4;margin-top:3px}
+
+/* ============================================================ INTERACTIVE PANELS */
+.lab{
+  background:var(--surface);border:1px solid var(--rule);border-radius:10px;
+  box-shadow:var(--shadow);overflow:hidden;
+}
+.lab-head{
+  padding:15px 18px 13px;border-bottom:1px solid var(--rule);display:flex;flex-wrap:wrap;
+  gap:10px;align-items:baseline;justify-content:space-between;background:var(--surface-2);
+}
+.lab-head .lt{font-family:var(--f-display);font-size:1.08rem;font-weight:600;letter-spacing:-.01em}
+.lab-head .lk{font-family:var(--f-mono);font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;color:var(--accent-ink)}
+.lab-body{padding:18px}
+.ctrls{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));margin-bottom:16px}
+.ctrl label{display:block;font-family:var(--f-mono);font-size:.63rem;letter-spacing:.13em;text-transform:uppercase;color:var(--ink-3);margin-bottom:6px}
+.ctrl .val{color:var(--accent-ink);font-weight:600}
+input[type=range]{width:100%;accent-color:var(--accent);height:20px;cursor:pointer;background:transparent}
+.seg{display:flex;flex-wrap:wrap;gap:4px;background:var(--surface-2);padding:3px;border-radius:7px;border:1px solid var(--rule-soft)}
+.seg button{
+  flex:1 1 auto;font-family:var(--f-body);font-size:.76rem;font-weight:500;padding:6px 9px;
+  border:0;border-radius:5px;background:transparent;color:var(--ink-2);cursor:pointer;white-space:nowrap;
+  transition:background .14s,color .14s;
+}
+.seg button:hover{background:color-mix(in oklab,var(--accent) 10%,transparent);color:var(--ink)}
+.seg button[aria-pressed=true]{background:var(--accent);color:#fff;font-weight:600}
+:root[data-theme="dark"] .seg button[aria-pressed=true]{color:#08110F}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .seg button[aria-pressed=true]{color:#08110F}}
+.readouts{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:1px;background:var(--rule);border:1px solid var(--rule);border-radius:8px;overflow:hidden;margin-top:16px}
+.ro{background:var(--surface);padding:11px 14px}
+.ro .rol{font-family:var(--f-mono);font-size:.6rem;letter-spacing:.13em;text-transform:uppercase;color:var(--ink-3)}
+.ro .rov{font-family:var(--f-mono);font-size:1.24rem;font-weight:600;margin-top:2px;font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+.legend{display:flex;flex-wrap:wrap;gap:14px;margin-top:12px;font-size:.76rem;color:var(--ink-2)}
+.legend span{display:flex;align-items:center;gap:6px}
+.legend i{width:14px;height:3px;border-radius:2px;background:var(--lc);display:block}
+.canvwrap{position:relative;width:100%}
+canvas{display:block;width:100%;height:auto;border-radius:6px}
+.verdict{
+  display:inline-flex;align-items:center;gap:8px;font-family:var(--f-mono);font-size:.72rem;
+  letter-spacing:.08em;text-transform:uppercase;font-weight:600;padding:7px 13px;border-radius:99px;
+  border:1px solid currentColor;
+}
+.verdict::before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor}
+.verdict.ok{color:var(--accent-ink)}
+.verdict.no{color:var(--ferrous)}
+
+/* discriminator */
+.disc-grid{display:grid;grid-template-columns:1fr auto auto;gap:1px;background:var(--rule);border:1px solid var(--rule);border-radius:8px;overflow:hidden;font-size:.84rem}
+.disc-grid > div{background:var(--surface);padding:10px 13px;display:flex;align-items:center}
+.disc-grid > .hd{background:var(--surface-2);font-family:var(--f-mono);font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);justify-content:center}
+.disc-grid > .hd:first-child{justify-content:flex-start}
+.disc-grid .cell{justify-content:center;font-family:var(--f-mono);font-weight:600;font-size:.95rem}
+.disc-grid .r.diff > div{background:var(--accent-soft)}
+.disc-grid .r{display:contents}
+.p-yes{color:var(--accent-ink)}
+.p-no{color:var(--ferrous)}
+.p-sil{color:var(--ink-3)}
+.disc-note{font-size:.79rem;color:var(--ink-3);margin-top:11px;line-height:1.5}
+
+/* gantt */
+.gantt{display:grid;grid-template-columns:120px repeat(6,1fr);gap:6px 0;align-items:center;font-size:.8rem}
+.gantt .gl{font-weight:600;padding-right:12px}
+.gantt .gh{font-family:var(--f-mono);font-size:.6rem;letter-spacing:.1em;color:var(--ink-3);text-align:center;padding-bottom:4px}
+.gantt .bar{height:22px;border-radius:4px;background:var(--gc,var(--accent));display:flex;align-items:center;padding-left:8px;color:#fff;font-family:var(--f-mono);font-size:.62rem;letter-spacing:.06em}
+:root[data-theme="dark"] .gantt .bar{color:#08110F}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .gantt .bar{color:#08110F}}
+
+/* pill list */
+.pills{display:flex;flex-wrap:wrap;gap:7px}
+.pill{
+  font-family:var(--f-mono);font-size:.68rem;letter-spacing:.06em;padding:4px 10px;border-radius:99px;
+  border:1px solid var(--rule);background:var(--surface);color:var(--ink-2);
+}
+.pill.acc{border-color:color-mix(in oklab,var(--accent) 45%,transparent);color:var(--accent-ink);background:var(--accent-soft)}
+
+/* refs */
+.refs{font-size:.83rem}
+.refs .rgrp{font-family:var(--f-mono);font-size:.63rem;letter-spacing:.15em;text-transform:uppercase;color:var(--ink-3);margin:1.6rem 0 .4rem}
+.refs ul{list-style:none;padding:0;margin:0;display:grid;gap:.55rem}
+.refs li{padding-left:1.1rem;position:relative;line-height:1.5;color:var(--ink-2)}
+.refs li::before{content:"";position:absolute;left:0;top:.55em;width:5px;height:5px;border-radius:1px;background:var(--accent);opacity:.6}
+.refs .id{font-family:var(--f-mono);font-size:.76em;color:var(--ink-3)}
+
+footer.doc-foot{
+  grid-column:full;margin-top:5rem;padding:36px 20px 60px;border-top:1px solid var(--rule);
+  background:var(--surface);
+}
+.doc-foot .in{max-width:calc(var(--measure) + 240px);margin:0 auto;font-size:.82rem;color:var(--ink-3);line-height:1.6}
+
+/* ============================================================ ACTIONS */
+.actions{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:0 0 4px}
+.act{
+  font-family:var(--f-body);font-size:.82rem;font-weight:600;color:var(--ink);
+  background:var(--surface);border:1px solid var(--rule);border-radius:7px;padding:9px 15px;
+  cursor:pointer;display:inline-flex;align-items:center;gap:9px;
+  transition:border-color .15s,background .15s,transform .06s;
+}
+.act:hover{border-color:color-mix(in oklab,var(--accent) 60%,transparent);background:var(--accent-soft)}
+.act:active{transform:translateY(1px)}
+.act[disabled]{opacity:.5;cursor:default;transform:none}
+.act svg{width:15px;height:15px;flex:none;stroke:currentColor;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.act .ext{font-family:var(--f-mono);font-size:.74em;color:var(--ink-3);letter-spacing:.05em}
+.act-note{font-size:.78rem;color:var(--ink-3);min-height:1em}
+
+/* ============================================================ RESPONSIVE */
+@media (max-width:1080px){
+  :root{--rail-w:0px}
+  .shell{grid-template-columns:1fr}
+  .rail{
+    position:sticky;top:0;height:auto;max-height:none;border-right:0;border-bottom:1px solid var(--rule);
+    padding:6px 10px;z-index:50;display:flex;align-items:stretch;gap:2px;
+    overflow-x:auto;overflow-y:hidden;scrollbar-width:thin;-webkit-overflow-scrolling:touch;
+  }
+  .rail-head,.rail-foot,.rail-band{display:none}
+  .strata{display:contents}
+  .stratum{flex:0 0 auto}
+  .stratum > a{
+    border-left:0;border-bottom:2px solid transparent;white-space:nowrap;padding:8px 11px;
+    border-radius:6px 6px 0 0;grid-template-columns:auto auto;gap:7px;font-size:.8rem;
+  }
+  .stratum.on > a{border-left:0;border-bottom-color:var(--accent)}
+  .prose,.hero{grid-template-columns:[full-start] minmax(16px,1fr) [wide-start] minmax(0,0px) [text-start] minmax(0,var(--measure)) [text-end] minmax(0,0px) [wide-end] minmax(16px,1fr) [full-end]}
+  .hero{padding:44px 0 34px}
+  body{font-size:16.5px}
+}
+@media (max-width:620px){
+  .hero-meta div{border-right:0;padding-right:0;margin-right:20px}
+  .disc-grid{font-size:.78rem}
+  h1{font-size:clamp(2.1rem,9vw,2.9rem)}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation-duration:.01ms !important;transition-duration:.01ms !important;scroll-behavior:auto !important}
+}
+html{scroll-behavior:smooth}
+
+/* ============================================================ PRINT
+   The page prints as the document it is: rail, controls and progress
+   drop away; the simulations print in whatever state the reader left
+   them, which is the honest thing for a figure a reader can move. */
+@media print{
+  :root, :root[data-theme="dark"]{
+    --paper:#FFFFFF; --surface:#FFFFFF; --surface-2:#F4F6F4;
+    --ink:#0B0F0E; --ink-2:#333D3A; --ink-3:#5C6764;
+    --rule:#C4CBC6; --rule-soft:#DEE3DF;
+    --accent:#00614F; --accent-ink:#00463A; --accent-soft:#EDF5F2;
+    --ferrous:#A2431A; --ferrous-soft:#FBF1EA;
+    --lapis:#2C4899; --lapis-soft:#EEF1FB;
+    --gold:#6E5709; --gold-soft:#F7F3E6;
+    --grid:#E2E6E2; --chart-surface:#FFFFFF; --shadow:none;
+  }
+  @page{margin:17mm 15mm 20mm}
+  html{scroll-behavior:auto}
+  body{font-size:10pt;line-height:1.5;background:#fff}
+  .rail,.progress,.actions,.ctrls,.seg,input[type=range]{display:none !important}
+  .shell{display:block;min-height:0}
+  .prose,.hero{
+    grid-template-columns:[full-start] 0 [wide-start] 0 [text-start] minmax(0,1fr) [text-end] 0 [wide-end] 0 [full-end];
+    row-gap:.7rem;
+  }
+  .prose{padding-bottom:0}
+  .hero{padding:0 0 18px;margin-bottom:16px;background:none;border-bottom:1.5pt solid var(--ink)}
+  h1{font-size:30pt;margin:.2em 0 .3em}
+  .dek{font-size:12pt;max-width:none}
+  h2{font-size:17pt;margin-top:1.2rem}
+  h3{font-size:13pt}
+  h4{font-size:11pt}
+  .phase-head{margin-top:1.4rem;padding-top:.9rem;break-before:page}
+  #s0.phase-head{break-before:avoid}
+  figure,.fig,.tablewrap,.call,.note-block,.registers,.readouts,.disc-grid,.gantt{break-inside:avoid}
+  h2,h3,h4,.kicker,.fignum{break-after:avoid}
+  .lab{break-inside:auto;box-shadow:none}
+  .lab-head{background:var(--surface-2)}
+  table{font-size:8.5pt}
+  thead th{position:static}
+  .note-block{font-size:8.5pt;white-space:pre-wrap}
+  a{color:var(--ink);border-bottom:0}
+  canvas{max-height:78mm;object-fit:contain}
+  .legend{font-size:8pt}
+  footer.doc-foot{margin-top:1.6rem;padding:14px 0 0;background:none}
+  .print-only{display:block !important}
+}
+.print-only{display:none}
+a.act{text-decoration:none;color:inherit}
+</style>
+
+<!--__meta-->
+<meta name="color-scheme" content="light dark">
+<meta name="description" content="A research protocol — methodology only, no results — for testing whether the Eastern Mediterranean collapsed around 1177 BCE because exogenous shocks struck…">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%2316150f'/><text x='50' y='72' font-size='64' font-family='Helvetica,Arial' font-weight='bold' fill='%23faf9f6' text-anchor='middle'>A</text></svg>">
+<link rel="canonical" href="https://alexrajcoomar.github.io/brittle-network.html">
+<meta property="og:title" content="The Brittle Network — Alex Rajcoomar">
+<meta property="og:description" content="A research protocol — methodology only, no results — for testing whether the Eastern Mediterranean collapsed around 1177 BCE because exogenous shocks struck…">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://alexrajcoomar.github.io/brittle-network.html">
+<meta property="og:site_name" content="Alex Rajcoomar — portfolio">
+<meta property="og:image" content="https://alexrajcoomar.github.io/og-card.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="The Brittle Network — Alex Rajcoomar">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://alexrajcoomar.github.io/og-card.png">
+<script>
+(function(){
+  var d=document.documentElement;
+  try{var t=localStorage.getItem('theme'); if(t) d.setAttribute('data-theme',t);}catch(e){}
+  new MutationObserver(function(){
+    try{
+      var v=d.getAttribute('data-theme');
+      if(v) localStorage.setItem('theme',v); else localStorage.removeItem('theme');
+    }catch(e){}
+  }).observe(d,{attributes:true,attributeFilter:['data-theme']});
+})();
+</script>
+<!--/__meta-->
+</head>
+<body>
+<!--__rb-->
+<!-- injected by the site build: a way back into the site from a standalone
+     piece. A static bar at the top, so it is visible on arrival, and a pill
+     that appears once you have scrolled past it, so there is always a way out.
+     Self-contained, because these pages do not load the site stylesheet. -->
+<style id="__rb-style">
+#__rb{
+  box-sizing:border-box;display:flex;flex-wrap:wrap;align-items:center;gap:.6rem 1.25rem;
+  padding:.6rem clamp(1rem,4vw,2rem);border-bottom:1px solid #ddd9cf;background:#faf9f6;
+  font:500 13px/1.35 InterVar,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  color:#55524a;
+}
+#__rb a{color:#14509b;text-decoration:none;display:inline-flex;align-items:center;gap:.4rem}
+#__rb a:hover{text-decoration:underline}
+#__rb .__rb-home{font-weight:640;color:#16150f}
+#__rb .__rb-home i{font-style:normal;font-weight:400;color:#6f6c63}
+#__rb .__rb-right{margin-left:auto;display:flex;gap:1.1rem;flex-wrap:wrap}
+#__rb .__mark{
+  display:inline-grid;place-items:center;width:1.2rem;height:1.2rem;flex:none;
+  background:#16150f;color:#faf9f6;font-size:.72rem;font-weight:700;
+}
+#__rb-pill{
+  position:fixed;left:14px;bottom:14px;z-index:2147483000;
+  display:inline-flex;align-items:center;gap:.45rem;padding:.58rem .9rem;
+  background:rgba(22,21,15,.93);color:#faf9f6;text-decoration:none;border-radius:99px;
+  font:600 12.5px/1 InterVar,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  border:1px solid rgba(255,255,255,.16);box-shadow:0 6px 22px rgba(0,0,0,.28);
+  opacity:0;transform:translateY(6px);pointer-events:none;
+  transition:opacity .2s ease,transform .2s ease;
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+}
+#__rb-pill.__on{opacity:1;transform:none;pointer-events:auto}
+#__rb-pill:hover{background:#16150f;color:#fff}
+/* Dark has to answer to two things: the reader's system setting, and the
+   theme button on the page, which sets data-theme on <html>. Keyed to the
+   media query alone, the bar stayed paper-white across the top of an essay
+   the reader had just switched to dark, and read as a rendering fault. The
+   media query is scoped so an explicit light choice wins, and the attribute
+   selector is repeated so an explicit dark choice wins on a light system. */
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) #__rb{background:#131310;border-bottom-color:#2c2b24;color:#c0bcb1}
+  :root:not([data-theme="light"]) #__rb .__rb-home{color:#f7f5ef}
+  :root:not([data-theme="light"]) #__rb .__rb-home i{color:#948f85}
+  :root:not([data-theme="light"]) #__rb a{color:#85adea}
+  :root:not([data-theme="light"]) #__rb .__mark{background:#f7f5ef;color:#131310}
+  :root:not([data-theme="light"]) #__rb-pill{background:rgba(247,245,239,.95);color:#131310;border-color:rgba(0,0,0,.2)}
+  :root:not([data-theme="light"]) #__rb-pill:hover{background:#fff;color:#000}
+}
+:root[data-theme="dark"] #__rb{background:#131310;border-bottom-color:#2c2b24;color:#c0bcb1}
+:root[data-theme="dark"] #__rb .__rb-home{color:#f7f5ef}
+:root[data-theme="dark"] #__rb .__rb-home i{color:#948f85}
+:root[data-theme="dark"] #__rb a{color:#85adea}
+:root[data-theme="dark"] #__rb .__mark{background:#f7f5ef;color:#131310}
+:root[data-theme="dark"] #__rb-pill{background:rgba(247,245,239,.95);color:#131310;border-color:rgba(0,0,0,.2)}
+:root[data-theme="dark"] #__rb-pill:hover{background:#fff;color:#000}
+@media (prefers-reduced-motion:reduce){#__rb-pill{transition:none}}
+@media print{#__rb,#__rb-pill{display:none !important}}
+</style>
+<div id="__rb">
+  <a class="__rb-home" href="index.html"><span class="__mark" aria-hidden="true">A</span>Alex Rajcoomar <i>portfolio</i></a>
+  <span class="__rb-right"><a href="research.html">Research</a><a href="library.html">All work</a></span>
+</div>
+<script>
+/* the trail: which passages this browser has opened. The atlas reads it and
+   rings them; the record lives in localStorage and never leaves the machine. */
+(function(){
+  if(window.__trailed) return; window.__trailed=1;
+  try{
+    var k='atlas.trail';
+    var u=location.pathname.split('/').pop()||'index.html';
+    var t2=JSON.parse(localStorage.getItem(k)||'{}');
+    function put(key){
+      if(t2[key]||Object.keys(t2).length<500){
+        t2[key]=(t2[key]||0)+1;
+        localStorage.setItem(k,JSON.stringify(t2));
+      }
+    }
+    put(u+location.hash);
+    addEventListener('hashchange',function(){ put(u+location.hash); });
+  }catch(e){}
+})();
+</script>
+<!--/__rb-->
+
+<div class="progress" id="progress"></div>
+
+<div class="shell">
+
+<!-- ============================== STRATIGRAPHIC RAIL ============================== -->
+<aside class="rail">
+  <div class="rail-head">
+    <div class="rail-mark">Research Protocol · v1.0</div>
+    <div class="rail-title">The Brittle Network</div>
+    <div class="rail-sub">Modelling the Late Bronze Age collapse as a cascading failure. Methodology only — no results claimed.</div>
+  </div>
+
+  <div class="rail-band" style="--bandc:var(--ferrous)">Premise audit</div>
+  <ul class="strata">
+    <li class="stratum"><a href="#s0"><span class="sn">00</span><span>Scope &amp; epistemic contract</span></a></li>
+  </ul>
+
+  <div class="rail-band" style="--bandc:var(--gold)">Phase 1 · Framework</div>
+  <ul class="strata">
+    <li class="stratum"><a href="#s1"><span class="sn">1.1</span><span>Historiographical arc</span></a></li>
+    <li class="stratum"><a href="#s1-2"><span class="sn">1.2</span><span>Claim → operator</span></a></li>
+    <li class="stratum"><a href="#s1-3"><span class="sn">1.3</span><span>Foundational positions</span></a></li>
+    <li class="stratum"><a href="#s1-4"><span class="sn">1.4</span><span>Competing hypotheses</span></a></li>
+  </ul>
+
+  <div class="rail-band" style="--bandc:var(--gold)">Phase 2 · Evidence</div>
+  <ul class="strata">
+    <li class="stratum"><a href="#s2"><span class="sn">2.1</span><span>Historical universe</span></a></li>
+    <li class="stratum"><a href="#s2-2"><span class="sn">2.2</span><span>Data streams</span></a></li>
+    <li class="stratum"><a href="#s2-3"><span class="sn">2.3</span><span>Chronological normalization</span></a></li>
+    <li class="stratum"><a href="#s2-4"><span class="sn">2.4</span><span>Destruction re-audit</span></a></li>
+    <li class="stratum"><a href="#s2-5"><span class="sn">2.5</span><span>Survivorship &amp; selection</span></a></li>
+  </ul>
+
+  <div class="rail-band" style="--bandc:var(--lapis)">Phase 3 · Model</div>
+  <ul class="strata">
+    <li class="stratum"><a href="#s3"><span class="sn">3.1</span><span>Network specification</span></a></li>
+    <li class="stratum"><a href="#s3-2"><span class="sn">3.2</span><span>Metrics &amp; cascade</span></a></li>
+    <li class="stratum"><a href="#s3-3"><span class="sn">3.3</span><span>The tin bottleneck</span></a></li>
+    <li class="stratum"><a href="#s3-4"><span class="sn">3.4</span><span>Perturbations &amp; matrix</span></a></li>
+    <li class="stratum"><a href="#s3-6"><span class="sn">3.6</span><span>Locating the tipping point</span></a></li>
+    <li class="stratum"><a href="#s3-7"><span class="sn">3.7</span><span>Validation</span></a></li>
+  </ul>
+
+  <div class="rail-band" style="--bandc:var(--ferrous)">Phase 4 · Brittleness</div>
+  <ul class="strata">
+    <li class="stratum"><a href="#s4"><span class="sn">4.1</span><span>Operationalizing brittleness</span></a></li>
+    <li class="stratum"><a href="#s4-2"><span class="sn">4.2</span><span>The homology test</span></a></li>
+    <li class="stratum"><a href="#s4-3"><span class="sn">4.3</span><span>Conclusion architecture</span></a></li>
+  </ul>
+
+  <div class="rail-band" style="--bandc:var(--accent)">Governance</div>
+  <ul class="strata">
+    <li class="stratum"><a href="#s5"><span class="sn">5.1</span><span>Falsification criteria</span></a></li>
+    <li class="stratum"><a href="#s5-2"><span class="sn">5.2</span><span>Programme &amp; risk</span></a></li>
+    <li class="stratum"><a href="#appa"><span class="sn">A</span><span>Notation</span></a></li>
+    <li class="stratum"><a href="#appb"><span class="sn">B</span><span>Verified sources</span></a></li>
+  </ul>
+
+  <div class="rail-foot">Every citation in Appendix&nbsp;B was checked against a publisher, journal, or institutional record. Unresolved evidence classes are marked <span class="m">[DATA REQUIREMENT]</span>.</div>
+</aside>
+
+<!-- ============================== DOCUMENT ============================== -->
+<main>
+<article class="prose">
+
+<header class="hero">
+  <div class="hero-in">
+    <div class="eyebrow"><span class="dot"></span>Research Protocol · v1.0 · Methodology only</div>
+    <h1>The Brittle<br>Network</h1>
+    <p class="dek">A protocol for testing whether the Eastern Mediterranean collapsed because exogenous shocks struck a trade system optimized past the point of resilience — and whether the Sea Peoples were a <em>symptom</em> rather than a cause.</p>
+    <p class="cm-protocol"><b>Pre-registered protocol.</b> Methodology only: this document contains no results. Hypotheses, falsification conditions, and the analysis plan are declared here before any data is touched.</p>
+    <div class="actions">
+      <a class="act" href="brittle-network-protocol.md" download>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12"/><path d="m7 11 5 5 5-5"/><path d="M4 20h16"/></svg>
+        Download the protocol <span class="ext">.md</span>
+      </a>
+      <a class="act" href="brittle-network-protocol.pdf" download>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9V3h12v6"/><rect x="4" y="9" width="16" height="7" rx="1.5"/><path d="M7 16h10v5H7z"/></svg>
+        Download the frozen PDF
+      </a>
+    </div>
+    <dl class="hero-meta">
+      <div><dt>Window</dt><dd>1250 – 1100 BCE</dd></div>
+      <div><dt>Unit of analysis</dt><dd>The exchange network</dd></div>
+      <div><dt>Design</dt><dd>Bayesian model comparison</dd></div>
+      <div><dt>Hypotheses</dt><dd>H₀ – H₄, pre-registered</dd></div>
+      <div><dt>Primary outcome</dt><dd>Differential survival</dd></div>
+    </dl>
+  </div>
+</header>
+
+<p class="lead">The collapse of the Late Bronze Age is the best-known systemic failure in the ancient record and one of the worst-served by its own evidence. This document specifies how a multidisciplinary team would test the cascading-failure hypothesis rigorously enough to be wrong.</p>
+
+<p>It is a protocol, not a study. It contains no results, and it is written so that its conclusions could fail: §5.1 lists seven conditions under which the central hypothesis is rejected, and the abstract to be published if it fails is drafted in advance.</p>
+
+<div class="registers" style="margin-top:.6rem">
+  <div class="reg" style="--rc:var(--accent)"><span class="sw"></span><div class="rt">Metals</div><div class="rd">Copper, tin, provenance, the supply chain that bound the system</div></div>
+  <div class="reg" style="--rc:var(--lapis)"><span class="sw"></span><div class="rt">Network</div><div class="rd">Topology, routes, cascade dynamics, percolation</div></div>
+  <div class="reg" style="--rc:var(--gold)"><span class="sw"></span><div class="rt">Textual</div><div class="rd">Amarna, Ḫattuša, Ugarit — claims by interested parties</div></div>
+  <div class="reg" style="--rc:var(--ferrous)"><span class="sw"></span><div class="rt">Failure</div><div class="rd">Destruction, abandonment, and the ferrous transition after</div></div>
+</div>
+<p class="tcap" style="margin-top:.1rem">Colour is used as a register throughout this document. It encodes which evidence stream a claim belongs to, and nothing else.</p>
+
+<!-- ===================== PHASE 0 ===================== -->
+<div class="phase-head" id="s0">
+  <div class="pn">Section 00</div>
+  <h2 id="scope-premise-audit-and-the-epistemic-contract">Scope, Premise Audit, and the Epistemic Contract</h2>
+  <p class="obj">Three corrections to the framing are entered before any framework is specified. A protocol that inherits an imprecise premise produces precise-looking answers to the wrong question.</p>
+</div>
+
+<h3 id="prove-or-disprove-is-not-an-available-inferentia">“Prove or disprove” is not an available inferential mode</h3>
+<p>The collapse is a single, unrepeatable realization with <span class="m">n = 1</span> at the system level. No dataset can <em>prove</em> a causal architecture for it. The protocol replaces proof with <strong>severity of test</strong>: each hypothesis must generate predictions that would very probably have failed had the hypothesis been false, and the analysis reports posterior model probabilities and Bayes factors rather than verdicts. A hypothesis that cannot be made to generate a differential prediction is declared <strong>empirically inert for this study</strong> and excluded rather than argued about.</p>
+
+<blockquote>Given the observed spatiotemporal pattern of destruction, abandonment, contraction, and <em>survival</em> between 1250 and 1100 BCE, which class of generative model — exogenous-shock-only, network-topology-only, or shock-propagating-through-brittle-topology — assigns the highest likelihood to the observed pattern, and how large is the margin relative to the uncertainty in the evidence?</blockquote>
+
+<h3 id="s-1177-bc-is-a-heuristic-anchor-not-a-datum">“1177 BC” is a heuristic anchor, not a datum</h3>
+<p>1177 BCE corresponds to Year 8 of Ramesses III in the Medinet Habu inscriptions — the best-known Egyptian account of conflict with the coalition conventionally labelled the Sea Peoples. Cline deploys the date as a narrative anchor for a multi-decadal process, not as the year of a discrete event. The protocol treats the collapse as a <strong>transition interval</strong>, provisionally 1225–1130 BCE, whose boundaries are parameters estimated from a Bayesian chronological model rather than assumed.</p>
+
+<div class="call correction">
+  <div class="ct">Correction entered · the brief names the wrong obstacle</div>
+  <p><strong>The Hallstatt plateau is irrelevant to this period.</strong> It spans approximately <strong>800–400 cal BC</strong>: determinations near 2450 BP calibrate across that entire four-century span regardless of measurement precision, because atmospheric ¹⁴C change flattens the calibration curve there. It sits two to six centuries <em>after</em> the study window.</p>
+</div>
+
+<p>The genuine chronological hazards at 1250–1100 BCE are different in kind, and §2.3 is built around them:</p>
+<ol>
+  <li><strong>Calibration-curve structure.</strong> IntCal20 is comparatively well-behaved here, but twelfth–eleventh century wiggles produce multi-modal calibrated distributions routinely spanning 60–120 years at 95.4% for single determinations — <em>coarser than the entire causal sequence under investigation.</em></li>
+  <li><strong>Regional and growing-season offsets.</strong> Demonstrated offsets between Northern Hemisphere calibration data and Eastern Mediterranean samples run to a few decades: negligible for most prehistory, decisive for ordering events inside a century.</li>
+  <li><strong>Dating-target ambiguity.</strong> A radiocarbon date dates a plant's death, not a destruction. Old wood, curated heirlooms, and residual charcoal all displace the date from the event.</li>
+  <li><strong>The Aegean–Levantine interlock.</strong> Mycenaean LH IIIB/IIIC, Cypriot LC IIC/IIIA, Levantine LB IIB/Iron IA, and Egyptian regnal chronology are cross-linked by ceramic synchronisms. An error in one link propagates through the grid, so synchronisms are modelled as <strong>uncertain priors, never fixed pegs</strong>.</li>
+</ol>
+
+<h3 id="the-epistemic-contract">The epistemic contract</h3>
+<ul>
+  <li><strong>Non-fabrication.</strong> No site, text, tablet, core, ingot, or study is cited unless verifiable in the published record. Where an evidence class is required but no specific dataset is confirmed, the document specifies the evidence <em>type</em>, acceptance criteria, and sampling requirement instead, marked <span class="m">[DATA REQUIREMENT]</span>.</li>
+  <li><strong>Separation of layers.</strong> Evidence, model, and interpretation stay in separate registers. A modelled quantity is never reported alongside an observed one without an explicit marker.</li>
+  <li><strong>Pre-registration.</strong> The analysis plan, falsification criteria, and stopping rules are fixed before data compilation. Deviations go in an amendment register, not silently into the method.</li>
+  <li><strong>Adversarial review.</strong> Each phase is reviewed by a named scholar on record as sceptical of the hypothesis.</li>
+</ul>
+
+<!-- ===================== PHASE 1 ===================== -->
+<div class="phase-head" id="s1">
+  <div class="pn">Phase 1</div>
+  <h2 id="theoretical-framework-and-literature-synthesis">Theoretical Framework and Literature Synthesis</h2>
+  <p class="obj">Establish the trajectory from monocausal invasion narrative to systems explanation — and translate each position into a <em>formal object</em> the Phase 3 model can instantiate. Synthesis that does not terminate in a formalizable claim is not admitted.</p>
+</div>
+
+<h3 id="the-historiographical-arc">The historiographical arc</h3>
+<p>The literature falls into five broad, partially overlapping generations. The protocol characterizes each by its <strong>causal topology</strong>, because that is what determines whether the position can be tested by network methods at all.</p>
+
+<div class="wide tablewrap">
+<table>
+  <thead><tr><th>Generation</th><th>Causal topology</th><th>Formal representation</th><th>Testable implication</th></tr></thead>
+  <tbody>
+    <tr><td>I · Migrationist<br><span class="tcap">late 19th – mid 20th c.</span></td><td>Single exogenous agent → many simultaneous failures. Read from Medinet Habu and the Great Karnak Inscription as reportage.</td><td>Exogenous node deletion, spatially contiguous and temporally near-simultaneous, on a causally inert graph</td><td>Destruction dates cluster along a coherent front; incidence <strong>uncorrelated</strong> with network position once coastal exposure is controlled</td></tr>
+    <tr><td>II · Systems collapse<br><span class="tcap">Renfrew 1979 · Tainter 1988</span></td><td>Internal structure → failure under generic stress. Explanatory weight moves from the external agent to the society's architecture.</td><td>State-dependent failure probability rising with an internal complexity parameter</td><td>Failure severity scales with pre-collapse specialization and administrative elaboration, and is <strong>insensitive to which shock</strong> is applied</td></tr>
+    <tr><td>III · Perfect storm<br><span class="tcap">Cline 2014/2021, 2024</span></td><td>Conjunction of stressors, each insufficient alone: drought, famine, seismicity, rebellion, invasion, severed trade.</td><td>Multiplicative or threshold interaction among stressors</td><td>Interaction terms carry significant weight; each stressor's conditional effect materially exceeds its unconditional effect</td></tr>
+    <tr><td>IV · Formal networks<br><span class="tcap">Knappett, Evans &amp; Rivers</span></td><td>Exogenous shock → topologically structured propagation → spatially patterned, temporally lagged failure.</td><td>Perturbation of an explicit spatial network model; consequence read from the model, not from destruction layers</td><td>Which centres matter, and what happens when one is removed, is predicted <em>a priori</em> and checked against the ground</td></tr>
+    <tr><td>V · Revisionist<br><span class="tcap">Millek 2021–2023</span></td><td>The destruction horizon is thinner, later, more staggered and less trade-terminating than the standard narrative asserts.</td><td>Not a model but a <strong>measurement correction</strong> applied to the outcome variable</td><td>If many “destructions” are misidentified, the pattern to be explained is partly an artefact of excavation and publication practice</td></tr>
+  </tbody>
+</table>
+</div>
+<p class="tcap">Generation III states that stressors interacted; it does not specify the medium of interaction, nor predict which polities fail. Naming that medium as the exchange network, and making the claim quantitative, is where this study begins.</p>
+
+<div class="call correction">
+  <div class="ct">Mandatory counterweight · not a citation but a processing stage</div>
+  <p>Millek's re-examination of claimed destruction layers is the single most important control on this project. A protocol that reads only the collapse literature will overfit to collapse. The re-audit is therefore built into the data pipeline at <strong>§2.4</strong>, before any site-level “failure” enters the model.</p>
+</div>
+
+<h3 id="s1-2">The translation: from historiographical claim to mathematical object</h3>
+<p>This is the pivotal deliverable of Phase 1. Each narrative claim maps to a formal operator so Phase 3 can implement it — and, crucially, so that rival claims produce <em>different</em> observable signatures.</p>
+
+<div class="wide tablewrap">
+<table>
+  <thead><tr><th>Historiographical claim</th><th>Formal object</th><th>Perturbation operator</th><th>Discriminating observable</th></tr></thead>
+  <tbody>
+    <tr><td>“The Sea Peoples destroyed the palaces”</td><td>Exogenous, spatially correlated node deletion on a causally inert graph</td><td>Delete coastal nodes over a short interval <span class="m">Δt</span>; topology plays no role</td><td>Incidence predicted by coastal exposure alone; <strong>no</strong> residual effect of centrality</td></tr>
+    <tr><td>“Drought caused famine and unrest”</td><td>Reduction in node-level agricultural carrying capacity</td><td><span class="m">π_i → (1−δ_i)·π_i</span>, with <span class="m">δ_i</span> drawn from the hydroclimate field</td><td>Failure severity tracks the <em>local</em> hydroclimate gradient, with short lag</td></tr>
+    <tr><td>“Earthquake storms shattered the palaces”</td><td>Temporally clustered, tectonically constrained node damage</td><td>Degrade nodes along active faults on a clustered point process</td><td>Damage confined to seismogenic zones; failure order follows fault geometry, not trade rank</td></tr>
+    <tr><td>“Trade routes were cut”</td><td>Edge deletion, targeted or random</td><td>Remove edges by weight rank, by geography, or at random</td><td>Loss of connectivity precedes loss of settlement; downstream nodes fail before upstream</td></tr>
+    <tr><td>“The system was hypercoherent”</td><td>High <span class="m">E_glob</span>, low redundancy, heavy-tailed degrees</td><td>None — a <em>property of the intact graph</em>, measured against null models</td><td>High efficiency <em>and</em> low robustness relative to degree-preserving and spatial nulls</td></tr>
+    <tr><td>“A cascading failure occurred”</td><td>Load-redistribution dynamics on a weighted graph</td><td>Motter–Lai: <span class="m">C_i = (1+α)·L_i(0)</span>; failures redistribute load</td><td>Failure times <strong>ordered along network paths</strong>, lag proportional to distance from the seed</td></tr>
+    <tr><td>“The collapse was a phase transition”</td><td>Percolation transition in the supply-satisfaction functional</td><td>Sweep removal fraction <span class="m">f</span>; locate the critical point</td><td>Sharp drop in the order parameter; susceptibility <span class="m">χ</span> peaks; finite-size scaling consistent</td></tr>
+    <tr><td>“Interdependence amplified failure”</td><td>Coupled multiplex with inter-layer dependency</td><td>Buldyrev-type iterative cascade across metals, grain, political layers</td><td>Transition is <strong>first-order</strong> rather than continuous — the signature of interdependence</td></tr>
+    <tr><td><strong>“The Sea Peoples were a symptom”</strong></td><td>Endogenous generation of mobile actors by prior stress</td><td>Migration intensity is an <em>output</em> of the model, not an input</td><td>Attestations of raiding <strong>post-date</strong> supply and hydroclimate stress in the source regions</td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="call falsify">
+  <div class="ct">The wager, and how it fails</div>
+  <p>The last row is the study's central historiographical claim, and it is falsifiable cleanly: <strong>if the earliest robust attestations of Sea Peoples activity precede the earliest robust indicators of network and climate stress, the symptom hypothesis fails</strong> — independently of anything the network model produces.</p>
+</div>
+
+<h3 id="s1-3">Foundational positions on the environmental and economic drivers</h3>
+<p>Five verified anchors, chosen because each supplies a methodologically <em>independent</em> proxy stream rather than a restatement of the same evidence.</p>
+
+<div class="wide tablewrap">
+<table>
+  <thead><tr><th>Anchor</th><th>Stream</th><th>What it contributes</th><th>How the protocol uses it</th></tr></thead>
+  <tbody>
+    <tr><td>Langgut, Finkelstein &amp; Litt 2013<br><span class="tcap"><em>Tel Aviv</em> 40(2)</span></td><td>Palynology</td><td>Sea of Galilee core; dry episode at the Late Bronze–Iron transition in the southern Levant</td><td>Primary terrestrial hydroclimate record for the southern Levant</td></tr>
+    <tr><td>Kaniewski et al. 2013<br><span class="tcap"><em>PLOS ONE</em> 8(8)</span></td><td>Palynology</td><td>Larnaca Salt Lake, Cyprus; a ~300-year drought episode from the late 13th c. BCE</td><td>Cyprus hydroclimate; explicitly frames Sea Peoples as consequence</td></tr>
+    <tr><td>Drake 2012<br><span class="tcap"><em>J. Archaeol. Sci.</em> 39(6)</span></td><td>Marine</td><td>Sea-surface temperature and isotope evidence for reduced precipitation</td><td>Independent <em>marine</em> axis, breaking pollen's land-use circularity</td></tr>
+    <tr><td>Nur &amp; Cline 2000<br><span class="tcap"><em>J. Archaeol. Sci.</em> 27(1)</span></td><td>Seismicity</td><td>The “earthquake storm” hypothesis — clustered events releasing strain in sequence</td><td>Treated as a <strong>hypothesis to be tested</strong>, not an established chronology (§2.2)</td></tr>
+    <tr><td>Powell et al. 2022<br><span class="tcap"><em>Science Advances</em> 8(48)</span></td><td>Metals</td><td>Tin-isotope provenancing of the Uluburun tin: remote sources, small-scale exchange</td><td><strong>Load-bearing.</strong> Lengthens the tin chain <em>and</em> polycentrifies its sources — opposing effects the model must resolve</td></tr>
+  </tbody>
+</table>
+</div>
+<p class="tcap">A published response contesting Powell et al. 2022 exists and is cited alongside it. Tin provenance is treated as <strong>contested</strong>, and the contestation is propagated as a prior over source configurations rather than settled by fiat.</p>
+
+<h3 id="s1-4">Competing hypotheses and their discriminating predictions</h3>
+<p>The study is a model comparison, so the rivals must be stated in advance with predictions that <em>differ</em>. A design in which every hypothesis predicts the same observations is not a test.</p>
+
+<!-- ============ INTERACTIVE 1: HYPOTHESIS DISCRIMINATOR ============ -->
+<div class="wide lab">
+  <div class="lab-head">
+    <div><div class="lk">Interactive · Phase 1</div><div class="lt">Hypothesis discriminator</div></div>
+    <div class="lk" id="discCount">—</div>
+  </div>
+  <div class="lab-body">
+    <div class="ctrls" style="grid-template-columns:1fr 1fr">
+      <div class="ctrl">
+        <label>Hypothesis A</label>
+        <div class="seg" id="segA"></div>
+      </div>
+      <div class="ctrl">
+        <label>Hypothesis B</label>
+        <div class="seg" id="segB"></div>
+      </div>
+    </div>
+    <div id="discNames" class="disc-note" style="margin:0 0 12px"></div>
+    <div class="disc-grid" id="discGrid"></div>
+    <div class="disc-note"><strong>Highlighted rows are the observables that separate the two hypotheses.</strong> <span class="p-yes">+</span> predicted present · <span class="p-no">−</span> predicted absent · <span class="p-sil">·</span> the hypothesis is silent. Where two models predict identically on every row, no amount of evidence distinguishes them and one must be reformulated or dropped.</div>
+  </div>
+</div>
+
+<div class="call falsify">
+  <div class="ct">The primary outcome is survival, not collapse</div>
+  <p>The literature is saturated with explanations of why centres fell; few explain why Egypt contracted without collapsing, why several Cypriot and northern Levantine coastal centres show substantial continuity, or why Assyria's trajectory differs. <strong>A model that predicts everyone's failure equally well predicts nothing.</strong> Differential survival is therefore the discriminating outcome of this study, and a model that predicts collapse well and survival badly has learned the shock rather than the structure.</p>
+</div>
+
+<h4 id="phase-1-deliverables">Phase 1 deliverables</h4>
+<ul class="tight">
+  <li><strong>D1.1</strong> — Annotated historiographical review (~12,000 words), organized by causal topology rather than chronology.</li>
+  <li><strong>D1.2</strong> — The claim→operator table in machine-readable form, each row bound to the Phase 3 module implementing it.</li>
+  <li><strong>D1.3</strong> — Pre-registered hypothesis set with prior model probabilities elicited by structured expert elicitation (Cooke's classical method, with calibration questions weighting each expert).</li>
+  <li><strong>D1.4</strong> — A register of <strong>inert claims</strong>: assertions in the literature that cannot generate a differential prediction, with reasons. Published, not suppressed.</li>
+</ul>
+
+<!-- ===================== PHASE 2 ===================== -->
+<div class="phase-head" id="s2">
+  <div class="pn">Phase 2</div>
+  <h2 id="data-architecture-and-multiproxy-normalization">Data Architecture and Multiproxy Normalization</h2>
+  <p class="obj">Build one uncertainty-bearing evidence base from datasets that differ in physical medium, temporal resolution, spatial support, and error structure — without manufacturing agreement between them.</p>
+</div>
+
+<div class="call">
+  <div class="ct">Governing principle</div>
+  <p>Proxies are <strong>never</strong> aligned by assumption. Every correlation between two proxy streams must survive a test in which the alignment itself is treated as an unknown with a prior.</p>
+</div>
+
+<h3 id="the-historical-universe">The historical universe</h3>
+<p>The universe is defined by <strong>participation in the exchange system</strong>, not by modern geography. A site enters if it satisfies at least one of: documented possession of imports traceable to another region within the universe; attestation in an inter-polity textual corpus; or production or transhipment of a commodity attested in circulation elsewhere.</p>
+<p>Core spheres are the Mycenaean Aegean, Crete, the Hittite empire and its Anatolian and North Syrian dependencies, Cyprus (Alashiya), the Levantine coast and interior, and Egypt. Three extensions are mandatory — without them the tin question cannot be posed at all:</p>
+<ul class="tight">
+  <li><strong>Mesopotamia and the Middle Euphrates</strong>, as the overland conduit for eastern tin.</li>
+  <li><strong>Central Asian and Anatolian tin sources</strong> implicated by tin-isotope provenancing.</li>
+  <li><strong>Central Mediterranean nodes</strong> — Sardinia, Sicily, southern Italy — where oxhide ingots and Aegean-type material occur.</li>
+</ul>
+
+<div class="wide tablewrap">
+<table>
+  <thead><tr><th>Window</th><th>Interval</th><th>Role in the design</th></tr></thead>
+  <tbody>
+    <tr><td>Baseline</td><td>1400–1250 BCE</td><td>Characterizes the network at maturity; supplies the normal-operating distribution against which anomalies are defined. <strong>Not optional</strong> — a brittleness claim is meaningless without a prior state to be brittle relative to.</td></tr>
+    <tr><td>Transition</td><td>1250–1100 BCE</td><td>The study window.</td></tr>
+    <tr><td>Aftermath</td><td>1100–1000 BCE</td><td>Tests recovery, substitution (notably the ferrous transition), and reconfiguration; supplies the differential-survival outcome.</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h4 id="evidence-tiers">Evidence tiers</h4>
+<p>Every datum carries a tier label, and tier is a covariate in every downstream model.</p>
+<div class="wide tablewrap">
+<table>
+  <thead><tr><th>Tier</th><th>Definition</th><th>Example</th><th>Treatment</th></tr></thead>
+  <tbody>
+    <tr><td>A</td><td>Directly measured, independently replicable, with published analytical uncertainty</td><td>Isotope ratio with stated 2σ; ¹⁴C determination with lab code and δ¹³C</td><td>Full weight</td></tr>
+    <tr><td>B</td><td>Directly observed but interpretation-dependent</td><td>Destruction layer with published section drawing</td><td>Full weight on the observation, modelled uncertainty on the interpretation</td></tr>
+    <tr><td>C</td><td>Reported without full supporting documentation</td><td>Destruction asserted in a preliminary report</td><td>Down-weighted; flagged for re-audit</td></tr>
+    <tr><td>D</td><td>Textual attestation</td><td>Ugaritic letter; Amarna letter</td><td>Evidence of <em>claims made by ancient actors</em> — never directly event data</td></tr>
+    <tr><td>E</td><td>Synthetic or secondary</td><td>Figure redrawn from a synthesis</td><td>Excluded from analysis; narrative only</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h3 id="s2-2">Data streams and acceptance criteria</h3>
+
+<h4 id="stream-p-palynological-and-terrestrial-hydroclim"><span style="color:var(--accent)">◆</span> Stream P — Palynological and terrestrial hydroclimate</h4>
+<p>A core is admitted only if it has a published age–depth model built from <strong>≥ 5 dated horizons</strong> within or bracketing 1600–900 BCE with a stated method and uncertainty envelope; sampling resolution <strong>≤ 50 years per sample</strong> across the transition; published raw counts by taxon, not only an interpretive curve; and an explicit strategy for discriminating aridity from clearance or abandoned orchard husbandry.</p>
+
+<div class="call">
+  <div class="ct">Mandatory heterogeneity test</div>
+  <p>The Aegean hydroclimate literature reports <em>divergent</em> regional patterns. The protocol therefore does not fit a single “Eastern Mediterranean drought.” It estimates a <strong>spatially varying anomaly field with explicit between-record disagreement</strong>, and carries that disagreement into the network model as parameter uncertainty. A drought signal that exists only after averaging away regional divergence is treated as an artefact of averaging.</p>
+</div>
+
+<h4 id="stream-s-speleothem-marine-and-independent-physi"><span style="color:var(--accent)">◆</span> Stream S — Speleothem, marine, and independent physical proxies</h4>
+<p>Included to break the circularity in Stream P, since pollen responds to human land use as well as to climate. Requirements: U–Th chronology with published errors, δ¹⁸O and δ¹³C series, and a stated hydrological interpretation for the specific cave system. Agreement between streams is a <em>finding</em>; disagreement is <em>data</em>, not noise to be smoothed.</p>
+
+<h4 id="stream-e-archaeoseismological"><span style="color:var(--ferrous)">◆</span> Stream E — Archaeoseismological</h4>
+<p>The weakest-evidenced and most over-interpreted stream in the collapse literature, and treated with corresponding severity. Every candidate event is scored on a formal quality index; <strong>admission requires ≥ 6 of 10, with a non-zero score on damage typology and on alternative-cause exclusion.</strong></p>
+
+<div class="wide tablewrap">
+<table>
+  <thead><tr><th>Criterion</th><th>Score 0</th><th>Score 1</th><th>Score 2</th></tr></thead>
+  <tbody>
+    <tr><td>Damage typology</td><td>Fire or collapse only</td><td>Directional wall collapse</td><td>Diagnostic: rotated or displaced masonry, tilted walls, chevron fractures, ground-rupture offset</td></tr>
+    <tr><td>Site-effect control</td><td>None</td><td>Qualitative</td><td>Modelled local amplification / geotechnical assessment</td></tr>
+    <tr><td>Geological corroboration</td><td>None</td><td>Regional palaeoseismic literature</td><td>Dated palaeoseismic trench or offset feature in the region</td></tr>
+    <tr><td>Chronological control</td><td>Ceramic phase only</td><td>One ¹⁴C date</td><td>Bayesian model with multiple dates</td></tr>
+    <tr><td>Alternative-cause exclusion</td><td>Not addressed</td><td>Discussed</td><td>Systematically excluded: siege, subsidence, structural failure, post-depositional</td></tr>
+  </tbody>
+</table>
+</div>
+<p class="tcap">Events below threshold enter a shadow register used only in sensitivity analysis. The earthquake-storm hypothesis is then tested as a <strong>point-process hypothesis</strong> — a conditional-intensity test against a homogeneous Poisson null at the region's long-term seismicity rate — not as a narrative assessment.</p>
+
+<h4 id="stream-m-archaeometallurgical-and-provenance"><span style="color:var(--accent)">◆</span> Stream M — Archaeometallurgical and provenance</h4>
+<p>The purpose is to reconstruct <em>flow</em>, not merely presence. Lead-isotope analysis is adopted with its standard cautions promoted to first-class model components rather than footnotes:</p>
+<ul class="tight">
+  <li>ore-field isotopic fields overlap, so provenance is a <strong>posterior distribution over sources</strong>, never a point assignment;</li>
+  <li>recycling and mixing shift composition along mixing lines, so mixing is modelled explicitly as a two- or three-endmember problem with unknown proportions;</li>
+  <li>reference-database coverage is incomplete, so an “unmatched” result is evidence of a gap in the reference set as much as of an exotic source;</li>
+  <li>trace-element and, where available, copper-isotope data are required as an independent check before any provenance claim is admitted.</li>
+</ul>
+
+<div class="call">
+  <div class="ct">Uluburun is calibration, not universe</div>
+  <p>The wreck carried roughly <strong>10 tonnes of copper and 1 tonne of tin</strong> — a 10:1 ratio matching the alloy proportion of standard tin bronze. It is a single cargo and cannot stand as a sample of the trade. It is used for exactly three purposes: to calibrate the copper:tin ratio moving as a bundled consignment; to establish the compositional diversity of one shipment; and as a <strong>taphonomic anchor</strong> — goods in transit, uncontaminated by the deposition biases of settlement contexts.</p>
+</div>
+
+<h4 id="stream-t-textual"><span style="color:var(--gold)">◆</span> Stream T — Textual</h4>
+<p>Three corpora supply the political-dependency layer and the only direct evidence of contemporaneous perception: the Amarna correspondence (EA 1–382, Moran 1992), the Hittite state archives from Boğazköy/Ḫattuša, and the Ugaritic and Akkadian correspondence from Ras Shamra.</p>
+<div class="call textual">
+  <div class="ct">Handling rule</div>
+  <p>A letter reporting a grain shortage is evidence that a shortage was <em>asserted by an interested party in a specific rhetorical context</em>. It is coded as <span class="m">{sender, recipient, date-range, commodity, direction of request, rhetorical register, corroboration status}</span> and never entered as a measured famine. Each cited tablet carries its siglum, publication reference, and a stated confidence in its date and context — several of the most-quoted texts have contested find-contexts. <strong>No text is quoted from a secondary synthesis.</strong></p>
+</div>
+
+<h3 id="s2-3">Chronological normalization</h3>
+<p>The hardest problem in the design. The approach is to abandon absolute placement: <strong>do not attempt to put events on a calendar; estimate the joint posterior over event orderings and intervals.</strong></p>
+<p>All determinations are modelled in OxCal against IntCal20 with <span class="m">Sequence</span>/<span class="m">Phase</span>/<span class="m">Boundary</span> structures encoding stratigraphy; general and charcoal outlier models on every determination; a jointly estimated regional offset parameter <span class="m">Δ_R</span> with a prior informed by the demonstrated Mediterranean offsets; ceramic synchronisms as informative priors with explicit uncertainty; and <span class="m">KDE_Plot</span> so that apparent clustering can be distinguished from the sum of individually wide calibrated distributions.</p>
+
+<h4 id="the-ordering-test-the-actual-inferential-workhor">The ordering test — the actual inferential workhorse</h4>
+<p>Causal claims here are claims about order and lag. For every pair of events the protocol computes, directly from the joint chronology, the posterior probability <span class="m">P(t_A &lt; t_B | D)</span> and the posterior distribution of the lag <span class="m">Δ_AB</span>.</p>
+
+<!-- ============ INTERACTIVE 2: ORDERING TEST ============ -->
+<div class="wide lab">
+  <div class="lab-head">
+    <div><div class="lk">Interactive · Phase 2</div><div class="lt">Can we say which happened first?</div></div>
+    <div class="lk">Admissibility threshold P ≥ 0.90</div>
+  </div>
+  <div class="lab-body">
+    <div class="canvwrap"><canvas id="chronoCanvas" width="1100" height="330" aria-label="Two calibrated date posteriors on a BCE axis, with the probability that event A precedes event B"></canvas></div>
+    <div class="legend">
+      <span><i style="--lc:var(--accent)"></i>Event A — destruction at an Aegean centre</span>
+      <span><i style="--lc:var(--ferrous)"></i>Event B — destruction at a Levantine centre</span>
+    </div>
+    <div class="ctrls" style="margin-top:16px">
+      <div class="ctrl"><label>Event A · <span class="val" id="aVal">1195 BCE</span></label><input type="range" id="aDate" min="0" max="120" value="45" step="1" aria-label="Date of event A in years BCE"></div>
+      <div class="ctrl"><label>Event B · <span class="val" id="bVal">1175 BCE</span></label><input type="range" id="bDate" min="0" max="120" value="65" step="1" aria-label="Date of event B in years BCE"></div>
+      <div class="ctrl"><label>Precision · <span class="val" id="sVal">±25 yr</span></label><input type="range" id="sigma" min="8" max="55" value="25" step="1" aria-label="Dating precision, plus or minus years"></div>
+      <div class="ctrl"><label>Calibration wiggles</label><div class="seg" id="wiggleSeg"><button data-w="1" aria-pressed="true">Realistic</button><button data-w="0" aria-pressed="false">Idealised</button></div></div>
+    </div>
+    <div class="readouts">
+      <div class="ro"><div class="rol">P(A before B)</div><div class="rov" id="pAB">—</div></div>
+      <div class="ro"><div class="rol">Median gap</div><div class="rov" id="lag">—</div></div>
+      <div class="ro"><div class="rol">A · 95.4% span</div><div class="rov" id="spanA">—</div></div>
+      <div class="ro"><div class="rol">Verdict</div><div style="margin-top:6px"><span class="verdict no" id="verdict">Unresolved</span></div></div>
+    </div>
+    <p class="disc-note">Drag the centres apart, or tighten precision, until the ordering becomes admissible. With realistic wiggles and ±25-year determinations, two events <strong>20 years apart cannot be ordered at all</strong> — which disqualifies a large share of the sequences the narrative literature relies on. Curves are illustrative of calibrated posterior shape, not calibrations of specific samples.</p>
+  </div>
+</div>
+
+<h4 id="coping-with-irreducible-imprecision">Coping with irreducible imprecision</h4>
+<ol>
+  <li><strong>Coarsening.</strong> Aggregate to 25-year bins and accept the loss of power rather than manufacture precision.</li>
+  <li><strong>Wiggle-matching.</strong> Where sequences of dated samples exist, wiggle-matching can reach decadal resolution — so sampling programmes that would yield such sequences are prioritized (§5.4).</li>
+  <li><strong>Order-free tests.</strong> Some predictions need no ordering at all. That failure severity correlates with centrality after controlling for exposure is a cross-sectional test, and survives total chronological failure. <strong>The design deliberately front-loads such tests</strong> so the study still discriminates H₁, H₃ and H₄ in the worst chronological case.</li>
+</ol>
+
+<h3 id="s2-4">The destruction-horizon re-audit</h3>
+<p>Before any site-level failure enters the model, its destruction claim is re-derived from primary excavation documentation: is there a published section or plan; is burning architectural or localized to a kiln or hearth; is the assemblage consistent with sudden abandonment or planned departure; are trauma indicators published or merely asserted; is the deposit dated independently or by assumed correlation with the collapse horizon; and is there immediate reoccupation?</p>
+<div class="pills" style="margin-top:.3rem">
+  <span class="pill">destroyed (violent)</span><span class="pill">destroyed (cause indeterminate)</span><span class="pill">burnt (localized)</span><span class="pill">abandoned (gradual)</span><span class="pill">abandoned (rapid, non-violent)</span><span class="pill">continuity</span><span class="pill">insufficient documentation</span>
+</div>
+<p>Outcome is a <strong>categorical response variable with measurement error</strong>, not a binary. Circular dating — a layer dated to 1200 BCE <em>because</em> it is a destruction layer — is flagged, and the site is excluded from chronological tests while remaining in cross-sectional ones.</p>
+
+<h3 id="s2-5">Survivorship, selection, and the causal firewall</h3>
+<p>Four distinct biases, each with a distinct correction. Conflating them is the standard error in this literature.</p>
+
+<div class="wide tablewrap">
+<table>
+  <thead><tr><th>Bias</th><th>Mechanism</th><th>Which hypothesis it flatters</th><th>Correction</th></tr></thead>
+  <tbody>
+    <tr><td>Excavation intensity</td><td>Large, rich, famous sites are excavated, published, and dated more</td><td>Any account centred on major palaces</td><td>Excavation-intensity covariate in every model; systematic survey data as a second, differently-biased sampling frame</td></tr>
+    <tr><td>Destruction preservation</td><td>Catastrophic burning preserves floor assemblages and bakes tablets; gradual abandonment leaves swept floors</td><td><strong>H₂ (invasion)</strong> — the record over-represents violent endings</td><td>Model <span class="m">P(detect | ending type)</span> explicitly; inverse-probability weighting; report weighted and unweighted</td></tr>
+    <tr><td><strong>Archive survival</strong></td><td>The Ugaritic crisis letters survive <em>because</em> Ugarit burned. The textual record of the collapse is conditioned on the collapse.</td><td>Any reading of the texts as a neutral account of causes</td><td>Texts may generate and characterize hypotheses but may <strong>never</strong> be the outcome variable in a causal test; comparable archive-less sites coded missing-not-at-random</td></tr>
+    <tr><td>Chronological resolution</td><td>Better-dated sites are better-funded, hence larger, hence more central</td><td>Naively, the network hypothesis itself</td><td>Dating quality as covariate; matched analysis pairing high- and low-centrality sites of comparable dating quality</td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="call correction">
+  <div class="ct">Collider stratification · the most seductive trap in the corpus</div>
+  <p>Selecting on the outcome and then reading the surviving texts as an unbiased account of causes is a textbook error. It is the reason the archive-survival row above is the one gate this protocol will not relax for any argument.</p>
+</div>
+
+<figure class="wide fig" style="margin-top:.4rem">
+  <div class="fignum">Figure 1 · The causal firewall</div>
+  <svg viewBox="0 0 1000 250" role="img" aria-label="A proposed causal claim passes through five sequential gates — temporal, dose-response, spatial coherence, mechanism specificity, and negative control — and is rejected at any gate it fails">
+    <defs>
+      <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+        <path d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
+      </marker>
+      <marker id="arRed" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+        <path d="M0,0 L10,5 L0,10 z" fill="#C05423"/>
+      </marker>
+    </defs>
+    <text x="8" y="72" font-family="IBM Plex Mono, monospace" font-size="11" fill="currentColor" letter-spacing="1">PROPOSED</text>
+    <text x="8" y="87" font-family="IBM Plex Mono, monospace" font-size="11" fill="currentColor" letter-spacing="1">CAUSAL CLAIM</text>
+    <line x1="120" y1="80" x2="158" y2="80" stroke="currentColor" stroke-width="1.5" marker-end="url(#ar)"/>
+    <g font-family="IBM Plex Sans, sans-serif" font-size="12">
+      <g><rect x="160" y="52" width="140" height="56" rx="6" fill="none" stroke="currentColor" stroke-width="1.5"/><text x="230" y="76" text-anchor="middle" font-weight="600" fill="currentColor">Temporal</text><text x="230" y="93" text-anchor="middle" font-size="10.5" fill="currentColor" opacity=".75">P(cause first) ≥ 0.90</text></g>
+      <line x1="300" y1="80" x2="318" y2="80" stroke="currentColor" stroke-width="1.5" marker-end="url(#ar)"/>
+      <g><rect x="320" y="52" width="140" height="56" rx="6" fill="none" stroke="currentColor" stroke-width="1.5"/><text x="390" y="76" text-anchor="middle" font-weight="600" fill="currentColor">Dose–response</text><text x="390" y="93" text-anchor="middle" font-size="10.5" fill="currentColor" opacity=".75">effect scales with cause</text></g>
+      <line x1="460" y1="80" x2="478" y2="80" stroke="currentColor" stroke-width="1.5" marker-end="url(#ar)"/>
+      <g><rect x="480" y="52" width="140" height="56" rx="6" fill="none" stroke="currentColor" stroke-width="1.5"/><text x="550" y="76" text-anchor="middle" font-weight="600" fill="currentColor">Spatial coherence</text><text x="550" y="93" text-anchor="middle" font-size="10.5" fill="currentColor" opacity=".75">gradients match</text></g>
+      <line x1="620" y1="80" x2="638" y2="80" stroke="currentColor" stroke-width="1.5" marker-end="url(#ar)"/>
+      <g><rect x="640" y="52" width="140" height="56" rx="6" fill="none" stroke="currentColor" stroke-width="1.5"/><text x="710" y="76" text-anchor="middle" font-weight="600" fill="currentColor">Mechanism</text><text x="710" y="93" text-anchor="middle" font-size="10.5" fill="currentColor" opacity=".75">distinctive signature</text></g>
+      <line x1="780" y1="80" x2="798" y2="80" stroke="currentColor" stroke-width="1.5" marker-end="url(#ar)"/>
+      <g><rect x="800" y="52" width="164" height="56" rx="6" fill="none" stroke="#008570" stroke-width="2.5"/><text x="882" y="76" text-anchor="middle" font-weight="600" fill="#008570">Negative control</text><text x="882" y="93" text-anchor="middle" font-size="10.5" fill="#008570">model predicts survivors</text></g>
+    </g>
+    <g stroke="#C05423" stroke-width="1.4" stroke-dasharray="4 3" fill="none">
+      <path d="M230 108 L230 168" marker-end="url(#arRed)"/><path d="M390 108 L390 168" marker-end="url(#arRed)"/>
+      <path d="M550 108 L550 168" marker-end="url(#arRed)"/><path d="M710 108 L710 168" marker-end="url(#arRed)"/>
+      <path d="M882 108 L882 168" marker-end="url(#arRed)"/>
+    </g>
+    <line x1="160" y1="182" x2="964" y2="182" stroke="#C05423" stroke-width="1.5"/>
+    <text x="160" y="205" font-family="IBM Plex Sans, sans-serif" font-size="12" font-weight="600" fill="#C05423">Claim not admitted — reported as unsupported, not quietly dropped</text>
+    <text x="160" y="228" font-family="IBM Plex Sans, sans-serif" font-size="11" fill="currentColor" opacity=".7">Egypt, several Cypriot centres, and the northern Levantine coast experienced comparable conditions with different outcomes. The last gate is the one this literature most often fails.</text>
+  </svg>
+  <figcaption><b>All five gates, in order.</b> No causal claim is admitted unless it clears every one. A model that reproduces the failures but cannot reproduce the survivals is rejected at the final gate regardless of how well it fits everything upstream.</figcaption>
+</figure>
+
+<h4 id="data-infrastructure">Data infrastructure</h4>
+<p>A PostgreSQL + PostGIS schema in which <strong>no uncertain quantity is stored as a scalar</strong>: dates are posterior distributions, provenance is a distribution over sources, edge weights are distributions. Every row references a source and carries a tier. Git-tracked ETL, every figure regenerable by one command, releases DOI-minted, CIDOC CRM alignment for interoperability, coordinates deliberately fuzzed for sites at looting risk, and code and derived data released under open licence at publication.</p>
+
+<!-- ===================== PHASE 3 ===================== -->
+<div class="phase-head" id="s3">
+  <div class="pn">Phase 3</div>
+  <h2 id="systems-modelling-and-network-vulnerability-test">Systems Modelling and Network Vulnerability Testing</h2>
+  <p class="obj">Build a spatially and temporally explicit multilayer model, subject it to historically constrained perturbations, and identify the conditions under which localized failure becomes systemic. The model is built to be broken — and to be broken in ways that could have failed.</p>
+</div>
+
+<div class="call network">
+  <div class="ct">Design commitment</div>
+  <p>Every result is reported against degree-preserving, spatial, and volume-matched null models. <strong>A cascade that also occurs in the null models is not evidence for H₄.</strong></p>
+</div>
+
+<h3 id="formal-specification">Formal specification</h3>
+<p>The system is a temporal, weighted, directed multiplex:</p>
+<div class="note-block">M(t) = ( V, {E^(α)(t)}, {W^(α)(t)}, D(t) )   for layers α ∈ L
+
+  V        nodes: polities and exchange places, |V| ≈ 120–250
+  L        layers: Cu · Sn · Au/Ag · grain · finished goods · political
+  E^(α)    directed edges in layer α at time t
+  W^(α)    edge weights: expected commodity flow, or dependency intensity
+  D(t)     inter-layer dependency: node i in layer α given its state in β</div>
+<p>Separating commodities into layers is not cosmetic. Copper and tin have different source geographies, different substitutability, and different route structures; collapsing them into one “trade” graph destroys precisely the asymmetry the study is testing.</p>
+
+<figure class="wide fig">
+  <div class="fignum">Figure 2 · Why the model is a multiplex</div>
+  <svg viewBox="0 0 1000 380" role="img" aria-label="Three network layers — tin, copper and grain, and political dependency — drawn one above another, with dashed inter-layer dependency links connecting the same node across layers; the tin layer is sparse with a single long chain, the copper layer is dense and regional">
+    <defs>
+      <marker id="ar2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="currentColor"/></marker>
+    </defs>
+    <g font-family="IBM Plex Mono, monospace" font-size="10.5" letter-spacing="1.1">
+      <text x="8" y="58" fill="#008570" font-weight="600">TIN · Sn</text>
+      <text x="8" y="73" fill="currentColor" opacity=".6">exotic, long chain</text>
+      <text x="8" y="188" fill="#008570" font-weight="600">COPPER · Cu</text>
+      <text x="8" y="203" fill="currentColor" opacity=".6">regional, dense</text>
+      <text x="8" y="318" fill="#8A6E10" font-weight="600">POLITICAL</text>
+      <text x="8" y="333" fill="currentColor" opacity=".6">dependency, tribute</text>
+    </g>
+    <!-- layer plates -->
+    <g fill="none" stroke="currentColor" stroke-width="1" opacity=".28">
+      <rect x="185" y="22" width="790" height="86" rx="8"/>
+      <rect x="185" y="152" width="790" height="86" rx="8"/>
+      <rect x="185" y="282" width="790" height="86" rx="8"/>
+    </g>
+    <!-- TIN layer: single long chain -->
+    <g stroke="#008570" stroke-width="2" fill="none">
+      <line x1="245" y1="65" x2="370" y2="65" marker-end="url(#ar2)" style="color:#008570"/>
+      <line x1="400" y1="65" x2="525" y2="65" marker-end="url(#ar2)" style="color:#008570"/>
+      <line x1="555" y1="65" x2="680" y2="65" marker-end="url(#ar2)" style="color:#008570"/>
+      <line x1="710" y1="65" x2="835" y2="65" marker-end="url(#ar2)" style="color:#008570"/>
+    </g>
+    <g fill="#008570">
+      <circle cx="230" cy="65" r="9"/><circle cx="385" cy="65" r="7"/><circle cx="540" cy="65" r="7"/><circle cx="695" cy="65" r="7"/><circle cx="850" cy="65" r="9"/>
+    </g>
+    <g font-family="IBM Plex Sans, sans-serif" font-size="10.5" fill="currentColor" text-anchor="middle" opacity=".85">
+      <text x="230" y="95">source</text><text x="385" y="95">relay</text><text x="540" y="95">relay</text><text x="695" y="95">port</text><text x="850" y="95">palace</text>
+    </g>
+    <text x="540" y="42" text-anchor="middle" font-family="IBM Plex Sans, sans-serif" font-size="11" fill="#008570" font-weight="600">four hops, no alternative path — per-hop survival compounds</text>
+    <!-- COPPER layer: dense mesh -->
+    <g stroke="#008570" stroke-width="1.6" opacity=".7" fill="none">
+      <path d="M300 195 L420 175 L540 200 L660 178 L790 195"/>
+      <path d="M300 195 L420 218 L540 200 L660 220 L790 195"/>
+      <path d="M420 175 L420 218 M660 178 L660 220 M300 195 L540 200 M540 200 L790 195"/>
+    </g>
+    <g fill="#008570"><circle cx="300" cy="195" r="8"/><circle cx="420" cy="175" r="6"/><circle cx="420" cy="218" r="6"/><circle cx="540" cy="200" r="8"/><circle cx="660" cy="178" r="6"/><circle cx="660" cy="220" r="6"/><circle cx="790" cy="195" r="8"/></g>
+    <text x="740" y="234" text-anchor="middle" font-family="IBM Plex Sans, sans-serif" font-size="11" fill="#008570" font-weight="600">multiple disjoint paths — a cut edge is absorbed</text>
+    <!-- POLITICAL layer: hub and spoke -->
+    <g stroke="#8A6E10" stroke-width="1.6" fill="none" opacity=".8">
+      <path d="M540 325 L330 305 M540 325 L330 348 M540 325 L760 305 M540 325 L760 348 M540 325 L440 348 M540 325 L650 305"/>
+    </g>
+    <g fill="#8A6E10"><circle cx="540" cy="325" r="11"/><circle cx="330" cy="305" r="6"/><circle cx="330" cy="348" r="6"/><circle cx="760" cy="305" r="6"/><circle cx="760" cy="348" r="6"/><circle cx="440" cy="348" r="6"/><circle cx="650" cy="305" r="6"/></g>
+    <text x="700" y="362" text-anchor="middle" font-family="IBM Plex Sans, sans-serif" font-size="11" fill="#8A6E10" font-weight="600">hub-and-spoke: removing the hub removes the layer</text>
+    <!-- inter-layer dependency -->
+    <g stroke="#C05423" stroke-width="1.5" stroke-dasharray="5 4">
+      <line x1="850" y1="74" x2="790" y2="187"/><line x1="790" y1="203" x2="760" y2="299"/>
+      <line x1="540" y1="74" x2="540" y2="192"/><line x1="540" y1="208" x2="540" y2="314"/>
+    </g>
+    <text x="905" y="140" font-family="IBM Plex Sans, sans-serif" font-size="10.5" fill="#C05423" font-weight="600">depends on</text>
+  </svg>
+  <figcaption><b>The same node behaves differently in each layer, and the layers depend on each other.</b> Tin arrives through a long chain with no alternative path; copper circulates in a redundant regional mesh; political dependency is hub-and-spoke. The dashed links are what convert a gradual decline into a discontinuous one: a palace that loses its metals function stops performing its grain-redistribution function too.</figcaption>
+</figure>
+
+<h4 id="nodes-edges-weights">Nodes, edges, weights</h4>
+<p>Node attributes are carried as distributions, never scalars: location, settlement extent, administrative complexity <span class="m">c_i</span> (archives, sealing practice, standardized weights, storage architecture, craft specialization), agricultural capacity <span class="m">π_i</span>, storage buffer <span class="m">σ_i</span> converted to person-months of supply, metallurgical dependency <span class="m">μ_i</span>, and political dependency <span class="m">ρ_i</span>.</p>
+<div class="call">
+  <div class="ct">No node is privileged</div>
+  <p>Ḫattuša, Mycenae, Ugarit and Pi-Ramesses enter as ordinary nodes. Their prominence in the narrative literature is itself a bias to be controlled: prominence correlates with excavation intensity, and excavation intensity is already a covariate.</p>
+</div>
+<p>An edge requires positive evidence of directional flow, from three independent classes combined by evidence synthesis rather than union — <strong>material provenance</strong> (discounted by the provenance posterior and the number of plausible intermediaries), <strong>textual attestation</strong> (full strength on the political layer, weak on commodity layers, because gift-exchange is a poor proxy for bulk volume), and <strong>route feasibility</strong> (least-cost paths over sea accounting for winds, currents, seasonality and the coastal-tramping character of Bronze Age sailing, and over land across terrain cost surfaces).</p>
+<div class="note-block">P(e_ij^(α) = 1 | evidence)  ∝  P_prov(·) · P_text(·) · P_route(·)^θ
+
+Volume weight      w_ij^(α)   estimated flow, order-of-magnitude posterior
+Dependency weight  d_ij^(α) = w_ij^(α) / Σ_k w_kj^(α)</div>
+<p><span class="m">d</span> is what matters for cascade dynamics. A node may carry small absolute volume and still be structurally critical if it is a sole supplier.</p>
+<div class="call textual">
+  <div class="ct">Anachronism guard on the Amarna layer</div>
+  <p>The Amarna archive dates predominantly to the <strong>mid-14th century</strong> — roughly a century before the transition window. It parameterizes <em>baseline</em> political topology and the persistence of dependency structures, with an explicit decay model for extrapolation forward. Using it directly as a 1200 BCE snapshot is forbidden. Coding is done in duplicate with inter-coder reliability reported (Krippendorff's α ≥ 0.80 for admission).</p>
+</div>
+
+<h3 id="s3-2">Metrics and cascade dynamics</h3>
+<p>Definitions are stated explicitly so results are reproducible.</p>
+<div class="note-block">Strength            s_i^(α) = Σ_j w_ij^(α)
+Betweenness         B_i     = Σ_{s≠i≠t} σ_st(i) / σ_st
+Supply criticality  SC_i^(α)= Σ_{j≠i} d_ij^(α) · ( 1 − r_j^(α) )
+
+Percolation (Cohen et al. 2000)
+    κ   = ⟨k²⟩ / ⟨k⟩            giant component exists iff κ > 2
+    f_c = 1 − 1/(κ₀ − 1)        critical fraction under random removal
+
+Global efficiency   E_glob  = 1/(N(N−1)) · Σ_{i≠j} 1/d_ij
+Robustness          R       = (1/N) · Σ_{q=1..N} S(q)        R ∈ (0, 0.5]
+Brittleness index   B       = 1 − 2R                          B ∈ [0, 1)
+
+Cascade (Motter–Lai 2002)
+    C_i = (1 + α) · L_i(0)      node fails at step τ if L_i(τ) > C_i</div>
+
+<div class="call network">
+  <div class="ct">Robust yet fragile — the formal content of the thesis</div>
+  <p>For heavy-tailed degree distributions with <span class="m">2 &lt; γ ≤ 3</span>, the second moment diverges, <span class="m">κ₀ → ∞</span>, and <span class="m">f_c → 1</span>. The network becomes extremely tolerant of <em>random</em> failure and acutely vulnerable to <em>targeted or correlated</em> failure. Measuring <span class="m">γ</span> is therefore a primary Phase 3 result — estimated by the Clauset–Shalizi–Newman maximum-likelihood procedure and tested against log-normal and stretched-exponential alternatives. A heavy tail is a hypothesis here, not an assumption; the sample is small enough that naive log-log fitting would mislead.</p>
+</div>
+
+<div class="call falsify">
+  <div class="ct">α is measured, not tuned</div>
+  <p>The tolerance parameter <span class="m">α</span> is the fraction of spare capacity a polity holds above ordinary throughput — granary volume, standing surplus, redundant shipping, alternative suppliers. It is not free. A command economy optimizing for extraction and display consumption drives it down. <strong>The over-optimization hypothesis just is the claim that the system ran at low α</strong>, so α is estimated from excavated storage capacity against estimated consumption and reported with its uncertainty as a headline result.</p>
+</div>
+
+<p><strong>Interdependent cascade.</strong> Where a node's function in one layer depends on its state in another — a palace cannot administer grain redistribution once its metallurgical and prestige economy has failed, and cannot sustain that economy without agricultural surplus — the iterative failure process between coupled layers produces a <strong>first-order, discontinuous percolation transition</strong>, in contrast to the continuous transition of a single network. Interdependence converts graceful degradation into abrupt collapse.</p>
+<p>This is the sharpest signature available. Under H₁ decline should be roughly proportional to shock magnitude. Under H₄ with interdependence there is a threshold below which the system absorbs the shock and above which it disintegrates.</p>
+
+<!-- ============ INTERACTIVE 3: TIPPING POINT EXPLORER ============ -->
+<div class="wide lab">
+  <div class="lab-head">
+    <div><div class="lk">Interactive · Phase 3 · the core mechanism</div><div class="lt">Where localized failure becomes systemic</div></div>
+    <div class="lk" id="tipMode">—</div>
+  </div>
+  <div class="lab-body">
+    <div style="display:grid;grid-template-columns:minmax(0,1fr);gap:18px">
+      <div class="canvwrap"><canvas id="netCanvas" width="1100" height="420" aria-label="A simulated exchange network of 150 nodes; nodes still supplied with tin are teal, nodes cut off are orange, and nodes removed by the shock or the cascade are greyed"></canvas></div>
+      <div class="legend">
+        <span><i style="--lc:var(--accent)"></i>Supplied — within five hops of a tin source</span>
+        <span><i style="--lc:var(--ferrous)"></i>Cut off — still standing, but the tin no longer arrives</span>
+        <span><i style="--lc:var(--ink-3)"></i>Removed by the shock or the cascade</span>
+      </div>
+    </div>
+    <div class="ctrls" style="margin-top:18px">
+      <div class="ctrl"><label>Removal fraction <span class="m">f</span> · <span class="val" id="fVal">0.10</span></label><input type="range" id="fSlider" min="0" max="60" value="10" step="1" aria-label="Removal fraction f: share of nodes removed by the shock or the cascade"></div>
+      <div class="ctrl"><label>Attack strategy</label><div class="seg" id="stratSeg"><button data-s="random" aria-pressed="true">Random</button><button data-s="degree" aria-pressed="false">Hubs first</button><button data-s="between" aria-pressed="false">Brokers first</button></div></div>
+      <div class="ctrl"><label>Inter-layer coupling <span class="m">q</span> · <span class="val" id="qVal">0.70</span></label><input type="range" id="qSlider" min="0" max="100" value="70" step="5" aria-label="Inter-layer coupling q"></div>
+      <div class="ctrl"><label>Spare capacity <span class="m">α</span> · <span class="val" id="aTol">0.20</span></label><input type="range" id="aSlider" min="0" max="100" value="20" step="5" aria-label="Spare capacity alpha"></div>
+    </div>
+    <div class="readouts">
+      <div class="ro"><div class="rol">Ψ · supply satisfied</div><div class="rov" id="psiOut">—</div></div>
+      <div class="ro"><div class="rol">f<sub>c</sub> · half unsupplied</div><div class="rov" id="fcOut">—</div></div>
+      <div class="ro"><div class="rol">Bimodal zone width</div><div class="rov" id="jumpOut">—</div></div>
+      <div class="ro"><div class="rol">Transition order</div><div style="margin-top:6px"><span class="verdict ok" id="orderOut">—</span></div></div>
+    </div>
+    <div style="margin-top:20px" class="canvwrap"><canvas id="curveCanvas" width="1100" height="430" aria-label="Two stacked charts sharing an x-axis of removal fraction: the supply-satisfaction order parameter above, and its rate of collapse below, with the peak of the rate curve marking the tipping point"></canvas></div>
+    <div class="legend">
+      <span><i style="--lc:var(--accent)"></i>Independent layers (q = 0)</span>
+      <span><i style="--lc:var(--ferrous)"></i>Coupled at the current q — shaded band is the 10th–90th percentile across 16 runs</span>
+      <span><i style="--lc:var(--lapis)"></i>f<sub>c</sub> — removal fraction at which half the system is unsupplied</span>
+    </div>
+    <p class="disc-note">Set coupling to zero and the curve bends gently: a <strong>second-order</strong> transition, where decline is roughly proportional to damage. Raise coupling and the same shock schedule produces a cliff — a <strong>first-order</strong> transition, where the warning interval between “stressed” and “failed” shrinks toward nothing. Switching from random removal to hubs-first collapses the network at a fraction of the damage, which is the robust-yet-fragile asymmetry made visible. The lower panel is the run-to-run spread. In a finite system a discontinuous transition does not show up as a vertical drop in the average — averaging smooths it away — it shows up as <strong>bimodality</strong>: near the threshold some runs survive intact and others are wiped out, so the ensemble spread balloons. A wide bimodal zone is the finite-size signature §3.6 prescribes. Simulated on a synthetic two-layer network with the qualitative properties described in §3.1 — an exchange layer and a hub-and-spoke political layer, coupled at strength q, with load redistributed on a degree proxy. It illustrates the mechanism; it is not a reconstruction of the Bronze Age.</p>
+  </div>
+</div>
+
+<h3 id="s3-3">The tin bottleneck</h3>
+<p>The metals system is modelled explicitly because it is where the argument is most testable. Tin bronze at the standard ~10% Sn requires inputs in near-fixed proportion — a Leontief technology with negligible short-run substitution:</p>
+<div class="note-block">b_i = min( cu_i / (1 − θ) , sn_i / θ )        θ ≈ 0.10</div>
+<p>Copper was available within the Eastern Mediterranean, Cypriot deposits above all. Tin had no abundant, securely exploited regional source at the scale of demand — small Anatolian deposits notwithstanding — and travelled great distances from Central Asian, Anatolian, and possibly European sources. The binding term is overwhelmingly <span class="m">sn_i / θ</span>.</p>
+
+<figure class="wide fig">
+  <div class="fignum">Figure 3 · Why tin, and not copper, is the constraint</div>
+  <svg viewBox="0 0 1000 260" role="img" aria-label="Two input pipes feed a minimum gate producing bronze: a wide copper pipe from regional sources and a narrow tin pipe from remote sources through four intermediaries; widening the copper pipe does not increase output because the tin pipe binds">
+    <defs><marker id="ar3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="currentColor"/></marker></defs>
+    <!-- copper pipe -->
+    <rect x="60" y="40" width="470" height="52" rx="6" fill="#008570" opacity=".22"/>
+    <rect x="60" y="40" width="470" height="52" rx="6" fill="none" stroke="#008570" stroke-width="1.5"/>
+    <text x="76" y="63" font-family="IBM Plex Sans, sans-serif" font-size="13" font-weight="600" fill="currentColor">Copper · 90% of the alloy</text>
+    <text x="76" y="81" font-family="IBM Plex Sans, sans-serif" font-size="11" fill="currentColor" opacity=".75">Cyprus, the Levant, Sinai — regional, redundant, one or two hops</text>
+    <!-- tin pipe -->
+    <rect x="60" y="150" width="470" height="16" rx="5" fill="#C05423" opacity=".28"/>
+    <rect x="60" y="150" width="470" height="16" rx="5" fill="none" stroke="#C05423" stroke-width="1.5"/>
+    <text x="76" y="141" font-family="IBM Plex Sans, sans-serif" font-size="13" font-weight="600" fill="currentColor">Tin · 10% of the alloy</text>
+    <text x="76" y="186" font-family="IBM Plex Sans, sans-serif" font-size="11" fill="currentColor" opacity=".75">Central Asia, Anatolia, possibly Europe — remote, four or more hops, no substitute</text>
+    <!-- arrows into gate -->
+    <line x1="530" y1="66" x2="588" y2="112" stroke="currentColor" stroke-width="1.5" marker-end="url(#ar3)"/>
+    <line x1="530" y1="158" x2="588" y2="130" stroke="#C05423" stroke-width="1.5" marker-end="url(#ar3)" style="color:#C05423"/>
+    <!-- min gate -->
+    <rect x="596" y="94" width="112" height="58" rx="8" fill="none" stroke="currentColor" stroke-width="2"/>
+    <text x="652" y="120" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="16" font-weight="600" fill="currentColor">min( )</text>
+    <text x="652" y="140" text-anchor="middle" font-family="IBM Plex Sans, sans-serif" font-size="10.5" fill="currentColor" opacity=".75">Leontief</text>
+    <line x1="708" y1="123" x2="762" y2="123" stroke="currentColor" stroke-width="1.5" marker-end="url(#ar3)"/>
+    <!-- output -->
+    <rect x="770" y="99" width="180" height="48" rx="6" fill="#C05423" opacity=".16"/>
+    <rect x="770" y="99" width="180" height="48" rx="6" fill="none" stroke="#C05423" stroke-width="1.5"/>
+    <text x="860" y="120" text-anchor="middle" font-family="IBM Plex Sans, sans-serif" font-size="13" font-weight="600" fill="currentColor">Bronze output</text>
+    <text x="860" y="137" text-anchor="middle" font-family="IBM Plex Sans, sans-serif" font-size="10.5" fill="currentColor" opacity=".75">set entirely by the tin pipe</text>
+    <!-- annotation -->
+    <text x="60" y="228" font-family="IBM Plex Sans, sans-serif" font-size="11.5" fill="#C05423" font-weight="600">Widening the copper pipe changes nothing. Elasticity of output w.r.t. tin ≈ 1; w.r.t. copper ≈ 0.</text>
+    <text x="60" y="248" font-family="IBM Plex Sans, sans-serif" font-size="11" fill="currentColor" opacity=".7">Criticality is a function of substitution elasticity and chain length — not of cost share, which is what procurement accounting measures.</text>
+  </svg>
+  <figcaption><b>The binding constraint is the small input, not the large one.</b> Tin was a tenth of the alloy and a tenth of the cargo mass, and an absolute limit on bronze production. This asymmetry generates a specific archaeological prediction, testable before any network modelling: declining Sn content in bronzes, rising recycling signatures, and increasing use of low-tin or unalloyed copper should appear <em>before</em> settlement failure at affected nodes.</figcaption>
+</figure>
+
+<div class="call correction">
+  <div class="ct">The result the study most needs to produce</div>
+  <p>The Powell et al. 2022 provenancing cuts both ways. Remote sources <strong>lengthen</strong> the chain, adding intermediaries and compounding per-hop failure — exposure rises as <span class="m">Π p_survive</span> over hops. But multiple extraction sources feeding the system through small-scale exchange <strong>reduce</strong> source-concentration risk. The two effects act in opposite directions, and the net effect is an empirical question the model must answer rather than assume.</p>
+</div>
+<p><strong>Substitution.</strong> The ferrous transition is a substitution response, not merely a technological succession. Substitution capacity <span class="m">r_j</span> becomes time-varying, and the aftermath window tests whether the network reconfigured around a commodity with ubiquitous sources — structurally, a shift from a long-chain, high-criticality input to a short-chain, low-criticality one.</p>
+
+<h3 id="s3-4">Perturbation operators and the experimental matrix</h3>
+<div class="wide tablewrap">
+<table>
+  <thead><tr><th>ID</th><th>Operator</th><th>Empirical calibration</th><th>Free parameters</th></tr></thead>
+  <tbody>
+    <tr><td>O1</td><td>Hydroclimate stress</td><td><span class="m">π_i → (1−δ_i(t))·π_i</span> from the spatially varying anomaly field, carrying its between-record disagreement</td><td>Severity scaling; lag from anomaly to yield loss</td></tr>
+    <tr><td>O2</td><td>Seismic node damage</td><td>Capacity and administrative function degraded at sites in the admitted seismic register, on the estimated event chronology</td><td>Damage-to-function mapping; recovery rate</td></tr>
+    <tr><td>O3</td><td>Edge severance</td><td>Maritime and overland edges removed at random, by weight, by betweenness, or in geographic clusters</td><td>Fraction removed; duration</td></tr>
+    <tr><td>O4</td><td>Node deletion</td><td>Random, degree-targeted, betweenness-targeted, or on the attested destruction schedule from the re-audit</td><td>Fraction; schedule</td></tr>
+    <tr><td>O5</td><td>Demand shock</td><td>Reduction in elite prestige-goods demand, modelling loss of legitimacy expenditure</td><td>Magnitude</td></tr>
+    <tr><td><strong>O6</strong></td><td><strong>Endogenous mobility</strong></td><td><span class="m">m_i(t) = f(unmet subsistence, neighbour failure)</span>; displaced groups then act on the network as raiders and migrants</td><td>Threshold; mobility rate; predation intensity</td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="call falsify">
+  <div class="ct">O6 is the whole argument, operationalized</div>
+  <p>Under H₂ the mobile actors are exogenous inputs. Under H₄ they are <em>outputs</em> that then feed back. The two are formally distinguishable: under H₄ the model must reproduce the observed pattern of intrusive material culture and raiding attestation <strong>without any exogenous injection of raiders</strong>, predicting their timing and geography from prior stress. <strong>If an exogenous injection is required to fit the data, H₄'s strongest form is falsified.</strong></p>
+</div>
+
+<div class="wide tablewrap">
+<table>
+  <thead><tr><th>Factor</th><th>Levels</th></tr></thead>
+  <tbody>
+    <tr><td>Shock set</td><td>none · O1 · O2 · O1+O2 · O1+O2+O3 · full (O1–O6)</td></tr>
+    <tr><td>Network</td><td>Empirical reconstruction · degree-preserving rewire · spatially constrained random · volume-matched random · <strong>redundancy-augmented counterfactual</strong> · low-efficiency counterfactual</td></tr>
+    <tr><td>Tolerance <span class="m">α</span></td><td>Empirical posterior · 0.05 · 0.1 · 0.2 · 0.5 · 1.0</td></tr>
+    <tr><td>Tin configuration</td><td>Polycentric (Powell et al.) · single-source concentrated · intermediate, weighted by the provenance-debate prior</td></tr>
+    <tr><td>Coupling <span class="m">q</span></td><td>0 (independent layers) → 1 (full coupling), 11 levels</td></tr>
+    <tr><td>Substitution <span class="m">r</span></td><td>Fixed low · fixed high · time-varying with the ferrous transition</td></tr>
+  </tbody>
+</table>
+</div>
+<p class="tcap">Ensemble ≥ 10⁴ realizations per cell, or until Monte Carlo standard error falls below 1% of the outcome range. Latin hypercube sampling over continuous parameters; full seed and configuration logging; every figure regenerable.</p>
+
+<div class="call network">
+  <div class="ct">The decisive comparison</div>
+  <p>The <strong>redundancy-augmented counterfactual</strong> holds constant the number of nodes, the total trade volume, and the geography, while adding alternative paths. If the historical shock schedule collapses the empirical network but <em>not</em> this one, the brittleness claim is supported in the strongest available sense: the collapse is attributable to topology <em>given</em> the shock — neither to the shock alone nor to the topology alone.</p>
+</div>
+
+<h3 id="s3-6">Locating the tipping point</h3>
+<p>The central question is answered as a critical-phenomena measurement, not a narrative judgement. Rather than the bare largest-component fraction, the order parameter is a <em>functional</em> outcome — whether the system is doing its job:</p>
+<div class="note-block">Ψ(f) = ( Σ_i min( supply_i(f), demand_i ) ) / ( Σ_i demand_i )      on the bronze layer
+
+χ(f) = Σ'_s s²·n_s / Σ'_s s·n_s      largest cluster excluded; χ peaks at f_c
+
+Finite-size scaling:   f_c(N) = f_c(∞) + a · N^(−1/ν)</div>
+<ul class="tight">
+  <li><strong>Order of the transition</strong> is discriminated by a discontinuity in Ψ under infinite-size extrapolation, bimodality of Ψ across ensemble members near <span class="m">f_c</span>, and hysteresis under a reverse sweep restoring capacity.</li>
+  <li><strong>Finite-size analysis is mandatory.</strong> With <span class="m">N ≈ 120–250</span>, apparent sharpness may be an artefact. Any claim of a sharp transition unaccompanied by finite-size analysis is inadmissible.</li>
+  <li><strong>Early-warning signals</strong> — rising autocorrelation, variance and skewness before a bifurcation — are directly measurable in the model. The empirical counterpart (settlement-size variance, import-diversity variance, hoarding frequency, assemblage heterogeneity) is deliberately weaker and is presented as exploratory: archaeological resolution is close to the limit this test needs, and a negative result would be uninformative, which must be said when it is reported.</li>
+  <li><strong>Attribution decomposition.</strong> A Shapley-value decomposition over the factorial design splits the systemic outcome into shock magnitude, topology, and their interaction. H₄ predicts the interaction term carries the largest share — which converts “the shocks interacted with a brittle network” from a metaphor into a number with a confidence interval.</li>
+</ul>
+
+<h3 id="s3-7">Validation — a model that fits the collapse is worthless unless it could have failed to</h3>
+<ol>
+  <li><strong>Out-of-sample temporal validation.</strong> Fit on 1400–1250 BCE baseline dynamics only; predict 1250–1100. No collapse-window data touches the fitting stage.</li>
+  <li><strong>Spatial hold-out.</strong> Withhold entire regions — Cyprus, or the southern Levant — fit on the remainder, predict the withheld pattern of failure <em>and survival</em>.</li>
+  <li><strong>Independent-event benchmark.</strong> Run the identical pipeline on the Theran eruption horizon, where the Knappett–Rivers–Evans results provide a published comparator. If it cannot reproduce known results there, it is not trusted here.</li>
+  <li><strong>Survival prediction</strong> scored by balanced accuracy and Matthews correlation coefficient, because the classes are imbalanced and raw accuracy would mislead.</li>
+  <li><strong>Adversarial fitting.</strong> An independent team fits the same observations with H₁ and H₂ maximally favoured, on an equal computational budget. Bayes factors are computed between the best H₄ model and the best adversarial model.</li>
+  <li><strong>Sensitivity.</strong> Global Sobol indices over all parameters; results reported for the full posterior, never a maximum-likelihood point.</li>
+  <li><strong>Prior sensitivity.</strong> Every substantive conclusion re-run under the advisory panel's most sceptical elicited prior. Conclusions that do not survive are reported as prior-dependent.</li>
+</ol>
+
+<!-- ===================== PHASE 4 ===================== -->
+<div class="phase-head" id="s4">
+  <div class="pn">Phase 4</div>
+  <h2 id="brittleness-and-the-limits-of-modern-parallels">Brittleness and the Limits of Modern Parallels</h2>
+  <p class="obj">Convert the network results into a general account of how efficiency-seeking generates fragility — and establish, under strict conditions, what if anything transfers to modern systems.</p>
+</div>
+
+<div class="call correction">
+  <div class="ct">Standing warning</div>
+  <p>This phase carries the highest risk in the project. The pull toward a satisfying contemporary moral is strong, the incentives to indulge it are strong, and the resulting literature is largely worthless. A <strong>formal homology test</strong> must be passed before any parallel is asserted, and disanalogies are published with equal prominence. If the test fails, Phase 4 reports that it fails — a legitimate and publishable outcome.</p>
+</div>
+
+<h3 id="operationalizing-brittleness">Operationalizing brittleness</h3>
+<p>Brittleness is not a mood. It is a measurable property of a response function, defined here as a five-component vector so that no single number can hide a trade-off.</p>
+<div class="wide tablewrap">
+<table>
+  <thead><tr><th>Component</th><th>Symbol</th><th>Definition</th><th>Measured from</th></tr></thead>
+  <tbody>
+    <tr><td>Redundancy deficit</td><td><span class="m">1 − R̄</span></td><td>Mean edge-disjoint path count, normalized, dependency-weighted</td><td>Reconstructed topology</td></tr>
+    <tr><td>Buffer deficit</td><td><span class="m">1 − ᾱ</span></td><td>Spare capacity relative to throughput</td><td>Excavated storage volume vs. estimated consumption</td></tr>
+    <tr><td>Input criticality</td><td><span class="m">SC</span></td><td>Supply criticality on the binding commodity</td><td>Commodity-flow layer</td></tr>
+    <tr><td>Substitution rigidity</td><td><span class="m">1 − r̄</span></td><td>Inability to substitute inputs or suppliers within the shock's timescale</td><td>Leontief constraint; source geography</td></tr>
+    <tr><td>Coupling</td><td><span class="m">q</span></td><td>Strength of inter-layer dependency</td><td>Multiplex dependency links</td></tr>
+  </tbody>
+</table>
+</div>
+<p class="tcap">The composite index <span class="m">B = 1 − 2R</span> is the headline scalar; the <em>vector</em> is what gets interpreted, because two systems can share a <span class="m">B</span> for entirely different reasons and will fail differently.</p>
+
+<figure class="wide fig">
+  <div class="fignum">Figure 4 · The efficiency–resilience frontier</div>
+  <svg viewBox="0 0 1000 440" role="img" aria-label="A scatter plot of global efficiency against robustness for four network configurations: the empirical reconstruction sits at high efficiency and low robustness, the degree-preserving and spatial nulls sit mid-range, and the redundancy-augmented counterfactual sits at slightly lower efficiency with much higher robustness">
+    <g stroke="#DFE4DF" stroke-width="1" opacity=".55">
+      <line x1="110" y1="60" x2="940" y2="60"/><line x1="110" y1="145" x2="940" y2="145"/>
+      <line x1="110" y1="230" x2="940" y2="230"/><line x1="110" y1="315" x2="940" y2="315"/>
+      <line x1="317" y1="60" x2="317" y2="360"/><line x1="525" y1="60" x2="525" y2="360"/><line x1="732" y1="60" x2="732" y2="360"/>
+    </g>
+    <line x1="110" y1="360" x2="940" y2="360" stroke="currentColor" stroke-width="1.5"/>
+    <line x1="110" y1="60" x2="110" y2="360" stroke="currentColor" stroke-width="1.5"/>
+    <text x="525" y="398" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="11" fill="currentColor" letter-spacing="1.2">GLOBAL EFFICIENCY  E_glob  →</text>
+    <text x="34" y="210" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="11" fill="currentColor" letter-spacing="1.2" transform="rotate(-90 34 210)">ROBUSTNESS  R  →</text>
+    <!-- frontier curve -->
+    <path d="M180 96 C360 130, 560 250, 900 336" fill="none" stroke="currentColor" stroke-width="1.4" stroke-dasharray="6 5" opacity=".45"/>
+    <text x="245" y="88" font-family="IBM Plex Sans, sans-serif" font-size="10.5" fill="currentColor" opacity=".6">attainable frontier</text>
+    <!-- points -->
+    <g>
+      <circle cx="860" cy="318" r="10" fill="#C05423"/>
+      <text x="840" y="308" text-anchor="end" font-family="IBM Plex Sans, sans-serif" font-size="12.5" font-weight="600" fill="#C05423">Empirical reconstruction</text>
+      <text x="840" y="325" text-anchor="end" font-family="IBM Plex Sans, sans-serif" font-size="10.5" fill="currentColor" opacity=".75">high efficiency, low robustness — collapses under the historical schedule</text>
+    </g>
+    <g>
+      <circle cx="560" cy="222" r="8" fill="#3B5FC0"/>
+      <text x="580" y="218" font-family="IBM Plex Sans, sans-serif" font-size="12" font-weight="600" fill="#3B5FC0">Degree-preserving null</text>
+      <text x="580" y="234" font-family="IBM Plex Sans, sans-serif" font-size="10.5" fill="currentColor" opacity=".75">same degrees, rewired</text>
+    </g>
+    <g>
+      <circle cx="430" cy="188" r="8" fill="#8A6E10"/>
+      <text x="450" y="184" font-family="IBM Plex Sans, sans-serif" font-size="12" font-weight="600" fill="#8A6E10">Spatially constrained null</text>
+      <text x="450" y="200" font-family="IBM Plex Sans, sans-serif" font-size="10.5" fill="currentColor" opacity=".75">same geography, random ties</text>
+    </g>
+    <g>
+      <circle cx="742" cy="132" r="10" fill="#008570"/>
+      <text x="722" y="122" text-anchor="end" font-family="IBM Plex Sans, sans-serif" font-size="12.5" font-weight="600" fill="#008570">Redundancy-augmented counterfactual</text>
+      <text x="722" y="139" text-anchor="end" font-family="IBM Plex Sans, sans-serif" font-size="10.5" fill="currentColor" opacity=".75">same nodes, same volume — survives the same shock</text>
+    </g>
+    <!-- the decisive gap -->
+    <line x1="800" y1="140" x2="836" y2="303" stroke="#008570" stroke-width="1.6" stroke-dasharray="4 4"/>
+    <text x="880" y="220" font-family="IBM Plex Sans, sans-serif" font-size="11" font-weight="600" fill="#008570">a small</text>
+    <text x="880" y="236" font-family="IBM Plex Sans, sans-serif" font-size="11" font-weight="600" fill="#008570">efficiency cost</text>
+    <text x="880" y="252" font-family="IBM Plex Sans, sans-serif" font-size="11" font-weight="600" fill="#008570">buys a large</text>
+    <text x="880" y="268" font-family="IBM Plex Sans, sans-serif" font-size="11" font-weight="600" fill="#008570">robustness gain</text>
+  </svg>
+  <figcaption><b>Schematic of the hypothesis, not a result.</b> H₄ predicts the empirical network sits measurably above the nulls in efficiency and below them in robustness. <b>If it does not, the over-optimization thesis is falsified at its root</b> — and that is a live risk: a network reconstructed from surviving imports is biased <em>toward</em> apparent efficiency, because evidence for a route survives better when the route was heavily used. That bias must be quantified by simulation before this figure is ever filled with real values.</figcaption>
+</figure>
+
+<h4 id="the-mechanism-stated-so-it-can-be-checked">The mechanism, stated so it can be checked</h4>
+<ol>
+  <li><strong>Centralized redistribution suppresses redundancy.</strong> When a palace stops functioning, the redistribution it performed does not degrade — it stops. <em>Testable:</em> the sharpest discontinuities occur at sites with the highest administrative-complexity index, and dependent settlements fail at a short, measurable lag behind their palace.</li>
+  <li><strong>Elite prestige demand rewards long chains.</strong> Value accrues to the exotic, so legitimacy expenditure commits the system to long, thin supply chains — the configuration with the lowest per-hop survival probability.</li>
+  <li><strong>Specialization raises efficiency and lowers substitutability.</strong></li>
+  <li><strong>Buffers are politically expensive.</strong> Stored surplus that is neither consumed nor displayed returns no legitimacy, so under competitive display pressure α is driven down. <em>Testable, and genuinely surprising if true:</em> storage capacity relative to estimated catchment yield should <strong>decline</strong> through the thirteenth century at high-complexity sites.</li>
+  <li><strong>Coupling is a by-product of integration.</strong> The same institutions manage metals, grain and diplomacy — and strong coupling makes the transition discontinuous.</li>
+</ol>
+<p>Point 4 is the sharpest empirical hook in Phase 4 and should be prioritized: it is a claim about excavated storage volumes over time, it is measurable, and it could easily come out the other way.</p>
+
+<h3 id="s4-2">The homology test for modern parallels</h3>
+<p>No parallel is asserted unless this gate is passed, and the modern comparator must be <strong>named and characterized in advance</strong> — not left as “globalization.”</p>
+<div class="wide tablewrap">
+<table>
+  <thead><tr><th>#</th><th>Dimension</th><th>LBA measurement</th><th>Modern counterpart</th><th>Pass condition</th></tr></thead>
+  <tbody>
+    <tr><td>1</td><td>Degree-distribution class</td><td><span class="m">γ</span> by Clauset MLE with model comparison</td><td>Same estimator on the modern supplier graph</td><td>Same class, overlapping credible intervals</td></tr>
+    <tr><td>2</td><td>Critical-input concentration</td><td><span class="m">SC</span> for tin; source-geography HHI</td><td><span class="m">SC</span> and HHI for the named critical input</td><td>Same order of magnitude</td></tr>
+    <tr><td>3</td><td>Buffer-to-throughput</td><td><span class="m">α</span> from storage vs. consumption</td><td>Days of inventory; strategic reserve coverage</td><td>Same order of magnitude</td></tr>
+    <tr><td>4</td><td>Substitution elasticity</td><td>Leontief rigidity of the alloy constraint</td><td>Short-run elasticity for the critical input</td><td>Both below 0.2 in the relevant horizon</td></tr>
+    <tr><td>5</td><td>Route redundancy</td><td>Edge-disjoint paths on the critical layer</td><td>Independent logistics corridors</td><td>Comparable normalized <span class="m">R</span></td></tr>
+    <tr><td>6</td><td>Cross-layer coupling</td><td><span class="m">q</span></td><td>Coupling of logistics, finance, energy, information</td><td>Comparable, or explicitly bounded</td></tr>
+  </tbody>
+</table>
+</div>
+<p class="tcap"><strong>Scoring:</strong> a parallel is asserted only where at least four of six pass and none fails catastrophically. Where fewer pass, the finding is reported as <em>structural difference</em> — equally informative, and considerably rarer in the literature.</p>
+
+<h4 id="the-disanalogy-register-published-not-buried">The disanalogy register — published, not buried</h4>
+<div class="wide tablewrap">
+<table>
+  <thead><tr><th>Difference</th><th>Why it matters</th></tr></thead>
+  <tbody>
+    <tr><td>Information velocity</td><td>Bronze Age disruption was detectable only after it had propagated. Instant signalling enables faster correction <em>and</em> faster contagion; the sign of this difference is genuinely ambiguous and must not be asserted.</td></tr>
+    <tr><td><strong>Price signals</strong></td><td>Palatial redistribution and gift-exchange are not price-clearing markets. Modern chains reallocate through prices — a powerful adaptive mechanism entirely absent from the ancient case. <strong>The single largest disanalogy.</strong></td></tr>
+    <tr><td>Capital and technological substitution</td><td>Modern systems build new capacity in months to years. A Bronze Age polity could not conjure a new tin source.</td></tr>
+    <tr><td>State capacity</td><td>Strategic reserves, industrial policy, and coordinated crisis response have no close ancient analogue.</td></tr>
+    <tr><td>Energy basis</td><td>Solar-agricultural versus fossil, nuclear and renewable energy produce different constraint structures entirely.</td></tr>
+    <tr><td>Scale and demographic buffer</td><td>Populations, urbanization, and mobility differ by orders of magnitude.</td></tr>
+    <tr><td>Data asymmetry</td><td>Modern supply-chain data is dense and directly measured; LBA data is sparse, indirect, and centuries-averaged. Confidence intervals must reflect that rather than being presented on a common footing.</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h4 id="what-actually-transfers-if-the-gate-is-passed">What actually transfers, if the gate is passed</h4>
+<p>The transferable content is <strong>structural and conditional</strong>, never predictive.</p>
+<ol>
+  <li><strong>Efficiency and robustness trade off, and the trade-off is invisible in normal operation.</strong> A network optimized for throughput emits no distress signal while conditions stay in-distribution. The absence of failure is not evidence of robustness.</li>
+  <li><strong>Robust-yet-fragile is a topological property, not a management failure.</strong> Systems that have survived many random shocks may have learned precisely the wrong lesson about their own resilience.</li>
+  <li><strong>Interdependence converts gradual degradation into discontinuous collapse.</strong> Coupling logistics, finance, energy and information moves the transition from second-order to first-order — the warning interval between “stressed” and “failed” shrinks toward zero.</li>
+  <li><strong>The binding constraint is the long-chain, low-substitutability input, whatever its share of value.</strong> Criticality is a function of substitution elasticity and chain length, not cost share — exactly the quantity conventional procurement accounting does not measure.</li>
+  <li><strong>Correlated shocks defeat diversification.</strong> When drought, seismicity and unrest are spatially correlated, apparently independent routes fail together and measured diversification overstates real protection.</li>
+  <li><strong>The visible agent of collapse may be an output of the system's own stress.</strong> If the endogenous-mobility result holds, attributing collapse to whoever appears at the moment of failure is a category error. <em>This is the study's contribution to general theory and the claim most at risk of being over-stated; it must travel with the model's limitations attached.</em></li>
+</ol>
+
+<h3 id="s4-3">Conclusion architecture</h3>
+<p>The concluding argument is written to a fixed structure that makes the strength of each claim visible: <strong>(1)</strong> what the evidence shows, with tiers and uncertainties, independent of any model; <strong>(2)</strong> what the model shows, always paired with the null comparison; <strong>(3)</strong> posterior model probabilities for H₀–H₄ with prior sensitivity; <strong>(4)</strong> what remains unresolved and the specific evidence that would resolve it; <strong>(5)</strong> what generalizes, gated by the homology test; <strong>(6)</strong> what does not.</p>
+<p>If the hypothesis is supported, the concluding claim is bounded in this form and no stronger:</p>
+<blockquote>The observed pattern of failure and survival between 1250 and 1100 BCE is better explained by exogenous climatic and seismic shocks propagating through a highly efficient, low-redundancy, strongly coupled exchange network than by those shocks alone, by network structure alone, or by exogenous migration. The mobile groups recorded in Egyptian sources are, on this account, consistent with an output of the failing system rather than its initiating cause — though the textual record is too thin, and its survival too strongly conditioned on the collapse itself, to exclude an independent migratory contribution.</blockquote>
+<p>If the hypothesis is not supported, the corresponding statement is written in advance, so the framing cannot drift after the results are seen.</p>
+
+<!-- ===================== GOVERNANCE ===================== -->
+<div class="phase-head" id="s5">
+  <div class="pn">Section 05</div>
+  <h2 id="governance-falsification-and-programme-managemen">Governance, Falsification, and Programme Management</h2>
+  <p class="obj">Pre-registered before data compilation, with a timestamped hash. Seven conditions reject the study hypothesis; one of them means the study cannot answer the question at all, and the two must never be conflated in reporting.</p>
+</div>
+
+<h3 id="falsification-criteria">Falsification criteria</h3>
+<div class="wide tablewrap">
+<table>
+  <thead><tr><th>#</th><th>H₄ is rejected if…</th></tr></thead>
+  <tbody>
+    <tr><td>F1</td><td>The reconstructed network's efficiency and robustness fall within the 90% interval of degree-preserving and spatially constrained nulls — it is not unusually brittle.</td></tr>
+    <tr><td>F2</td><td>Failure incidence and severity show no association with network position after controlling for hydroclimate exposure, seismic exposure, excavation intensity, and dating quality.</td></tr>
+    <tr><td>F3</td><td>The historical shock schedule collapses the redundancy-augmented counterfactual as readily as the empirical network.</td></tr>
+    <tr><td>F4</td><td>Failure times show no path-ordered structure: lag between connected failures is unrelated to network distance, at the resolution the chronology permits.</td></tr>
+    <tr><td>F5</td><td>The earliest robust attestations of Sea Peoples activity <strong>precede</strong> the earliest robust indicators of supply-chain and hydroclimate stress in the source regions.</td></tr>
+    <tr><td>F6</td><td>The re-audit reduces securely attested destructions below the threshold needed to detect the predicted spatial pattern at power ≥ 0.8.</td></tr>
+    <tr><td>F7</td><td>The Bayes factor for H₄ against the best adversarial H₁/H₂ model is below 3.</td></tr>
+  </tbody>
+</table>
+</div>
+<div class="call correction">
+  <div class="ct">F6 is not a negative result</div>
+  <p>F6 is a condition under which the study <strong>cannot answer the question</strong>, not one under which the answer is no. If it obtains, the deliverable becomes the audited evidence base plus a power analysis specifying what new excavation and dating would be required — which is a real contribution, and must not be written up as a refutation.</p>
+</div>
+
+<h3 id="s5-2">Programme, team, and risk</h3>
+<div class="wide fig" style="padding:22px 20px 18px">
+  <div class="fignum" style="margin-bottom:14px">Figure 5 · Phase structure, with hard gates</div>
+  <div class="gantt">
+    <div></div><div class="gh">M1–9</div><div class="gh">M10–18</div><div class="gh">M19–27</div><div class="gh">M28–36</div><div class="gh">M37–45</div><div class="gh">M46–54</div>
+    <div class="gl">Phase 1 · Framework</div>
+    <div class="bar" style="--gc:var(--gold);grid-column:2/3">operators approved</div><div></div><div></div><div></div><div></div>
+    <div class="gl">Phase 2 · Evidence</div>
+    <div></div><div class="bar" style="--gc:var(--gold);grid-column:3/6">re-audit · chronology · proxy compilation</div><div></div><div></div>
+    <div class="gl">Phase 3 · Model</div>
+    <div></div><div></div><div></div><div class="bar" style="--gc:var(--lapis);grid-column:5/7">validation suite must pass</div>
+    <div class="gl">Phase 4 · Synthesis</div>
+    <div></div><div></div><div></div><div></div><div class="bar" style="--gc:var(--ferrous);grid-column:6/8">homology test, reported either way</div>
+  </div>
+  <p class="tcap" style="margin-top:14px">Phases overlap deliberately. The Phase 2 → Phase 3 gate is hard: <strong>modelling on unaudited data is prohibited.</strong></p>
+</div>
+
+<p><strong>Team.</strong> A network scientist with percolation and multilayer expertise; a computational archaeologist; four regional specialists (Aegean, Anatolian, Levantine/Cypriot, Egyptian); a philologist covering Akkadian, Ugaritic and Hittite; a palaeoclimatologist; an archaeometallurgist; a Bayesian chronologist; a data engineer; and a heritage-liaison officer.</p>
+<div class="call">
+  <div class="ct">Anti-siloing requirement</div>
+  <p>Regional specialists see every quantitative result in domain terms before publication and may veto claims that misrepresent their evidence. Modellers see every archaeological interpretation and may flag unfalsifiable claims. <strong>Disagreements that survive are published as disagreements.</strong></p>
+</div>
+
+<h4 id="data-acquisition-priorities">Data acquisition priorities</h4>
+<p>Ranked by expected reduction in posterior uncertainty:</p>
+<ol class="tight">
+  <li>High-resolution, well-dated hydroclimate records for the Anatolian plateau and northern Levant — the largest spatial gaps in the drought field.</li>
+  <li>Dendrochronologically anchored or wiggle-matched sequences from destruction contexts — the only realistic route to decadal ordering.</li>
+  <li>Systematic lead- and tin-isotope programmes on stratified assemblages spanning 1300–1050 BCE, converting provenance snapshots into a time series.</li>
+  <li>Re-excavation or archival re-study of destruction contexts flagged as insufficiently documented.</li>
+  <li>Systematic quantification of storage capacity by phase at palatial sites — the weakest link in the α estimate, on which the sharpest Phase 4 prediction depends.</li>
+</ol>
+
+<div class="wide tablewrap">
+<table>
+  <thead><tr><th>Risk</th><th>Likelihood</th><th>Impact</th><th>Mitigation</th></tr></thead>
+  <tbody>
+    <tr><td>Destruction corpus collapses under re-audit</td><td>Medium</td><td>High</td><td>Front-load the audit; design order-free tests that survive it</td></tr>
+    <tr><td>Chronology cannot resolve ordering</td><td>High</td><td>High</td><td>Cross-sectional tests as primary; wiggle-matching programme; report unresolved pairs honestly</td></tr>
+    <tr><td><strong>Network reconstruction is circular</strong> — routes inferred from the same finds used to test the model</td><td>High</td><td>Critical</td><td>Strict separation of edge-construction evidence from outcome evidence; spatial hold-out; simulate the survival bias and quantify its effect on the frontier</td></tr>
+    <tr><td>Overfitting to a single realization</td><td>High</td><td>High</td><td>Out-of-sample and hold-out validation; Thera benchmark; Sobol sensitivity</td></tr>
+    <tr><td>Modern-parallel over-claiming</td><td>High</td><td>High (reputational)</td><td>Homology gate; disanalogy register; external review by an economist and a supply-chain specialist</td></tr>
+    <tr><td>Proxy disagreement dismissed as noise</td><td>Medium</td><td>High</td><td>Between-record disagreement carried as parameter uncertainty, never averaged away</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h4 id="ethics">Ethics</h4>
+<p>Coordinates for sites at looting risk are fuzzed in public releases. Sampling requires national permits and is minimized in favour of legacy-collection reanalysis. Regional scholars and institutions in the countries where the evidence originates are collaborators with authorship, not data providers. Published language avoids framing collapse as civilizational judgement, and avoids deploying ancient migration as commentary on modern migration — a use of this material that is both historically indefensible and politically instrumentalized.</p>
+
+<h4 id="deliverables">Deliverables</h4>
+<div class="wide tablewrap">
+<table>
+  <thead><tr><th>ID</th><th>Deliverable</th></tr></thead>
+  <tbody>
+    <tr><td>D1</td><td>Historiographical synthesis and formal operator table</td></tr>
+    <tr><td>D2</td><td>Audited, versioned, DOI-minted multiproxy evidence base with full uncertainty representation</td></tr>
+    <tr><td>D3</td><td>Destruction-horizon re-audit catalogue — a standalone contribution regardless of the study's outcome</td></tr>
+    <tr><td>D4</td><td>Bayesian chronological model with published posterior orderings and a register of unresolved pairs</td></tr>
+    <tr><td>D5</td><td>Open-source multilayer network and cascade simulation suite, containerized and reproducible</td></tr>
+    <tr><td>D6</td><td>Primary results paper: model comparison and tipping-point analysis</td></tr>
+    <tr><td>D7</td><td>Methods paper: multiproxy normalization and the causal firewall, written for transfer to other collapse studies</td></tr>
+    <tr><td>D8</td><td>Phase 4 synthesis: brittleness, the frontier, and the homology assessment</td></tr>
+    <tr><td>D9</td><td>Public interactive visualization of the network and its failure dynamics</td></tr>
+  </tbody>
+</table>
+</div>
+
+<!-- ===================== APPENDICES ===================== -->
+<div class="phase-head" id="appa">
+  <div class="pn">Appendix A</div>
+  <h2 id="notation">Notation</h2>
+</div>
+<div class="wide tablewrap">
+<table>
+  <thead><tr><th>Symbol</th><th>Meaning</th><th>Symbol</th><th>Meaning</th></tr></thead>
+  <tbody>
+    <tr><td><span class="m">M(t)</span></td><td>Temporal multiplex network</td><td><span class="m">E_glob</span></td><td>Global efficiency</td></tr>
+    <tr><td><span class="m">V, N</span></td><td>Node set; number of nodes</td><td><span class="m">R_ij, R̄</span></td><td>Edge-disjoint path count; weighted mean</td></tr>
+    <tr><td><span class="m">L, α</span></td><td>Layer set; layer index</td><td><span class="m">R</span></td><td>Schneider robustness index</td></tr>
+    <tr><td><span class="m">w_ij^(α)</span></td><td>Volume weight, i → j, layer α</td><td><span class="m">B</span></td><td>Brittleness index, 1 − 2R</td></tr>
+    <tr><td><span class="m">d_ij^(α)</span></td><td>Dependency weight</td><td><span class="m">L_i, C_i</span></td><td>Node load; node capacity</td></tr>
+    <tr><td><span class="m">⟨k⟩, ⟨k²⟩</span></td><td>Degree moments</td><td><span class="m">α</span> (cascade)</td><td>Tolerance, C_i = (1+α)L_i(0)</td></tr>
+    <tr><td><span class="m">κ</span></td><td>⟨k²⟩/⟨k⟩, Molloy–Reed parameter</td><td><span class="m">q</span></td><td>Inter-layer coupling strength</td></tr>
+    <tr><td><span class="m">f, f_c</span></td><td>Removal fraction; critical fraction</td><td><span class="m">Ψ(f)</span></td><td>Supply-satisfaction ratio</td></tr>
+    <tr><td><span class="m">γ</span></td><td>Degree-distribution tail exponent</td><td><span class="m">χ(f)</span></td><td>Percolation susceptibility</td></tr>
+    <tr><td><span class="m">B_i</span></td><td>Betweenness centrality</td><td><span class="m">ν</span></td><td>Finite-size scaling exponent</td></tr>
+    <tr><td><span class="m">SC_i^(α)</span></td><td>Supply criticality</td><td><span class="m">π_i, σ_i, c_i</span></td><td>Agricultural capacity; storage buffer; complexity</td></tr>
+    <tr><td><span class="m">r_j^(α)</span></td><td>Substitution capacity</td><td><span class="m">θ</span></td><td>Tin fraction in bronze (≈ 0.10)</td></tr>
+    <tr><td><span class="m">δ_i(t)</span></td><td>Hydroclimate capacity reduction</td><td><span class="m">Δ_R</span></td><td>Regional radiocarbon offset</td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="phase-head" id="appb">
+  <div class="pn">Appendix B</div>
+  <h2 id="verified-source-register">Verified Source Register</h2>
+  <p class="obj">Every item was checked against a publisher, journal, or institutional record during protocol preparation. Identifiers are reproduced as published.</p>
+</div>
+
+<div class="refs wide">
+  <div class="rgrp" style="color:var(--ink-3)">Anchor monographs and editions</div>
+  <ul>
+    <li>Cline, E.H. <em>1177 B.C.: The Year Civilization Collapsed.</em> Princeton UP, 2014; rev. ed. 2021. <span class="id">ISBN 9780691208015 (rev.) · 9780691140896 (1st) · JSTOR j.ctv15r58dw</span></li>
+    <li>Cline, E.H. <em>After 1177 B.C.: The Survival of Civilizations.</em> Princeton UP, 2024. <span class="id">ISBN 9780691192130</span></li>
+    <li>Tainter, J.A. <em>The Collapse of Complex Societies.</em> Cambridge UP, 1988. <span class="id">ISBN 9780521386739</span></li>
+    <li>Renfrew, C. “Systems Collapse as Social Transformation,” in <em>Transformations: Mathematical Approaches to Culture Change</em>, 1979. <span class="id">Academic Press</span></li>
+    <li>Millek, J.M. <em>Destruction and Its Impact on Ancient Societies at the End of the Bronze Age.</em> Lockwood Press, 2023. <span class="id">ISBN 9781948488839</span></li>
+    <li>Killebrew, A.E. &amp; Lehmann, G. (eds.) <em>The Philistines and Other “Sea Peoples” in Text and Archaeology.</em> SBL, 2013. <span class="id">ISBN 9781589831292</span></li>
+    <li>Leidwanger, J. &amp; Knappett, C. (eds.) <em>Maritime Networks in the Ancient Mediterranean World.</em> Cambridge UP, 2018. <span class="id">ISBN 9781108429948</span></li>
+    <li>Knappett, C. (ed.) <em>Network Analysis in Archaeology.</em> Oxford UP, 2013.</li>
+    <li>Moran, W.L. <em>The Amarna Letters.</em> Johns Hopkins UP, 1992. <span class="id">Standard edition, EA 1–382</span></li>
+  </ul>
+
+  <div class="rgrp" style="color:var(--accent-ink)">Climate and environment</div>
+  <ul>
+    <li>Langgut, D., Finkelstein, I. &amp; Litt, T. 2013. “Climate and the Late Bronze Collapse: New Evidence from the Southern Levant.” <em>Tel Aviv</em> 40(2): 149–175. <span class="id">DOI 10.1179/033443513X13753505864205</span></li>
+    <li>Kaniewski, D. et al. 2013. “Environmental Roots of the Late Bronze Age Crisis.” <em>PLOS ONE</em> 8(8): e71004. <span class="id">DOI 10.1371/journal.pone.0071004</span></li>
+    <li>Drake, B.L. 2012. “The influence of climatic change on the Late Bronze Age Collapse and the Greek Dark Ages.” <em>Journal of Archaeological Science</em> 39(6): 1862–1870.</li>
+    <li>Finné, M., Woodbridge, J., Labuhn, I. &amp; Roberts, C.N. 2019. “Holocene hydro-climatic variability in the Mediterranean.” <em>The Holocene</em>. <span class="id">DOI 10.1177/0959683619826634</span></li>
+    <li>Jacobson, M.J., Seguin, J. &amp; Finné, M. 2024. “Holocene hydroclimate synthesis of the Aegean.” <em>The Holocene</em>. <span class="id">DOI 10.1177/09596836241275028</span></li>
+    <li>Weiberg, E. &amp; Finné, M. 2018. “Resilience and persistence of ancient societies in the face of climate change.” <em>World Archaeology</em>. <span class="id">DOI 10.1080/00438243.2018.1515035</span></li>
+  </ul>
+
+  <div class="rgrp" style="color:var(--ferrous)">Seismicity</div>
+  <ul>
+    <li>Nur, A. &amp; Cline, E.H. 2000. “Poseidon's Horses: Plate Tectonics and Earthquake Storms in the Late Bronze Age Aegean and Eastern Mediterranean.” <em>Journal of Archaeological Science</em> 27(1): 43–63.</li>
+    <li>Stiros, S. 1996. “Identification of earthquakes from archaeological data: methodology, criteria and limitations,” in Stiros &amp; Jones (eds.), <em>Archaeoseismology</em>, Fitch Laboratory Occasional Paper 7.</li>
+  </ul>
+
+  <div class="rgrp" style="color:var(--accent-ink)">Metals and provenance</div>
+  <ul>
+    <li>Powell, W. et al. 2022. “Tin from Uluburun shipwreck shows small-scale commodity exchange fueled continental tin supply across Late Bronze Age Eurasia.” <em>Science Advances</em> 8(48): eabq3766. <span class="id">DOI 10.1126/sciadv.abq3766</span></li>
+    <li>Stos-Gale, Z.A. et al. 1997. “Lead isotope characteristics of the Cyprus copper ore deposits applied to provenance studies of copper oxhide ingots.” <em>Archaeometry</em> 39(1). <span class="id">DOI 10.1111/j.1475-4754.1997.tb00792.x</span></li>
+    <li>OXALID lead-isotope reference database, University of Oxford.</li>
+  </ul>
+
+  <div class="rgrp" style="color:var(--gold)">Chronology</div>
+  <ul>
+    <li>Reimer, P.J. et al. 2020. “The IntCal20 Northern Hemisphere radiocarbon age calibration curve.” <em>Radiocarbon</em> 62(4).</li>
+    <li>Manning, S.W. et al. 2020. “Mediterranean radiocarbon offsets and calendar dates for prehistory.” <em>Science Advances</em>. <span class="id">DOI 10.1126/sciadv.aaz1096</span></li>
+    <li>Manning, S.W. et al. 2020. “Radiocarbon offsets and old world chronology as relevant to Mesopotamia, Egypt, Anatolia and Thera.” <em>Scientific Reports</em>. <span class="id">DOI 10.1038/s41598-020-69287-2</span></li>
+    <li>Manning, S.W. et al. 2018. “Fluctuating radiocarbon offsets observed in the southern Levant.” <em>PNAS</em> 115(24): 6141.</li>
+  </ul>
+
+  <div class="rgrp" style="color:var(--lapis)">Network science</div>
+  <ul>
+    <li>Knappett, C., Evans, T. &amp; Rivers, R. 2008. “Modelling maritime interaction in the Aegean Bronze Age.” <em>Antiquity</em> 82(318): 1009–1024.</li>
+    <li>Knappett, C., Rivers, R. &amp; Evans, T. 2011. “The Theran eruption and Minoan palatial collapse.” <em>Antiquity</em> 85(329): 1008–1023. <span class="id">DOI 10.1017/S0003598X00068459</span></li>
+    <li>Cline, D.H. &amp; Cline, E.H. 2015. “Text Messages, Tablets, and Social Networks: The ‘Small World’ of the Amarna Letters,” in <em>There and Back Again — the Crossroads II</em>, 17–44. Charles University, Prague.</li>
+    <li>Cohen, R., Erez, K., ben-Avraham, D. &amp; Havlin, S. 2000. “Resilience of the Internet to random breakdowns.” <em>Phys. Rev. Lett.</em> 85(21): 4626. <span class="id">DOI 10.1103/PhysRevLett.85.4626</span></li>
+    <li>Motter, A.E. &amp; Lai, Y.-C. 2002. “Cascade-based attacks on complex networks.” <em>Phys. Rev. E</em> 66: 065102(R). <span class="id">DOI 10.1103/PhysRevE.66.065102</span></li>
+    <li>Buldyrev, S.V. et al. 2010. “Catastrophic cascade of failures in interdependent networks.” <em>Nature</em> 464: 1025–1028. <span class="id">DOI 10.1038/nature08932</span></li>
+    <li>Schneider, C.M. et al. 2011. “Mitigation of malicious attacks on networks.” <em>PNAS</em> 108(10): 3838–3841.</li>
+    <li>Latora, V. &amp; Marchiori, M. 2001. “Efficient behavior of small-world networks.” <em>Phys. Rev. Lett.</em> 87: 198701.</li>
+    <li>Clauset, A., Shalizi, C.R. &amp; Newman, M.E.J. 2009. “Power-law distributions in empirical data.” <em>SIAM Review</em> 51(4): 661–703.</li>
+    <li>Scheffer, M. et al. 2009. “Early-warning signals for critical transitions.” <em>Nature</em> 461: 53–59.</li>
+  </ul>
+
+  <div class="rgrp" style="color:var(--ink-3)">[DATA REQUIREMENT] — evidence classes specified but not resolved to particular datasets</div>
+  <ul>
+    <li>Comprehensive site-level destruction and abandonment catalogue for 1250–1100 BCE meeting the re-audit rubric.</li>
+    <li>Anatolian and northern Levantine hydroclimate records meeting the Stream P acceptance criteria.</li>
+    <li>Complete published corpus of oxhide-ingot and tin isotope determinations within the temporal universe, with analytical metadata.</li>
+    <li>Storage-capacity-by-phase measurements at palatial sites, for estimation of α.</li>
+    <li>Systematic excavation-intensity metadata for all sites in the universe.</li>
+    <li>Regional field-survey datasets, systematically collected and published, as a second sampling frame.</li>
+    <li>Palaeoseismic trench and offset-feature data for the relevant fault systems.</li>
+  </ul>
+</div>
+
+</article>
+
+<footer class="doc-foot">
+  <div class="in">
+    <span class="print-only" style="margin-bottom:10px;font-family:var(--f-mono);font-size:.72rem;letter-spacing:.08em;text-transform:uppercase">The Brittle Network · Research Protocol v1.0 · printed from the interactive edition</span>
+    <strong style="color:var(--ink)">Protocol v1.0 — methodology only.</strong> No empirical results are claimed or implied. All quantities marked <span class="m">[DATA REQUIREMENT]</span> must be resolved to specific, verifiable datasets before any analysis is executed. The interactive panels simulate the mechanisms described in the text on synthetic networks and illustrative distributions; they are teaching instruments, not reconstructions of the Late Bronze Age.
+  </div>
+</footer>
+</main>
+</div>
+
+
+
+
+
+<script>
+(function(){
+"use strict";
+
+/* ============================ theme-aware palette ============================ */
+function tok(n){ return getComputedStyle(document.documentElement).getPropertyValue(n).trim(); }
+var P = {};
+function readTokens(){
+  P.accent = tok('--accent'); P.ferrous = tok('--ferrous'); P.lapis = tok('--lapis');
+  P.gold = tok('--gold'); P.ink = tok('--ink'); P.ink2 = tok('--ink-2'); P.ink3 = tok('--ink-3');
+  P.grid = tok('--grid'); P.surface = tok('--chart-surface'); P.rule = tok('--rule');
+}
+readTokens();
+
+var redrawHooks = [];
+function onThemeChange(){ readTokens(); redrawHooks.forEach(function(f){ try{ f(); }catch(e){} }); }
+if (window.matchMedia) {
+  var mq = window.matchMedia('(prefers-color-scheme: dark)');
+  if (mq.addEventListener) mq.addEventListener('change', onThemeChange);
+  else if (mq.addListener) mq.addListener(onThemeChange);
+}
+new MutationObserver(onThemeChange).observe(document.documentElement, {attributes:true, attributeFilter:['data-theme']});
+
+/* ============================ canvas helper ============================ */
+function fit(cv, designW, designH){
+  var dpr = Math.min(window.devicePixelRatio || 1, 2);
+  var cssW = cv.clientWidth || designW;
+  var cssH = cssW * designH / designW;
+  cv.style.height = cssH + 'px';
+  cv.width = Math.round(cssW * dpr);
+  cv.height = Math.round(cssH * dpr);
+  var ctx = cv.getContext('2d');
+  var s = (cssW / designW) * dpr;
+  ctx.setTransform(s, 0, 0, s, 0, 0);
+  ctx.clearRect(0, 0, designW, designH);
+  return ctx;
+}
+function debounce(fn, ms){ var t; return function(){ clearTimeout(t); t = setTimeout(fn, ms); }; }
+
+/* ============================ deterministic PRNG ============================ */
+function mulberry(a){ return function(){ a |= 0; a = a + 0x6D2B79F5 | 0; var t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+
+/* ==================================================================================
+   1 · SCROLL SPY + PROGRESS
+   ================================================================================== */
+(function(){
+  var links = Array.prototype.slice.call(document.querySelectorAll('.stratum > a'));
+  var targets = links.map(function(a){ return document.getElementById(a.getAttribute('href').slice(1)); });
+  var bar = document.getElementById('progress');
+  function update(){
+    var y = window.scrollY || window.pageYOffset;
+    var h = document.body.scrollHeight - window.innerHeight;
+    if (bar) bar.style.height = (h > 0 ? Math.min(100, (y / h) * 100) : 0) + 'vh';
+    var best = 0;
+    for (var i = 0; i < targets.length; i++){
+      if (!targets[i]) continue;
+      if (targets[i].getBoundingClientRect().top < window.innerHeight * 0.36) best = i;
+    }
+    links.forEach(function(a, i){ a.parentElement.classList.toggle('on', i === best); });
+  }
+  window.addEventListener('scroll', update, {passive:true});
+  window.addEventListener('resize', update);
+  update();
+})();
+
+/* ==================================================================================
+   2 · HYPOTHESIS DISCRIMINATOR
+   ================================================================================== */
+(function(){
+  var H = [
+    {id:'H₀', name:'Null / stochastic', note:'Failures are independent draws with a common rate; the apparent pattern is chronological imprecision plus excavation bias.'},
+    {id:'H₁', name:'Exogenous shock only', note:'Climate and seismicity fully determine failure; topology is causally inert.'},
+    {id:'H₂', name:'Invasion primary', note:'An external agent drives failure along a coherent migration front.'},
+    {id:'H₃', name:'Endogenous fragility only', note:'The network would have failed under generic stress; the specific shock is incidental.'},
+    {id:'H₄', name:'Shock × brittle topology', note:'Shocks of historically plausible magnitude collapse the empirical topology and not counterfactual topologies of equal size and volume. The study hypothesis.'}
+  ];
+  var OBS = [
+    {t:'Failure tracks network centrality, after controls',        v:['−','−','−','+','+']},
+    {t:'Failure severity tracks the local hydroclimate gradient',   v:['·','+','·','−','+']},
+    {t:'Damage confined to seismogenic zones',                      v:['·','+','−','·','+']},
+    {t:'Failure times ordered along network paths',                 v:['−','−','−','+','+']},
+    {t:'Aggregate decline is discontinuous (first-order)',          v:['−','−','·','·','+']},
+    {t:'Random perturbation reproduces the pattern equally well',   v:['+','−','−','+','−']},
+    {t:'Same shock collapses the redundancy-augmented counterfactual', v:['·','+','·','+','−']},
+    {t:'Sea Peoples attestation precedes stress indicators',        v:['·','·','+','·','−']},
+    {t:'Survivors predicted by low coupling + high substitution',   v:['−','−','−','·','+']}
+  ];
+  var a = 4, b = 1;
+  var segA = document.getElementById('segA'), segB = document.getElementById('segB');
+  var grid = document.getElementById('discGrid'), names = document.getElementById('discNames'), count = document.getElementById('discCount');
+  function buildSeg(el, which){
+    el.innerHTML = '';
+    H.forEach(function(h, i){
+      var btn = document.createElement('button');
+      btn.textContent = h.id;
+      btn.setAttribute('aria-pressed', String((which === 'a' ? a : b) === i));
+      btn.addEventListener('click', function(){
+        if (which === 'a'){ if (i === b) { b = a; } a = i; } else { if (i === a) { a = b; } b = i; }
+        render();
+      });
+      el.appendChild(btn);
+    });
+  }
+  function cls(v){ return v === '+' ? 'p-yes' : (v === '−' ? 'p-no' : 'p-sil'); }
+  function render(){
+    buildSeg(segA, 'a'); buildSeg(segB, 'b');
+    names.innerHTML = '<strong style="color:var(--accent-ink)">' + H[a].id + ' · ' + H[a].name + '</strong> — ' + H[a].note +
+                      '<br><strong style="color:var(--ferrous)">' + H[b].id + ' · ' + H[b].name + '</strong> — ' + H[b].note;
+    var n = 0, html = '<div class="hd">Observable</div><div class="hd">' + H[a].id + '</div><div class="hd">' + H[b].id + '</div>';
+    OBS.forEach(function(o){
+      var va = o.v[a], vb = o.v[b], diff = va !== vb;
+      if (diff) n++;
+      var rc = diff ? ' style="background:var(--accent-soft)"' : '';
+      html += '<div' + rc + '>' + o.t + '</div>' +
+              '<div class="cell ' + cls(va) + '"' + rc + '>' + va + '</div>' +
+              '<div class="cell ' + cls(vb) + '"' + rc + '>' + vb + '</div>';
+    });
+    grid.innerHTML = html;
+    count.textContent = n + ' of ' + OBS.length + ' observables separate them';
+  }
+  render();
+})();
+
+/* ==================================================================================
+   3 · CHRONOLOGY ORDERING TEST
+   ================================================================================== */
+(function(){
+  var cv = document.getElementById('chronoCanvas');
+  if (!cv) return;
+  var W = 1100, Hh = 330, L = 70, R = 30, T = 24, Bm = 62;
+  var T0 = 1240, T1 = 1120;                        // drawn BCE range
+  var G0 = 1300, G1 = 1060, NB = 481;              // wider compute grid, sampled every half-year, so lobes are not clipped
+  var els = {
+    a: document.getElementById('aDate'), b: document.getElementById('bDate'), s: document.getElementById('sigma'),
+    aV: document.getElementById('aVal'), bV: document.getElementById('bVal'), sV: document.getElementById('sVal'),
+    p: document.getElementById('pAB'), lag: document.getElementById('lag'), span: document.getElementById('spanA'),
+    verdict: document.getElementById('verdict')
+  };
+  var wiggles = 1;
+  document.querySelectorAll('#wiggleSeg button').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      wiggles = +btn.dataset.w;
+      document.querySelectorAll('#wiggleSeg button').forEach(function(o){ o.setAttribute('aria-pressed', String(o === btn)); });
+      draw();
+    });
+  });
+
+  function grid(){ var g = []; for (var i = 0; i < NB; i++) g.push(G0 - i * (G0 - G1) / (NB - 1)); return g; }
+  var G = grid();
+  function pdf(centre, sigma){
+    // A calibrated posterior is rarely a clean gaussian: wiggles in the curve split it into lobes.
+    var lobes = wiggles ? [[0, 1.0], [-21, 0.82], [17, 0.66], [-38, 0.34], [34, 0.24]] : [[0, 1]];
+    var out = new Array(NB), sum = 0;
+    for (var i = 0; i < NB; i++){
+      var t = G[i], v = 0;
+      for (var k = 0; k < lobes.length; k++){
+        var d = (t - (centre + lobes[k][0])) / (sigma * (wiggles ? 0.42 : 1));
+        v += lobes[k][1] * Math.exp(-0.5 * d * d);
+      }
+      out[i] = v; sum += v;
+    }
+    for (i = 0; i < NB; i++) out[i] /= sum;
+    return out;
+  }
+  function hpdSpan(p){
+    var idx = p.map(function(v, i){ return [v, i]; }).sort(function(x, y){ return y[0] - x[0]; });
+    var acc = 0, keep = [];
+    for (var i = 0; i < idx.length && acc < 0.954; i++){ acc += idx[i][0]; keep.push(idx[i][1]); }
+    keep.sort(function(x, y){ return x - y; });
+    return Math.abs(G[keep[keep.length - 1]] - G[keep[0]]);
+  }
+  function x(t){ return L + (T0 - t) / (T0 - T1) * (W - L - R); }
+
+  function draw(){
+    var ca = 1240 - (+els.a.value), cb = 1240 - (+els.b.value), sg = +els.s.value;
+    els.aV.textContent = ca + ' BCE'; els.bV.textContent = cb + ' BCE'; els.sV.textContent = '±' + sg + ' yr';
+    var pa = pdf(ca, sg), pb = pdf(cb, sg);
+
+    // P(A earlier than B) — earlier means a LARGER BCE value
+    var pAB = 0, cum = 0, lagSum = [];
+    for (var j = 0; j < NB; j++){
+      pAB += pb[j] * cum;             // cum = P(A strictly earlier than G[j])
+      cum += pa[j];
+    }
+    for (var i = 0; i < NB; i++) for (j = 0; j < NB; j += 6) lagSum.push([G[i] - G[j], pa[i] * pb[j] * 6]);
+    lagSum.sort(function(u, v){ return u[0] - v[0]; });
+    var acc = 0, med = 0;
+    for (i = 0; i < lagSum.length; i++){ acc += lagSum[i][1]; if (acc >= 0.5){ med = lagSum[i][0]; break; } }
+
+    els.p.textContent = pAB.toFixed(2);
+    els.lag.textContent = Math.abs(Math.round(med)) + ' yr';
+    els.span.textContent = Math.round(hpdSpan(pa)) + ' yr';
+    var ok = pAB >= 0.90 || pAB <= 0.10;
+    els.verdict.textContent = ok ? 'Admissible' : 'Unresolved';
+    els.verdict.className = 'verdict ' + (ok ? 'ok' : 'no');
+
+    var ctx = fit(cv, W, Hh);
+    var maxp = Math.max.apply(null, pa.concat(pb));
+    var Wv = W, Lv = L, Rv = R;
+    var base = Hh - Bm;
+    ctx.font = '11px "IBM Plex Mono", monospace';
+    ctx.strokeStyle = P.grid; ctx.lineWidth = 1;
+    for (var t = 1240; t >= 1120; t -= 20){
+      ctx.beginPath(); ctx.moveTo(x(t), T); ctx.lineTo(x(t), base); ctx.stroke();
+      ctx.fillStyle = P.ink3; ctx.textAlign = 'center'; ctx.fillText(t + ' BCE', x(t), base + 20);
+    }
+    ctx.strokeStyle = P.ink3; ctx.beginPath(); ctx.moveTo(L, base); ctx.lineTo(W - R, base); ctx.stroke();
+    ctx.textAlign = 'left'; ctx.fillStyle = P.ink3;
+    ctx.fillText('EARLIER', L, base + 42); ctx.textAlign = 'right'; ctx.fillText('LATER', W - R, base + 42);
+
+    var vis = [];
+    for (var vi = 0; vi < NB; vi++) if (G[vi] <= T0 && G[vi] >= T1) vis.push(vi);
+    function area(p, col){
+      var h = base - T - 14, first = vis[0], lastI = vis[vis.length - 1];
+      ctx.save(); ctx.beginPath(); ctx.rect(L, T, W - L - R, base - T); ctx.clip();
+      ctx.beginPath(); ctx.moveTo(x(G[first]), base);
+      for (var i = 0; i < vis.length; i++) ctx.lineTo(x(G[vis[i]]), base - (p[vis[i]] / maxp) * h);
+      ctx.lineTo(x(G[lastI]), base); ctx.closePath();
+      ctx.globalAlpha = 0.16; ctx.fillStyle = col; ctx.fill(); ctx.globalAlpha = 1;
+      ctx.beginPath();
+      for (i = 0; i < vis.length; i++){ var px = x(G[vis[i]]), py = base - (p[vis[i]] / maxp) * h; i ? ctx.lineTo(px, py) : ctx.moveTo(px, py); }
+      ctx.strokeStyle = col; ctx.lineWidth = 2; ctx.stroke();
+      ctx.restore();
+    }
+    area(pa, P.accent); area(pb, P.ferrous);
+    ctx.font = '600 12px "IBM Plex Sans", sans-serif';
+    ctx.textAlign = 'center'; ctx.fillStyle = P.accent; ctx.fillText('A', x(ca), T + 4);
+    ctx.fillStyle = P.ferrous; ctx.fillText('B', x(cb), T + 4);
+  }
+  redrawHooks.push(draw);
+  [els.a, els.b, els.s].forEach(function(e){ e.addEventListener('input', draw); });
+  window.addEventListener('resize', debounce(draw, 120));
+  draw();
+})();
+
+/* ==================================================================================
+   4 · TIPPING-POINT EXPLORER
+   ================================================================================== */
+(function(){
+  var netCv = document.getElementById('netCanvas'), curveCv = document.getElementById('curveCanvas');
+  if (!netCv || !curveCv) return;
+  var NW = 1100, NH = 420, CW = 1100, CH = 430;
+  var LAM = 0.42, CAPF = 2.2, HOPS = 5;
+
+  /* ---- layer A: spatial exchange network with a heavy-ish degree tail ----
+         layer B: political dependency, hub-and-spoke on the same nodes      */
+  var N = 150, rnd = mulberry(20260823);
+  var pos = [], adj = [], adjB = [];
+  for (var i = 0; i < N; i++){
+    var u = rnd(), v = rnd();
+    var ang = Math.PI * (0.08 + 0.84 * u), rad = 0.58 + 0.42 * Math.pow(v, 1.5);
+    pos.push({ x: 550 - Math.cos(ang) * 455 * rad, y: 52 + Math.sin(ang) * 330 * rad });
+    adj.push([]); adjB.push([]);
+  }
+  function d2(i, j){ var dx = pos[i].x - pos[j].x, dy = pos[i].y - pos[j].y; return dx * dx + dy * dy; }
+  function mk(A){ return function(i, j){ if (i === j || A[i].indexOf(j) >= 0) return; A[i].push(j); A[j].push(i); }; }
+  var link = mk(adj), linkB = mk(adjB);
+  for (i = 0; i < N; i++){
+    var order = [];
+    for (var j = 0; j < N; j++) if (j !== i) order.push([d2(i, j), j]);
+    order.sort(function(a, b){ return a[0] - b[0]; });
+    var kk = 3 + (rnd() < 0.5 ? 1 : 0);
+    for (var m = 0; m < kk; m++) link(i, order[m][1]);
+  }
+  for (var e = 0; e < 120; e++){
+    var tot = 0; for (i = 0; i < N; i++) tot += adj[i].length + 1;
+    var pick = function(){ var r = rnd() * tot, s = 0; for (var k = 0; k < N; k++){ s += adj[k].length + 1; if (s >= r) return k; } return N - 1; };
+    link(pick(), pick());
+  }
+  var hubs = []; for (i = 0; i < 7; i++) hubs.push(Math.floor(rnd() * N));
+  for (i = 0; i < N; i++){ linkB(i, hubs[Math.floor(rnd() * hubs.length)]); if (rnd() < 0.25) linkB(i, Math.floor(rnd() * N)); }
+  for (i = 0; i < hubs.length; i++) linkB(hubs[i], hubs[(i + 1) % hubs.length]);
+
+  var deg = adj.map(function(a){ return a.length; });
+  var byX = pos.map(function(p, i){ return [p.x, i]; }).sort(function(a, b){ return b[0] - a[0]; });
+  var SOURCES = [byX[0][1], byX[5][1], byX[11][1]];
+
+  /* ---- exact betweenness (Brandes), computed once, for broker targeting ---- */
+  var btw = new Array(N).fill(0);
+  (function(){
+    for (var s = 0; s < N; s++){
+      var S = [], Pn = [], sig = new Array(N).fill(0), dist = new Array(N).fill(-1), dlt = new Array(N).fill(0);
+      for (var i2 = 0; i2 < N; i2++) Pn.push([]);
+      sig[s] = 1; dist[s] = 0; var Q = [s], head = 0;
+      while (head < Q.length){
+        var v2 = Q[head++]; S.push(v2);
+        for (var a = 0; a < adj[v2].length; a++){
+          var w = adj[v2][a];
+          if (dist[w] < 0){ dist[w] = dist[v2] + 1; Q.push(w); }
+          if (dist[w] === dist[v2] + 1){ sig[w] += sig[v2]; Pn[w].push(v2); }
+        }
+      }
+      while (S.length){
+        var wv = S.pop();
+        for (var b = 0; b < Pn[wv].length; b++){ var pv = Pn[wv][b]; dlt[pv] += (sig[pv] / sig[wv]) * (1 + dlt[wv]); }
+        if (wv !== s) btw[wv] += dlt[wv];
+      }
+    }
+  })();
+  var rankDeg = Array.from({length:N}, function(_, i){ return i; }).sort(function(a, b){ return deg[b] - deg[a]; });
+  var rankBtw = Array.from({length:N}, function(_, i){ return i; }).sort(function(a, b){ return btw[b] - btw[a]; });
+
+  function giantOf(A, alive){
+    var seen = new Array(N).fill(false), best = [], sizes = [];
+    for (var i = 0; i < N; i++){
+      if (!alive[i] || seen[i]) continue;
+      var st = [i], c = []; seen[i] = true;
+      while (st.length){ var uu = st.pop(); c.push(uu); for (var a = 0; a < A[uu].length; a++){ var z = A[uu][a]; if (alive[z] && !seen[z]){ seen[z] = true; st.push(z); } } }
+      sizes.push(c.length); if (c.length > best.length) best = c;
+    }
+    return { giant: best, sizes: sizes };
+  }
+
+  function cascade(f, strat, q, alpha, seed){
+    var r = mulberry(seed), rc = mulberry(seed + 99991);
+    var U = new Array(N); for (var z = 0; z < N; z++) U[z] = rc();   // fixed draws ⇒ coupling is nested in q
+    var alive = new Array(N).fill(true);
+    var nRemove = Math.round(f * N), i;
+    if (strat === 'random'){
+      var idx = Array.from({length:N}, function(_, k){ return k; });
+      for (i = N - 1; i > 0; i--){ var j = Math.floor(r() * (i + 1)); var t = idx[i]; idx[i] = idx[j]; idx[j] = t; }
+      for (i = 0; i < nRemove; i++) alive[idx[i]] = false;
+    } else {
+      // targeted, but not omniscient: draw from the top-ranked pool so runs differ
+      var rk = strat === 'degree' ? rankDeg : rankBtw;
+      var pool = rk.slice(0, Math.min(N, Math.round(nRemove * 1.7) + 5));
+      for (i = pool.length - 1; i > 0; i--){ var jj = Math.floor(r() * (i + 1)); var tt = pool[i]; pool[i] = pool[jj]; pool[jj] = tt; }
+      for (i = 0; i < nRemove && i < pool.length; i++) alive[pool[i]] = false;
+    }
+    // load redistribution — Motter–Lai on a degree-load proxy
+    var load = deg.slice(), cap = deg.map(function(k){ return (1 + alpha) * (k + CAPF); }), done = new Array(N).fill(false);
+    for (var pass = 0; pass < 10; pass++){
+      var ch = false;
+      for (i = 0; i < N; i++){
+        if (alive[i] || done[i]) continue;
+        done[i] = true;
+        var surv = adj[i].filter(function(w){ return alive[w]; });
+        if (surv.length){ var sh = LAM * load[i] / surv.length; for (var s2 = 0; s2 < surv.length; s2++) load[surv[s2]] += sh; }
+        load[i] = 0; ch = true;
+      }
+      for (i = 0; i < N; i++) if (alive[i] && load[i] > cap[i]){ alive[i] = false; ch = true; }
+      if (!ch) break;
+    }
+    // interdependent percolation between the exchange and political layers
+    if (q > 0){
+      for (var it = 0; it < 18; it++){
+        var died = false;
+        var gA = giantOf(adj, alive), inA = new Array(N).fill(false);
+        for (i = 0; i < gA.giant.length; i++) inA[gA.giant[i]] = true;
+        var gB = giantOf(adjB, alive), inB = new Array(N).fill(false);
+        for (i = 0; i < gB.giant.length; i++) inB[gB.giant[i]] = true;
+        for (i = 0; i < N; i++) if (alive[i] && U[i] < q && !(inA[i] && inB[i])){ alive[i] = false; died = true; }
+        if (!died) break;
+      }
+    }
+    // supply from the tin sources, attenuating with chain length: reachable within HOPS
+    var dist = new Array(N).fill(-1), Q = [], head = 0;
+    for (i = 0; i < SOURCES.length; i++) if (alive[SOURCES[i]]){ dist[SOURCES[i]] = 0; Q.push(SOURCES[i]); }
+    while (head < Q.length){
+      var v = Q[head++];
+      if (dist[v] >= HOPS) continue;
+      for (var a2 = 0; a2 < adj[v].length; a2++){ var w2 = adj[v][a2]; if (alive[w2] && dist[w2] < 0){ dist[w2] = dist[v] + 1; Q.push(w2); } }
+    }
+    var supplied = dist.map(function(d){ return d >= 0; });
+    var ns = 0; for (i = 0; i < N; i++) if (supplied[i]) ns++;
+    return { psi: ns / N, alive: alive, supplied: supplied };
+  }
+
+  /* ---- controls ---- */
+  var st = { f:0.10, strat:'random', q:0.70, alpha:0.20 };
+  var el = {
+    f: document.getElementById('fSlider'), q: document.getElementById('qSlider'), a: document.getElementById('aSlider'),
+    fV: document.getElementById('fVal'), qV: document.getElementById('qVal'), aV: document.getElementById('aTol'),
+    psi: document.getElementById('psiOut'), fc: document.getElementById('fcOut'), jump: document.getElementById('jumpOut'),
+    order: document.getElementById('orderOut'), mode: document.getElementById('tipMode')
+  };
+  document.querySelectorAll('#stratSeg button').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      st.strat = btn.dataset.s;
+      document.querySelectorAll('#stratSeg button').forEach(function(o){ o.setAttribute('aria-pressed', String(o === btn)); });
+      recompute();
+    });
+  });
+  el.f.addEventListener('input', function(){ st.f = +el.f.value / 100; drawNet(); drawCurves(); });
+  el.q.addEventListener('input', function(){ st.q = +el.q.value / 100; el.qV.textContent = st.q.toFixed(2); scheduleRecompute(); });
+  el.a.addEventListener('input', function(){ st.alpha = +el.a.value / 100; el.aV.textContent = st.alpha.toFixed(2); scheduleRecompute(); });
+  var scheduleRecompute = debounce(function(){ recompute(); }, 90);
+
+  var FS = [], meanC = [], meanI = [], loC = [], hiC = [], spreadC = [], spreadI = [], fc = 0, bimodal = 0;
+  var SPREAD_T = 0.25;
+  function smooth(a){
+    var o = a.slice();
+    for (var i = 1; i < a.length - 1; i++) o[i] = (a[i - 1] + 2 * a[i] + a[i + 1]) / 4;
+    return o;
+  }
+  function recompute(){
+    el.fV.textContent = st.f.toFixed(2); el.qV.textContent = st.q.toFixed(2); el.aV.textContent = st.alpha.toFixed(2);
+    FS = []; var mc = [], mi = [], lo = [], hi = [], sc = [], si = [];
+    var REP = 16;
+    for (var k = 0; k <= 60; k++){
+      var f = k / 100; FS.push(f);
+      var vc = [], vi = [];
+      for (var r = 0; r < REP; r++){
+        vc.push(cascade(f, st.strat, st.q, st.alpha, 1000 + r * 37 + k * 5).psi);
+        vi.push(cascade(f, st.strat, 0,    st.alpha, 1000 + r * 37 + k * 5).psi);
+      }
+      vc.sort(function(a, b){ return a - b; }); vi.sort(function(a, b){ return a - b; });
+      var avg = function(v){ var t = 0; for (var z = 0; z < v.length; z++) t += v[z]; return t / v.length; };
+      var p = function(v, q2){ return v[Math.min(v.length - 1, Math.floor(q2 * v.length))]; };
+      mc.push(avg(vc)); mi.push(avg(vi));
+      lo.push(p(vc, 0.10)); hi.push(p(vc, 0.90));
+      sc.push(p(vc, 0.90) - p(vc, 0.10)); si.push(p(vi, 0.90) - p(vi, 0.10));
+    }
+    meanC = smooth(mc); meanI = smooth(mi); loC = smooth(lo); hiC = smooth(hi);
+    spreadC = smooth(sc); spreadI = smooth(si);
+
+    fc = FS[FS.length - 1];                            // collapse threshold: half the system unsupplied
+    for (k = 0; k < meanC.length; k++) if (meanC[k] < 0.5){ fc = FS[k]; break; }
+    bimodal = 0; for (k = 0; k < spreadC.length; k++) if (spreadC[k] >= SPREAD_T) bimodal += 0.01;
+
+    el.fc.textContent = fc.toFixed(2);
+    el.jump.textContent = bimodal <= 0 ? 'none' : 'Δf ' + bimodal.toFixed(2);
+    var firstOrder = bimodal >= 0.15;
+    el.order.textContent = firstOrder ? 'Discontinuous' : 'Continuous';
+    el.order.className = 'verdict ' + (firstOrder ? 'no' : 'ok');
+    el.mode.textContent = firstOrder ? 'Bimodal near threshold — the warning interval closes' : 'Decline tracks damage — runs agree';
+    drawNet(); drawCurves();
+  }
+
+  function drawNet(){
+    el.fV.textContent = st.f.toFixed(2);
+    var res = cascade(st.f, st.strat, st.q, st.alpha, 1037);
+    el.psi.textContent = res.psi.toFixed(2);
+    var ctx = fit(netCv, NW, NH);
+    ctx.lineWidth = 1.1;
+    for (var i = 0; i < N; i++) for (var a = 0; a < adj[i].length; a++){
+      var j = adj[i][a]; if (j < i) continue;
+      var both = res.alive[i] && res.alive[j];
+      var sup = both && res.supplied[i] && res.supplied[j];
+      ctx.strokeStyle = both ? (sup ? P.accent : P.ferrous) : P.ink3;
+      ctx.globalAlpha = both ? (sup ? 0.38 : 0.34) : 0.08;
+      ctx.beginPath(); ctx.moveTo(pos[i].x, pos[i].y); ctx.lineTo(pos[j].x, pos[j].y); ctx.stroke();
+    }
+    ctx.globalAlpha = 1;
+    for (i = 0; i < N; i++){
+      var rr = 3 + Math.min(7, Math.sqrt(deg[i]) * 1.7);
+      ctx.beginPath(); ctx.arc(pos[i].x, pos[i].y, rr, 0, 6.2832);
+      if (!res.alive[i]){ ctx.fillStyle = P.ink3; ctx.globalAlpha = 0.20; }
+      else if (res.supplied[i]){ ctx.fillStyle = P.accent; ctx.globalAlpha = 1; }
+      else { ctx.fillStyle = P.ferrous; ctx.globalAlpha = 1; }
+      ctx.fill();
+      if (res.alive[i]){ ctx.globalAlpha = 1; ctx.strokeStyle = P.surface; ctx.lineWidth = 1.4; ctx.stroke(); }
+      ctx.globalAlpha = 1;
+    }
+    for (i = 0; i < SOURCES.length; i++){
+      var s = SOURCES[i];
+      ctx.beginPath(); ctx.arc(pos[s].x, pos[s].y, 14, 0, 6.2832);
+      ctx.strokeStyle = res.alive[s] ? P.accent : P.ink3; ctx.lineWidth = 2.2; ctx.stroke();
+    }
+    ctx.font = '600 11.5px "IBM Plex Mono", monospace'; ctx.textAlign = 'left';
+    ctx.fillStyle = P.ink3; ctx.fillText('◎ TIN SOURCES', 14, 22);
+    ctx.fillStyle = P.ink2; ctx.fillText('Ψ = ' + res.psi.toFixed(2) + '   f = ' + st.f.toFixed(2) + '   q = ' + st.q.toFixed(2) + '   α = ' + st.alpha.toFixed(2), 14, 40);
+  }
+
+  function drawCurves(){
+    if (!meanC.length) return;
+    var ctx = fit(curveCv, CW, CH);
+    var L = 76, R = 92, gapY = 46;
+    var topT = 28, topB = 236, botT = topB + gapY, botB = CH - 58;
+    function X(f){ return L + (f / 0.6) * (CW - L - R); }
+    function Y1(v){ return topB - v * (topB - topT); }
+    function Y2(v){ return botB - v * (botB - botT); }
+
+    ctx.font = '10.5px "IBM Plex Mono", monospace';
+    for (var g = 0; g <= 6; g++){
+      var f = g * 0.1;
+      ctx.strokeStyle = P.grid; ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.moveTo(X(f), topT); ctx.lineTo(X(f), botB); ctx.stroke();
+      ctx.fillStyle = P.ink3; ctx.textAlign = 'center'; ctx.fillText(f.toFixed(1), X(f), botB + 20);
+    }
+    ctx.textAlign = 'center'; ctx.fillStyle = P.ink3;
+    ctx.fillText('REMOVAL FRACTION  f', (L + CW - R) / 2, botB + 42);
+    for (g = 0; g <= 4; g++){
+      var v = g / 4;
+      ctx.strokeStyle = P.grid;
+      ctx.beginPath(); ctx.moveTo(L, Y1(v)); ctx.lineTo(CW - R, Y1(v)); ctx.stroke();
+      ctx.fillStyle = P.ink3; ctx.textAlign = 'right'; ctx.fillText(v.toFixed(2), L - 10, Y1(v) + 4);
+    }
+    for (g = 0; g <= 2; g++){
+      var v2 = g / 2;
+      ctx.strokeStyle = P.grid;
+      ctx.beginPath(); ctx.moveTo(L, Y2(v2)); ctx.lineTo(CW - R, Y2(v2)); ctx.stroke();
+      ctx.fillStyle = P.ink3; ctx.textAlign = 'right'; ctx.fillText(v2.toFixed(1), L - 10, Y2(v2) + 4);
+    }
+
+    // bimodal zone shading, drawn under everything else in the lower panel
+    ctx.fillStyle = P.ferrous; ctx.globalAlpha = 0.10;
+    for (var k = 0; k < spreadC.length; k++){
+      if (spreadC[k] >= SPREAD_T) ctx.fillRect(X(FS[k]) - 0.5, botT, (CW - L - R) / 60 + 1, botB - botT);
+    }
+    ctx.globalAlpha = 1;
+
+    ctx.strokeStyle = P.ink3; ctx.lineWidth = 1.3;
+    ctx.beginPath(); ctx.moveTo(L, topT); ctx.lineTo(L, topB); ctx.lineTo(CW - R, topB); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(L, botT); ctx.lineTo(L, botB); ctx.lineTo(CW - R, botB); ctx.stroke();
+
+    // 10–90 band on the coupled curve
+    ctx.beginPath();
+    for (k = 0; k < FS.length; k++){ var px = X(FS[k]), py = Y1(hiC[k]); k ? ctx.lineTo(px, py) : ctx.moveTo(px, py); }
+    for (k = FS.length - 1; k >= 0; k--) ctx.lineTo(X(FS[k]), Y1(loC[k]));
+    ctx.closePath(); ctx.fillStyle = P.ferrous; ctx.globalAlpha = 0.16; ctx.fill(); ctx.globalAlpha = 1;
+
+    ctx.textAlign = 'left'; ctx.font = '600 11px "IBM Plex Mono", monospace'; ctx.fillStyle = P.ink2;
+    ctx.fillText('Ψ   SUPPLY SATISFACTION', L + 8, topT + 1);
+    ctx.fillText('RUN-TO-RUN SPREAD   p90 − p10', L + 8, botT + 1);
+
+    // spread threshold
+    ctx.strokeStyle = P.ink3; ctx.setLineDash([3, 4]); ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(L, Y2(SPREAD_T)); ctx.lineTo(CW - R, Y2(SPREAD_T)); ctx.stroke(); ctx.setLineDash([]);
+    ctx.fillStyle = P.ink3; ctx.font = '10px "IBM Plex Mono", monospace'; ctx.textAlign = 'left';
+    ctx.fillText('bimodality threshold', L + 8, Y2(SPREAD_T) - 5);
+
+    ctx.strokeStyle = P.lapis; ctx.setLineDash([5, 4]); ctx.lineWidth = 1.4;
+    ctx.beginPath(); ctx.moveTo(X(fc), topT); ctx.lineTo(X(fc), botB); ctx.stroke(); ctx.setLineDash([]);
+    ctx.fillStyle = P.lapis; ctx.textAlign = 'left'; ctx.font = '600 10.5px "IBM Plex Mono", monospace';
+    ctx.fillText('f_c = ' + fc.toFixed(2), X(fc) + 7, topT + 15);
+
+    function line(vals, Yf, col, w){
+      ctx.beginPath();
+      for (var i = 0; i < vals.length; i++){ var px2 = X(FS[i]), py2 = Yf(vals[i]); i ? ctx.lineTo(px2, py2) : ctx.moveTo(px2, py2); }
+      ctx.strokeStyle = col; ctx.lineWidth = w; ctx.lineJoin = 'round'; ctx.stroke();
+    }
+    line(meanI, Y1, P.accent, 2);
+    line(meanC, Y1, P.ferrous, 2.4);
+    line(spreadI, Y2, P.accent, 2);
+    line(spreadC, Y2, P.ferrous, 2.4);
+
+    ctx.font = '600 11px "IBM Plex Sans", sans-serif'; ctx.textAlign = 'left';
+    var last = meanI.length - 1;
+    ctx.fillStyle = P.accent; ctx.fillText('q = 0', X(0.6) + 8, Y1(meanI[last]) + 4);
+    ctx.fillStyle = P.ferrous; ctx.fillText('q = ' + st.q.toFixed(2), X(0.6) + 8, Y1(meanC[last]) + 18);
+
+    ctx.strokeStyle = P.ink2; ctx.lineWidth = 1.6;
+    ctx.beginPath(); ctx.moveTo(X(st.f), topT); ctx.lineTo(X(st.f), topB); ctx.stroke();
+    var ci = Math.round(st.f * 100);
+    [[meanI, P.accent], [meanC, P.ferrous]].forEach(function(pair){
+      ctx.beginPath(); ctx.arc(X(st.f), Y1(pair[0][ci] || 0), 5, 0, 6.2832);
+      ctx.fillStyle = pair[1]; ctx.fill(); ctx.strokeStyle = P.surface; ctx.lineWidth = 2; ctx.stroke();
+    });
+  }
+
+  redrawHooks.push(function(){ drawNet(); drawCurves(); });
+  window.addEventListener('resize', debounce(function(){ drawNet(); drawCurves(); }, 140));
+  recompute();
+})();
+
+})();
+</script>
+
+<!--__rbp-->
+<a id="__rb-pill" href="research.html">&#8592; Research</a>
+<script>
+(function(){
+  var p=document.getElementById('__rb-pill'); if(!p) return;
+  var t=false;
+  function run(){ t=false;
+    p.classList.toggle('__on',(window.scrollY||document.documentElement.scrollTop)>420); }
+  function q(){ if(!t){ t=true; requestAnimationFrame(run); } }
+  addEventListener('scroll',q,{passive:true}); run();
+})();
+/* the trail, for the pages that carry only the pill (the tools) */
+(function(){
+  if(window.__trailed) return; window.__trailed=1;
+  try{
+    var k='atlas.trail';
+    var u=location.pathname.split('/').pop()||'index.html';
+    var t2=JSON.parse(localStorage.getItem(k)||'{}');
+    function put(key){
+      if(t2[key]||Object.keys(t2).length<500){
+        t2[key]=(t2[key]||0)+1;
+        localStorage.setItem(k,JSON.stringify(t2));
+      }
+    }
+    put(u+location.hash);
+    addEventListener('hashchange',function(){ put(u+location.hash); });
+  }catch(e){}
+})();
+</script>
+<!--/__rbp-->
+</body>
+</html>

@@ -1,0 +1,202 @@
+/* case-method.css — the shared layer for case-method pieces.
+   One stylesheet, linked by every piece built on the same discipline
+   (falsifiable claims, provenance-labelled evidence, adversarial or
+   pre-registered testing), so a sixth project drops in by linking this
+   file and writing its content. Tokens are the site's own palette; a
+   piece that links this sheet belongs to the site in both themes. */
+
+@font-face{
+  font-family:"InterVar";
+  font-style:normal;
+  font-weight:100 900;
+  font-display:swap;
+  src:url("InterVariable-sub.woff2") format("woff2");
+}
+
+:root{
+  --paper:#faf9f6; --panel:#f2f0e9; --panel-2:#ebe8df;
+  --ink:#16150f; --ink-2:#55524a; --ink-3:#6f6c63;
+  --rule:#ddd9cf; --rule-strong:#bfb9aa; --edge:#8a847c;
+  --accent:#14509b; --accent-2:#1a5fb4;
+  --tool:#0f6b58; --ref:#8a5410; --selection:#cfe0f6;
+  --warm:var(--ref); --cool:var(--accent);
+  --warm-soft:rgba(138,84,16,.12); --cool-soft:rgba(20,80,155,.10);
+  --chip-bg:rgba(20,80,155,.08); --chip-line:rgba(20,80,155,.30);
+  --measure:66ch;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#131310; --panel:#1b1a16; --panel-2:#23221d;
+    --ink:#f7f5ef; --ink-2:#c0bcb1; --ink-3:#948f85;
+    --rule:#2c2b24; --rule-strong:#454239; --edge:#6e6960;
+    --accent:#85adea; --accent-2:#a8c6f3;
+    --tool:#4fc0a3; --ref:#d6a558; --selection:#24405f;
+    --warm-soft:rgba(214,165,88,.14); --cool-soft:rgba(133,173,234,.12);
+    --chip-bg:rgba(133,173,234,.12); --chip-line:rgba(133,173,234,.34);
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#131310; --panel:#1b1a16; --panel-2:#23221d;
+  --ink:#f7f5ef; --ink-2:#c0bcb1; --ink-3:#948f85;
+  --rule:#2c2b24; --rule-strong:#454239; --edge:#6e6960;
+  --accent:#85adea; --accent-2:#a8c6f3;
+  --tool:#4fc0a3; --ref:#d6a558; --selection:#24405f;
+  --warm-soft:rgba(214,165,88,.14); --cool-soft:rgba(133,173,234,.12);
+  --chip-bg:rgba(133,173,234,.12); --chip-line:rgba(133,173,234,.34);
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0; background:var(--paper); color:var(--ink);
+  font-family:"InterVar",ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  font-size:17px; line-height:1.62; -webkit-font-smoothing:antialiased;
+}
+::selection{background:var(--selection)}
+.mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+.num{font-variant-numeric:tabular-nums}
+a{color:var(--accent)}
+a:hover{color:var(--accent-2)}
+.cm-wrap{max-width:1180px;margin:0 auto;padding:0 24px 96px}
+
+/* ---- masthead ---- */
+header.cm-mast{border-bottom:1px solid var(--rule-strong);padding:52px 0 26px;margin-bottom:40px}
+.cm-kicker{
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--ink-3);margin:0 0 20px;
+  display:flex;flex-wrap:wrap;gap:8px 20px;align-items:baseline;
+}
+.cm-mast h1{
+  font-size:clamp(2.5rem,6.4vw,4.6rem);line-height:1.02;letter-spacing:-.025em;
+  font-weight:640;margin:0;text-wrap:balance;
+}
+.cm-mast h1 em{font-style:italic;font-weight:450;color:var(--ink-2)}
+.cm-standfirst{max-width:60ch;margin:24px 0 0;font-size:1.12rem;line-height:1.55;color:var(--ink-2)}
+
+/* ---- the protocol banner: a pre-registered piece states, before anything
+       else, that it contains no results. ---- */
+.cm-protocol{
+  margin:30px 0 0;padding:16px 20px;border:1px solid var(--rule-strong);
+  border-left:4px solid var(--ref);background:var(--panel);
+  font-size:.98rem;color:var(--ink-2);
+}
+.cm-protocol b{color:var(--ink)}
+
+/* ---- section scaffold: the working-paper rail ---- */
+.cm-sec{padding:48px 0;border-top:1px solid var(--rule)}
+.cm-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:8px}
+@media (min-width:1000px){
+  .cm-grid{grid-template-columns:132px minmax(0,1fr);gap:36px}
+  .cm-rail{position:sticky;top:22px;align-self:start}
+}
+.cm-rail{
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px;
+  letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);line-height:1.7;
+}
+.cm-rail b{display:block;color:var(--ink-2);font-size:12px}
+.cm-sec h2{font-size:clamp(1.5rem,3.4vw,2.1rem);line-height:1.12;letter-spacing:-.015em;font-weight:640;margin:0 0 14px}
+.cm-sec h3{font-size:1.12rem;font-weight:640;margin:30px 0 8px}
+.cm-lede{font-size:1.06rem;color:var(--ink-2);max-width:var(--measure);margin:0 0 18px}
+.cm-sec p{max-width:var(--measure)}
+
+/* ---- provenance tags: the labels are the product ---- */
+.tag{
+  display:inline-block;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+  font-size:10px;letter-spacing:.12em;padding:2px 7px;vertical-align:.12em;
+  border:1px solid var(--chip-line);background:var(--chip-bg);color:var(--accent);
+  border-radius:2px;white-space:nowrap;
+}
+.tag.inf{border-color:rgba(138,84,16,.4);background:var(--warm-soft);color:var(--ref)}
+.tag.rep{border-color:rgba(15,107,88,.4);background:rgba(15,107,88,.09);color:var(--tool)}
+:root[data-theme="dark"] .tag.rep{background:rgba(79,192,163,.12)}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]) .tag.rep{background:rgba(79,192,163,.12)}
+}
+.cm-src{font-size:.9rem;color:var(--ink-3);max-width:var(--measure);line-height:1.6}
+.cm-src b{color:var(--ink-2)}
+
+/* ---- tables ---- */
+.cm-tblwrap{overflow-x:auto;margin:18px 0}
+.cm-tblwrap table{border-collapse:collapse;width:100%;font-size:.92rem}
+.cm-tblwrap caption{text-align:left;font-size:.85rem;color:var(--ink-3);padding:0 0 8px}
+.cm-tblwrap th{
+  text-align:left;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;
+  letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);
+  border-bottom:1px solid var(--rule-strong);padding:6px 14px 6px 0;
+}
+.cm-tblwrap td{border-bottom:1px solid var(--rule);padding:8px 14px 8px 0;vertical-align:top}
+.cm-tblwrap td.num{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.88rem;white-space:nowrap}
+
+/* ---- claim cards: one falsifiable claim, its provenance, its fate ---- */
+.claim{
+  border:1px solid var(--rule);border-left-width:4px;background:var(--panel);
+  margin:0 0 14px;padding:14px 18px;
+}
+.claim.v-held{border-left-color:var(--tool)}
+.claim.v-narrowed{border-left-color:var(--ref)}
+.claim.v-killed{border-left-color:var(--warm)}
+.claim.v-contested,.claim.v-undetermined{border-left-color:var(--edge)}
+.claim-head{display:flex;flex-wrap:wrap;gap:6px 12px;align-items:baseline;margin:0 0 8px}
+.claim-id{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-weight:600;font-size:.95rem}
+.claim-chips{display:flex;flex-wrap:wrap;gap:6px;margin-left:auto}
+.chip{
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10px;letter-spacing:.1em;
+  padding:2px 8px;border:1px solid var(--edge);color:var(--ink-2);border-radius:2px;white-space:nowrap;
+}
+.chip.verdict-HELD{border-color:var(--tool);color:var(--tool)}
+.chip.verdict-NARROWED{border-color:var(--ref);color:var(--ref)}
+.chip.verdict-KILLED{border-color:var(--warm);color:var(--warm)}
+.chip.load{background:var(--panel-2)}
+.claim-text{margin:0 0 8px;max-width:none}
+.claim-fals{font-size:.92rem;color:var(--ink-2);margin:0 0 8px;max-width:none}
+.claim-fals b{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3)}
+.claim details{margin-top:8px;border-top:1px dashed var(--rule);padding-top:8px}
+.claim summary{cursor:pointer;font-size:.9rem;color:var(--ink-3)}
+.claim summary:hover{color:var(--ink-2)}
+.claim-body{font-size:.92rem;color:var(--ink-2);white-space:pre-wrap;overflow-wrap:anywhere}
+.claim .cm-src{margin:8px 0 0}
+
+/* ---- verdict block ---- */
+.cm-verdict{
+  margin:30px 0;padding:20px 22px;border:1px solid var(--rule-strong);background:var(--panel);
+  display:grid;gap:16px;grid-template-columns:minmax(0,1fr);
+}
+@media (min-width:820px){.cm-verdict{grid-template-columns:auto minmax(0,1fr);align-items:center;gap:30px}}
+.cm-bigstat{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:clamp(1.7rem,4.6vw,2.6rem);line-height:1;letter-spacing:-.02em}
+.cm-bigstat small{display:block;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);margin-top:10px;line-height:1.5}
+.cm-verdict p{margin:0;font-size:1rem;color:var(--ink-2);max-width:none}
+
+/* ---- reproducibility strip ---- */
+.cm-repro{
+  display:flex;flex-wrap:wrap;gap:6px 18px;margin:18px 0 0;
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px;color:var(--ink-3);
+}
+.cm-repro span b{color:var(--ink-2);font-weight:600}
+.cm-repro .sha{overflow-wrap:anywhere}
+
+/* ---- graveyard: falsified claims stay on the page ---- */
+.grave{border:1px solid var(--rule);border-left:4px solid var(--warm);background:var(--panel);margin:0 0 12px;padding:12px 18px}
+.grave .claim-text{text-decoration:line-through;text-decoration-color:var(--warm);text-decoration-thickness:1px;color:var(--ink-2)}
+.grave .why{font-size:.92rem;color:var(--ink-2);margin:6px 0 0}
+
+/* ---- filter toolbar (progressive: hidden without JS) ---- */
+.cm-toolbar{display:none;flex-wrap:wrap;gap:8px;margin:0 0 18px;align-items:center}
+.js .cm-toolbar{display:flex}
+.cm-toolbar button{
+  font:inherit;font-size:.85rem;padding:4px 12px;border:1px solid var(--edge);
+  background:var(--paper);color:var(--ink-2);cursor:pointer;border-radius:2px;
+}
+.cm-toolbar button[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.cm-toolbar input[type="search"]{
+  font:inherit;font-size:.9rem;padding:4px 10px;border:1px solid var(--edge);
+  background:var(--paper);color:var(--ink);min-width:180px;border-radius:2px;
+}
+.cm-count{font-size:.85rem;color:var(--ink-3)}
+
+/* ---- footer nav between siblings ---- */
+.cm-sibs{border-top:1px solid var(--rule-strong);margin-top:56px;padding-top:22px;font-size:.95rem}
+.cm-sibs ul{list-style:none;margin:8px 0 0;padding:0;display:flex;flex-direction:column;gap:6px}
+
+@media print{
+  .cm-toolbar{display:none !important}
+  .claim details{display:block}
+}

@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="en-CA">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Crucible Cockpit</title>
+<link rel="stylesheet" href="case-method.css">
+<style>.cm-tblwrap td a{font-weight:600}</style>
+<!--__meta-->
+<meta name="color-scheme" content="light">
+<meta name="description" content="A system that refuses to answer questions directly: it decomposes each one into individually falsifiable claims, files a falsifier and an evidence tier with…">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%2316150f'/><text x='50' y='72' font-size='64' font-family='Helvetica,Arial' font-weight='bold' fill='%23faf9f6' text-anchor='middle'>A</text></svg>">
+<link rel="canonical" href="https://alexrajcoomar.github.io/crucible-cockpit.html">
+<meta property="og:title" content="Crucible Cockpit — Alex Rajcoomar">
+<meta property="og:description" content="A system that refuses to answer questions directly: it decomposes each one into individually falsifiable claims, files a falsifier and an evidence tier with…">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://alexrajcoomar.github.io/crucible-cockpit.html">
+<meta property="og:site_name" content="Alex Rajcoomar — portfolio">
+<meta property="og:image" content="https://alexrajcoomar.github.io/og-card.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Crucible Cockpit — Alex Rajcoomar">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://alexrajcoomar.github.io/og-card.png">
+<script>
+(function(){
+  var d=document.documentElement;
+  try{var t=localStorage.getItem('theme'); if(t) d.setAttribute('data-theme',t);}catch(e){}
+  new MutationObserver(function(){
+    try{
+      var v=d.getAttribute('data-theme');
+      if(v) localStorage.setItem('theme',v); else localStorage.removeItem('theme');
+    }catch(e){}
+  }).observe(d,{attributes:true,attributeFilter:['data-theme']});
+})();
+</script>
+<!--/__meta-->
+</head>
+<body>
+<!--__rb-->
+<!-- injected by the site build: a way back into the site from a standalone
+     piece. A static bar at the top, so it is visible on arrival, and a pill
+     that appears once you have scrolled past it, so there is always a way out.
+     Self-contained, because these pages do not load the site stylesheet. -->
+<style id="__rb-style">
+#__rb{
+  box-sizing:border-box;display:flex;flex-wrap:wrap;align-items:center;gap:.6rem 1.25rem;
+  padding:.6rem clamp(1rem,4vw,2rem);border-bottom:1px solid #ddd9cf;background:#faf9f6;
+  font:500 13px/1.35 InterVar,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  color:#55524a;
+}
+#__rb a{color:#14509b;text-decoration:none;display:inline-flex;align-items:center;gap:.4rem}
+#__rb a:hover{text-decoration:underline}
+#__rb .__rb-home{font-weight:640;color:#16150f}
+#__rb .__rb-home i{font-style:normal;font-weight:400;color:#6f6c63}
+#__rb .__rb-right{margin-left:auto;display:flex;gap:1.1rem;flex-wrap:wrap}
+#__rb .__mark{
+  display:inline-grid;place-items:center;width:1.2rem;height:1.2rem;flex:none;
+  background:#16150f;color:#faf9f6;font-size:.72rem;font-weight:700;
+}
+#__rb-pill{
+  position:fixed;left:14px;bottom:14px;z-index:2147483000;
+  display:inline-flex;align-items:center;gap:.45rem;padding:.58rem .9rem;
+  background:rgba(22,21,15,.93);color:#faf9f6;text-decoration:none;border-radius:99px;
+  font:600 12.5px/1 InterVar,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  border:1px solid rgba(255,255,255,.16);box-shadow:0 6px 22px rgba(0,0,0,.28);
+  opacity:0;transform:translateY(6px);pointer-events:none;
+  transition:opacity .2s ease,transform .2s ease;
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+}
+#__rb-pill.__on{opacity:1;transform:none;pointer-events:auto}
+#__rb-pill:hover{background:#16150f;color:#fff}
+/* Dark has to answer to two things: the reader's system setting, and the
+   theme button on the page, which sets data-theme on <html>. Keyed to the
+   media query alone, the bar stayed paper-white across the top of an essay
+   the reader had just switched to dark, and read as a rendering fault. The
+   media query is scoped so an explicit light choice wins, and the attribute
+   selector is repeated so an explicit dark choice wins on a light system. */
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) #__rb{background:#131310;border-bottom-color:#2c2b24;color:#c0bcb1}
+  :root:not([data-theme="light"]) #__rb .__rb-home{color:#f7f5ef}
+  :root:not([data-theme="light"]) #__rb .__rb-home i{color:#948f85}
+  :root:not([data-theme="light"]) #__rb a{color:#85adea}
+  :root:not([data-theme="light"]) #__rb .__mark{background:#f7f5ef;color:#131310}
+  :root:not([data-theme="light"]) #__rb-pill{background:rgba(247,245,239,.95);color:#131310;border-color:rgba(0,0,0,.2)}
+  :root:not([data-theme="light"]) #__rb-pill:hover{background:#fff;color:#000}
+}
+:root[data-theme="dark"] #__rb{background:#131310;border-bottom-color:#2c2b24;color:#c0bcb1}
+:root[data-theme="dark"] #__rb .__rb-home{color:#f7f5ef}
+:root[data-theme="dark"] #__rb .__rb-home i{color:#948f85}
+:root[data-theme="dark"] #__rb a{color:#85adea}
+:root[data-theme="dark"] #__rb .__mark{background:#f7f5ef;color:#131310}
+:root[data-theme="dark"] #__rb-pill{background:rgba(247,245,239,.95);color:#131310;border-color:rgba(0,0,0,.2)}
+:root[data-theme="dark"] #__rb-pill:hover{background:#fff;color:#000}
+@media (prefers-reduced-motion:reduce){#__rb-pill{transition:none}}
+@media print{#__rb,#__rb-pill{display:none !important}}
+</style>
+<div id="__rb">
+  <a class="__rb-home" href="index.html"><span class="__mark" aria-hidden="true">A</span>Alex Rajcoomar <i>portfolio</i></a>
+  <span class="__rb-right"><a href="research.html">Research</a><a href="library.html">All work</a></span>
+</div>
+<script>
+/* the trail: which passages this browser has opened. The atlas reads it and
+   rings them; the record lives in localStorage and never leaves the machine. */
+(function(){
+  if(window.__trailed) return; window.__trailed=1;
+  try{
+    var k='atlas.trail';
+    var u=location.pathname.split('/').pop()||'index.html';
+    var t2=JSON.parse(localStorage.getItem(k)||'{}');
+    function put(key){
+      if(t2[key]||Object.keys(t2).length<500){
+        t2[key]=(t2[key]||0)+1;
+        localStorage.setItem(k,JSON.stringify(t2));
+      }
+    }
+    put(u+location.hash);
+    addEventListener('hashchange',function(){ put(u+location.hash); });
+  }catch(e){}
+})();
+</script>
+<!--/__rb-->
+
+<div class="cm-wrap">
+<header class="cm-mast">
+<p class="cm-kicker"><span>Crucible Cockpit</span><span>Adversarial claim auditing</span><span>Three runs on the record</span></p>
+<h1 id="a-forecast-is-a-pile-of-claims-audit-the-pile">A forecast is a pile of claims.<br><em>Audit the pile.</em></h1>
+<p class="cm-standfirst">The Crucible Cockpit takes one question — a rate call, a credit thesis, an accounting critique — and refuses to answer it directly. Instead it decomposes the question into individually falsifiable claims, each filed with its own falsifier and an evidence tier, and then sets agents against them: attackers working four vectors (provenance, inference, selection, anachronism), a null agent contesting thin evidence, an advocate allowed to rebuild only what the record supports. Claims are held, narrowed, or killed. The answer at the end is whatever the surviving claims can carry, at the tier of the weakest load-bearing link, with the graveyard and every rejected attack left on the page.</p>
+</header>
+<main>
+
+<section class="cm-sec" id="runs"><div class="cm-grid">
+<div class="cm-rail"><b>§ 1</b>The runs</div><div>
+<h2 id="three-runs-one-engine">Three runs, one engine</h2>
+<p class="cm-lede">All three runs were executed by the same engine — the run headers carry the same code hash (c5539ae8bf8ff7f6…), verified at run time — so differences in outcome are differences in the evidence, not the machinery.</p>
+<div class="cm-tblwrap"><table>
+<caption>Every run on the record. Direction is the reader&#8217;s verdict on the original question; probability is the reader&#8217;s, stated in advance of any resolution.</caption>
+<thead><tr><th>Run</th><th>Mode</th><th>Question</th><th>Claims</th><th>Verdicts</th><th>Direction</th></tr></thead>
+<tbody>
+<tr><td><a href="crucible-run-0.html">Run 0</a></td><td>BACKTEST</td><td>Bank of Canada policy path, cutoff Jan 26 2023</td><td class="num">16</td><td class="num">10 held · 3 narrowed · 1 killed</td><td>UNDETERMINED @ 0.5</td></tr>
+<tr><td><a href="crucible-run-b.html">Run B</a></td><td>LIVE</td><td>The 2026 maturity-wall coupon step-up thesis</td><td class="num">48</td><td class="num">27 held · 13 narrowed · 4 killed</td><td>REFUTED @ 0.2</td></tr>
+<tr><td><a href="crucible-run-c.html">Run C</a></td><td>LIVE</td><td>Goodwill impairment: “too little, too late”</td><td class="num">48</td><td class="num">21 held · 19 narrowed · 7 killed</td><td>REFUTED @ 0.3</td></tr>
+</tbody></table></div>
+<p><b>Why the backtest exists.</b> Run 0 replays a question whose answer is now known — the Bank of Canada&#8217;s policy path — but locks the evidence at a cutoff of January 26, 2023, and audits only what was knowable then. It returned UNDETERMINED at 0.50: the record available on the cutoff date did not decide the question, and the engine said so instead of pretending otherwise. An engine that leaked hindsight would have scored confidently. That is the point of the run: it is the leak test the two live runs stand on.</p>
+<p><b>The live runs.</b> Run B audits the widely-circulated 2026 maturity-wall thesis for Canadian investment-grade issuers and refutes its central statistic at 0.20: every construction of the issuer-level median coupon step-up the retrievable record supports lands below the threshold the thesis needs. Run C audits the &#8220;too little, too late&#8221; critique of impairment-only goodwill accounting against TSX Composite issuers and comes back REFUTED at 0.30 on the claim as filed.</p>
+</div></div></section>
+
+<section class="cm-sec" id="read"><div class="cm-grid">
+<div class="cm-rail"><b>§ 2</b>How to read a run</div><div>
+<h2 id="the-vocabulary-once">The vocabulary, once</h2>
+<div class="cm-tblwrap"><table>
+<thead><tr><th>Term</th><th>Meaning</th></tr></thead>
+<tbody>
+<tr><td class="num">E0 – E3</td><td>Evidence tiers, best to worst: E0 is a primary dated record; E3 is an uncited assertion. A conclusion inherits the tier of its weakest load-bearing claim.</td></tr>
+<tr><td>Falsifier</td><td>Filed with every claim at entry: the observation that would kill it. A claim without one is not admitted.</td></tr>
+<tr><td>HELD / NARROWED / KILLED</td><td>A claim&#8217;s fate. Narrowed claims survive only in a weaker form, shown beside the text as filed. Killed claims move to the graveyard and stay visible.</td></tr>
+<tr><td>Attack vectors</td><td>Provenance (is the source real and dated), inference (does the claim follow), selection (what was left out), anachronism (was it knowable at the cutoff).</td></tr>
+<tr><td>Tripwire</td><td>A pre-declared halt condition: if too many load-bearing claims fall, the run stops and says so rather than concluding.</td></tr>
+<tr><td>BACKTEST / LIVE</td><td>Backtest runs lock evidence at a historical cutoff to test the engine; live runs audit a present-day thesis.</td></tr>
+</tbody></table></div>
+<p>Each run page carries the complete record: the claim matrix with every source, the graveyard, the crux that stayed contested, the attacks that scored zero, each agent&#8217;s concessions, the confidence arithmetic, and the unabridged round-by-round transcript on its own page. Nothing is summarised away.</p>
+<p class="cm-src"><b>Method kinship.</b> The same discipline &#8212; label the evidence, file the falsifier, let the attack run &#8212; drives <a href="flagged-in-hindsight.html">Flagged in Hindsight</a>, <a href="brittle-network.html">The Brittle Network</a>, and <a href="price-of-divergence.html">The Price of Divergence</a> elsewhere on this site.</p>
+</div></div></section>
+</div>
+
+<!--__rbp-->
+<a id="__rb-pill" href="research.html">&#8592; Research</a>
+<script>
+(function(){
+  var p=document.getElementById('__rb-pill'); if(!p) return;
+  var t=false;
+  function run(){ t=false;
+    p.classList.toggle('__on',(window.scrollY||document.documentElement.scrollTop)>420); }
+  function q(){ if(!t){ t=true; requestAnimationFrame(run); } }
+  addEventListener('scroll',q,{passive:true}); run();
+})();
+/* the trail, for the pages that carry only the pill (the tools) */
+(function(){
+  if(window.__trailed) return; window.__trailed=1;
+  try{
+    var k='atlas.trail';
+    var u=location.pathname.split('/').pop()||'index.html';
+    var t2=JSON.parse(localStorage.getItem(k)||'{}');
+    function put(key){
+      if(t2[key]||Object.keys(t2).length<500){
+        t2[key]=(t2[key]||0)+1;
+        localStorage.setItem(k,JSON.stringify(t2));
+      }
+    }
+    put(u+location.hash);
+    addEventListener('hashchange',function(){ put(u+location.hash); });
+  }catch(e){}
+})();
+</script>
+<!--/__rbp-->
+</body>
+</html>

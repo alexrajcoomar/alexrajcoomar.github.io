@@ -1,0 +1,1710 @@
+<!doctype html>
+<html lang="en-CA">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Crucible Cockpit · Run 0 — the full transcript</title>
+<meta name="description" content="Unabridged round-by-round transcript of Crucible run 0. Appendix to the run report.">
+<link rel="stylesheet" href="case-method.css">
+<style>
+.claim-body-html h3,.claim-body-html h4{font-size:.82rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);margin:14px 0 4px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+.claim-body-html p,.claim-body-html li{font-size:.92rem;color:var(--ink-2);max-width:none}
+.claim-body-html pre{background:var(--panel-2);padding:10px 12px;overflow-x:auto;font-size:.82rem;border:1px solid var(--rule)}
+.claim-body-html code{background:var(--panel-2);padding:0 4px;font-size:.88em}
+.meta-dl{display:grid;grid-template-columns:auto 1fr;gap:4px 18px;font-size:.92rem;margin:14px 0}
+.meta-dl dt{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);padding-top:.2em}
+.meta-dl dd{margin:0}
+.rejected-list{list-style:none;padding:0;margin:0;font-size:.9rem}
+.rejected-list li{border-bottom:1px solid var(--rule);padding:8px 0;color:var(--ink-2)}
+.concession{border:1px solid var(--rule);background:var(--panel);padding:12px 16px;margin:0 0 12px}
+.concession .who{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);margin:0 0 6px}
+.concession p{font-size:.93rem;max-width:none;margin:0}
+</style>
+<script>document.documentElement.className+=' js';</script>
+</head>
+<body>
+<!--__rb-->
+<!-- injected by the site build: a way back into the site from a standalone
+     piece. A static bar at the top, so it is visible on arrival, and a pill
+     that appears once you have scrolled past it, so there is always a way out.
+     Self-contained, because these pages do not load the site stylesheet. -->
+<style id="__rb-style">
+#__rb{
+  box-sizing:border-box;display:flex;flex-wrap:wrap;align-items:center;gap:.6rem 1.25rem;
+  padding:.6rem clamp(1rem,4vw,2rem);border-bottom:1px solid #ddd9cf;background:#faf9f6;
+  font:500 13px/1.35 InterVar,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  color:#55524a;
+}
+#__rb a{color:#14509b;text-decoration:none;display:inline-flex;align-items:center;gap:.4rem}
+#__rb a:hover{text-decoration:underline}
+#__rb .__rb-home{font-weight:640;color:#16150f}
+#__rb .__rb-home i{font-style:normal;font-weight:400;color:#6f6c63}
+#__rb .__rb-right{margin-left:auto;display:flex;gap:1.1rem;flex-wrap:wrap}
+#__rb .__mark{
+  display:inline-grid;place-items:center;width:1.2rem;height:1.2rem;flex:none;
+  background:#16150f;color:#faf9f6;font-size:.72rem;font-weight:700;
+}
+#__rb-pill{
+  position:fixed;left:14px;bottom:14px;z-index:2147483000;
+  display:inline-flex;align-items:center;gap:.45rem;padding:.58rem .9rem;
+  background:rgba(22,21,15,.93);color:#faf9f6;text-decoration:none;border-radius:99px;
+  font:600 12.5px/1 InterVar,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  border:1px solid rgba(255,255,255,.16);box-shadow:0 6px 22px rgba(0,0,0,.28);
+  opacity:0;transform:translateY(6px);pointer-events:none;
+  transition:opacity .2s ease,transform .2s ease;
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+}
+#__rb-pill.__on{opacity:1;transform:none;pointer-events:auto}
+#__rb-pill:hover{background:#16150f;color:#fff}
+/* Dark has to answer to two things: the reader's system setting, and the
+   theme button on the page, which sets data-theme on <html>. Keyed to the
+   media query alone, the bar stayed paper-white across the top of an essay
+   the reader had just switched to dark, and read as a rendering fault. The
+   media query is scoped so an explicit light choice wins, and the attribute
+   selector is repeated so an explicit dark choice wins on a light system. */
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) #__rb{background:#131310;border-bottom-color:#2c2b24;color:#c0bcb1}
+  :root:not([data-theme="light"]) #__rb .__rb-home{color:#f7f5ef}
+  :root:not([data-theme="light"]) #__rb .__rb-home i{color:#948f85}
+  :root:not([data-theme="light"]) #__rb a{color:#85adea}
+  :root:not([data-theme="light"]) #__rb .__mark{background:#f7f5ef;color:#131310}
+  :root:not([data-theme="light"]) #__rb-pill{background:rgba(247,245,239,.95);color:#131310;border-color:rgba(0,0,0,.2)}
+  :root:not([data-theme="light"]) #__rb-pill:hover{background:#fff;color:#000}
+}
+:root[data-theme="dark"] #__rb{background:#131310;border-bottom-color:#2c2b24;color:#c0bcb1}
+:root[data-theme="dark"] #__rb .__rb-home{color:#f7f5ef}
+:root[data-theme="dark"] #__rb .__rb-home i{color:#948f85}
+:root[data-theme="dark"] #__rb a{color:#85adea}
+:root[data-theme="dark"] #__rb .__mark{background:#f7f5ef;color:#131310}
+:root[data-theme="dark"] #__rb-pill{background:rgba(247,245,239,.95);color:#131310;border-color:rgba(0,0,0,.2)}
+:root[data-theme="dark"] #__rb-pill:hover{background:#fff;color:#000}
+@media (prefers-reduced-motion:reduce){#__rb-pill{transition:none}}
+@media print{#__rb,#__rb-pill{display:none !important}}
+</style>
+<div id="__rb">
+  <a class="__rb-home" href="index.html"><span class="__mark" aria-hidden="true">A</span>Alex Rajcoomar <i>portfolio</i></a>
+  <span class="__rb-right"><a href="index.html">Home</a><a href="library.html">All work</a></span>
+</div>
+<script>
+/* the trail: which passages this browser has opened. The atlas reads it and
+   rings them; the record lives in localStorage and never leaves the machine. */
+(function(){
+  if(window.__trailed) return; window.__trailed=1;
+  try{
+    var k='atlas.trail';
+    var u=location.pathname.split('/').pop()||'index.html';
+    var t2=JSON.parse(localStorage.getItem(k)||'{}');
+    function put(key){
+      if(t2[key]||Object.keys(t2).length<500){
+        t2[key]=(t2[key]||0)+1;
+        localStorage.setItem(k,JSON.stringify(t2));
+      }
+    }
+    put(u+location.hash);
+    addEventListener('hashchange',function(){ put(u+location.hash); });
+  }catch(e){}
+})();
+</script>
+<!--/__rb-->
+
+
+<div class="cm-wrap"><header class="cm-mast">
+<p class="cm-kicker"><span>Crucible Cockpit</span><span>Run 0 · transcript</span></p>
+<h1>The full transcript</h1>
+<p class="cm-standfirst">Every round of run 0, unabridged, as the engine wrote it. The readable report is <a href="crucible-run-0.html">the run page</a>; this is its evidence.</p></header>
+<main>
+<section class="cm-sec" id="round-1"><div class="cm-grid"><div class="cm-rail"><b>R 1</b>RUN HEADER</div><div><h2>RUN HEADER</h2>
+<div class="claim-body-html"><h3>1 · RUN HEADER</h3>
+<h3>Input block as executed</h3>
+<pre><code>MODE:            BACKTEST
+RUN_ID:          0
+ROOT:            ./run-0
+
+QUESTION: &gt;
+  "The Bank of Canada will lower its policy interest rate below 4.00% before July 31, 2024."
+
+CLAIM_ORIGIN:    Desjardins Economic Studies, Monetary Policy Outlook, 2023-01-26
+CUTOFF:          2023-01-26
+
+MAX_CLAIMS_PER_TERRITORY: 4
+SHUFFLE_SEED:    20260822
+MAX_ROUNDS:      3
+CONTROL_ARM:     NO</code></pre>
+<p>The §1 variance thresholds (VAR_DIRECTION, VAR_PROB_DELTA_PASS, VAR_PROB_DELTA_STOP,</p>
+<p>VAR_TIER, VAR_JACCARD_PASS, VAR_JACCARD_STOP, VAR_VERDICT_DIST) were not supplied in the</p>
+<p>input block for this run. They govern §18's Runs 1 and 2 and §15.3, neither of which is</p>
+<p>exercised by Run 0.</p>
+<h3>Runtime</h3>
+<pre><code>orchestrator:        Convener (root context), orchestration only per §2
+agent runtime:       Claude subagents, isolated contexts, one agent per role per round
+retrieval tools:     WebSearch + WebFetch, granted to all Round 0/1/2/3 evidence roles
+code execution:      Python 3.11.15 on Linux 6.18.44-fc-v21
+run date (UTC):      2026-08-22
+phase 2 invocation:  python strip.py ./run-0 2023-01-26 20260822   (exit code 0)
+shuffle seed:        20260822
+strip_py_sha256 (script-printed):  c5539ae8bf8ff7f679aaaf99d677d9138eae735291743dc18d809655b01d23e7
+strip_py_sha256 (sha256sum strip.py): c5539ae8bf8ff7f679aaaf99d677d9138eae735291743dc18d809655b01d23e7
+match:               YES</code></pre>
+<p><code>strip.py</code> was extracted programmatically from the single ``<code>python</code>`` fence in §5 of the</p>
+<p>package file and executed unmodified.</p>
+<hr></div></div></div></section>
+<section class="cm-sec" id="round-2"><div class="cm-grid"><div class="cm-rail"><b>R 2</b>SELF-AUDIT BLOCK</div><div><h2>SELF-AUDIT BLOCK</h2>
+<div class="claim-body-html"><h3>2 · SELF-AUDIT BLOCK</h3>
+<pre><code>strip_py_sha256:              c5539ae8bf8ff7f679aaaf99d677d9138eae735291743dc18d809655b01d23e7
+cutoff_applied:               2023-01-26
+claims_filed_raw:             16
+unparseable_lines:            0
+malformed_field_rows:         0
+rows_dropped_empty_claim:     0
+claims_merged_away:           0
+claims_filed:                 16
+tier_counts:                  E0=10 E1=4 E2=1 E3=1
+e3_share_pct:                 6
+anachronism_flags:            0
+anachronism_records:          0
+anachronism_rate_pct:         0
+date_integrity_failures:      0
+cutoff_integrity_failures:    0
+cutoff_integrity_failures_LB: 0
+inadmissible_source_records:  1
+shared_source_groups:         3
+voice_lint_flags:             0
+lint_exemptions_applied:      0
+shuffle_seed:                 20260822
+--- counted by the Convener from agent output ---
+lint_flags_resolved:          0  (voice_lint_flags was 0; nothing to resolve)
+attacks_landed:               PROVENANCE=6  INFERENCE=2  SELECTION=3  ANACHRONISM=0   (total 11)
+attacks_retrieved:            17   (r1=7, r2=5, r3=5)
+attacks_asserted:             1    (r1=1, r2=0, r3=0)
+attacks_scored_zero:          12   (= line count of rejected-attacks.md)
+verdicts:                     HELD=10  NARROWED=3  CONTESTED=1  UNDETERMINED=1  KILLED=1
+advocate_rebuilt:             15   (r1=7, r2=5, r3=3)
+advocate_conceded:            2    (r1=1, r2=0, r3=1)
+null_contested:               15   (r1=7 of 16, r2=4 of 7, r3=4 of 5)
+null_not_contested:           13   (r1=9 of 16, r2=3 of 7, r3=1 of 5)
+weakest_load_bearing:         C-13 at tier E0 (nominal); verdict UNDETERMINED, supplies no floor
+conclusion_tier:              E1   (min() over the 8 settled load-bearing claims)
+reader_direction:             UNDETERMINED
+reader_probability:           0.50
+rounds_run:                   3
+reentered_subset_size:        round1=16 (initial entry, nothing re-entered)  round2=7  round3=5
+new_landed_attacks:           round1=6  round2=2  round3=3
+verdict_changes:              round1=16 (initial assignment, no prior map)  round2=4  round3=2   (over re-entered only)
+halt_reason:                  HARD_CAP
+tripwire:                     NOT_FIRED   (load-bearing HELD or NARROWED: 8 of 9)
+tripwire_verdicts_moved:      0  (tripwire did not fire; no tripwire pass was run)
+retrieval_calls_crucible:     131  (cartographers 29; r1 29; r2 45; r3 31; adjudicators and Reader 0)
+retrieval_calls_control:      n/a  (CONTROL_ARM: NO)
+agent_calls:                  17</code></pre>
+<p>Abort conditions in §14 were evaluated after Phase 2 and after each round. None fired.</p>
+<p><code>inadmissible_source_records</code> is 1 (C-02) and C-02 is COLOR, not LOAD-BEARING, so the</p>
+<p>load-bearing abort trigger did not apply.</p>
+<hr></div></div></div></section>
+<section class="cm-sec" id="round-3"><div class="cm-grid"><div class="cm-rail"><b>R 3</b>SCRIPT REPORT</div><div><h2>SCRIPT REPORT</h2>
+<div class="claim-body-html"><h3>3 · SCRIPT REPORT  (strip.py printed output, verbatim)</h3>
+<pre><code>strip_py_sha256:              c5539ae8bf8ff7f679aaaf99d677d9138eae735291743dc18d809655b01d23e7
+cutoff_applied:               2023-01-26
+claims_filed_raw:             16
+unparseable_lines:            0
+malformed_field_rows:         0
+rows_dropped_empty_claim:     0
+claims_merged_away:           0
+claims_filed:                 16
+tier_counts:                  E0=10 E1=4 E2=1 E3=1
+e3_share_pct:                 6
+anachronism_flags:            0
+anachronism_records:          0
+anachronism_rate_pct:         0
+date_integrity_failures:      0
+cutoff_integrity_failures:    0
+cutoff_integrity_failures_LB: 0
+inadmissible_source_records:  1
+shared_source_groups:         3
+voice_lint_flags:             0
+lint_exemptions_applied:      0
+shuffle_seed:                 20260822</code></pre>
+<hr></div></div></div></section>
+<section class="cm-sec" id="round-4"><div class="cm-grid"><div class="cm-rail"><b>R 4</b>STRIPPED LEDGER</div><div><h2>STRIPPED LEDGER</h2>
+<div class="claim-body-html"><h3>4 · STRIPPED LEDGER  (02-stripped/stripped.md, complete)</h3>
+<pre><code># STRIPPED LEDGER  (cutoff=2023-01-26, seed=20260822, order randomised)
+
+C-01
+  claim       : Bank of Canada Governor Tiff Macklem said on January 25, 2023 it was too early to discuss rate cuts.
+  tier        : E1
+  falsifier   : No CBC report from January 25, 2023 quotes Macklem making a statement that discussing rate cuts was premature.
+  load        : LOAD-BEARING
+  sources     : 1
+      - [E1] 2023-01-25 · CBC News, "Bank of Canada raises interest rate again — but hits 'pause' on any more for now" · https://www.cbc.ca/news/business/bank-of-canada-january-rate-decision-1.6725283
+
+C-02
+  claim       : Fixed-deadline macroeconomic threshold predictions resolve true less than half the time across general forecasting tournaments.
+  tier        : E3
+  falsifier   : A cross-tournament calibration study showing a majority of fixed-deadline macroeconomic threshold questions resolve true would falsify this claim.
+  load        : COLOR
+  sources     : 1
+      - [E3] N/A · model prior, no external source · N/A
+
+C-03
+  claim       : Capital Economics economist Stephen Brown forecast Bank of Canada rate cuts beginning in the third quarter of 2023.
+  tier        : E1
+  falsifier   : No Capital Economics forecast for third-quarter 2023 Bank of Canada rate cuts appears in this January 25, 2023 CBC report.
+  load        : SUPPORTING
+  sources     : 1
+      - [E1] 2023-01-25 · CBC News, "Bank of Canada raises interest rate again — but hits 'pause' on any more for now" (quoting Capital Economics) · https://www.cbc.ca/news/business/bank-of-canada-january-rate-decision-1.6725283
+
+C-04
+  claim       : The Bank of Canada held its policy rate at 4.50% on January 25, 2023, remaining prepared to raise it further.
+  tier        : E0
+  falsifier   : The BoC's January 25, 2023 statement instead signaled openness to near-term rate cuts.
+  load        : LOAD-BEARING
+  sources     : 1
+      - [E0] 2023-01-25 · Bank of Canada official press release · https://www.bankofcanada.ca/2023/01/fad-press-release-2023-01-25/
+
+C-05
+  claim       : The Bank of Canada's January 25, 2023 statement says it expects to hold the policy rate at its current level.
+  tier        : E0
+  falsifier   : The text of the January 25, 2023 press release contains no statement about holding the policy rate.
+  load        : LOAD-BEARING
+  sources     : 1
+      - [E0] 2023-01-25 · Bank of Canada press release: 'Bank of Canada increases policy interest rate by 25 basis points, continues quantitative tightening' · https://www.bankofcanada.ca/2023/01/fad-press-release-2023-01-25/
+
+C-06
+  claim       : The Bank of Canada's January 25, 2023 statement said it expects to hold the policy rate at its current level.
+  tier        : E0
+  falsifier   : The text of the January 25, 2023 Bank of Canada statement contains no language about holding the policy rate at its current level.
+  load        : LOAD-BEARING
+  sources     : 1
+      - [E0] 2023-01-25 · Bank of Canada, Fixed Announcement Date press release · https://www.bankofcanada.ca/2023/01/fad-press-release-2023-01-25/
+
+C-07
+  claim       : The median G10 hiking cycle's first rate cut occurred seven months after the final hike.
+  tier        : E0
+  falsifier   : Data showing the median gap between last hike and first cut exceeds seven months would falsify this claim.
+  load        : SUPPORTING
+  sources     : 1
+      - [E0] 2022-10-30 · Goldman Sachs Global Investment Research, G10 Hiking and Cutting Cycles: Lessons from History · https://www.gspublishing.com/content/research/en/reports/2022/10/30/c19ac960-e849-4407-ba4d-568e2a2cceb9.html
+
+C-08
+  claim       : The Bank of Canada raised its target overnight rate to 4.50% on January 25, 2023.
+  tier        : E0
+  falsifier   : A primary Bank of Canada document dated January 25, 2023 shows the policy rate set to a level other than 4.50%.
+  load        : LOAD-BEARING
+  sources     : 1
+      - [E0] 2023-01-25 · Bank of Canada, Fixed Announcement Date press release · https://www.bankofcanada.ca/2023/01/fad-press-release-2023-01-25/
+
+C-09
+  claim       : The Bank of Canada raised its target for the overnight rate to 4.50% on January 25, 2023.
+  tier        : E0
+  falsifier   : A primary Bank of Canada record shows the January 25, 2023 target overnight rate was not 4.50%.
+  load        : LOAD-BEARING
+  sources     : 1
+      - [E0] 2023-01-25 · Bank of Canada press release: 'Bank of Canada increases policy interest rate by 25 basis points, continues quantitative tightening' · https://www.bankofcanada.ca/2023/01/fad-press-release-2023-01-25/
+
+C-10
+  claim       : CIBC economists said on January 25, 2023 that Bank of Canada rates would remain at 4.5% through the rest of 2023 before gradual easing in 2024.
+  tier        : E1
+  falsifier   : CIBC's January 25 note instead forecast a rate cut before year-end 2023.
+  load        : LOAD-BEARING
+  sources     : 1
+      - [E1] 2023-01-25 · FXStreet, reporting CIBC analysis (Matias Salord) · https://www.fxstreet.com/amp/news/bank-of-canada-rates-likely-to-remain-at-45-this-year-before-easing-in-2024-cibc-202301251813
+
+C-11
+  claim       : Median G10 cutting cycles delivered 200 basis points of easing within the first year after the last hike.
+  tier        : E0
+  falsifier   : Data showing median first-year post-peak easing under 200 basis points would falsify this claim.
+  load        : SUPPORTING
+  sources     : 1
+      - [E0] 2022-10-30 · Goldman Sachs Global Investment Research, G10 Hiking and Cutting Cycles: Lessons from History · https://www.gspublishing.com/content/research/en/reports/2022/10/30/c19ac960-e849-4407-ba4d-568e2a2cceb9.html
+
+C-12
+  claim       : Commerzbank analyst Elisabeth Andreae said on January 25, 2023 that a hawkish Bank of Canada rate outlook would support the Canadian dollar.
+  tier        : E1
+  falsifier   : Andreae's note instead argued a hawkish outlook would weaken, not support, the loonie.
+  load        : SUPPORTING
+  sources     : 1
+      - [E1] 2023-01-25 · FXStreet, reporting Commerzbank FX note (Elisabeth Andreae) · https://www.fxstreet.com/news/loonie-to-come-unde-pressure-if-boc-signals-a-pause-ahead-commerzbank-202301250941
+
+C-13
+  claim       : Roughly 75% of G10 rate-hiking cycles saw a first rate cut within 12 months of the final hike.
+  tier        : E0
+  falsifier   : A dataset showing under half of G10 hiking cycles produced a cut within 12 months of the final hike would falsify this claim.
+  load        : LOAD-BEARING
+  sources     : 1
+      - [E0] 2022-10-30 · Goldman Sachs Global Investment Research, G10 Hiking and Cutting Cycles: Lessons from History · https://www.gspublishing.com/content/research/en/reports/2022/10/30/c19ac960-e849-4407-ba4d-568e2a2cceb9.html
+
+C-14
+  claim       : The Bank of Canada's January 2023 Monetary Policy Report projected CPI inflation reaching the 2% target only sometime in 2024.
+  tier        : E0
+  falsifier   : The January 2023 MPR instead forecast inflation returning to the 2% target within 2023.
+  load        : LOAD-BEARING
+  sources     : 1
+      - [E0] 2023-01-25 · Bank of Canada Monetary Policy Report · https://www.bankofcanada.ca/wp-content/uploads/2023/01/mpr-2023-01-25.pdf
+
+C-15
+  claim       : The Bank of Canada scheduled eight policy interest rate announcements for 2023 in a release dated July 26, 2022.
+  tier        : E0
+  falsifier   : The July 26, 2022 release lists a count of 2023 announcement dates other than eight.
+  load        : SUPPORTING
+  sources     : 1
+      - [E0] 2022-07-26 · Bank of Canada press release: 'Bank of Canada publishes 2023 schedule for interest rate announcements' · https://www.bankofcanada.ca/2022/07/2023-schedule-interest-rate-announcements/
+
+C-16
+  claim       : A decline from 4.50% to below 4.00% requires policy rate cuts totaling more than 50 basis points.
+  tier        : E2
+  falsifier   : Bank of Canada primary records show the January 25, 2023 policy rate was 4.00% or below.
+  load        : SUPPORTING
+  sources     : 1
+      - [E2] 2023-01-25 · Author calculation from the Bank of Canada January 25, 2023 rate press release · https://www.bankofcanada.ca/2023/01/fad-press-release-2023-01-25/ (derived arithmetic)</code></pre>
+<hr></div></div></div></section>
+<section class="cm-sec" id="round-5"><div class="cm-grid"><div class="cm-rail"><b>R 5</b>LINT REPORT</div><div><h2>LINT REPORT</h2>
+<div class="claim-body-html"><h3>5 · LINT REPORT</h3>
+<p><code>01-ledger/lint.txt</code>, verbatim:</p>
+<pre><code>none</code></pre>
+<p><code>voice_lint_flags: 0</code> and <code>lint_exemptions_applied: 0</code>. No claim was flagged for a hedge,</p>
+<p>a conjunction, or length, so no claim was returned to its Cartographer for restatement and</p>
+<p>none was dropped. <code>lint_flags_resolved: 0</code>.</p>
+<hr></div></div></div></section>
+<section class="cm-sec" id="round-6"><div class="cm-grid"><div class="cm-rail"><b>R 6</b>INTEGRITY FILES</div><div><h2>INTEGRITY FILES</h2>
+<div class="claim-body-html"><h3>6 · INTEGRITY FILES  (verbatim)</h3>
+<h3>01-ledger/flags.txt</h3>
+<pre><code>none</code></pre>
+<h3>01-ledger/date-failures.txt</h3>
+<pre><code>none</code></pre>
+<h3>01-ledger/cutoff-failures.txt</h3>
+<pre><code>none</code></pre>
+<h3>01-ledger/malformed-rows.txt</h3>
+<pre><code>none</code></pre>
+<h3>01-ledger/inadmissible-records.txt</h3>
+<pre><code>C-02  COLOR  dates: N/A</code></pre>
+<hr></div></div></div></section>
+<section class="cm-sec" id="round-7"><div class="cm-grid"><div class="cm-rail"><b>R 7</b>SHARED SOURCES</div><div><h2>SHARED SOURCES</h2>
+<div class="claim-body-html"><h3>7 · SHARED SOURCES  (01-ledger/shared-sources.txt, verbatim)</h3>
+<pre><code>www.bankofcanada.ca/2023/01/fad-press-release-2023-01-25  -&gt;  C-04, C-05, C-06, C-08, C-09
+www.cbc.ca/news/business/bank-of-canada-january-rate-decision-1.6725283  -&gt;  C-01, C-03
+www.gspublishing.com/content/research/en/reports/2022/10/30/c19ac960-e849-4407-ba4d-568e2a2cceb9.html  -&gt;  C-07, C-11, C-13</code></pre>
+<hr></div></div></div></section>
+<section class="cm-sec" id="round-8"><div class="cm-grid"><div class="cm-rail"><b>R 8</b>INQUISITOR OUTPUT</div><div><h2>INQUISITOR OUTPUT</h2>
+<div class="claim-body-html"><h3>8 · INQUISITOR OUTPUT  (verbatim)</h3>
+<h3>ROUND 1 — 03-attacks/inquisitor.md</h3>
+<h3>INQUISITOR ATTACK LOG</h3>
+<p>ledger: 02-stripped/stripped.md (cutoff=2023-01-26, seed=20260822)</p>
+<p>A-01 │ target: C-04 │ vector: PROVENANCE │ attack: C-04 claims the Bank of Canada "held its policy rate at 4.50% on January 25, 2023, remaining prepared to raise it further." The cited primary source instead states the Bank "today increased its target for the overnight rate to 4½%" (a 25bp hike from 4.25%) — the January 25 action was a raise, not a hold. "Hold" appears in the source only as forward guidance for future meetings ("Governing Council expects to hold the policy rate at its current level while it assesses the impact of the cumulative interest rate increases"), not as a description of what happened that day. This is a misread that inverts the primary action verb in a LOAD-BEARING, E0-tier claim, and the identical source is cited by C-08/C-09 to correctly say "raised" — a direct within-cluster contradiction from one document. │ evidence: Bank of Canada, FAD press release, 2023-01-25, https://www.bankofcanada.ca/2023/01/fad-press-release-2023-01-25/ — "The Bank of Canada today increased its target for the overnight rate to 4½%" │ evidence_status: RETRIEVED</p>
+<p>A-02 │ target: C-05, C-06 │ vector: PROVENANCE │ attack: C-05 and C-06 are the same claim ("[the statement] expects to hold the policy rate at its current level") sourced from the exact same single URL, filed as two separate LOAD-BEARING ledger entries. Independence audit: this is one document counted twice, not two corroborating lines of evidence — the apparent doubling of support is an artifact of record-splitting, not additional evidence. │ evidence: both cite https://www.bankofcanada.ca/2023/01/fad-press-release-2023-01-25/ verbatim; confirmed text: "Governing Council expects to hold the policy rate at its current level while it assesses the impact of the cumulative interest rate increases." │ evidence_status: RETRIEVED</p>
+<p>A-03 │ target: C-08, C-09 │ vector: PROVENANCE │ attack: same duplication pattern as A-02 — C-08 and C-09 both assert "raised ... to 4.50% on January 25, 2023" from the identical single press-release URL, filed as two separate LOAD-BEARING entries. One document is being double-counted as two independent sources. │ evidence: https://www.bankofcanada.ca/2023/01/fad-press-release-2023-01-25/ — one document ("increased its target for the overnight rate to 4½%") backing both C-08 and C-09. │ evidence_status: RETRIEVED</p>
+<p>A-04 │ target: C-10 │ vector: PROVENANCE │ attack: the source line credits the CIBC forecast to "(Matias Salord)," implying he is the CIBC economist behind the analysis. The FXStreet article body attributes the forecast only to unnamed "Analysts at CIBC" — no CIBC economist is named anywhere in the piece. Matías Salord's own FXStreet author bio identifies him as an FXStreet "news writer and analyst" (on staff since 2009) covering the FX market, emerging markets, commodities and bonds — i.e., the reporter who wrote the piece, not a CIBC source. The citation misattributes authorship of the underlying analysis to a name that belongs to the journalist, not the bank. │ evidence: https://www.fxstreet.com/author/matias-salord — "Matías is currently a news writer and analyst, specializing in the Foreign Exchange market. He also covers emerging markets, commodities and bonds"; article text confirmed to attribute the forecast only to "Analysts at CIBC." │ evidence_status: RETRIEVED</p>
+<p>A-05 │ target: C-02 │ vector: PROVENANCE │ attack: the sources field literally reads "N/A · model prior, no external source · N/A." There is no source to audit — a claim about calibration rates across "general forecasting tournaments" rests on nothing but an assertion. Even at COLOR load this cannot clear the PROVENANCE bar of "a source exists." │ evidence: the record itself, C-02 source line: "[E3] N/A · model prior, no external source · N/A" │ evidence_status: ASSERTED</p>
+<p>A-06 │ target: C-02 │ vector: SELECTION │ attack: a competent opponent addressing forecasting-tournament calibration would cite the actual literature on the subject instead of an uncited model prior — e.g. Tetlock, Mellers et al., "Forecasting Tournaments: Tools for Increasing Transparency and Improving the Quality of Debate," publicly posted well before the cutoff and squarely on-topic (tournament question calibration/resolution behavior). It is entirely absent from this ledger. │ evidence: https://faculty.wharton.upenn.edu/wp-content/uploads/2015/07/2014---forecasting-tournaments-tools-for-increasing-transparency-and-improving-debate.pdf (dated 2014, predates cutoff) │ evidence_status: RETRIEVED</p>
+<p>A-07 │ target: C-03 │ vector: INFERENCE │ attack: C-03 states Capital Economics' Stephen Brown "forecast Bank of Canada rate cuts beginning in the third quarter of 2023" — presented as a firm prediction. The actual quote is hedged and conditional: "we see scope for the bank to start cutting interest rates again as soon as the third quarter." The evidence supports only the weaker claim: Brown said there was scope/room for a cut as early as Q3 2023 (an earliest-possible-case framing), not that Capital Economics' base-case forecast was for cuts to begin in Q3 2023. │ evidence: https://www.cbc.ca/lite/story/1.6725283 — "we see scope for the bank to start cutting interest rates again as soon as the third quarter" (Stephen Brown, Capital Economics) │ evidence_status: RETRIEVED</p>
+<p>A-08 │ target: C-07, C-11, C-13 │ vector: PROVENANCE │ attack: all three are tiered E0 — the tier this ledger otherwise reserves for official primary documents (the BoC press releases underlying C-04–C-09). But the underlying document is a Goldman Sachs sell-side research note synthesizing 85 historical hiking/cutting cycles (1960-2019) into summary statistics — a private bank's derived analytical product, not a primary/official data release. Tiering it E0 alongside central-bank primary sources overstates its evidentiary status. │ evidence: https://www.gspublishing.com/content/research/en/reports/2022/10/30/c19ac960-e849-4407-ba4d-568e2a2cceb9.html — Goldman Sachs Global Investment Research note (Bhushan), "examines 85 hiking and easing cycles from 1960-2019 across G10 economies" │ evidence_status: RETRIEVED</p>
+<p>UNATTACKED: C-01, C-12, C-14, C-15, C-16</p>
+<p>CONCESSION: MOVED — retrieval confirmed several claims cleanly (C-01's Macklem quote, C-12's Andreae quote, C-14's 2024 inflation-target timing, C-15's eight 2023 announcement dates all check out verbatim against primary/quoted text), so the ledger is not wholesale unreliable. But it moved down from my prior: a LOAD-BEARING E0 claim (C-04) inverts the primary source's own action verb (raised vs. held) while a duplicate-sourced sibling claim (C-08/C-09) states the correct verb from the same document: 5 of 16 records collapse to one press release double- and triple-filed as independent entries; a named-analyst citation (C-10) misattributes a CIBC forecast to an FXStreet reporter; and a forecast claim (C-03) drops the source's own hedge ("scope," "as soon as") to read as a firm prediction.</p>
+<hr>
+<h3>ROUND 2 — 03-attacks/inquisitor-r2.md</h3>
+<h3>INQUISITOR — ROUND 2 ATTACK LOG</h3>
+<p>cutoff: 2023-01-26 · mode: BACKTEST · ledger: stripped-r2.md (7 re-entered claims: C-01, C-03, C-04, C-07, C-10, C-11, C-13)</p>
+<p>C-01 │ vector: ANACHRONISM │ attack: The claim pins the exact wording "it's really far too early to be talking about [rate] cuts" to the Jan 25, 2023 press conference, but the Bank of Canada's own official transcript of that press conference contains no such language — only conditional-pause framing ("we expect to pause rate hikes while we assess the impacts... this is a conditional pause... If we need to do more to get inflation to the 2% target, we will"). Every dated, retrievable instance of Macklem using this specific "far too early / premature to discuss cuts" formulation is post-cutoff: a May 19, 2023 São Paulo seminar ("far too early to be thinking about interest rate cuts"), a Dec 15, 2023 statement, and a Jan 24, 2024 speech. The claim's true evidentiary basis is this later reporting, not the Jan 25, 2023 event it is pinned to. Under BACKTEST rules the claim reverts to what the pre-cutoff primary transcript actually supports: a conditional pause, not a "far too early to discuss cuts" statement. │ evidence: Bank of Canada, "Opening Statement" (2023-01-25), https://www.bankofcanada.ca/2023/01/opening-statement-2023-01-25/ [pre-cutoff, retrieved, contains no such language]; Investing.com, "BoC's Macklem says it's far too early to think about interest rate cuts" (2023-05-19) [POST-CUTOFF — true origin of this quote pattern]; corroborating later instances Dec 15 2023 (Bloomberg/Global News) and Jan 24 2024 (FXStreet) │ evidence_status: RETRIEVED</p>
+<p>C-03 │ vector: SELECTION │ attack: absent from the ledger — The Globe and Mail's same-day "Instant reaction" market roundup (Jan 25, 2023) quotes Stephen Brown of Capital Economics giving a specific, dated call: "the Bank will begin to cut in September, a little later than July as we previously suggested" — their actual operative forecast that day, delayed from an even earlier July-2023 call, not a hedge floated as an outer bound. This directly undercuts this record's own narrowing that Brown's statement was "an earliest-possible-case statement, not a firm base-case forecast" — independent same-day reporting shows Capital Economics held a firm, dated base case (September, i.e. Q3) throughout. │ evidence: The Globe and Mail, "How the Street and money markets are reacting..." (2023-01-25), https://www.theglobeandmail.com/investing/markets/inside-the-market/article-instant-reaction-what-the-street-is-saying-about-the-boc-rate-hike/ — not on this record's source list │ evidence_status: RETRIEVED</p>
+<p>C-07 │ vector: PROVENANCE │ attack: independence audit — C-07, C-11 and C-13 are three separate ledger entries whose combined source list is exactly one document, at the identical URL (confirmed by shared-sources-r2.txt line 2: gspublishing.com → C-07, C-11, C-13). This is one piece of evidence counted three times, not triangulated corroboration; a single methodological choice in that report (which economies count as "G10," how a "cycle" is delimited) would falsify all three claims simultaneously. The report itself sits behind Goldman's client-registration wall — retrieval returned only a summarized excerpt, not the underlying dataset/table, so no reader of the ledger can check the figure independently of the ledger's own paraphrase. │ evidence: shared-sources-r2.txt line 2; gspublishing.com/content/research/en/reports/2022/10/30/c19ac960-e849-4407-ba4d-568e2a2cceb9.html (retrieved as gated/subscriber content) │ evidence_status: RETRIEVED</p>
+<p>C-11 │ vector: PROVENANCE │ attack: same single-source concentration as C-07, plus a concrete misread risk specific to this figure — the retrieved excerpt of the GS report states both that "the median G10 hiking cycle involved a 200bp rate increase" (total hike size, an unrelated metric) and that cutting cycles delivered "a cumulative 200bp of easing within the first year" (the metric C-11 actually cites) — two different quantities landing on the identical number in the same summary. A record resting on one gated source, accessed only through a third-party summarization pass, has no independent check against the two 200bp figures having been conflated somewhere in the citation chain. │ evidence: gspublishing.com/content/research/en/reports/2022/10/30/c19ac960-e849-4407-ba4d-568e2a2cceb9.html (retrieved excerpt shows the duplicate "200bp" figures side by side) │ evidence_status: RETRIEVED</p>
+<p>C-13 │ vector: PROVENANCE │ attack: same single-source concentration as C-07 — the "roughly 75%" figure has no corroboration anywhere on the ledger besides the identical gated GS report already flagged for C-07/C-11 (shared-sources-r2.txt line 2). I could access the report only via a summarized excerpt, not the underlying table, so the ledger's "75%" cannot be checked against the report's actual dataset by any reader of this record; it is one analyst house's proprietary count, presented with the same single-source fragility as C-07 and C-11. │ evidence: shared-sources-r2.txt line 2; gspublishing.com/content/research/en/reports/2022/10/30/c19ac960-e849-4407-ba4d-568e2a2cceb9.html (retrieved, gated) │ evidence_status: RETRIEVED</p>
+<p>UNATTACKED: C-04, C-10</p>
+<p>CONCESSION: MOVED — 5 of 7 re-entered claims took a sanctioned, evidence-backed hit this round: C-01 (LOAD-BEARING) falls to ANACHRONISM once the primary Jan-25-2023 transcript is checked against it and the quote's real documented origin is traced to May 2023 and later; C-03 (SUPPORTING) falls to SELECTION via a same-day Globe and Mail report the ledger omitted, which contradicts the record's own narrowing; C-07/C-11/C-13 (one LOAD-BEARING, two SUPPORTING) share a single gated source that the shared-sources file itself flags, with C-11 carrying an additional figure-conflation risk found on direct retrieval. Only C-04 (BoC press release, quoted verbatim against the retrieved primary text) and C-10 (FXStreet quote, verified verbatim and already self-narrowed) survive round 2 unmarked.</p>
+<hr>
+<h3>ROUND 3 — 03-attacks/inquisitor-r3.md</h3>
+<h3>INQUISITOR — ROUND 3 ATTACKS</h3>
+<p>cutoff=2023-01-26 · mode=BACKTEST · ledger=stripped-r3.md (5 contested records: C-03, C-07, C-10, C-11, C-13)</p>
+<hr>
+<p>C-03 │ vector: SELECTION │ attack: A competent opponent cites The Globe and Mail's same-day (2023-01-25) "Instant reaction: What the Street is saying about the BoC rate hike," which quotes Capital Economics directly on cut timing and presents it as the firm's <b>base case</b>, not a hedge: "We suspect the Bank will begin to cut in September, a little later than July as we previously suggested." September sits inside Q3 (Jul–Sep). This is a second, same-day, same-firm statement that directly contradicts the record's load-bearing framing device — it shows Capital Economics' actual base case <i>was</i> a Q3 start, undercutting the claim's central move that the CBC quote ("as soon as the third quarter") was merely an earliest-possible scenario distinct from a firm base-case forecast. The record's own single source cannot settle this because it never quotes Brown using the words "base case" either way — the "earliest-possible, not base-case" characterization is the ledger's inference, and a same-day competing report shows the opposite characterization from the same analyst shop. │ evidence: The Globe and Mail, "Instant reaction: What the Street is saying about the BoC rate hike," 2023-01-25, https://www.theglobeandmail.com/investing/markets/inside-the-market/article-instant-reaction-what-the-street-is-saying-about-the-boc-rate-hike/ │ evidence_status: RETRIEVED</p>
+<p>C-07 │ vector: PROVENANCE │ attack: The claim text asserts a second, "independently sourced compilation of Fed-only pause periods (1988–89–2015–18)" giving "median ~7.5 months" and a "3.4 to 14.6 months" range, and leans on that compilation to license the record's hedge language ("plausible historical central tendency, not a reliable point-prediction"). But the record's own sources field lists exactly one source (sources: 1 — the Goldman Sachs G10 report), and that report is a G10-wide 85-cycle (1960–2019) dataset, not a Fed-only 1988-89/2015-18 breakdown — confirmed by direct fetch, which returned no such two-cycle Fed subset. The "independently sourced compilation" that does the actual work of narrowing this claim to E0/SUPPORTING has no citation anywhere in the record and cannot be verified to exist. │ evidence: stripped-r3.md C-07 sources field (count=1, lists only the Goldman Sachs report) vs. claim text's uncited second dataset; cross-checked against https://www.gspublishing.com/content/research/en/reports/2022/10/30/c19ac960-e849-4407-ba4d-568e2a2cceb9.html (fetched directly, no Fed-only 1988-89/2015-18 subset present) │ evidence_status: RETRIEVED</p>
+<p>C-10 │ vector: PROVENANCE │ attack: The cited FXStreet piece is a secondary paraphrase of a CIBC note ("reporting CIBC analysis"), not the note itself. A second, earlier same-day FXStreet piece from the same outlet — "BoC Preview: Forecasts from eight major banks" (2023-01-25, 07:31 ET) — quotes CIBC's position that day with no "4.5% throughout the balance of this year... eased gradually in 2024" language at all; instead it has CIBC saying to watch the press conference for "the conditions that the Bank eventually needs to see to start cutting interest rates again" — a materially more conditional, non-committal framing. Of eight banks previewed in that piece, only Wells Fargo commits to an explicit cut-timing call ("the BoC begins cutting interest rates in the final quarter of 2023"); CIBC is explicitly among the banks giving no explicit timeline. This is a same-day, same-outlet source that undercuts confidence that the specific "4.5% through 2023 / gradual 2024 easing" figure cited in the ledger record is a faithful rendering of CIBC's actual note rather than the reporter's own gloss. │ evidence: FXStreet, "BoC Preview: Forecasts from eight major banks, edging towards a final rate hike," 2023-01-25 07:31, https://www.fxstreet.com/news/boc-preview-forecasts-from-eight-major-banks-edging-towards-a-final-rate-hike-202301250731 │ evidence_status: RETRIEVED</p>
+<p>C-11 │ vector: INFERENCE │ attack: The evidence supports a weaker claim than stated. Direct fetch of the cited Goldman Sachs report itself surfaces the authors' own limiting caveat: "An important caveat to these findings is that the current post-pandemic cycle remains very unique." The report also does not decompose its 200bp median-easing figure by inflation regime or by recession-vs-soft-landing outcome across its 1960–2019, 85-cycle sample (confirmed by direct fetch: no such breakdown present) — so the 200bp figure is a blended median across cycles as different as 1970s-80s stagflation-era tightening and 1990s soft landings. The weaker, evidence-supported claim is: "Across a heterogeneous 1960–2019 G10 sample that the report's own authors caution may not transfer to the post-pandemic cycle, median first-year post-peak easing was 200bp" — not a figure that can be read as informative for the Bank of Canada's 2023 (post-pandemic) cycle specifically, which is exactly the cycle the caveat names. │ evidence: Goldman Sachs Global Investment Research, "G10 Hiking and Cutting Cycles: Lessons from History," 2022-10-30, https://www.gspublishing.com/content/research/en/reports/2022/10/30/c19ac960-e849-4407-ba4d-568e2a2cceb9.html (fetched directly for caveat language and absence of sub-period breakdown) │ evidence_status: RETRIEVED</p>
+<p>C-13 │ vector: PROVENANCE │ attack: Independence audit on the shared-sources list, per shared-sources-r3.txt: the identical URL (gspublishing.com/.../c19ac960...) is the sole source_id for C-07, C-11, and C-13 simultaneously. These are presented in the ledger as three separate pieces of evidence (a 7-month median gap, a 200bp easing figure, a 75%-within-12-months figure) but they are three statistics pulled from one proprietary Goldman Sachs product, not three independently triangulated findings — confirmed by direct fetch showing all three figures originate in the same report with the same undifferentiated 85-cycle sample and the same self-declared "very unique" post-pandemic caveat. If Goldman's cycle-classification methodology is flawed or non-generalizable to the post-pandemic case (which the report's own authors flag), C-07, C-11, and C-13 do not fail independently — they fail together, as one data point wearing three record numbers. The ledger's presentation of three separate SUPPORTING/LOAD-BEARING entries overstates the actual evidentiary diversity behind the "G10 pattern → BoC 2023" inference. │ evidence: shared-sources-r3.txt (gspublishing.com/.../c19ac960-e849-4407-ba4d-568e2a2cceb9.html → C-07, C-11, C-13); cross-checked by direct fetch of the report │ evidence_status: RETRIEVED</p>
+<hr>
+<p>UNATTACKED: none — all five contested/re-entered records (C-03, C-07, C-10, C-11, C-13) carry a filed attack above.</p>
+<hr>
+<p>CONCESSION: MOVED — C-03's central rhetorical move (Q3 as "earliest-possible" rather than base case) is directly contradicted by a same-day, same-firm statement in an independent outlet, which is the strongest single result of this pass. Separately, the three Goldman-sourced records (C-07, C-11, C-13) survive as a general historical pattern but lose their claim to independent triangulation (one source_id, three record numbers) and lose unqualified applicability to the Bank of Canada's 2023 cycle specifically, since the source's own authors caveat that the post-pandemic cycle is "very unique" — a caveat none of the three records disclose. C-07's secondary Fed-pause compilation, which does the real work of softening that record to E0/SUPPORTING, has no citation anywhere and could not be verified to exist. C-10 stands weakened but not felled: a same-day, same-outlet source shows CIBC's public framing that day was more conditional than the cited note suggests, but this does not establish the cited note is wrong, only that it is less corroborated than a single E1 LOAD-BEARING source ought to be.</p>
+<hr>
+<p>*No TRIPWIRE PASS section: the tripwire reported NOT_FIRED in all three rounds (8 of 9</p>
+<p>load-bearing claims HELD or NARROWED), so no fresh tripwire Inquisitor was spawned and</p>
+<p><code>03-attacks/tripwire-inquisitor.md</code> does not exist.*</p>
+<hr></div></div></div></section>
+<section class="cm-sec" id="round-9"><div class="cm-grid"><div class="cm-rail"><b>R 9</b>NULL OUTPUT</div><div><h2>NULL OUTPUT</h2>
+<div class="claim-body-html"><h3>9 · NULL OUTPUT  (verbatim)</h3>
+<h3>ROUND 1 — 03-attacks/null.md</h3>
+<h3>NULL — position: the ledger does not uniformly settle its claims</h3>
+<p>Method: for each claim id, ask whether the cited evidence rules out a</p>
+<p>named rival, or whether it merely fails to have been challenged yet.</p>
+<p>Only claims that survive a named rival, a correlation check, or a</p>
+<p>minimum-evidence check are left uncontested.</p>
+<hr>
+<h3>CONTESTED</h3>
+<p><b>C-01</b> — Macklem "too early to discuss rate cuts" (E1, 1 source, LOAD-BEARING)</p>
+<ul>
+<li><i>Thinness</i>: a single secondary paraphrase (CBC) stands in for a</li>
+</ul>
+<p>LOAD-BEARING claim about specific wording. No transcript, no second</p>
+<p>outlet, no direct quotation marks in the claim itself.</p>
+<ul>
+<li><i>Live rivals, named</i>: (A) Macklem explicitly rejected rate-cut talk</li>
+</ul>
+<p>as premature, vs. (B) Macklem declined to give forward guidance in</p>
+<p>general terms and CBC's article compressed that into "too early to</p>
+<p>discuss rate cuts" as editorial shorthand. The ledger contains</p>
+<p>nothing — no direct quote, no second report — that discriminates</p>
+<p>between (A) and (B).</p>
+<p><b>C-02</b> — fixed-deadline macro threshold questions resolve true &lt;50% of the time (E3, COLOR)</p>
+<ul>
+<li><i>Thinness, extreme</i>: source is "model prior, no external source,</li>
+</ul>
+<p>N/A" — already flagged in <code>inadmissible-records.txt</code>. Zero</p>
+<p>evidence base means no possible falsifier check has been run; this</p>
+<p>is an assertion, not a settled claim.</p>
+<p><b>C-03</b> — Capital Economics/Stephen Brown forecast Q3 2023 cuts (E1, 1 source, SUPPORTING)</p>
+<ul>
+<li><i>Thinness</i>: single secondary source.</li>
+<li><i>Correlation</i>: sources with C-01 (<code>shared-sources.txt</code>) — both facts</li>
+</ul>
+<p>come from one CBC article by one reporter. If that reporter</p>
+<p>compressed or mischaracterized either quote, both C-01 and C-03 fail</p>
+<p>together; they are not independent confirmations of "what was said</p>
+<p>on Jan 25."</p>
+<p><b>C-07, C-11, C-13</b> — G10 hiking-cycle statistics: median 7-month gap to first cut / 200bp first-year easing / ~75% cut within 12 months (all E0, 1 source each, LOAD-BEARING/SUPPORTING)</p>
+<ul>
+<li><i>Correlation, the clean case</i>: <code>shared-sources.txt</code> shows all three</li>
+</ul>
+<p>numbers trace to one Goldman Sachs report — one desk, one dataset,</p>
+<p>one cycle-dating methodology. Three ledger entries create an</p>
+<p>appearance of triangulated support, but a single flawed</p>
+<p>methodological choice would move all three numbers together; they</p>
+<p>are facets of one analysis, not three independent measurements.</p>
+<ul>
+<li><i>Ill-posedness</i>: the ledger's own "E0" tier is applied both to an</li>
+</ul>
+<p>institution's direct self-report of its own action (Bank of Canada</p>
+<p>press releases) and to a private bank's derived statistical</p>
+<p>aggregate (Goldman). These are epistemically different kinds of</p>
+<p>"primary" — one is testimony about one's own act, the other is a</p>
+<p>calculation over an undisclosed set of historical episodes — yet</p>
+<p>the tier label treats them as equivalent reliability.</p>
+<ul>
+<li><i>Live rivals, named</i>: cycle-dating is a live methodological choice.</li>
+</ul>
+<p>An ex-post dating convention (declare a hiking cycle "ended" only</p>
+<p>once the rate has been stable for N months, as in BIS-style</p>
+<p>cross-country studies) versus Goldman's real-time/ex-ante dating</p>
+<p>(cycle ends at the last observed hike as of the report's Oct 2022</p>
+<p>publication) can produce materially different gap-to-first-cut and</p>
+<p>hit-rate statistics from the same underlying rate history. Nothing</p>
+<p>in the ledger cites a second methodology to check Goldman's numbers</p>
+<p>against.</p>
+<p><b>C-10</b> — CIBC: BoC rates remain at 4.5% through 2023, ease in 2024 (E1, 1 source, LOAD-BEARING)</p>
+<ul>
+<li><i>Thinness</i>: single secondary source (FXStreet) paraphrasing a</li>
+</ul>
+<p>private CIBC note that is not itself in the ledger — the primary</p>
+<p>note was never checked against the wire's characterization.</p>
+<ul>
+<li><i>Live rival, named</i>: Capital Economics/Stephen Brown (C-03), cited</li>
+</ul>
+<p>in this same ledger, forecast BoC cuts beginning Q3 2023 — the</p>
+<p>opposite call, made the same day. If C-10 is meant to establish</p>
+<p>anything about analyst consensus on the 2023 path, the ledger itself</p>
+<p>contains a named, contemporaneous rival forecast it does not</p>
+<p>adjudicate between.</p>
+<hr>
+<h3>NOT CONTESTED</h3>
+<p><b>C-04</b> — BoC held rate at 4.50% Jan 25 2023, remaining prepared to raise further — the claim is checkable directly against the cited primary Bank of Canada release; the falsifier (did the statement instead signal openness to cuts) is a straightforward text-presence check and no rival account of the Bank's own words is plausible. (Note: "held... at 4.50%" is loosely worded next to C-08/09's "raised... to 4.50%," but the claim's own falsifier targets stance direction — hold/hawkish vs. cut-signal — which the primary text settles either way.)</p>
+<p><b>C-05</b> — BoC statement expects to hold the rate — same primary source, directly quotable text, no competing reading of the document's own language.</p>
+<p><b>C-06</b> — near-duplicate of C-05 — same reasoning; redundant restatement of one document's language, not independently contested content.</p>
+<p><b>C-08</b> — BoC raised target rate to 4.50% — a specific numeric fact of institutional record from the Bank's own release; not open to competing interpretation.</p>
+<p><b>C-09</b> — near-duplicate of C-08 — same primary source, same numeric fact, directly verifiable.</p>
+<p><b>C-12</b> — Commerzbank/Andreae: hawkish outlook supports CAD — single source, but SUPPORTING (not load-bearing), and states a routine, textbook FX mechanism (rate-differential support) attributed to a named analyst in a contemporaneous wire report; not consequential or implausible enough to carry a contest.</p>
+<p><b>C-14</b> — Jan 2023 MPR projects 2% CPI only in 2024 — sourced directly to the primary MPR document; the falsifier is a direct text check of the Bank's own report, with no rival account of what that report says.</p>
+<p><b>C-15</b> — BoC published eight 2023 announcement dates (July 2022 release) — a simple, low-stakes administrative count from a primary release; trivially verifiable, not a matter of interpretation.</p>
+<p><b>C-16</b> — decline from 4.50% to below 4.00% requires &gt;50bp of cuts — pure arithmetic (0.50 percentage points is "more than 50 basis points" by definition) once the 4.50% starting point is fixed by C-08/C-09; this is a tautology, not an empirical claim, so no rival explanation is coherent against it.</p>
+<hr>
+<p>CONCESSION: MOVED — the ledger's core institutional facts (what the Bank of Canada itself did and said on January 25, 2023: the hike to 4.50%, the hold/hawkish forward guidance, the MPR's 2024 inflation-target timeline, the 2023 announcement schedule, and the arithmetic built on the 4.50% figure) are each carried by a direct primary self-report or trivial derivation with no coherent rival reading, and I concede those. What does not survive is the layer built on secondary paraphrase and single-author analytics: specific wording attributed to Macklem, competing analyst forecasts reported through a single wire each, and — most importantly — the three Goldman "historical base rate" statistics, which look like three lines of evidence but are one methodology's output restated three times, with no rival methodology in the ledger to check it against.</p>
+<hr>
+<h3>ROUND 2 — 03-attacks/null-r2.md</h3>
+<h3>NULL — ROUND 2 RE-ENTRY</h3>
+<p>Ledger: <code>stripped-r2.md</code> (7 re-entered claims: C-01, C-03, C-04, C-07, C-10, C-11, C-13)</p>
+<p>Cutoff: 2023-01-26. All retrieval below is restricted to facts that were knowable on or before the cutoff (a modern compilation cited for pre-2023 historical data points is used only for those pre-cutoff data points, never for post-cutoff outcomes).</p>
+<h3>Position</h3>
+<p>The ledger is not uniformly thin. Two clusters of claims survive scrutiny once corroboration is actually checked (C-01/C-03 quotes; C-04 primary document). One cluster does not: the three Goldman-sourced statistical claims (C-07/C-11/C-13) and the CIBC forecast claim (C-10) rest on exactly one account each, and retrieval aimed specifically at finding a second, independent account of each came back empty. That is the honest boundary of "we do not know" here — not the whole ledger, and not none of it.</p>
+<hr>
+<h3>CONTESTED</h3>
+<h3>C-07, C-11, C-13 — Goldman Sachs "G10 Hiking and Cutting Cycles" statistics (grouped: one source, three claims)</h3>
+<p><b>Correlation.</b> <code>shared-sources-r2.txt</code> already flags this: all three claims cite the identical URL (gspublishing.com/.../c19ac960...). I fetched that page directly — it reproduces the exact three figures ("first cut came seven months after the last hike," "200bp of easing within the first year," "roughly 75% of the cycles involved a first cut within a year") verbatim, confirming the ledger did not misquote it, but also confirming there is exactly one analytical product behind three separate ledger entries. Targeted search (<code>Goldman Sachs "G10 Hiking and Cutting Cycles" median seven months first cut</code>) found no independent bank, IMF/BIS study, or academic source replicating this G10-wide statistic with its own methodology. Three "facts" that all cash out to one proprietary spreadsheet are not three units of evidence.</p>
+<p><b>Ill-posedness.</b> The ledger never states Goldman's sample size (N cycles), the date range sampled, which G10 economies are included, or the operational definition of a "cycle" (does a hike-pause-hike sequence count as one cycle or two?). Without N, "roughly 75%" is unfalsifiable in practice — it could be 6/8 or 60/80, and those carry very different evidentiary weight. "G10 hiking cycle" is doing load-bearing work in C-13 in particular while remaining Goldman's private categorization choice, not a term with an agreed public definition.</p>
+<p><b>Live rivals — named explicitly.</b></p>
+<ul>
+<li><i>Rival A (the ledger's implicit reading):</i> Goldman's median/percentage figures are a reliable predictive base rate for how the Bank of Canada's 2023 tightening cycle would resolve.</li>
+<li><i>Rival B:</i> hike-to-cut timing is highly idiosyncratic and cycle-specific (driven by inflation persistence, labor-market slack, and country-specific shocks), so a median computed over a small, heterogeneous historical sample has weak power to predict any one particular cycle — including the BoC's.</li>
+</ul>
+<p>An independently sourced, differently-constructed historical compilation of <i>Fed-only</i> pause periods (1988–89 through 2015–18, i.e., cycles fully completed before the 2023 cutoff) puts the median at a similar ~7.5 months but shows individual cycles ranging from 3.4 to 14.6 months — a 4x spread around the median, using a completely different (single-country, publicly reconstructable) methodology than Goldman's G10 blend. That range is itself pre-cutoff-knowable information; it shows the "median" statistic Goldman reports is compatible with a fast-cut BoC scenario and a slow-cut BoC scenario alike. Nothing in the ledger's admitted evidence — a median, a percentage, a basis-point figure, all from one source — distinguishes which regime the actual 2023 BoC cycle would fall into. C-13's "75%" framing in particular invites the reader to treat a cut-within-12-months as the modal, near-certain outcome; the dispersion evidence says the ledger cannot license that confidence.</p>
+<h3>C-10 — CIBC forecast ("stay at 4.5%... eased gradually in 2024") via FXStreet</h3>
+<p><b>Thinness / Correlation.</b> The sole citation is one FXStreet wire item (reporter: Matias Salord) attributing the forecast to unnamed "CIBC economists" — not a CIBC-authored document, not a named economist. I ran two separate searches for independent corroboration (general search on the forecast text, and a targeted search on CIBC's own named economists — Avery Shenfeld, Benjamin Tal) and found no second outlet or CIBC primary document repeating this specific "hold at 4.5% through 2023, ease gradually in 2024" formulation as of the claim date. I also pulled the same-day Globe and Mail market-reaction roundup for Jan 25, 2023 (independent of FXStreet), hoping it would either corroborate or contradict — it quotes a <i>named</i> CIBC economist, Andrew Grantham, but on a narrower and different point ("today's hike... will indeed mark the final one of this cycle"), with no statement on cut timing. That neither confirms nor denies the FXStreet framing; it just shows CIBC's public commentary that day is not obviously all pointing the same direction across outlets. One uncorroborated, unnamed-source wire report is too thin to carry a LOAD-BEARING claim.</p>
+<hr>
+<h3>NOT CONTESTED</h3>
+<p><b>C-01 — Macklem's "far too early to be talking about cuts" quote.</b> The ledger cites only CBC, which on its face looks like the same single-source problem as C-07/11/13. It isn't: I found independent, same-day corroboration from separate news organizations covering the same live press conference — FXStreet's own separate wire ("BOC's Macklem: Far too early to be talking about interest rate cuts," dated 2023-01-25) and Investing.com carry matching language, and Reuters' coverage (via TradingView) confirms the same press-conference exchange. A public press conference is a multiply-observed event with many independent reporters in the room; that is structurally different from a proprietary single-author dataset, and here it produced real, independent convergence. The evidence settles this.</p>
+<p><b>C-03 — Capital Economics/Stephen Brown's Q3 2023 cut framing.</b> Also cited to CBC alone in the ledger, but independently corroborated by a separate, same-day Globe and Mail article quoting Brown directly: "We suspect the Bank will begin to cut in September, a little later than July as we previously suggested." Different outlet, different byline, substantively consistent (September falls inside Q3), and it actually reinforces the ledger's own careful hedge — the forecast had visibly just moved from July to September, confirming this was live, revisable speculation rather than a fixed institutional call, exactly as the claim already states. Settled.</p>
+<p><b>C-04 — Bank of Canada's January 25, 2023 statement (25bp hike to 4.50%; "hold" + "prepared to increase further" language).</b> E0, primary source, and I verified it directly by fetching the Bank of Canada's own press release rather than relying on the ledger's transcription. Both quoted phrases match verbatim: "Governing Council expects to hold the policy rate at its current level while it assesses the impact of the cumulative interest rate increases" and "Governing Council is prepared to increase the policy rate further if needed." The 25bp increase to 4½% is confirmed. A primary institutional document, read directly, is as close to conclusive as this ledger gets — there is no rival account of what the Bank's own statement said.</p>
+<hr>
+<p>CONCESSION: MOVED — Retrieval defeated the apparent single-source problem on C-01 and C-03 (independent, same-day, differently-bylined corroboration exists outside the ledger's own citation list) and directly confirmed C-04 against its primary source. Blanket "the ledger is too thin" does not survive that check, so I am not claiming the whole ledger. But retrieval aimed just as hard at C-07/C-11/C-13 (one Goldman dataset wearing three claim-IDs, undefined N, and a demonstrable rival explanation the ledger cannot rule out) and at C-10 (one unnamed-source wire report, no second account found) came back empty-handed. Those four remain undetermined on the evidence actually in front of me.</p>
+<hr>
+<h3>ROUND 3 — 03-attacks/null-r3.md</h3>
+<h3>NULL — Round 3 Re-Entry Review</h3>
+<p>Ledger: <code>stripped-r3.md</code> (cutoff 2023-01-26). Claims in scope: C-03, C-07, C-10, C-11, C-13.</p>
+<p>Position: the ledger, read as a set, does not settle a reliable timeline for when Bank of Canada rate cuts would begin after the January 25, 2023 hike. Below is a claim-by-claim accounting — not a blanket rejection. Two claims cluster (C-07/C-11/C-13) share exactly one source; C-10 is contradicted in its precision by an independent contemporaneous account; C-03 survives.</p>
+<hr>
+<h3>Retrieval findings (new, pre-cutoff, admissible)</h3>
+<p>1. <b>Macklem, Jan 25 2023 (same day, same event), Reuters exclusive</b> — "We're not talking about cuts. We're not even thinking about cuts … the question really we're asking ourselves is, 'Have we done enough?'" Published 2023-01-25, same press conference the hike claims are drawn from. https://www.investing.com/news/economy/exclusivebank-of-canadas-macklem-says-he-is-not-even-thinking-of-cutting-rates-2988107</p>
+<p>2. <b>Globe and Mail, "How the Street and money markets are reacting" (2023-01-25)</b> — rounds up six bank desks reacting to the <i>same</i> announcement the same day: National Bank (modest H2-2023 easing), Capital Economics/Stephen Brown (cuts from September 2023, rate to 2.5% by mid-2024), TD Economics/James Orlando (hold most of 2023, cut at year-end), CIBC/Andrew Grantham (final hike, but cut timing <i>not</i> explicitly specified), Desjardins/Royce Mendes (pause "at least the next few months," no exact timing), BMO/Benjamin Reitzes (on hold through the rest of 2023). https://www.theglobeandmail.com/investing/markets/inside-the-market/article-instant-reaction-what-the-street-is-saying-about-the-boc-rate-hike/</p>
+<p>3. <b>FXStreet, CIBC note (2023-01-25)</b>, re-fetched and confirmed to say exactly what C-10 quotes, attributed only to "Analysts at CIBC," no individual named. https://www.fxstreet.com/amp/news/bank-of-canada-rates-likely-to-remain-at-45-this-year-before-easing-in-2024-cibc-202301251813</p>
+<p>4. CBC source underlying C-03 could not be re-fetched directly (403), but its content is corroborated in substance (not contradicted) by finding (2) above.</p>
+<p>5. Confirmed via search: the Goldman Sachs "G10 Hiking and Cutting Cycles" report (2022-10-30) is the sole retrievable primary source for the 85-cycle statistic set; no independent replication of the 85-cycle count turned up.</p>
+<hr>
+<h3>CONTESTED</h3>
+<h3>C-07 — Goldman 85-cycle median gap (7 months), E0, SUPPORTING</h3>
+<p><b>Argument: Correlation</b>, backed directly by <code>shared-sources-r3.txt</code>, which shows the <i>same</i> URL (gspublishing.com/.../c19ac960…) backing C-07, C-11, and C-13. Three "supporting" data points in this ledger are one proprietary dataset counted three times — the appearance of triangulation is illusory. The claim's own text already half-concedes this ("not independently triangulated by another G10-wide study"), which is itself evidence the correlation problem is real and unresolved, not evidence it's been cured. A single bank's internal cycle-classification (which cycles count, how boundaries are drawn, country weighting) has not been checked against any second compiler in this ledger.</p>
+<p><b>Argument: Live rivals</b>, secondary. Rival explanation: the 2022–23 tightening cycle — response to the highest inflation in four decades, the fastest hiking pace in the Bank of Canada's modern history, launched near the zero lower bound — may not be exchangeable with the median cycle in a 1960–2019, 85-cycle G10 sample dominated by different inflation/rate regimes. Nothing in the ledger discriminates "this cycle resembles the historical median" from "this cycle is a regime outlier the median doesn't cover." Macklem's own framing on the day ("have we done enough" — i.e., still weighing more hikes, not cuts) is more consistent with the outlier reading than the typical-cycle reading, and the ledger does not engage it.</p>
+<h3>C-11 — Median 200bps first-year easing, E0, SUPPORTING</h3>
+<p><b>Argument: Correlation.</b> Identical single-source problem as C-07 — same URL, same report, per <code>shared-sources-r3.txt</code>. This claim carries none of C-07's internal hedging, so it is the cleanest case of the pattern: one dataset presented as if it were a second, independent corroborating data point alongside C-07 and C-13. A median also collapses the same kind of dispersion C-07 explicitly flags for cycle <i>timing</i> (3.4–14.6 months); nothing in the ledger reports the corresponding spread for easing <i>magnitude</i>, so "200bps" cannot be checked against how representative it is of any single cycle, including 2023's.</p>
+<h3>C-13 — ~75% of G10 cycles cut within 12 months, E0, LOAD-BEARING</h3>
+<p><b>Argument: Correlation</b>, same shared source as C-07/C-11 (<code>shared-sources-r3.txt</code>), and the most consequential instance because this one is LOAD-BEARING. A load-bearing conclusion resting on a statistic that is, in the ledger's own evidentiary base, a single proprietary count from one bank is exactly the "one dataset wearing three hats" pattern the brief flags.</p>
+<p><b>Argument: Live rivals</b>, named explicitly: Rival A ("history is a reliable base rate — expect a cut inside 12 months, consistent with 75% of prior G10 cycles") vs. Rival B ("this cycle is not exchangeable with the historical sample because it was launched to fight 40-year-high inflation from near-zero rates at the fastest pace on record, and the central bank's own guidance on the very day of the hike explicitly disclaimed near-term cuts — 'we're not even thinking about cuts'"). Nothing in the ledger cites or discriminates against Rival B; Macklem's Jan 25, 2023 statement (finding 1 above) is a same-day, on-the-record statement from the actual decision-maker and is not addressed anywhere in the ledger's C-13 sourcing.</p>
+<h3>C-10 — CIBC: hold at 4.5% through 2023, ease gradually 2024, E1, LOAD-BEARING</h3>
+<p><b>Argument: Thinness + Live rivals, named explicitly.</b> The claim's own text already flags "unnamed in the reporting" — a single FXStreet piece attributing a precise, numeric forecast to unnamed "CIBC economists." Independent retrieval (finding 2) turns up a second, contemporaneous, <i>named</i>-economist account of CIBC's position the same day: Andrew Grantham (CIBC), per the Globe and Mail, is reported as saying the January hike was the last one but that cut <i>timing was not explicitly specified</i> — a materially less precise position than "stays at 4.5% throughout the balance of this year, before being eased gradually in 2024." These are two different characterizations of the same house's view, issued the same day, and the ledger only carries one of them. Named rivals: Rival A = FXStreet's precise, numeric CIBC call (no cut before 2024) vs. Rival B = Globe and Mail's vaguer Grantham characterization (cut anticipated, timing unspecified). Nothing in the ledger discriminates between them, and this claim is LOAD-BEARING, so the gap matters. (Note: this finding does not make C-10 false — Rival A and Rival B are not strictly incompatible, just different-precision accounts — but the ledger cannot currently tell you which is the more faithful rendering of CIBC's actual position, which is exactly the thinness problem.)</p>
+<hr>
+<h3>NOT CONTESTED</h3>
+<p><b>C-03 — Capital Economics/Stephen Brown, Jan 25 2023, "confident... will be the last," Q3 2023 scope, E1, SUPPORTING — the evidence does settle this one.</b></p>
+<p>This claim is narrowly self-referential: it asserts only that a named economist made a specific hedged statement ("scope for... as soon as the third quarter"), reported by one named outlet, and the claim's own falsifier is bibliographic (does this text appear in this report). That is a reported-speech claim, not a forecast-truth claim, and single-sourcing a direct quote to the outlet that ran it is not thin in the way a generalizing statistical claim is thin. Independent retrieval (finding 2, Globe and Mail) corroborates rather than contradicts the substance — Capital Economics/Stephen Brown did flag September 2023 specifically as a cut point that day, and the hedged phrasing in the ledger's claim ("scope for," "as soon as") matches the hedged phrasing Capital Economics itself is reported as using elsewhere. I looked for a rival characterization strong enough to contest the accuracy of the quote-report itself and did not find one; I found dispersion in what <i>other banks</i> said (which is a live-rivals point about the broader macro question, not about whether CBC accurately reported what Capital Economics said). The claim does not assert that Capital Economics' call was correct or representative — only that it was made and hedged as described — and that narrow assertion holds.</p>
+<hr>
+<h3>CONCESSION: MOVED — retrieval moved me off contesting C-03 (its narrow, bibliographic scope holds up against everything I could find), while the same retrieval pass <i>strengthened</i> rather than weakened the contests on C-07, C-10, C-11, and C-13: the shared-source problem in the Goldman trio is confirmed structural (not just claim-level hedging), and Macklem's own "not even thinking about cuts" statement plus the six-way bank dispersion in the Globe and Mail roundup are concrete, named, pre-cutoff rivals the ledger does not currently engage.</h3>
+<hr></div></div></div></section>
+<section class="cm-sec" id="round-10"><div class="cm-grid"><div class="cm-rail"><b>R 10</b>ADVOCATE OUTPUT</div><div><h2>ADVOCATE OUTPUT</h2>
+<div class="claim-body-html"><h3>10 · ADVOCATE OUTPUT  (verbatim)</h3>
+<h3>ROUND 1 — 04-advocate/advocate.md</h3>
+<h3>ADVOCATE — rebuild log</h3>
+<p>ledger: inbox-advocate/stripped.md (cutoff=2023-01-26) · attacks: inquisitor.md, null.md</p>
+<p>Method: for each claim, took the strongest surviving attack (Inquisitor</p>
+<p>PROVENANCE/INFERENCE/SELECTION or Null thinness/correlation/rival), tried</p>
+<p>to retrieve pre-cutoff evidence that repairs or narrows the claim, and</p>
+<p>graded the result. Retrieval used only sources dated on/before 2023-01-25.</p>
+<hr>
+<p>C-01 │ REBUILT: Bank of Canada Governor Tiff Macklem said at the January 25, 2023 press conference, "it's really far too early to be talking about cuts" — a direct, on-the-record quotation (CBC), not editorial paraphrase. This defeats the Null's named rivals: rival (B) — that CBC compressed a general refusal to give forward guidance into "too early to discuss cuts" — cannot survive a direct quotation using almost that exact phrase; rival (A), explicit rejection of rate-cut talk as premature, is what the primary quote shows. Source: CBC, Jan 25 2023, https://www.cbc.ca/lite/story/1.6725283.</p>
+<p>C-02 │ CONCEDED: the record cites no external source at all ("model prior, no external source"). I searched for actual pre-cutoff calibration literature on fixed-deadline macroeconomic threshold questions (Tetlock/Mellers-style tournament studies, Good Judgment Project write-ups, Metaculus/IARPA calibration papers) and found nothing that supports this specific numerical claim ("&lt;50% resolve true") rather than general tournament-accuracy findings. There is no narrower version I can construct that both matches the claim's specificity and rests on retrieved evidence. This is the clean concession Inquisitor's A-05/A-06 call for.</p>
+<p>C-03 │ REBUILT: Capital Economics economist Stephen Brown said on January 25, 2023 that the firm was "confident that today's hike will be the last" and saw "scope for the bank to start cutting interest rates again as soon as the third quarter" of 2023 — a conditional, earliest-possible-case statement, not a firm base-case forecast that cuts would begin in Q3 2023. Confirms Inquisitor A-07's hedge exactly; narrowing the claim to "scope for a cut as early as Q3" (rather than "forecast cuts beginning in Q3") is the defensible form. Source: CBC, Jan 25 2023, https://www.cbc.ca/lite/story/1.6725283.</p>
+<p>C-04 │ REBUILT: The Bank of Canada raised its target for the overnight rate by 25 basis points to 4.50% on January 25, 2023 — that day's action was an increase, not a hold. Its statement separately signaled that Governing Council "expects to hold the policy rate at its current level" going forward while it assesses prior increases, and that it "is prepared to increase the policy rate further if needed" — both phrases confirmed verbatim in the primary release. This corrects Inquisitor A-01's inverted-verb attack (the Jan 25 action was "raised," not "held") while preserving the "prepared to raise further" clause, which the source text actually supports and which the original attack did not challenge. Source: Bank of Canada FAD release, 2023-01-25, https://www.bankofcanada.ca/2023/01/fad-press-release-2023-01-25/.</p>
+<p>C-05 │ HELD AS WRITTEN: survives A-02. Inquisitor's own retrieval confirms the quoted language verbatim ("Governing Council expects to hold the policy rate at its current level..."). A-02's attack is that this claim and C-06 share one source URL and are filed as two independent LOAD-BEARING lines — a record-independence/double-counting problem in the ledger's bookkeeping, not a defect in this sentence's truth. The claim's content is unchanged whether it appears once or twice in the ledger.</p>
+<p>C-06 │ HELD AS WRITTEN: survives A-02 on the same grounds as C-05 — near-duplicate wording of the same verbatim-confirmed primary quote. Duplication is a weight/independence issue for anyone using C-05+C-06 as two corroborating data points; it does not make either individual statement false.</p>
+<p>C-07 │ REBUILT: According to Goldman Sachs Global Investment Research's October 2022 study of 85 G10 hiking/cutting cycles since 1960, the median cycle's first cut followed the final hike by about seven months, under Goldman's own real-time (as-of-report) cycle-dating convention. I searched for an independent pre-cutoff replication using a different dating convention (e.g., an ex-post/BIS-style "cycle ends only after N months of stability" method, as Null's A-08/rival flags) and found none dated before 2023-01-26. The figure is accurately attributed to Goldman's single study; I cannot certify it against Null's named rival methodology, so it is narrowed to an explicitly single-source, method-dependent statistic rather than a settled base rate.</p>
+<p>C-11 │ REBUILT: According to the same October 2022 Goldman Sachs report, median G10 cutting cycles delivered about 200bp of easing in the first year after the last hike, per Goldman's cycle-dating methodology. Same limitation as C-07: this is one desk's derived statistic from one dataset, not corroborated here by a second methodology, and should be read as "per Goldman's analysis" rather than as an independently triangulated fact — addressing Null's correlation point (C-07/C-11/C-13 are facets of one analysis, not three measurements).</p>
+<p>C-13 │ REBUILT: According to Goldman Sachs's single October 2022 study (not independently replicated in this ledger), roughly 75% of the 85 G10 hiking cycles examined saw a first cut within 12 months of the final hike. Because this is filed LOAD-BEARING, the single-source dependency matters more here than in C-07/C-11: the number is accurately drawn from Goldman's report, but — absent a second cycle-dating methodology to check it against — it should carry the evidentiary weight of one private-bank analytical product, not the weight of an institutional primary record (Null's ill-posedness point on E0 tiering, which I cannot resolve without evidence I could not retrieve).</p>
+<p>C-14 │ HELD AS WRITTEN: unattacked by Inquisitor; Null lists it NOT CONTESTED. Sourced directly to the primary Monetary Policy Report; the falsifier is a direct text check with no rival account of what the Bank's own report says.</p>
+<p>C-15 │ HELD AS WRITTEN: unattacked; Null lists it NOT CONTESTED. A trivial, low-stakes administrative count (eight 2023 announcement dates) drawn directly from the primary July 26, 2022 release — not a matter of interpretation.</p>
+<p>C-16 │ HELD AS WRITTEN: unattacked; Null lists it NOT CONTESTED. Given the 4.50% starting point (independently verified at C-08/C-09), "decline to below 4.00% requires &gt;50bp of cuts" is arithmetic, not an empirical claim — no rival reading is coherent against a tautology.</p>
+<p>C-08 │ HELD AS WRITTEN: survives A-03. Inquisitor's own retrieval confirms "increased its target for the overnight rate to 4½%" verbatim against the primary release. A-03's attack is that C-08 and C-09 double-count one source URL as two LOAD-BEARING entries — a record-independence problem, not a factual error in the 4.50% figure itself.</p>
+<p>C-09 │ HELD AS WRITTEN: survives A-03 on the same grounds as C-08 — a near-duplicate restatement of the same verbatim-confirmed institutional fact (target rate raised to 4.50%).</p>
+<p>C-10 │ REBUILT: CIBC economists — unnamed in the reporting — said in a note covered by FXStreet on January 25, 2023 that Bank of Canada rates would "stay at 4.5% throughout the balance of this year, before being eased gradually in 2024." The article attributes the forecast only to "Analysts at CIBC"; the byline "Matías Salord" belongs to the FXStreet reporter (his own author bio identifies him as an FXStreet news writer/analyst), not a CIBC source, so the claim is rebuilt without naming him as the CIBC economist. Separately, this is one bank's house view issued the same day Capital Economics offered a different call (C-03: scope for a cut as early as Q3 2023) — the ledger records two contemporaneous, named, conflicting forecasts without adjudicating between them, and this rebuild does not attempt to; it only repairs the misattribution.</p>
+<p>C-12 │ HELD AS WRITTEN: unattacked by Inquisitor; Null lists it NOT CONTESTED. Single source, but SUPPORTING (not load-bearing) load, states a routine textbook FX rate-differential mechanism, attributed to a named analyst in a contemporaneous wire report — not consequential or implausible enough to require rebuilding.</p>
+<hr>
+<p>CONCESSION: MOVED — retrieval added evidence the stripped ledger and both prior rounds lacked. Against the Null specifically: a direct Macklem quotation ("it's really far too early to be talking about cuts") discriminates cleanly in favor of the "explicit rejection" rival on C-01, which the Null had marked contested for lack of exactly that. Against the Inquisitor's PROVENANCE attacks: two were real defects requiring repair, not just relabeling — C-04's claim text inverted "raised" into "held" for the day's actual action (fixed by REBUILT, keeping the "prepared to raise further" clause the source does support), and C-10 misattributed a CIBC forecast to the FXStreet reporter by name (fixed by attributing to unnamed "CIBC economists"). C-03's overclaim (firm forecast vs. hedged "scope... as soon as") was also confirmed and narrowed. One claim, C-02, has no retrievable evidence at any grain and is conceded outright — no rebuild is honest there. On the Goldman G10 statistics (C-07/C-11/C-13), my position stayed UNMOVED against the Null's specific methodological-rival attack: I searched for a pre-cutoff independent replication using a different cycle-dating convention and found none, so those three claims are narrowed to explicit single-source, method-dependent attribution rather than defended as settled base rates. Net: 7 rebuilt, 1 conceded, 8 held as written.</p>
+<hr>
+<h3>ROUND 2 — 04-advocate/advocate-r2.md</h3>
+<h3>ADVOCATE — ROUND 2 REBUILD</h3>
+<p>ledger: stripped-r2.md · 7 re-entered claims · cutoff: 2023-01-26 · retrieval performed against both attacks below</p>
+<hr>
+<p>C-01 │ HELD AS WRITTEN: Survives the Inquisitor's ANACHRONISM attack. Direct fetch of the ledger's own cited source — CBC, "Bank of Canada raises interest rate again — but hits 'pause'..." (cbc.ca/news/business/bank-of-canada-january-rate-decision-1.6725283), dated 2023-01-25 — confirms it quotes Macklem in the Q&amp;A that followed the rate announcement: "Let's keep in mind that inflation's still over six per cent... So it's really far too early to be talking about cuts," matching the ledger's claim almost verbatim. Independently corroborated same day by a second outlet: FXStreet, "BOC's Macklem: Far too early to be talking about interest rate cuts" (fxstreet.com/news/bocs-macklem-far-too-early-to-be-talking-about-interest-rate-cuts-202301251629), timestamped 2023-01-25 16:29 GMT — "It is far too early to be talking about interest rate cuts." The Inquisitor's attack checked only the Bank's separate prepared "Opening Statement" transcript (bankofcanada.ca/2023/01/opening-statement-2023-01-25/), which covers prepared remarks and does not include the press-conference Q&amp;A where this line was actually spoken — the same press conference has two distinct documents, and the Inquisitor checked the one that doesn't carry this quote. That gap in the attack's own evidence, not a dating error in the claim, explains the mismatch it found. The claim's pinning to Jan 25, 2023 is correct and multiply sourced.</p>
+<p>C-03 │ REBUILT: Capital Economics' Stephen Brown gave substantively consistent remarks to two independent same-day outlets — CBC (2023-01-25): "we remain confident that today's hike will be the last and we see scope for the bank to start cutting interest rates again as soon as the third quarter"; The Globe and Mail (2023-01-25, "instant reaction" market roundup, theglobeandmail.com/investing/markets/inside-the-market/article-instant-reaction-what-the-street-is-saying-about-the-boc-rate-hike/), verified by direct fetch: "We suspect the Bank will begin to cut in September, a little later than July as we previously suggested." The Globe's directly quoted "we suspect... will begin" is a positive, dated operative call — just revised down from an even earlier July 2023 call — not a hedge floated as an outer bound. New text: Capital Economics/Stephen Brown said Jan 25, 2023, in commentary reported by both CBC and The Globe and Mail, that the day's hike would be the BoC's last of the cycle and that the firm's actual base case, just revised from July to September, put the first cut in Q3 2023. Drop the ledger's "earliest-possible-case, not a firm base-case forecast" qualifier — independent corroboration contradicts it rather than supporting it.</p>
+<p>C-04 │ HELD AS WRITTEN: Unattacked by the Inquisitor. Independently re-verified directly against the Bank of Canada's own press release (bankofcanada.ca/2023/01/fad-press-release-2023-01-25/): the 25bp increase to 4½% target, "expects to hold the policy rate at its current level while it assesses the impact of the cumulative interest rate increases," and "prepared to increase the policy rate further if needed to return inflation to the 2% target" all match verbatim. Primary-source, E0, no rival account of the Bank's own words exists.</p>
+<p>C-07 │ REBUILT: The PROVENANCE attack (one gated report backing three ledger entries) is legitimate and not fully answerable — but direct retrieval of the report's public-facing page (gspublishing.com/content/research/en/reports/2022/10/30/c19ac960-e849-4407-ba4d-568e2a2cceb9.html) surfaced sample detail neither the Inquisitor nor the Null could access: the "seven months" median is drawn from a stated 85 G10 hiking-and-easing cycles spanning 1960–2019, not an undisclosed N — partially answering the Null's "ill-posedness" objection. That same 60-year span crosses Bretton Woods, the 1970s inflation era, Volcker disinflation, and the modern inflation-targeting regime, a heterogeneity the ledger doesn't disclose and that bears directly on how well one long-run median predicts any single cycle, including 2023's. New text: "Per Goldman Sachs's own count of 85 G10 hiking/easing cycles (1960–2019), the median gap between the final hike and first cut was seven months" — attributed to one analytical product, not independently triangulated, and explicitly one of three ledger entries (with C-11, C-13) drawn from that same single source.</p>
+<p>C-11 │ REBUILT: Same single-source/N=85/1960–2019 framing as C-07. On the Inquisitor's specific figure-conflation charge: direct retrieval confirms the source text does contain two distinct 200bp figures — "the policy rate increased by 200bp in the median G10 hiking cycle" (total hike size) and "cumulative 200bp of easing within the first year" (post-peak easing) — but the ledger's claim text matches the second (easing) clause specifically, not the first. No conflation actually occurred in this ledger's citation chain, though the coincidence in the source is real and worth flagging for any future reader. New text: "Per the same Goldman Sachs report underlying C-07/C-13, median G10 cutting cycles delivered a cumulative 200bp of easing within the first year after the last hike — a distinct figure from that report's separate 200bp total-hike-size statistic, which this claim is not citing."</p>
+<p>C-13 │ REBUILT: Same single-source/N=85/1960–2019 framing as C-07/C-11; no claim-specific defect beyond the shared provenance concern. New text: "Per Goldman Sachs's count of 85 G10 hiking/easing cycles (1960–2019), roughly 75% saw a first cut within 12 months of the final hike — one firm's proprietary classification, not independently replicated." I could not find, within the cutoff, independent evidence discriminating between the Null's named rivals (a reliable predictive base rate vs. cycle-specific idiosyncrasy dominating any long-run median); treat the 75% as directional context for the 2023 BoC cycle, not a calibrated probability for it specifically.</p>
+<p>C-10 │ REBUILT: Direct fetch confirms the cited FXStreet article (fxstreet.com/.../bank-of-canada-rates-likely-to-remain-at-45-this-year-before-easing-in-2024-cibc-202301251813, timestamped 2023-01-25 18:13 GMT) genuinely carries this forecast, attributed collectively to unnamed "analysts at CIBC" — no named economist, no specific report cited within the article. Three separate corroboration searches (general text match, named CIBC economists Shenfeld/Tal, and a same-day eight-major-bank BoC preview piece covering CIBC's pre-decision view) found no second outlet or CIBC-authored document repeating this specific "hold at 4.5% through 2023, ease gradually in 2024" timeline — the same empty result the Null reports. New text: "According to a single wire report (FXStreet, citing unnamed CIBC economists, Jan 25 2023), CIBC expected the BoC's rate to hold at 4.5% through the balance of 2023 before easing gradually in 2024" — accurately and verifiably reported, but resting on one uncorroborated account; do not present as an independently confirmed CIBC institutional forecast.</p>
+<hr>
+<p>CONCESSION: MOVED — Real, evidence-based narrowing landed on 5 of 7 claims (C-03, C-07, C-11, C-13, C-10), and none of the seven were false as written — every rebuild above is a reframing/attribution fix, not a retraction of fact. But the round's headline attack does not stand: the Inquisitor's ANACHRONISM strike on C-01 (its own tally's marquee LOAD-BEARING hit) is defeated outright once the press-conference Q&amp;A is checked rather than only the prepared opening statement, and C-04 stands fully unmarked. Against the Null: its C-01/C-03/C-04 findings are confirmed and, for C-03, extended into a concrete rebuild; its harder claim — that C-07/C-11/C-13's single-source Goldman cluster and C-10's single unnamed-source wire report cannot currently be discriminated from their named rivals — survives my own independent retrieval, which closed one gap (sample size/date range for the Goldman report) but could not close the predictive-power or corroboration gaps the Null identified. Net: the ledger exits round 2 smaller in stated confidence on the statistical/forecast cluster, intact on its two primary-source/multiply-corroborated claims.</p>
+<hr>
+<h3>ROUND 3 — 04-advocate/advocate-r3.md</h3>
+<h3>ADVOCATE — ROUND 3 RE-ENTRY</h3>
+<p>cutoff=2023-01-26 · ledger=stripped-r3.md · claims in scope: C-03, C-07, C-10, C-11, C-13</p>
+<p>New retrieval this pass (all pre-cutoff, all RETRIEVED by direct fetch):</p>
+<ul>
+<li>Globe and Mail, "Instant reaction: What the Street is saying about the BoC rate hike," 2023-01-25 — https://www.theglobeandmail.com/investing/markets/inside-the-market/article-instant-reaction-what-the-street-is-saying-about-the-boc-rate-hike/</li>
+<li>FXStreet, "BoC Preview: Forecasts from eight major banks," 2023-01-25 07:31 GMT — https://www.fxstreet.com/news/boc-preview-forecasts-from-eight-major-banks-edging-towards-a-final-rate-hike-202301250731</li>
+<li>FXStreet, CIBC-specific note coverage, 2023-01-25 18:13 GMT — https://www.fxstreet.com/amp/news/bank-of-canada-rates-likely-to-remain-at-45-this-year-before-easing-in-2024-cibc-202301251813</li>
+<li>Goldman Sachs, "G10 Hiking and Cutting Cycles: Lessons from History," 2022-10-30 — https://www.gspublishing.com/content/research/en/reports/2022/10/30/c19ac960-e849-4407-ba4d-568e2a2cceb9.html (re-fetched independently)</li>
+</ul>
+<hr>
+<p>C-03 REBUILT: Capital Economics economist Stephen Brown told CBC on Jan 25, 2023 the hike would be 'the last' and saw 'scope for the bank to start cutting interest rates again as soon as the third quarter' of 2023 — and, per a same-day Globe and Mail item independently re-fetched this pass, Capital Economics gave a more specific, more confidently-framed statement the same day: 'We suspect the Bank will begin to cut in September, a little later than July as we previously suggested.' September sits inside Q3. The ledger's added interpretive gloss ("an earliest-possible-case statement, not a firm base-case forecast") is dropped — it is the ledger's own unsupported inference, contradicted rather than supported by the firm's other same-day statement — and replaced with the better-evidenced reading: two same-day sources agree Q3 2023 (specifically September) was Capital Economics' actual expectation that day, not merely a hedge. Reported-speech core intact; tier/load unchanged (E1/SUPPORTING).</p>
+<p>C-07 REBUILT: The 7-month median hike-to-cut gap is confirmed by this pass's direct re-fetch of the Goldman report ("the first cut came seven months after the last hike"). The claim's second leg — an "independently sourced compilation of Fed-only pause periods (1988-89 / 2015-18)" giving ~7.5-month median and a 3.4-14.6-month range — is dropped: direct fetch of the Goldman report confirms no such breakdown exists in it, the ledger's own sources field lists only the one Goldman source, and a targeted search this pass turned up no citable pre-cutoff compilation matching those figures, so it cannot be verified to exist and does no evidentiary work. What survives: a single proprietary 85-cycle (1960-2019) G10 dataset, shared with C-11 and C-13 (not independently triangulated), carrying the report's own disclosed caveat ("the current post-pandemic cycle remains very unique," confirmed by direct fetch) — retained as E0/SUPPORTING description of a historical pattern, explicitly not a point-prediction for the Bank of Canada's 2023 cycle.</p>
+<p>C-10 HELD AS WRITTEN: survives the Inquisitor's PROVENANCE attack. Direct fetch this pass timestamps the Inquisitor's competing source — the FXStreet "eight banks preview" — at 2023-01-25 07:31 GMT (~2:31am ET), hours before the Bank of Canada's ~10am ET rate decision; its vaguer, no-explicit-timeline CIBC framing is therefore a pre-decision preview, not a competing account of the same moment as the piece C-10 cites, which direct fetch dates to 2023-01-25 18:13 GMT (~1:13pm ET) — after the decision and press conference — and confirms verbatim: "interest rates will stay at 4.5% throughout the balance of this year, before being eased gradually in 2024." The claim's own text already discloses the source as unnamed, which pre-empts the Null's parallel point (a same-day Globe and Mail quote from a named CIBC economist, Andrew Grantham, gives a vaguer, non-numeric account: hike was the last, no cut timing specified) — a different-precision, non-contradictory account of the same institution's view on the same day, not a rebuttal of the quoted figure. Tier/load unchanged (E1/LOAD-BEARING).</p>
+<p>C-11 REBUILT: The 200bp median first-year post-peak easing figure is confirmed by this pass's direct re-fetch of the Goldman report ("a cumulative 200bp of easing within the first year"). Retained only as a bare description of that single 85-cycle (1960-2019) G10 dataset — it shares its sole source with C-07 and C-13 (no independent triangulation, confirmed by direct fetch showing all three figures originate in the same report), no sub-period or regime breakdown exists to show how representative 200bp is of any individual cycle (including a post-pandemic one), and the report's own authors flag the post-pandemic cycle as "very unique." Stands as a historical statistic, not a magnitude prediction for the Bank of Canada's 2023 easing path (E0/SUPPORTING, non-predictive).</p>
+<p>C-13 CONCEDED: this is the ledger's one LOAD-BEARING claim, and it cannot be rebuilt to survive the Null's named, evidenced rival. The ~75%-within-12-months figure is confirmed by direct re-fetch to come from the same single Goldman 85-cycle dataset already entered as C-07 and C-11 (no independent triangulation) and carries the same unresolved "very unique" post-pandemic caveat. The Null names two live rivals — Rival A (historical base rate holds: expect a cut inside 12 months) vs. Rival B (this cycle is not exchangeable with the historical sample: fastest hiking pace on record, launched to fight 40-year-high inflation from near-zero rates) — and backs Rival B with Governor Macklem's own on-the-record, same-day statement: "We're not talking about cuts. We're not even thinking about cuts." No pre-cutoff evidence available to this pass discriminates against Rival B; restating the Goldman figure more confidently would only replay the Null's own point about the gap. The claim's load-bearing predictive function (G10 history → BoC 2023 within 12 months) does not survive; nothing narrower salvages that function, since its only content beyond C-07/C-11 was the inferential leap itself.</p>
+<hr>
+<p>CONCESSION: MOVED — C-13, the ledger's sole LOAD-BEARING claim, is conceded outright: its 75%-within-12-months figure is the same single Goldman dataset already counted at C-07 and C-11, and the record has no pre-cutoff evidence discriminating against the Null's named, evidenced rival (BoC's 2023 cycle as a hiking-regime outlier, backed by Macklem's own same-day "not even thinking about cuts" statement). C-07 and C-11 survive only narrowed to bare, non-predictive descriptions of that same shared dataset, each shorn of one specific defect — C-07 of an uncited, unverifiable secondary source; C-11 of any claim to representativeness — and both now explicitly disclosing the report's own "very unique" caveat. C-03 is substantively rebuilt rather than merely defended: a same-day, same-firm quote independently re-fetched this pass contradicts the ledger's "earliest-possible, not base-case" framing device, so that interpretive gloss is replaced with the better-supported reading that Q3 2023 (September) was Capital Economics' actual expectation. C-10 is the one claim that survives fully intact — direct-fetch timestamps show the Inquisitor's competing source predates the rate decision by hours and so is not in competition with the post-decision note C-10 cites, and the claim's pre-existing "unnamed" hedge already absorbs the Null's parallel point.</p>
+<hr></div></div></div></section>
+<section class="cm-sec" id="round-11"><div class="cm-grid"><div class="cm-rail"><b>R 11</b>VERDICT MAP</div><div><h2>VERDICT MAP</h2>
+<div class="claim-body-html"><h3>11 · VERDICT MAP  (05-verdict/map.md, final reissue after round 3, verbatim)</h3>
+<h3>ADJUDICATION MAP — ROUND 3 (FINAL, REISSUED, CUMULATIVE)</h3>
+<p>ledger: 02-stripped/stripped.md (16 claims) · cutoff 2023-01-26 · mode BACKTEST</p>
+<p>Round 3 re-entrants (per stripped-r3.md, the CONTESTED/NARROWED survivors of round 2):</p>
+<p>C-03, C-07, C-10, C-11, C-13. MAX_ROUNDS = 3 — this is the hard cap; no further rounds.</p>
+<p>All other ids (C-01, C-02, C-04, C-05, C-06, C-08, C-09, C-12, C-14, C-15, C-16) did not</p>
+<p>re-enter and are frozen at their most recent (round 2 or round 1) verdict by construction.</p>
+<hr>
+<h3>C-01 — Macklem "too early to discuss rate cuts" (E1, LOAD-BEARING)</h3>
+<p><i>(frozen — did not re-enter round 3)</i></p>
+<p><b>Round 2 Verdict: HELD (round 2)</b> — Round 1 verdict: NARROWED</p>
+<p>Current text (the round-1 narrowing, re-tested round 2 and now standing unmarked):</p>
+<p>"Bank of Canada Governor Tiff Macklem said at the January 25, 2023 press conference: 'it's</p>
+<p>really far too early to be talking about [rate] cuts.'" (CBC News, Jan 25, 2023.)</p>
+<p>Round 2 attack: Inquisitor (ANACHRONISM, RETRIEVED) argued this exact phrasing is absent</p>
+<p>from the Bank of Canada's own "Opening Statement" transcript of the Jan 25, 2023 press</p>
+<p>conference, and that every dated instance of Macklem using this "far too early" formulation</p>
+<p>is post-cutoff (May 2023 onward) — i.e., the claim's true evidentiary basis is later</p>
+<p>reporting mispinned to Jan 25, 2023.</p>
+<p>Rebuttal (Advocate + Null, both RETRIEVED, independently): the Inquisitor checked only the</p>
+<p>Bank's scripted opening remarks, which by design exclude the press-conference Q&amp;A — a</p>
+<p>separate document from the same event. The Q&amp;A is where this line was actually spoken, and</p>
+<p>it is corroborated same-day by a second, independent outlet the ledger did not originally</p>
+<p>cite: FXStreet, "BOC's Macklem: Far too early to be talking about interest rate cuts,"</p>
+<p>timestamped 2023-01-25 16:29 GMT. Null independently adds Investing.com and Reuters (via</p>
+<p>TradingView) as further same-day corroboration of the same press-conference exchange.</p>
+<p><b>Ruling:</b> the attack is rejected — it checked the wrong of two documents from the same</p>
+<p>event, and its central factual premise (no pre-cutoff record of this language) is directly</p>
+<p>contradicted by multiply-sourced, dated, same-day reporting. A public press conference is a</p>
+<p>multiply-observed event; the convergence here is real, not circular. Text stands unchanged;</p>
+<p>now more strongly corroborated than at round 1 (three same-day outlets instead of one), but</p>
+<p>tier remains E1 (secondary press reporting of spoken remarks, not a primary transcript).</p>
+<h3>C-02 — fixed-deadline macro threshold questions resolve true &lt;50% of the time (E3, COLOR)</h3>
+<p><i>(frozen — did not re-enter round 3)</i></p>
+<p><b>Verdict: KILLED</b></p>
+<p>The record's own source field reads "N/A · model prior, no external source · N/A" —</p>
+<p>flags.txt and inadmissible-records.txt both independently flag this row. Inquisitor A-05</p>
+<p>notes no source exists to audit at all; A-06 (RETRIEVED) shows genuine on-topic pre-cutoff</p>
+<p>literature (Tetlock/Mellers et al. 2014) existed and was not used. The Advocate searched</p>
+<p>pre-cutoff calibration literature specifically for this claim and found nothing supporting</p>
+<p>it, conceding outright with no narrower version possible. Distinguished from UNDETERMINED:</p>
+<p>this is not "evidence exists on both sides but doesn't discriminate" — it is a claim with</p>
+<p>zero evidentiary basis at any grain, self-admitted, whose own defender found nothing to</p>
+<p>rebuild. See graveyard.md.</p>
+<h3>C-03 — Capital Economics/Brown forecast Q3 2023 cuts (E1, SUPPORTING)</h3>
+<p><b>Round 3 Verdict: CONTESTED (round 3, unchanged)</b> — Round 2 verdict: CONTESTED</p>
+<p>Current text (unchanged since round 1's narrowing; round 2 and round 3 both left it</p>
+<p>CONTESTED, so no narrower text has ever replaced it): "Capital Economics economist Stephen</p>
+<p>Brown said on January 25, 2023 that the firm was 'confident that today's hike will be the</p>
+<p>last' and saw 'scope for the bank to start cutting interest rates again as soon as the</p>
+<p>third quarter' of 2023 — an earliest-possible-case statement, not a firm base-case</p>
+<p>forecast that cuts would begin in Q3 2023."</p>
+<p>Round 3 attack: Inquisitor (SELECTION, RETRIEVED) resubmits the same Globe and Mail</p>
+<p>"Instant reaction" quote already on file since round 2: "We suspect the Bank will begin to</p>
+<p>cut in September, a little later than July as we previously suggested" — argued again as</p>
+<p>Capital Economics' actual base case, undercutting the "earliest-possible-case" gloss.</p>
+<p><b>Position 1 (Advocate, REBUILT):</b> the Globe quote is more specific and more confidently</p>
+<p>framed than the CBC hedge; two same-day sources now agree September/Q3 2023 was Capital</p>
+<p>Economics' actual expectation that day. Drop "an earliest-possible-case statement, not a</p>
+<p>firm base-case forecast" and replace with a reading that treats Q3 as the firm's real</p>
+<p>call, not an outer bound.</p>
+<p>**Position 2 (Null, "NOT CONTESTED" self-framing, but substantively defends the existing</p>
+<p>hedge text):** the claim is narrowly a reported-speech claim — that Brown said a specific</p>
+<p>hedged thing, as quoted, to CBC — and that bibliographic fact holds regardless of how the</p>
+<p>Globe quote is read. Null further observes the Globe quote's own language ("we suspect...</p>
+<p>will begin") is itself hedged, not a commitment verb ("we forecast," "we expect"), which is</p>
+<p>consistent with, not a refutation of, the existing "earliest-possible-case" framing.</p>
+<p><b>What separates them:</b> identical to round 2 — not what Brown said (both sides retrieved</p>
+<p>and agree on the verbatim quotes from both outlets) but whether "we suspect [a cut] will</p>
+<p>begin in September, revised from July" is a firm dated base-case call or a still-hedged,</p>
+<p>evolving estimate. Round 3 introduced no new source, no primary Capital Economics note, and</p>
+<p>no third outlet's verbatim quote — the identical evidentiary record from round 2 was simply</p>
+<p>re-argued. The round-2 crux (a primary note or a third, non-paraphrased outlet) was not</p>
+<p>retrieved this round, so the interpretive gap it would resolve remains open.</p>
+<p><b>Ruling:</b> CONTESTED, unmoved. This is not "averaging the room" by inventing a</p>
+<p>split-the-difference text — it is a genuine, unresolved disagreement about how to</p>
+<p>characterize hedged language, identical in substance to round 2's, and no new discriminating</p>
+<p>evidence arrived to settle it. Text unchanged. See crux.md.</p>
+<h3>C-04 — BoC raised rate to 4.50% Jan 25 2023, prepared to raise further (E0, LOAD-BEARING)</h3>
+<p><i>(frozen — did not re-enter round 3)</i></p>
+<p><b>Round 2 Verdict: HELD (round 2)</b> — Round 1 verdict: NARROWED</p>
+<p>Current text (round-1 narrowing, unmarked since round 2): "The Bank of Canada raised its</p>
+<p>target for the overnight rate by 25 basis points to 4.50% on January 25, 2023; its</p>
+<p>statement separately said Governing Council 'expects to hold the policy rate at its current</p>
+<p>level' while it assesses the impact of past increases, and that it 'is prepared to increase</p>
+<p>the policy rate further if needed.'"</p>
+<p>Round 2: unattacked by the Inquisitor. Both Advocate and Null independently re-fetched the</p>
+<p>Bank of Canada's own press release (bankofcanada.ca/2023/01/fad-press-release-2023-01-25/)</p>
+<p>and confirmed every quoted phrase verbatim. Primary institutional document, E0, no rival</p>
+<p>account of the Bank's own words exists, tested twice more in round 2 with no defect found.</p>
+<h3>C-05 — BoC statement expects to hold the policy rate (E0, LOAD-BEARING)</h3>
+<p><i>(frozen — did not re-enter round 3)</i></p>
+<p><b>Verdict: HELD</b></p>
+<p>Text verbatim-confirmed by Inquisitor's own retrieval: "Governing Council expects to hold</p>
+<p>the policy rate at its current level while it assesses the impact of the cumulative</p>
+<p>interest rate increases." A-02's duplicate-source point (shared URL with C-06) is a</p>
+<p>ledger-bookkeeping/independence issue, not a defect in this sentence — rejected as a truth</p>
+<p>attack; see rejected-attacks.md.</p>
+<h3>C-06 — near-duplicate of C-05 (E0, LOAD-BEARING)</h3>
+<p><i>(frozen — did not re-enter round 3)</i></p>
+<p><b>Verdict: HELD</b></p>
+<p>Same primary text, same verbatim confirmation. A-02 rejected on the same grounds as C-05.</p>
+<h3>C-07 — median G10 hiking cycle: 7 months to first cut (E0 nominal, SUPPORTING)</h3>
+<p><b>Round 3 Verdict: NARROWED (round 3, further narrowed)</b> — Round 2 verdict: NARROWED</p>
+<p>Round 3 attack: Inquisitor (PROVENANCE, RETRIEVED) points out that stripped-r3.md's own</p>
+<p>sources field for C-07 lists exactly one source (the Goldman Sachs G10 report), yet the</p>
+<p>round-2 narrowed text leans on a second, uncited "independently sourced compilation of</p>
+<p>Fed-only pause periods (1988–89–2015–18)" to do the actual work of softening the claim to</p>
+<p>E0/SUPPORTING with a disclosed dispersion caveat. Direct fetch of the Goldman report</p>
+<p>confirms no such Fed-only subset exists inside it, and the second compilation has no</p>
+<p>citation anywhere in the round-3 record.</p>
+<p><b>Ruling:</b> attack accepted. The Advocate's own round-3 rebuild independently confirms the</p>
+<p>same defect by direct fetch and a fresh targeted search that turned up no citable source</p>
+<p>matching those figures, and withdraws the Fed-only compilation outright rather than</p>
+<p>defending it — a genuine concession, not a forced one. What survives unweakened: the 7-month</p>
+<p>median figure itself, verbatim-confirmed again this round directly against the Goldman</p>
+<p>report ("the first cut came seven months after the last hike"). New this round: the</p>
+<p>Inquisitor's parallel C-11 attack surfaced the Goldman report's own caveat, "the current</p>
+<p>post-pandemic cycle remains very unique," which the Advocate's rebuild folds into C-07 too</p>
+<p>since it is the same underlying report.</p>
+<p><b>Narrower text replacing the round-2 text:</b> "Per Goldman Sachs's own count of 85 G10</p>
+<p>hiking/easing cycles (1960–2019), the median gap between the final hike and first cut was</p>
+<p>seven months — verbatim-confirmed by direct fetch. This is a single proprietary analytical</p>
+<p>product's classification; the same one URL is the sole source for two other ledger claims</p>
+<p>(C-11, C-13), so no independent triangulation exists across the trio. A previously-cited</p>
+<p>'independently sourced compilation of Fed-only pause periods' said to corroborate this</p>
+<p>figure's magnitude could not be re-located or verified against any citable source this</p>
+<p>round and is withdrawn. The report's own authors caution that 'the current post-pandemic</p>
+<p>cycle remains very unique' — a limitation that names the Bank of Canada's 2023 cycle by</p>
+<p>implication. Read as a description of one bank's historical dataset, not an independently</p>
+<p>corroborated or point-predictive figure for any single hiking cycle, including the Bank of</p>
+<p>Canada's 2023 cycle." Tier remains E0 nominal (same primary document; the round-2</p>
+<p>corroboration this text previously claimed has been retracted, which is why this is a</p>
+<p>further narrowing, not a hold).</p>
+<h3>C-08 — BoC raised target rate to 4.50% (E0, LOAD-BEARING)</h3>
+<p><i>(frozen — did not re-enter round 3)</i></p>
+<p><b>Verdict: HELD</b></p>
+<p>Verbatim-confirmed: "increased its target for the overnight rate to 4½%." A-03's duplicate-</p>
+<p>source point (shared URL with C-09) rejected as bookkeeping, not truth; see</p>
+<p>rejected-attacks.md.</p>
+<h3>C-09 — near-duplicate of C-08 (E0, LOAD-BEARING)</h3>
+<p><i>(frozen — did not re-enter round 3)</i></p>
+<p><b>Verdict: HELD</b></p>
+<p>Same reasoning as C-08.</p>
+<h3>C-10 — CIBC: rates remain 4.5% through 2023, ease 2024 (E1, LOAD-BEARING)</h3>
+<p><b>Round 3 Verdict: NARROWED (round 3, unchanged)</b> — Round 2 verdict: NARROWED</p>
+<p>Current text (unchanged since round 1): "CIBC economists (unnamed in the reporting) said in</p>
+<p>a note covered by FXStreet on January 25, 2023 that Bank of Canada rates would 'stay at</p>
+<p>4.5% throughout the balance of this year, before being eased gradually in 2024.'"</p>
+<p>Round 3 attack: Inquisitor (PROVENANCE, RETRIEVED) surfaces a second, earlier same-day</p>
+<p>FXStreet piece, "BoC Preview: Forecasts from eight major banks" (2023-01-25, 07:31 GMT),</p>
+<p>in which CIBC's position is far more conditional — watch the press conference for "the</p>
+<p>conditions... to start cutting interest rates again" — with no numeric 4.5%/2024 call, and</p>
+<p>notes CIBC is among the banks in that piece giving no explicit cut-timing.</p>
+<p><b>Ruling:</b> attack rejected. The Advocate's direct-fetch timestamps resolve this decisively:</p>
+<p>the "eight banks" preview is dated 2023-01-25 07:31 GMT (~2:31am ET) — hours <i>before</i> the</p>
+<p>Bank of Canada's ~10am ET rate decision — while the note C-10 cites is dated 18:13 GMT</p>
+<p>(~1:13pm ET), after the decision and press conference. These are not two accounts of the</p>
+<p>same moment; one is pre-decision speculation, the other post-decision analysis. A</p>
+<p>pre-decision preview cannot contradict a post-decision note by the same institution.</p>
+<p>Separately, Null's parallel point — a same-day Globe and Mail quote from a <i>named</i> CIBC</p>
+<p>economist, Andrew Grantham, giving a vaguer, non-numeric account (hike was the last, cut</p>
+<p>timing unspecified) — was already known and adjudicated in round 2 as a different-precision,</p>
+<p>non-contradictory account, and nothing new discriminates it from the FXStreet note this</p>
+<p>round either. Text and tier unchanged; not upgraded to HELD because the underlying</p>
+<p>single-unnamed-source limitation the round-1 narrowing already discloses is still the honest</p>
+<p>description of this claim's evidentiary base.</p>
+<h3>C-11 — median G10 cutting cycles: 200bp easing in first year (E0 nominal, SUPPORTING)</h3>
+<p><b>Round 3 Verdict: NARROWED (round 3)</b> — Round 2 verdict: CONTESTED</p>
+<p>Round 3 attack: Inquisitor (INFERENCE, RETRIEVED) argues the evidence supports a weaker</p>
+<p>claim than stated: direct fetch of the Goldman report surfaces the authors' own caveat,</p>
+<p>"the current post-pandemic cycle remains very unique," and confirms no sub-period or</p>
+<p>regime breakdown of the 200bp median exists — so the figure is a blended median across a</p>
+<p>1960–2019 sample spanning very different inflation/rate regimes, not shown to transfer to</p>
+<p>a post-pandemic cycle specifically.</p>
+<p><b>Ruling:</b> attack accepted — and, unlike round 2, this round produced genuine convergence</p>
+<p>rather than a standoff. The Advocate's rebuild independently reaches the same weaker framing</p>
+<p>the Inquisitor proposed (retaining the figure only as a non-predictive historical</p>
+<p>description); the Null's parallel argument (same single-source problem as C-07/C-13, plus</p>
+<p>no disclosed dispersion for this specific figure, unlike C-07's now-documented spread) does</p>
+<p>not contradict this narrower framing, it reinforces it. No party defends the original,</p>
+<p>unqualified E0/SUPPORTING reading any longer.</p>
+<p><b>Narrower text replacing the original:</b> "Goldman Sachs's own count of 85 G10 hiking/easing</p>
+<p>cycles (1960–2019) found a median 200 basis points of first-year post-peak easing —</p>
+<p>verbatim-confirmed by direct re-fetch. This figure is drawn from the same single proprietary</p>
+<p>dataset and the same one-URL source as C-07 and C-13 (no independent triangulation across</p>
+<p>the three). No sub-period, regime, or dispersion breakdown is disclosed for this specific</p>
+<p>figure — unlike C-07's timing-gap median, which sits within a documented 3.4–14.6-month</p>
+<p>individual-cycle range, no comparable spread is available here, so 200bp's representativeness</p>
+<p>for any single cycle, including 2023's, cannot be checked. The report's own authors caution</p>
+<p>that 'the current post-pandemic cycle remains very unique.' Read as a description of one</p>
+<p>historical dataset, not a magnitude prediction for the Bank of Canada's 2023 easing path."</p>
+<p>Tier remains E0 nominal (same primary document; caveat is qualitative).</p>
+<h3>C-12 — Commerzbank/Andreae: hawkish outlook supports CAD (E1, SUPPORTING)</h3>
+<p><i>(frozen — did not re-enter round 3)</i></p>
+<p><b>Verdict: HELD</b></p>
+<p>Unattacked by the Inquisitor; Null lists it NOT CONTESTED (single source, but SUPPORTING</p>
+<p>not LOAD-BEARING, states a routine textbook FX rate-differential mechanism, attributed to</p>
+<p>a named analyst in a contemporaneous wire report). No basis to disturb.</p>
+<h3>C-13 — ~75% of G10 hiking cycles cut within 12 months of final hike (E0 nominal, LOAD-BEARING)</h3>
+<p><b>Round 3 Verdict: UNDETERMINED (round 3)</b> — Round 2 verdict: CONTESTED</p>
+<p>Round 3 attack: Inquisitor (PROVENANCE, RETRIEVED) reiterates the same single-gated-source</p>
+<p>concentration already litigated in rounds 1 and 2 (shared URL across C-07/C-11/C-13, no</p>
+<p>independent triangulation). This specific attack adds no new dispositive fact beyond what</p>
+<p>was already on file and rejected as non-dispositive reiteration in round 2 — it is rejected</p>
+<p>again this round on the same grounds; see rejected-attacks.md. **The verdict nonetheless</p>
+<p>moves, on different evidence supplied by the Null and conceded by the Advocate.**</p>
+<p>Null's new retrieval (RETRIEVED, pre-cutoff, same day as the claim): Bank of Canada Governor</p>
+<p>Tiff Macklem, Jan 25, 2023, Investing.com (Reuters exclusive): "We're not talking about</p>
+<p>cuts. We're not even thinking about cuts... the question really we're asking ourselves is,</p>
+<p>'Have we done enough?'" Null names two live rivals this creates: Rival A — the historical</p>
+<p>base rate holds, and a cut within 12 months should be expected, consistent with Goldman's</p>
+<p>75%; Rival B — the 2022–23 cycle is not exchangeable with the 1960–2019, 85-cycle G10 sample,</p>
+<p>because it was launched to fight the highest inflation in four decades from near-zero rates</p>
+<p>at the fastest pace on record, and the Bank's own Governor, on the very day of the hike the</p>
+<p>claim is dated to, explicitly disclaimed near-term cuts.</p>
+<p><b>Position 1 (residual — the bare statistic, unfalsified on its own narrow terms):</b></p>
+<p>Goldman's report, drawn from the same 85-cycle dataset as C-07/C-11, states ~75% of G10</p>
+<p>hiking cycles saw a first cut within 12 months. No rival dataset has been produced showing</p>
+<p>under half of G10 cycles cut within 12 months — the claim's own stated falsifier is not</p>
+<p>met, so this is not KILLED.</p>
+<p><b>Position 2 (Null, and — decisively — the Advocate's own round-3 concession):</b> the</p>
+<p>statistic cannot discharge the LOAD-BEARING predictive function assigned to it (that G10</p>
+<p>historical precedent supports expecting a BoC cut within 12 months of its 2023 cycle's final</p>
+<p>hike), because (a) it is one unreplicated, gated, proprietary figure sharing its sole source</p>
+<p>with two other ledger rows, and (b) a same-day, on-the-record, primary statement from the</p>
+<p>actual decision-maker points toward this specific cycle being treated, by the Bank itself,</p>
+<p>as still in a wait-and-see tightening posture rather than one already approaching its</p>
+<p>historical median cut point. The Advocate, whose role is to defend the claim, concedes</p>
+<p>outright: "No pre-cutoff evidence available to this pass discriminates against Rival B...</p>
+<p>nothing narrower salvages that function."</p>
+<p><b>What separates this from CONTESTED:</b> CONTESTED requires an active, evidence-grounded</p>
+<p>disagreement between positions that are both still defended (see C-03). Here, the claim's</p>
+<p>own defender has conceded that no discriminating evidence exists between the two named</p>
+<p>rivals — that is precisely the "Null won; evidence cannot discriminate" pattern the brief</p>
+<p>reserves for UNDETERMINED, not a live fight over how to read one piece of evidence.</p>
+<p><b>What separates this from KILLED:</b> the 75% figure itself is not falsified — no rival</p>
+<p>count of G10 cycles contradicting it was produced, only a reasoned, evidenced argument that</p>
+<p>the <i>current</i> cycle may not be exchangeable with the historical sample it is drawn from.</p>
+<p>That is an applicability gap, not a factual refutation.</p>
+<p>Tier remains E0 nominal (Goldman figure itself unchallenged as a historical statistic); the</p>
+<p>LOAD-BEARING designation is retained on the ledger (it is what the claim was filed as) but</p>
+<p>the verdict records that this round found no evidence able to discharge that function. See</p>
+<p>crux.md.</p>
+<h3>C-14 — Jan 2023 MPR: CPI reaches 2% only in 2024 (E0, LOAD-BEARING)</h3>
+<p><i>(frozen — did not re-enter round 3)</i></p>
+<p><b>Verdict: HELD</b></p>
+<p>Unattacked by both Inquisitor and Null; sourced directly to the primary MPR document, a</p>
+<p>straightforward text check with no rival account of the report's own language.</p>
+<h3>C-15 — BoC scheduled eight 2023 rate announcements (July 26, 2022 release) (E0, SUPPORTING)</h3>
+<p><i>(frozen — did not re-enter round 3)</i></p>
+<p><b>Verdict: HELD</b></p>
+<p>Unattacked; trivial, low-stakes administrative count from a primary release.</p>
+<h3>C-16 — decline from 4.50% to below 4.00% requires &gt;50bp of cuts (E2, SUPPORTING)</h3>
+<p><i>(frozen — did not re-enter round 3)</i></p>
+<p><b>Verdict: HELD</b></p>
+<p>Unattacked; pure arithmetic once the 4.50% starting point is fixed by C-08/C-09 (both</p>
+<p>HELD) — a tautology, not an empirical claim open to rival readings.</p>
+<hr>
+<h3>1 · CONFIDENCE ARITHMETIC</h3>
+<p>No load-bearing claim is tiered E3. The weakest load-bearing claim is, again, <b>C-13</b></p>
+<p>(~75% of G10 hiking cycles cut within 12 months, nominally E0, LOAD-BEARING) — but its</p>
+<p>status just changed in kind, not merely in degree: round 3 moved it from CONTESTED to</p>
+<p>UNDETERMINED. That is not a promotion. A CONTESTED claim (like C-03) still has an active</p>
+<p>defender arguing the evidence supports it; C-13 no longer does — the Advocate's own</p>
+<p>round-3 concession states plainly that no pre-cutoff evidence discriminates between "the</p>
+<p>historical G10 pattern applies" and "this cycle is an outlier," and names Governor</p>
+<p>Macklem's own same-day statement ("we're not even thinking about cuts") as the evidence</p>
+<p>that broke the tie against the claim's predictive use. Because confidence propagates as</p>
+<p>min(), not average, and neither CONTESTED nor UNDETERMINED supplies a floor, this changes</p>
+<p>nothing mechanically about the chain below — but it should be read as the evidentiary</p>
+<p>record moving <i>against</i> the historical-precedent inference, not merely remaining stuck.</p>
+<p>Its two SUPPORTING siblings converged this round instead of diverging further: C-07</p>
+<p>(median 7-month gap) lost the one piece of independent corroboration it had gained in round</p>
+<p>2 — the "Fed-only pause periods" compilation could not be re-verified this round and was</p>
+<p>withdrawn by its own proponent (the Advocate) — so it is narrower now than at the end of</p>
+<p>round 2, even though its category is still NARROWED. C-11 (200bp first-year easing) moved</p>
+<p>from CONTESTED to NARROWED as all three parties converged on treating it as a non-predictive</p>
+<p>historical description rather than a forecast input. Both now carry the Goldman report's own</p>
+<p>disclosed caveat ("the current post-pandemic cycle remains very unique") explicitly in their</p>
+<p>text — a caveat the ledger did not disclose before round 3.</p>
+<p>Chain over the 8 load-bearing claims that are settled (excludes C-13, UNDETERMINED):</p>
+<p>min( E0[C-05 HELD, frozen], E0[C-06 HELD, frozen], E0[C-08 HELD, frozen],</p>
+<p>E0[C-09 HELD, frozen], E0[C-14 HELD, frozen],</p>
+<p>E0[C-04 HELD, frozen — unattacked in round 2, re-verified twice against the same</p>
+<p>primary document],</p>
+<p>E1[C-01 HELD, frozen — round 2's ANACHRONISM attack rejected; cross-verified by three</p>
+<p>independently-retrieved same-day outlets],</p>
+<p>E1[C-10 NARROWED, round 3 — a fresh PROVENANCE attack rejected on direct-fetch</p>
+<p>timestamp evidence (pre-decision preview vs. post-decision note); still a single</p>
+<p>secondary wire report of an unseen primary note, tier and text unchanged] )</p>
+<p>= <b>E1</b></p>
+<p>Unchanged in shape from rounds 1 and 2: the "what the Bank of Canada itself did and said on</p>
+<p>January 25, 2023" limb is sound at E1, capped by C-01 and C-10 resting on secondary</p>
+<p>reporting. C-13, and with it the ~75%-hit-rate figure underneath the "historical G10</p>
+<p>precedent" limb, still supplies no confidence floor at all — the reason has hardened from</p>
+<p>"an unresolved provenance dispute" to "an acknowledged, undiscriminated fork including a</p>
+<p>primary-source rival statement from the actual decision-maker, unrebutted by the claim's own</p>
+<p>defender."</p>
+<p><b>Independence caveat, updated:</b> the 9 load-bearing claims trace to only 4 documents that</p>
+<p>actually contribute to the settled floor above — the BoC FAD release (behind C-04/C-05/</p>
+<p>C-06/C-08/C-09: one release, five ledger rows), the BoC MPR (behind C-14), the CBC article</p>
+<p>behind C-01 (cross-verified against FXStreet, Investing.com, and Reuters/TradingView), and</p>
+<p>the FXStreet article behind C-10 (still uncorroborated after three rounds of dedicated</p>
+<p>searching, though a competing account this round was shown to predate the decision and so</p>
+<p>does not count against it). The Goldman report behind C-13 remains a fifth document but,</p>
+<p>being UNDETERMINED, contributes nothing to the settled chain above — as it has for three</p>
+<p>rounds running, under three different labels (CONTESTED, CONTESTED, UNDETERMINED).</p>
+<h3>2 · THE CRUX</h3>
+<p><b>C-03</b> (Capital Economics Q3 2023 cut framing — firm base case vs. hedged outer bound) —</p>
+<p>cheapest resolving observation: locate Capital Economics' own contemporaneous client note,</p>
+<p>or a third outlet's verbatim (non-paraphrased) quotation of Stephen Brown from Jan 25,</p>
+<p>2023, rather than continuing to relies on two secondary outlets' (CBC vs. Globe and Mail)</p>
+<p>differently-worded paraphrases of what may be the same underlying remark. Commitment</p>
+<p>language ("will begin," "we expect") settles Position 1 (firm dated call); hedge language</p>
+<p>("scope for," "as soon as," "could," "we suspect") settles Position 2 (still a bounded,</p>
+<p>evolving estimate). Three rounds have now relied on the same two secondary paraphrases</p>
+<p>without ever producing this document — it is the single most economical unresolved</p>
+<p>retrieval left on the ledger for a SUPPORTING claim.</p>
+<p><b>C-13</b> (~75% of G10 cycles cut within 12 months — UNDETERMINED between "historical base</p>
+<p>rate applies" and "this cycle is a regime outlier") — cheapest resolving observation: a</p>
+<p>pre-cutoff-knowable, independently-sourced compilation that conditions the hit-rate</p>
+<p>statistic on cycle characteristics resembling 2022–23's — i.e., not "all 85 G10 cycles</p>
+<p>1960–2019" but specifically the subset of unusually fast, high-magnitude tightening cycles</p>
+<p>launched from near-zero rates to fight high inflation. If that conditional subset still cuts</p>
+<p>within 12 months at a similar rate, Rival A (historical base rate applies) gains real</p>
+<p>support; if it takes systematically longer, Rival B (this cycle is an outlier) does. This is</p>
+<p>a sharper, cheaper version of the search that already resolved C-07's timing-gap figure in</p>
+<p>round 2 (an independent Fed-only compilation) and that this round showed cannot simply be</p>
+<p>assumed to exist for every Goldman-sourced figure — it must actually be retrieved and</p>
+<p>checked, not asserted.</p>
+<h3>3 · TRIPWIRE</h3>
+<p>Tripwire condition: every LOAD-BEARING claim verdicted HELD or NARROWED.</p>
+<p>Load-bearing claims (9 total): C-01, C-04, C-05, C-06, C-08, C-09, C-10, C-13, C-14.</p>
+<p>HELD or NARROWED: C-01(H, frozen), C-04(H, frozen), C-05(H, frozen), C-06(H, frozen),</p>
+<p>C-08(H, frozen), C-09(H, frozen), C-10(N, round 3, unchanged), C-14(H, frozen) = 8.</p>
+<p>UNDETERMINED: C-13(round 3, moved from CONTESTED) = 1.</p>
+<p><b>TRIPWIRE: NOT_FIRED — 8 of 9 load-bearing claims HELD or NARROWED.</b></p>
+<p>The count is numerically unchanged across all three rounds (8 of 9 each time), but the</p>
+<p>reason has not stood still: C-13 has now been examined under three different lenses across</p>
+<p>three rounds — an under-specified N (round 1), an unreplicated single-source statistic with</p>
+<p>disclosed sample size (round 2), and finally, this round, a named live rival backed by the</p>
+<p>Bank's own Governor's same-day words, unrebutted by the claim's own defender (round 3). Each</p>
+<p>round made the case against treating it as settled <i>more</i> concrete, not less. The tripwire</p>
+<p>has never fired because the one load-bearing claim resting on contested historical inference</p>
+<p>— as opposed to primary institutional documents or multiply-corroborated press reporting —</p>
+<p>has never been rescued by a second, independent check of its own specific figure, despite</p>
+<p>that check being explicitly named as retrievable-in-principle at the end of both round 1 and</p>
+<p>round 2.</p>
+<hr>
+<p>CONCESSION: MOVED — three places where I broke from what any single party in this round's</p>
+<p>room proposed, and one place where I held firm against an escalating pile of small doubts.</p>
+<p>(1) On C-13, none of the three parties used the word "UNDETERMINED." The Advocate's language</p>
+<p>("does not survive," "nothing narrower salvages that function") reads like a concession</p>
+<p>toward KILLED; the Null's framing ("live rivals," "evidence cannot discriminate") is the</p>
+<p>UNDETERMINED pattern but the Null did not name that verdict; the Inquisitor filed a</p>
+<p>plain PROVENANCE reiteration that, taken alone, would only support CONTESTED-as-before. I</p>
+<p>classified it UNDETERMINED because the actual shape of the disagreement — a real statistic,</p>
+<p>not falsified, that is unable to discharge its predictive function against a named,</p>
+<p>evidenced rival, with the claim's own defender agreeing no discriminating evidence exists —</p>
+<p>matches the brief's UNDETERMINED definition precisely and is a different, more honest</p>
+<p>label than either KILLED (nothing was factually falsified) or CONTESTED (nobody is still</p>
+<p>defending the predictive reading). (2) Also on C-13, I deliberately rejected the Inquisitor's</p>
+<p>filed round-3 PROVENANCE attack as non-dispositive reiteration — the same call made in round</p>
+<p>2 for the same argument — while crediting the verdict <i>change</i> entirely to the Null's newly</p>
+<p>retrieved Macklem quote and the Advocate's concession, neither of which the Inquisitor's</p>
+<p>filed attack introduced. An attack and a verdict can move in the same direction without the</p>
+<p>filed attack being the operative cause; I did not let one borrow credit from the other. (3)</p>
+<p>On C-11, I accepted a verdict change (CONTESTED to NARROWED) that none of the three parties</p>
+<p>explicitly framed as a resolution of the round-2 deadlock — the Advocate called it</p>
+<p>"REBUILT," the Null kept arguing "Correlation," and neither used language like "this settles</p>
+<p>it" — but read together, all three had in fact stopped defending the unqualified E0 reading,</p>
+<p>which is what actually matters for the verdict category, regardless of the labels the room</p>
+<p>used. (4) On C-10, I rejected the Inquisitor's new round-3 PROVENANCE attack on strong,</p>
+<p>direct-fetch timestamp evidence, declining to let a third round of doubt-stacking (round 1</p>
+<p>thinness, round 2 thinness, round 3 a mistimed rival source) erode an already-appropriately-</p>
+<p>narrowed E1 claim further — but I also declined to promote it to HELD, because failing three</p>
+<p>different attacks is not the same evidentiary category as being independently corroborated,</p>
+<p>and the claim's core limitation (single unnamed source) is exactly as true today as at round</p>
+<p>1. Net result: the tripwire count (8 of 9) is numerically identical across all three rounds,</p>
+<p>but two of the five re-entered verdicts changed this round (C-11, C-13), and the ledger's</p>
+<p>single most consequential claim, C-13, ends the process in a materially different and more</p>
+<p>evidenced place than where it started — not fired, but no longer merely stuck.</p>
+<hr></div></div></div></section>
+<section class="cm-sec" id="round-12"><div class="cm-grid"><div class="cm-rail"><b>R 12</b>GRAVEYARD</div><div><h2>GRAVEYARD</h2>
+<div class="claim-body-html"><h3>12 · GRAVEYARD  (05-verdict/graveyard.md, verbatim)</h3>
+<h3>GRAVEYARD</h3>
+<h3>C-02 — KILLED</h3>
+<p><b>Original claim (E3, COLOR):</b> "Fixed-deadline macroeconomic threshold predictions</p>
+<p>resolve true less than half the time across general forecasting tournaments."</p>
+<p><b>Original falsifier on file:</b> "A cross-tournament calibration study showing a majority</p>
+<p>of fixed-deadline macroeconomic threshold questions resolve true would falsify this</p>
+<p>claim."</p>
+<p><b>Evidence that killed it:</b></p>
+<p>1. The ledger's own source field: <code>[E3] N/A · model prior, no external source · N/A</code> —</p>
+<p>a self-declared claim with zero evidentiary basis, filed with no citation of any kind.</p>
+<p>2. <code>flags.txt</code> and <code>inadmissible-records.txt</code> both independently flag this exact record</p>
+<p>(<code>C-02 COLOR dates: N/A</code>) — the pipeline itself marked it inadmissible before any</p>
+<p>debate occurred.</p>
+<p>3. Inquisitor A-05 (PROVENANCE): "There is no source to audit... Even at COLOR load this</p>
+<p>cannot clear the PROVENANCE bar of 'a source exists.'"</p>
+<p>4. Inquisitor A-06 (SELECTION, RETRIEVED): genuine, on-topic, pre-cutoff literature on</p>
+<p>forecasting-tournament calibration exists — Tetlock, Mellers et al., "Forecasting</p>
+<p>Tournaments: Tools for Increasing Transparency and Improving the Quality of Debate"</p>
+<p>(2014, Wharton, predates the 2023-01-26 cutoff) — and was never cited. Its absence from</p>
+<p>the ledger is not an availability problem; it demonstrates the claim was asserted</p>
+<p>instead of sourced when sourcing was possible.</p>
+<p>5. The Advocate's own concession: searched pre-cutoff calibration literature (Good</p>
+<p>Judgment Project, Metaculus/IARPA-style write-ups) specifically for support of this</p>
+<p>numerical claim, found nothing, and stated outright "there is no narrower version I</p>
+<p>can construct that both matches the claim's specificity and rests on retrieved</p>
+<p>evidence... This is the clean concession."</p>
+<p><b>Why KILLED and not UNDETERMINED:</b> UNDETERMINED is reserved for claims where real</p>
+<p>evidence exists on file but does not discriminate between rivals (see C-13, round 3 — a</p>
+<p>genuine live-rivals fork the evidence could not settle). C-02 has no evidence at any</p>
+<p>grain, on either side, at any point in this three-round process — including after a</p>
+<p>dedicated search by the party whose job was to defend it. That is a stronger and more</p>
+<p>final failure than "inconclusive"; it does not belong in a bucket that implies the</p>
+<p>question remains open and could be settled with more looking. It was inadmissible from</p>
+<p>the moment it was filed.</p>
+<p><b>Status/tier of the claim:</b> E3, COLOR (not load-bearing) — its death does not affect the</p>
+<p>confidence-arithmetic chain or the tripwire.</p>
+<hr>
+<p>No other claims were killed in round 1. C-04's inverted-verb defect (Inquisitor A-01) was</p>
+<p>severe but fully repairable from the same primary document the original claim already</p>
+<p>cited, so it was verdicted NARROWED rather than killed — see map.md.</p>
+<hr>
+<h3>ROUND 2 ADDENDUM</h3>
+<p>No claims were killed in round 2. All five round-2 Inquisitor attacks (C-01 ANACHRONISM,</p>
+<p>C-03 SELECTION, C-07/C-11/C-13 PROVENANCE) were evidence_status: RETRIEVED — real,</p>
+<p>sourced, checkable attacks, not bare assertions — and none produced a falsification of any</p>
+<p>re-entered claim's underlying fact:</p>
+<ul>
+<li>C-01's ANACHRONISM attack was rejected outright: it checked the wrong of two documents</li>
+</ul>
+<p>from the same event (the Bank's scripted opening remarks, not the press-conference Q&amp;A),</p>
+<p>and the claimed post-cutoff origin was directly contradicted by multiply-sourced,</p>
+<p>same-day reporting the Inquisitor did not check. Result: HELD, not killed.</p>
+<ul>
+<li>C-03's SELECTION attack surfaced genuine new same-day evidence (a Globe and Mail quote)</li>
+</ul>
+<p>but produced a live disagreement over characterization, not a falsification of what</p>
+<p>Brown actually said. Result: CONTESTED, not killed.</p>
+<ul>
+<li>C-07/C-11/C-13's PROVENANCE attacks reiterated a real single-gated-source concentration</li>
+</ul>
+<p>problem already identified in round 1, refined by new sample-size disclosure (N=85,</p>
+<p>1960–2019) and, for C-07 specifically, partial independent corroboration. None of the</p>
+<p>three figures were shown to be wrong — only, for C-11 and C-13, still unreplicated by a</p>
+<p>second methodology. Results: C-07 NARROWED, C-11 and C-13 remain CONTESTED — none killed.</p>
+<p>The graveyard therefore still holds exactly one entry after two rounds: C-02.</p>
+<hr>
+<h3>ROUND 3 ADDENDUM (FINAL — MAX_ROUNDS reached)</h3>
+<p>No claims were killed in round 3 either. The graveyard's sole entry remains C-02, unchanged</p>
+<p>across all three rounds. Round 3 produced its most consequential movement not by killing a</p>
+<p>claim but by moving C-13 (~75% of G10 hiking cycles cut within 12 months, LOAD-BEARING) from</p>
+<p>CONTESTED to UNDETERMINED — worth recording here precisely because it is the closest any</p>
+<p>claim has come to KILLED without qualifying:</p>
+<ul>
+<li>The Advocate, C-13's own defender, conceded outright in round 3 that the claim's</li>
+</ul>
+<p>load-bearing predictive function "does not survive" and that "nothing narrower salvages</p>
+<p>that function" — language that would, on a first read, suggest a kill.</p>
+<ul>
+<li>It is NOT killed because the claim's own stated falsifier — "a dataset showing under half</li>
+</ul>
+<p>of G10 hiking cycles produced a cut within 12 months of the final hike" — was never met.</p>
+<p>No rival dataset contradicting the ~75% figure was produced in any of the three rounds.</p>
+<p>What was produced (round 3) is a named, evidenced rival <i>hypothesis</i> — Governor Macklem's</p>
+<p>own same-day statement that the Bank was "not even thinking about cuts" — bearing on</p>
+<p>whether the historical pattern transfers to this specific cycle, not on whether the</p>
+<p>historical pattern itself is true.</p>
+<ul>
+<li>That is exactly the KILLED/UNDETERMINED boundary this graveyard exists to keep visible:</li>
+</ul>
+<p>a claim is killed when the evidence contradicts it; a claim is undetermined when real,</p>
+<p>named, evidence-backed rivals exist and nothing in the record discriminates between them.</p>
+<p>C-13 is the clearest instance of the latter this ledger has produced. See map.md and</p>
+<p>crux.md for the full accounting.</p>
+<p>Final graveyard tally after three rounds and the hard cap: one entry (C-02), unchanged</p>
+<p>since round 1.</p>
+<hr></div></div></div></section>
+<section class="cm-sec" id="round-13"><div class="cm-grid"><div class="cm-rail"><b>R 13</b>CONFIDENCE CHAIN</div><div><h2>CONFIDENCE CHAIN</h2>
+<div class="claim-body-html"><h3>13 · CONFIDENCE CHAIN</h3>
+<p>Reproduced verbatim from section <code>1 · CONFIDENCE ARITHMETIC</code> of the final map:</p>
+<p>No load-bearing claim is tiered E3. The weakest load-bearing claim is, again, <b>C-13</b></p>
+<p>(~75% of G10 hiking cycles cut within 12 months, nominally E0, LOAD-BEARING) — but its</p>
+<p>status just changed in kind, not merely in degree: round 3 moved it from CONTESTED to</p>
+<p>UNDETERMINED. That is not a promotion. A CONTESTED claim (like C-03) still has an active</p>
+<p>defender arguing the evidence supports it; C-13 no longer does — the Advocate's own</p>
+<p>round-3 concession states plainly that no pre-cutoff evidence discriminates between "the</p>
+<p>historical G10 pattern applies" and "this cycle is an outlier," and names Governor</p>
+<p>Macklem's own same-day statement ("we're not even thinking about cuts") as the evidence</p>
+<p>that broke the tie against the claim's predictive use. Because confidence propagates as</p>
+<p>min(), not average, and neither CONTESTED nor UNDETERMINED supplies a floor, this changes</p>
+<p>nothing mechanically about the chain below — but it should be read as the evidentiary</p>
+<p>record moving <i>against</i> the historical-precedent inference, not merely remaining stuck.</p>
+<p>Its two SUPPORTING siblings converged this round instead of diverging further: C-07</p>
+<p>(median 7-month gap) lost the one piece of independent corroboration it had gained in round</p>
+<p>2 — the "Fed-only pause periods" compilation could not be re-verified this round and was</p>
+<p>withdrawn by its own proponent (the Advocate) — so it is narrower now than at the end of</p>
+<p>round 2, even though its category is still NARROWED. C-11 (200bp first-year easing) moved</p>
+<p>from CONTESTED to NARROWED as all three parties converged on treating it as a non-predictive</p>
+<p>historical description rather than a forecast input. Both now carry the Goldman report's own</p>
+<p>disclosed caveat ("the current post-pandemic cycle remains very unique") explicitly in their</p>
+<p>text — a caveat the ledger did not disclose before round 3.</p>
+<p>Chain over the 8 load-bearing claims that are settled (excludes C-13, UNDETERMINED):</p>
+<p>min( E0[C-05 HELD, frozen], E0[C-06 HELD, frozen], E0[C-08 HELD, frozen],</p>
+<p>E0[C-09 HELD, frozen], E0[C-14 HELD, frozen],</p>
+<p>E0[C-04 HELD, frozen — unattacked in round 2, re-verified twice against the same</p>
+<p>primary document],</p>
+<p>E1[C-01 HELD, frozen — round 2's ANACHRONISM attack rejected; cross-verified by three</p>
+<p>independently-retrieved same-day outlets],</p>
+<p>E1[C-10 NARROWED, round 3 — a fresh PROVENANCE attack rejected on direct-fetch</p>
+<p>timestamp evidence (pre-decision preview vs. post-decision note); still a single</p>
+<p>secondary wire report of an unseen primary note, tier and text unchanged] )</p>
+<p>= <b>E1</b></p>
+<p>Unchanged in shape from rounds 1 and 2: the "what the Bank of Canada itself did and said on</p>
+<p>January 25, 2023" limb is sound at E1, capped by C-01 and C-10 resting on secondary</p>
+<p>reporting. C-13, and with it the ~75%-hit-rate figure underneath the "historical G10</p>
+<p>precedent" limb, still supplies no confidence floor at all — the reason has hardened from</p>
+<p>"an unresolved provenance dispute" to "an acknowledged, undiscriminated fork including a</p>
+<p>primary-source rival statement from the actual decision-maker, unrebutted by the claim's own</p>
+<p>defender."</p>
+<p><b>Independence caveat, updated:</b> the 9 load-bearing claims trace to only 4 documents that</p>
+<p>actually contribute to the settled floor above — the BoC FAD release (behind C-04/C-05/</p>
+<p>C-06/C-08/C-09: one release, five ledger rows), the BoC MPR (behind C-14), the CBC article</p>
+<p>behind C-01 (cross-verified against FXStreet, Investing.com, and Reuters/TradingView), and</p>
+<p>the FXStreet article behind C-10 (still uncorroborated after three rounds of dedicated</p>
+<p>searching, though a competing account this round was shown to predate the decision and so</p>
+<p>does not count against it). The Goldman report behind C-13 remains a fifth document but,</p>
+<p>being UNDETERMINED, contributes nothing to the settled chain above — as it has for three</p>
+<p>rounds running, under three different labels (CONTESTED, CONTESTED, UNDETERMINED).</p>
+<hr></div></div></div></section>
+<section class="cm-sec" id="round-14"><div class="cm-grid"><div class="cm-rail"><b>R 14</b>THE CRUX</div><div><h2>THE CRUX</h2>
+<div class="claim-body-html"><h3>14 · THE CRUX  (05-verdict/crux.md, verbatim)</h3>
+<h3>THE CRUX — Round 3 (final, standalone)</h3>
+<p>One cheapest-resolving-observation per CONTESTED and UNDETERMINED item on the final map.</p>
+<p>Two items remain open after three rounds and the MAX_ROUNDS=3 hard cap.</p>
+<hr>
+<p><b>C-03 (CONTESTED)</b> — Capital Economics/Stephen Brown, Jan 25 2023: was "scope for the</p>
+<p>bank to start cutting interest rates again as soon as the third quarter" an earliest-</p>
+<p>possible-case hedge, or was the firm's actual base case a Q3 (specifically September) cut,</p>
+<p>as a same-day Globe and Mail quote ("we suspect the Bank will begin to cut in September, a</p>
+<p>little later than July as we previously suggested") arguably shows?</p>
+<p>Cheapest resolving observation: locate Capital Economics' own contemporaneous client note,</p>
+<p>or a third outlet's verbatim (non-paraphrased) quotation of Stephen Brown from Jan 25,</p>
+<p>2023, rather than continuing to rely on two secondary outlets' (CBC vs. Globe and Mail)</p>
+<p>differently-worded paraphrases of what may be the same underlying remark. Commitment</p>
+<p>language ("will begin," "we expect") settles the reading that Q3 was a firm dated call;</p>
+<p>hedge language ("scope for," "as soon as," "could," "we suspect") settles the reading that</p>
+<p>it remained a bounded, evolving estimate. This exact crux was named at the end of round 2</p>
+<p>and, despite a third round of debate, was never actually retrieved — the identical two</p>
+<p>secondary sources were simply re-argued. It is the single cheapest, most-repeatedly-deferred</p>
+<p>retrieval left on the whole ledger.</p>
+<hr>
+<p><b>C-13 (UNDETERMINED)</b> — Goldman Sachs's ~75%-of-G10-cycles-cut-within-12-months figure:</p>
+<p>does the historical G10 base rate apply to the Bank of Canada's 2023 cycle (Rival A), or is</p>
+<p>this cycle a regime outlier — fastest hiking pace on record, launched from near-zero rates</p>
+<p>to fight 40-year-high inflation, with the Bank's own Governor stating on the claim's own</p>
+<p>date that "we're not even thinking about cuts" — that the 1960–2019 blended median does not</p>
+<p>speak to (Rival B)?</p>
+<p>Cheapest resolving observation: a pre-cutoff-knowable, independently-sourced compilation</p>
+<p>that conditions the hit-rate statistic on cycle characteristics resembling 2022–23's —</p>
+<p>i.e., not "all 85 G10 cycles, 1960–2019" but specifically the subset of unusually fast,</p>
+<p>high-magnitude tightening cycles launched from near-zero rates to fight high inflation. If</p>
+<p>that conditional subset still shows a cut within 12 months at a rate near 75%, Rival A</p>
+<p>gains real support; if it shows systematically longer gaps, Rival B does. This is a sharper</p>
+<p>and cheaper version of the search that partially resolved C-07's timing-gap figure in round</p>
+<p>2 (an independent Fed-only pause-period compilation) — but round 3 showed that kind of</p>
+<p>corroboration cannot simply be assumed to exist for every figure drawn from this Goldman</p>
+<p>report; it must actually be retrieved and checked source-by-source, which has now happened</p>
+<p>for C-07 (retracted on re-check) and C-11 (never existed) but never yet successfully for</p>
+<p>C-13's specific hit-rate statistic. It remains the single highest-value retrieval on the</p>
+<p>entire ledger: C-13 is the one LOAD-BEARING claim that is neither HELD nor NARROWED, and it</p>
+<p>is the sole reason the tripwire has not fired across all three rounds.</p>
+<hr></div></div></div></section>
+<section class="cm-sec" id="round-15"><div class="cm-grid"><div class="cm-rail"><b>R 15</b>READER OUTPUT</div><div><h2>READER OUTPUT</h2>
+<div class="claim-body-html"><h3>15 · READER OUTPUT  (05-verdict/reader.md, verbatim)</h3>
+<p>The Reader received the <code>QUESTION</code> verbatim and <code>map.md</code>, and nothing else (C12):</p>
+<p>&gt; The claim: <code>"The Bank of Canada will lower its policy interest rate below 4.00% before July 31, 2024."</code></p>
+<pre><code>DIRECTION:   UNDETERMINED
+PROBABILITY: 0.50
+BASIS:       C-13, C-07, C-11
+INSUFFICIENT: </code></pre>
+<hr></div></div></div></section>
+<section class="cm-sec" id="round-16"><div class="cm-grid"><div class="cm-rail"><b>R 16</b>CONCESSION LEDGER</div><div><h2>CONCESSION LEDGER</h2>
+<div class="claim-body-html"><h3>16 · CONCESSION LEDGER  (every agent, every round, verbatim)</h3>
+<h3>Cartographer · Territory 1 · Round 0</h3>
+<pre><code>CONCESSION: UNMOVED — The strongest objection is that four E0 records cannot establish anything about Bank of Canada action between January 26, 2023 and July 31, 2024, since the cutoff bars any primary record dated after 2023-01-26; the ledger documents the starting rate, the Bank's own stated near-term intent, and the decision cadence, but contains no primary evidence of what the Bank actually did within the question window, and none can be filed without violating the cutoff.</code></pre>
+<h3>Cartographer · Territory 2 · Round 0</h3>
+<pre><code>CONCESSION: UNMOVED — The strongest objection is that Stephen Brown's Q3-2023 cut forecast, if realized, would leave over a year of easing room before July 31, 2024, making sub-4.00% plausible; it fails as proof because Macklem's same-day "too early to discuss cuts" stance and the Bank's own hold guidance are the operative primary-source signal, and one dissenting private forecaster's timing call is not evidence of the Bank's actual future path.</code></pre>
+<h3>Cartographer · Territory 3 · Round 0</h3>
+<pre><code>CONCESSION: UNMOVED — The strongest objection is that swap-market pricing and some desks (ING, National Bank) already implied a 2023 cut, undercutting a no-cut-before-July-2024 case; it fails because those are market-implied bets and single-desk calls, while the BoC's own rate statement and MPR (E0) plus CIBC's house forecast (E1) put the first cut in 2024 with only gradual easing after, leaving no confirmed path to sub-4.00% by July 31, 2024.</code></pre>
+<h3>Cartographer · Territory 4 · Round 0</h3>
+<pre><code>CONCESSION: UNMOVED — The strongest objection is that G10 hiking-cycle statistics are a broad reference class, not calibrated to an 18-month-or-shorter window ending mid-cycle rather than at a clean cycle boundary; it fails to move me because the 75%-within-12-months and 7-month-median figures already sit inside the horizon implied by this claim shape, making the reference class tight enough to anchor on rather than discard.</code></pre>
+<h3>Inquisitor · Round 1</h3>
+<pre><code>CONCESSION: MOVED — retrieval confirmed several claims cleanly (C-01's Macklem quote, C-12's Andreae quote, C-14's 2024 inflation-target timing, C-15's eight 2023 announcement dates all check out verbatim against primary/quoted text), so the ledger is not wholesale unreliable. But it moved down from my prior: a LOAD-BEARING E0 claim (C-04) inverts the primary source's own action verb (raised vs. held) while a duplicate-sourced sibling claim (C-08/C-09) states the correct verb from the same document: 5 of 16 records collapse to one press release double- and triple-filed as independent entries; a named-analyst citation (C-10) misattributes a CIBC forecast to an FXStreet reporter; and a forecast claim (C-03) drops the source's own hedge ("scope," "as soon as") to read as a firm prediction.</code></pre>
+<h3>Null · Round 1</h3>
+<pre><code>CONCESSION: MOVED — the ledger's core institutional facts (what the Bank of Canada itself did and said on January 25, 2023: the hike to 4.50%, the hold/hawkish forward guidance, the MPR's 2024 inflation-target timeline, the 2023 announcement schedule, and the arithmetic built on the 4.50% figure) are each carried by a direct primary self-report or trivial derivation with no coherent rival reading, and I concede those. What does not survive is the layer built on secondary paraphrase and single-author analytics: specific wording attributed to Macklem, competing analyst forecasts reported through a single wire each, and — most importantly — the three Goldman "historical base rate" statistics, which look like three lines of evidence but are one methodology's output restated three times, with no rival methodology in the ledger to check it against.</code></pre>
+<h3>Advocate · Round 1</h3>
+<pre><code>CONCESSION: MOVED — retrieval added evidence the stripped ledger and both prior rounds lacked. Against the Null specifically: a direct Macklem quotation ("it's really far too early to be talking about cuts") discriminates cleanly in favor of the "explicit rejection" rival on C-01, which the Null had marked contested for lack of exactly that. Against the Inquisitor's PROVENANCE attacks: two were real defects requiring repair, not just relabeling — C-04's claim text inverted "raised" into "held" for the day's actual action (fixed by REBUILT, keeping the "prepared to raise further" clause the source does support), and C-10 misattributed a CIBC forecast to the FXStreet reporter by name (fixed by attributing to unnamed "CIBC economists"). C-03's overclaim (firm forecast vs. hedged "scope... as soon as") was also confirmed and narrowed. One claim, C-02, has no retrievable evidence at any grain and is conceded outright — no rebuild is honest there. On the Goldman G10 statistics (C-07/C-11/C-13), my position stayed UNMOVED against the Null's specific methodological-rival attack: I searched for a pre-cutoff independent replication using a different cycle-dating convention and found none, so those three claims are narrowed to explicit single-source, method-dependent attribution rather than defended as settled base rates. Net: 7 rebuilt, 1 conceded, 8 held as written.</code></pre>
+<h3>Adjudicator · Round 1</h3>
+<pre><code>CONCESSION: MOVED — I did not simply ratify the room's apparent convergence. The Advocate
+labeled C-07, C-11, and C-13 "REBUILT" and treated them as repaired by narrower attribution;
+I did not accept that as sufficient given their evidentiary shape is different in kind from
+C-01/C-03/C-04/C-10's narrowings. Those four were repaired by retrieving a more precise
+quotation or fixing a misattribution against text everyone agrees on — genuine narrowing.
+C-07/C-11/C-13 rest on a single sell-side statistic whose reliability depends on an
+unaudited, undisclosed methodology with a named, never-checked rival convention, and the
+Advocate's own words ("I cannot resolve [this] without evidence I could not retrieve")
+concede the dispute is live, not settled. I held the LOAD-BEARING instance (C-13) and its
+two SUPPORTING siblings to CONTESTED rather than let a well-written rebuild paragraph stand
+in for actual cross-methodology evidence — which is what moves the tripwire to NOT_FIRED
+and keeps this ledger's "historical precedent" claim honestly open rather than quietly
+closed. Separately, I broke from a soft reading of C-02 as merely thin/undetermined and
+called it KILLED: a claim resting on an admitted zero-source "model prior," flagged
+inadmissible by the pipeline itself, and expressly unrebuildable by its own defender, does
+not deserve the more generous "evidence exists but doesn't discriminate" framing that
+UNDETERMINED implies.</code></pre>
+<h3>Inquisitor · Round 2</h3>
+<pre><code>CONCESSION: MOVED — 5 of 7 re-entered claims took a sanctioned, evidence-backed hit this round: C-01 (LOAD-BEARING) falls to ANACHRONISM once the primary Jan-25-2023 transcript is checked against it and the quote's real documented origin is traced to May 2023 and later; C-03 (SUPPORTING) falls to SELECTION via a same-day Globe and Mail report the ledger omitted, which contradicts the record's own narrowing; C-07/C-11/C-13 (one LOAD-BEARING, two SUPPORTING) share a single gated source that the shared-sources file itself flags, with C-11 carrying an additional figure-conflation risk found on direct retrieval. Only C-04 (BoC press release, quoted verbatim against the retrieved primary text) and C-10 (FXStreet quote, verified verbatim and already self-narrowed) survive round 2 unmarked.</code></pre>
+<h3>Null · Round 2</h3>
+<pre><code>CONCESSION: MOVED — Retrieval defeated the apparent single-source problem on C-01 and C-03 (independent, same-day, differently-bylined corroboration exists outside the ledger's own citation list) and directly confirmed C-04 against its primary source. Blanket "the ledger is too thin" does not survive that check, so I am not claiming the whole ledger. But retrieval aimed just as hard at C-07/C-11/C-13 (one Goldman dataset wearing three claim-IDs, undefined N, and a demonstrable rival explanation the ledger cannot rule out) and at C-10 (one unnamed-source wire report, no second account found) came back empty-handed. Those four remain undetermined on the evidence actually in front of me.</code></pre>
+<h3>Advocate · Round 2</h3>
+<pre><code>CONCESSION: MOVED — Real, evidence-based narrowing landed on 5 of 7 claims (C-03, C-07, C-11, C-13, C-10), and none of the seven were false as written — every rebuild above is a reframing/attribution fix, not a retraction of fact. But the round's headline attack does not stand: the Inquisitor's ANACHRONISM strike on C-01 (its own tally's marquee LOAD-BEARING hit) is defeated outright once the press-conference Q&amp;A is checked rather than only the prepared opening statement, and C-04 stands fully unmarked. Against the Null: its C-01/C-03/C-04 findings are confirmed and, for C-03, extended into a concrete rebuild; its harder claim — that C-07/C-11/C-13's single-source Goldman cluster and C-10's single unnamed-source wire report cannot currently be discriminated from their named rivals — survives my own independent retrieval, which closed one gap (sample size/date range for the Goldman report) but could not close the predictive-power or corroboration gaps the Null identified. Net: the ledger exits round 2 smaller in stated confidence on the statistical/forecast cluster, intact on its two primary-source/multiply-corroborated claims.</code></pre>
+<h3>Adjudicator · Round 2</h3>
+<pre><code>CONCESSION: MOVED — I did not simply ratify the room's apparent consensus in either
+direction this round. Three specific places where I broke from what any single party
+proposed: (1) On C-01 and C-04, both Advocate and Null argued full survival, and I agreed —
+but I want to be explicit that "HELD" here is a real promotion from round 1's NARROWED, not
+a rubber stamp: the Inquisitor's ANACHRONISM attack on C-01 was a genuine, RETRIEVED,
+evidence-backed attempt, and it failed on the merits (wrong document checked), which is
+different from an attack that was never seriously mounted. (2) On C-07, I split it away
+from its round-1 twins C-11 and C-13 even though the Advocate's rebuild treated all three
+uniformly as "REBUILT" with parallel framing, and even though the Null's own document groups
+all three under one CONTESTED heading. I disaggregated them because the evidence this round
+actually landed differently: Null's own newly-retrieved Fed-only pause-period data
+corroborates C-07's specific timing-gap figure (in magnitude, with a dispersion caveat) but
+says nothing about C-11's easing-magnitude figure or C-13's hit-rate figure — so treating
+all three identically after round 2 would either over-credit C-11/C-13 or under-credit C-07.
+(3) On C-03, I declined to adopt the Advocate's confident rewrite ("drop the
+earliest-possible-case qualifier... independent corroboration contradicts it") in full,
+because the Null's independent reading of the very same Globe and Mail quote — "we
+suspect... will begin," itself hedged language, describing a call that had already moved
+once — is not an unpersuasive dissent; it is a defensible reading of the identical text
+that the Advocate's rewrite simply asserted past. I held that one CONTESTED rather than let
+a well-argued rebuild paragraph stand in for actual resolution of an ambiguous quotation.
+(4) On C-10, I declined to let the Null's persistent thinness objection — real effort,
+three additional failed corroboration searches — slide the claim past NARROWED, because
+"we still couldn't find a second source" is not the same evidentiary category as "we found
+a source that disagrees," and round 1's narrower text already discloses the single-source
+limitation honestly. Net result: the tripwire count (8 of 9) is numerically identical to
+round 1's, but that stability is not because nothing moved — four of seven re-entered
+verdicts changed (C-01, C-03, C-04, C-07), and the one number that mattered most, C-13,
+stayed exactly where the evidence still leaves it: open.</code></pre>
+<h3>Inquisitor · Round 3</h3>
+<pre><code>CONCESSION: MOVED — C-03's central rhetorical move (Q3 as "earliest-possible" rather than base case) is directly contradicted by a same-day, same-firm statement in an independent outlet, which is the strongest single result of this pass. Separately, the three Goldman-sourced records (C-07, C-11, C-13) survive as a general historical pattern but lose their claim to independent triangulation (one source_id, three record numbers) and lose unqualified applicability to the Bank of Canada's 2023 cycle specifically, since the source's own authors caveat that the post-pandemic cycle is "very unique" — a caveat none of the three records disclose. C-07's secondary Fed-pause compilation, which does the real work of softening that record to E0/SUPPORTING, has no citation anywhere and could not be verified to exist. C-10 stands weakened but not felled: a same-day, same-outlet source shows CIBC's public framing that day was more conditional than the cited note suggests, but this does not establish the cited note is wrong, only that it is less corroborated than a single E1 LOAD-BEARING source ought to be.</code></pre>
+<h3>Null · Round 3</h3>
+<pre><code>CONCESSION: MOVED — retrieval moved me off contesting C-03 (its narrow, bibliographic scope holds up against everything I could find), while the same retrieval pass *strengthened* rather than weakened the contests on C-07, C-10, C-11, and C-13: the shared-source problem in the Goldman trio is confirmed structural (not just claim-level hedging), and Macklem's own "not even thinking about cuts" statement plus the six-way bank dispersion in the Globe and Mail roundup are concrete, named, pre-cutoff rivals the ledger does not currently engage.</code></pre>
+<h3>Advocate · Round 3</h3>
+<pre><code>CONCESSION: MOVED — C-13, the ledger's sole LOAD-BEARING claim, is conceded outright: its 75%-within-12-months figure is the same single Goldman dataset already counted at C-07 and C-11, and the record has no pre-cutoff evidence discriminating against the Null's named, evidenced rival (BoC's 2023 cycle as a hiking-regime outlier, backed by Macklem's own same-day "not even thinking about cuts" statement). C-07 and C-11 survive only narrowed to bare, non-predictive descriptions of that same shared dataset, each shorn of one specific defect — C-07 of an uncited, unverifiable secondary source; C-11 of any claim to representativeness — and both now explicitly disclosing the report's own "very unique" caveat. C-03 is substantively rebuilt rather than merely defended: a same-day, same-firm quote independently re-fetched this pass contradicts the ledger's "earliest-possible, not base-case" framing device, so that interpretive gloss is replaced with the better-supported reading that Q3 2023 (September) was Capital Economics' actual expectation. C-10 is the one claim that survives fully intact — direct-fetch timestamps show the Inquisitor's competing source predates the rate decision by hours and so is not in competition with the post-decision note C-10 cites, and the claim's pre-existing "unnamed" hedge already absorbs the Null's parallel point.</code></pre>
+<h3>Adjudicator · Round 3</h3>
+<pre><code>CONCESSION: MOVED — three places where I broke from what any single party in this round's
+room proposed, and one place where I held firm against an escalating pile of small doubts.
+(1) On C-13, none of the three parties used the word "UNDETERMINED." The Advocate's language
+("does not survive," "nothing narrower salvages that function") reads like a concession
+toward KILLED; the Null's framing ("live rivals," "evidence cannot discriminate") is the
+UNDETERMINED pattern but the Null did not name that verdict; the Inquisitor filed a
+plain PROVENANCE reiteration that, taken alone, would only support CONTESTED-as-before. I
+classified it UNDETERMINED because the actual shape of the disagreement — a real statistic,
+not falsified, that is unable to discharge its predictive function against a named,
+evidenced rival, with the claim's own defender agreeing no discriminating evidence exists —
+matches the brief's UNDETERMINED definition precisely and is a different, more honest
+label than either KILLED (nothing was factually falsified) or CONTESTED (nobody is still
+defending the predictive reading). (2) Also on C-13, I deliberately rejected the Inquisitor's
+filed round-3 PROVENANCE attack as non-dispositive reiteration — the same call made in round
+2 for the same argument — while crediting the verdict *change* entirely to the Null's newly
+retrieved Macklem quote and the Advocate's concession, neither of which the Inquisitor's
+filed attack introduced. An attack and a verdict can move in the same direction without the
+filed attack being the operative cause; I did not let one borrow credit from the other. (3)
+On C-11, I accepted a verdict change (CONTESTED to NARROWED) that none of the three parties
+explicitly framed as a resolution of the round-2 deadlock — the Advocate called it
+"REBUILT," the Null kept arguing "Correlation," and neither used language like "this settles
+it" — but read together, all three had in fact stopped defending the unqualified E0 reading,
+which is what actually matters for the verdict category, regardless of the labels the room
+used. (4) On C-10, I rejected the Inquisitor's new round-3 PROVENANCE attack on strong,
+direct-fetch timestamp evidence, declining to let a third round of doubt-stacking (round 1
+thinness, round 2 thinness, round 3 a mistimed rival source) erode an already-appropriately-
+narrowed E1 claim further — but I also declined to promote it to HELD, because failing three
+different attacks is not the same evidentiary category as being independently corroborated,
+and the claim's core limitation (single unnamed source) is exactly as true today as at round
+1. Net result: the tripwire count (8 of 9) is numerically identical across all three rounds,
+but two of the five re-entered verdicts changed this round (C-11, C-13), and the ledger's
+single most consequential claim, C-13, ends the process in a materially different and more
+evidenced place than where it started — not fired, but no longer merely stuck.</code></pre>
+<hr></div></div></div></section>
+<section class="cm-sec" id="round-17"><div class="cm-grid"><div class="cm-rail"><b>R 17</b>CONTROL ARM</div><div><h2>CONTROL ARM</h2>
+<div class="claim-body-html"><h3>17 · CONTROL ARM</h3>
+<pre><code>CONTROL_ARM: NO</code></pre>
+<p>No control arm was run. <code>retrieval_calls_control</code> is therefore <code>n/a</code>, and measurement 1 of</p>
+<p>§15.3 (Crucible vs. control arm) cannot be computed from this run.</p>
+<hr></div></div></div></section>
+<section class="cm-sec" id="round-18"><div class="cm-grid"><div class="cm-rail"><b>R 18</b>HALT RECORD</div><div><h2>HALT RECORD</h2>
+<div class="claim-body-html"><h3>18 · HALT RECORD</h3>
+<pre><code>rounds_run:                 3   (hard cap MAX_ROUNDS = 3 reached)
+halt_reason:                HARD_CAP
+
+round 1
+  re-entered subset size:   16   (initial entry; no prior map, nothing re-entered)
+  new_landed_attacks:       6    (A-01, A-04, A-05, A-06, A-07, A-08 accepted; A-02, A-03 rejected)
+  verdict_changes:          16   (initial assignment against no prior map)
+  verdicts after round 1:   HELD=8  NARROWED=4  CONTESTED=3  UNDETERMINED=0  KILLED=1
+
+round 2
+  re-entered subset:        C-01, C-03, C-04, C-07, C-10, C-11, C-13   (size 7)
+  new_landed_attacks:       2    (PROVENANCE=1, SELECTION=1)
+  verdict_changes:          4    over the 7 re-entered ids: C-01, C-03, C-04, C-07
+  verdicts after round 2:   HELD=10  NARROWED=2  CONTESTED=3  UNDETERMINED=0  KILLED=1
+
+round 3
+  re-entered subset:        C-03, C-07, C-10, C-11, C-13   (size 5)
+  new_landed_attacks:       3    (PROVENANCE=1, INFERENCE=1, SELECTION=1)
+  verdict_changes:          2    over the 5 re-entered ids: C-11, C-13
+  verdicts after round 3:   HELD=10  NARROWED=3  CONTESTED=1  UNDETERMINED=1  KILLED=1
+
+tripwire:                   NOT_FIRED in every round
+  round 1:                  8 of 9 load-bearing claims HELD or NARROWED (C-13 CONTESTED)
+  round 2:                  8 of 9 load-bearing claims HELD or NARROWED (C-13 CONTESTED)
+  round 3:                  8 of 9 load-bearing claims HELD or NARROWED (C-13 UNDETERMINED)
+  before/after counts:      not applicable; no tripwire pass was run
+  verdicts moved:           0</code></pre>
+<p>Round 3 produced <code>verdict_changes = 2 &gt; 0</code>, so the run did not reach</p>
+<p><code>ZERO_VERDICT_CHANGES</code>; it stopped at the <code>MAX_ROUNDS</code> hard cap with the subset still live.</p>
+<hr></div></div></div></section>
+<section class="cm-sec" id="round-19"><div class="cm-grid"><div class="cm-rail"><b>R 19</b>REJECTED ATTACKS</div><div><h2>REJECTED ATTACKS</h2>
+<div class="claim-body-html"><h3>19 · REJECTED ATTACKS  (05-verdict/rejected-attacks.md, verbatim)</h3>
+<pre><code>C-05 │ PROVENANCE │ rejected: shared-URL duplication with C-06 is a ledger bookkeeping/independence flaw, not a defect in claim content — text verbatim-confirmed by retrieval.
+C-06 │ PROVENANCE │ rejected: shared-URL duplication with C-05 is a ledger bookkeeping/independence flaw, not a defect in claim content — text verbatim-confirmed by retrieval.
+C-08 │ PROVENANCE │ rejected: shared-URL duplication with C-09 is a ledger bookkeeping flaw, not a defect in the 4.50% figure, which is verbatim-confirmed institutional fact.
+C-09 │ PROVENANCE │ rejected: shared-URL duplication with C-08 is a ledger bookkeeping flaw, not a defect in the 4.50% figure, which is verbatim-confirmed institutional fact.
+C-03 │ CORRELATION │ rejected: shared CBC article with C-01 does not undermine C-03's own content — the two claims report independent facts that do not lean on each other, and the shared URL is independently corroborated by the Inquisitor's own retrieval.
+C-10 │ RIVAL-FORECAST │ rejected: a same-day contrary forecast from a different bank (C-03/Capital Economics) is not counter-evidence against what CIBC itself said; differing house views across two banks is not a factual conflict requiring adjudication.
+C-01 │ ANACHRONISM │ rejected: attack verified only the BoC's scripted Opening Statement transcript, which excludes the press-conference Q&amp;A where the quote was spoken; Advocate and Null independently retrieved a second same-day outlet (FXStreet, timestamped 2023-01-25 16:29 GMT) carrying matching language, refuting the claimed post-cutoff origin.
+C-11 │ PROVENANCE │ rejected: the attack's specific figure-conflation charge was checked directly against the source text and found not to have occurred — the ledger cites the easing-specific 200bp clause, not the total-hike-size 200bp clause; the residual single-source concentration point is unchanged from round 1's already-adjudicated CONTESTED status and no independent replication of this figure was found this round either.
+C-13 │ PROVENANCE │ rejected: reiterates round 1's already-adjudicated single-source/methodology concern (Inquisitor A-08) without new dispositive evidence; the gated/excerpt-only framing adds no new information and no independent replication of the 75% figure was found this round.
+C-10 │ THINNESS │ rejected: Null's and Advocate's additional round-2 corroboration searches came up empty but surfaced no contradicting evidence either; round 1's narrower text already discloses this rests on a single uncorroborated wire report, so absence of further corroboration does not license downgrading an already-appropriately-caveated E1 claim further.
+C-10 │ PROVENANCE │ rejected: the competing "eight banks" preview is timestamped 2023-01-25 07:31 GMT (~2:31am ET), hours before the ~10am ET rate decision — a pre-decision preview, not a rival account of the same post-decision moment as the note C-10 cites (18:13 GMT / ~1:13pm ET); direct-fetch timestamps confirm the two are not in competition.
+C-13 │ PROVENANCE │ rejected: reiterates round 1/round 2's already-adjudicated single-source/methodology concern (same shared URL across C-07/C-11/C-13) without new dispositive evidence on the 75% figure itself; the round-3 verdict shift to UNDETERMINED rests on the Null's newly-retrieved Macklem same-day quote and the Advocate's own concession, not on this repeated provenance point.</code></pre>
+<p>Line count: 12. This is the sole producer of <code>attacks_scored_zero</code> in §13.</p>
+<hr></div></div></div></section>
+<section class="cm-sec" id="round-20"><div class="cm-grid"><div class="cm-rail"><b>R 20</b>KEYMAP</div><div><h2>KEYMAP</h2>
+<div class="claim-body-html"><h3>20 · KEYMAP  (01-ledger/keymap.json)</h3>
+<p>Convener-only during the run; never crossed the barrier. Appended here for §15 scoring.</p>
+<pre><code>{
+  "C-01": {
+    "claim": "Bank of Canada Governor Tiff Macklem said on January 25, 2023 it was too early to discuss rate cuts.",
+    "territories": [
+      "2"
+    ],
+    "load": "LOAD-BEARING",
+    "tier": "E1",
+    "sources": [
+      {
+        "source": "CBC News, \"Bank of Canada raises interest rate again \u2014 but hits 'pause' on any more for now\"",
+        "source_id": "https://www.cbc.ca/news/business/bank-of-canada-january-rate-decision-1.6725283",
+        "source_id_norm": "www.cbc.ca/news/business/bank-of-canada-january-rate-decision-1.6725283",
+        "source_date": "2023-01-25",
+        "tier": "E1"
+      }
+    ]
+  },
+  "C-02": {
+    "claim": "Fixed-deadline macroeconomic threshold predictions resolve true less than half the time across general forecasting tournaments.",
+    "territories": [
+      "4"
+    ],
+    "load": "COLOR",
+    "tier": "E3",
+    "sources": [
+      {
+        "source": "model prior, no external source",
+        "source_id": "N/A",
+        "source_id_norm": "n/a",
+        "source_date": "N/A",
+        "tier": "E3"
+      }
+    ]
+  },
+  "C-03": {
+    "claim": "Capital Economics economist Stephen Brown forecast Bank of Canada rate cuts beginning in the third quarter of 2023.",
+    "territories": [
+      "2"
+    ],
+    "load": "SUPPORTING",
+    "tier": "E1",
+    "sources": [
+      {
+        "source": "CBC News, \"Bank of Canada raises interest rate again \u2014 but hits 'pause' on any more for now\" (quoting Capital Economics)",
+        "source_id": "https://www.cbc.ca/news/business/bank-of-canada-january-rate-decision-1.6725283",
+        "source_id_norm": "www.cbc.ca/news/business/bank-of-canada-january-rate-decision-1.6725283",
+        "source_date": "2023-01-25",
+        "tier": "E1"
+      }
+    ]
+  },
+  "C-04": {
+    "claim": "The Bank of Canada held its policy rate at 4.50% on January 25, 2023, remaining prepared to raise it further.",
+    "territories": [
+      "3"
+    ],
+    "load": "LOAD-BEARING",
+    "tier": "E0",
+    "sources": [
+      {
+        "source": "Bank of Canada official press release",
+        "source_id": "https://www.bankofcanada.ca/2023/01/fad-press-release-2023-01-25/",
+        "source_id_norm": "www.bankofcanada.ca/2023/01/fad-press-release-2023-01-25",
+        "source_date": "2023-01-25",
+        "tier": "E0"
+      }
+    ]
+  },
+  "C-05": {
+    "claim": "The Bank of Canada's January 25, 2023 statement says it expects to hold the policy rate at its current level.",
+    "territories": [
+      "1"
+    ],
+    "load": "LOAD-BEARING",
+    "tier": "E0",
+    "sources": [
+      {
+        "source": "Bank of Canada press release: 'Bank of Canada increases policy interest rate by 25 basis points, continues quantitative tightening'",
+        "source_id": "https://www.bankofcanada.ca/2023/01/fad-press-release-2023-01-25/",
+        "source_id_norm": "www.bankofcanada.ca/2023/01/fad-press-release-2023-01-25",
+        "source_date": "2023-01-25",
+        "tier": "E0"
+      }
+    ]
+  },
+  "C-06": {
+    "claim": "The Bank of Canada's January 25, 2023 statement said it expects to hold the policy rate at its current level.",
+    "territories": [
+      "2"
+    ],
+    "load": "LOAD-BEARING",
+    "tier": "E0",
+    "sources": [
+      {
+        "source": "Bank of Canada, Fixed Announcement Date press release",
+        "source_id": "https://www.bankofcanada.ca/2023/01/fad-press-release-2023-01-25/",
+        "source_id_norm": "www.bankofcanada.ca/2023/01/fad-press-release-2023-01-25",
+        "source_date": "2023-01-25",
+        "tier": "E0"
+      }
+    ]
+  },
+  "C-07": {
+    "claim": "The median G10 hiking cycle's first rate cut occurred seven months after the final hike.",
+    "territories": [
+      "4"
+    ],
+    "load": "SUPPORTING",
+    "tier": "E0",
+    "sources": [
+      {
+        "source": "Goldman Sachs Global Investment Research, G10 Hiking and Cutting Cycles: Lessons from History",
+        "source_id": "https://www.gspublishing.com/content/research/en/reports/2022/10/30/c19ac960-e849-4407-ba4d-568e2a2cceb9.html",
+        "source_id_norm": "www.gspublishing.com/content/research/en/reports/2022/10/30/c19ac960-e849-4407-ba4d-568e2a2cceb9.html",
+        "source_date": "2022-10-30",
+        "tier": "E0"
+      }
+    ]
+  },
+  "C-08": {
+    "claim": "The Bank of Canada raised its target overnight rate to 4.50% on January 25, 2023.",
+    "territories": [
+      "2"
+    ],
+    "load": "LOAD-BEARING",
+    "tier": "E0",
+    "sources": [
+      {
+        "source": "Bank of Canada, Fixed Announcement Date press release",
+        "source_id": "https://www.bankofcanada.ca/2023/01/fad-press-release-2023-01-25/",
+        "source_id_norm": "www.bankofcanada.ca/2023/01/fad-press-release-2023-01-25",
+        "source_date": "2023-01-25",
+        "tier": "E0"
+      }
+    ]
+  },
+  "C-09": {
+    "claim": "The Bank of Canada raised its target for the overnight rate to 4.50% on January 25, 2023.",
+    "territories": [
+      "1"
+    ],
+    "load": "LOAD-BEARING",
+    "tier": "E0",
+    "sources": [
+      {
+        "source": "Bank of Canada press release: 'Bank of Canada increases policy interest rate by 25 basis points, continues quantitative tightening'",
+        "source_id": "https://www.bankofcanada.ca/2023/01/fad-press-release-2023-01-25/",
+        "source_id_norm": "www.bankofcanada.ca/2023/01/fad-press-release-2023-01-25",
+        "source_date": "2023-01-25",
+        "tier": "E0"
+      }
+    ]
+  },
+  "C-10": {
+    "claim": "CIBC economists said on January 25, 2023 that Bank of Canada rates would remain at 4.5% through the rest of 2023 before gradual easing in 2024.",
+    "territories": [
+      "3"
+    ],
+    "load": "LOAD-BEARING",
+    "tier": "E1",
+    "sources": [
+      {
+        "source": "FXStreet, reporting CIBC analysis (Matias Salord)",
+        "source_id": "https://www.fxstreet.com/amp/news/bank-of-canada-rates-likely-to-remain-at-45-this-year-before-easing-in-2024-cibc-202301251813",
+        "source_id_norm": "www.fxstreet.com/amp/news/bank-of-canada-rates-likely-to-remain-at-45-this-year-before-easing-in-2024-cibc-202301251813",
+        "source_date": "2023-01-25",
+        "tier": "E1"
+      }
+    ]
+  },
+  "C-11": {
+    "claim": "Median G10 cutting cycles delivered 200 basis points of easing within the first year after the last hike.",
+    "territories": [
+      "4"
+    ],
+    "load": "SUPPORTING",
+    "tier": "E0",
+    "sources": [
+      {
+        "source": "Goldman Sachs Global Investment Research, G10 Hiking and Cutting Cycles: Lessons from History",
+        "source_id": "https://www.gspublishing.com/content/research/en/reports/2022/10/30/c19ac960-e849-4407-ba4d-568e2a2cceb9.html",
+        "source_id_norm": "www.gspublishing.com/content/research/en/reports/2022/10/30/c19ac960-e849-4407-ba4d-568e2a2cceb9.html",
+        "source_date": "2022-10-30",
+        "tier": "E0"
+      }
+    ]
+  },
+  "C-12": {
+    "claim": "Commerzbank analyst Elisabeth Andreae said on January 25, 2023 that a hawkish Bank of Canada rate outlook would support the Canadian dollar.",
+    "territories": [
+      "3"
+    ],
+    "load": "SUPPORTING",
+    "tier": "E1",
+    "sources": [
+      {
+        "source": "FXStreet, reporting Commerzbank FX note (Elisabeth Andreae)",
+        "source_id": "https://www.fxstreet.com/news/loonie-to-come-unde-pressure-if-boc-signals-a-pause-ahead-commerzbank-202301250941",
+        "source_id_norm": "www.fxstreet.com/news/loonie-to-come-unde-pressure-if-boc-signals-a-pause-ahead-commerzbank-202301250941",
+        "source_date": "2023-01-25",
+        "tier": "E1"
+      }
+    ]
+  },
+  "C-13": {
+    "claim": "Roughly 75% of G10 rate-hiking cycles saw a first rate cut within 12 months of the final hike.",
+    "territories": [
+      "4"
+    ],
+    "load": "LOAD-BEARING",
+    "tier": "E0",
+    "sources": [
+      {
+        "source": "Goldman Sachs Global Investment Research, G10 Hiking and Cutting Cycles: Lessons from History",
+        "source_id": "https://www.gspublishing.com/content/research/en/reports/2022/10/30/c19ac960-e849-4407-ba4d-568e2a2cceb9.html",
+        "source_id_norm": "www.gspublishing.com/content/research/en/reports/2022/10/30/c19ac960-e849-4407-ba4d-568e2a2cceb9.html",
+        "source_date": "2022-10-30",
+        "tier": "E0"
+      }
+    ]
+  },
+  "C-14": {
+    "claim": "The Bank of Canada's January 2023 Monetary Policy Report projected CPI inflation reaching the 2% target only sometime in 2024.",
+    "territories": [
+      "3"
+    ],
+    "load": "LOAD-BEARING",
+    "tier": "E0",
+    "sources": [
+      {
+        "source": "Bank of Canada Monetary Policy Report",
+        "source_id": "https://www.bankofcanada.ca/wp-content/uploads/2023/01/mpr-2023-01-25.pdf",
+        "source_id_norm": "www.bankofcanada.ca/wp-content/uploads/2023/01/mpr-2023-01-25.pdf",
+        "source_date": "2023-01-25",
+        "tier": "E0"
+      }
+    ]
+  },
+  "C-15": {
+    "claim": "The Bank of Canada scheduled eight policy interest rate announcements for 2023 in a release dated July 26, 2022.",
+    "territories": [
+      "1"
+    ],
+    "load": "SUPPORTING",
+    "tier": "E0",
+    "sources": [
+      {
+        "source": "Bank of Canada press release: 'Bank of Canada publishes 2023 schedule for interest rate announcements'",
+        "source_id": "https://www.bankofcanada.ca/2022/07/2023-schedule-interest-rate-announcements/",
+        "source_id_norm": "www.bankofcanada.ca/2022/07/2023-schedule-interest-rate-announcements",
+        "source_date": "2022-07-26",
+        "tier": "E0"
+      }
+    ]
+  },
+  "C-16": {
+    "claim": "A decline from 4.50% to below 4.00% requires policy rate cuts totaling more than 50 basis points.",
+    "territories": [
+      "1"
+    ],
+    "load": "SUPPORTING",
+    "tier": "E2",
+    "sources": [
+      {
+        "source": "Author calculation from the Bank of Canada January 25, 2023 rate press release",
+        "source_id": "https://www.bankofcanada.ca/2023/01/fad-press-release-2023-01-25/ (derived arithmetic)",
+        "source_id_norm": "www.bankofcanada.ca/2023/01/fad-press-release-2023-01-25/ (derived arithmetic)",
+        "source_date": "2023-01-25",
+        "tier": "E2"
+      }
+    ]
+  }
+}</code></pre></div></div></div></section>
+</main>
+</div>
+
+<!--__rbp-->
+<a id="__rb-pill" href="index.html">&#8592; Home</a>
+<script>
+(function(){
+  var p=document.getElementById('__rb-pill'); if(!p) return;
+  var t=false;
+  function run(){ t=false;
+    p.classList.toggle('__on',(window.scrollY||document.documentElement.scrollTop)>420); }
+  function q(){ if(!t){ t=true; requestAnimationFrame(run); } }
+  addEventListener('scroll',q,{passive:true}); run();
+})();
+/* the trail, for the pages that carry only the pill (the tools) */
+(function(){
+  if(window.__trailed) return; window.__trailed=1;
+  try{
+    var k='atlas.trail';
+    var u=location.pathname.split('/').pop()||'index.html';
+    var t2=JSON.parse(localStorage.getItem(k)||'{}');
+    function put(key){
+      if(t2[key]||Object.keys(t2).length<500){
+        t2[key]=(t2[key]||0)+1;
+        localStorage.setItem(k,JSON.stringify(t2));
+      }
+    }
+    put(u+location.hash);
+    addEventListener('hashchange',function(){ put(u+location.hash); });
+  }catch(e){}
+})();
+</script>
+<!--/__rbp-->
+</body>
+</html>

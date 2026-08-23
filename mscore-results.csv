@@ -1,0 +1,7 @@
+case,test_year,DSRI,GMI,AQI,SGI,DEPI,SGAI,LVGI,TATA,M_score,flag_at_-1.78,flag_at_-2.22
+Sino-Forest,FY2010,1.451608,1.018809,1.087634,1.553513,1.314762,0.902592,1.286325,-0.077615,-1.929289,no,YES
+Sino-Forest,FY2009,0.904963,1.146987,0.870182,1.381834,0.837927,0.874399,0.849106,-0.125671,-2.737383,no,no
+Nortel,FY2002,1.083557,0.559079,1.176994,0.603050,0.668333,0.750429,1.045115,-0.187590,-3.806211,no,no
+Poseidon,2012,n/a,n/a,n/a,n/a,n/a,n/a,n/a,n/a,model inapplicable,n/a,n/a
+Livent,FY1997,n/a,n/a,n/a,n/a,n/a,n/a,n/a,n/a,inputs not retrievable,n/a,n/a
+Philip Services,FY1996,n/a,n/a,n/a,n/a,n/a,n/a,n/a,n/a,inputs not retrievable,n/a,n/a

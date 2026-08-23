@@ -1,0 +1,42 @@
+case,period,regime,line_item,test_year,prior_year,source
+Sino-Forest,FY2010 vs FY2009,Canadian GAAP (US$000),Revenue,1923536,1238185,News release 15 Mar 2011
+Sino-Forest,FY2010 vs FY2009,Canadian GAAP (US$000),Cost of sales,1252023,797800,News release 15 Mar 2011
+Sino-Forest,FY2010 vs FY2009,Canadian GAAP (US$000),SG&A,89712,63980,News release 15 Mar 2011
+Sino-Forest,FY2010 vs FY2009,Canadian GAAP (US$000),Depreciation and amortization,5145,4693,News release 15 Mar 2011
+Sino-Forest,FY2010 vs FY2009,Canadian GAAP (US$000),Net income,395426,286370,News release 15 Mar 2011
+Sino-Forest,FY2010 vs FY2009,Canadian GAAP (US$000),Cash from operating activities,840085,784517,News release 15 Mar 2011
+Sino-Forest,FY2010 vs FY2009,Canadian GAAP (US$000),Accounts receivable,636626,282306,News release 15 Mar 2011
+Sino-Forest,FY2010 vs FY2009,Canadian GAAP (US$000),Short-term deposits,32101,70387,News release 15 Mar 2011
+Sino-Forest,FY2010 vs FY2009,Canadian GAAP (US$000),Total current assets,2079295,1586761,News release 15 Mar 2011
+Sino-Forest,FY2010 vs FY2009,Canadian GAAP (US$000),Capital assets net,113150,77377,News release 15 Mar 2011
+Sino-Forest,FY2010 vs FY2009,Canadian GAAP (US$000),Total assets,5729033,3963899,News release 15 Mar 2011
+Sino-Forest,FY2010 vs FY2009,Canadian GAAP (US$000),Total current liabilities,755784,373780,News release 15 Mar 2011
+Sino-Forest,FY2010 vs FY2009,Canadian GAAP (US$000),Long-term debt,1659682,925466,News release 15 Mar 2011
+Sino-Forest,FY2009 vs FY2008,Canadian GAAP (US$000),Revenue,1238185,896045,News release 16 Mar 2010
+Sino-Forest,FY2009 vs FY2008,Canadian GAAP (US$000),Cost of sales,797292,530083,News release 16 Mar 2010
+Sino-Forest,FY2009 vs FY2008,Canadian GAAP (US$000),SG&A,64488,53372,News release 16 Mar 2010
+Sino-Forest,FY2009 vs FY2008,Canadian GAAP (US$000),Depreciation and amortization,4693,3206,News release 16 Mar 2010
+Sino-Forest,FY2009 vs FY2008,Canadian GAAP (US$000),Net income,286370,228593,News release 16 Mar 2010
+Sino-Forest,FY2009 vs FY2008,Canadian GAAP (US$000),Cash from operating activities,784517,487183,News release 16 Mar 2010
+Sino-Forest,FY2009 vs FY2008,Canadian GAAP (US$000),Accounts receivable,282306,225753,News release 16 Mar 2010
+Sino-Forest,FY2009 vs FY2008,Canadian GAAP (US$000),Short-term deposits,70387,45784,News release 16 Mar 2010
+Sino-Forest,FY2009 vs FY2008,Canadian GAAP (US$000),Total current assets,1586761,811457,News release 16 Mar 2010
+Sino-Forest,FY2009 vs FY2008,Canadian GAAP (US$000),Capital assets net,77377,63704,News release 16 Mar 2010
+Sino-Forest,FY2009 vs FY2008,Canadian GAAP (US$000),Total assets,3963899,2603924,News release 16 Mar 2010
+Sino-Forest,FY2009 vs FY2008,Canadian GAAP (US$000),Total current liabilities,373780,290692,News release 16 Mar 2010
+Sino-Forest,FY2009 vs FY2008,Canadian GAAP (US$000),Long-term debt,925466,714468,News release 16 Mar 2010
+Nortel,FY2002 vs FY2001,US GAAP (US$m),Revenues,10560,17511,8-K 23 Jan 2003 ex-99.1
+Nortel,FY2002 vs FY2001,US GAAP (US$m),Cost of revenues,6953,14167,8-K 23 Jan 2003 ex-99.1
+Nortel,FY2002 vs FY2001,US GAAP (US$m),SG&A,2675,5911,8-K 23 Jan 2003 ex-99.1
+Nortel,FY2002 vs FY2001,US GAAP (US$m),Amortization and depreciation,705,722,8-K 23 Jan 2003 ex-99.1
+Nortel,FY2002 vs FY2001,US GAAP (US$m),Net loss from continuing operations,-3585,-24307,8-K 23 Jan 2003 ex-99.1
+Nortel,FY2002 vs FY2001,US GAAP (US$m),Cash from operating activities (continuing),-589,not shown,8-K 23 Jan 2003 ex-99.1
+Nortel,FY2002 vs FY2001,US GAAP (US$m),Accounts receivable net,1910,2923,8-K 23 Jan 2003 ex-99.1
+Nortel,FY2002 vs FY2001,US GAAP (US$m),Total current assets,8476,11762,8-K 23 Jan 2003 ex-99.1
+Nortel,FY2002 vs FY2001,US GAAP (US$m),Plant and equipment net,1444,2571,8-K 23 Jan 2003 ex-99.1
+Nortel,FY2002 vs FY2001,US GAAP (US$m),Total assets,15971,21137,8-K 23 Jan 2003 ex-99.1
+Nortel,FY2002 vs FY2001,US GAAP (US$m),Total current liabilities,6982,9457,8-K 23 Jan 2003 ex-99.1
+Nortel,FY2002 vs FY2001,US GAAP (US$m),Long-term debt,3719,4094,8-K 23 Jan 2003 ex-99.1
+Poseidon,Q1 2012,IFRS (CAD$m),Revenue / Accounts receivable,52.129,83.018,2016 ABASC 161 para 20
+Poseidon,Q2 2012,IFRS (CAD$m),Revenue / Accounts receivable,54.875,118.641,2016 ABASC 161 para 20
+Poseidon,Q3 2012,IFRS (CAD$m),Revenue / Accounts receivable,41.116,125.516,2016 ABASC 161 para 20
