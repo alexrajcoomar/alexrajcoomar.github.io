@@ -1012,6 +1012,12 @@
   save.addEventListener("click", function () {
     save.disabled = true;
     say("Saving…");
+    /* ask the browser to protect this storage from being reclaimed; on an
+       installed app this is usually granted, and it is what makes the copy
+       durable rather than merely cached */
+    if (navigator.storage && navigator.storage.persist) {
+      navigator.storage.persist().catch(function () {});
+    }
     navigator.serviceWorker.ready.then(function (reg) {
       if (reg.active) reg.active.postMessage({ type: "cache-all" });
       else { say("The offline worker is still starting; try again in a moment."); save.disabled = false; }
