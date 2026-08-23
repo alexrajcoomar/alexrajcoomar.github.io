@@ -2160,21 +2160,25 @@ self.addEventListener("fetch", e => {{
   const url = new URL(req.url);
   if (url.origin !== location.origin) return;
 
-  // Network first, so a published change is picked up as soon as there is a
-  // connection; the caches are the fallback that makes the offline claim true.
+  // Cache first, refresh behind: a click on a saved page opens from disk
+  // with no network wait at all, while the fetch that follows replaces the
+  // stored copy so the next click is current. A page seen after a publish
+  // is therefore at most one visit old, and never slow.
   e.respondWith(
-    fetch(req)
-      .then(res => {{
-        if (res && res.ok && res.type === "basic") {{
-          const copy = res.clone();
-          caches.open(PAGES).then(c => c.put(req, copy)).catch(() => {{}});
-        }}
-        return res;
-      }})
-      .catch(() =>
-        caches.match(req)
-          .then(hit => hit || caches.match(url.pathname.replace(/^\//, "") || "index.html"))
-          .then(hit => hit || caches.match("index.html")))
+    caches.match(req).then(hit => {{
+      const refresh = fetch(req)
+        .then(res => {{
+          if (res && res.ok && res.type === "basic") {{
+            const copy = res.clone();
+            caches.open(PAGES).then(c => c.put(req, copy)).catch(() => {{}});
+          }}
+          return res;
+        }});
+      if (hit) {{ refresh.catch(() => {{}}); return hit; }}
+      return refresh.catch(() =>
+        caches.match(url.pathname.replace(/^\//, "") || "index.html")
+          .then(h2 => h2 || caches.match("index.html")));
+    }})
   );
 }});
 
