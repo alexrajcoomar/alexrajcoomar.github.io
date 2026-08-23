@@ -39,6 +39,8 @@
 <meta name="color-scheme" content="light">
 <meta name="description" content="A visual walk through the hype cycle, phase by phase, with what each phase predicts and what it does not.">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%2316150f'/><text x='50' y='72' font-size='64' font-family='Helvetica,Arial' font-weight='bold' fill='%23faf9f6' text-anchor='middle'>A</text></svg>">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="site.webmanifest">
 <link rel="canonical" href="https://alexrajcoomar.github.io/hype-cycle.html">
 <meta property="og:title" content="The Gartner Hype Cycle — Alex Rajcoomar">
 <meta property="og:description" content="A visual walk through the hype cycle, phase by phase, with what each phase predicts and what it does not.">
@@ -132,6 +134,10 @@
    rings them; the record lives in localStorage and never leaves the machine. */
 (function(){
   if(window.__trailed) return; window.__trailed=1;
+  if('serviceWorker' in navigator && location.protocol.indexOf('http')===0){
+    addEventListener('load',function(){setTimeout(function(){
+      navigator.serviceWorker.register('sw.js').catch(function(){});},6000);});
+  }
   try{
     var k='atlas.trail';
     var u=location.pathname.split('/').pop()||'index.html';
@@ -291,6 +297,10 @@
 /* the trail, for the pages that carry only the pill (the tools) */
 (function(){
   if(window.__trailed) return; window.__trailed=1;
+  if('serviceWorker' in navigator && location.protocol.indexOf('http')===0){
+    addEventListener('load',function(){setTimeout(function(){
+      navigator.serviceWorker.register('sw.js').catch(function(){});},6000);});
+  }
   try{
     var k='atlas.trail';
     var u=location.pathname.split('/').pop()||'index.html';
