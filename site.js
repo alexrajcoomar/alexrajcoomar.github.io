@@ -972,3 +972,56 @@
     }
   } catch (e) {}
 })();
+
+/* ------------------------------------------------ offline, site-wide ----
+   Every shell page registers the worker, so the offline claim does not
+   depend on which page a reader arrived at. The colophon's two controls
+   talk to it over postMessage: one fetches the build's offline manifest and
+   stores the whole site, the other removes that copy. */
+(function () {
+  if (!("serviceWorker" in navigator) || location.protocol.indexOf("http") !== 0) return;
+  /* after load and an idle beat, so the worker's first install never taxes
+     the paint the budgets are measured on */
+  addEventListener("load", function () {
+    setTimeout(function () {
+      navigator.serviceWorker.register("sw.js").catch(function () {});
+    }, 6000);
+  });
+
+  var save = document.getElementById("offline-save");
+  var drop = document.getElementById("offline-drop");
+  var status = document.getElementById("offline-status");
+  if (!save || !drop || !status) return;
+
+  function say(t) { status.textContent = t; }
+  navigator.serviceWorker.addEventListener("message", function (e) {
+    var m = e.data || {};
+    if (m.type === "cache-all-progress") {
+      say("Saving… " + m.done + " of " + m.total + " files");
+    } else if (m.type === "cache-all-done") {
+      if (m.failed === -1) { say("Could not read the file list; try again online."); return; }
+      say(m.failed
+        ? "Saved " + m.ok + " of " + m.total + " files; " + m.failed + " failed. Press again to retry the rest."
+        : "The whole site is on this phone: " + m.ok + " files. It refreshes itself when opened online.");
+      save.disabled = false;
+    } else if (m.type === "drop-all-done") {
+      say("Offline copy removed. Pages you visit will still cache as you read.");
+      drop.disabled = false;
+    }
+  });
+  save.addEventListener("click", function () {
+    save.disabled = true;
+    say("Saving…");
+    navigator.serviceWorker.ready.then(function (reg) {
+      if (reg.active) reg.active.postMessage({ type: "cache-all" });
+      else { say("The offline worker is still starting; try again in a moment."); save.disabled = false; }
+    });
+  });
+  drop.addEventListener("click", function () {
+    drop.disabled = true;
+    navigator.serviceWorker.ready.then(function (reg) {
+      if (reg.active) reg.active.postMessage({ type: "drop-all" });
+      else drop.disabled = false;
+    });
+  });
+})();
