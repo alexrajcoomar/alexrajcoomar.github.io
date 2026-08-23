@@ -155,10 +155,58 @@
   "tables": 0,
   "details": 0
  },
+ "brittle-network": {
+  "words": 9239,
+  "figures": 4,
+  "tables": 16,
+  "details": 0
+ },
  "business-law-primer": {
   "words": 10196,
   "figures": 0,
   "tables": 9,
+  "details": 0
+ },
+ "crucible-cockpit": {
+  "words": 612,
+  "figures": 0,
+  "tables": 2,
+  "details": 0
+ },
+ "crucible-run-0": {
+  "words": 18597,
+  "figures": 0,
+  "tables": 0,
+  "details": 16
+ },
+ "crucible-run-0-transcript": {
+  "words": 22248,
+  "figures": 0,
+  "tables": 0,
+  "details": 0
+ },
+ "crucible-run-b": {
+  "words": 60153,
+  "figures": 0,
+  "tables": 0,
+  "details": 48
+ },
+ "crucible-run-b-transcript": {
+  "words": 74118,
+  "figures": 0,
+  "tables": 0,
+  "details": 0
+ },
+ "crucible-run-c": {
+  "words": 53066,
+  "figures": 0,
+  "tables": 0,
+  "details": 48
+ },
+ "crucible-run-c-transcript": {
+  "words": 70442,
+  "figures": 0,
+  "tables": 0,
   "details": 0
  },
  "daily-learning-cockpit": {
@@ -190,6 +238,12 @@
   "figures": 0,
   "tables": 13,
   "details": 1
+ },
+ "flagged-in-hindsight": {
+  "words": 4993,
+  "figures": 4,
+  "tables": 6,
+  "details": 0
  },
  "global-spending-and-wealth": {
   "words": 6521,
@@ -280,6 +334,12 @@
   "figures": 17,
   "tables": 19,
   "details": 18
+ },
+ "price-of-divergence": {
+  "words": 11964,
+  "figures": 49,
+  "tables": 24,
+  "details": 0
  },
  "revenue-recognition": {
   "words": 5323,
