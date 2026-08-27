@@ -5,7 +5,7 @@
    file changes. PAGES holds everything a reader has visited, plus the full
    offline copy if they asked for one; it survives version bumps because its
    contents are refreshed network-first on every online visit anyway. */
-const VERSION = "ec62914c5cab";
+const VERSION = "41db6564702c";
 const CORE    = "site-" + VERSION;
 const PAGES   = "site-pages-v1";
 const FILES   = [
