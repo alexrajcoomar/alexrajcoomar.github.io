@@ -11,7 +11,12 @@
   "affiliation": [
    "University of Waterloo",
    "School of Accounting and Finance"
-  ]
+  ],
+  "resume": "",
+  "linkedin": "",
+  "github": "",
+  "coop_term": "",
+  "grad_year": ""
  },
  "pieces": [
   {
@@ -282,7 +287,7 @@
     "Provenance"
    ],
    "blurb": "Seventeen figures built from the analysis's own numbers, under one rule: the fork between the two anchors is never closed, and any mark that arithmetic produced rather than an instrument measured is drawn open.",
-   "demo": "The largest piece here, and the one that shows the method at full size. Two rival readings of the same capital cycle are carried side by side to the end rather than averaged into one, and the page corrects its own arithmetic in public where a later attribution changed the base.",
+   "demo": "The largest essay here (Crucible Run B is the largest piece on the site), and the one that shows the method at full size. Two rival readings of the same capital cycle are carried side by side to the end rather than averaged into one, and the page corrects its own arithmetic in public where a later attribution changed the base.",
    "featured": true,
    "pwa": false,
    "url": "the-trillion-dollar-vintage.html"
@@ -302,7 +307,7 @@
    ],
    "blurb": "Eight questions, one repeating structure, and one recurring decision: where the accounting boundary sits, and whose losses fall outside it.",
    "demo": "An accounting question asked as an ethics question. Colour means one thing on every figure: blue is inside the accounting boundary and priced, red is outside it. A result that is not distinguishable from zero is drawn as an open outline at full size rather than shrunk to nothing.",
-   "featured": true,
+   "featured": false,
    "pwa": false,
    "url": "whose-losses-count.html"
   },
@@ -321,7 +326,7 @@
    ],
    "blurb": "When a firm harms someone who does not trade with it, the share price moves 0.24 per cent. Not significant. An essay on standing, externality, and who decides which losses count.",
    "demo": "The whole essay turns on a negative result, and reports it as one. Solid marks are quantities that reach someone's books; open outlines at full size are quantities that are real and appear on no invoice.",
-   "featured": true,
+   "featured": false,
    "pwa": false,
    "url": "not-significant.html"
   },
@@ -340,7 +345,7 @@
    ],
    "blurb": "A fixed-unit data essay: one square is one trillion US dollars, declared once and never rescaled, with every figure carrying the provenance tag it was published under.",
    "demo": "A unit declared once and held for the whole document, so quantities stay comparable by eye across every figure. Two sources that disagree are shown side by side instead of averaged.",
-   "featured": true,
+   "featured": false,
    "pwa": false,
    "url": "global-spending-and-wealth.html"
   },
@@ -358,7 +363,7 @@
    ],
    "blurb": "A small investigation into a popular claim, following the evidence rather than the headline.",
    "demo": "A claim I did not believe, checked properly, and reported at the strength the evidence actually supports.",
-   "featured": true,
+   "featured": false,
    "pwa": false,
    "url": "heartbeat-budget.html"
   },
@@ -395,7 +400,7 @@
    ],
    "blurb": "A daily instrument for deliberate learning: log a prediction, work the spaced rotation, then score your own calibration.",
    "demo": "Turns the research on durable learning into something with a button on it.",
-   "featured": true,
+   "featured": false,
    "pwa": true,
    "url": "daily-learning-cockpit.html"
   },
@@ -414,7 +419,7 @@
    ],
    "blurb": "Six adversarial research panels reduced to one argument: the feeling of learning and the fact of learning come apart, and the gap only shows at a delay.",
    "demo": "Every claim carries the evidence grade its source file gave it, unaltered. Where a source marked a figure second-hand or contested, that flag travels with the figure into this page rather than being quietly dropped.",
-   "featured": true,
+   "featured": false,
    "pwa": false,
    "url": "the-delayed-test.html"
   },
@@ -451,7 +456,7 @@
    ],
    "blurb": "The hub for the AFM 291 vault: eleven documents covering intermediate financial accounting end to end, every chapter built to the same structure.",
    "demo": "A full course rebuilt as one system rather than a pile of notes. Every chapter runs the same spine, so a topic can be found the same way twice.",
-   "featured": true,
+   "featured": false,
    "pwa": false,
    "url": "afm291.html"
   },
@@ -488,7 +493,7 @@
    ],
    "blurb": "A primer on the business law an accountant needs, written to keep the Canadian and American positions distinct rather than blended.",
    "demo": "",
-   "featured": true,
+   "featured": false,
    "pwa": false,
    "url": "business-law-primer.html"
   },
@@ -525,7 +530,7 @@
    ],
    "blurb": "A drilling app for intermediate financial accounting, built to force retrieval rather than rereading.",
    "demo": "",
-   "featured": true,
+   "featured": false,
    "pwa": true,
    "url": "skill-forge.html"
   },
@@ -579,7 +584,7 @@
    ],
    "blurb": "An exam trainer for introductory macroeconomics: work the question, check the reasoning, repeat.",
    "demo": "",
-   "featured": true,
+   "featured": false,
    "pwa": false,
    "url": "econ102-exam-trainer.html"
   },
@@ -759,7 +764,7 @@
    ],
    "blurb": "A single visual reference for the macro models: what each diagram shows, which curve moves, and what it means.",
    "demo": "",
-   "featured": true,
+   "featured": false,
    "pwa": false,
    "url": "econ102-visual-reference.html"
   },
@@ -850,7 +855,7 @@
    ],
    "blurb": "The five-step model, performance obligations satisfied over time, warranties and long-term contracts, with a missing exhibit range marked as missing rather than invented.",
    "demo": "The note states its own gap: the source jumps from Exhibit 4-22 to 4-28, so the onerous-contract worked example is absent, and the page says so at the point where it would have appeared.",
-   "featured": true,
+   "featured": false,
    "pwa": false,
    "url": "afm291-ch4-revenue-recognition.html"
   },
@@ -905,7 +910,7 @@
    ],
    "blurb": "The longest note in the vault: revaluation, investment property, biological assets and held-for-sale, each traced to where the gain or loss lands.",
    "demo": "",
-   "featured": true,
+   "featured": false,
    "pwa": false,
    "url": "afm291-ch10-fair-value.html"
   },
@@ -924,7 +929,7 @@
    ],
    "blurb": "The whole course compressed into one map with a repeating five-slot shape, written to be copied out by hand rather than reread.",
    "demo": "",
-   "featured": true,
+   "featured": false,
    "pwa": false,
    "url": "afm291-key-takeaways.html"
   },
@@ -978,7 +983,7 @@
    ],
    "blurb": "The master classification decision tree for equity investments, the significant-influence test, and equity-method mechanics worked through.",
    "demo": "Fills a topic the chapter notes never covered: the vault's own gap register flagged financial assets as missing.",
-   "featured": true,
+   "featured": false,
    "pwa": false,
    "url": "afm291-w7-financial-assets.html"
   },
@@ -1051,7 +1056,7 @@
    ],
    "blurb": "What goes into the cost of an asset and what never does, worked through the capitalise-or-expense hinge that every PP&E question turns on.",
    "demo": "The other topic the chapter notes never reached. Includes the borrowing-cost flow and the component-depreciation treatment in full.",
-   "featured": true,
+   "featured": false,
    "pwa": false,
    "url": "afm291-w9-ppe.html"
   },
