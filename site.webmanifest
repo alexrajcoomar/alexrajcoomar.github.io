@@ -1,7 +1,7 @@
 {
   "name": "Alex Rajcoomar — portfolio",
   "short_name": "Rajcoomar",
-  "description": "Arguments you can audit: 61 pieces of research, coursework, and interactive tools, readable offline once saved.",
+  "description": "Arguments you can audit: research, coursework and interactive tools, readable offline once saved.",
   "start_url": "index.html",
   "scope": "./",
   "display": "standalone",

@@ -538,7 +538,7 @@ var S = {
 
 /* ---------- persistent record, best-effort ---------- */
 var REC = {stats:{}};
-function loadRec(){ try{ var r=localStorage.getItem('ifrs15-trainer-v1'); if(r){ var o=JSON.parse(r); if(o && o.stats) REC=o; } }catch(e){} }
+function loadRec(){ try{ var r=localStorage.getItem('ifrs15-trainer-v1'); if(r){ var o=JSON.parse(r); if(o && o.stats && typeof o.stats==='object' && !Array.isArray(o.stats)){ Object.keys(o.stats).forEach(function(k){ var v=o.stats[k]; if(!v || typeof v!=='object' || typeof v.seen!=='number' || typeof v.missed!=='number') delete o.stats[k]; }); REC=o; } } }catch(e){} }
 function saveRec(){ try{ localStorage.setItem('ifrs15-trainer-v1', JSON.stringify(REC)); }catch(e){} }
 function bump(id, missed){
   var st=REC.stats[id]||(REC.stats[id]={seen:0,missed:0});
@@ -743,7 +743,7 @@ function wire(it){
 
 function gotoItem(id){
   var idx=S.queue.findIndex(function(o){ return o.id===id; });
-  if(idx>-1){ S.pos=idx; }
+  if(idx>=S.pos){ S.pos=idx; }
   else{
     var it=ITEMS.find(function(o){ return o.id===id; });
     if(!it) return;
@@ -869,7 +869,7 @@ Object.keys(TABMAP).forEach(function(t){
 document.addEventListener('keydown', function(e){
   if(e.target && /^(TEXTAREA|INPUT|SELECT)$/.test(e.target.tagName)) return;
   if(el('view-drill').classList.contains('hidden')) return;
-  if(e.key===' '){ e.preventDefault(); if(window.__reveal) window.__reveal(); }
+  if(e.key===' ' && !(e.target && e.target.tagName==='BUTTON')){ e.preventDefault(); if(window.__reveal) window.__reveal(); }
   if(!S.revealed) return;
   var it = current(); if(!it) return;
   if(e.key==='1'){ if(it.type==='determinate') gradeDet(it,true); else { var a=el('tAuth'); if(a) tog(a,'auth'); } }
