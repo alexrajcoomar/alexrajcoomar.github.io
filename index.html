@@ -31,6 +31,10 @@
 (function(){try{var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}
 document.documentElement.className+=' js';})();
 </script>
+<!-- A control that can do nothing is worse than no control: with scripts
+     off, the script-driven surfaces hide rather than sit dead. Everything
+     they reach remains reachable as plain links and server-rendered lists. -->
+<noscript><style>.hbtns,#keysbtn,.tools-bar,#corpusread,#atlasmini,.jsonly,.offline-controls{display:none !important}</style></noscript>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"Alex Rajcoomar \u2014 portfolio","url":"https://alexrajcoomar.github.io/","inLanguage":"en-CA","author":{"@type":"Person","name":"Leesharam Alexander Rajcoomar"}}</script>
 </head>
 <body>
@@ -112,79 +116,109 @@ document.documentElement.className+=' js';})();
 
 <section class="band shell">
   <div class="sechead">
-    <h2>Start here</h2>
-    <p class="note">The three sections, and what is in each. If you have ten minutes, open the first piece under research.</p>
-    <span class="count">3 sections</span>
+    <h2>Selected work</h2>
+    <p class="note">The pieces I keep at the front: together they show the range of the method in the
+    least space, and each one states its own rule for what its marks mean. If you have ten minutes,
+    open <a href="flagged-in-hindsight.html">Flagged in Hindsight</a>.</p>
+    <span class="count">6 of 61</span>
   </div>
   <div class="features">
-      <a class="feature rise" href="research.html">
-        <span class="kindrow"><span class="kind">Research and writing</span></span>
-        <h3>Independent research</h3>
-        <p>Four data essays and a study edition, each with its own declared rule for what its marks mean, plus the method pieces on how the work gets built and audited.</p>
-        <span class="go">23 pieces <span class="arrow" aria-hidden="true">&#8594;</span></span>
-      </a>      <a class="feature rise" href="tools.html">
-        <span class="kindrow"><span class="kind">Interactive tools</span></span>
-        <h3>7 things you can use</h3>
-        <p>Interactive trainers and daily instruments. 3 of them install to a phone home screen.</p>
-        <span class="go">7 pieces <span class="arrow" aria-hidden="true">&#8594;</span></span>
-      </a>      <a class="feature rise" href="coursework.html">
-        <span class="kindrow"><span class="kind">Coursework</span></span>
-        <h3>Grouped by course</h3>
-        <p>Every reference and trainer, sorted into the 5 courses they were built for, with a coverage table.</p>
-        <span class="go">34 pieces <span class="arrow" aria-hidden="true">&#8594;</span></span>
+      <article class="feature feature-c rise" style="transition-delay:0ms">
+        <span class="kindrow"><span class="kind kind-essay">Essay</span><span class="surf surf-independent">Independent</span></span>
+        <h3><a class="cardlink" href="flagged-in-hindsight.html">Flagged in Hindsight</a></h3>
+        <p>Five Canadian frauds, put back through the forensic screen ex ante</p>
+        <p class="sig"><span><span class="s-min">22 min</span></span><i aria-hidden="true">&middot;</i><span>4 figures, 6 tables</span><i aria-hidden="true">&middot;</i><span><span class="dens dens-Mixed">Mixed</span></span></p>
+        <span class="go">Open <span class="arrow" aria-hidden="true">&#8594;</span></span>
+      </article>
+      <article class="feature feature-c rise" style="transition-delay:45ms">
+        <span class="kindrow"><span class="kind kind-essay">Essay</span><span class="surf surf-independent">Independent</span></span>
+        <h3><a class="cardlink" href="crucible-cockpit.html">Crucible Cockpit</a></h3>
+        <p>Adversarial claim auditing: decompose, attack, grade what survives</p>
+        <p class="sig"><span>2 tables</span></p>
+        <span class="go">Open <span class="arrow" aria-hidden="true">&#8594;</span></span>
+      </article>
+      <article class="feature feature-c rise" style="transition-delay:90ms">
+        <span class="kindrow"><span class="kind kind-reference">Reference</span><span class="surf surf-independent">Independent</span></span>
+        <h3><a class="cardlink" href="brittle-network.html">The Brittle Network</a></h3>
+        <p>A pre-registered protocol on the Late Bronze Age collapse</p>
+        <p class="sig"><span><span class="s-min">40 min</span></span><i aria-hidden="true">&middot;</i><span>4 figures, 16 tables</span><i aria-hidden="true">&middot;</i><span><span class="dens dens-Mixed">Mixed</span></span></p>
+        <span class="go">Open <span class="arrow" aria-hidden="true">&#8594;</span></span>
+      </article>
+      <article class="feature feature-c rise" style="transition-delay:135ms">
+        <span class="kindrow"><span class="kind kind-tool">Tool</span><span class="surf surf-independent">Independent</span></span>
+        <h3><a class="cardlink" href="ifrs15-judgment-trainer.html">IFRS 15 Judgment Trainer</a></h3>
+        <p>Sixty-two revenue scenarios, every answer anchored to the Handbook</p>
+        <p class="sig"><span><span class="s-min">Interactive</span></span><i aria-hidden="true">&middot;</i><span>runs in the browser</span></p>
+        <span class="go">Open <span class="arrow" aria-hidden="true">&#8594;</span></span>
+      </article>
+      <article class="feature feature-c rise" style="transition-delay:180ms">
+        <span class="kindrow"><span class="kind kind-essay">Essay</span><span class="surf surf-independent">Independent</span></span>
+        <h3><a class="cardlink" href="predictive-history.html">Predictive History</a></h3>
+        <p>The map, and the method that audits it</p>
+        <p class="sig"><span><span class="s-min">42 min</span></span><i aria-hidden="true">&middot;</i><span>11 figures, 14 tables</span><i aria-hidden="true">&middot;</i><span><span class="dens dens-Mixed">Mixed</span></span></p>
+        <span class="go">Open <span class="arrow" aria-hidden="true">&#8594;</span></span>
+      </article>
+      <article class="feature feature-c rise" style="transition-delay:225ms">
+        <span class="kindrow"><span class="kind kind-essay">Essay</span><span class="surf surf-independent">Independent</span></span>
+        <h3><a class="cardlink" href="the-trillion-dollar-vintage.html">The Trillion-Dollar Vintage</a></h3>
+        <p>A study edition of the AI capital-cycle adjudication</p>
+        <p class="sig"><span><span class="s-min">81 min</span></span><i aria-hidden="true">&middot;</i><span>16 figures, 15 tables</span><i aria-hidden="true">&middot;</i><span><span class="dens dens-Mixed">Mixed</span></span></p>
+        <span class="go">Open <span class="arrow" aria-hidden="true">&#8594;</span></span>
+      </article>
+  </div>
+</section>
+
+<section class="band shell" id="crucible">
+  <div class="sechead">
+    <h2>One system, on the record</h2>
+    <p class="note">Crucible Cockpit is the hub and deliberately small; the weight stands in the runs
+    behind it: a hindsight-locked backtest and two live audits, published with their graveyards,
+    rejected attacks and unabridged transcripts.</p>
+    <span class="count">131,816 words of runs</span>
+  </div>
+  <div class="sysgrid rise">
+      <a class="sysitem" href="crucible-cockpit.html">
+        <span class="sys-t">Crucible Cockpit</span>
+        <span class="sys-m">Essay &middot; <b class="tnum">612</b> words</span>
+      </a>
+      <a class="sysitem" href="crucible-run-0.html">
+        <span class="sys-t">Crucible Run 0: the Bank of Canada backtest</span>
+        <span class="sys-m">Reference &middot; <b class="tnum">18,597</b> words</span>
+      </a>
+      <a class="sysitem" href="crucible-run-b.html">
+        <span class="sys-t">Crucible Run B: the maturity-wall thesis</span>
+        <span class="sys-m">Reference &middot; <b class="tnum">60,153</b> words</span>
+      </a>
+      <a class="sysitem" href="crucible-run-c.html">
+        <span class="sys-t">Crucible Run C: the goodwill-impairment thesis</span>
+        <span class="sys-m">Reference &middot; <b class="tnum">53,066</b> words</span>
       </a>
   </div>
 </section>
 
 <section class="band shell">
   <div class="sechead">
-    <h2>Selected work</h2>
-    <p class="note">Chosen because together they show the widest range: a study edition, an audited final, a negative result, a comparative primer, and the tools people actually use.</p>
-    <span class="count">6 of 61</span>
+    <h2>The three sections</h2>
+    <p class="note">Where everything lives, and what is in each.</p>
+    <span class="count">3 sections</span>
   </div>
   <div class="features">
-      <a class="feature rise" style="transition-delay:0ms" href="flagged-in-hindsight.html">
-        <span class="kindrow"><span class="kind kind-essay">Essay</span><span class="surf surf-independent">Independent</span></span>
-        <h3>Flagged in Hindsight</h3>
-        <p>Five Canadian accounting frauds with completed regulatory or judicial findings — Sino-Forest, Nortel, Poseidon Concepts, Livent, Philip Services — put back through the Beneish M-Score on the filings that existed before each collapse. Zero of three computable test years flag at the standard cut-off, and the piece types every miss by its cause: threshold, mechanism, model scope, or archive failure. Every figure carries a provenance label, and the computation ships with the page.</p>
-        <p class="sig"><span><span class="s-min">22 min</span></span><i aria-hidden="true">&middot;</i><span>4 figures, 6 tables</span><i aria-hidden="true">&middot;</i><span><span class="dens dens-Mixed">Mixed</span></span></p>
-        <span class="go">Open <span class="arrow" aria-hidden="true">&#8594;</span></span>
-      </a>
-      <a class="feature rise" style="transition-delay:45ms" href="crucible-cockpit.html">
-        <span class="kindrow"><span class="kind kind-essay">Essay</span><span class="surf surf-independent">Independent</span></span>
-        <h3>Crucible Cockpit</h3>
-        <p>A system that refuses to answer questions directly: it decomposes each one into individually falsifiable claims, files a falsifier and an evidence tier with every claim, and sets attack agents against them on provenance, inference, selection, and anachronism. The answer is whatever the surviving claims can carry, at the tier of the weakest load-bearing link. Three runs are on the record — a hindsight-locked backtest and two live audits — with graveyards, rejected attacks, and unabridged transcripts.</p>
-        <p class="sig"><span>2 tables</span></p>
-        <span class="go">Open <span class="arrow" aria-hidden="true">&#8594;</span></span>
-      </a>
-      <a class="feature rise" style="transition-delay:90ms" href="brittle-network.html">
-        <span class="kindrow"><span class="kind kind-reference">Reference</span><span class="surf surf-independent">Independent</span></span>
-        <h3>The Brittle Network</h3>
-        <p>A research protocol — methodology only, no results — for testing whether the Eastern Mediterranean collapsed around 1177 BCE because exogenous shocks struck a trade network optimised past the point of resilience, with the Sea Peoples as symptom rather than cause. Hypotheses, falsification conditions, data architecture, and the analysis plan are declared before any data is touched, and the abstract to be published if the central hypothesis fails is drafted in advance.</p>
-        <p class="sig"><span><span class="s-min">40 min</span></span><i aria-hidden="true">&middot;</i><span>4 figures, 16 tables</span><i aria-hidden="true">&middot;</i><span><span class="dens dens-Mixed">Mixed</span></span></p>
-        <span class="go">Open <span class="arrow" aria-hidden="true">&#8594;</span></span>
-      </a>
-      <a class="feature rise" style="transition-delay:135ms" href="ifrs15-judgment-trainer.html">
-        <span class="kindrow"><span class="kind kind-tool">Tool</span><span class="surf surf-independent">Independent</span></span>
-        <h3>IFRS 15 Judgment Trainer</h3>
-        <p>A drill on revenue recognition under IFRS 15: 29 determinate items scored against the standard and 33 judgment items that show their reasoning, every answer carrying its paragraph or illustrative example, verified against Part I of the CPA Canada Handbook, 2026 Edition. Each item names the trap beside the treatment, because the wrong answer you almost gave is the thing worth studying.</p>
-        <p class="sig"><span><span class="s-min">Interactive</span></span><i aria-hidden="true">&middot;</i><span>runs in the browser</span></p>
-        <span class="go">Open <span class="arrow" aria-hidden="true">&#8594;</span></span>
-      </a>
-      <a class="feature rise" style="transition-delay:180ms" href="predictive-history.html">
-        <span class="kindrow"><span class="kind kind-essay">Essay</span><span class="surf surf-independent">Independent</span></span>
-        <h3>Predictive History</h3>
-        <p>Fifteen systems and 148 couplings, annotated by an audit instrument that was run against its own falsification test and failed it. Every one of eighty claims carries the verdict three independent raters gave it, blind to the author, and a mark for whether its evidence can be retrieved at all.</p>
-        <p class="sig"><span><span class="s-min">42 min</span></span><i aria-hidden="true">&middot;</i><span>11 figures, 14 tables</span><i aria-hidden="true">&middot;</i><span><span class="dens dens-Mixed">Mixed</span></span></p>
-        <span class="go">Open <span class="arrow" aria-hidden="true">&#8594;</span></span>
-      </a>
-      <a class="feature rise" style="transition-delay:225ms" href="the-trillion-dollar-vintage.html">
-        <span class="kindrow"><span class="kind kind-essay">Essay</span><span class="surf surf-independent">Independent</span></span>
-        <h3>The Trillion-Dollar Vintage</h3>
-        <p>Seventeen figures built from the analysis&#x27;s own numbers, under one rule: the fork between the two anchors is never closed, and any mark that arithmetic produced rather than an instrument measured is drawn open.</p>
-        <p class="sig"><span><span class="s-min">81 min</span></span><i aria-hidden="true">&middot;</i><span>16 figures, 15 tables</span><i aria-hidden="true">&middot;</i><span><span class="dens dens-Mixed">Mixed</span></span></p>
-        <span class="go">Open <span class="arrow" aria-hidden="true">&#8594;</span></span>
-      </a>
+      <article class="feature rise">
+        <span class="kindrow"><span class="kind">Research and writing</span></span>
+        <h3><a class="cardlink" href="research.html">Independent research</a></h3>
+        <p>Data essays, audited references and a study edition, each with its own declared rule for what its marks mean, plus the method pieces on how the work gets built and audited.</p>
+        <span class="go">23 pieces <span class="arrow" aria-hidden="true">&#8594;</span></span>
+      </article>      <article class="feature rise">
+        <span class="kindrow"><span class="kind">Interactive tools</span></span>
+        <h3><a class="cardlink" href="tools.html">7 things you can use</a></h3>
+        <p>Interactive trainers and daily instruments. 3 of them install to a phone home screen.</p>
+        <span class="go">7 pieces <span class="arrow" aria-hidden="true">&#8594;</span></span>
+      </article>      <article class="feature rise">
+        <span class="kindrow"><span class="kind">Coursework</span></span>
+        <h3><a class="cardlink" href="coursework.html">Grouped by course</a></h3>
+        <p>Every reference and trainer, sorted into the 5 courses they were built for, with a coverage table.</p>
+        <span class="go">34 pieces <span class="arrow" aria-hidden="true">&#8594;</span></span>
+      </article>
   </div>
 </section>
 
@@ -195,8 +229,9 @@ document.documentElement.className+=' js';})();
     <span class="count">470,943 words</span>
   </div>
   <div class="corpus">
+    <a class="skip" href="#corpus-table">Skip the drawing to the table of its numbers</a>
     <div class="plot rise">
-      <svg viewBox="0 0 1477 922" width="100%" role="img" aria-label="Every published document drawn at one square per 500 words. Independent work is drawn solid, coursework as open outlines. The independent block and the coursework block are close to the same size." class="corpusfig">
+      <svg viewBox="0 0 1477 922" width="100%" role="group" aria-label="Every published document drawn at one square per 500 words. Independent work is drawn solid, coursework as open outlines. The independent block and the coursework block are close to the same size." class="corpusfig">
 <style>.cf-h{font:600 11px/1 InterVar,Helvetica,Arial,sans-serif;letter-spacing:.09em;text-transform:uppercase;fill:var(--ink-3)}.cf-n{font:400 11.5px/1 InterVar,Helvetica,Arial,sans-serif;fill:var(--ink-2)}.cf-t{font:500 11.5px/1 InterVar,Helvetica,Arial,sans-serif;fill:var(--ink)}.cf-v{font:400 11px/1 InterVar,Helvetica,Arial,sans-serif;fill:var(--ink-3);font-variant-numeric:tabular-nums}</style>
 <text class="cf-h" x="0" y="11.0">Independent</text>
 <line x1="0" y1="17.0" x2="1477" y2="17.0" stroke="var(--rule)" stroke-width="1"/>
@@ -1297,7 +1332,7 @@ document.documentElement.className+=' js';})();
 </a>
 </svg>
     </div>
-    <aside class="rail-app">
+    <aside class="rail-app" aria-label="How to read the figure">
       <h3>How to read it</h3>
       <p><b>One square is 500 words.</b> The square never rescales, so a long piece is
       long on the page.</p>
@@ -1323,13 +1358,14 @@ document.documentElement.className+=' js';})();
       end. 257,943 were written because I wanted the answer and nobody asked for
       them. The two blocks are not the same size, and the drawing says so rather than the
       caption.</p>
-      <p>Four of the drill engines are not drawn: they render a few hundred words and hold the
-      rest in code, so a word count would understate them badly. They are counted on the
-      <a class="inlink" href="tools.html">tools page</a> instead.</p>
+      <p>13 pieces are not drawn: each renders under 1,200 words, the floor the
+      <a class="inlink" href="colophon.html">colophon</a> sets for measuring a document. The drill
+      engines among them hold their content in code, so a word count would understate them badly;
+      they are counted on the <a class="inlink" href="tools.html">tools page</a> instead.</p>
       <p><a class="openlink" href="colophon.html">How every number here is measured &#8594;</a></p>
     </aside>
   </div>
-  <details class="tv spaced">
+  <details class="tv spaced" id="corpus-table">
     <summary>The numbers behind the figure</summary>
     <table class="ctab"><caption>Every document, with the word count each square is drawn from. Interactive tools are not drawn: their content is held in code rather than prose.</caption><thead><tr><th scope="col">Piece</th><th scope="col">Kind</th><th scope="col" class="tnum">Words</th></tr></thead><tbody><tr class="grp"><th scope="rowgroup" colspan="2">Independent</th><td class="tnum">257,943</td></tr><tr><td><a href="crucible-run-b.html">Crucible Run B: the maturity-wall thesis</a></td><td>Reference</td><td class="tnum">60,153</td></tr><tr><td><a href="crucible-run-c.html">Crucible Run C: the goodwill-impairment thesis</a></td><td>Reference</td><td class="tnum">53,066</td></tr><tr><td><a href="five-shall-paragraphs.html">The Five Shall Paragraphs</a></td><td>Reference</td><td class="tnum">19,112</td></tr><tr><td><a href="the-trillion-dollar-vintage.html">The Trillion-Dollar Vintage</a></td><td>Essay</td><td class="tnum">18,610</td></tr><tr><td><a href="crucible-run-0.html">Crucible Run 0: the Bank of Canada backtest</a></td><td>Reference</td><td class="tnum">18,597</td></tr><tr><td><a href="price-of-divergence.html">The Price of Divergence</a></td><td>Reference</td><td class="tnum">11,964</td></tr><tr><td><a href="predictive-history-archive.html">Predictive History: the withdrawn first edition</a></td><td>Reference</td><td class="tnum">11,697</td></tr><tr><td><a href="predictive-history.html">Predictive History</a></td><td>Essay</td><td class="tnum">9,606</td></tr><tr><td><a href="brittle-network.html">The Brittle Network</a></td><td>Reference</td><td class="tnum">9,239</td></tr><tr><td><a href="whose-losses-count.html">Whose Losses Count</a></td><td>Essay</td><td class="tnum">6,956</td></tr><tr><td><a href="global-spending-and-wealth.html">Global Spending and Wealth</a></td><td>Essay</td><td class="tnum">6,521</td></tr><tr><td><a href="not-significant.html">Not Significant</a></td><td>Essay</td><td class="tnum">6,319</td></tr><tr><td><a href="the-delayed-test.html">The Delayed Test</a></td><td>Essay</td><td class="tnum">5,372</td></tr><tr><td><a href="flagged-in-hindsight.html">Flagged in Hindsight</a></td><td>Essay</td><td class="tnum">4,993</td></tr><tr><td><a href="zakaria-putin-audited.html">Zakaria&#x27;s Putin, Audited</a></td><td>Essay</td><td class="tnum">4,145</td></tr><tr><td><a href="ifrs15-judgment-trainer.html">IFRS 15 Judgment Trainer</a></td><td>Tool</td><td class="tnum">3,946</td></tr><tr><td><a href="ifrs15-verification-memo.html">IFRS 15 Item Bank: Verification and Backfill</a></td><td>Reference</td><td class="tnum">3,005</td></tr><tr><td><a href="the-calibrated-mind.html">The Calibrated Mind</a></td><td>Reference</td><td class="tnum">1,871</td></tr><tr><td><a href="heartbeat-budget.html">Does chronic caffeine spend your heartbeat budget faster?</a></td><td>Essay</td><td class="tnum">1,434</td></tr><tr><td><a href="us-canada-legal-architecture.html">US and Canada Legal Architecture</a></td><td>Reference</td><td class="tnum">1,337</td></tr><tr class="grp"><th scope="rowgroup" colspan="2">Personal interest</th><td class="tnum">11,274</td></tr><tr><td><a href="how-to-judge-a-president.html">How to Judge a President</a></td><td>Essay</td><td class="tnum">7,038</td></tr><tr><td><a href="leadership-evaluation-kit.html">The Portable Kit</a></td><td>Reference</td><td class="tnum">4,236</td></tr><tr class="grp"><th scope="rowgroup" colspan="2">Coursework</th><td class="tnum">194,218</td></tr><tr><td><a href="afm291-ch10-fair-value.html">AFM 291 Chapter 10</a></td><td>Reference &middot; AFM 291</td><td class="tnum">19,134</td></tr><tr><td><a href="afm291-key-takeaways.html">AFM 291 Key Takeaways</a></td><td>Reference &middot; AFM 291</td><td class="tnum">14,475</td></tr><tr><td><a href="afm291-ch6-inventories.html">AFM 291 Chapter 6</a></td><td>Reference &middot; AFM 291</td><td class="tnum">14,167</td></tr><tr><td><a href="afm291-study-system.html">AFM 291 Interactive Study System</a></td><td>Tool &middot; AFM 291</td><td class="tnum">14,094</td></tr><tr><td><a href="afm291-ch2-conceptual-frameworks.html">AFM 291 Chapter 2</a></td><td>Reference &middot; AFM 291</td><td class="tnum">13,455</td></tr><tr><td><a href="afm291-ch9-intangibles-and-goodwill.html">AFM 291 Chapter 9</a></td><td>Reference &middot; AFM 291</td><td class="tnum">12,917</td></tr><tr><td><a href="afm291-ch3-accrual-accounting.html">AFM 291 Chapter 3</a></td><td>Reference &middot; AFM 291</td><td class="tnum">12,629</td></tr><tr><td><a href="afm291-ch4-revenue-recognition.html">AFM 291 Chapter 4</a></td><td>Reference &middot; AFM 291</td><td class="tnum">12,024</td></tr><tr><td><a href="afm291-ch1-theory-and-analytics.html">AFM 291 Chapter 1</a></td><td>Reference &middot; AFM 291</td><td class="tnum">11,193</td></tr><tr><td><a href="business-law-primer.html">Business Law for Accountants</a></td><td>Reference &middot; Business law</td><td class="tnum">10,196</td></tr><tr><td><a href="afm291-inventory-gap-map.html">AFM 291 Inventory and Gap Map</a></td><td>Reference &middot; AFM 291</td><td class="tnum">7,032</td></tr><tr><td><a href="econ102-visual-reference.html">ECON 102 Master Visual Reference</a></td><td>Reference &middot; ECON 102</td><td class="tnum">5,908</td></tr><tr><td><a href="revenue-recognition.html">Revenue Recognition</a></td><td>Reference &middot; AFM 291</td><td class="tnum">5,323</td></tr><tr><td><a href="afm291-w8-financial-assets.html">AFM 291 Financial Assets II</a></td><td>Reference &middot; AFM 291</td><td class="tnum">4,502</td></tr><tr><td><a href="afm291-w9-ppe.html">AFM 291 Property, Plant and Equipment</a></td><td>Reference &middot; AFM 291</td><td class="tnum">4,437</td></tr><tr><td><a href="afm291-study-plan.html">AFM 291 Study Plan</a></td><td>Reference &middot; AFM 291</td><td class="tnum">4,009</td></tr><tr><td><a href="afm291-w7-financial-assets.html">AFM 291 Financial Assets I</a></td><td>Reference &middot; AFM 291</td><td class="tnum">3,954</td></tr><tr><td><a href="afm291-reconciliation.html">AFM 291 Reconciliation</a></td><td>Reference &middot; AFM 291</td><td class="tnum">3,929</td></tr><tr><td><a href="afm291-w9-cases.html">AFM 291 Case Guide: AceSpin Inc.</a></td><td>Reference &middot; AFM 291</td><td class="tnum">3,542</td></tr><tr><td><a href="afm291-w8-cases.html">AFM 291 Case Guide: Debt Investments</a></td><td>Reference &middot; AFM 291</td><td class="tnum">3,363</td></tr><tr><td><a href="afm241-study-reference.html">AFM 241 Exam Study Reference</a></td><td>Reference &middot; AFM 241</td><td class="tnum">3,141</td></tr><tr><td><a href="afm291-w7-cases.html">AFM 291 Case Guide: Equity Investments</a></td><td>Reference &middot; AFM 291</td><td class="tnum">3,116</td></tr><tr><td><a href="econ102-exam-trainer.html">ECON 102 Interactive Exam Trainer</a></td><td>Tool &middot; ECON 102</td><td class="tnum">2,614</td></tr><tr><td><a href="afm291-field-manual.html">AFM 291 Midterm Field Manual</a></td><td>Reference &middot; AFM 291</td><td class="tnum">2,470</td></tr><tr><td><a href="afm291-journal-entries.html">AFM 291 Journal Entry Reference</a></td><td>Reference &middot; AFM 291</td><td class="tnum">1,364</td></tr><tr><td><a href="afm274-capital-structure.html">AFM 274 Chapter 17</a></td><td>Reference &middot; AFM 274</td><td class="tnum">1,230</td></tr></tbody></table>
   </details>
@@ -1443,7 +1479,7 @@ document.documentElement.className+=' js';})();
       </figcaption>
     </figure>
     <figure class="spec rise" id="fs-tv1">
-      <div class="frame"><svg style="max-width:814px;min-width:814px" class="" viewBox="-37 -20 814 440" role="img" aria-label="How the two revenue-yield anchors were constructed. Anchor A divides 8.99 million dollars of filed revenue per megawatt by a rumoured 50 million dollar build cost, giving 18.0 per cent. Anchor B divides 16.7 million dollars of constructed revenue by a 39.9 million dollar constructed cost, giving 41.9 per cent. The ratio is 2.3 times." xmlns="http://www.w3.org/2000/svg"><desc>The open diamond marks the mid-anchor the analysis refuses to interpolate.</desc><text x="24" y="20" class="lb-p" fill="var(--anchor-a)">ANCHOR A &#183; realised, from a filer</text><text x="24" y="34" class="lb-s">weight 0.40</text><text x="384" y="20" class="lb-p" fill="var(--anchor-b)">ANCHOR B &#183; constructed, from market prices</text><text x="384" y="34" class="lb-s">weight 0.60 &#183; designated base case</text><rect x="24" y="46" width="338" height="76" fill="none" stroke="var(--anchor-a)" stroke-width="1.5" rx="3"/><text x="37" y="68" class="val">$8.99 M revenue per active megawatt</text><text x="37" y="89" class="lb-s">annualised mean of 9.25 / 8.73 / 8.99 across three quarters,</text><text x="37" y="106" class="lb-s">from CoreWeave&#8217;s filings&#8195;[F]</text><text x="38" y="144" class="big" fill="var(--anchor-a)">&#247;</text><rect x="24" y="154" width="338" height="76" fill="none" stroke="var(--anchor-a)" stroke-width="1.5" rx="3"/><text x="37" y="176" class="val">$50 M all-in build cost per megawatt</text><text x="37" y="197" class="lb-s">no filer discloses an all-in cost per MW anywhere in the</text><text x="37" y="214" class="lb-s">evidence base&#8195;[S]</text><text x="38" y="252" class="big" fill="var(--anchor-a)">=</text><text x="72" y="252" class="val" fill="var(--anchor-a)">18.0% gross revenue yield per year</text><rect x="384" y="46" width="338" height="76" fill="none" stroke="var(--anchor-b)" stroke-width="1.5" rx="3"/><text x="397" y="68" class="val">$39.9 M all-in cost per megawatt</text><text x="397" y="89" class="lb-s">a $3.0 M GB200 NVL72 rack [S] drawing 132 kW gives</text><text x="397" y="106" class="lb-s">$22.7 M of accelerator per MW, over the 57% weight&#8195;[I]</text><text x="398" y="144" class="big" fill="var(--anchor-b)">&#247;</text><text x="428" y="138" class="lb-s">inverted: revenue over cost</text><rect x="384" y="154" width="338" height="76" fill="none" stroke="var(--anchor-b)" stroke-width="1.5" rx="3"/><text x="397" y="176" class="val">$16.7 M revenue per megawatt per year</text><text x="397" y="197" class="lb-s">$3.50 per GPU-hour [S] rented around the clock,</text><text x="397" y="214" class="lb-s">8,760 hours a year&#8195;[I]</text><text x="398" y="252" class="big" fill="var(--anchor-b)">=</text><text x="432" y="252" class="val" fill="var(--anchor-b)">41.9% gross revenue yield per year</text><line x1="70" y1="300" x2="70" y2="348" class="gridl"/><line x1="207.78" y1="300" x2="207.78" y2="348" class="gridl"/><line x1="345.56" y1="300" x2="345.56" y2="348" class="gridl"/><line x1="483.33" y1="300" x2="483.33" y2="348" class="gridl"/><line x1="621.11" y1="300" x2="621.11" y2="348" class="gridl"/><line x1="70" y1="348" x2="690" y2="348" class="axis"/><line x1="70" y1="348" x2="70" y2="352" class="axis"/><text x="70" y="364" class="tk" text-anchor="middle">0%</text><line x1="207.78" y1="348" x2="207.78" y2="352" class="axis"/><text x="207.78" y="364" class="tk" text-anchor="middle">10%</text><line x1="345.56" y1="348" x2="345.56" y2="352" class="axis"/><text x="345.56" y="364" class="tk" text-anchor="middle">20%</text><line x1="483.33" y1="348" x2="483.33" y2="352" class="axis"/><text x="483.33" y="364" class="tk" text-anchor="middle">30%</text><line x1="621.11" y1="348" x2="621.11" y2="352" class="axis"/><text x="621.11" y="364" class="tk" text-anchor="middle">40%</text><text x="70" y="380" class="lb-s">gross revenue yield, annual per cent of installed capital</text><g class="hit" tabindex="0" role="img" aria-label="Anchor A · 18.0%. Realised revenue from the one filer that discloses both revenue and active capacity, over a build cost no filer discloses. [F] over [S]" data-tip="1" data-t="Anchor A &amp;#183; 18.0%" data-b="Realised revenue from the one filer that discloses both revenue and active capacity, over a build cost no filer discloses." data-o="[F] over [S]"><circle cx="318" cy="333" r="8" fill="var(--anchor-a)" class="ringed"/></g><text x="318" y="318" class="val" text-anchor="middle" fill="var(--anchor-a)">A &#183; 18.0%</text><g class="hit" tabindex="0" role="img" aria-label="Anchor B · 41.9%. Constructed from a rumoured rack price and a marketplace rental rate. Designated the base case on three dated triangulating observations. [S] on both sides" data-tip="1" data-t="Anchor B &amp;#183; 41.9%" data-b="Constructed from a rumoured rack price and a marketplace rental rate. Designated the base case on three dated triangulating observations." data-o="[S] on both sides"><circle cx="647.29" cy="333" r="8" fill="var(--anchor-b)" class="ringed"/></g><text x="647.29" y="318" class="val" text-anchor="middle" fill="var(--anchor-b)">B &#183; 41.9%</text><g class="hit" tabindex="0" role="img" aria-label="The mid-anchor that is not drawn. Correcting Anchor A’s denominator at a 70% IT share closes roughly half the gap. A defect that is half-corrected argues for a mid-anchor, and no mid-anchor cell exists in the evidence pack. The analysis declines to interpolate one, so this page declines to draw one. Pattern №5 · carry the fork" data-tip="1" data-t="The mid-anchor that is not drawn" data-b="Correcting Anchor A&amp;#8217;s denominator at a 70% IT share closes roughly half the gap. A defect that is half-corrected argues for a mid-anchor, and no mid-anchor cell exists in the evidence pack. The analysis declines to interpolate one, so this page declines to draw one." data-o="Pattern &amp;#8470;5 &amp;#183; carry the fork"><path d="M424.09 321 l12 12 l-12 12 l-12 -12 z" class="opened"/><line x1="409.09" y1="347" x2="439.09" y2="319" class="opened"/></g><text x="424.09" y="314" class="lb-p" text-anchor="middle">refused</text><text x="424.09" y="374" class="lb-s" text-anchor="middle">no instrument took it</text><line x1="318" y1="282" x2="647.29" y2="282" class="dim"/><line x1="318" y1="277" x2="318" y2="287" class="dim"/><line x1="647.29" y1="277" x2="647.29" y2="287" class="dim"/><text x="482.64" y="272" class="val" text-anchor="middle">2.3&#215; apart</text></svg></div>
+      <div class="frame"><svg style="max-width:814px;min-width:814px" class="" viewBox="-37 -20 814 440" role="img" aria-label="How the two revenue-yield anchors were constructed. Anchor A divides 8.99 million dollars of filed revenue per megawatt by a rumoured 50 million dollar build cost, giving 18.0 per cent. Anchor B divides 16.7 million dollars of constructed revenue by a 39.9 million dollar constructed cost, giving 41.9 per cent. The ratio is 2.3 times." xmlns="http://www.w3.org/2000/svg"><desc>The open diamond marks the mid-anchor the analysis refuses to interpolate.</desc><text x="24" y="20" class="lb-p" fill="var(--anchor-a)">ANCHOR A &#183; realised, from a filer</text><text x="24" y="34" class="lb-s">weight 0.40</text><text x="384" y="20" class="lb-p" fill="var(--anchor-b)">ANCHOR B &#183; constructed, from market prices</text><text x="384" y="34" class="lb-s">weight 0.60 &#183; designated base case</text><rect x="24" y="46" width="338" height="76" fill="none" stroke="var(--anchor-a)" stroke-width="1.5" rx="3"/><text x="37" y="68" class="val">$8.99 M revenue per active megawatt</text><text x="37" y="89" class="lb-s">annualised mean of 9.25 / 8.73 / 8.99 across three quarters,</text><text x="37" y="106" class="lb-s">from CoreWeave&#8217;s filings&#8195;[F]</text><text x="38" y="144" class="big" fill="var(--anchor-a)">&#247;</text><rect x="24" y="154" width="338" height="76" fill="none" stroke="var(--anchor-a)" stroke-width="1.5" rx="3"/><text x="37" y="176" class="val">$50 M all-in build cost per megawatt</text><text x="37" y="197" class="lb-s">no filer discloses an all-in cost per MW anywhere in the</text><text x="37" y="214" class="lb-s">evidence base&#8195;[S]</text><text x="38" y="252" class="big" fill="var(--anchor-a)">=</text><text x="72" y="252" class="val" fill="var(--anchor-a)">18.0% gross revenue yield per year</text><rect x="384" y="46" width="338" height="76" fill="none" stroke="var(--anchor-b)" stroke-width="1.5" rx="3"/><text x="397" y="68" class="val">$39.9 M all-in cost per megawatt</text><text x="397" y="89" class="lb-s">a $3.0 M GB200 NVL72 rack [S] drawing 132 kW gives</text><text x="397" y="106" class="lb-s">$22.7 M of accelerator per MW, over the 57% weight&#8195;[I]</text><text x="398" y="144" class="big" fill="var(--anchor-b)">&#247;</text><text x="428" y="138" class="lb-s">inverted: revenue over cost</text><rect x="384" y="154" width="338" height="76" fill="none" stroke="var(--anchor-b)" stroke-width="1.5" rx="3"/><text x="397" y="176" class="val">$16.7 M revenue per megawatt per year</text><text x="397" y="197" class="lb-s">$3.50 per GPU-hour [S] rented around the clock,</text><text x="397" y="214" class="lb-s">8,760 hours a year&#8195;[I]</text><text x="398" y="252" class="big" fill="var(--anchor-b)">=</text><text x="432" y="252" class="val" fill="var(--anchor-b)">41.9% gross revenue yield per year</text><line x1="70" y1="300" x2="70" y2="348" class="gridl"/><line x1="207.78" y1="300" x2="207.78" y2="348" class="gridl"/><line x1="345.56" y1="300" x2="345.56" y2="348" class="gridl"/><line x1="483.33" y1="300" x2="483.33" y2="348" class="gridl"/><line x1="621.11" y1="300" x2="621.11" y2="348" class="gridl"/><line x1="70" y1="348" x2="690" y2="348" class="axis"/><line x1="70" y1="348" x2="70" y2="352" class="axis"/><text x="70" y="364" class="tk" text-anchor="middle">0%</text><line x1="207.78" y1="348" x2="207.78" y2="352" class="axis"/><text x="207.78" y="364" class="tk" text-anchor="middle">10%</text><line x1="345.56" y1="348" x2="345.56" y2="352" class="axis"/><text x="345.56" y="364" class="tk" text-anchor="middle">20%</text><line x1="483.33" y1="348" x2="483.33" y2="352" class="axis"/><text x="483.33" y="364" class="tk" text-anchor="middle">30%</text><line x1="621.11" y1="348" x2="621.11" y2="352" class="axis"/><text x="621.11" y="364" class="tk" text-anchor="middle">40%</text><text x="70" y="380" class="lb-s">gross revenue yield, annual per cent of installed capital</text><g class="hit" data-tip="1" data-t="Anchor A &amp;#183; 18.0%" data-b="Realised revenue from the one filer that discloses both revenue and active capacity, over a build cost no filer discloses." data-o="[F] over [S]"><circle cx="318" cy="333" r="8" fill="var(--anchor-a)" class="ringed"/></g><text x="318" y="318" class="val" text-anchor="middle" fill="var(--anchor-a)">A &#183; 18.0%</text><g class="hit" data-tip="1" data-t="Anchor B &amp;#183; 41.9%" data-b="Constructed from a rumoured rack price and a marketplace rental rate. Designated the base case on three dated triangulating observations." data-o="[S] on both sides"><circle cx="647.29" cy="333" r="8" fill="var(--anchor-b)" class="ringed"/></g><text x="647.29" y="318" class="val" text-anchor="middle" fill="var(--anchor-b)">B &#183; 41.9%</text><g class="hit" data-tip="1" data-t="The mid-anchor that is not drawn" data-b="Correcting Anchor A&amp;#8217;s denominator at a 70% IT share closes roughly half the gap. A defect that is half-corrected argues for a mid-anchor, and no mid-anchor cell exists in the evidence pack. The analysis declines to interpolate one, so this page declines to draw one." data-o="Pattern &amp;#8470;5 &amp;#183; carry the fork"><path d="M424.09 321 l12 12 l-12 12 l-12 -12 z" class="opened"/><line x1="409.09" y1="347" x2="439.09" y2="319" class="opened"/></g><text x="424.09" y="314" class="lb-p" text-anchor="middle">refused</text><text x="424.09" y="374" class="lb-s" text-anchor="middle">no instrument took it</text><line x1="318" y1="282" x2="647.29" y2="282" class="dim"/><line x1="318" y1="277" x2="318" y2="287" class="dim"/><line x1="647.29" y1="277" x2="647.29" y2="287" class="dim"/><text x="482.64" y="272" class="val" text-anchor="middle">2.3&#215; apart</text></svg></div>
       <figcaption>
         <div class="who">
           <p class="rule">The fork is never closed</p>
@@ -1537,19 +1573,19 @@ document.documentElement.className+=' js';})();
       <p class="small fnote">Accounting and Financial Management, Analytics stream, University of Waterloo. 61 published pieces: research, interactive tools and references, all of them running rather than described.</p>
       <p class="small"><a class="inlink" href="mailto:leesharamrajcoomar@gmail.com">leesharamrajcoomar@gmail.com</a></p>
     </div>
-    <div>
+    <nav aria-label="Sections, from the footer">
       <h2>Sections</h2>
       <a href="research.html">Research and writing</a>
       <a href="coursework.html">Coursework</a>
       <a href="tools.html">Interactive tools</a>
       <a href="library.html">Full library</a>
-    </div>
-    <div>
+    </nav>
+    <nav aria-label="About this site">
       <h2>This site</h2>
       <a href="about.html">About and contact</a>
       <a href="colophon.html">Colophon and method</a>
       <a href="https://alexrajcoomar.github.io">alexrajcoomar.github.io</a>
-    </div>
+    </nav>
   </div>
   <div class="fine">
     <span>&copy; 2026 Leesharam Alexander Rajcoomar</span>
@@ -1561,7 +1597,7 @@ document.documentElement.className+=' js';})();
      without it, and the button is the same route as the keyboard. -->
 <div class="cmdk" id="cmdk" hidden role="dialog" aria-modal="true" aria-label="Search all work">
   <div class="cmdk-panel">
-    <input id="cmdk-input" type="text" placeholder="Search 61 pieces by title, course or topic" autocomplete="off" spellcheck="false" aria-controls="cmdk-list">
+    <input id="cmdk-input" type="text" placeholder="Search 61 pieces by title, course or topic" autocomplete="off" spellcheck="false" role="combobox" aria-expanded="false" aria-autocomplete="list" aria-controls="cmdk-list">
     <ul class="cmdk-list" id="cmdk-list" role="listbox" aria-label="Results"></ul>
     <div class="cmdk-foot">
       <span><kbd>&#8593;</kbd><kbd>&#8595;</kbd> move</span><span><kbd>Enter</kbd> open</span><span><kbd>Esc</kbd> close</span>
@@ -1585,6 +1621,9 @@ document.documentElement.className+=' js';})();
       <dt><kbd>g</kbd> <kbd>a</kbd></dt><dd>About</dd>
       <dt><kbd>?</kbd></dt><dd>This list</dd>
     </dl>
+    <p class="keys-pref"><label><input type="checkbox" id="keysingles" checked>
+      Single-key shortcuts. Turn these off if a key press where you did not
+      mean one keeps opening things; search stays on <kbd>&#8984;</kbd><kbd>K</kbd>.</label></p>
     <button class="close" type="button">Close</button>
   </div>
 </div>

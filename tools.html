@@ -31,6 +31,10 @@
 (function(){try{var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}
 document.documentElement.className+=' js';})();
 </script>
+<!-- A control that can do nothing is worse than no control: with scripts
+     off, the script-driven surfaces hide rather than sit dead. Everything
+     they reach remains reachable as plain links and server-rendered lists. -->
+<noscript><style>.hbtns,#keysbtn,.tools-bar,#corpusread,#atlasmini,.jsonly,.offline-controls{display:none !important}</style></noscript>
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -59,9 +63,9 @@ document.documentElement.className+=' js';})();
   <p class="eyebrow accent">Section <span class="tnum">03 / 03</span></p>
   <h1 class="h1">Interactive tools</h1>
   <p class="lede">7 things you use rather than read. 3 of them install to a phone home
-  screen. Four are drill engines that hold their question banks in code, so they carry no reading
-  time: a drill has no length, only a session. The other two render a full document on load and are
-  measured like one.</p>
+  screen. 4 are drill engines that hold their question banks in code, so they carry no reading
+  time: a drill has no length, only a session. The other 3 render a full document on load and
+  are measured like one.</p>
   <nav class="guide sections" aria-label="The three sections">
     <p class="guide-h">The sections <span class="guide-c">3 in the sequence</span></p>
     <ol>
@@ -74,55 +78,55 @@ document.documentElement.className+=' js';})();
 <section class="band shell">
   <div class="sechead"><h2>All 7</h2><p class="note">Each opens and runs in the browser. Nothing to install unless you want the home-screen icon.</p><span class="count">7 tools</span></div>
   <div class="features">
-      <a class="feature rise" style="transition-delay:0ms" href="ifrs15-judgment-trainer.html">
+      <article class="feature rise" style="transition-delay:0ms">
         <span class="kindrow"><span class="kind kind-tool">Tool</span><span class="surf surf-independent">Independent</span></span>
-        <h3>IFRS 15 Judgment Trainer</h3>
+        <h3><a class="cardlink" href="ifrs15-judgment-trainer.html">IFRS 15 Judgment Trainer</a></h3>
         <p>A drill on revenue recognition under IFRS 15: 29 determinate items scored against the standard and 33 judgment items that show their reasoning, every answer carrying its paragraph or illustrative example, verified against Part I of the CPA Canada Handbook, 2026 Edition. Each item names the trap beside the treatment, because the wrong answer you almost gave is the thing worth studying.</p>
         <p class="sig"><span><span class="s-min">Interactive</span></span><i aria-hidden="true">&middot;</i><span>runs in the browser</span></p>
         <span class="go">Open <span class="arrow" aria-hidden="true">&#8594;</span></span>
-      </a>
-      <a class="feature rise" style="transition-delay:45ms" href="daily-learning-cockpit.html">
+      </article>
+      <article class="feature rise" style="transition-delay:45ms">
         <span class="kindrow"><span class="kind kind-tool">Tool</span><span class="surf surf-independent">Independent</span></span>
-        <h3>Daily Learning Cockpit</h3>
+        <h3><a class="cardlink" href="daily-learning-cockpit.html">Daily Learning Cockpit</a></h3>
         <p>A daily instrument for deliberate learning: log a prediction, work the spaced rotation, then score your own calibration.</p>
         <p class="sig"><span><span class="s-min">Interactive</span></span><i aria-hidden="true">&middot;</i><span>installs to a phone</span></p>
         <span class="go">Open <span class="arrow" aria-hidden="true">&#8594;</span></span>
-      </a>
-      <a class="feature rise" style="transition-delay:90ms" href="law-arena.html">
+      </article>
+      <article class="feature rise" style="transition-delay:90ms">
         <span class="kindrow"><span class="kind kind-tool">Tool</span><span class="surf surf-course">Coursework</span></span>
-        <h3>Law Arena</h3>
+        <h3><a class="cardlink" href="law-arena.html">Law Arena</a></h3>
         <p>Question-by-question practice on the business law an accountant actually meets.</p>
         <p class="sig"><span><span class="s-min">Interactive</span></span><i aria-hidden="true">&middot;</i><span>installs to a phone</span></p>
         <span class="go">Open <span class="arrow" aria-hidden="true">&#8594;</span></span>
-      </a>
-      <a class="feature rise" style="transition-delay:135ms" href="skill-forge.html">
+      </article>
+      <article class="feature rise" style="transition-delay:135ms">
         <span class="kindrow"><span class="kind kind-tool">Tool</span><span class="surf surf-course">Coursework</span></span>
-        <h3>Skill Forge</h3>
+        <h3><a class="cardlink" href="skill-forge.html">Skill Forge</a></h3>
         <p>A drilling app for intermediate financial accounting, built to force retrieval rather than rereading.</p>
         <p class="sig"><span><span class="s-min">Interactive</span></span><i aria-hidden="true">&middot;</i><span>installs to a phone</span></p>
         <span class="go">Open <span class="arrow" aria-hidden="true">&#8594;</span></span>
-      </a>
-      <a class="feature rise" style="transition-delay:180ms" href="afm291-study-system.html">
+      </article>
+      <article class="feature rise" style="transition-delay:180ms">
         <span class="kindrow"><span class="kind kind-tool">Tool</span><span class="surf surf-course">Coursework</span></span>
-        <h3>AFM 291 Interactive Study System</h3>
+        <h3><a class="cardlink" href="afm291-study-system.html">AFM 291 Interactive Study System</a></h3>
         <p>The full visual study system for AFM 291, covering the course end to end in one interactive document.</p>
         <p class="sig"><span><span class="s-min">Interactive</span></span><i aria-hidden="true">&middot;</i><span>runs in the browser</span></p>
         <span class="go">Open <span class="arrow" aria-hidden="true">&#8594;</span></span>
-      </a>
-      <a class="feature rise" style="transition-delay:225ms" href="practice-arena.html">
+      </article>
+      <article class="feature rise" style="transition-delay:225ms">
         <span class="kindrow"><span class="kind kind-tool">Tool</span><span class="surf surf-course">Coursework</span></span>
-        <h3>AFM 291 Practice Arena</h3>
+        <h3><a class="cardlink" href="practice-arena.html">AFM 291 Practice Arena</a></h3>
         <p>Practice questions for AFM 291 with immediate feedback, built for repetition under time pressure.</p>
         <p class="sig"><span><span class="s-min">Interactive</span></span><i aria-hidden="true">&middot;</i><span>runs in the browser</span></p>
         <span class="go">Open <span class="arrow" aria-hidden="true">&#8594;</span></span>
-      </a>
-      <a class="feature rise" style="transition-delay:270ms" href="econ102-exam-trainer.html">
+      </article>
+      <article class="feature rise" style="transition-delay:270ms">
         <span class="kindrow"><span class="kind kind-tool">Tool</span><span class="surf surf-course">Coursework</span></span>
-        <h3>ECON 102 Interactive Exam Trainer</h3>
+        <h3><a class="cardlink" href="econ102-exam-trainer.html">ECON 102 Interactive Exam Trainer</a></h3>
         <p>An exam trainer for introductory macroeconomics: work the question, check the reasoning, repeat.</p>
         <p class="sig"><span><span class="s-min">Interactive</span></span><i aria-hidden="true">&middot;</i><span>runs in the browser</span></p>
         <span class="go">Open <span class="arrow" aria-hidden="true">&#8594;</span></span>
-      </a>
+      </article>
   </div>
 </section>
 <section class="band shell">
@@ -143,19 +147,19 @@ document.documentElement.className+=' js';})();
       <p class="small fnote">Accounting and Financial Management, Analytics stream, University of Waterloo. 61 published pieces: research, interactive tools and references, all of them running rather than described.</p>
       <p class="small"><a class="inlink" href="mailto:leesharamrajcoomar@gmail.com">leesharamrajcoomar@gmail.com</a></p>
     </div>
-    <div>
+    <nav aria-label="Sections, from the footer">
       <h2>Sections</h2>
       <a href="research.html">Research and writing</a>
       <a href="coursework.html">Coursework</a>
       <a href="tools.html">Interactive tools</a>
       <a href="library.html">Full library</a>
-    </div>
-    <div>
+    </nav>
+    <nav aria-label="About this site">
       <h2>This site</h2>
       <a href="about.html">About and contact</a>
       <a href="colophon.html">Colophon and method</a>
       <a href="https://alexrajcoomar.github.io">alexrajcoomar.github.io</a>
-    </div>
+    </nav>
   </div>
   <div class="fine">
     <span>&copy; 2026 Leesharam Alexander Rajcoomar</span>
@@ -167,7 +171,7 @@ document.documentElement.className+=' js';})();
      without it, and the button is the same route as the keyboard. -->
 <div class="cmdk" id="cmdk" hidden role="dialog" aria-modal="true" aria-label="Search all work">
   <div class="cmdk-panel">
-    <input id="cmdk-input" type="text" placeholder="Search 61 pieces by title, course or topic" autocomplete="off" spellcheck="false" aria-controls="cmdk-list">
+    <input id="cmdk-input" type="text" placeholder="Search 61 pieces by title, course or topic" autocomplete="off" spellcheck="false" role="combobox" aria-expanded="false" aria-autocomplete="list" aria-controls="cmdk-list">
     <ul class="cmdk-list" id="cmdk-list" role="listbox" aria-label="Results"></ul>
     <div class="cmdk-foot">
       <span><kbd>&#8593;</kbd><kbd>&#8595;</kbd> move</span><span><kbd>Enter</kbd> open</span><span><kbd>Esc</kbd> close</span>
@@ -191,6 +195,9 @@ document.documentElement.className+=' js';})();
       <dt><kbd>g</kbd> <kbd>a</kbd></dt><dd>About</dd>
       <dt><kbd>?</kbd></dt><dd>This list</dd>
     </dl>
+    <p class="keys-pref"><label><input type="checkbox" id="keysingles" checked>
+      Single-key shortcuts. Turn these off if a key press where you did not
+      mean one keeps opening things; search stays on <kbd>&#8984;</kbd><kbd>K</kbd>.</label></p>
     <button class="close" type="button">Close</button>
   </div>
 </div>

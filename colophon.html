@@ -31,6 +31,10 @@
 (function(){try{var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}
 document.documentElement.className+=' js';})();
 </script>
+<!-- A control that can do nothing is worse than no control: with scripts
+     off, the script-driven surfaces hide rather than sit dead. Everything
+     they reach remains reachable as plain links and server-rendered lists. -->
+<noscript><style>.hbtns,#keysbtn,.tools-bar,#corpusread,#atlasmini,.jsonly,.offline-controls{display:none !important}</style></noscript>
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -121,8 +125,11 @@ document.documentElement.className+=' js';})();
       the running text, and every mark that means something also differs in fill or shape.</dd>
 
       <dt>Typography</dt>
-      <dd>Inter Variable, loaded from a public CDN with a metric-matched fallback so the page does not
-      reflow when the webfont lands. If the CDN fails, the site keeps working on the system stack.</dd>
+      <dd>Inter Variable, subset to the 243 characters the corpus actually uses and
+      self-hosted at 84,752 bytes, with a metric-matched fallback face so the page does not
+      reflow when the font lands. If the file fails to load, the site keeps working on the system
+      stack. The build fails on any page character the subset lacks, so the number above is checked
+      rather than believed.</dd>
 
       <dt>Surfaces</dt>
       <dd>Warm paper, near-black ink, hairline rules, one accent, no rounded corners, no drop shadows,
@@ -174,9 +181,9 @@ document.documentElement.className+=' js';})();
   <div class="prose measure">
     <p>This site installs. In Safari on a phone, open the share sheet and choose
     <b>Add to Home Screen</b>: the site becomes an app icon, and every page you
-    have visited already works with no connection. To hold the whole site
-    — every piece, the atlas, the tools, the data files — press the button
-    below once while online. Everything refreshes itself quietly whenever the
+    have visited already works with no connection. To hold all of it, every
+    piece, the atlas, the tools and the data files, press the button below
+    once while online. Everything refreshes itself quietly whenever the
     installed copy is opened with a connection.</p>
     <p class="offline-controls">
       <button type="button" id="offline-save" class="linkbtn">Keep the whole site on this phone</button>
@@ -196,19 +203,19 @@ document.documentElement.className+=' js';})();
       <p class="small fnote">Accounting and Financial Management, Analytics stream, University of Waterloo. 61 published pieces: research, interactive tools and references, all of them running rather than described.</p>
       <p class="small"><a class="inlink" href="mailto:leesharamrajcoomar@gmail.com">leesharamrajcoomar@gmail.com</a></p>
     </div>
-    <div>
+    <nav aria-label="Sections, from the footer">
       <h2>Sections</h2>
       <a href="research.html">Research and writing</a>
       <a href="coursework.html">Coursework</a>
       <a href="tools.html">Interactive tools</a>
       <a href="library.html">Full library</a>
-    </div>
-    <div>
+    </nav>
+    <nav aria-label="About this site">
       <h2>This site</h2>
       <a href="about.html">About and contact</a>
       <a href="colophon.html">Colophon and method</a>
       <a href="https://alexrajcoomar.github.io">alexrajcoomar.github.io</a>
-    </div>
+    </nav>
   </div>
   <div class="fine">
     <span>&copy; 2026 Leesharam Alexander Rajcoomar</span>
@@ -220,7 +227,7 @@ document.documentElement.className+=' js';})();
      without it, and the button is the same route as the keyboard. -->
 <div class="cmdk" id="cmdk" hidden role="dialog" aria-modal="true" aria-label="Search all work">
   <div class="cmdk-panel">
-    <input id="cmdk-input" type="text" placeholder="Search 61 pieces by title, course or topic" autocomplete="off" spellcheck="false" aria-controls="cmdk-list">
+    <input id="cmdk-input" type="text" placeholder="Search 61 pieces by title, course or topic" autocomplete="off" spellcheck="false" role="combobox" aria-expanded="false" aria-autocomplete="list" aria-controls="cmdk-list">
     <ul class="cmdk-list" id="cmdk-list" role="listbox" aria-label="Results"></ul>
     <div class="cmdk-foot">
       <span><kbd>&#8593;</kbd><kbd>&#8595;</kbd> move</span><span><kbd>Enter</kbd> open</span><span><kbd>Esc</kbd> close</span>
@@ -244,6 +251,9 @@ document.documentElement.className+=' js';})();
       <dt><kbd>g</kbd> <kbd>a</kbd></dt><dd>About</dd>
       <dt><kbd>?</kbd></dt><dd>This list</dd>
     </dl>
+    <p class="keys-pref"><label><input type="checkbox" id="keysingles" checked>
+      Single-key shortcuts. Turn these off if a key press where you did not
+      mean one keeps opening things; search stays on <kbd>&#8984;</kbd><kbd>K</kbd>.</label></p>
     <button class="close" type="button">Close</button>
   </div>
 </div>

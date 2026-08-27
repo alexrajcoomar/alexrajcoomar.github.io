@@ -279,18 +279,6 @@ section.chapter{content-visibility:auto;contain-intrinsic-size:auto 4000px}
   display:inline-grid;place-items:center;width:1.2rem;height:1.2rem;flex:none;
   background:#16150f;color:#faf9f6;font-size:.72rem;font-weight:700;
 }
-#__rb-pill{
-  position:fixed;left:14px;bottom:14px;z-index:2147483000;
-  display:inline-flex;align-items:center;gap:.45rem;padding:.58rem .9rem;
-  background:rgba(22,21,15,.93);color:#faf9f6;text-decoration:none;border-radius:99px;
-  font:600 12.5px/1 InterVar,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
-  border:1px solid rgba(255,255,255,.16);box-shadow:0 6px 22px rgba(0,0,0,.28);
-  opacity:0;transform:translateY(6px);pointer-events:none;
-  transition:opacity .2s ease,transform .2s ease;
-  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
-}
-#__rb-pill.__on{opacity:1;transform:none;pointer-events:auto}
-#__rb-pill:hover{background:#16150f;color:#fff}
 /* Dark has to answer to two things: the reader's system setting, and the
    theme button on the page, which sets data-theme on <html>. Keyed to the
    media query alone, the bar stayed paper-white across the top of an essay
@@ -303,23 +291,18 @@ section.chapter{content-visibility:auto;contain-intrinsic-size:auto 4000px}
   :root:not([data-theme="light"]) #__rb .__rb-home i{color:#948f85}
   :root:not([data-theme="light"]) #__rb a{color:#85adea}
   :root:not([data-theme="light"]) #__rb .__mark{background:#f7f5ef;color:#131310}
-  :root:not([data-theme="light"]) #__rb-pill{background:rgba(247,245,239,.95);color:#131310;border-color:rgba(0,0,0,.2)}
-  :root:not([data-theme="light"]) #__rb-pill:hover{background:#fff;color:#000}
 }
 :root[data-theme="dark"] #__rb{background:#131310;border-bottom-color:#2c2b24;color:#c0bcb1}
 :root[data-theme="dark"] #__rb .__rb-home{color:#f7f5ef}
 :root[data-theme="dark"] #__rb .__rb-home i{color:#948f85}
 :root[data-theme="dark"] #__rb a{color:#85adea}
 :root[data-theme="dark"] #__rb .__mark{background:#f7f5ef;color:#131310}
-:root[data-theme="dark"] #__rb-pill{background:rgba(247,245,239,.95);color:#131310;border-color:rgba(0,0,0,.2)}
-:root[data-theme="dark"] #__rb-pill:hover{background:#fff;color:#000}
-@media (prefers-reduced-motion:reduce){#__rb-pill{transition:none}}
-@media print{#__rb,#__rb-pill{display:none !important}}
+@media print{#__rb{display:none !important}}
 </style>
-<div id="__rb">
+<nav id="__rb" aria-label="Portfolio">
   <a class="__rb-home" href="index.html"><span class="__mark" aria-hidden="true">A</span>Alex Rajcoomar <i>portfolio</i></a>
-  <span class="__rb-right"><a href="research.html">Research</a><a href="library.html">All work</a></span>
-</div>
+  <span class="__rb-right"><a href="research.html">Research</a><a href="atlas.html">Atlas</a><a href="library.html">All work</a></span>
+</nav>
 <script>
 /* the trail: which passages this browser has opened. The atlas reads it and
    rings them; the record lives in localStorage and never leaves the machine. */
@@ -336,7 +319,7 @@ section.chapter{content-visibility:auto;contain-intrinsic-size:auto 4000px}
     function put(key){
       if(t2[key]||Object.keys(t2).length<500){
         t2[key]=(t2[key]||0)+1;
-        localStorage.setItem(k,JSON.stringify(t2));
+        try{localStorage.setItem(k,JSON.stringify(t2));}catch(e){}
       }
     }
     put(u+location.hash);
@@ -2092,13 +2075,49 @@ targets.forEach(t => io.observe(t));
 </script>
 
 <!--__rbp-->
+<!-- The pill styles itself: this block used to live only with the top bar,
+     so the seven tool pages, which carry the pill alone, rendered it as an
+     unstyled link at the very end of the document. Whatever carries the
+     pill now carries its style. -->
+<style id="__rbp-style">
+#__rb-pill{
+  position:fixed;left:14px;bottom:14px;z-index:2147483000;
+  display:inline-flex;align-items:center;gap:.45rem;padding:.58rem .9rem;
+  background:rgba(22,21,15,.93);color:#faf9f6;text-decoration:none;border-radius:99px;
+  font:600 12.5px/1 InterVar,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  border:1px solid rgba(255,255,255,.16);box-shadow:0 6px 22px rgba(0,0,0,.28);
+  opacity:0;transform:translateY(6px);pointer-events:none;
+  transition:opacity .2s ease,transform .2s ease;
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+}
+#__rb-pill.__on{opacity:1;transform:none;pointer-events:auto}
+#__rb-pill:hover{background:#16150f;color:#fff}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) #__rb-pill{background:rgba(247,245,239,.95);color:#131310;border-color:rgba(0,0,0,.2)}
+  :root:not([data-theme="light"]) #__rb-pill:hover{background:#fff;color:#000}
+}
+:root[data-theme="dark"] #__rb-pill{background:rgba(247,245,239,.95);color:#131310;border-color:rgba(0,0,0,.2)}
+:root[data-theme="dark"] #__rb-pill:hover{background:#fff;color:#000}
+@media (prefers-reduced-motion:reduce){#__rb-pill{transition:none}}
+@media print{#__rb-pill{display:none !important}}
+</style>
+<!-- With scripts off nothing ever adds the __on class, and the only way
+     back from a tool page vanished. The pill needs its script for the
+     scroll threshold, not for existing. -->
+<noscript><style>#__rb-pill{opacity:1 !important;transform:none !important;pointer-events:auto !important}</style></noscript>
 <a id="__rb-pill" href="research.html">&#8592; Research</a>
 <script>
 (function(){
   var p=document.getElementById('__rb-pill'); if(!p) return;
+  /* On a page with the top bar the pill waits until the bar has scrolled
+     out of reach. On a page without one (the tools carry no bar, because a
+     bar inside a full-screen application sits in the wrong place) the pill
+     is the only way back, so it is there from the first paint: a tool
+     screen shorter than the threshold used to strand the reader entirely. */
+  var TH=document.getElementById('__rb')?160:-1;
   var t=false;
   function run(){ t=false;
-    p.classList.toggle('__on',(window.scrollY||document.documentElement.scrollTop)>420); }
+    p.classList.toggle('__on',(window.scrollY||document.documentElement.scrollTop)>TH); }
   function q(){ if(!t){ t=true; requestAnimationFrame(run); } }
   addEventListener('scroll',q,{passive:true}); run();
 })();
@@ -2116,7 +2135,7 @@ targets.forEach(t => io.observe(t));
     function put(key){
       if(t2[key]||Object.keys(t2).length<500){
         t2[key]=(t2[key]||0)+1;
-        localStorage.setItem(k,JSON.stringify(t2));
+        try{localStorage.setItem(k,JSON.stringify(t2));}catch(e){}
       }
     }
     put(u+location.hash);
