@@ -946,6 +946,11 @@ function renderSite() {
   f('eyebrow', 'Line above the headline', 'A short label, e.g. Portfolio · Waterloo AFM Analytics.');
   f('url', 'Site address', 'Used to build the canonical links. Change this only if the address changes.');
   f('born', 'Date of birth', 'Used only to keep the age on the About page current. Format: 2006-10-09.');
+  f('linkedin', 'LinkedIn profile', 'Optional. Full address, e.g. https://www.linkedin.com/in/yourname. Empty shows nothing.');
+  f('github', 'GitHub profile', 'Optional. Full address, e.g. https://github.com/yourname. Empty shows nothing.');
+  f('resume', 'Resume link', 'Optional. A full address, or the name of a PDF uploaded to the site, e.g. resume.pdf. The build fails if a named file does not exist, so a dead link cannot ship. Empty shows nothing.');
+  f('coop_term', 'Co-op term sought', 'Optional. Shown on the About page, e.g. Winter 2027. Empty shows nothing.');
+  f('grad_year', 'Graduation year', 'Optional. Shown on the About page, e.g. 2029. Empty shows nothing.');
 
   var box = el('div', 'field');
   var lab = el('label', null, 'Affiliation'); lab.htmlFor = 's_aff'; box.appendChild(lab);
