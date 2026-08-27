@@ -8,10 +8,11 @@
    drop shadows, no gradients, no framework.
    ============================================================ */
 
-/* Inter Variable 4.1.1, self-hosted and subset to the 444 glyphs the
-   corpus uses (75,956 bytes against 352,240 full), with a metric-matched fallback so the
-   page does not reflow when the webfont lands. If the CDN fails the
-   site keeps working on the system stack. */
+/* Inter Variable 4.1.1, self-hosted and subset to the characters the corpus
+   uses (the colophon prints the measured count and byte size), with a
+   metric-matched fallback so the page does not reflow when the webfont
+   lands. If the file fails to load the site keeps working on the system
+   stack. */
 @font-face{
   font-family:"InterVar";
   font-style:normal;
@@ -197,7 +198,7 @@ kbd{
 .surf,.kind,.pwa,.tag,.metadate,.tease-key,.spec .rule,.rail-app h3,
 .lead .demo b,.flagship .demo b,.facts dt,.facts b,.ft-cap > span,
 .docmast .kick,.cal .cw,.toc h2,.cmdk-list .cmdk-group,
-.docmeta .mchip,.pv,details.cal-q > summary::after,
+.docmeta .mchip,.pv,details.cal-q > summary::after,.sysitem .sys-m,
 .matrix thead th,.ctab thead th,.docbody thead th{
   font-size:var(--meta-size);
   letter-spacing:var(--meta-track);
@@ -209,7 +210,7 @@ kbd{
    margin it starts competing with the title beside it, and "AUGUST 2026"
    is louder than the piece it dates. It keeps the size, the tracking and
    the colour of the contract, and it keeps its own case. */
-.metadate,.rail .rm,.row .side{text-transform:none;letter-spacing:.01em}
+.metadate,.rail .rm,.row .side,.sysitem .sys-m{text-transform:none;letter-spacing:.01em}
 
 /* One: a chip carrying a colour-coded mark keeps its weight, because
    the weight is what makes it read as a badge rather than a caption. */
@@ -440,11 +441,21 @@ section.band + section.band{border-top:1px solid var(--rule)}
   content:"";position:absolute;left:0;top:-1px;height:2px;width:0;background:var(--accent);
   transition:width var(--t-in) var(--ease-move)
 }
-.feature:hover::after,.feature:focus-visible::after{width:100%}
+.feature:hover::after,.feature:focus-within::after{width:100%}
+/* The card is an article whose title link stretches over it, so the card
+   stays one click target while the accessible name stays the title. */
+.feature h3 a.cardlink,.feature h4 a.cardlink{text-decoration:none;color:inherit}
+.feature h3 a.cardlink::after,.feature h4 a.cardlink::after{content:"";position:absolute;inset:0}
+/* Focus draws around the whole card where :has() exists; elsewhere the
+   link's own ring stays, so focus is never invisible. */
+@supports selector(:has(a)){
+  .feature:has(a.cardlink:focus-visible){outline:2px solid var(--accent);outline-offset:3px}
+  .feature a.cardlink:focus-visible{outline:none}
+}
 .feature .kindrow{display:flex;gap:.7rem;align-items:center;margin-bottom:.85rem}
 /* Below the plate heading at every width, which it was not: at 390px
    the tile title was 1.18rem against a 1.15rem group head above it. */
-.feature h3{font-size:clamp(1.02rem,1.5vw,1.18rem);letter-spacing:var(--plate-h-tr);
+.feature h3,.feature h4{font-size:clamp(1.02rem,1.5vw,1.18rem);letter-spacing:var(--plate-h-tr);
   font-weight:var(--plate-h-w);margin:0 0 .45rem;max-width:22ch}
 .feature p{font-size:.94rem;color:var(--ink-2);margin:0 0 1.1rem;line-height:1.52}
 .feature .go{
@@ -453,6 +464,26 @@ section.band + section.band{border-top:1px solid var(--rule)}
 }
 .feature .arrow{transition:transform var(--t-fast) var(--ease-move)}
 .feature:hover .arrow{transform:translateX(3px)}
+
+/* ------------------------- the system band ------------------------
+   Four artifacts of one system in a row: the hub and its runs. The
+   same hairline grammar as the feature grid, one line of title and
+   one measured metadata line each. */
+.sysgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,15rem),1fr));gap:0}
+.sysitem{
+  display:flex;flex-direction:column;gap:.35rem;text-decoration:none;
+  padding:1.1rem 1.4rem 1.05rem 0;border-top:1px solid var(--rule);position:relative
+}
+.sysgrid .sysitem{border-right:1px solid var(--rule);padding-right:1.4rem}
+.sysitem::after{
+  content:"";position:absolute;left:0;top:-1px;height:2px;width:0;background:var(--accent);
+  transition:width var(--t-in) var(--ease-move)
+}
+.sysitem:hover::after,.sysitem:focus-visible::after{width:100%}
+.sysitem .sys-t{font-weight:600;font-size:.96rem;letter-spacing:-.01em;line-height:1.35;
+  transition:color var(--t-fast) ease}
+.sysitem:hover .sys-t{color:var(--accent)}
+.sysitem .sys-m b{color:var(--ink-2)}
 
 /* big flagship feature */
 .flagship{
@@ -551,7 +582,9 @@ ol.index li:last-child{border-bottom:1px solid var(--rule)}
 }
 .chip[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
 .chip:hover{color:var(--ink);border-color:var(--ink)}
-.chip[aria-pressed="true"]:hover{background:var(--accent);border-color:var(--accent);color:#fff}
+/* color:var(--paper), not #fff: in dark mode the accent is a light blue
+   and white on it reads 2.3:1; dark paper on it reads 8.1:1. */
+.chip[aria-pressed="true"]:hover{background:var(--accent);border-color:var(--accent);color:var(--paper)}
 .resultnote{font-size:.85rem;color:var(--ink-3);padding:.9rem 0 0}
 
 /* ------------------------- command palette ------------------------- */
@@ -574,7 +607,10 @@ ol.index li:last-child{border-bottom:1px solid var(--rule)}
   font:inherit;font-size:1.05rem;padding:1rem 1.1rem;border:0;border-bottom:1px solid var(--rule);
   background:transparent;color:var(--ink);width:100%
 }
-.cmdk-panel input:focus{outline:none}
+/* The default ring is dropped because it boxes the whole panel head, but
+   the focused control still shows where it is: the rule under the input
+   thickens and takes the accent. */
+.cmdk-panel input:focus{outline:none;border-bottom:2px solid var(--accent);padding-bottom:calc(1rem - 1px)}
 .cmdk-list{list-style:none;margin:0;padding:.35rem;overflow-y:auto}
 .cmdk-list a{
   display:grid;grid-template-columns:minmax(0,1fr) auto;gap:1rem;align-items:center;
@@ -712,14 +748,20 @@ footer.site .fine b{font-weight:600;color:var(--ink-2)}
    hero heading on the home page was arriving half a second after it
    had been laid out. Shortening it aligns the motion with the Atlas
    and moves the largest contentful paint at the same time. */
-.js .rise{opacity:0;transform:translateY(12px)}
+/* The delayed animation is a dead-man's switch: if site.js never runs
+   (blocked, failed request) nothing would ever add .in, and content held
+   at opacity 0 is content the reader never sees. After 1.8s the keyframe
+   forces the end state; when the observer fires first, both write the
+   same values and nothing visibly changes. */
+.js .rise{opacity:0;transform:translateY(12px);animation:rise-auto 0s 1.8s forwards}
 .js .rise.in{opacity:1;transform:none;
   transition:opacity var(--t-in) var(--ease-move),transform var(--t-in) var(--ease-move)}
+@keyframes rise-auto{to{opacity:1;transform:none}}
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
   /* Both states, so the transition declaration on .in cannot survive and
      animate later on a hover or a class change. */
-  .js .rise,.js .rise.in{opacity:1;transform:none;transition:none}
+  .js .rise,.js .rise.in{opacity:1;transform:none;transition:none;animation:none}
   .feature::after,.feature .arrow,.row .side .arrow{transition:none}
 }
 
@@ -1068,9 +1110,12 @@ a.figtile:hover .ft-cap b{color:var(--accent)}
 /* ------------------------------------------------------------- masthead -- */
 .docmast{padding:3rem 0 1.5rem;border-bottom:2px solid var(--ink);margin-bottom:2rem}
 .docmast .kick{color:var(--accent);margin:0 0 .9rem}
-.docmast h1{
+/* .docmast-h1 is the demoted masthead title on converted notes: the build
+   turns the masthead's h1 into a paragraph so the document's own h1 stays
+   the page's only one, and this keeps it looking exactly as it did. */
+.docmast h1,.docmast .docmast-h1{
   margin:0 0 .6rem;font-size:clamp(1.85rem,4.2vw,2.75rem);line-height:1.08;
-  letter-spacing:-.028em;font-weight:660;max-width:24ch;
+  letter-spacing:-.028em;font-weight:660;max-width:24ch;color:var(--ink);
 }
 .docmast .dek{margin:0 0 1.25rem;color:var(--ink-2);font-size:1.0625rem;max-width:44rem}
 .docmeta{display:flex;flex-wrap:wrap;gap:.4rem .5rem;align-items:center}
@@ -1179,6 +1224,13 @@ details.cal-q .cb > *:first-child{margin-top:.8rem}
   display:inline-block;padding:.02rem .35rem;border:1px solid currentColor;vertical-align:.06em;
 }
 .pv-v{color:var(--tool)} .pv-i{color:var(--ref)} .pv-m{color:var(--ink-3)} .pv-u{color:#c0392b}
+/* Same dark lift the danger callout already gets: #c0392b reads 3.4:1 on
+   dark paper, under AA for text, and this chip is the smallest text on
+   the site with the job of flagging unverified content. */
+@media (prefers-color-scheme:dark){
+  :root:where(:not([data-theme="light"])) .pv-u{color:#e66767}
+}
+:root[data-theme="dark"] .pv-u{color:#e66767}
 
 /* ------------------------------------------------------------- endnote --- */
 .docend{
@@ -1350,6 +1402,11 @@ details.cal-q .cb > *:first-child{margin-top:.8rem}
 .keys dl{display:grid;grid-template-columns:auto 1fr;gap:.5rem .9rem;margin:0;font-size:.875rem}
 .keys dt{margin:0}
 .keys dd{margin:0;color:var(--ink-2)}
+.keys .keys-pref{
+  margin:1rem 0 0;padding-top:.8rem;border-top:1px solid var(--rule);
+  font-size:.85rem;color:var(--ink-2)
+}
+.keys .keys-pref input{accent-color:var(--accent);margin-right:.4rem}
 .keys kbd{
   font:inherit;font-size:.75rem;border:1px solid var(--edge);background:var(--panel);
   padding:.1rem .35rem;min-width:1.5rem;display:inline-block;text-align:center
@@ -1407,8 +1464,8 @@ nav.main a[aria-current="page"]{border-bottom-color:transparent}
 
 /* ---------------------------- feature tiles ------------------- */
 .feature{transition:background var(--t-fast) ease,border-color var(--t-fast) ease}
-.feature h3{transition:color var(--t-fast) ease}
-.feature:hover h3{color:var(--accent)}
+.feature h3,.feature h4{transition:color var(--t-fast) ease}
+.feature:hover h3,.feature:hover h4{color:var(--accent)}
 
 /* ---------------------------- honour the setting --------------
    One block, at the end, so it wins. Anything above that moves
@@ -1416,7 +1473,7 @@ nav.main a[aria-current="page"]{border-bottom-color:transparent}
 @media (prefers-reduced-motion:reduce){
   .row::after,.row .title,.row .num,
   .cf-bar i,.corpusfig .cf-row rect,.corpusfig .cf-row text,
-  nav.main .navink,#themebtn,.totop,.feature,.feature h3{
+  nav.main .navink,#themebtn,.totop,.feature,.feature h3,.feature h4{
     transition:none !important
   }
   :target{animation:none}
@@ -1543,7 +1600,8 @@ body.atlas-free .atlas-h1{font-size:clamp(1.2rem,1.7vw,1.42rem);max-width:24em;
   border-radius:var(--radius)}
 .pbtn:hover{border-color:var(--ink);color:var(--ink)}
 .pbtn-go{background:var(--ink);color:var(--paper);border-color:var(--ink)}
-.pbtn-go:hover{background:var(--accent);border-color:var(--accent);color:#fff}
+/* var(--paper) for the same contrast reason as the pressed chip's hover */
+.pbtn-go:hover{background:var(--accent);border-color:var(--accent);color:var(--paper)}
 .pbtn[aria-disabled="true"]{opacity:.4;pointer-events:none}
 .pskip{font-size:.82rem;color:var(--ink-3);margin-left:auto}
 .pskip:hover{color:var(--accent)}

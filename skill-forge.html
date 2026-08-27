@@ -1265,6 +1265,10 @@ try{
   }
 }catch(e){}
 if(!Array.isArray(ST.calib))ST.calib=[];
+if(!ST.streak||typeof ST.streak!=="object")ST.streak={last:"",days:0};
+for(const k of["best","leit","calc"])if(!ST[k]||typeof ST[k]!=="object"||Array.isArray(ST[k]))ST[k]={};
+for(const k in ST.leit)if(!ST.leit[k]||typeof ST.leit[k]!=="object")delete ST.leit[k];
+ST.xp=+ST.xp||0;ST.rapidHigh=+ST.rapidHigh||0;
 const save=()=>store.set(ST_KEY,JSON.stringify(ST));
 if(ST.theme)D.documentElement.dataset.theme=ST.theme;
 
@@ -1927,7 +1931,7 @@ function showResults(r){
     for(const ms of r.miss){
       ml.appendChild(E("div","mlitem",
         "<div class='mlq'>"+ms.label+"</div>"+
-        "<div class='mlrow'><span class='no'>you: "+ms.chosen+"</span> <span class='yes'>ans: "+ms.ans+"</span></div>"+
+        "<div class='mlrow'><span class='no'>you: "+String(ms.chosen).replace(/&/g,"&amp;").replace(/</g,"&lt;")+"</span> <span class='yes'>ans: "+ms.ans+"</span></div>"+
         "<div class='mlx'>"+(ms.flag?badge(ms.flag):"")+(ms.x||"")+"</div>"));
     }
     b.appendChild(ml);
@@ -2084,16 +2088,17 @@ function wireTools(){
     rd.onload=()=>{try{
       const o=JSON.parse(rd.result);
       if(!o||typeof o!=="object")throw 0;
-      ST.xp=Math.max(ST.xp,o.xp||0);
+      ST.xp=Math.max(ST.xp,Number.isFinite(+o.xp)?+o.xp:0);
       ST.rapidHigh=Math.max(ST.rapidHigh,o.rapidHigh||0);
       if(o.streak&&o.streak.last>(ST.streak.last||""))ST.streak=o.streak;
-      for(const k in (o.best||{}))ST.best[k]=Math.max(ST.best[k]||0,o.best[k]);
+      for(const k in (o.best||{}))ST.best[k]=Math.max(ST.best[k]||0,+o.best[k]||0);
       for(const k in (o.leit||{})){
         if(!resolves(k))continue;
         const inc=o.leit[k],cur=ST.leit[k];
+        if(!inc||typeof inc!=="object"||typeof inc.due!=="number")continue;
         ST.leit[k]=(!cur||inc.due<cur.due)?inc:cur;
       }
-      for(const g in (o.calc||{}))if(!ST.calc[g]||(o.calc[g].n||0)>(ST.calc[g].n||0))ST.calc[g]=o.calc[g];
+      for(const g in (o.calc||{}))if(o.calc[g]&&typeof o.calc[g]==="object"&&(!ST.calc[g]||(o.calc[g].n||0)>(ST.calc[g].n||0)))ST.calc[g]=o.calc[g];
       if(Array.isArray(o.calib))ST.calib=[...ST.calib,...o.calib].slice(-60);
       save();paintHome();
       imLbl.textContent="Imported ✓";setTimeout(()=>imLbl.textContent="Import progress",1800);
@@ -2141,7 +2146,7 @@ $("#thmBtn").onclick=()=>{
 };
 D.addEventListener("keydown",e=>{
   if(/^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName))return;
-  if(!$("#scr-quiz").classList.contains("on"))return;
+  if(!$("#scr-quiz").classList.contains("on")||$("#overlay").classList.contains("on"))return;
   if(/^[1-9]$/.test(e.key)){
     const opts=$$("#qcard .opt:not(:disabled)");
     const i=+e.key-1;if(opts[i])opts[i].click();

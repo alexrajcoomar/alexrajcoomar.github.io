@@ -504,6 +504,7 @@ if(!Array.isArray(ST.drills.hist))ST.drills.hist=[];
 if(!ST.rq||typeof ST.rq!=="object")ST.rq={};
 if(!ST.acts||typeof ST.acts!=="object")ST.acts={};
 if(!ST.seen||typeof ST.seen!=="object")ST.seen={};
+if(!ST.streak||typeof ST.streak!=="object")ST.streak={last:"",days:0,best:0};
 if(!ST.settings)ST.settings={lastExport:"",firstGap:3,secondGap:10,maxGap:21};
 const save=()=>store.set(ST_KEY,JSON.stringify(ST));
 if(ST.theme)D.documentElement.dataset.theme=ST.theme;
@@ -952,7 +953,7 @@ function addJournal(){
       return{focus:t,save(){
         if(!t.value.trim()||!f.value.trim()){err.textContent="Both the thesis and its falsifier are required.";err.hidden=false;return false;}
         ST.journal.push({id:uid(),d:TODAY(),thesis:t.value.trim(),falsifier:f.value.trim(),
-          source:s.value.trim(),review:d.value,status:"open",updates:[]});
+          source:s.value.trim(),review:d.value||addDays(TODAY(),30),status:"open",updates:[]});
         act();save();paintAll();toast("Logged. Review "+humanDate(d.value));
       }};
     });
@@ -1035,7 +1036,7 @@ function secondPass(id){
 }
 function doRQ(id){
   const r=RQ.find(x=>x.id===id);if(!r)return;
-  const s=rqState(id);
+  const s=ST.rq[id]||{n:0,next:"",last:"",attempts:[]};
   openSheet("Retrieval question",
     "Closed book. Attempt it in full sentences, then save. Answers are withheld by design in the source files: the protocol is to attempt, then send the attempt to be marked.",
     body=>{
@@ -1861,6 +1862,8 @@ function renderTools(b){
         if(!merged.drills||typeof merged.drills!=="object")merged.drills={hist:[],next:""};
         if(!Array.isArray(merged.drills.hist)||!merged.drills.hist.length)merged.drills.hist=ST.drills.hist;
         if(!merged.drills.next)merged.drills.next=ST.drills.next;
+        if(!merged.streak||typeof merged.streak!=="object")merged.streak={last:"",days:0,best:0};
+        if(!merged.settings||typeof merged.settings!=="object")merged.settings=ST.settings;
         ST=merged;save();paintAll();
         toast("Imported and merged.");
       }catch(e){toast("That file could not be read as a cockpit export.");}

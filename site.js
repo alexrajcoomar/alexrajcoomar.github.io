@@ -10,6 +10,14 @@
 
   var reduced = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+  /* Single-key shortcuts (/, ?, g, j, k) can be turned off from the
+     keyboard sheet. On unless the reader has said otherwise; the guarded
+     read matches every other storage access in this file. */
+  var SINGLES = "keys.singles";
+  function singlesOn() {
+    try { return localStorage.getItem(SINGLES) !== "off"; } catch (e) { return true; }
+  }
+
   /* ---------------------------------------------------- theme ----- */
   var themebtn = document.getElementById("themebtn");
   function isDark() {
@@ -78,55 +86,11 @@
     setTimeout(sweep, 1200);
   }
 
-  /* ------------------------------------------- library filtering ---
-     Progressive: the full list is in the DOM and printed. This only
-     hides rows. */
-  var q = document.getElementById("q");
-  var list = document.getElementById("list");
-  var chips = document.getElementById("chips");
-  var note = document.getElementById("resultnote");
-  var empty = document.getElementById("noresults");
-  if (list) {
-    var rows = [].slice.call(list.children);
-    var filter = "all";
-    function apply() {
-      var term = (q && q.value || "").trim().toLowerCase();
-      var shown = 0;
-      rows.forEach(function (li) {
-        var okKind = filter === "all" || li.getAttribute("data-kind") === filter;
-        var okTerm = !term || (li.getAttribute("data-search") || "").indexOf(term) > -1;
-        var on = okKind && okTerm;
-        li.hidden = !on;
-        if (on) shown++;
-      });
-      var one = shown === 1;
-      if (note) {
-        var what = filter === "all" ? (one ? "piece" : "pieces")
-          : filter === "tool" ? (one ? "tool" : "tools")
-          : filter === "essay" ? (one ? "essay" : "essays")
-          : (one ? "reference" : "references");
-        note.textContent = shown === rows.length
-          ? "Showing all " + rows.length + " pieces."
-          : shown === 0
-            ? "Nothing matches" + (term ? ' "' + q.value.trim() + '"' : " that filter") + "."
-            : "Showing " + shown + " " + what + (term ? ' matching "' + q.value.trim() + '".' : ".");
-      }
-      /* An empty list with no message reads as a broken page. */
-      if (empty) empty.hidden = shown !== 0;
-    }
-    if (q) q.addEventListener("input", apply);
-    if (chips) {
-      chips.addEventListener("click", function (e) {
-        var b = e.target.closest(".chip");
-        if (!b) return;
-        filter = b.getAttribute("data-f");
-        [].slice.call(chips.querySelectorAll(".chip")).forEach(function (c) {
-          c.setAttribute("aria-pressed", c === b ? "true" : "false");
-        });
-        apply();
-      });
-    }
-  }
+  /* The flat library-filter block that used to sit here targeted a
+     #list element no page has carried since the library moved to
+     grouped sections; the grouped filter below is the live one, and
+     both bound listeners to the same #q. Removed rather than kept as a
+     trap for the next editor. */
 
   /* -------------------------------------------- command palette ----
      Search every piece from any page. Opened by the header button,
@@ -240,6 +204,10 @@
       });
       items = [].slice.call(results.querySelectorAll("li[role=option]"));
       cur = 0;
+      /* the combobox names its selection on every render, not only after
+         an arrow key; an emptied list clears the stale reference */
+      if (items.length) input.setAttribute("aria-activedescendant", items[0].id);
+      else input.removeAttribute("aria-activedescendant");
     }
 
     /* Puts `text` into `host`, wrapping the first case-insensitive run of
@@ -296,6 +264,7 @@
     function open() {
       lastFocus = document.activeElement;
       pal.hidden = false;
+      input.setAttribute("aria-expanded", "true");
       input.value = "";
       render();
       input.focus();
@@ -303,6 +272,7 @@
     }
     function close() {
       pal.hidden = true;
+      input.setAttribute("aria-expanded", "false");
       document.body.style.overflow = "";
       if (lastFocus && lastFocus.focus) lastFocus.focus();
     }
@@ -333,11 +303,13 @@
       var typing = tag === "input" || tag === "textarea" || e.target.isContentEditable;
       if ((e.key === "k" || e.key === "K") && (e.metaKey || e.ctrlKey)) {
         e.preventDefault(); pal.hidden ? open() : close();
-      } else if (e.key === "/" && !typing && pal.hidden) {
+      } else if (typing || !pal.hidden || !singlesOn()) {
+        /* single-key routes only: the modified Cmd/Ctrl+K above stays on */
+      } else if (e.key === "/") {
         e.preventDefault(); open();
-      } else if (e.key === "?" && !typing && pal.hidden) {
+      } else if (e.key === "?") {
         e.preventDefault(); keys(true);
-      } else if (!typing && pal.hidden && (e.key === "g" || e.key === "G")) {
+      } else if (e.key === "g" || e.key === "G") {
         /* g then a letter: the two-stroke jump every reader of a long site
            already knows from mail clients and code hosts. */
         goArmed = Date.now();
@@ -354,14 +326,19 @@
      The header already advertises "/" . Everything else was undiscoverable,
      which is the same as absent. */
   var goArmed = 0;
+  var keysLastFocus = null;
   function keys(on) {
     var sheet = document.getElementById("keysheet");
     if (!sheet) return;
+    if (on) keysLastFocus = document.activeElement;
     sheet.hidden = !on;
     document.body.style.overflow = on ? "hidden" : "";
     if (on) {
       var c = sheet.querySelector(".close");
       if (c) c.focus();
+    } else if (keysLastFocus && keysLastFocus.focus) {
+      /* aria-modal promised a modal; a modal gives focus back */
+      keysLastFocus.focus();
     }
   }
   (function () {
@@ -372,9 +349,28 @@
     });
     sheet.addEventListener("keydown", function (e) {
       if (e.key === "Escape") { e.preventDefault(); keys(false); }
+      else if (e.key === "Tab") {
+        /* aria-modal also promised focus stays inside. The sheet holds a
+           checkbox and a button, so the trap walks its own controls. */
+        var f = [].slice.call(sheet.querySelectorAll("input, button"));
+        if (!f.length) return;
+        var first = f[0], last = f[f.length - 1];
+        if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+        else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+      }
     });
     var opener = document.getElementById("keysbtn");
     if (opener) opener.addEventListener("click", function () { keys(true); });
+    /* Single-key shortcuts can be turned off, for speech input and for
+       anyone whose stray key press keeps opening things (WCAG 2.1.4).
+       The choice stays in this browser, like the theme. */
+    var toggle = document.getElementById("keysingles");
+    if (toggle) {
+      toggle.checked = singlesOn();
+      toggle.addEventListener("change", function () {
+        try { localStorage.setItem(SINGLES, toggle.checked ? "on" : "off"); } catch (e) {}
+      });
+    }
   })();
 
   /* ------------------------------------------------------ the age --
@@ -401,9 +397,10 @@
     if (!groups.length) return;
     var qq = document.getElementById("q"),
         chipsEl = document.getElementById("chips"),
+        surfEl = document.getElementById("chips-surface"),
         noteEl = document.getElementById("resultnote"),
         none = document.getElementById("noresults"),
-        f = "all", total = 0;
+        f = "all", fs = "all", total = 0;
     var sets = groups.map(function (g) {
       var r = [].slice.call(g.querySelectorAll("ol.index > li"));
       total += r.length;
@@ -415,6 +412,7 @@
         var vis = 0;
         s.rows.forEach(function (li) {
           var ok = (f === "all" || li.getAttribute("data-kind") === f) &&
+                   (fs === "all" || li.getAttribute("data-surface") === fs) &&
                    (!term || (li.getAttribute("data-search") || "").indexOf(term) > -1);
           li.hidden = !ok; if (ok) vis++;
         });
@@ -431,14 +429,19 @@
       if (none) none.hidden = shown !== 0;
     }
     if (qq) qq.addEventListener("input", run);
-    if (chipsEl) chipsEl.addEventListener("click", function (e) {
-      var b = e.target.closest(".chip"); if (!b) return;
-      f = b.getAttribute("data-f");
-      [].slice.call(chipsEl.querySelectorAll(".chip")).forEach(function (c) {
-        c.setAttribute("aria-pressed", c === b ? "true" : "false");
+    function chipGroup(box, set) {
+      if (!box) return;
+      box.addEventListener("click", function (e) {
+        var b = e.target.closest(".chip"); if (!b) return;
+        set(b.getAttribute("data-f"));
+        [].slice.call(box.querySelectorAll(".chip")).forEach(function (c) {
+          c.setAttribute("aria-pressed", c === b ? "true" : "false");
+        });
+        run();
       });
-      run();
-    });
+    }
+    chipGroup(chipsEl, function (v) { f = v; });
+    chipGroup(surfEl, function (v) { fs = v; });
 
     /* A tag that looks like a filter should behave like one. Clicking one
        puts it in the search box, which is the control the reader already
@@ -463,6 +466,7 @@
       var tag = (e.target.tagName || "").toLowerCase();
       if (tag === "input" || tag === "textarea" || e.target.isContentEditable) return;
       if (e.metaKey || e.ctrlKey || e.altKey) return;
+      if (!singlesOn()) return;
       var pal = document.getElementById("cmdk");
       if (pal && !pal.hidden) return;
       var vis = [];
@@ -567,7 +571,11 @@
         if (j) { animate(j); io.unobserve(e.target); }
       });
     }, { threshold: 0.1, rootMargin: "0px 0px -4% 0px" });
-    jobs.forEach(function (j) { paint(j, 0); io.observe(j.el); });
+    /* The built value stays in the DOM until the count actually starts:
+       a screen reader or a reader arriving mid-page must never find a
+       statistic reading zero. The first animation frame takes it from
+       there. */
+    jobs.forEach(function (j) { io.observe(j.el); });
 
     /* A number showing zero is a wrong number, not a pending animation, so
        nothing is left waiting on an observer that may never report. This
@@ -632,7 +640,8 @@
       /* a short hold, so crossing a gap between two rows does not make
          the rail flicker back to its resting state */
       hold = setTimeout(function () {
-        out.hidden = true; rest.hidden = false; bar.style.width = "0";
+        out.hidden = true; rest.hidden = false;
+        if (bar) bar.style.width = "0";
       }, 260);
     }
     rows.forEach(function (r) {
@@ -651,6 +660,12 @@
   (function () {
     var heads = [].slice.call(document.querySelectorAll(".band .sechead h2, .hero .sechead h2"));
     if (!heads.length) return;
+    /* one polite live region for the copy confirmations, because the CSS
+       pseudo-content the anchor flashes is not reliably announced */
+    var live = document.createElement("span");
+    live.className = "sr";
+    live.setAttribute("aria-live", "polite");
+    document.body.appendChild(live);
     heads.forEach(function (h) {
       var sec = h.closest("section");
       if (!sec) return;
@@ -663,16 +678,17 @@
       a.href = "#" + sec.id;
       a.setAttribute("aria-label", "Link to this section: " + (h.textContent || "").trim());
       a.innerHTML = "&#167;";
-      a.addEventListener("click", function (e) {
-        /* the link still works as a link; the copy is the extra */
+      a.addEventListener("click", function () {
+        /* the link navigates as a link promises to; the copy is the extra,
+           and it is announced rather than only flashed */
         if (!navigator.clipboard) return;
-        e.preventDefault();
         var url = location.href.split("#")[0] + "#" + sec.id;
         navigator.clipboard.writeText(url).then(function () {
-          history.replaceState(null, "", "#" + sec.id);
           a.classList.add("copied");
+          live.textContent = "";
+          setTimeout(function () { live.textContent = "Link copied"; }, 30);
           setTimeout(function () { a.classList.remove("copied"); }, 1400);
-        }, function () { location.hash = sec.id; });
+        }, function () {});
       });
       h.appendChild(a);
     });
@@ -703,6 +719,23 @@
       if (!tick) { tick = true; requestAnimationFrame(run); }
     }, { passive: true });
     run();
+  })();
+
+  /* --------------------------------------------- the nav edge fade --
+     On narrow screens the nav scrolls sideways behind a mask fade that
+     signals more content. The CSS hook that lifts the fade at scroll end
+     was never driven by anything, so the last item stayed dimmed even
+     when fully in view. */
+  (function () {
+    var nav = document.querySelector("nav.main");
+    if (!nav) return;
+    function edge() {
+      nav.classList.toggle("scrolled-end",
+        nav.scrollLeft + nav.clientWidth >= nav.scrollWidth - 4);
+    }
+    nav.addEventListener("scroll", edge, { passive: true });
+    addEventListener("resize", edge);
+    edge();
   })();
 
   /* ------------------------------------------------ the nav underline

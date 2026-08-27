@@ -431,7 +431,7 @@ draw:{time:"~40s",art:String.raw`   UP bias                DOWN bias
  share price for        weaken union
  financing, M&A         position`,cap:"Name the motivation + the direction, every time."},
 one:{h:"Earnings mgmt",t:"direction follows motivation — up (covenant, bonus, financing) / down (big bath, tax, union)"},
-connects:[{to:"ch4-ltc",label:"cost-to-cost estimates"},{to:"ch6-foh",label:"overproduction absorbs fixed OH"},{to:"ch9-rd",label:"R&D capitalization discretion"},{to:"ch10-reval",label:"revaluation timing"}]},
+connects:[{to:"ch4-ltc",label:"cost-to-cost estimates"},{to:"ch6-foh",label:"overproduction absorbs fixed OH"},{to:"ch9-rd",label:"R&D capitalization discretion"},{to:"ch10-revroute",label:"revaluation timing"}]},
 
 {id:"ch1-emh",title:"Efficient Markets & the Mixed-Measurement Balance Sheet",std:[],tags:"efficient markets semi-strong form measurement historical cost market price insider",
 core:"Markets are <b>semi-strong-form</b> efficient — prices absorb all PUBLIC information fast, but not private information. So accounting uses market price where an efficient market exists, historical cost where it doesn't.",
@@ -2170,6 +2170,7 @@ const store={
 const MK_KEY="afm291.mark.v1";
 let MARKS={};
 try{MARKS=JSON.parse(store.get(MK_KEY)||"{}");}catch(e){MARKS={};}
+if(!MARKS||typeof MARKS!=="object")MARKS={};
 const saveMarks=()=>store.set(MK_KEY,JSON.stringify(MARKS));
 
 /* ---------- mount point: append a block into an existing concept card ---------- */
@@ -2409,6 +2410,7 @@ const {E,S,box,arrow,newSvg,mount,money,$m,rnd,pick,store}=O;
 /* ══════════ scoring ══════════ */
 const SC_KEY="afm291.score.v1";
 let SCORE={};try{SCORE=JSON.parse(store.get(SC_KEY)||"{}");}catch(e){SCORE={};}
+if(!SCORE||typeof SCORE!=="object")SCORE={};
 function bump(id,ok){
   const s=SCORE[id]=SCORE[id]||{n:0,k:0};
   s.n++;if(ok)s.k++;
@@ -2906,6 +2908,7 @@ function paintProgress(){
   const total=$$(".card").length;
   let s=0,k=0,w=0;
   for(const id in MARKS){
+    if(!D.getElementById("c-"+id))continue;
     if(MARKS[id]==="solid")s++;else if(MARKS[id]==="shaky")k++;else if(MARKS[id]==="weak")w++;
   }
   const bar=strip.querySelector(".pbar");
@@ -2954,6 +2957,7 @@ function harvestTraps(){
 }
 const BOX_KEY="afm291.box.v1";
 let BOXES={};try{BOXES=JSON.parse(store.get(BOX_KEY)||"{}");}catch(e){BOXES={};}
+if(!BOXES||typeof BOXES!=="object")BOXES={};
 const saveBoxes=()=>store.set(BOX_KEY,JSON.stringify(BOXES));
 let current=null;
 function weightedPick(){
