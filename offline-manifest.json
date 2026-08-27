@@ -1,6 +1,6 @@
 {
- "version": "e4aabd54f01f",
- "bytes": 14749144,
+ "version": "10ba0904f01d",
+ "bytes": 14734977,
  "files": [
   "InterVariable-sub.woff2",
   "about.html",
@@ -37,7 +37,6 @@
   "afm291-w9-ppe.html",
   "afm291.html",
   "apple-touch-icon.png",
-  "atlas-concepts.md",
   "atlas.html",
   "atlas.js",
   "brittle-network-protocol.md",
