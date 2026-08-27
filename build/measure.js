@@ -17,7 +17,7 @@ const path = require('path');
 const ROOT = path.dirname(__dirname);
 const SHELL = new Set(['index.html', 'library.html', 'about.html', '404.html',
                        'research.html', 'coursework.html', 'tools.html',
-                       'reader.html', 'colophon.html', 'admin.html']);
+                       'reader.html', 'colophon.html', 'admin.html', 'atlas.html']);
 const TYPES = { '.html': 'text/html; charset=utf-8', '.css': 'text/css', '.js': 'text/javascript',
                 '.json': 'application/json', '.webmanifest': 'application/manifest+json',
                 '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg',

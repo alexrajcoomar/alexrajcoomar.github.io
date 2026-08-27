@@ -12,7 +12,8 @@ import hashlib, json, os, re, sys
 
 ROOT  = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SHELL = {"index.html", "library.html", "about.html", "404.html", "research.html",
-         "coursework.html", "tools.html", "reader.html", "colophon.html", "admin.html"}
+         "coursework.html", "tools.html", "reader.html", "colophon.html", "admin.html",
+         "atlas.html"}
 
 def load(name, default):
     path = os.path.join(ROOT, "content", name)
