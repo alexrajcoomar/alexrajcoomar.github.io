@@ -1,8 +1,9 @@
 {
- "version": "5eb5f646e424",
- "bytes": 14735027,
+ "version": "0aaca1f0be1d",
+ "bytes": 14677367,
  "files": [
   "InterVariable-sub.woff2",
+  "README.md",
   "about.html",
   "afm241-cheat-sheet.html",
   "afm241-study-reference.html",

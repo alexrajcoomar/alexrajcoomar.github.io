@@ -4,8 +4,10 @@
    and the site shell, and its versioned name retires it whenever a cached
    file changes. PAGES holds everything a reader has visited, plus the full
    offline copy if they asked for one; it survives version bumps because its
-   contents are refreshed network-first on every online visit anyway. */
-const VERSION = "41db6564702c";
+   contents are refreshed network-first on every online visit anyway.
+   Caches named term-* belong to the /term/ instrument's own worker, which
+   manages its own versions; they are not this worker's to delete. */
+const VERSION = "b9e75552d620";
 const CORE    = "site-" + VERSION;
 const PAGES   = "site-pages-v1";
 const FILES   = [
@@ -38,7 +40,8 @@ self.addEventListener("activate", e => {
   e.waitUntil(
     caches.keys()
       .then(keys => Promise.all(
-        keys.filter(k => k !== CORE && k !== PAGES).map(k => caches.delete(k))))
+        keys.filter(k => k !== CORE && k !== PAGES && k.indexOf("term-") !== 0)
+          .map(k => caches.delete(k))))
       .then(() => self.clients.claim())
   );
 });
