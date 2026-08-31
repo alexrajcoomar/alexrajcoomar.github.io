@@ -6,7 +6,7 @@ This script never touches a piece's own HTML except to give it a way back
 into the site, and it never touches the stylesheet. Run by the GitHub
 Action on every push, so the site relists itself.
 """
-import datetime, hashlib, html, json, os, re, struct, sys
+import datetime, hashlib, html, json, os, re, sys
 
 ROOT    = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 CONTENT = json.load(open(os.path.join(ROOT, "content", "pieces.json"), encoding="utf-8"))
@@ -21,14 +21,6 @@ SHORT    = S["short"]
 EMAIL    = S["email"]
 SITE_URL = S["url"]
 BORN     = tuple(int(x) for x in S["born"].split("-"))
-# Recruiter fields. All optional: an empty value renders nothing, so the
-# owner fills them in pieces.json (or the editor) when he has them, and no
-# placeholder can ever look production-ready.
-RESUME    = (S.get("resume") or "").strip()
-LINKEDIN  = (S.get("linkedin") or "").strip()
-GITHUB    = (S.get("github") or "").strip()
-COOP_TERM = (S.get("coop_term") or "").strip()
-GRAD_YEAR = (S.get("grad_year") or "").strip()
 WPM      = 230
 DOC_MIN  = 1200
 TODAY    = datetime.date.today()
@@ -37,14 +29,6 @@ TODAY    = datetime.date.today()
 # the footer of every page used to print the old address while linking to the
 # new one, which is the single contradiction this site cannot afford.
 HOST     = SITE_URL.split("//", 1)[-1].rstrip("/")
-
-# The colophon describes the font subset in numbers, so those numbers are
-# measured from the shipped file and the cmap the subset was cut to, the same
-# way every other figure on the site is measured rather than typed.
-FONT_BYTES = os.path.getsize(os.path.join(ROOT, "InterVariable-sub.woff2"))
-FONT_CODEPOINTS = len([c for c in open(
-    os.path.join(HERE, "font-subset-cmap.txt"), encoding="utf-8"
-).read().strip().split(",") if c != ""])
 
 def reading_minutes(w): return max(1, round(w / WPM))
 
@@ -201,11 +185,7 @@ def head(title, desc, page, extra=""):
    embedded contexts throw on storage access. */
 (function(){{try{{var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);}}catch(e){{}}
 document.documentElement.className+=' js';}})();
-</script>
-<!-- A control that can do nothing is worse than no control: with scripts
-     off, the script-driven surfaces hide rather than sit dead. Everything
-     they reach remains reachable as plain links and server-rendered lists. -->
-<noscript><style>.hbtns,#keysbtn,.tools-bar,#corpusread,#atlasmini,.jsonly,.offline-controls{{display:none !important}}</style></noscript>{extra}
+</script>{extra}
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -242,19 +222,19 @@ def foot():
       <p class="small fnote">Accounting and Financial Management, Analytics stream, University of Waterloo. {len(P)} published pieces: research, interactive tools and references, all of them running rather than described.</p>
       <p class="small"><a class="inlink" href="mailto:{EMAIL}">{EMAIL}</a></p>
     </div>
-    <nav aria-label="Sections, from the footer">
+    <div>
       <h2>Sections</h2>
       <a href="research.html">Research and writing</a>
       <a href="coursework.html">Coursework</a>
       <a href="tools.html">Interactive tools</a>
       <a href="library.html">Full library</a>
-    </nav>
-    <nav aria-label="About this site">
+    </div>
+    <div>
       <h2>This site</h2>
       <a href="about.html">About and contact</a>
       <a href="colophon.html">Colophon and method</a>
       <a href="{SITE_URL}">{HOST}</a>
-    </nav>
+    </div>
   </div>
   <div class="fine">
     <span>&copy; {TODAY.year} {esc(NAME)}</span>
@@ -266,7 +246,7 @@ def foot():
      without it, and the button is the same route as the keyboard. -->
 <div class="cmdk" id="cmdk" hidden role="dialog" aria-modal="true" aria-label="Search all work">
   <div class="cmdk-panel">
-    <input id="cmdk-input" type="text" placeholder="Search {len(P)} pieces by title, course or topic" autocomplete="off" spellcheck="false" role="combobox" aria-expanded="false" aria-autocomplete="list" aria-controls="cmdk-list">
+    <input id="cmdk-input" type="text" placeholder="Search {len(P)} pieces by title, course or topic" autocomplete="off" spellcheck="false" aria-controls="cmdk-list">
     <ul class="cmdk-list" id="cmdk-list" role="listbox" aria-label="Results"></ul>
     <div class="cmdk-foot">
       <span><kbd>&#8593;</kbd><kbd>&#8595;</kbd> move</span><span><kbd>Enter</kbd> open</span><span><kbd>Esc</kbd> close</span>
@@ -290,9 +270,6 @@ def foot():
       <dt><kbd>g</kbd> <kbd>a</kbd></dt><dd>About</dd>
       <dt><kbd>?</kbd></dt><dd>This list</dd>
     </dl>
-    <p class="keys-pref"><label><input type="checkbox" id="keysingles" checked>
-      Single-key shortcuts. Turn these off if a key press where you did not
-      mean one keeps opening things; search stays on <kbd>&#8984;</kbd><kbd>K</kbd>.</label></p>
     <button class="close" type="button">Close</button>
   </div>
 </div>
@@ -356,35 +333,14 @@ def row(n, p):
         </a>
       </li>"""
 
-def feature(p, delay=0, h=3):
-    # The whole card stays clickable through the stretched title link, but the
-    # link itself is the title, so a screen reader's link list announces a
-    # name rather than the card's entire text: the old whole-card anchor made
-    # the ~90-word blurb part of every link's accessible name.
-    # The heading level is a parameter because the same card sits under an h2
-    # band head on most pages and under an h3 course head on coursework.html,
-    # where an h3 card would read as the course's sibling rather than its
-    # member.
-    return f"""      <article class="feature rise" style="transition-delay:{delay}ms">
+def feature(p, delay=0):
+    return f"""      <a class="feature rise" style="transition-delay:{delay}ms" href="{p['url']}">
         <span class="kindrow">{kind_chip(p)}{surf(p)}</span>
-        <h{h}><a class="cardlink" href="{p['url']}">{esc(p['t'])}</a></h{h}>
+        <h3>{esc(p['t'])}</h3>
         <p>{esc(p['blurb'])}</p>
         {sig(p, with_surface=False)}
         <span class="go">Open <span class="arrow" aria-hidden="true">&#8594;</span></span>
-      </article>"""
-
-
-def feature_compact(p, delay=0):
-    # The home page is the skim surface, so its cards carry the standfirst
-    # rather than the full blurb; the blurbs stay on the section pages and in
-    # the library, one click away, where the reader has chosen depth.
-    return f"""      <article class="feature feature-c rise" style="transition-delay:{delay}ms">
-        <span class="kindrow">{kind_chip(p)}{surf(p)}</span>
-        <h3><a class="cardlink" href="{p['url']}">{esc(p['t'])}</a></h3>
-        <p>{esc(p['s'])}</p>
-        {sig(p, with_surface=False)}
-        <span class="go">Open <span class="arrow" aria-hidden="true">&#8594;</span></span>
-      </article>"""
+      </a>"""
 
 
 def _smallest_label(d):
@@ -418,13 +374,6 @@ def strip_svg(fid):
     art  = w * 1.10
     floor = min(art, art * (10.5 / _smallest_label(d)))
     svg = svg.replace("<svg ", f'<svg style="max-width:{art:.0f}px;min-width:{floor:.0f}px" ', 1)
-    # The source page wires its .hit groups to a tooltip script that the
-    # shell does not carry, so the lifted copy must not promise interaction
-    # it cannot deliver: no tab stop, no nested img role inside the figure's
-    # own img role, and no aria-label either, which is prohibited on a plain
-    # group. The figure's own label and caption carry the description.
-    svg = re.sub(r'<g class="hit" tabindex="0" role="img" aria-label="[^"]*"',
-                 '<g class="hit"', svg)
     return svg
 
 def lifted(fid, rule, title, note, href):
@@ -489,6 +438,7 @@ def fit(sid):
 """The corpus figure. Static SVG, generated at build time, so it renders
 with JavaScript disabled and prints. Geometry is computed here rather than
 hand-written, which is what keeps labels from colliding."""
+import html
 
 
 UNIT   = 500      # words per square. Declared once, never rescaled.
@@ -524,10 +474,7 @@ def corpus_svg():
     h = y + 4.0
     w = x0 + plotw + GAPW + NUMW
 
-    # role="group", not "img": an img role marks its descendants
-    # presentational, and every row in this drawing is a real link. A group
-    # keeps the label and leaves the links to be what they are.
-    out = [f'<svg viewBox="0 0 {w:.0f} {h:.0f}" width="100%" role="group" '
+    out = [f'<svg viewBox="0 0 {w:.0f} {h:.0f}" width="100%" role="img" '
            f'aria-label="Every published document drawn at one square per {UNIT} words. '
            f'Independent work is drawn solid, coursework as open outlines. '
            f'The independent block and the coursework block are close to the same size." '
@@ -622,43 +569,8 @@ figs = _FigsShim()
 def page_index():
     recent = [p for p in P if p["surface"] != "personal"][:4]
     feats  = [p for p in P if p["featured"]][:6]
-    # The one directed action on the page names its target, so the target is
-    # computed: the first independent piece in the owner's order, the same
-    # piece the research page puts on top.
-    first_indep = next(p for p in P if p["surface"] == "independent")
-    n_undrawn = sum(1 for p in P if not p["is_doc"])
     gt = figs.group_totals()
-
-    # The Crucible system's weight lives in its runs, which are References
-    # and therefore never surfaced beside the hub on this page: the two
-    # largest artifacts on the site (60k and 53k words) were invisible from
-    # the home page. The band is emitted only while the pieces exist, and
-    # every number on it is measured.
-    _cru_slugs = ["crucible-cockpit", "crucible-run-0", "crucible-run-b", "crucible-run-c"]
-    _by_slug = {p["slug"]: p for p in P}
-    cru = [_by_slug[s] for s in _cru_slugs if s in _by_slug]
-    cru_runs = [p for p in cru if p["slug"] != "crucible-cockpit"]
-    cru_words = sum(p["words"] for p in cru_runs)
-    crucible_band = ""
-    if len(cru_runs) >= 2:
-        sysitems = "\n".join(f"""      <a class="sysitem" href="{p['url']}">
-        <span class="sys-t">{esc(p['t'])}</span>
-        <span class="sys-m">{esc(p['k'])} &middot; <b class="tnum">{p['words']:,}</b> words</span>
-      </a>""" for p in cru)
-        crucible_band = f"""
-<section class="band shell" id="crucible">
-  <div class="sechead">
-    <h2>One system, on the record</h2>
-    <p class="note">Crucible Cockpit is the hub and deliberately small; the weight stands in the runs
-    behind it: a hindsight-locked backtest and two live audits, published with their graveyards,
-    rejected attacks and unabridged transcripts.</p>
-    <span class="count">{cru_words:,} words of runs</span>
-  </div>
-  <div class="sysgrid rise">
-{sysitems}
-  </div>
-</section>
-"""
+    indep_share = round(gt["independent"] / (gt["independent"] + gt["course"] + gt["personal"]) * 100)
     ATLAS_N, ATLAS_PTS, ATLAS_SHARED = atlas_teaser_bits()
 
     rail = "".join(f"""      <a href="{p['url']}">
@@ -695,9 +607,9 @@ def page_index():
         <div><b class="tnum">{N_TOOLS}</b><span>interactive tools, {N_PWA} installable</span></div>
       </div>
       <p class="hero-contact rise" style="transition-delay:220ms">
-        <a class="inlink" href="mailto:{EMAIL}">{EMAIL}</a>
+        <a class="inlink" href="mailto:leesharamrajcoomar@gmail.com">leesharamrajcoomar@gmail.com</a>
         <span aria-hidden="true">&middot;</span>
-        <a class="inlink" href="about.html">About me</a>{"".join(chr(10) + '        <span aria-hidden="true">&middot;</span> ' + a for a in profile_links())}
+        <a class="inlink" href="about.html">About me</a>
       </p>
     </div>
     <aside class="rail rise hero-rail" style="transition-delay:240ms" aria-label="Most recent work">
@@ -710,40 +622,38 @@ def page_index():
 
 <section class="band shell">
   <div class="sechead">
-    <h2>Selected work</h2>
-    <p class="note">The pieces I keep at the front: together they show the range of the method in the
-    least space, and each one states its own rule for what its marks mean. If you have ten minutes,
-    open <a href="{first_indep['url']}">{esc(first_indep['t'])}</a>.</p>
-    <span class="count">{len(feats)} of {len(P)}</span>
-  </div>
-  <div class="features">
-{chr(10).join(feature_compact(p, n*45) for n, p in enumerate(feats))}
-  </div>
-</section>
-{crucible_band}
-<section class="band shell">
-  <div class="sechead">
-    <h2>The three sections</h2>
-    <p class="note">Where everything lives, and what is in each.</p>
+    <h2>Start here</h2>
+    <p class="note">The three sections, and what is in each. If you have ten minutes, open the first piece under research.</p>
     <span class="count">3 sections</span>
   </div>
   <div class="features">
-      <article class="feature rise">
+      <a class="feature rise" href="research.html">
         <span class="kindrow"><span class="kind">Research and writing</span></span>
-        <h3><a class="cardlink" href="research.html">Independent research</a></h3>
-        <p>Data essays, audited references and a study edition, each with its own declared rule for what its marks mean, plus the method pieces on how the work gets built and audited.</p>
+        <h3>Independent research</h3>
+        <p>Four data essays and a study edition, each with its own declared rule for what its marks mean, plus the method pieces on how the work gets built and audited.</p>
         <span class="go">{N_INDEP} pieces <span class="arrow" aria-hidden="true">&#8594;</span></span>
-      </article>      <article class="feature rise">
+      </a>      <a class="feature rise" href="tools.html">
         <span class="kindrow"><span class="kind">Interactive tools</span></span>
-        <h3><a class="cardlink" href="tools.html">{N_TOOLS} things you can use</a></h3>
+        <h3>{N_TOOLS} things you can use</h3>
         <p>Interactive trainers and daily instruments. {N_PWA} of them install to a phone home screen.</p>
         <span class="go">{N_TOOLS} pieces <span class="arrow" aria-hidden="true">&#8594;</span></span>
-      </article>      <article class="feature rise">
+      </a>      <a class="feature rise" href="coursework.html">
         <span class="kindrow"><span class="kind">Coursework</span></span>
-        <h3><a class="cardlink" href="coursework.html">Grouped by course</a></h3>
+        <h3>Grouped by course</h3>
         <p>Every reference and trainer, sorted into the {len(COURSES)} courses they were built for, with a coverage table.</p>
         <span class="go">{N_COURSE} pieces <span class="arrow" aria-hidden="true">&#8594;</span></span>
-      </article>
+      </a>
+  </div>
+</section>
+
+<section class="band shell">
+  <div class="sechead">
+    <h2>Selected work</h2>
+    <p class="note">Chosen because together they show the widest range: a study edition, an audited final, a negative result, a comparative primer, and the tools people actually use.</p>
+    <span class="count">{len(feats)} of {len(P)}</span>
+  </div>
+  <div class="features">
+{chr(10).join(feature(p, n*45) for n, p in enumerate(feats))}
   </div>
 </section>
 
@@ -754,11 +664,10 @@ def page_index():
     <span class="count">{TOTAL_WORDS:,} words</span>
   </div>
   <div class="corpus">
-    <a class="skip" href="#corpus-table">Skip the drawing to the table of its numbers</a>
     <div class="plot rise">
       {figs.corpus_svg()}
     </div>
-    <aside class="rail-app" aria-label="How to read the figure">
+    <aside class="rail-app">
       <h3>How to read it</h3>
       <p><b>One square is {figs.UNIT} words.</b> The square never rescales, so a long piece is
       long on the page.</p>
@@ -784,14 +693,13 @@ def page_index():
       end. {gt['independent']:,} were written because I wanted the answer and nobody asked for
       them. The two blocks are not the same size, and the drawing says so rather than the
       caption.</p>
-      <p>{n_undrawn} pieces are not drawn: each renders under {DOC_MIN:,} words, the floor the
-      <a class="inlink" href="colophon.html">colophon</a> sets for measuring a document. The drill
-      engines among them hold their content in code, so a word count would understate them badly;
-      they are counted on the <a class="inlink" href="tools.html">tools page</a> instead.</p>
+      <p>Four of the drill engines are not drawn: they render a few hundred words and hold the
+      rest in code, so a word count would understate them badly. They are counted on the
+      <a class="inlink" href="tools.html">tools page</a> instead.</p>
       <p><a class="openlink" href="colophon.html">How every number here is measured &#8594;</a></p>
     </aside>
   </div>
-  <details class="tv spaced" id="corpus-table">
+  <details class="tv spaced">
     <summary>The numbers behind the figure</summary>
     {figs.corpus_table()}
   </details>
@@ -875,15 +783,7 @@ def page_research():
     # anything is published above it
     lead = max(items, key=lambda x: x["words"])
     rest = [x for x in items if x is not lead]
-    # This page describes the pieces themselves, so it sums every word in the
-    # group. The corpus figure's documents-only total is a different
-    # instrument and lives with the figure that draws it; publishing the two
-    # different totals under the same label is how the research and library
-    # pages came to disagree by 1,339 words.
-    iw = sum(p["words"] for p in items)
-    n_essay = sum(1 for p in items if p["k"] == "Essay")
-    n_ref   = sum(1 for p in items if p["k"] == "Reference")
-    n_tool  = sum(1 for p in items if p["k"] == "Tool")
+    gt = figs.group_totals()
 
     spec = SPECIMEN_OF.get(lead["slug"])
     leadfig = ""
@@ -892,23 +792,6 @@ def page_research():
                    f'      <div class="fig">{fit(spec[0])}</div>\n'
                    f'      <p class="figcap">{esc(spec[1])}</p>\n'
                    f'    </div>')
-    else:
-        # A lead with no registered specimen used to leave its whole second
-        # column empty. The slot now carries the lead's measured profile,
-        # in the same facts component the about page uses.
-        share = round(lead["words"] / iw * 100) if iw else 0
-        frows = [f'<div><b>Words</b><span class="tnum">{lead["words"]:,}</span></div>']
-        if lead["mins"]:
-            frows.append(f'<div><b>Reading time</b><span class="tnum">{lead["mins"]} min</span></div>')
-        if lead["figures"]:
-            frows.append(f'<div><b>Figures</b><span class="tnum">{lead["figures"]}</span></div>')
-        if lead["tables"]:
-            frows.append(f'<div><b>Tables</b><span class="tnum">{lead["tables"]}</span></div>')
-        frows.append(f'<div><b>Share</b><span><span class="tnum">{share}%</span> of the independent words</span></div>')
-        leadfig = ('<div class="facts leadfacts" aria-label="Measured profile of the lead piece">\n      '
-                   + "\n      ".join(frows)
-                   + f'\n      <p class="small fnote">Counted from the rendered page by the build. '
-                   f'<a class="inlink" href="colophon.html">The definitions</a>.</p>\n    </div>')
 
     blocks = []
     for p in rest:
@@ -930,11 +813,11 @@ def page_research():
   <h1 class="h1">Research and writing</h1>
   <p class="lede">{len(items)} pieces where the argument is the point. Every one of them started because
   I did not believe a claim, or could not find two jurisdictions held apart properly, and the fastest
-  way to find out was to build the thing. {iw:,} words, none of them assigned.</p>
+  way to find out was to build the thing. {gt['independent']:,} words, none of them assigned.</p>
 {section_guide("research.html")}
   <div class="stats">
     <div><b class="tnum">{len(items)}</b><span>independent pieces</span></div>
-    <div><b class="tnum">{iw:,}</b><span>words</span></div>
+    <div><b class="tnum">{gt['independent']:,}</b><span>words</span></div>
     <div><b class="tnum">{sum(p['figures'] for p in items)}</b><span>figures, hand-built</span></div>
     <div><b class="tnum">{sum(p['tables'] for p in items)}</b><span>tables of underlying numbers</span></div>
   </div>
@@ -954,7 +837,7 @@ def page_research():
       <p class="blurb">{esc(lead['blurb'])}</p>
       <div class="demo"><b>What it demonstrates</b>{esc(lead['demo'])}</div>
       {sig(lead, with_surface=False)}
-      <p class="plate-nav"><a class="pbtn pbtn-go" href="{lead['url']}">Open the {esc(lead['k'].lower())} <span aria-hidden="true">&#8594;</span></a></p>
+      <p class="plate-nav"><a class="pbtn pbtn-go" href="{lead['url']}">Open the study edition <span aria-hidden="true">&#8594;</span></a></p>
     </div>
     {leadfig}
   </article>
@@ -963,7 +846,7 @@ def page_research():
 <section class="band shell">
   <div class="sechead">
     <h2>The rest</h2>
-    <p class="note">Each opens as a self-contained page.</p>
+    <p class="note">Newest first. Each opens as a self-contained page.</p>
     <span class="count">{len(rest)} pieces</span>
   </div>
   <div class="stack">
@@ -992,26 +875,19 @@ def page_research():
 </section>
 """
     return head(f"Research and writing — {SHORT}",
-                f"{len(items)} independent research pieces by Alex Rajcoomar: {n_essay} essays, "
-                f"{n_ref} references and {n_tool} tool{'s' if n_tool != 1 else ''}, "
-                f"{iw:,} words, every figure carrying its source.",
+                f"{len(items)} independent research pieces by Alex Rajcoomar: data essays, a study edition "
+                f"and an audited final, {gt['independent']:,} words, every figure carrying its source.",
                 "research.html") + body + foot()
 
 def page_tools():
     items = [p for p in P if p["k"] == "Tool"]
-    # A drill engine is a tool the measurement floor filed as an instrument:
-    # it renders under DOC_MIN words and holds the rest in code. The split is
-    # computed, because the last hand-typed version of this sentence said
-    # "four and two" over a seven-item page.
-    n_drill = sum(1 for p in items if not p["is_doc"])
-    n_full  = len(items) - n_drill
     body = f"""<div class="hero tight shell">
   {section_eyebrow("tools.html")}
   <h1 class="h1">Interactive tools</h1>
   <p class="lede">{len(items)} things you use rather than read. {N_PWA} of them install to a phone home
-  screen. {n_drill} are drill engines that hold their question banks in code, so they carry no reading
-  time: a drill has no length, only a session. The other {n_full} render{'s' if n_full == 1 else ''} a full document on load and
-  {'is' if n_full == 1 else 'are'} measured like one.</p>
+  screen. Four are drill engines that hold their question banks in code, so they carry no reading
+  time: a drill has no length, only a session. The other two render a full document on load and are
+  measured like one.</p>
 {section_guide("tools.html")}
 </div>
 <section class="band shell">
@@ -1059,7 +935,7 @@ def page_coursework():
     <p class="gnote">{len(cs)} piece{'s' if len(cs)!=1 else ''}, {sum(p['words'] for p in cs):,} words.</p>
     <span class="gcount">{len(cs)}</span></div>
   <div class="features">
-{chr(10).join(feature(p, h=4) for p in cs)}
+{chr(10).join(feature(p) for p in cs)}
   </div>""")
 
     body = f"""<div class="hero tight shell">
@@ -1137,12 +1013,6 @@ def page_library():
       <button class="chip" type="button" data-f="tool" aria-pressed="false">Tools</button>
       <button class="chip" type="button" data-f="reference" aria-pressed="false">References</button>
     </div>
-    <div class="chipset" id="chips-surface" role="group" aria-label="Filter by what asked for the work">
-      <button class="chip" type="button" data-f="all" aria-pressed="true">Any origin</button>
-      <button class="chip" type="button" data-f="independent" aria-pressed="false">Independent</button>
-      <button class="chip" type="button" data-f="course" aria-pressed="false">Coursework</button>
-      <button class="chip" type="button" data-f="personal" aria-pressed="false">Personal</button>
-    </div>
     <div class="sortset">
       <label class="sr" for="sort">Order</label>
       <select id="sort">
@@ -1163,32 +1033,9 @@ def page_library():
                 f"All {len(P)} pieces by Alex Rajcoomar, split into independent work and coursework, with reading time and density on each.",
                 "library.html") + body + foot()
 
-def profile_links(css="inlink"):
-    """The optional recruiter links, each rendered only where a value
-    exists in pieces.json's site block."""
-    out = []
-    if LINKEDIN:
-        out.append(f'<a class="{css}" href="{esc(LINKEDIN)}">LinkedIn</a>')
-    if GITHUB:
-        out.append(f'<a class="{css}" href="{esc(GITHUB)}">GitHub</a>')
-    if RESUME:
-        out.append(f'<a class="{css}" href="{esc(RESUME)}">Resume</a>')
-    return out
-
-
 def page_about():
     gt = figs.group_totals()
-    # Optional recruiter rows: absent values render nothing at all, so the
-    # section carries no empty shelves while the owner has not filled them.
-    seek_bits = []
-    if COOP_TERM:
-        seek_bits.append(f'<div><b>Seeking</b><span>{esc(COOP_TERM)}</span></div>')
-    if GRAD_YEAR:
-        seek_bits.append(f'<div><b>Graduation</b><span class="tnum">{esc(GRAD_YEAR)}</span></div>')
-    if profile_links():
-        seek_bits.append('<div><b>Profiles</b><span>'
-                         + ' &middot; '.join(profile_links()) + '</span></div>')
-    recruit_rows = ("\n    " + "\n    ".join(seek_bits)) if seek_bits else ""
+    indep_share = round(gt["independent"] / (gt["independent"] + gt["course"] + gt["personal"]) * 100)
     body = f"""<div class="hero tight shell">
   <p class="eyebrow accent">About</p>
   <div class="namerow">
@@ -1212,7 +1059,7 @@ def page_about():
     <div><b>Focus</b><span>Financial reporting under IFRS and ASPE, Canadian tax, and the analytics side of accounting.</span></div>
     <div><b>Standing interests</b><span>The science of learning, judgment under uncertainty, and capital cycles. Outside coursework, AI in medicine and commercial spaceflight.</span></div>
     <div><b>Contact</b><span><a class="inlink" href="mailto:{EMAIL}">{EMAIL}</a></span></div>
-    <div><b>This site</b><span><a class="inlink" href="{SITE_URL}">{HOST}</a></span></div>{recruit_rows}
+    <div><b>This site</b><span><a class="inlink" href="{SITE_URL}">{HOST}</a></span></div>
   </div>
 </section>
 
@@ -1255,7 +1102,7 @@ def page_about():
     nobody assigned. The corpus figure on the <a href="index.html#corpus">home page</a> draws that
     split rather than claiming it.</p>
 
-    <h3>How the work is organised</h3>
+    <h2>How the work is organised</h2>
     <ul>
       <li><strong>Research and writing</strong> holds the pieces where the argument is the point, plus
       the method work on how the rest gets built and audited.</li>
@@ -1265,7 +1112,7 @@ def page_about():
       phone home screen.</li>
     </ul>
 
-    <h3>A note on the material</h3>
+    <h2>A note on the material</h2>
     <p>These are my own artefacts, written by me for my own use. They are not course materials,
     not official solutions, and not a substitute for the standards themselves. Where a figure or a
     rule matters, check the primary source: the CPA Canada Handbook, the Income Tax Act, or the CRA.</p>
@@ -1279,27 +1126,15 @@ def page_about():
                 "Alex Rajcoomar, Accounting and Financial Management student in the Analytics stream at the University of Waterloo.",
                 "about.html", extra="\n" + jsonld_person()) + body + foot()
 
-# One selection rule for the full-offline copy, stated once: the colophon's
-# "about N MB" and the manifest the service worker reads were two copies of
-# this logic evaluated at different points in the build, which is how they
-# could drift. The skip set also keeps repo documentation out of a reader's
-# phone: the handoff notes and the README serve the repository, not an
-# offline reader (mscore.py stays: a piece ships it on purpose).
-OFFLINE_EXT  = (".html", ".css", ".js", ".woff2", ".webmanifest",
-                ".pdf", ".md", ".csv", ".py", ".png")
-OFFLINE_SKIP = {"og-card.png", "sw.js", "admin.html", "404.html",
-                "HANDOFF.md", "README.md"}
-
-def offline_files():
-    return sorted(
-        f for f in os.listdir(OUT)
-        if f.endswith(OFFLINE_EXT) and f not in OFFLINE_SKIP
-        and os.path.isfile(os.path.join(OUT, f)))
-
 def page_colophon():
     gt = figs.group_totals()
+    _ext = (".html", ".css", ".js", ".woff2", ".webmanifest",
+            ".pdf", ".md", ".csv", ".py", ".png")
+    _skip = {"og-card.png", "sw.js", "admin.html", "404.html"}
     OFF_MB = round(sum(
-        os.path.getsize(os.path.join(OUT, f)) for f in offline_files()) / 1048576)
+        os.path.getsize(os.path.join(OUT, f)) for f in os.listdir(OUT)
+        if f.endswith(_ext) and f not in _skip
+        and os.path.isfile(os.path.join(OUT, f))) / 1048576)
     body = f"""<div class="hero tight shell">
   <p class="eyebrow accent">Colophon</p>
   <h1 class="h1">How this site is built, and how it counts.</h1>
@@ -1366,11 +1201,8 @@ def page_colophon():
       the running text, and every mark that means something also differs in fill or shape.</dd>
 
       <dt>Typography</dt>
-      <dd>Inter Variable, subset to the {FONT_CODEPOINTS} characters the corpus actually uses and
-      self-hosted at {FONT_BYTES:,} bytes, with a metric-matched fallback face so the page does not
-      reflow when the font lands. If the file fails to load, the site keeps working on the system
-      stack. The build fails on any page character the subset lacks, so the number above is checked
-      rather than believed.</dd>
+      <dd>Inter Variable, loaded from a public CDN with a metric-matched fallback so the page does not
+      reflow when the webfont lands. If the CDN fails, the site keeps working on the system stack.</dd>
 
       <dt>Surfaces</dt>
       <dd>Warm paper, near-black ink, hairline rules, one accent, no rounded corners, no drop shadows,
@@ -1422,9 +1254,9 @@ def page_colophon():
   <div class="prose measure">
     <p>This site installs. In Safari on a phone, open the share sheet and choose
     <b>Add to Home Screen</b>: the site becomes an app icon, and every page you
-    have visited already works with no connection. To hold all of it, every
-    piece, the atlas, the tools and the data files, press the button below
-    once while online. Everything refreshes itself quietly whenever the
+    have visited already works with no connection. To hold the whole site
+    — every piece, the atlas, the tools, the data files — press the button
+    below once while online. Everything refreshes itself quietly whenever the
     installed copy is opened with a connection.</p>
     <p class="offline-controls">
       <button type="button" id="offline-save" class="linkbtn">Keep the whole site on this phone</button>
@@ -1533,6 +1365,18 @@ RETURN_BAR = """
   display:inline-grid;place-items:center;width:1.2rem;height:1.2rem;flex:none;
   background:#16150f;color:#faf9f6;font-size:.72rem;font-weight:700;
 }
+#__rb-pill{
+  position:fixed;left:14px;bottom:14px;z-index:2147483000;
+  display:inline-flex;align-items:center;gap:.45rem;padding:.58rem .9rem;
+  background:rgba(22,21,15,.93);color:#faf9f6;text-decoration:none;border-radius:99px;
+  font:600 12.5px/1 InterVar,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  border:1px solid rgba(255,255,255,.16);box-shadow:0 6px 22px rgba(0,0,0,.28);
+  opacity:0;transform:translateY(6px);pointer-events:none;
+  transition:opacity .2s ease,transform .2s ease;
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+}
+#__rb-pill.__on{opacity:1;transform:none;pointer-events:auto}
+#__rb-pill:hover{background:#16150f;color:#fff}
 /* Dark has to answer to two things: the reader's system setting, and the
    theme button on the page, which sets data-theme on <html>. Keyed to the
    media query alone, the bar stayed paper-white across the top of an essay
@@ -1545,18 +1389,23 @@ RETURN_BAR = """
   :root:not([data-theme="light"]) #__rb .__rb-home i{color:#948f85}
   :root:not([data-theme="light"]) #__rb a{color:#85adea}
   :root:not([data-theme="light"]) #__rb .__mark{background:#f7f5ef;color:#131310}
+  :root:not([data-theme="light"]) #__rb-pill{background:rgba(247,245,239,.95);color:#131310;border-color:rgba(0,0,0,.2)}
+  :root:not([data-theme="light"]) #__rb-pill:hover{background:#fff;color:#000}
 }
 :root[data-theme="dark"] #__rb{background:#131310;border-bottom-color:#2c2b24;color:#c0bcb1}
 :root[data-theme="dark"] #__rb .__rb-home{color:#f7f5ef}
 :root[data-theme="dark"] #__rb .__rb-home i{color:#948f85}
 :root[data-theme="dark"] #__rb a{color:#85adea}
 :root[data-theme="dark"] #__rb .__mark{background:#f7f5ef;color:#131310}
-@media print{#__rb{display:none !important}}
+:root[data-theme="dark"] #__rb-pill{background:rgba(247,245,239,.95);color:#131310;border-color:rgba(0,0,0,.2)}
+:root[data-theme="dark"] #__rb-pill:hover{background:#fff;color:#000}
+@media (prefers-reduced-motion:reduce){#__rb-pill{transition:none}}
+@media print{#__rb,#__rb-pill{display:none !important}}
 </style>
-<nav id="__rb" aria-label="Portfolio">
+<div id="__rb">
   <a class="__rb-home" href="index.html"><span class="__mark" aria-hidden="true">A</span>Alex Rajcoomar <i>portfolio</i></a>
-  <span class="__rb-right"><a href="__UP__">__UPNAME__</a><a href="atlas.html">Atlas</a><a href="library.html">All work</a></span>
-</nav>
+  <span class="__rb-right"><a href="__UP__">__UPNAME__</a><a href="library.html">All work</a></span>
+</div>
 <script>
 /* the trail: which passages this browser has opened. The atlas reads it and
    rings them; the record lives in localStorage and never leaves the machine. */
@@ -1573,7 +1422,7 @@ RETURN_BAR = """
     function put(key){
       if(t2[key]||Object.keys(t2).length<500){
         t2[key]=(t2[key]||0)+1;
-        try{localStorage.setItem(k,JSON.stringify(t2));}catch(e){}
+        localStorage.setItem(k,JSON.stringify(t2));
       }
     }
     put(u+location.hash);
@@ -1586,49 +1435,13 @@ RETURN_BAR = """
 
 RETURN_PILL = """
 <!--__rbp-->
-<!-- The pill styles itself: this block used to live only with the top bar,
-     so the seven tool pages, which carry the pill alone, rendered it as an
-     unstyled link at the very end of the document. Whatever carries the
-     pill now carries its style. -->
-<style id="__rbp-style">
-#__rb-pill{
-  position:fixed;left:14px;bottom:14px;z-index:2147483000;
-  display:inline-flex;align-items:center;gap:.45rem;padding:.58rem .9rem;
-  background:rgba(22,21,15,.93);color:#faf9f6;text-decoration:none;border-radius:99px;
-  font:600 12.5px/1 InterVar,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
-  border:1px solid rgba(255,255,255,.16);box-shadow:0 6px 22px rgba(0,0,0,.28);
-  opacity:0;transform:translateY(6px);pointer-events:none;
-  transition:opacity .2s ease,transform .2s ease;
-  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
-}
-#__rb-pill.__on{opacity:1;transform:none;pointer-events:auto}
-#__rb-pill:hover{background:#16150f;color:#fff}
-@media (prefers-color-scheme:dark){
-  :root:not([data-theme="light"]) #__rb-pill{background:rgba(247,245,239,.95);color:#131310;border-color:rgba(0,0,0,.2)}
-  :root:not([data-theme="light"]) #__rb-pill:hover{background:#fff;color:#000}
-}
-:root[data-theme="dark"] #__rb-pill{background:rgba(247,245,239,.95);color:#131310;border-color:rgba(0,0,0,.2)}
-:root[data-theme="dark"] #__rb-pill:hover{background:#fff;color:#000}
-@media (prefers-reduced-motion:reduce){#__rb-pill{transition:none}}
-@media print{#__rb-pill{display:none !important}}
-</style>
-<!-- With scripts off nothing ever adds the __on class, and the only way
-     back from a tool page vanished. The pill needs its script for the
-     scroll threshold, not for existing. -->
-<noscript><style>#__rb-pill{opacity:1 !important;transform:none !important;pointer-events:auto !important}</style></noscript>
 <a id="__rb-pill" href="__UP__">&#8592; __UPNAME__</a>
 <script>
 (function(){
   var p=document.getElementById('__rb-pill'); if(!p) return;
-  /* On a page with the top bar the pill waits until the bar has scrolled
-     out of reach. On a page without one (the tools carry no bar, because a
-     bar inside a full-screen application sits in the wrong place) the pill
-     is the only way back, so it is there from the first paint: a tool
-     screen shorter than the threshold used to strand the reader entirely. */
-  var TH=document.getElementById('__rb')?160:-1;
   var t=false;
   function run(){ t=false;
-    p.classList.toggle('__on',(window.scrollY||document.documentElement.scrollTop)>TH); }
+    p.classList.toggle('__on',(window.scrollY||document.documentElement.scrollTop)>420); }
   function q(){ if(!t){ t=true; requestAnimationFrame(run); } }
   addEventListener('scroll',q,{passive:true}); run();
 })();
@@ -1646,7 +1459,7 @@ RETURN_PILL = """
     function put(key){
       if(t2[key]||Object.keys(t2).length<500){
         t2[key]=(t2[key]||0)+1;
-        try{localStorage.setItem(k,JSON.stringify(t2));}catch(e){}
+        localStorage.setItem(k,JSON.stringify(t2));
       }
     }
     put(u+location.hash);
@@ -1669,7 +1482,6 @@ _INJECTED = [
     r"<!-- injected by the site build.*?-->",
     r'<style id="__rb-style">.*?</style>',
     r'<div id="__rb">.*?</div>',
-    r'<nav id="__rb".*?</nav>',
     r'<span class="__rb-right">.*?</span>\s*</div>',
     r'<a id="__rb-pill"[^>]*>.*?</a>',
     r"<script>\s*\(function\(\)\{\s*var p=document\.getElementById\('__rb-pill'\).*?</script>",
@@ -1891,94 +1703,6 @@ def fix_stale_host(path):
     return False
 
 
-# The shared assets carry a content digest in their URL on every generated
-# page, so a deploy can never serve yesterday's stylesheet against today's
-# markup. The pieces that link those same assets referenced them bare, which
-# is exactly that failure, made one visit longer by the service worker's
-# cache-first strategy. Rewritten to the current digest on every build;
-# idempotent because the digest is a function of the asset's content.
-_ASSET_LINK = re.compile(
-    r'\b(href|src)="(site\.css|figures\.css|site\.js|atlas\.js)(\?v=[0-9a-f]{8})?"')
-
-def version_assets(path):
-    try:
-        text = open(path, encoding="utf-8", errors="ignore").read()
-    except Exception:
-        return False
-    fixed = _ASSET_LINK.sub(lambda m: f'{m.group(1)}="{asset(m.group(2))}"', text)
-    if fixed != text:
-        os.chmod(path, 0o644)
-        open(path, "w", encoding="utf-8").write(fixed)
-        return True
-    return False
-
-
-# The converted notes carry two h1s: the site masthead's, copied in when the
-# note was converted, and the document's own inside .docbody. Two h1s make
-# the document read as two documents to heading navigation. The masthead is
-# site furniture, so its h1 is demoted to a styled paragraph; the document's
-# own h1, which is content, stays the page's one h1.
-_DOCMAST_H1 = re.compile(
-    r'(<header class="docmast">.*?)<h1>(.*?)</h1>', re.S)
-
-def demote_docmast_h1(path):
-    try:
-        text = open(path, encoding="utf-8", errors="ignore").read()
-    except Exception:
-        return False
-    fixed = _DOCMAST_H1.sub(r'\1<p class="docmast-h1">\2</p>', text, count=1)
-    if fixed != text:
-        os.chmod(path, 0o644)
-        open(path, "w", encoding="utf-8").write(fixed)
-        return True
-    return False
-
-
-# An image with no declared size claims no space until it loads, and the
-# prose below it jumps down when it does. The size is measured from the
-# file's own PNG header rather than typed, the same way every other number
-# here is, and the declared height stays honest because site.css keeps
-# img{height:auto}. Idempotent: a tag that already carries a width is left
-# exactly as it is.
-_IMG_TAG = re.compile(r"<img\b[^>]*>")
-
-def _png_size(fp):
-    try:
-        with open(fp, "rb") as fh:
-            head = fh.read(24)
-    except OSError:
-        return None
-    if head[:8] != b"\x89PNG\r\n\x1a\n" or head[12:16] != b"IHDR":
-        return None
-    w, h = struct.unpack(">II", head[16:24])
-    return (w, h) if w and h else None
-
-def size_images(path):
-    try:
-        text = open(path, encoding="utf-8", errors="ignore").read()
-    except Exception:
-        return 0
-    count = [0]
-    def fix(m):
-        tag = m.group(0)
-        if "width=" in tag or "height=" in tag:
-            return tag
-        src = re.search(r'src="([^"/]+\.png)"', tag)
-        if not src:
-            return tag
-        wh = _png_size(os.path.join(OUT, src.group(1)))
-        if not wh:
-            return tag
-        count[0] += 1
-        end = "/>" if tag.endswith("/>") else ">"
-        return tag[:-len(end)].rstrip() + f' width="{wh[0]}" height="{wh[1]}"' + end
-    fixed = _IMG_TAG.sub(fix, text)
-    if count[0] and fixed != text:
-        os.chmod(path, 0o644)
-        open(path, "w", encoding="utf-8").write(fixed)
-    return count[0]
-
-
 
 # The nav on a converted piece was copied by hand when the piece was written,
 # so it is frozen at whatever the site looked like that day. Thirty-one of them
@@ -2122,10 +1846,7 @@ def add_returns_everywhere():
         if f in by_url and normalise_head(path, by_url[f]):
             heads += 1
         fix_stale_host(path)
-        version_assets(path)
         figs_named += label_figures(path)
-        size_images(path)
-        demote_docmast_h1(path)
         if 'class="docbar"' in open(path, encoding="utf-8", errors="ignore").read():
             continue                      # converted notes already carry full navigation
         up, upname = where.get(f, ("index.html", "Home"))
@@ -2144,7 +1865,7 @@ ATLAS_BODY = r"""<section class="band atlas-band" id="atlas">
 
       <script type="application/json" id="afacts">{facts}</script>
 
-      <noscript><style>#aplates article[hidden]{{display:block !important}}#astage{{display:none}}</style></noscript>
+      <noscript><style>#aplates article[hidden]{{display:block !important}}</style></noscript>
       <div class="plates" id="aplates">
 {plates}
       </div>
@@ -2353,7 +2074,7 @@ def page_404():
   <p class="eyebrow accent">404</p>
   <h1 class="display lost-h">That page is not here.</h1>
   <p class="lede">The address may have a typo, or the piece may have been renamed. The library holds
-  all {len(P)} pieces<span class="jsonly">, and pressing <kbd>/</kbd> searches them from anywhere</span>.</p>
+  all {len(P)} pieces, and pressing <kbd>/</kbd> searches them from anywhere.</p>
   <p class="plate-nav">
     <a class="pbtn pbtn-go" href="library.html">Open the library <span aria-hidden="true">&#8594;</span></a>
     <a class="pbtn" href="index.html">&#8592; Home</a>
@@ -2361,15 +2082,9 @@ def page_404():
   </p>
 </div>
 """
-    out = head("Page not found \u2014 " + SHORT,
-               f"That address is not on this site. The library holds all {len(P)} pieces.",
-               "404.html") + body + foot()
-    # GitHub Pages serves this file's content at ANY missing path, including
-    # nested ones, where relative URLs stop resolving: /foo/bar rendered the
-    # page unstyled with every link broken. Every static relative reference
-    # is therefore made root-relative here. Fragment, absolute, data: and
-    # mailto: URLs pass through untouched.
-    return re.sub(r'\b(href|src)="(?!https?:|/|#|data:|mailto:)', r'\1="/', out)
+    return head("Page not found \u2014 " + SHORT,
+                f"That address is not on this site. The library holds all {len(P)} pieces.",
+                "404.html") + body + foot()
 
 
 # ------------------------------------------------------- service worker ----
@@ -2413,7 +2128,9 @@ def page_sw():
    and the site shell, and its versioned name retires it whenever a cached
    file changes. PAGES holds everything a reader has visited, plus the full
    offline copy if they asked for one; it survives version bumps because its
-   contents are refreshed network-first on every online visit anyway. */
+   contents are refreshed network-first on every online visit anyway.
+   Caches named term-* belong to the /term/ instrument's own worker, which
+   manages its own versions; they are not this worker's to delete. */
 const VERSION = "{version}";
 const CORE    = "site-" + VERSION;
 const PAGES   = "site-pages-v1";
@@ -2434,7 +2151,8 @@ self.addEventListener("activate", e => {{
   e.waitUntil(
     caches.keys()
       .then(keys => Promise.all(
-        keys.filter(k => k !== CORE && k !== PAGES).map(k => caches.delete(k))))
+        keys.filter(k => k !== CORE && k !== PAGES && k.indexOf("term-") !== 0)
+          .map(k => caches.delete(k))))
       .then(() => self.clients.claim())
   );
 }});
@@ -2561,9 +2279,6 @@ def jsonld_person():
         "knowsAbout": ["Financial reporting under IFRS and ASPE",
                        "Canadian taxation", "Accounting analytics"],
     }
-    same_as = [u for u in (LINKEDIN, GITHUB) if u]
-    if same_as:
-        data["sameAs"] = same_as
     return ('<script type="application/ld+json">'
             + json.dumps(data, separators=(",", ":")).replace("</", "<\\/")
             + "</script>")
@@ -2591,10 +2306,7 @@ def check_site():
     def local(u):
         if not u or re.match(r"^(https?:|mailto:|tel:|#|data:|//|javascript:)", u):
             return None
-        # The site is served at the domain root, so a root-relative URL names
-        # the same file its bare form does. 404.html uses them on purpose:
-        # GitHub Pages serves that page at any missing path, at any depth.
-        return u.lstrip("/").split("#")[0].split("?")[0] or None
+        return u.split("#")[0].split("?")[0] or None
 
     for f in sorted(os.listdir(OUT)):
         if not f.endswith(".html"):
@@ -2770,32 +2482,6 @@ def check_site():
                 "not Inter; re-subset InterVariable-sub.woff2" % (ord(ch), ch, f))
     except FileNotFoundError:
         problems.append("font subset: build/font-*-cmap.txt missing")
-
-    # 11. the injected chrome carries the palette as literals, because the
-    # standalone pieces do not load site.css. Nothing kept the two in
-    # agreement: a palette change in the stylesheet would ship every piece
-    # with last year's chrome. Every colour the chrome states must therefore
-    # exist somewhere in site.css's own vocabulary (white and black are
-    # allowed: the pill states them on purpose, on surfaces that never
-    # change with the palette).
-    def _hexes(text):
-        out = set()
-        for h in re.findall(r'#([0-9a-fA-F]{6})\b', text):
-            out.add(h.lower())
-        for h in re.findall(r'#([0-9a-fA-F]{3})\b(?![0-9a-fA-F])', text):
-            out.add("".join(c * 2 for c in h.lower()))
-        for r, g, b in re.findall(r'rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)', text):
-            out.add("%02x%02x%02x" % (int(r), int(g), int(b)))
-        return out
-    try:
-        _vocab = _hexes(open(os.path.join(OUT, "site.css"), encoding="utf-8").read())
-        _stray = (_hexes(RETURN_BAR) | _hexes(RETURN_PILL)) - _vocab - {"ffffff", "000000"}
-        for h in sorted(_stray):
-            problems.append("injected chrome: #%s is not a colour site.css knows; "
-                            "the chrome palette in build_site.py has drifted from "
-                            "the stylesheet" % h)
-    except FileNotFoundError:
-        problems.append("injected chrome: site.css missing, palette unverifiable")
     return sorted(set(problems))
 
 
@@ -2843,8 +2529,16 @@ def main():
     # the files it caches, and the pass above edits three of them. Generated
     # first, the digest described the previous build and the file never settled.
     # The full-offline manifest: every file a reader needs to hold the whole
-    # site on a phone, from the one selection rule offline_files() states.
-    off_files = offline_files()
+    # site on a phone. Root files by reading-relevant extension; the preview
+    # cards, admin data, and build internals stay out, because they serve
+    # crawlers and editors, not an offline reader.
+    _off_ext = (".html", ".css", ".js", ".woff2", ".webmanifest",
+                ".pdf", ".md", ".csv", ".py", ".png")
+    _off_skip = {"og-card.png", "sw.js", "admin.html", "404.html"}
+    off_files = sorted(
+        f for f in os.listdir(OUT)
+        if f.endswith(_off_ext) and f not in _off_skip
+        and os.path.isfile(os.path.join(OUT, f)))
     _oh = hashlib.sha1()
     for f in off_files:
         _oh.update((f + str(os.path.getsize(os.path.join(OUT, f)))).encode())
