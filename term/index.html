@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="en-CA">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#131313">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="description" content="What matters right now.">
+  <title>Term</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="apple-touch-icon" href="icon-180.png">
+  <style>
+    :root {
+      --ground: #131313;
+      --ink: #ece7de;
+      --dim: #8f8a80;
+      --rule: #2a2a28;
+      --signal: #e2b93b; /* the one signal: a deadline inside seven days */
+      --serif: ui-serif, "New York", Charter, Georgia, serif;
+      --sans: system-ui, -apple-system, "Segoe UI", sans-serif;
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; margin: 0; }
+    body {
+      background: var(--ground);
+      color: var(--ink);
+      font-family: var(--serif);
+      font-size: 17px;
+      line-height: 1.45;
+      padding: env(safe-area-inset-top) 0 0;
+      -webkit-text-size-adjust: 100%;
+    }
+    .app {
+      max-width: 40rem;
+      margin: 0 auto;
+      padding: 1.5rem 1.25rem 6.5rem;
+    }
+    .screen { display: none; }
+    .screen.on { display: block; }
+
+    h2 {
+      font-size: 1.05rem;
+      font-weight: 600;
+      margin: 2.25rem 0 0.25rem;
+    }
+    .lede { margin: 0 0 0.25rem; }
+    .sub { font-family: var(--sans); font-size: 0.85rem; color: var(--dim); margin: 0.25rem 0 0; }
+    .note { font-family: var(--sans); font-size: 0.9rem; color: var(--dim); margin: 0.75rem 0; min-height: 1.2em; }
+    .quietline { color: var(--dim); margin: 0.75rem 0; }
+    .days {
+      font-size: clamp(4.5rem, 26vw, 7.5rem);
+      line-height: 0.95;
+      letter-spacing: -0.03em;
+      margin: 0.4rem 0 0;
+      font-variant-numeric: tabular-nums;
+    }
+    .days.signal { color: var(--signal); }
+    .count {
+      font-size: 3.25rem;
+      line-height: 1;
+      letter-spacing: -0.02em;
+      margin: 0.25rem 0 0;
+      font-variant-numeric: tabular-nums;
+    }
+    .hr { border: 0; border-top: 1px solid var(--rule); margin: 1.75rem 0; }
+
+    .field { display: block; margin: 1.25rem 0 0.5rem; }
+    .field span {
+      display: block;
+      font-family: var(--sans);
+      font-size: 0.8rem;
+      color: var(--dim);
+      margin-bottom: 0.3rem;
+    }
+    input, textarea, button {
+      font: inherit;
+      color: inherit;
+      background: transparent;
+      border: 0;
+      border-radius: 0;
+      margin: 0;
+    }
+    input.line {
+      width: 100%;
+      border-bottom: 1px solid var(--rule);
+      padding: 0.65rem 0;
+      min-height: 44px;
+      caret-color: var(--ink);
+    }
+    textarea.block {
+      width: 100%;
+      min-height: 7.5rem;
+      border: 1px solid var(--rule);
+      padding: 0.7rem;
+      resize: vertical;
+      font-family: var(--sans);
+      font-size: 0.85rem;
+      color: var(--dim);
+    }
+    .row { display: flex; gap: 0.6rem; flex-wrap: wrap; margin: 0.8rem 0; }
+    button.hit {
+      font-family: var(--sans);
+      font-size: 0.95rem;
+      min-height: 48px;
+      min-width: 44px;
+      padding: 0.7rem 1.1rem;
+      border: 1px solid var(--rule);
+      cursor: pointer;
+    }
+    button.hit:active { border-color: var(--ink); }
+    button.hit[aria-pressed="true"] { border-color: var(--ink); }
+    button.quiet { border-color: transparent; color: var(--dim); }
+    input:focus-visible, textarea:focus-visible, button:focus-visible, .nav a:focus-visible {
+      outline: 2px solid var(--ink);
+      outline-offset: 2px;
+    }
+
+    .item { padding: 0.9rem 0; border-bottom: 1px solid var(--rule); }
+    .item:first-child { border-top: 1px solid var(--rule); }
+    .item .text { margin: 0; }
+    .item .meta { font-family: var(--sans); font-size: 0.8rem; color: var(--dim); margin: 0.25rem 0 0; }
+    .item .acts { display: flex; gap: 0.6rem; margin-top: 0.6rem; }
+    .item.old { opacity: 0.45; }
+    .item.done { opacity: 0.45; }
+
+    /* The one animation in the app: the confirmation when something closes. */
+    .item.closing { pointer-events: none; animation: close-out 0.5s ease forwards; }
+    .item.closing .text { text-decoration: line-through; text-decoration-color: var(--dim); }
+    @keyframes close-out {
+      0% { opacity: 1; }
+      35% { opacity: 1; }
+      100% { opacity: 0; transform: translateY(-3px); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .item.closing { animation: none; }
+    }
+
+    .course { padding: 1.15rem 0; border-bottom: 1px solid var(--rule); }
+    .course:first-child { border-top: 1px solid var(--rule); }
+    .course h3 { font-size: 1.02rem; font-weight: 600; margin: 0; }
+    .course .when { font-family: var(--sans); font-size: 0.82rem; color: var(--dim); margin: 0.25rem 0 0; }
+    .course p { margin: 0.5rem 0 0; }
+
+    .tablewrap { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { text-align: left; padding: 0.7rem 0.75rem 0.7rem 0; border-bottom: 1px solid var(--rule); vertical-align: top; }
+    th { font-family: var(--sans); font-size: 0.78rem; font-weight: 500; color: var(--dim); }
+    td:last-child, th:last-child { padding-right: 0; }
+    tr.soft td { color: var(--dim); }
+    tr.past td { color: var(--dim); }
+    td.num { font-variant-numeric: tabular-nums; }
+    td.num.soon { color: var(--signal); }
+
+    .nav {
+      position: fixed;
+      left: 0; right: 0; bottom: 0;
+      display: flex;
+      background: var(--ground);
+      border-top: 1px solid var(--rule);
+      padding: 0 env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+    }
+    .nav a {
+      flex: 1;
+      min-height: 48px;
+      padding: 0.95rem 0.25rem;
+      text-align: center;
+      text-decoration: none;
+      font-family: var(--sans);
+      font-size: 0.92rem;
+      color: var(--dim);
+    }
+    .nav a[aria-current="page"] { color: var(--ink); }
+  </style>
+</head>
+<body>
+  <div class="app">
+
+    <section id="now" class="screen" aria-label="Now">
+      <p class="lede" id="now-line"></p>
+      <p class="days" id="now-days"></p>
+      <p class="sub" id="now-sub"></p>
+      <div id="now-body">
+        <label class="field" for="one"><span>The one thing</span></label>
+        <input class="line" id="one" autocomplete="off" enterkeyhint="done">
+        <div class="row">
+          <button type="button" class="hit" id="train" aria-pressed="false">Train</button>
+        </div>
+        <div id="items"></div>
+        <div id="commit"></div>
+      </div>
+      <p class="note" id="now-msg" role="status"></p>
+    </section>
+
+    <section id="parking" class="screen" aria-label="Parking">
+      <div id="park-list"></div>
+      <label class="field" for="park-text"><span>Park it</span></label>
+      <input class="line" id="park-text" autocomplete="off" enterkeyhint="done">
+      <div class="row">
+        <button type="button" class="hit" id="park-btn">Park</button>
+      </div>
+      <p class="note" id="park-msg" role="status"></p>
+    </section>
+
+    <section id="ledger" class="screen" aria-label="Ledger">
+      <p class="count" id="closed-count"></p>
+      <p class="sub" id="closed-sub"></p>
+      <div id="closed-list"></div>
+    </section>
+
+    <section id="term" class="screen" aria-label="Term">
+      <p class="lede" id="term-head"></p>
+      <div id="course-list"></div>
+      <h2>Deadlines</h2>
+      <div class="tablewrap" id="deadline-table"></div>
+      <h2>Frozen until December</h2>
+      <p class="sub">Parked. Not this term.</p>
+      <div id="frozen-list"></div>
+      <hr class="hr">
+      <label class="field" for="io-text"><span>State</span></label>
+      <textarea class="block" id="io-text" spellcheck="false" autocomplete="off" placeholder="Paste the term JSON here"></textarea>
+      <div class="row">
+        <button type="button" class="hit" id="export-btn">Export</button>
+        <button type="button" class="hit" id="import-btn">Import</button>
+      </div>
+      <p class="note" id="io-msg" role="status"></p>
+    </section>
+
+  </div>
+
+  <nav class="nav" aria-label="Screens">
+    <a href="#now" id="nav-now">Now</a>
+    <a href="#parking" id="nav-parking">Parking</a>
+    <a href="#ledger" id="nav-ledger">Ledger</a>
+    <a href="#term" id="nav-term">Term</a>
+  </nav>
+
+  <script>
+  (function () {
+    "use strict";
+    var KEY = "term.v1";
+    var ITEM_CAP = 3;
+    var PARK_CAP = 10;
+    var state = null;
+    var train = false;
+    var closingBusy = false;
+
+    /* ---------- state ---------- */
+
+    function empty() {
+      return {
+        term: { name: "", start: "", end: "" },
+        courses: [],
+        deadlines: [],
+        frozen: [],
+        parking: [],
+        closed: [],
+        today: { date: "", one: "", items: [] }
+      };
+    }
+    function str(v) { return v == null ? "" : String(v); }
+    function arr(v) { return Array.isArray(v) ? v : []; }
+
+    function shape(x) {
+      var e = empty();
+      if (!x || typeof x !== "object") return e;
+      var t = x.term && typeof x.term === "object" ? x.term : {};
+      e.term = { name: str(t.name), start: str(t.start), end: str(t.end) };
+      e.courses = arr(x.courses).map(function (c) {
+        c = c && typeof c === "object" ? c : {};
+        return { code: str(c.code), title: str(c.title), meets: str(c.meets),
+                 room: str(c.room), instructor: str(c.instructor), rule: str(c.rule) };
+      });
+      e.deadlines = arr(x.deadlines).map(function (d) {
+        d = d && typeof d === "object" ? d : {};
+        return { date: str(d.date), label: str(d.label), hard: !!d.hard };
+      });
+      e.frozen = arr(x.frozen).map(str);
+      e.parking = arr(x.parking).map(function (p) {
+        p = p && typeof p === "object" ? p : {};
+        return { text: str(p.text), added: str(p.added) };
+      });
+      e.closed = arr(x.closed).map(function (c) {
+        c = c && typeof c === "object" ? c : {};
+        return { date: str(c.date), text: str(c.text) };
+      });
+      var td = x.today && typeof x.today === "object" ? x.today : {};
+      e.today = {
+        date: str(td.date),
+        one: str(td.one),
+        items: arr(td.items).map(function (i) {
+          i = i && typeof i === "object" ? i : {};
+          return { text: str(i.text),
+                   kind: i.kind === "reading" ? "reading" : "problems",
+                   done: !!i.done };
+        })
+      };
+      return e;
+    }
+
+    function load() {
+      try {
+        var raw = localStorage.getItem(KEY);
+        if (!raw) return empty();
+        return shape(JSON.parse(raw));
+      } catch (err) { return empty(); }
+    }
+    function save() {
+      try { localStorage.setItem(KEY, JSON.stringify(state)); }
+      catch (err) { setNote("now-msg", "Could not save. Storage is unavailable."); }
+    }
+
+    /* The import refuses, with the reason, anything the model cannot hold.
+       Silent truncation would break the export and import round trip. */
+    function importReason(x) {
+      if (!x || typeof x !== "object" || Array.isArray(x)) return "That is not a term.v1 object.";
+      var known = ["term", "courses", "deadlines", "frozen", "parking", "closed", "today"];
+      var any = known.some(function (k) { return k in x; });
+      if (!any) return "That does not look like term.v1.";
+      var p = arr(x.parking);
+      if (p.length > PARK_CAP) return "Parking holds ten. This has " + p.length + ".";
+      var items = x.today && typeof x.today === "object" ? arr(x.today.items) : [];
+      if (items.length > ITEM_CAP) return "Three items is the cap. This has " + items.length + ".";
+      return "";
+    }
+
+    /* ---------- dates ---------- */
+
+    function todayISO() {
+      var d = new Date();
+      var z = function (n) { return (n < 10 ? "0" : "") + n; };
+      return d.getFullYear() + "-" + z(d.getMonth() + 1) + "-" + z(d.getDate());
+    }
+    function parseISO(iso) {
+      var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(iso || "");
+      if (!m) return null;
+      return new Date(Date.UTC(+m[1], +m[2] - 1, +m[3], 12));
+    }
+    function daysUntil(iso) {
+      var b = parseISO(iso);
+      var a = parseISO(todayISO());
+      if (!a || !b) return null;
+      return Math.round((b - a) / 86400000);
+    }
+    var DOW = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+    var MON = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    var MONTH = ["January", "February", "March", "April", "May", "June", "July",
+                 "August", "September", "October", "November", "December"];
+    function fmtShort(iso) {
+      var d = parseISO(iso);
+      if (!d) return iso || "";
+      return DOW[d.getUTCDay()] + " " + d.getUTCDate() + " " + MON[d.getUTCMonth()];
+    }
+    function fmtRange(a, b) {
+      var da = parseISO(a), db = parseISO(b);
+      if (!da || !db) return "";
+      var left = da.getUTCDate() + " " + MONTH[da.getUTCMonth()];
+      if (da.getUTCFullYear() !== db.getUTCFullYear()) left += " " + da.getUTCFullYear();
+      return left + " to " + db.getUTCDate() + " " + MONTH[db.getUTCMonth()] + " " + db.getUTCFullYear();
+    }
+
+    /* ---------- rendering ---------- */
+
+    function el(tag, cls, text) {
+      var n = document.createElement(tag);
+      if (cls) n.className = cls;
+      if (text != null) n.textContent = text;
+      return n;
+    }
+    function clear(id) {
+      var n = document.getElementById(id);
+      while (n.firstChild) n.removeChild(n.firstChild);
+      return n;
+    }
+    function setNote(id, msg) {
+      document.getElementById(id).textContent = msg || "";
+    }
+    function isBlank() {
+      return !state.term.name && !state.courses.length && !state.deadlines.length &&
+             !state.frozen.length && !state.parking.length && !state.closed.length &&
+             !state.today.one && !state.today.items.length;
+    }
+    function nextHard() {
+      var best = null;
+      state.deadlines.forEach(function (d) {
+        if (!d.hard) return;
+        var n = daysUntil(d.date);
+        if (n == null || n < 0) return;
+        if (!best || d.date < best.d.date) best = { d: d, n: n };
+      });
+      return best;
+    }
+
+    function renderNow() {
+      var line = document.getElementById("now-line");
+      var days = document.getElementById("now-days");
+      var sub = document.getElementById("now-sub");
+      var body = document.getElementById("now-body");
+
+      if (isBlank()) {
+        line.textContent = "Nothing here yet.";
+        days.textContent = "";
+        sub.textContent = "Import the term on the Term screen.";
+        body.hidden = true;
+        return;
+      }
+      body.hidden = false;
+
+      var nxt = nextHard();
+      if (nxt) {
+        line.textContent = fmtShort(nxt.d.date) + ". " + nxt.d.label;
+        days.textContent = String(nxt.n);
+        days.className = "days" + (nxt.n <= 7 ? " signal" : "");
+        sub.textContent = nxt.n === 1 ? "day remaining" : "days remaining";
+      } else {
+        line.textContent = "No hard deadlines ahead.";
+        days.textContent = "";
+        days.className = "days";
+        sub.textContent = "";
+      }
+
+      var one = document.getElementById("one");
+      if (one.value !== state.today.one) one.value = state.today.one;
+      document.getElementById("train").setAttribute("aria-pressed", train ? "true" : "false");
+
+      var items = state.today.items;
+      var shown = train
+        ? items.filter(function (i) { return i.kind === "reading"; })
+        : items;
+      var list = clear("items");
+      if (!shown.length) {
+        list.appendChild(el("p", "quietline",
+          train && items.length ? "Nothing to read. Problem sets wait for a desk." : "Nothing committed."));
+      }
+      shown.forEach(function (i) {
+        var idx = items.indexOf(i);
+        var row = el("div", "item" + (i.done ? " done" : ""));
+        row.appendChild(el("p", "text", i.text));
+        row.appendChild(el("p", "meta", i.kind === "reading" ? "Reading" : "Problems"));
+        if (!i.done) {
+          var acts = el("div", "acts");
+          var close = el("button", "hit", "Close it");
+          close.type = "button";
+          close.setAttribute("data-act", "close");
+          close.setAttribute("data-i", String(idx));
+          var drop = el("button", "hit quiet", "Drop");
+          drop.type = "button";
+          drop.setAttribute("data-act", "drop");
+          drop.setAttribute("data-i", String(idx));
+          acts.appendChild(close);
+          acts.appendChild(drop);
+          row.appendChild(acts);
+        }
+        list.appendChild(row);
+      });
+
+      var commit = clear("commit");
+      if (items.length >= ITEM_CAP) {
+        commit.appendChild(el("p", "note", "Three committed. Close one to commit another."));
+      } else {
+        var lab = el("label", "field");
+        lab.htmlFor = "commit-text";
+        lab.appendChild(el("span", null, "Commit an item"));
+        commit.appendChild(lab);
+        var inp = el("input", "line");
+        inp.id = "commit-text";
+        inp.autocomplete = "off";
+        inp.setAttribute("enterkeyhint", "done");
+        commit.appendChild(inp);
+        var row2 = el("div", "row");
+        var bp = el("button", "hit", "Problems");
+        bp.type = "button"; bp.setAttribute("data-act", "add-problems");
+        var br = el("button", "hit", "Reading");
+        br.type = "button"; br.setAttribute("data-act", "add-reading");
+        row2.appendChild(bp);
+        row2.appendChild(br);
+        commit.appendChild(row2);
+      }
+    }
+
+    function renderParking() {
+      var list = clear("park-list");
+      if (!state.parking.length) {
+        list.appendChild(el("p", "quietline", "Nothing parked"));
+        return;
+      }
+      state.parking.forEach(function (p, i) {
+        var n = daysUntil(p.added);
+        var old = n != null && n < -30;
+        var row = el("div", "item" + (old ? " old" : ""));
+        row.appendChild(el("p", "text", p.text));
+        row.appendChild(el("p", "meta", fmtShort(p.added)));
+        var acts = el("div", "acts");
+        var del = el("button", "hit quiet", "Delete");
+        del.type = "button";
+        del.setAttribute("data-act", "del-park");
+        del.setAttribute("data-i", String(i));
+        acts.appendChild(del);
+        row.appendChild(acts);
+        list.appendChild(row);
+      });
+    }
+
+    function renderLedger() {
+      var n = state.closed.length;
+      document.getElementById("closed-count").textContent = String(n);
+      document.getElementById("closed-sub").textContent =
+        n === 1 ? "closed this term" : "closed this term";
+      var list = clear("closed-list");
+      if (!n) {
+        list.appendChild(el("p", "quietline", "Nothing closed yet"));
+        return;
+      }
+      state.closed.slice().reverse().forEach(function (c) {
+        var row = el("div", "item");
+        row.appendChild(el("p", "text", "Closed. " + c.text));
+        row.appendChild(el("p", "meta", fmtShort(c.date)));
+        list.appendChild(row);
+      });
+    }
+
+    function renderTerm() {
+      var head = document.getElementById("term-head");
+      if (isBlank()) {
+        head.textContent = "No term loaded. Paste the plan below and import it once.";
+      } else {
+        var span = fmtRange(state.term.start, state.term.end);
+        head.textContent = state.term.name + (span ? ". " + span + "." : "");
+      }
+
+      var courses = clear("course-list");
+      state.courses.forEach(function (c) {
+        var art = el("article", "course");
+        art.appendChild(el("h3", null, [c.code, c.title].filter(Boolean).join(" ")));
+        var when = [c.meets, c.room, c.instructor].filter(Boolean).join(", ");
+        if (when) art.appendChild(el("p", "when", when));
+        if (c.rule) art.appendChild(el("p", null, c.rule));
+        courses.appendChild(art);
+      });
+      if (!state.courses.length) courses.appendChild(el("p", "quietline", "No courses"));
+
+      var wrap = clear("deadline-table");
+      if (!state.deadlines.length) {
+        wrap.appendChild(el("p", "quietline", "No deadlines"));
+      } else {
+        var table = el("table");
+        var thead = el("thead");
+        var hr = el("tr");
+        ["When", "What", "Days"].forEach(function (h) { hr.appendChild(el("th", null, h)); });
+        thead.appendChild(hr);
+        table.appendChild(thead);
+        var tbody = el("tbody");
+        state.deadlines.slice().sort(function (a, b) {
+          return a.date < b.date ? -1 : a.date > b.date ? 1 : 0;
+        }).forEach(function (d) {
+          var n = daysUntil(d.date);
+          var past = n != null && n < 0;
+          var tr = el("tr", (d.hard ? "" : "soft") + (past ? " past" : ""));
+          tr.appendChild(el("td", null, fmtShort(d.date)));
+          tr.appendChild(el("td", null, d.label));
+          var num = el("td", "num", past || n == null ? "" : String(n));
+          if (d.hard && n != null && n >= 0 && n <= 7) num.className = "num soon";
+          tr.appendChild(num);
+          tbody.appendChild(tr);
+        });
+        table.appendChild(tbody);
+        wrap.appendChild(table);
+      }
+
+      var fr = clear("frozen-list");
+      state.frozen.forEach(function (s) {
+        fr.appendChild(el("div", "item", s));
+      });
+      if (!state.frozen.length) fr.appendChild(el("p", "quietline", "Nothing frozen"));
+    }
+
+    function render() {
+      renderNow();
+      renderParking();
+      renderLedger();
+      renderTerm();
+    }
+
+    /* ---------- actions ---------- */
+
+    function addItem(kind) {
+      var input = document.getElementById("commit-text");
+      var text = input ? input.value.trim() : "";
+      if (!text) { if (input) input.focus(); return; }
+      if (state.today.items.length >= ITEM_CAP) return;
+      state.today.items.push({ text: text, kind: kind, done: false });
+      state.today.date = todayISO();
+      setNote("now-msg", "");
+      save();
+      render();
+    }
+
+    function reduceMotion() {
+      return window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    }
+
+    function closeItem(i, rowEl) {
+      var item = state.today.items[i];
+      if (!item || closingBusy) return;
+      var commit = function () {
+        closingBusy = false;
+        state.closed.push({ date: todayISO(), text: item.text });
+        state.today.items.splice(i, 1);
+        save();
+        render();
+      };
+      if (rowEl && !reduceMotion()) {
+        closingBusy = true;
+        rowEl.classList.add("closing");
+        setTimeout(commit, 520);
+      } else {
+        commit();
+      }
+    }
+
+    function dropItem(i) {
+      if (!state.today.items[i]) return;
+      state.today.items.splice(i, 1);
+      save();
+      render();
+    }
+
+    function park() {
+      var input = document.getElementById("park-text");
+      var text = input.value.trim();
+      if (!text) { input.focus(); return; }
+      if (state.parking.length >= PARK_CAP) {
+        setNote("park-msg", "Ten is the cap. Delete one first.");
+        return;
+      }
+      state.parking.push({ text: text, added: todayISO() });
+      input.value = "";
+      setNote("park-msg", "");
+      save();
+      render();
+    }
+
+    function doExport() {
+      var json = JSON.stringify(state, null, 2);
+      document.getElementById("io-text").value = json;
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(json).then(function () {
+          setNote("io-msg", "Copied to the clipboard.");
+        }).catch(function () {
+          setNote("io-msg", "Copy it from the box above.");
+        });
+      } else {
+        setNote("io-msg", "Copy it from the box above.");
+      }
+    }
+
+    function doImport() {
+      var raw = document.getElementById("io-text").value.trim();
+      if (!raw) { setNote("io-msg", "Paste the term JSON first."); return; }
+      var parsed;
+      try { parsed = JSON.parse(raw); }
+      catch (err) { setNote("io-msg", "That is not valid JSON."); return; }
+      var reason = importReason(parsed);
+      if (reason) { setNote("io-msg", reason); return; }
+      state = shape(parsed);
+      save();
+      setNote("park-msg", "");
+      setNote("now-msg", "");
+      setNote("io-msg", "Imported.");
+      render();
+    }
+
+    /* ---------- wiring ---------- */
+
+    document.addEventListener("click", function (e) {
+      var t = e.target.closest ? e.target.closest("button") : e.target;
+      if (!t || t.tagName !== "BUTTON") return;
+      if (t.id === "train") { train = !train; renderNow(); return; }
+      if (t.id === "park-btn") { park(); return; }
+      if (t.id === "export-btn") { doExport(); return; }
+      if (t.id === "import-btn") { doImport(); return; }
+      var act = t.getAttribute("data-act");
+      var i = Number(t.getAttribute("data-i"));
+      if (act === "add-problems") { addItem("problems"); return; }
+      if (act === "add-reading") { addItem("reading"); return; }
+      if (act === "close") { closeItem(i, t.closest(".item")); return; }
+      if (act === "drop") { dropItem(i); return; }
+      if (act === "del-park") {
+        state.parking.splice(i, 1);
+        setNote("park-msg", "");
+        save();
+        render();
+      }
+    });
+
+    document.getElementById("one").addEventListener("input", function () {
+      state.today.one = this.value;
+      state.today.date = todayISO();
+      save();
+    });
+    document.addEventListener("keydown", function (e) {
+      if (e.key !== "Enter" || !e.target) return;
+      if (e.target.id === "park-text") { e.preventDefault(); park(); }
+      if (e.target.id === "commit-text") { e.preventDefault(); }
+      if (e.target.id === "one") { e.target.blur(); }
+    });
+
+    function route() {
+      var h = (location.hash || "#now").slice(1);
+      if (["now", "parking", "ledger", "term"].indexOf(h) < 0) h = "now";
+      ["now", "parking", "ledger", "term"].forEach(function (id) {
+        document.getElementById(id).classList.toggle("on", id === h);
+        var a = document.getElementById("nav-" + id);
+        if (id === h) a.setAttribute("aria-current", "page");
+        else a.removeAttribute("aria-current");
+      });
+    }
+    window.addEventListener("hashchange", route);
+
+    state = load();
+    route();
+    render();
+
+    if (navigator.storage && navigator.storage.persist) {
+      navigator.storage.persist().catch(function () {});
+    }
+    if ("serviceWorker" in navigator && location.protocol.indexOf("http") === 0) {
+      window.addEventListener("load", function () {
+        navigator.serviceWorker.register("./sw.js").catch(function () {});
+      });
+    }
+  })();
+  </script>
+</body>
+</html>
