@@ -1,7 +1,7 @@
 # Rebuilds the site's index pages whenever content changes.
 #
 # Nothing here touches design. It reads content/pieces.json, measures any
-# piece whose file changed, regenerates the seven listing pages, and commits
+# piece whose file changed, regenerates the nine shell pages, and commits
 # the result back. The commit carries [skip ci] so it cannot set itself off
 # again.
 name: Rebuild site
