@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AFM 274 · Chapter 17 — Capital Structure in a Perfect Market (Exam Sheet)</title>
+<title>AFM 274 Chapter 17 · Alex Rajcoomar</title>
 <style>
   :root{
     --ink:#15314b;        /* deep navy for headings/accents */
@@ -14,13 +14,14 @@
     --panel2:#eceae3;
     --line:#bdbab1;
     --hair:#d9d6cd;
+  --paper:#fff;
   }
   *{box-sizing:border-box;}
   html,body{margin:0;padding:0;}
   body{
     font-family:"Charter","Georgia","Iowan Old Style",serif;
     color:var(--text);
-    background:#fff;
+    background:var(--paper);
     font-size:10.5pt;
     line-height:1.32;
     -webkit-print-color-adjust:exact;
@@ -141,6 +142,81 @@
     .card,.cheat,.qa .row,.viz svg{break-inside:avoid;}
     h1,h2,h3{break-after:avoid;}
   }
+
+
+/* ---------- Dark palette, derived and audited ---------- */
+/* Light surfaces become deep ones of the same hue, ink becomes near-white, accents are lifted to read on ink;
+   every rule that set a colour as a literal is re-emitted below with the literal mapped the same way. */
+@media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){ color-scheme:dark; --ink:#c4ced7; --accent:#d4b7bb; --text:#d8d8d8; --muted:#c8c8c8; --panel:#29271b; --panel2:#232018; --line:#57544a; --hair:#655f4d; --paper:#2b2b2b; }
+:root:not([data-theme="light"]) :where(body){}
+:root:not([data-theme="light"]) h2{color:#2b2b2b}
+:root:not([data-theme="light"]) b,strong{color:#e6e6e6}
+:root:not([data-theme="light"]) .card{background:#2b2b2b}
+:root:not([data-theme="light"]) th{color:#2b2b2b}
+:root:not([data-theme="light"]) .cheat .bar{color:#2b2b2b}
+:root:not([data-theme="light"]) .hl .b{background:#2b2b2b}
+:root:not([data-theme="light"]) .toolbar button{color:#2b2b2b}
+:root:not([data-theme="light"]) #__rb{border-bottom:1px solid #69604a;background:#312c1d;color:#cac8c2}
+:root:not([data-theme="light"]) #__rb a{color:#b3c1d2}
+:root:not([data-theme="light"]) #__rb .__rb-home{color:#e3e1d6}
+:root:not([data-theme="light"]) #__rb .__rb-home i{color:#a29f96}
+:root:not([data-theme="light"]) #__rb .__rb-row{color:#a29f96}
+:root:not([data-theme="light"]) #__rb .__rb-row b{color:#cac8c2}
+:root:not([data-theme="light"]) #__rb .__rb-from{color:#a29f96}
+:root:not([data-theme="light"]) #__rb .__rb-from b{color:#cac8c2}
+:root:not([data-theme="light"]) #__rb .__mark{background:#2a291d;color:#312c1d}
+:root:not([data-theme="light"]) :root[data-theme="dark"] #__rb{background:#272721;border-bottom-color:#292822;color:#595548}
+:root:not([data-theme="light"]) :root[data-theme="dark"] #__rb .__rb-home{color:#2d291b}
+:root:not([data-theme="light"]) :root[data-theme="dark"] #__rb .__rb-home i{color:#c1beb8}
+:root:not([data-theme="light"]) :root[data-theme="dark"] #__rb .__rb-row{color:#c1beb8}
+:root:not([data-theme="light"]) :root[data-theme="dark"] #__rb .__rb-row b{color:#595548}
+:root:not([data-theme="light"]) :root[data-theme="dark"] #__rb .__rb-from{color:#c1beb8}
+:root:not([data-theme="light"]) :root[data-theme="dark"] #__rb .__rb-from b{color:#595548}
+:root:not([data-theme="light"]) :root[data-theme="dark"] #__rb a{color:#384c69}
+:root:not([data-theme="light"]) :root[data-theme="dark"] #__rb .__mark{background:#2d291b;color:#e0e0da}
+:root:not([data-theme="light"]) #__rb-pill{color:#312c1d}
+:root:not([data-theme="light"]) #__rb-pill:hover{background:#2a291d;color:#2b2b2b}
+:root:not([data-theme="light"]) :root[data-theme="dark"] #__rb-pill{color:#e0e0da}
+:root:not([data-theme="light"]) :root[data-theme="dark"] #__rb-pill:hover{background:#2b2b2b;color:#e6e6e6}
+:root:not([data-theme="light"]) #__rb-from{color:#a29f96}
+:root:not([data-theme="light"]) #__rb-from b{color:#cac8c2}
+:root:not([data-theme="light"]) :root[data-theme="dark"] #__rb-from{color:#c1beb8}
+:root:not([data-theme="light"]) :root[data-theme="dark"] #__rb-from b{color:#595548} }
+:root[data-theme="dark"]{ color-scheme:dark; --ink:#c4ced7; --accent:#d4b7bb; --text:#d8d8d8; --muted:#c8c8c8; --panel:#29271b; --panel2:#232018; --line:#57544a; --hair:#655f4d; --paper:#2b2b2b; }
+:root[data-theme="dark"] h2{color:#2b2b2b}
+:root[data-theme="dark"] b,strong{color:#e6e6e6}
+:root[data-theme="dark"] .card{background:#2b2b2b}
+:root[data-theme="dark"] th{color:#2b2b2b}
+:root[data-theme="dark"] .cheat .bar{color:#2b2b2b}
+:root[data-theme="dark"] .hl .b{background:#2b2b2b}
+:root[data-theme="dark"] .toolbar button{color:#2b2b2b}
+:root[data-theme="dark"] #__rb{border-bottom:1px solid #69604a;background:#312c1d;color:#cac8c2}
+:root[data-theme="dark"] #__rb a{color:#b3c1d2}
+:root[data-theme="dark"] #__rb .__rb-home{color:#e3e1d6}
+:root[data-theme="dark"] #__rb .__rb-home i{color:#a29f96}
+:root[data-theme="dark"] #__rb .__rb-row{color:#a29f96}
+:root[data-theme="dark"] #__rb .__rb-row b{color:#cac8c2}
+:root[data-theme="dark"] #__rb .__rb-from{color:#a29f96}
+:root[data-theme="dark"] #__rb .__rb-from b{color:#cac8c2}
+:root[data-theme="dark"] #__rb .__mark{background:#2a291d;color:#312c1d}
+:root[data-theme="dark"] :root[data-theme="dark"] #__rb{background:#272721;border-bottom-color:#292822;color:#595548}
+:root[data-theme="dark"] :root[data-theme="dark"] #__rb .__rb-home{color:#2d291b}
+:root[data-theme="dark"] :root[data-theme="dark"] #__rb .__rb-home i{color:#c1beb8}
+:root[data-theme="dark"] :root[data-theme="dark"] #__rb .__rb-row{color:#c1beb8}
+:root[data-theme="dark"] :root[data-theme="dark"] #__rb .__rb-row b{color:#595548}
+:root[data-theme="dark"] :root[data-theme="dark"] #__rb .__rb-from{color:#c1beb8}
+:root[data-theme="dark"] :root[data-theme="dark"] #__rb .__rb-from b{color:#595548}
+:root[data-theme="dark"] :root[data-theme="dark"] #__rb a{color:#384c69}
+:root[data-theme="dark"] :root[data-theme="dark"] #__rb .__mark{background:#2d291b;color:#e0e0da}
+:root[data-theme="dark"] #__rb-pill{color:#312c1d}
+:root[data-theme="dark"] #__rb-pill:hover{background:#2a291d;color:#2b2b2b}
+:root[data-theme="dark"] :root[data-theme="dark"] #__rb-pill{color:#e0e0da}
+:root[data-theme="dark"] :root[data-theme="dark"] #__rb-pill:hover{background:#2b2b2b;color:#e6e6e6}
+:root[data-theme="dark"] #__rb-from{color:#a29f96}
+:root[data-theme="dark"] #__rb-from b{color:#cac8c2}
+:root[data-theme="dark"] :root[data-theme="dark"] #__rb-from{color:#c1beb8}
+:root[data-theme="dark"] :root[data-theme="dark"] #__rb-from b{color:#595548}
+@media print{ :root{ --ink:#15314b; --accent:#7a2733; --text:#1a1a1a; --muted:#4a4a4a; --panel:#f3f2ed; --panel2:#eceae3; --line:#bdbab1; --hair:#d9d6cd; --paper:#ffffff; } }
 </style>
 
 <style id="__mobile_fit">
@@ -176,15 +252,15 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="manifest" href="site.webmanifest">
 <link rel="canonical" href="https://alexrajcoomar.github.io/afm274-capital-structure.html">
-<meta property="og:title" content="AFM 274 Chapter 17 — Alex Rajcoomar">
+<meta property="og:title" content="AFM 274 Chapter 17 · Alex Rajcoomar">
 <meta property="og:description" content="Exam sheet for capital structure under perfect-market assumptions: the propositions, and what each one actually rules out.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://alexrajcoomar.github.io/afm274-capital-structure.html">
-<meta property="og:site_name" content="Alex Rajcoomar — portfolio">
+<meta property="og:site_name" content="Alex Rajcoomar · portfolio">
 <meta property="og:image" content="https://alexrajcoomar.github.io/cards/afm274-capital-structure.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="AFM 274 Chapter 17 — Alex Rajcoomar">
+<meta property="og:image:alt" content="AFM 274 Chapter 17 · Alex Rajcoomar">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://alexrajcoomar.github.io/cards/afm274-capital-structure.png">
 <script>
@@ -219,22 +295,18 @@
 #__rb .__rb-home{font-weight:640;color:#16150f}
 #__rb .__rb-home i{font-style:normal;font-weight:400;color:#6f6c63}
 #__rb .__rb-right{margin-left:auto;display:flex;gap:1.1rem;flex-wrap:wrap}
+/* the piece's own row of the statement: origin, words, figures, tables, the
+   same figures the home page prints for it, from the same measurement */
+#__rb .__rb-row{color:#6f6c63;font-variant-numeric:tabular-nums;white-space:nowrap}
+#__rb .__rb-row b{font-weight:600;color:#55524a}
+@media (max-width:44rem){#__rb .__rb-row{flex-basis:100%;order:3;white-space:normal}}
+/* what the piece was built from, in the owner's words, from pieces.json */
+#__rb .__rb-from{flex-basis:100%;order:5;font-weight:400;color:#6f6c63;line-height:1.4;max-width:70ch}
+#__rb .__rb-from b{font-weight:600;color:#55524a}
 #__rb .__mark{
   display:inline-grid;place-items:center;width:1.2rem;height:1.2rem;flex:none;
   background:#16150f;color:#faf9f6;font-size:.72rem;font-weight:700;
 }
-#__rb-pill{
-  position:fixed;left:14px;bottom:14px;z-index:2147483000;
-  display:inline-flex;align-items:center;gap:.45rem;padding:.58rem .9rem;
-  background:rgba(22,21,15,.93);color:#faf9f6;text-decoration:none;border-radius:99px;
-  font:600 12.5px/1 InterVar,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
-  border:1px solid rgba(255,255,255,.16);box-shadow:0 6px 22px rgba(0,0,0,.28);
-  opacity:0;transform:translateY(6px);pointer-events:none;
-  transition:opacity .2s ease,transform .2s ease;
-  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
-}
-#__rb-pill.__on{opacity:1;transform:none;pointer-events:auto}
-#__rb-pill:hover{background:#16150f;color:#fff}
 /* Dark has to answer to two things: the reader's system setting, and the
    theme button on the page, which sets data-theme on <html>. Keyed to the
    media query alone, the bar stayed paper-white across the top of an essay
@@ -245,25 +317,30 @@
   :root:not([data-theme="light"]) #__rb{background:#131310;border-bottom-color:#2c2b24;color:#c0bcb1}
   :root:not([data-theme="light"]) #__rb .__rb-home{color:#f7f5ef}
   :root:not([data-theme="light"]) #__rb .__rb-home i{color:#948f85}
+  :root:not([data-theme="light"]) #__rb .__rb-row{color:#948f85}
+  :root:not([data-theme="light"]) #__rb .__rb-row b{color:#c0bcb1}
+  :root:not([data-theme="light"]) #__rb .__rb-from{color:#948f85}
+  :root:not([data-theme="light"]) #__rb .__rb-from b{color:#c0bcb1}
   :root:not([data-theme="light"]) #__rb a{color:#85adea}
   :root:not([data-theme="light"]) #__rb .__mark{background:#f7f5ef;color:#131310}
-  :root:not([data-theme="light"]) #__rb-pill{background:rgba(247,245,239,.95);color:#131310;border-color:rgba(0,0,0,.2)}
-  :root:not([data-theme="light"]) #__rb-pill:hover{background:#fff;color:#000}
 }
 :root[data-theme="dark"] #__rb{background:#131310;border-bottom-color:#2c2b24;color:#c0bcb1}
 :root[data-theme="dark"] #__rb .__rb-home{color:#f7f5ef}
 :root[data-theme="dark"] #__rb .__rb-home i{color:#948f85}
+:root[data-theme="dark"] #__rb .__rb-row{color:#948f85}
+:root[data-theme="dark"] #__rb .__rb-row b{color:#c0bcb1}
+:root[data-theme="dark"] #__rb .__rb-from{color:#948f85}
+:root[data-theme="dark"] #__rb .__rb-from b{color:#c0bcb1}
 :root[data-theme="dark"] #__rb a{color:#85adea}
 :root[data-theme="dark"] #__rb .__mark{background:#f7f5ef;color:#131310}
-:root[data-theme="dark"] #__rb-pill{background:rgba(247,245,239,.95);color:#131310;border-color:rgba(0,0,0,.2)}
-:root[data-theme="dark"] #__rb-pill:hover{background:#fff;color:#000}
-@media (prefers-reduced-motion:reduce){#__rb-pill{transition:none}}
-@media print{#__rb,#__rb-pill{display:none !important}}
+@media print{#__rb{display:none !important}}
 </style>
-<div id="__rb">
+<nav id="__rb" aria-label="Portfolio">
   <a class="__rb-home" href="index.html"><span class="__mark" aria-hidden="true">A</span>Alex Rajcoomar <i>portfolio</i></a>
-  <span class="__rb-right"><a href="coursework.html">Coursework</a><a href="library.html">All work</a></span>
-</div>
+  <span class="__rb-row">Coursework &middot; <b>1,230</b> words &middot; <b>2</b> figures &middot; <b>2</b> tables</span>
+  <span class="__rb-right"><a href="coursework.html">Coursework</a><a href="atlas.html">Atlas</a><a href="library.html">All work</a></span>
+  <span class="__rb-from"><b>Built from</b> Not declared on file.</span>
+</nav>
 <script>
 /* the trail: which passages this browser has opened. The atlas reads it and
    rings them; the record lives in localStorage and never leaves the machine. */
@@ -280,7 +357,7 @@
     function put(key){
       if(t2[key]||Object.keys(t2).length<500){
         t2[key]=(t2[key]||0)+1;
-        localStorage.setItem(k,JSON.stringify(t2));
+        try{localStorage.setItem(k,JSON.stringify(t2));}catch(e){}
       }
     }
     put(u+location.hash);
@@ -292,14 +369,14 @@
 
 <div class="toolbar"><button onclick="window.print()">⎙ Print / Save PDF</button></div>
 
-<div class="page">
+<div class="page" role="main">
 
   <!-- ===== HEADER ===== -->
   <div class="full">
-    <h1 id="afm-274-chapter-17-capital-structure-in-a-perfec">AFM&nbsp;274 · Chapter 17 — Capital Structure in a Perfect Market</h1>
+    <h1 id="afm-274-chapter-17-capital-structure-in-a-perfec">AFM&nbsp;274 · Chapter 17: Capital Structure in a Perfect Market</h1>
     <p class="sub">Exam quick-reference sheet · Modigliani–Miller in a frictionless world</p>
     <div class="howto">
-      <b>How to use this sheet (last-minute review):</b> Read the <b>Core Intuition</b> boxes once out loud — if you can explain MM I, MM II, and why WACC is flat in your own words, you're 80% there. Then drill the <b>Formulas</b> and <b>Cheat Sheet</b>, re-do the <b>Entrepreneur example</b> from a blank page, and finish with the <b>Active Recall</b> Qs (cover the grey answers). The two <span class="x" style="color:var(--accent);font-weight:bold;">Fallacies</span> are almost always tested.
+      <b>How to use this sheet (last-minute review):</b> Read the <b>Core Intuition</b> boxes once out loud, if you can explain MM I, MM II, and why WACC is flat in your own words, you're 80% there. Then drill the <b>Formulas</b> and <b>Cheat Sheet</b>, re-do the <b>Entrepreneur example</b> from a blank page, and finish with the <b>Active Recall</b> Qs (cover the grey answers). The two <span class="x" style="color:var(--accent);font-weight:bold;">Fallacies</span> are almost always tested.
     </div>
   </div>
 
@@ -307,12 +384,12 @@
   <div class="cols">
 
     <div class="card tint">
-      <h3 id="midterm-must-know-checklist">Midterm Must-Know Checklist</h3>
+      <h3 id="midterm-must-know-checklist" aria-level="2">Midterm Must-Know Checklist</h3>
       <ul class="check small">
         <li>State <b>MM I</b> via the Law-of-One-Price / cash-flow-identity argument.</li>
         <li>Apply <b>MM II</b>: show <var>r<sub>E</sub></var> rises linearly with <var>D/E</var>.</li>
         <li>Argue <b>WACC = r<sub>U</sub></b> is constant; explain the flat line.</li>
-        <li>Compute value, <var>E</var>, <var>r<sub>E</sub></var>, WACC — unlevered <i>and</i> levered.</li>
+        <li>Compute value, <var>E</var>, <var>r<sub>E</sub></var>, WACC, unlevered <i>and</i> levered.</li>
         <li>Explain <b>homemade leverage</b> &amp; why firm leverage is irrelevant.</li>
         <li>Build/read a <b>market-value balance sheet</b>; do a leveraged recap.</li>
         <li><b>Lever &amp; unlever betas</b> (incl. shortcut when <var>β<sub>D</sub>=0</var>).</li>
@@ -323,13 +400,13 @@
     </div>
 
     <div class="card">
-      <h3 id="mm-proposition-i-the-core-result">MM Proposition I — the core result</h3>
+      <h3 id="mm-proposition-i-the-core-result">MM Proposition I: the core result</h3>
       <div class="eq">V<sub>L</sub> = V<sub>U</sub> &nbsp;&nbsp;⟺&nbsp;&nbsp; E + D = U = A</div>
       <p class="small"><b>Pizza intuition:</b> the assets generate a fixed cash-flow "pizza." Debt &amp; equity just slice it. More slices ≠ more pizza. <b>Proof:</b> (1) debt + equity payoffs = asset payoff in <i>every</i> state; (2) Law of One Price → identical cash flows must have equal price; so <var>E+D</var> = value of assets, whatever the split.</p>
     </div>
 
     <div class="card">
-      <h3 id="mm-proposition-ii-cost-of-equity">MM Proposition II — cost of equity</h3>
+      <h3 id="mm-proposition-ii-cost-of-equity">MM Proposition II: cost of equity</h3>
       <div class="eq">r<sub>E</sub> = r<sub>U</sub> + <span class="f"><span class="n">D</span><span class="d">E</span></span>(r<sub>U</sub> − r<sub>D</sub>)</div>
       <p class="small">Debt is paid first, so the same asset-cash-flow swings hit a smaller equity base → equity gets riskier → investors demand more. The rise in <var>r<sub>E</sub></var> <b>exactly offsets</b> putting more weight on cheap debt. <b>No free lunch.</b></p>
     </div>
@@ -337,12 +414,12 @@
     <div class="card">
       <h3 id="why-wacc-is-constant-r-u">Why WACC is constant (= r<sub>U</sub>)</h3>
       <div class="eqL">r<sub>wacc</sub> = <span class="f"><span class="n">E</span><span class="d">E+D</span></span>r<sub>E</sub> + <span class="f"><span class="n">D</span><span class="d">E+D</span></span>r<sub>D</sub></div>
-      <p class="small">Sub MM II into this and the leverage terms cancel → <span class="box">r<sub>wacc</sub> = r<sub>U</sub> = r<sub>A</sub></span>. As leverage ↑, both <var>r<sub>E</sub></var> and <var>r<sub>D</sub></var> rise, but more weight shifts to cheaper debt — net effect zero. <b>Discount projects at r<sub>U</sub>, not r<sub>E</sub>.</b></p>
+      <p class="small">Sub MM II into this and the leverage terms cancel → <span class="box">r<sub>wacc</sub> = r<sub>U</sub> = r<sub>A</sub></span>. As leverage ↑, both <var>r<sub>E</sub></var> and <var>r<sub>D</sub></var> rise, but more weight shifts to cheaper debt, net effect zero. <b>Discount projects at r<sub>U</sub>, not r<sub>E</sub>.</b></p>
     </div>
 
     <div class="card">
       <h3 id="homemade-leverage">Homemade leverage</h3>
-      <p class="small">Investors can <b>borrow/lend on personal account</b> to build any capital structure themselves (e.g., buy unlevered stock on margin). At the same interest rate, this perfectly substitutes for corporate leverage — so nobody pays extra for the firm to do it. ⟹ leverage is value-irrelevant.</p>
+      <p class="small">Investors can <b>borrow/lend on personal account</b> to build any capital structure themselves (e.g., buy unlevered stock on margin). At the same interest rate, this perfectly substitutes for corporate leverage, so nobody pays extra for the firm to do it. ⟹ leverage is value-irrelevant.</p>
     </div>
 
     <div class="card">
@@ -354,20 +431,20 @@
 
   <!-- ===== FORMULAS TABLE (full width) ===== -->
   <div class="full">
-    <h2 id="key-formulas-and-when-to-use-them">Key Formulas — and When to Use Them</h2>
+    <h2 id="key-formulas-and-when-to-use-them">Key Formulas: and When to Use Them</h2>
     <table class="ftab">
       <tr><th style="width:38%">Formula</th><th>Gives you / use it when</th></tr>
       <tr><td><var>V = E + D</var></td><td><b>Firm value</b> (the "pizza"). Always market values.</td></tr>
-      <tr><td><var>V<sub>L</sub> = V<sub>U</sub></var></td><td><b>MM I</b> — value is independent of capital structure.</td></tr>
+      <tr><td><var>V<sub>L</sub> = V<sub>U</sub></var></td><td><b>MM I</b>, value is independent of capital structure.</td></tr>
       <tr><td>r<sub>U</sub> = <span class="f"><span class="n">E</span><span class="d">E+D</span></span>r<sub>E</sub> + <span class="f"><span class="n">D</span><span class="d">E+D</span></span>r<sub>D</sub></td><td><b>Asset / unlevered / pretax-WACC</b>. Same as WACC (no taxes). Discount rate for projects.</td></tr>
       <tr><td>r<sub>E</sub> = r<sub>U</sub> + <span class="f"><span class="n">D</span><span class="d">E</span></span>(r<sub>U</sub> − r<sub>D</sub>)</td><td><b>Levered cost of equity (MM II)</b>. After a leverage change.</td></tr>
       <tr><td>β<sub>U</sub> = <span class="f"><span class="n">E</span><span class="d">E+D</span></span>β<sub>E</sub> + <span class="f"><span class="n">D</span><span class="d">E+D</span></span>β<sub>D</sub></td><td><b>Unlever a beta</b> (isolate business risk of a comparable).</td></tr>
       <tr><td>β<sub>E</sub> = β<sub>U</sub> + <span class="f"><span class="n">D</span><span class="d">E</span></span>(β<sub>U</sub> − β<sub>D</sub>)</td><td><b>Relever a beta</b> to a target structure. (Twin of MM II.)</td></tr>
       <tr><td>β<sub>U</sub> = <span class="f"><span class="n">β<sub>E</sub></span><span class="d">1 + D/E</span></span></td><td><b>Shortcut</b> for β<sub>U</sub> <i>when β<sub>D</sub> = 0</i>.</td></tr>
-      <tr><td><var>r<sub>E</sub> = r<sub>f</sub> + β<sub>E</sub>(r<sub>M</sub> − r<sub>f</sub>)</var></td><td><b>CAPM</b> — estimate <var>r<sub>E</sub></var> (or <var>r<sub>U</sub></var> with <var>β<sub>U</sub></var>).</td></tr>
+      <tr><td><var>r<sub>E</sub> = r<sub>f</sub> + β<sub>E</sub>(r<sub>M</sub> − r<sub>f</sub>)</var></td><td><b>CAPM</b>, estimate <var>r<sub>E</sub></var> (or <var>r<sub>U</sub></var> with <var>β<sub>U</sub></var>).</td></tr>
       <tr><td><var>Net debt = D − Cash</var>; &nbsp;EV = E + Net debt</td><td><b>Cash = negative debt</b>. Use net-debt weights for β<sub>U</sub>.</td></tr>
     </table>
-    <p class="small muted" style="margin-top:2px;">⚠ <b>Not this chapter:</b> the tax versions on your formula sheet — <var>V<sub>L</sub> = V<sub>U</sub> + PV(ITS)</var> and after-tax WACC with <var>(1−t<sub>c</sub>)</var> — belong to later chapters. In a perfect-markets question there are <b>no taxes</b>, so WACC = <var>r<sub>U</sub></var>.</p>
+    <p class="small muted" style="margin-top:2px;">⚠ <b>Not this chapter:</b> the tax versions on your formula sheet: <var>V<sub>L</sub> = V<sub>U</sub> + PV(ITS)</var> and after-tax WACC with <var>(1−t<sub>c</sub>)</var>, belong to later chapters. In a perfect-markets question there are <b>no taxes</b>, so WACC = <var>r<sub>U</sub></var>.</p>
   </div>
 
   <!-- ===== VISUAL AIDS (2-col flow) ===== -->
@@ -391,7 +468,7 @@
         <text x="170" y="35" font-size="10" font-family="sans-serif" fill="#7a2733" font-weight="bold">D</text>
         <text x="200" y="78" font-size="11" font-family="sans-serif" fill="#15314b" font-weight="bold">E</text>
       </svg>
-      <div class="cap">Resize the slices (more/less debt) — the pizza (firm value) is the same size.</div>
+      <div class="cap">Resize the slices (more/less debt), the pizza (firm value) is the same size.</div>
     </div>
 
     <div class="card viz">
@@ -438,7 +515,7 @@
 
   <!-- ===== ENTREPRENEUR EXAMPLE (full width) ===== -->
   <div class="full">
-    <h2 id="worked-example-the-entrepreneur-s-project-know-c">Worked Example — The Entrepreneur's Project (know cold)</h2>
+    <h2 id="worked-example-the-entrepreneur-s-project-know-c">Worked Example: The Entrepreneur's Project (know cold)</h2>
     <div class="card" style="margin-bottom:6px;">
       <p class="small"><b>Setup:</b> cost <b>$800</b> today; pays <b>$1,400</b> (strong) or <b>$900</b> (weak), 50/50. Risk-free 5%, risk premium 10% ⟹ <var>r<sub>U</sub></var> = <b>15%</b>.</p>
       <table class="num" style="font-size:9pt;">
@@ -454,21 +531,21 @@
         &nbsp;<b>Check MM II:</b> 15% + (500/500)(15%−5%) = <b>25% ✓</b>. &nbsp;
         <b>Check WACC:</b> ½(25%)+½(5%) = <b>15% = r<sub>U</sub> ✓</b>.
       </p>
-      <p class="small muted" style="margin-top:2px;">Debt + levered-equity rows sum to the firm row in every column — that cash-flow identity <i>is</i> MM I. Leverage widened equity's range (−10..+40 → −25..+75) and raised its return, but value and WACC didn't budge.</p>
+      <p class="small muted" style="margin-top:2px;">Debt + levered-equity rows sum to the firm row in every column, that cash-flow identity <i>is</i> MM I. Leverage widened equity's range (−10..+40 → −25..+75) and raised its return, but value and WACC didn't budge.</p>
     </div>
   </div>
 
   <!-- ===== FALLACIES (2-col) ===== -->
   <div class="cols">
     <div class="card fal">
-      <h3 id="fallacy-1-leverage-eps-so-price">Fallacy 1 — "Leverage ↑ EPS, so price ↑"</h3>
+      <h3 id="fallacy-1-leverage-eps-so-price">Fallacy 1: "Leverage ↑ EPS, so price ↑"</h3>
       <p class="small"><span class="x">Wrong:</span> EPS does rise, but leverage also raises <var>r<sub>E</sub></var> (MM II), lowering the P/E by the offsetting amount. <b>Price unchanged.</b></p>
       <p class="small muted"><b>Levitron:</b> after recap EPS $1.00→$1.10, but <var>r<sub>E</sub></var> 13.33%→14.66%; price = EPS/r<sub>E</sub> = 1.10/0.1466 = <b>$7.50</b> (unchanged). Use EV/EBIT(DA), not P/E, to compare firms.</p>
     </div>
     <div class="card fal">
-      <h3 id="fallacy-2-issuing-equity-dilutes-value">Fallacy 2 — "Issuing equity dilutes value"</h3>
-      <p class="small"><span class="x">Wrong:</span> sold at a <b>fair price</b>, new shares bring in matching assets — more shares <i>and</i> proportionally more assets ⟹ <b>value per share unchanged.</b></p>
-      <p class="small muted"><b>Jet Set Air:</b> $8B (500M×$16) + $1B raised = $9B over 562.5M shares = <b>$16</b>. Any gain/loss comes from the <b>NPV of what you buy</b>, not the issuance. <span class="x">Bonus:</span> "cheap debt lowers WACC" is also false — <var>r<sub>E</sub></var> rises to offset.</p>
+      <h3 id="fallacy-2-issuing-equity-dilutes-value">Fallacy 2: "Issuing equity dilutes value"</h3>
+      <p class="small"><span class="x">Wrong:</span> sold at a <b>fair price</b>, new shares bring in matching assets, more shares <i>and</i> proportionally more assets ⟹ <b>value per share unchanged.</b></p>
+      <p class="small muted"><b>Jet Set Air:</b> $8B (500M×$16) + $1B raised = $9B over 562.5M shares = <b>$16</b>. Any gain/loss comes from the <b>NPV of what you buy</b>, not the issuance. <span class="x">Bonus:</span> "cheap debt lowers WACC" is also false, <var>r<sub>E</sub></var> rises to offset.</p>
     </div>
   </div>
 
@@ -504,7 +581,7 @@
       </div>
       <div class="blk">
         <div class="t">As leverage ↑</div>
-        <div class="small"><var>r<sub>E</sub></var> ↑, <var>r<sub>D</sub></var> ↑ (eventually), <var>β<sub>E</sub></var> ↑, EPS/ROE ↑ — but <b>WACC flat at r<sub>U</sub></b>, <var>β<sub>U</sub></var> flat, <b>V flat</b>.</div>
+        <div class="small"><var>r<sub>E</sub></var> ↑, <var>r<sub>D</sub></var> ↑ (eventually), <var>β<sub>E</sub></var> ↑, EPS/ROE ↑, but <b>WACC flat at r<sub>U</sub></b>, <var>β<sub>U</sub></var> flat, <b>V flat</b>.</div>
       </div>
       <div class="blk">
         <div class="t">Don't get fooled</div>
@@ -519,16 +596,16 @@
 
   <!-- ===== ACTIVE RECALL (full width, 2-col) ===== -->
   <div class="full">
-    <h2 id="active-recall-cover-the-grey-answers">Active Recall — Cover the Grey Answers</h2>
+    <h2 id="active-recall-cover-the-grey-answers">Active Recall: Cover the Grey Answers</h2>
     <div class="qa cols">
       <div class="row"><b>1. State MM I + the proof.</b> <span class="a">V<sub>L</sub>=V<sub>U</sub>. Debt+equity payoffs = asset payoff every state; Law of One Price → equal price; so E+D = asset value regardless of split.</span></div>
       <div class="row"><b>2. Why does r<sub>E</sub> rise with leverage (no bankruptcy)?</b> <span class="a">Senior fixed debt concentrates the same asset-cash-flow swings onto less equity → more volatile → higher required return (∝ D/E).</span></div>
       <div class="row"><b>3. E=$600M, D=$400M, r<sub>E</sub>=18%, r<sub>D</sub>=7%. Find r<sub>U</sub>.</b> <span class="a">0.6(18%)+0.4(7%) = <b>13.6%</b>.</span></div>
       <div class="row"><b>4. r<sub>U</sub>=12%, r<sub>D</sub>=6%, D/E=0.5. Find r<sub>E</sub> &amp; WACC.</b> <span class="a">r<sub>E</sub>=12%+0.5(6%)=<b>15%</b>; WACC=⅔(15%)+⅓(6%)=<b>12%</b>=r<sub>U</sub>.</span></div>
       <div class="row"><b>5. β<sub>E</sub>=1.2, D/E=0.5, β<sub>D</sub>=0. β<sub>U</sub>? Relever to D/E=1.</b> <span class="a">β<sub>U</sub>=1.2/1.5=<b>0.8</b>; new β<sub>E</sub>=0.8+1(0.8)=<b>1.6</b>.</span></div>
-      <div class="row"><b>6. Borrow to buy back shares — does the price change?</b> <span class="a"><b>No.</b> Selling $X debt and buying $X equity is a zero-NPV swap; risk changes, value/share doesn't.</span></div>
+      <div class="row"><b>6. Borrow to buy back shares, does the price change?</b> <span class="a"><b>No.</b> Selling $X debt and buying $X equity is a zero-NPV swap; risk changes, value/share doesn't.</span></div>
       <div class="row"><b>7. T/F: issuing equity adds supply, so price falls.</b> <span class="a"><b>False.</b> A fair-price issue brings in matching assets; price/share unchanged. Effects come from new info / NPV of use of funds.</span></div>
-      <div class="row"><b>8. Why is "debt is cheaper, so more debt lowers WACC" wrong?</b> <span class="a">Adding debt raises r<sub>E</sub> (MM II) by exactly enough to offset the heavier weight on cheap debt — WACC stays at r<sub>U</sub>.</span></div>
+      <div class="row"><b>8. Why is "debt is cheaper, so more debt lowers WACC" wrong?</b> <span class="a">Adding debt raises r<sub>E</sub> (MM II) by exactly enough to offset the heavier weight on cheap debt: WACC stays at r<sub>U</sub>.</span></div>
     </div>
   </div>
 
@@ -541,13 +618,59 @@
 
 
 <!--__rbp-->
+<!-- The pill styles itself: this block used to live only with the top bar,
+     so the seven tool pages, which carry the pill alone, rendered it as an
+     unstyled link at the very end of the document. Whatever carries the
+     pill now carries its style. -->
+<style id="__rbp-style">
+#__rb-pill{
+  position:fixed;left:14px;bottom:14px;z-index:2147483000;
+  display:inline-flex;align-items:center;gap:.45rem;padding:.58rem .9rem;
+  background:rgba(22,21,15,.93);color:#faf9f6;text-decoration:none;border-radius:99px;
+  font:600 12.5px/1 InterVar,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  border:1px solid rgba(255,255,255,.16);box-shadow:0 6px 22px rgba(0,0,0,.28);
+  opacity:0;transform:translateY(6px);pointer-events:none;
+  transition:opacity .2s ease,transform .2s ease;
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+}
+#__rb-pill.__on{opacity:1;transform:none;pointer-events:auto}
+#__rb-pill:hover{background:#16150f;color:#fff}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) #__rb-pill{background:rgba(247,245,239,.95);color:#131310;border-color:rgba(0,0,0,.2)}
+  :root:not([data-theme="light"]) #__rb-pill:hover{background:#fff;color:#000}
+}
+:root[data-theme="dark"] #__rb-pill{background:rgba(247,245,239,.95);color:#131310;border-color:rgba(0,0,0,.2)}
+:root[data-theme="dark"] #__rb-pill:hover{background:#fff;color:#000}
+@media (prefers-reduced-motion:reduce){#__rb-pill{transition:none}}
+@media print{#__rb-pill{display:none !important}}
+/* a tool carries no bar, so what it was built from stands at the foot of the document */
+#__rb-from{margin:1.25rem 1rem;font:400 13px/1.45 InterVar,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;color:#6f6c63;max-width:70ch}
+#__rb-from b{font-weight:600;color:#55524a}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) #__rb-from{color:#948f85}
+  :root:not([data-theme="light"]) #__rb-from b{color:#c0bcb1}
+}
+:root[data-theme="dark"] #__rb-from{color:#948f85}
+:root[data-theme="dark"] #__rb-from b{color:#c0bcb1}
+</style>
+<!-- With scripts off nothing ever adds the __on class, and the only way
+     back from a tool page vanished. The pill needs its script for the
+     scroll threshold, not for existing. -->
+<noscript><style>#__rb-pill{opacity:1 !important;transform:none !important;pointer-events:auto !important}</style></noscript>
 <a id="__rb-pill" href="coursework.html">&#8592; Coursework</a>
+
 <script>
 (function(){
   var p=document.getElementById('__rb-pill'); if(!p) return;
+  /* On a page with the top bar the pill waits until the bar has scrolled
+     out of reach. On a page without one (the tools carry no bar, because a
+     bar inside a full-screen application sits in the wrong place) the pill
+     is the only way back, so it is there from the first paint: a tool
+     screen shorter than the threshold used to strand the reader entirely. */
+  var TH=document.getElementById('__rb')?160:-1;
   var t=false;
   function run(){ t=false;
-    p.classList.toggle('__on',(window.scrollY||document.documentElement.scrollTop)>420); }
+    p.classList.toggle('__on',(window.scrollY||document.documentElement.scrollTop)>TH); }
   function q(){ if(!t){ t=true; requestAnimationFrame(run); } }
   addEventListener('scroll',q,{passive:true}); run();
 })();
@@ -565,7 +688,7 @@
     function put(key){
       if(t2[key]||Object.keys(t2).length<500){
         t2[key]=(t2[key]||0)+1;
-        localStorage.setItem(k,JSON.stringify(t2));
+        try{localStorage.setItem(k,JSON.stringify(t2));}catch(e){}
       }
     }
     put(u+location.hash);

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AFM 291 — MIDTERM 01 FIELD MANUAL · MT1-FM REV C</title>
+<title>AFM 291 Midterm Field Manual · Alex Rajcoomar</title>
 <style>
   /* ============ CORE ============ */
   * { margin:0; padding:0; box-sizing:border-box; }
@@ -388,15 +388,15 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="manifest" href="site.webmanifest">
 <link rel="canonical" href="https://alexrajcoomar.github.io/afm291-field-manual.html">
-<meta property="og:title" content="AFM 291 Midterm Field Manual — Alex Rajcoomar">
+<meta property="og:title" content="AFM 291 Midterm Field Manual · Alex Rajcoomar">
 <meta property="og:description" content="The condensed field manual for the AFM 291 midterm: what to know, in the order it gets tested.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://alexrajcoomar.github.io/afm291-field-manual.html">
-<meta property="og:site_name" content="Alex Rajcoomar — portfolio">
+<meta property="og:site_name" content="Alex Rajcoomar · portfolio">
 <meta property="og:image" content="https://alexrajcoomar.github.io/cards/afm291-field-manual.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="AFM 291 Midterm Field Manual — Alex Rajcoomar">
+<meta property="og:image:alt" content="AFM 291 Midterm Field Manual · Alex Rajcoomar">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://alexrajcoomar.github.io/cards/afm291-field-manual.png">
 <script>
@@ -431,22 +431,18 @@
 #__rb .__rb-home{font-weight:640;color:#16150f}
 #__rb .__rb-home i{font-style:normal;font-weight:400;color:#6f6c63}
 #__rb .__rb-right{margin-left:auto;display:flex;gap:1.1rem;flex-wrap:wrap}
+/* the piece's own row of the statement: origin, words, figures, tables, the
+   same figures the home page prints for it, from the same measurement */
+#__rb .__rb-row{color:#6f6c63;font-variant-numeric:tabular-nums;white-space:nowrap}
+#__rb .__rb-row b{font-weight:600;color:#55524a}
+@media (max-width:44rem){#__rb .__rb-row{flex-basis:100%;order:3;white-space:normal}}
+/* what the piece was built from, in the owner's words, from pieces.json */
+#__rb .__rb-from{flex-basis:100%;order:5;font-weight:400;color:#6f6c63;line-height:1.4;max-width:70ch}
+#__rb .__rb-from b{font-weight:600;color:#55524a}
 #__rb .__mark{
   display:inline-grid;place-items:center;width:1.2rem;height:1.2rem;flex:none;
   background:#16150f;color:#faf9f6;font-size:.72rem;font-weight:700;
 }
-#__rb-pill{
-  position:fixed;left:14px;bottom:14px;z-index:2147483000;
-  display:inline-flex;align-items:center;gap:.45rem;padding:.58rem .9rem;
-  background:rgba(22,21,15,.93);color:#faf9f6;text-decoration:none;border-radius:99px;
-  font:600 12.5px/1 InterVar,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
-  border:1px solid rgba(255,255,255,.16);box-shadow:0 6px 22px rgba(0,0,0,.28);
-  opacity:0;transform:translateY(6px);pointer-events:none;
-  transition:opacity .2s ease,transform .2s ease;
-  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
-}
-#__rb-pill.__on{opacity:1;transform:none;pointer-events:auto}
-#__rb-pill:hover{background:#16150f;color:#fff}
 /* Dark has to answer to two things: the reader's system setting, and the
    theme button on the page, which sets data-theme on <html>. Keyed to the
    media query alone, the bar stayed paper-white across the top of an essay
@@ -457,25 +453,30 @@
   :root:not([data-theme="light"]) #__rb{background:#131310;border-bottom-color:#2c2b24;color:#c0bcb1}
   :root:not([data-theme="light"]) #__rb .__rb-home{color:#f7f5ef}
   :root:not([data-theme="light"]) #__rb .__rb-home i{color:#948f85}
+  :root:not([data-theme="light"]) #__rb .__rb-row{color:#948f85}
+  :root:not([data-theme="light"]) #__rb .__rb-row b{color:#c0bcb1}
+  :root:not([data-theme="light"]) #__rb .__rb-from{color:#948f85}
+  :root:not([data-theme="light"]) #__rb .__rb-from b{color:#c0bcb1}
   :root:not([data-theme="light"]) #__rb a{color:#85adea}
   :root:not([data-theme="light"]) #__rb .__mark{background:#f7f5ef;color:#131310}
-  :root:not([data-theme="light"]) #__rb-pill{background:rgba(247,245,239,.95);color:#131310;border-color:rgba(0,0,0,.2)}
-  :root:not([data-theme="light"]) #__rb-pill:hover{background:#fff;color:#000}
 }
 :root[data-theme="dark"] #__rb{background:#131310;border-bottom-color:#2c2b24;color:#c0bcb1}
 :root[data-theme="dark"] #__rb .__rb-home{color:#f7f5ef}
 :root[data-theme="dark"] #__rb .__rb-home i{color:#948f85}
+:root[data-theme="dark"] #__rb .__rb-row{color:#948f85}
+:root[data-theme="dark"] #__rb .__rb-row b{color:#c0bcb1}
+:root[data-theme="dark"] #__rb .__rb-from{color:#948f85}
+:root[data-theme="dark"] #__rb .__rb-from b{color:#c0bcb1}
 :root[data-theme="dark"] #__rb a{color:#85adea}
 :root[data-theme="dark"] #__rb .__mark{background:#f7f5ef;color:#131310}
-:root[data-theme="dark"] #__rb-pill{background:rgba(247,245,239,.95);color:#131310;border-color:rgba(0,0,0,.2)}
-:root[data-theme="dark"] #__rb-pill:hover{background:#fff;color:#000}
-@media (prefers-reduced-motion:reduce){#__rb-pill{transition:none}}
-@media print{#__rb,#__rb-pill{display:none !important}}
+@media print{#__rb{display:none !important}}
 </style>
-<div id="__rb">
+<nav id="__rb" aria-label="Portfolio">
   <a class="__rb-home" href="index.html"><span class="__mark" aria-hidden="true">A</span>Alex Rajcoomar <i>portfolio</i></a>
-  <span class="__rb-right"><a href="afm291.html">The vault</a><a href="library.html">All work</a></span>
-</div>
+  <span class="__rb-row">Coursework &middot; <b>2,470</b> words &middot; <b>0</b> figures &middot; <b>4</b> tables</span>
+  <span class="__rb-right"><a href="afm291.html">The vault</a><a href="atlas.html">Atlas</a><a href="library.html">All work</a></span>
+  <span class="__rb-from"><b>Built from</b> Not declared on file.</span>
+</nav>
 <script>
 /* the trail: which passages this browser has opened. The atlas reads it and
    rings them; the record lives in localStorage and never leaves the machine. */
@@ -492,7 +493,7 @@
     function put(key){
       if(t2[key]||Object.keys(t2).length<500){
         t2[key]=(t2[key]||0)+1;
-        localStorage.setItem(k,JSON.stringify(t2));
+        try{localStorage.setItem(k,JSON.stringify(t2));}catch(e){}
       }
     }
     put(u+location.hash);
@@ -502,17 +503,18 @@
 </script>
 <!--/__rb-->
 
-<div class="printbar">PRINT SPEC — PAPER: LETTER 8.5×11 · SCALE: 100% · MARGINS: NONE · BACKGROUND GRAPHICS: ON · 5 SHEETS</div>
+<div class="printbar">PRINT SPEC: PAPER: LETTER 8.5×11 · SCALE: 100% · MARGINS: NONE · BACKGROUND GRAPHICS: ON · 5 SHEETS</div>
 
+<main>
 <!-- ===================== SHEET 1 — REVENUE: FIVE-STEP ===================== -->
 <div class="sheet">
 
   <div class="mast">
     <h1 id="afm-291-midterm-01-field-manual">AFM 291<span>Midterm 01 · Field Manual</span></h1>
     <div class="meta">
-      <div><b>STANDARD</b> — IFRS 15 / ASPE 3400 / IAS 37</div>
-      <div><b>METHOD</b> — REDRAW BLIND · CHECK · FIX</div>
-      <div><b>REF</b> — S26 GUIDANCE APPENDIX GOVERNS</div>
+      <div><b>STANDARD</b>: IFRS 15 / ASPE 3400 / IAS 37</div>
+      <div><b>METHOD</b>: REDRAW BLIND · CHECK · FIX</div>
+      <div><b>REF</b>: S26 GUIDANCE APPENDIX GOVERNS</div>
       <div><b>DOC</b> MT1-FM · REV C · SHEET 1/5</div>
     </div>
   </div>
@@ -526,14 +528,14 @@
   </div>
 
   <div class="doctrine">
-    <div>RULE 1 — <b>NAME</b> THE FRAMEWORK<i>IFRS or ASPE decides the rule. State it first.</i></div>
-    <div>RULE 2 — <b>CITE</b> THE CRITERION<i>The appendix is open. Point to the page — don't recite from memory.</i></div>
-    <div>RULE 3 — <b>REDRAW</b> IT BLIND<i>If you can't draw the model + gate, you don't own it.</i></div>
+    <div>RULE 1: <b>NAME</b> THE FRAMEWORK<i>IFRS or ASPE decides the rule. State it first.</i></div>
+    <div>RULE 2: <b>CITE</b> THE CRITERION<i>The appendix is open. Point to the page, don't recite from memory.</i></div>
+    <div>RULE 3: <b>REDRAW</b> IT BLIND<i>If you can't draw the model + gate, you don't own it.</i></div>
   </div>
 
   <div class="zlabel">
     <div class="badge">ZONE R1</div>
-    <div class="name">IFRS 15 — The Five-Step Model</div>
+    <div class="name">IFRS 15: The Five-Step Model</div>
     <div class="rule"></div>
     <div class="sub">Guidance p.3–4 · redraw the chain + gate blind</div>
   </div>
@@ -555,24 +557,24 @@
   <div class="decision">
     <div class="dk">Step 05<br>Control<br>Gate</div>
     <div class="dc">
-      <h4 id="over-time-if-any-one-holds">Over Time — If ANY ONE Holds</h4>
+      <h4 id="over-time-if-any-one-holds" aria-level="2">Over Time: If ANY ONE Holds</h4>
       <p><b>①</b> Customer simultaneously RECEIVES + CONSUMES benefits as you perform &nbsp; <b>②</b> Customer CONTROLS the asset as it is created / enhanced &nbsp; <b>③</b> Asset has NO ALTERNATIVE USE + enforceable RIGHT TO PAYMENT for work done to date</p>
-      <small>B4 backstop — another entity wouldn't substantially re-perform the work done → over time</small>
+      <small>B4 backstop, another entity wouldn't substantially re-perform the work done → over time</small>
     </div>
     <div class="dc">
-      <h4 id="none-hold-point-in-time-default">None Hold → <span class="bk">Point in Time</span> (default)</h4>
+      <h4 id="none-hold-point-in-time-default" aria-level="3">None Hold → <span class="bk">Point in Time</span> (default)</h4>
       <p>Recognize at the moment <b>control</b> transfers. <span class="tri-i">△</span> indicators (general IFRS 15, not in appendix): physical possession · legal title · risks + rewards · acceptance · present right to payment.</p>
       <small>Billing / invoice date ≠ revenue. Control + performance drive recognition.</small>
     </div>
   </div>
 
   <div class="blind">
-    <div class="bh"><div class="bt">Blind Drill — 5-Step Chain + Control Gate</div><div class="bs">Spaced · ≥1 day between passes</div></div>
+    <div class="bh"><div class="bt">Blind Drill: 5-Step Chain + Control Gate</div><div class="bs">Spaced · ≥1 day between passes</div></div>
     <div class="bbody">
       <div class="bpass">
-        <span class="p"><b>PASS 1 —</b> copy it with notes open. Learn the shape: 5 boxes, the 3 over-time tests, the default.</span>
-        <span class="p"><b>PASS 2 —</b> draw notes-CLOSED. Check vs p.3–4. Fix every gap in RED.</span>
-        <span class="p"><b>PASS 3 —</b> draw BLIND + timed (&lt;3 min), zero errors. Now you own it.</span>
+        <span class="p"><b>PASS 1, </b> copy it with notes open. Learn the shape: 5 boxes, the 3 over-time tests, the default.</span>
+        <span class="p"><b>PASS 2, </b> draw notes-CLOSED. Check vs p.3–4. Fix every gap in RED.</span>
+        <span class="p"><b>PASS 3, </b> draw BLIND + timed (&lt;3 min), zero errors. Now you own it.</span>
       </div>
       <div class="bgrid">
         <div class="brow"><div class="l">5-Step</div><div class="dbx"><s>P1</s></div><div class="dbx"><s>P2</s></div><div class="dbx"><s>P3</s></div></div>
@@ -591,20 +593,20 @@
 
   <div class="panels p4">
     <div class="panel">
-      <div class="phead">01 · Contract — All 5</div>
+      <div class="phead">01 · Contract: All 5</div>
       <div class="pbody"><b>Approved</b> (written / oral / customary) · <b>Rights</b> identifiable · <b>Payment terms</b> identifiable · <b>Commercial substance</b> · <b>Collection probable</b>. Fail any → no contract under the model.</div>
     </div>
     <div class="panel">
-      <div class="phead">02 · Distinct — Need BOTH</div>
-      <div class="pbody"><b>Capable of being distinct</b> — usable alone or with readily available resources. <b>Distinct in context</b> — separately identifiable; no significant integration / modification / customization; not highly interdependent. <b>Series</b> of substantially-same goods with same transfer pattern = <b>one PO</b>.</div>
+      <div class="phead">02 · Distinct: Need BOTH</div>
+      <div class="pbody"><b>Capable of being distinct</b>, usable alone or with readily available resources. <b>Distinct in context</b>, separately identifiable; no significant integration / modification / customization; not highly interdependent. <b>Series</b> of substantially-same goods with same transfer pattern = <b>one PO</b>.</div>
     </div>
     <div class="panel">
       <div class="phead">03 · Transaction Price</div>
-      <div class="pbody"><b>Variable</b> — expected value (many similar outcomes) vs most likely (two outcomes). <b>CONSTRAIN</b>: include only if highly probable NO significant reversal. Also: significant financing (→ discount, Sheet 3) · non-cash · consideration payable to customer.</div>
+      <div class="pbody"><b>Variable</b>, expected value (many similar outcomes) vs most likely (two outcomes). <b>CONSTRAIN</b>: include only if highly probable NO significant reversal. Also: significant financing (→ discount, Sheet 3) · non-cash · consideration payable to customer.</div>
     </div>
     <div class="panel">
       <div class="phead">04 · Allocate</div>
-      <div class="pbody">Split the price on a <b>relative SSP</b> basis where SSP is available. (SSP defined under ASPE A9 — Sheet 2: best evidence is the observable separate-sale price; a list price is <b>not presumed</b> to be SSP.)</div>
+      <div class="pbody">Split the price on a <b>relative SSP</b> basis where SSP is available. (SSP defined under ASPE A9: Sheet 2: best evidence is the observable separate-sale price; a list price is <b>not presumed</b> to be SSP.)</div>
     </div>
   </div>
 
@@ -621,9 +623,9 @@
   <div class="mast">
     <h1 id="afm-291-revenue-framework-split">AFM 291<span>Revenue · Framework Split</span></h1>
     <div class="meta">
-      <div><b>STANDARD</b> — IFRS 15 vs ASPE 3400</div>
-      <div><b>CORE SPLIT</b> — CONTROL vs RISKS + REWARDS</div>
-      <div><b>METHOD</b> — ONE CONTRACT, BOTH WAYS</div>
+      <div><b>STANDARD</b>: IFRS 15 vs ASPE 3400</div>
+      <div><b>CORE SPLIT</b>: CONTROL vs RISKS + REWARDS</div>
+      <div><b>METHOD</b>: ONE CONTRACT, BOTH WAYS</div>
       <div><b>DOC</b> MT1-FM · REV C · SHEET 2/5</div>
     </div>
   </div>
@@ -641,12 +643,12 @@
     <span><i class="sw a"></i>ASH = ASPE</span>
     <span><i class="sw k"></i>BLACK = TRIGGER / OUTCOME</span>
     <span><i class="tri">△</i>SUPPLEMENTS THE APPENDIX</span>
-    <span class="mot">SAME CONTRACT — DIFFERENT TRIGGER. KNOW WHERE + WHY THEY DIVERGE.</span>
+    <span class="mot">SAME CONTRACT: DIFFERENT TRIGGER. KNOW WHERE + WHY THEY DIVERGE.</span>
   </div>
 
   <div class="zlabel">
     <div class="badge">ZONE R2</div>
-    <div class="name">IFRS 15 vs ASPE 3400 — Line by Line</div>
+    <div class="name">IFRS 15 vs ASPE 3400: Line by Line</div>
     <div class="rule"></div>
     <div class="sub">Guidance p.3–6 · the first row decides everything downstream</div>
   </div>
@@ -655,13 +657,13 @@
     <div class="chead"><div class="hc">Axis</div><div class="hc">IFRS 15</div><div class="hc">ASPE 3400</div></div>
     <div class="crow hot"><div class="ck">Core Trigger</div><div class="ci"><span class="big">Transfer of CONTROL</span></div><div class="ca"><span class="big">Risks + Rewards transferred + collection assured</span></div></div>
     <div class="crow"><div class="ck">Model</div><div class="ci">5-step model, applied per performance obligation</div><div class="ca">Performance satisfied · measurable reliably · collection assured. (+ persuasive evidence · delivery · price fixed/determinable)</div></div>
-    <div class="crow"><div class="ck">Distinct Unit</div><div class="ci">Distinct <b>performance obligations</b> (capable + in-context)</div><div class="ca">Separate <b>units of account</b> — stand-alone value + (if right of return) remaining delivery probable & in vendor's control</div></div>
-    <div class="crow"><div class="ck">Allocate</div><div class="ci">Relative <b>SSP</b></div><div class="ca">Relative <b>SSP</b> — same basis (A9)</div></div>
+    <div class="crow"><div class="ck">Distinct Unit</div><div class="ci">Distinct <b>performance obligations</b> (capable + in-context)</div><div class="ca">Separate <b>units of account</b>, stand-alone value + (if right of return) remaining delivery probable & in vendor's control</div></div>
+    <div class="crow"><div class="ck">Allocate</div><div class="ci">Relative <b>SSP</b></div><div class="ca">Relative <b>SSP</b>, same basis (A9)</div></div>
     <div class="crow"><div class="ck">Variable Price</div><div class="ci">Expected value / most likely, <b>then constrain</b> (no significant reversal)</div><div class="ca">Price must be <b>fixed or determinable</b></div></div>
     <div class="crow"><div class="ck">Timing</div><div class="ci">Over time (3 criteria) <b>or</b> point in time (default)</div><div class="ca">Delivery / performance; long-term → <b>% completion</b> (default) or <b>completed contract</b></div></div>
     <div class="crow"><div class="ck">Long-Term Loss</div><div class="ci">Onerous contract → recognize <b>expected gross loss</b></div><div class="ca">Expected loss → recognize the <b>ENTIRE loss immediately</b>, regardless of % complete</div></div>
     <div class="crow"><div class="ck">Financing</div><div class="ci">Significant financing component → <b>discount to PV</b> (Sheet 3)</div><div class="ca">No 3400 detail; deferred → note receivable (S.3856); below-market → <b>PV at market rate</b></div></div>
-    <div class="crow"><div class="ck">Warranty</div><div class="ci">Assurance vs service — <b>B28–B30</b> (gate below)</div><div class="ca">No warranty guidance in the appendix</div></div>
+    <div class="crow"><div class="ck">Warranty</div><div class="ci">Assurance vs service: <b>B28–B30</b> (gate below)</div><div class="ca">No warranty guidance in the appendix</div></div>
   </div>
 
   <div class="zlabel">
@@ -674,7 +676,7 @@
   <div class="panels p4">
     <div class="panel shade">
       <div class="phead aspe">Long-Term Contracts</div>
-      <div class="pbody"><b>% of completion</b> — relate revenue to work done (default when progress is estimable). <b>Completed contract</b> ONLY when performance is a SINGLE ACT or progress CAN'T be reliably estimated (.18).</div>
+      <div class="pbody"><b>% of completion</b>, relate revenue to work done (default when progress is estimable). <b>Completed contract</b> ONLY when performance is a SINGLE ACT or progress CAN'T be reliably estimated (.18).</div>
     </div>
     <div class="panel shade">
       <div class="phead aspe">Expected Losses</div>
@@ -692,26 +694,26 @@
 
   <div class="zlabel">
     <div class="badge">ZONE R3</div>
-    <div class="name">Warranty Decision — IFRS B28–B30</div>
+    <div class="name">Warranty Decision: IFRS B28–B30</div>
     <div class="rule"></div>
-    <div class="sub">Guidance p.4 · one pivot — separately purchasable?</div>
+    <div class="sub">Guidance p.4 · one pivot, separately purchasable?</div>
   </div>
 
   <div class="binwrap" style="grid-template-columns:1.5fr 1fr;">
     <div class="binary">
-      <div class="bhead">Warranty — Performance Obligation or Provision?</div>
+      <div class="bhead">Warranty: Performance Obligation or Provision?</div>
       <div class="bq">Can the customer purchase the warranty SEPARATELY?</div>
       <div class="bb">
         <div class="br yes"><span class="bl">YES → B29</span> Distinct service → it's a <b>PERFORMANCE OBLIGATION</b>. Allocate part of the price; recognize over the service period.</div>
-        <div class="br"><span class="bl">NO → B30</span> Account under <b>IAS 37 — provision</b>. <b>UNLESS</b> it provides a service <b>beyond</b> assurance (then that part is a PO).</div>
+        <div class="br"><span class="bl">NO → B30</span> Account under <b>IAS 37, provision</b>. <b>UNLESS</b> it provides a service <b>beyond</b> assurance (then that part is a PO).</div>
       </div>
       <div class="bfoot"><b>Assurance-type</b> = product meets agreed specs (provision). <b>Service-type</b> = something extra the customer could buy alone (performance obligation).</div>
     </div>
     <div class="binary">
-      <div class="bhead">Blind Drill — R2 Table</div>
+      <div class="bhead">Blind Drill: R2 Table</div>
       <div class="bq" style="border-bottom:none; font-size:6pt;">Reproduce the 9-row split from blank.</div>
       <div class="recall" style="border-top:2px solid var(--ink);"><b>Reps</b><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
-      <div class="bfoot"><b>Drill:</b> take ONE contract with a bundled warranty + a financing term — solve it under IFRS, then ASPE. Mark every line where the answers split.</div>
+      <div class="bfoot"><b>Drill:</b> take ONE contract with a bundled warranty + a financing term, solve it under IFRS, then ASPE. Mark every line where the answers split.</div>
     </div>
   </div>
 
@@ -728,9 +730,9 @@
   <div class="mast">
     <h1 id="afm-291-time-value-of-money">AFM 291<span>Time Value of Money</span></h1>
     <div class="meta">
-      <div><b>SCOPE</b> — FINANCING + DEFERRED PAYMENT</div>
-      <div><b>TOOLS</b> — PVF (SINGLE SUM) · PVFA (ANNUITY)</div>
-      <div><b>RULE</b> — DISCOUNT AT A MARKET RATE</div>
+      <div><b>SCOPE</b>: FINANCING + DEFERRED PAYMENT</div>
+      <div><b>TOOLS</b>: PVF (SINGLE SUM) · PVFA (ANNUITY)</div>
+      <div><b>RULE</b>: DISCOUNT AT A MARKET RATE</div>
       <div><b>DOC</b> MT1-FM · REV C · SHEET 3/5</div>
     </div>
   </div>
@@ -752,20 +754,20 @@
 
   <div class="binwrap">
     <div class="binary">
-      <div class="bhead">IFRS — Significant Financing Component</div>
+      <div class="bhead">IFRS: Significant Financing Component</div>
       <div class="bq">Does payment timing differ significantly from transfer?</div>
       <div class="bb">
         <div class="br yes"><span class="bl">YES → FINANCE</span> Use the <b>cash-equivalent price</b>: discount the consideration to <b>PV</b>. Revenue = PV; the rest is <b>interest income</b> over time.</div>
-        <div class="br"><span class="bl">NO</span> Recognize the stated amount — no financing adjustment.</div>
+        <div class="br"><span class="bl">NO</span> Recognize the stated amount, no financing adjustment.</div>
       </div>
       <div class="bfoot">Step 3(b) of the 5-step model. The gap between nominal and PV is <b>interest, not sales revenue</b>.</div>
     </div>
     <div class="binary">
-      <div class="bhead">ASPE — Deferred Payment (S.3856)</div>
+      <div class="bhead">ASPE: Deferred Payment (S.3856)</div>
       <div class="bq">Is the interest rate offered BELOW market?</div>
       <div class="bb">
         <div class="br yes"><span class="bl">YES → DISCOUNT</span> Record the receivable at the <b>PV of cash flows using a market rate</b>. Difference unwinds as interest.</div>
-        <div class="br"><span class="bl">NO</span> Receivable at face — rate is already at market.</div>
+        <div class="br"><span class="bl">NO</span> Receivable at face, rate is already at market.</div>
       </div>
       <div class="bfoot">3400 has no IFRS-style financing rule; the receivable falls under <b>Section 3856</b>.</div>
     </div>
@@ -775,14 +777,14 @@
 
   <div class="zlabel">
     <div class="badge">ZONE T2</div>
-    <div class="name">Worked Examples — Navigate the Tables</div>
+    <div class="name">Worked Examples: Navigate the Tables</div>
     <div class="rule"></div>
     <div class="sub">Illustrative figures · method + PV factors from the appendix</div>
   </div>
 
   <div class="binwrap">
     <div class="wex">
-      <div class="wh"><div class="wt">EX 1 — Single Sum</div><div class="wf">IFRS · SIG. FINANCING</div></div>
+      <div class="wh"><div class="wt">EX 1: Single Sum</div><div class="wf">IFRS · SIG. FINANCING</div></div>
       <div class="wfacts">Jan 1: sell equipment; customer pays <b>$100,000 in 3 years</b>, no interim payments. Cash price not separately observable. Market rate <b>8%</b>.</div>
       <div class="wsteps">
         <div class="ws"><div class="si">1</div><div>Significant financing → discount to the <b>cash-equivalent price</b>.</div></div>
@@ -791,11 +793,11 @@
         <div class="ws"><div class="si">4</div><div>Interest income = $100,000 − $79,380, earned over 3 yrs.</div></div>
       </div>
       <div class="wans">REVENUE <b>$79,380</b> · INTEREST INCOME <b>$20,620</b> OVER 3 YRS</div>
-      <div class="wwatch"><b>Watch:</b> don't book the full $100,000 as revenue at delivery — the $20,620 gap is <b>interest</b>, recognized over the term (effective interest).</div>
+      <div class="wwatch"><b>Watch:</b> don't book the full $100,000 as revenue at delivery, the $20,620 gap is <b>interest</b>, recognized over the term (effective interest).</div>
     </div>
 
     <div class="wex">
-      <div class="wh"><div class="wt">EX 2 — Annuity</div><div class="wf">ASPE · S.3856</div></div>
+      <div class="wh"><div class="wt">EX 2: Annuity</div><div class="wf">ASPE · S.3856</div></div>
       <div class="wfacts">Sell goods; customer pays <b>$10,000 / year for 4 years</b> (each year-end). Rate offered is below market. Market rate <b>10%</b>.</div>
       <div class="wsteps">
         <div class="ws"><div class="si">1</div><div>Below-market deferred terms → receivable at <b>PV at the market rate</b>.</div></div>
@@ -804,7 +806,7 @@
         <div class="ws"><div class="si">4</div><div>Interest income = $40,000 nominal − $31,699 PV, over 4 yrs.</div></div>
       </div>
       <div class="wans">RECEIVABLE / REVENUE <b>$31,699</b> · INTEREST <b>$8,301</b> OVER 4 YRS</div>
-      <div class="wwatch"><b>Watch:</b> the $40,000 nominal is <b>not</b> revenue — PV is the measure. Using PVF instead of PVFA here is the classic error.</div>
+      <div class="wwatch"><b>Watch:</b> the $40,000 nominal is <b>not</b> revenue: PV is the measure. Using PVF instead of PVFA here is the classic error.</div>
     </div>
   </div>
 
@@ -817,7 +819,7 @@
 
   <div class="pvwrap">
     <div class="pvbox">
-      <div class="pvh"><span>PVF — Single Sum</span><em>PV = FV × factor</em></div>
+      <div class="pvh"><span>PVF: Single Sum</span><em>PV = FV × factor</em></div>
       <table class="pvref">
         <thead><tr><th>n</th><th>6%</th><th>8%</th><th>10%</th><th>12%</th></tr></thead>
         <tbody>
@@ -830,7 +832,7 @@
       </table>
     </div>
     <div class="pvbox">
-      <div class="pvh"><span>PVFA — Ordinary Annuity</span><em>PV = CF × factor</em></div>
+      <div class="pvh"><span>PVFA: Ordinary Annuity</span><em>PV = CF × factor</em></div>
       <table class="pvref">
         <thead><tr><th>n</th><th>6%</th><th>8%</th><th>10%</th><th>12%</th></tr></thead>
         <tbody>
@@ -848,7 +850,7 @@
 
   <div class="docline">
     <div>MT1-FM · REV C · ISSUED 06.2026</div>
-    <div>PV IS THE MEASURE — THE GAP IS INTEREST</div>
+    <div>PV IS THE MEASURE: THE GAP IS INTEREST</div>
   </div>
 
 </div>
@@ -859,9 +861,9 @@
   <div class="mast">
     <h1 id="afm-291-recognition-contingencies">AFM 291<span>Recognition · Contingencies</span></h1>
     <div class="meta">
-      <div><b>STANDARD</b> — FRAMEWORKS / IAS 37 / ASPE</div>
-      <div><b>SIGNATURE</b> — THE PROBABILITY LADDER</div>
-      <div><b>METHOD</b> — RUN FACTS THROUGH THE GATE</div>
+      <div><b>STANDARD</b>: FRAMEWORKS / IAS 37 / ASPE</div>
+      <div><b>SIGNATURE</b>: THE PROBABILITY LADDER</div>
+      <div><b>METHOD</b>: RUN FACTS THROUGH THE GATE</div>
       <div><b>DOC</b> MT1-FM · REV C · SHEET 4/5</div>
     </div>
   </div>
@@ -887,14 +889,14 @@
     <div class="arow"><div class="an"><em>①</em>Benefit</div><div class="ai">A <b>RIGHT</b> with the potential to produce economic benefits / future cash flows</div><div class="aa"><b>Future benefit</b> contributing (directly / indirectly) to future net cash flows</div></div>
     <div class="arow"><div class="an"><em>②</em>Control</div><div class="ai">The right is <b>controlled</b> by the entity</div><div class="aa">Entity can <b>control access</b> to the benefit</div></div>
     <div class="arow"><div class="an"><em>③</em>Past Event</div><div class="ai">Control arose from a <b>past event</b></div><div class="aa">The transaction / event has <b>already occurred</b></div></div>
-    <div class="asub">Recognition — Can It Go On The Statements? (applies to assets &amp; liabilities)</div>
+    <div class="asub">Recognition: Can It Go On The Statements? (applies to assets &amp; liabilities)</div>
     <div class="arow rec"><div class="an">IFRS</div><div class="ai" style="grid-column:span 2;">Produces <b>relevant information</b> + a <b>faithful representation</b>. Relevance ← probability of in/outflow. Faithful rep ← measurement uncertainty. <b>Routed through the qualitative characteristics.</b></div></div>
     <div class="arow rec"><div class="an">ASPE</div><div class="aa" style="grid-column:span 2;"><b>(1)</b> Appropriate basis of measurement + a reasonable estimate of the amount; <b>AND (2)</b> probable the future benefits are obtained / given up. <b>Two standalone criteria.</b></div></div>
     <div class="afoot">BOTH FRAMEWORKS ASK THE SAME TWO QUESTIONS: <span class="q1">① IS THE BENEFIT LIKELY?</span> &nbsp; <span class="q1">② CAN YOU MEASURE IT?</span> &nbsp; IFRS ROUTES THEM THROUGH THE QUALITATIVE CHARACTERISTICS; ASPE STATES THEM OUTRIGHT.</div>
   </div>
 
   <div class="ladder">
-    <div class="lh"><div class="t">⊕ Probability Ladder — The Words + The Thresholds</div><div class="dir">LESS CERTAIN ───────────────► MORE CERTAIN</div></div>
+    <div class="lh"><div class="t">⊕ Probability Ladder: The Words + The Thresholds</div><div class="dir">LESS CERTAIN ───────────────► MORE CERTAIN</div></div>
     <div class="scalerow">
       <div class="srk">IFRS</div>
       <div class="scale">
@@ -921,12 +923,12 @@
         <div class="seg a">Likely</div>
       </div>
     </div>
-    <div class="cap"><b>ASYMMETRY</b> &nbsp; A liability is recognized at PROBABLE — but an asset only at VIRTUALLY CERTAIN. Bad news books easier than good news. Never mix the IFRS words (probable / possible / remote) with the ASPE words (likely / not determinable / unlikely).</div>
+    <div class="cap"><b>ASYMMETRY</b> &nbsp; A liability is recognized at PROBABLE, but an asset only at VIRTUALLY CERTAIN. Bad news books easier than good news. Never mix the IFRS words (probable / possible / remote) with the ASPE words (likely / not determinable / unlikely).</div>
   </div>
 
   <div class="zlabel">
     <div class="badge">ZONE C1</div>
-    <div class="name">IFRS Provisions &amp; Contingent Liabilities — IAS 37</div>
+    <div class="name">IFRS Provisions &amp; Contingent Liabilities: IAS 37</div>
     <div class="rule"></div>
     <div class="sub">Guidance p.9 · YES drops down · NO branches right</div>
   </div>
@@ -952,7 +954,7 @@
     </div>
     <div class="gyes">▼ YES</div>
 
-    <div class="provide">███ PROVIDE — recognize the provision ███</div>
+    <div class="provide">███ PROVIDE, recognize the provision ███</div>
   </div>
 
   <div class="zlabel">
@@ -963,21 +965,21 @@
   </div>
 
   <div class="tiers">
-    <div class="tier act"><div class="cond">IFRS asset · VIRTUALLY CERTAIN</div><div class="arr">▶</div><div class="out">RECOGNIZE — not contingent</div></div>
-    <div class="tier"><div class="cond">IFRS asset · PROBABLE (not virt. certain)</div><div class="arr">▶</div><div class="out">DISCLOSE only — no asset</div></div>
+    <div class="tier act"><div class="cond">IFRS asset · VIRTUALLY CERTAIN</div><div class="arr">▶</div><div class="out">RECOGNIZE, not contingent</div></div>
+    <div class="tier"><div class="cond">IFRS asset · PROBABLE (not virt. certain)</div><div class="arr">▶</div><div class="out">DISCLOSE only, no asset</div></div>
     <div class="tier"><div class="cond">IFRS asset · NOT PROBABLE</div><div class="arr">▶</div><div class="out">NO asset · NO disclosure</div></div>
   </div>
 
   <table class="matrix2">
     <thead>
-      <tr><th>ASPE Contingent Loss — Measure ↓ / Probability →</th><th>Likely</th><th>Not Determinable</th><th>Unlikely</th></tr>
+      <tr><th>ASPE Contingent Loss: Measure ↓ / Probability →</th><th>Likely</th><th>Not Determinable</th><th>Unlikely</th></tr>
     </thead>
     <tbody>
-      <tr><th>Measurable — can estimate</th><td class="accrue">Accrue / Recognize<small>disclose excess exposure</small></td><td class="disc">Disclose</td><td class="none">No accrual<small>no disclosure</small></td></tr>
-      <tr><th>Not Measurable — cannot estimate</th><td class="disc">Disclose</td><td class="disc">Disclose</td><td class="none">No accrual<small>no disclosure</small></td></tr>
+      <tr><th>Measurable: can estimate</th><td class="accrue">Accrue / Recognize<small>disclose excess exposure</small></td><td class="disc">Disclose</td><td class="none">No accrual<small>no disclosure</small></td></tr>
+      <tr><th>Not Measurable: cannot estimate</th><td class="disc">Disclose</td><td class="disc">Disclose</td><td class="none">No accrual<small>no disclosure</small></td></tr>
     </tbody>
   </table>
-  <div class="login">ONLY MEASURABLE + LIKELY ACCRUES · UNLIKELY = NOTHING · EVERYTHING ELSE DISCLOSES. <i>&nbsp;CONTINGENT GAINS (ASPE) — NEVER ACCRUED; DISCLOSE ONLY IF LIKELY (.17/.22).</i> &nbsp; <b style="font-weight:900;">ONEROUS (IFRS):</b> unavoidable costs to complete &gt; benefits → recognize the expected GROSS loss now.</div>
+  <div class="login">ONLY MEASURABLE + LIKELY ACCRUES · UNLIKELY = NOTHING · EVERYTHING ELSE DISCLOSES. <i>&nbsp;CONTINGENT GAINS (ASPE): NEVER ACCRUED; DISCLOSE ONLY IF LIKELY (.17/.22).</i> &nbsp; <b style="font-weight:900;">ONEROUS (IFRS):</b> unavoidable costs to complete &gt; benefits → recognize the expected GROSS loss now.</div>
 
   <div class="docline">
     <div>MT1-FM · REV C · ISSUED 06.2026</div>
@@ -992,9 +994,9 @@
   <div class="mast">
     <h1 id="afm-291-changes-events-error-rehab">AFM 291<span>Changes · Events · Error Rehab</span></h1>
     <div class="meta">
-      <div><b>STANDARD</b> — CHANGES / SUBSEQUENT EVENTS</div>
-      <div><b>NOTE</b> — IFRS &amp; ASPE SIMILAR HERE</div>
-      <div><b>METHOD</b> — EVERY LOST MARK = A ROW</div>
+      <div><b>STANDARD</b>: CHANGES / SUBSEQUENT EVENTS</div>
+      <div><b>NOTE</b>: IFRS &amp; ASPE SIMILAR HERE</div>
+      <div><b>METHOD</b>: EVERY LOST MARK = A ROW</div>
       <div><b>DOC</b> MT1-FM · REV C · SHEET 5/5</div>
     </div>
   </div>
@@ -1009,7 +1011,7 @@
 
   <div class="zlabel">
     <div class="badge">ZONE J1</div>
-    <div class="name">Changes — Estimate / Policy / Error</div>
+    <div class="name">Changes: Estimate / Policy / Error</div>
     <div class="rule"></div>
     <div class="sub">Guidance p.7 · the trap is the treatment, not the framework</div>
   </div>
@@ -1017,7 +1019,7 @@
   <div class="changes">
     <div class="chg">
       <div class="chgh"><div class="ct">Change in Estimate</div><div class="cr">→ PROSPECTIVE</div></div>
-      <div class="chgb">Amounts subject to <b>measurement uncertainty</b>, revised for new information / developments / experience. Apply <b>going forward</b> — no restatement.</div>
+      <div class="chgb">Amounts subject to <b>measurement uncertainty</b>, revised for new information / developments / experience. Apply <b>going forward</b>, no restatement.</div>
       <div class="chgtag">Eyes Forward</div>
     </div>
     <div class="chg">
@@ -1036,7 +1038,7 @@
 
   <div class="zlabel">
     <div class="badge">ZONE J2</div>
-    <div class="name">Subsequent Events — Adjust or Disclose?</div>
+    <div class="name">Subsequent Events: Adjust or Disclose?</div>
     <div class="rule"></div>
     <div class="sub">Guidance p.7–8 · test = when the condition arose</div>
   </div>
@@ -1052,12 +1054,12 @@
       <div class="bfoot">Window: period-end → <b>authorized for issue</b> (IFRS) / <b>completion of F/S</b> (ASPE). Decide by WHEN THE CONDITION AROSE, not when you learned it.</div>
     </div>
     <div class="binary">
-      <div class="bhead">Non-Adjusting — Disclose What?</div>
+      <div class="bhead">Non-Adjusting: Disclose What?</div>
       <div class="bq" style="font-size:6pt;">For a material non-adjusting event:</div>
       <div class="bb" style="grid-template-columns:1fr;">
         <div class="br"><span class="bl">DISCLOSE</span> The <b>nature</b> of the event; and an <b>estimate of its financial effect</b>, or a statement that an estimate cannot be made. Plus the <b>date authorized for issue</b> (IFRS).</div>
       </div>
-      <div class="bfoot">Disclosure is in the <b>notes</b> — the numbers on the face of the statements do not change.</div>
+      <div class="bfoot">Disclosure is in the <b>notes</b>, the numbers on the face of the statements do not change.</div>
     </div>
   </div>
 
@@ -1071,14 +1073,14 @@
   <div class="traps">
     <div class="trap"><div class="th"><s>01</s>Framework Swap<span class="ref">p.3 / p.5</span></div><div class="td">IFRS = <b>control</b> · ASPE = <b>risks + rewards</b>. Name it first or the whole answer drifts.</div></div>
     <div class="trap"><div class="th"><s>02</s>Half a Distinct Test<span class="ref">p.3 §2</span></div><div class="td"><b>Capable</b> AND <b>distinct-in-context</b>. Integration / customization kills the split.</div></div>
-    <div class="trap"><div class="th"><s>03</s>Constraint Skipped<span class="ref">p.3 §3a</span></div><div class="td">Estimate variable consideration, <b>then constrain</b> — only if a significant reversal is highly improbable.</div></div>
+    <div class="trap"><div class="th"><s>03</s>Constraint Skipped<span class="ref">p.3 §3a</span></div><div class="td">Estimate variable consideration, <b>then constrain</b>, only if a significant reversal is highly improbable.</div></div>
     <div class="trap"><div class="th"><s>04</s>Wrong Probability Word<span class="ref">p.9–10</span></div><div class="td">IFRS: probable / possible / remote (+ virtually certain). ASPE: likely / not determinable / unlikely. <b>Don't mix.</b></div></div>
     <div class="trap"><div class="th"><s>05</s>Booked Good News Early<span class="ref">p.10</span></div><div class="td">Liability books at probable; an <b>asset needs virtually certain</b>. ASPE <b>gains never accrue</b>.</div></div>
     <div class="trap"><div class="th"><s>06</s>Loss Prorated<span class="ref">p.10 / p.6</span></div><div class="td">Onerous / expected loss = the <b>ENTIRE loss NOW</b>, not by % complete.</div></div>
     <div class="trap"><div class="th"><s>07</s>Wrong Change Treatment<span class="ref">p.7</span></div><div class="td"><b>Estimate forward</b>; policy + error <b>back</b> (restate). Easy to flip under pressure.</div></div>
     <div class="trap"><div class="th"><s>08</s>Event Misclassified<span class="ref">p.7–8</span></div><div class="td">Classify by <b>when the condition existed</b>, not when you found out.</div></div>
     <div class="trap"><div class="th"><s>09</s>List Price = SSP<span class="ref">p.6 A9</span></div><div class="td">A stated / list price is <b>NOT presumed</b> to be the stand-alone selling price.</div></div>
-    <div class="trap"><div class="th"><s>10</s>Billing = Revenue<span class="ref">p.4 / p.5</span></div><div class="td">Invoice / cash timing doesn't drive recognition — <b>control / performance</b> does.</div></div>
+    <div class="trap"><div class="th"><s>10</s>Billing = Revenue<span class="ref">p.4 / p.5</span></div><div class="td">Invoice / cash timing doesn't drive recognition, <b>control / performance</b> does.</div></div>
     <div class="trap"><div class="th"><s>11</s>Warranty Assumed a PO<span class="ref">p.4 B29/30</span></div><div class="td">Only a PO if <b>separately purchasable</b> (B29); otherwise IAS 37 provision (B30).</div></div>
     <div class="trap"><div class="th"><s>12</s>Completed-Contract Default<span class="ref">p.6 .18</span></div><div class="td">% completion is the default; completed contract only for a <b>single act</b> or when progress can't be estimated.</div></div>
   </div>
@@ -1091,20 +1093,20 @@
   </div>
 
   <div class="protocol">
-    <div class="pstep"><div class="pn">01</div><div class="pt">Skim — 10′</div><div class="pd"><b>Skim</b> the appendix page for the red topic. Skim, not study.</div></div>
-    <div class="pstep"><div class="pn">02</div><div class="pt">Execute — 30–40′</div><div class="pd"><b>Solve</b> problems · <b>redraw</b> the gate / model blind · check.</div></div>
-    <div class="pstep"><div class="pn">03</div><div class="pt">Quiz — 10′</div><div class="pd"><b>Test</b> page-closed. Misses → rows below.</div></div>
-    <div class="pstep"><div class="pn">04</div><div class="pt">Encode — 5′</div><div class="pd"><b>Write</b> 3–5 recall cards from the misses.</div></div>
+    <div class="pstep"><div class="pn">01</div><div class="pt">Skim: 10′</div><div class="pd"><b>Skim</b> the appendix page for the red topic. Skim, not study.</div></div>
+    <div class="pstep"><div class="pn">02</div><div class="pt">Execute: 30–40′</div><div class="pd"><b>Solve</b> problems · <b>redraw</b> the gate / model blind · check.</div></div>
+    <div class="pstep"><div class="pn">03</div><div class="pt">Quiz: 10′</div><div class="pd"><b>Test</b> page-closed. Misses → rows below.</div></div>
+    <div class="pstep"><div class="pn">04</div><div class="pt">Encode: 5′</div><div class="pd"><b>Write</b> 3–5 recall cards from the misses.</div></div>
     <div class="pstep"><div class="pn">⊘</div><div class="pt">Standing Order</div><div class="pd"><b>Every lost mark = a row. Redo on date +3.</b> This table outranks new material.</div></div>
   </div>
 
   <div class="cadence">
-    <div><b>DAILY</b> — log every miss as it happens · 1 row each (date · topic · rule).</div>
-    <div><b>+3 DAYS</b> — redo each row page-closed. Clean redo → tick the box.</div>
-    <div><b>WEEKLY (SUN)</b> — re-test all still-open rows + worst Blind Drills.</div>
+    <div><b>DAILY</b>, log every miss as it happens · 1 row each (date · topic · rule).</div>
+    <div><b>+3 DAYS</b>, redo each row page-closed. Clean redo → tick the box.</div>
+    <div><b>WEEKLY (SUN)</b>, re-test all still-open rows + worst Blind Drills.</div>
   </div>
 
-  <div class="login">Tired? Fill 3 cells — date · topic · rule. <i>Detail can wait for the redo. A half-row beats no row.</i></div>
+  <div class="login">Tired? Fill 3 cells, date · topic · rule. <i>Detail can wait for the redo. A half-row beats no row.</i></div>
 
   <table class="log">
     <colgroup>
@@ -1127,7 +1129,7 @@
       <div class="d">ONE STRUCTURE REDRAWN BLIND + ONE PROBLEM SOLVED + ONE ROW LOGGED = DAY HELD</div>
     </div>
     <div class="m2">
-      <div>NAME THE FRAMEWORK · CITE THE CRITERION · RUN THE FACTS THROUGH THE GATE — THE APPENDIX IS A TOOL, NOT A TEACHER</div>
+      <div>NAME THE FRAMEWORK · CITE THE CRITERION · RUN THE FACTS THROUGH THE GATE: THE APPENDIX IS A TOOL, NOT A TEACHER</div>
       <div>BORING IS WINNING</div>
     </div>
   </div>
@@ -1138,18 +1140,61 @@
   </div>
 
 </div>
-
-
-
-
+</main>
 <!--__rbp-->
+<!-- The pill styles itself: this block used to live only with the top bar,
+     so the seven tool pages, which carry the pill alone, rendered it as an
+     unstyled link at the very end of the document. Whatever carries the
+     pill now carries its style. -->
+<style id="__rbp-style">
+#__rb-pill{
+  position:fixed;left:14px;bottom:14px;z-index:2147483000;
+  display:inline-flex;align-items:center;gap:.45rem;padding:.58rem .9rem;
+  background:rgba(22,21,15,.93);color:#faf9f6;text-decoration:none;border-radius:99px;
+  font:600 12.5px/1 InterVar,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  border:1px solid rgba(255,255,255,.16);box-shadow:0 6px 22px rgba(0,0,0,.28);
+  opacity:0;transform:translateY(6px);pointer-events:none;
+  transition:opacity .2s ease,transform .2s ease;
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+}
+#__rb-pill.__on{opacity:1;transform:none;pointer-events:auto}
+#__rb-pill:hover{background:#16150f;color:#fff}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) #__rb-pill{background:rgba(247,245,239,.95);color:#131310;border-color:rgba(0,0,0,.2)}
+  :root:not([data-theme="light"]) #__rb-pill:hover{background:#fff;color:#000}
+}
+:root[data-theme="dark"] #__rb-pill{background:rgba(247,245,239,.95);color:#131310;border-color:rgba(0,0,0,.2)}
+:root[data-theme="dark"] #__rb-pill:hover{background:#fff;color:#000}
+@media (prefers-reduced-motion:reduce){#__rb-pill{transition:none}}
+@media print{#__rb-pill{display:none !important}}
+/* a tool carries no bar, so what it was built from stands at the foot of the document */
+#__rb-from{margin:1.25rem 1rem;font:400 13px/1.45 InterVar,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;color:#6f6c63;max-width:70ch}
+#__rb-from b{font-weight:600;color:#55524a}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) #__rb-from{color:#948f85}
+  :root:not([data-theme="light"]) #__rb-from b{color:#c0bcb1}
+}
+:root[data-theme="dark"] #__rb-from{color:#948f85}
+:root[data-theme="dark"] #__rb-from b{color:#c0bcb1}
+</style>
+<!-- With scripts off nothing ever adds the __on class, and the only way
+     back from a tool page vanished. The pill needs its script for the
+     scroll threshold, not for existing. -->
+<noscript><style>#__rb-pill{opacity:1 !important;transform:none !important;pointer-events:auto !important}</style></noscript>
 <a id="__rb-pill" href="afm291.html">&#8592; The vault</a>
+
 <script>
 (function(){
   var p=document.getElementById('__rb-pill'); if(!p) return;
+  /* On a page with the top bar the pill waits until the bar has scrolled
+     out of reach. On a page without one (the tools carry no bar, because a
+     bar inside a full-screen application sits in the wrong place) the pill
+     is the only way back, so it is there from the first paint: a tool
+     screen shorter than the threshold used to strand the reader entirely. */
+  var TH=document.getElementById('__rb')?160:-1;
   var t=false;
   function run(){ t=false;
-    p.classList.toggle('__on',(window.scrollY||document.documentElement.scrollTop)>420); }
+    p.classList.toggle('__on',(window.scrollY||document.documentElement.scrollTop)>TH); }
   function q(){ if(!t){ t=true; requestAnimationFrame(run); } }
   addEventListener('scroll',q,{passive:true}); run();
 })();
@@ -1167,7 +1212,7 @@
     function put(key){
       if(t2[key]||Object.keys(t2).length<500){
         t2[key]=(t2[key]||0)+1;
-        localStorage.setItem(k,JSON.stringify(t2));
+        try{localStorage.setItem(k,JSON.stringify(t2));}catch(e){}
       }
     }
     put(u+location.hash);

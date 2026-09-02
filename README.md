@@ -60,8 +60,9 @@ This is the part worth understanding, because it is what keeps the site from
 breaking.
 
 **`content/pieces.json` is the content.** One entry per piece: its title, its
-description, its tags, where it belongs, whether it is featured, and which file
-it opens. The order of the entries is the order on the site. The editor writes
+description, its tags, where it belongs, whether it is featured, what it was
+built from (one line in the owner's words, rendered at the top of the piece),
+and which file it opens. The order of the entries is the order on the site. The editor writes
 this file and nothing else.
 
 **`build/build_site.py` is the design.** It reads `content/pieces.json` and

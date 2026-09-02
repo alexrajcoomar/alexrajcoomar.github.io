@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Business Law for Accountants: Canada and the United States</title>
+<title>Business Law for Accountants · Alex Rajcoomar</title>
 <style>
 :root{
   --ink:#16181d; --ink-2:#3c4149; --ink-3:#5f6673;
@@ -120,6 +120,9 @@ footer.end a{color:var(--ink-3)}
   h2.part{page-break-after:avoid}table{page-break-inside:avoid}
   a{color:inherit;text-decoration:none}
 }
+
+/* the widest text block on the page holds the reading measure */
+.meta{max-width:70ch}
 </style>
 <!--__meta-->
 <meta name="color-scheme" content="light dark">
@@ -128,15 +131,15 @@ footer.end a{color:var(--ink-3)}
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="manifest" href="site.webmanifest">
 <link rel="canonical" href="https://alexrajcoomar.github.io/business-law-primer.html">
-<meta property="og:title" content="Business Law for Accountants — Alex Rajcoomar">
+<meta property="og:title" content="Business Law for Accountants · Alex Rajcoomar">
 <meta property="og:description" content="A primer on the business law an accountant needs, written to keep the Canadian and American positions distinct rather than blended.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://alexrajcoomar.github.io/business-law-primer.html">
-<meta property="og:site_name" content="Alex Rajcoomar — portfolio">
+<meta property="og:site_name" content="Alex Rajcoomar · portfolio">
 <meta property="og:image" content="https://alexrajcoomar.github.io/cards/business-law-primer.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Business Law for Accountants — Alex Rajcoomar">
+<meta property="og:image:alt" content="Business Law for Accountants · Alex Rajcoomar">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://alexrajcoomar.github.io/cards/business-law-primer.png">
 <script>
@@ -171,22 +174,18 @@ footer.end a{color:var(--ink-3)}
 #__rb .__rb-home{font-weight:640;color:#16150f}
 #__rb .__rb-home i{font-style:normal;font-weight:400;color:#6f6c63}
 #__rb .__rb-right{margin-left:auto;display:flex;gap:1.1rem;flex-wrap:wrap}
+/* the piece's own row of the statement: origin, words, figures, tables, the
+   same figures the home page prints for it, from the same measurement */
+#__rb .__rb-row{color:#6f6c63;font-variant-numeric:tabular-nums;white-space:nowrap}
+#__rb .__rb-row b{font-weight:600;color:#55524a}
+@media (max-width:44rem){#__rb .__rb-row{flex-basis:100%;order:3;white-space:normal}}
+/* what the piece was built from, in the owner's words, from pieces.json */
+#__rb .__rb-from{flex-basis:100%;order:5;font-weight:400;color:#6f6c63;line-height:1.4;max-width:70ch}
+#__rb .__rb-from b{font-weight:600;color:#55524a}
 #__rb .__mark{
   display:inline-grid;place-items:center;width:1.2rem;height:1.2rem;flex:none;
   background:#16150f;color:#faf9f6;font-size:.72rem;font-weight:700;
 }
-#__rb-pill{
-  position:fixed;left:14px;bottom:14px;z-index:2147483000;
-  display:inline-flex;align-items:center;gap:.45rem;padding:.58rem .9rem;
-  background:rgba(22,21,15,.93);color:#faf9f6;text-decoration:none;border-radius:99px;
-  font:600 12.5px/1 InterVar,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
-  border:1px solid rgba(255,255,255,.16);box-shadow:0 6px 22px rgba(0,0,0,.28);
-  opacity:0;transform:translateY(6px);pointer-events:none;
-  transition:opacity .2s ease,transform .2s ease;
-  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
-}
-#__rb-pill.__on{opacity:1;transform:none;pointer-events:auto}
-#__rb-pill:hover{background:#16150f;color:#fff}
 /* Dark has to answer to two things: the reader's system setting, and the
    theme button on the page, which sets data-theme on <html>. Keyed to the
    media query alone, the bar stayed paper-white across the top of an essay
@@ -197,25 +196,30 @@ footer.end a{color:var(--ink-3)}
   :root:not([data-theme="light"]) #__rb{background:#131310;border-bottom-color:#2c2b24;color:#c0bcb1}
   :root:not([data-theme="light"]) #__rb .__rb-home{color:#f7f5ef}
   :root:not([data-theme="light"]) #__rb .__rb-home i{color:#948f85}
+  :root:not([data-theme="light"]) #__rb .__rb-row{color:#948f85}
+  :root:not([data-theme="light"]) #__rb .__rb-row b{color:#c0bcb1}
+  :root:not([data-theme="light"]) #__rb .__rb-from{color:#948f85}
+  :root:not([data-theme="light"]) #__rb .__rb-from b{color:#c0bcb1}
   :root:not([data-theme="light"]) #__rb a{color:#85adea}
   :root:not([data-theme="light"]) #__rb .__mark{background:#f7f5ef;color:#131310}
-  :root:not([data-theme="light"]) #__rb-pill{background:rgba(247,245,239,.95);color:#131310;border-color:rgba(0,0,0,.2)}
-  :root:not([data-theme="light"]) #__rb-pill:hover{background:#fff;color:#000}
 }
 :root[data-theme="dark"] #__rb{background:#131310;border-bottom-color:#2c2b24;color:#c0bcb1}
 :root[data-theme="dark"] #__rb .__rb-home{color:#f7f5ef}
 :root[data-theme="dark"] #__rb .__rb-home i{color:#948f85}
+:root[data-theme="dark"] #__rb .__rb-row{color:#948f85}
+:root[data-theme="dark"] #__rb .__rb-row b{color:#c0bcb1}
+:root[data-theme="dark"] #__rb .__rb-from{color:#948f85}
+:root[data-theme="dark"] #__rb .__rb-from b{color:#c0bcb1}
 :root[data-theme="dark"] #__rb a{color:#85adea}
 :root[data-theme="dark"] #__rb .__mark{background:#f7f5ef;color:#131310}
-:root[data-theme="dark"] #__rb-pill{background:rgba(247,245,239,.95);color:#131310;border-color:rgba(0,0,0,.2)}
-:root[data-theme="dark"] #__rb-pill:hover{background:#fff;color:#000}
-@media (prefers-reduced-motion:reduce){#__rb-pill{transition:none}}
-@media print{#__rb,#__rb-pill{display:none !important}}
+@media print{#__rb{display:none !important}}
 </style>
-<div id="__rb">
+<nav id="__rb" aria-label="Portfolio">
   <a class="__rb-home" href="index.html"><span class="__mark" aria-hidden="true">A</span>Alex Rajcoomar <i>portfolio</i></a>
-  <span class="__rb-right"><a href="coursework.html">Coursework</a><a href="library.html">All work</a></span>
-</div>
+  <span class="__rb-row">Coursework &middot; <b>10,196</b> words &middot; <b>0</b> figures &middot; <b>9</b> tables</span>
+  <span class="__rb-right"><a href="coursework.html">Coursework</a><a href="atlas.html">Atlas</a><a href="library.html">All work</a></span>
+  <span class="__rb-from"><b>Built from</b> Built from the statutes, cases and standards it cites, listed in its sources section, with the Canadian and American positions kept apart; the items I could not confirm to a primary source are flagged [VERIFY].</span>
+</nav>
 <script>
 /* the trail: which passages this browser has opened. The atlas reads it and
    rings them; the record lives in localStorage and never leaves the machine. */
@@ -232,7 +236,7 @@ footer.end a{color:var(--ink-3)}
     function put(key){
       if(t2[key]||Object.keys(t2).length<500){
         t2[key]=(t2[key]||0)+1;
-        localStorage.setItem(k,JSON.stringify(t2));
+        try{localStorage.setItem(k,JSON.stringify(t2));}catch(e){}
       }
     }
     put(u+location.hash);
@@ -353,7 +357,7 @@ footer.end a{color:var(--ink-3)}
 
 <div class="split">
 <div class="ca">
-<h5>Reading a Canadian citation</h5>
+<h5 aria-level="4">Reading a Canadian citation</h5>
 <p><em>Deloitte &amp; Touche v Livent Inc (Receiver of)</em>, 2017 SCC 63</p>
 <ul>
 <li><strong>2017</strong> year of decision</li>
@@ -429,7 +433,7 @@ footer.end a{color:var(--ink-3)}
 
 <div class="split">
 <div class="ca">
-<h5>Canada: the Anns/Cooper framework</h5>
+<h5 aria-level="4">Canada: the Anns/Cooper framework</h5>
 <p>From <em>Cooper v Hobart</em>, 2001 SCC 79, refining the English <em>Anns</em> test:</p>
 <ul>
 <li><strong>Stage one:</strong> is there sufficient <em>proximity</em> between the parties, and was the injury <em>reasonably foreseeable</em>? If yes, a prima facie duty arises.</li>
@@ -519,7 +523,7 @@ footer.end a{color:var(--ink-3)}
 
 <div class="split">
 <div class="ca">
-<h5>Canada</h5>
+<h5 aria-level="4">Canada</h5>
 <p>A genuine choice between the federal <em>Canada Business Corporations Act</em> and a provincial statute such as Ontario's <em>Business Corporations Act</em>. Federal incorporation gives name protection nationally and the right to carry on business in every province, subject to extra-provincial registration.</p>
 <p>The statutes are broadly similar in structure because most were drafted from the same 1970s model. Differences worth checking: Canadian-residency requirements for directors (present under the CBCA, removed in Ontario as of 2021 <strong>[VERIFY]</strong> the current requirement in each province before advising).</p>
 </div>
@@ -627,7 +631,7 @@ footer.end a{color:var(--ink-3)}
 
 <div class="split">
 <div class="ca">
-<h5>Canada</h5>
+<h5 aria-level="4">Canada</h5>
 <p><strong><em>Bankruptcy and Insolvency Act</em> (BIA).</strong> Federal. Handles liquidation bankruptcies and the more procedural, rules-driven "proposal" route to restructuring. Used by individuals and by smaller corporate debtors.</p>
 <p><strong><em>Companies' Creditors Arrangement Act</em> (CCAA).</strong> Federal, short, and deliberately skeletal. Available where liabilities exceed $5 million. The vehicle for every large Canadian restructuring.</p>
 <p><strong>Security interests are provincial.</strong> Personal Property Security Acts in the common law provinces; the <em>Civil Code</em> hypothec regime in Quebec.</p>
@@ -733,7 +737,7 @@ footer.end a{color:var(--ink-3)}
 
 <div class="split">
 <div class="ca">
-<h5>Canada: there is no accountant-client privilege</h5>
+<h5 aria-level="4">Canada: there is no accountant-client privilege</h5>
 <p><strong>Solicitor-client privilege applies to lawyers only.</strong> An accountant's working papers, memos, planning notes, and emails to the client are producible to the CRA and to opposing parties in litigation. There is no professional privilege attaching to accountants as such.</p>
 <p>The narrow route to protection is for the client's <em>lawyer</em> to retain the accountant so that the accountant's work is done in aid of the provision of legal advice, which can bring it inside the lawyer's privilege. Structuring that properly matters and it is not achieved by copying a lawyer on an email. <strong>[VERIFY]</strong> the current state of the case law before relying on any specific arrangement.</p>
 </div>
@@ -837,7 +841,7 @@ footer.end a{color:var(--ink-3)}
 
 <div class="split">
 <div class="ca">
-<h5>Canada</h5>
+<h5 aria-level="3">Canada</h5>
 <ul>
 <li><strong>CanLII</strong> (canlii.org). Free full-text case law and legislation for every Canadian jurisdiction. The default starting point.</li>
 <li><strong>Justice Laws</strong> (laws-lois.justice.gc.ca). Consolidated federal statutes and regulations, including the <em>Income Tax Act</em> and the CBCA.</li>
@@ -849,7 +853,7 @@ footer.end a{color:var(--ink-3)}
 </ul>
 </div>
 <div class="us">
-<h5>United States</h5>
+<h5 aria-level="4">United States</h5>
 <ul>
 <li><strong>Cornell Legal Information Institute</strong> (law.cornell.edu). Free US Code, CFR, and Supreme Court decisions with usable annotations.</li>
 <li><strong>SEC EDGAR</strong> (sec.gov/edgar) for issuer filings, and sec.gov generally for rules and releases.</li>
@@ -941,16 +945,62 @@ footer.end a{color:var(--ink-3)}
 </div>
 </div>
 
-
+<!--__long--><link rel="stylesheet" href="long.css?v=0b99e235"><script src="long.js?v=98a5c23b" defer></script><!--/__long-->
 
 <!--__rbp-->
+<!-- The pill styles itself: this block used to live only with the top bar,
+     so the seven tool pages, which carry the pill alone, rendered it as an
+     unstyled link at the very end of the document. Whatever carries the
+     pill now carries its style. -->
+<style id="__rbp-style">
+#__rb-pill{
+  position:fixed;left:14px;bottom:14px;z-index:2147483000;
+  display:inline-flex;align-items:center;gap:.45rem;padding:.58rem .9rem;
+  background:rgba(22,21,15,.93);color:#faf9f6;text-decoration:none;border-radius:99px;
+  font:600 12.5px/1 InterVar,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  border:1px solid rgba(255,255,255,.16);box-shadow:0 6px 22px rgba(0,0,0,.28);
+  opacity:0;transform:translateY(6px);pointer-events:none;
+  transition:opacity .2s ease,transform .2s ease;
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+}
+#__rb-pill.__on{opacity:1;transform:none;pointer-events:auto}
+#__rb-pill:hover{background:#16150f;color:#fff}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) #__rb-pill{background:rgba(247,245,239,.95);color:#131310;border-color:rgba(0,0,0,.2)}
+  :root:not([data-theme="light"]) #__rb-pill:hover{background:#fff;color:#000}
+}
+:root[data-theme="dark"] #__rb-pill{background:rgba(247,245,239,.95);color:#131310;border-color:rgba(0,0,0,.2)}
+:root[data-theme="dark"] #__rb-pill:hover{background:#fff;color:#000}
+@media (prefers-reduced-motion:reduce){#__rb-pill{transition:none}}
+@media print{#__rb-pill{display:none !important}}
+/* a tool carries no bar, so what it was built from stands at the foot of the document */
+#__rb-from{margin:1.25rem 1rem;font:400 13px/1.45 InterVar,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;color:#6f6c63;max-width:70ch}
+#__rb-from b{font-weight:600;color:#55524a}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) #__rb-from{color:#948f85}
+  :root:not([data-theme="light"]) #__rb-from b{color:#c0bcb1}
+}
+:root[data-theme="dark"] #__rb-from{color:#948f85}
+:root[data-theme="dark"] #__rb-from b{color:#c0bcb1}
+</style>
+<!-- With scripts off nothing ever adds the __on class, and the only way
+     back from a tool page vanished. The pill needs its script for the
+     scroll threshold, not for existing. -->
+<noscript><style>#__rb-pill{opacity:1 !important;transform:none !important;pointer-events:auto !important}</style></noscript>
 <a id="__rb-pill" href="coursework.html">&#8592; Coursework</a>
+
 <script>
 (function(){
   var p=document.getElementById('__rb-pill'); if(!p) return;
+  /* On a page with the top bar the pill waits until the bar has scrolled
+     out of reach. On a page without one (the tools carry no bar, because a
+     bar inside a full-screen application sits in the wrong place) the pill
+     is the only way back, so it is there from the first paint: a tool
+     screen shorter than the threshold used to strand the reader entirely. */
+  var TH=document.getElementById('__rb')?160:-1;
   var t=false;
   function run(){ t=false;
-    p.classList.toggle('__on',(window.scrollY||document.documentElement.scrollTop)>420); }
+    p.classList.toggle('__on',(window.scrollY||document.documentElement.scrollTop)>TH); }
   function q(){ if(!t){ t=true; requestAnimationFrame(run); } }
   addEventListener('scroll',q,{passive:true}); run();
 })();
@@ -968,7 +1018,7 @@ footer.end a{color:var(--ink-3)}
     function put(key){
       if(t2[key]||Object.keys(t2).length<500){
         t2[key]=(t2[key]||0)+1;
-        localStorage.setItem(k,JSON.stringify(t2));
+        try{localStorage.setItem(k,JSON.stringify(t2));}catch(e){}
       }
     }
     put(u+location.hash);

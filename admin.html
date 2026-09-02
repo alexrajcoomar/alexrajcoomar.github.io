@@ -762,6 +762,8 @@ function renderEditor() {
     'The paragraph shown under the title in every list. Two sentences is usually right.', 320, true));
   host.appendChild(textField('demo', 'What it demonstrates',
     'Only shown on the home page and on the lead piece. Safe to leave empty.', 400, true));
+  host.appendChild(textField('built_from', 'Built from',
+    'One plain line in your own words: what this piece was built from. Shown in the bar at the top of the piece, and counted on the coursework shelf. Write "Not declared on file." when the piece says nothing about its sources. The build refuses an empty line or one with an em dash.', 400, true));
 
   host.appendChild(checkField('featured', 'Feature it on the home page',
     ' — the first six featured pieces, in list order, fill the band under the headline.'));
@@ -945,11 +947,12 @@ function renderSite() {
     'The largest line on the site. Wrapping a word in <em>…</em> gives it the accent treatment.', true);
   f('eyebrow', 'Line above the headline', 'A short label, e.g. Portfolio · Waterloo AFM Analytics.');
   f('url', 'Site address', 'Used to build the canonical links. Change this only if the address changes.');
-  f('born', 'Date of birth', 'Used only to keep the age on the About page current. Format: 2006-10-09.');
+  f('born', 'Date of birth', 'Kept for the record. No page shows an age.');
+  f('standing', 'Standing', 'Your term standing, e.g. 2B. Shown in the identity block on the home page and on the About page. Empty shows nothing.');
   f('linkedin', 'LinkedIn profile', 'Optional. Full address, e.g. https://www.linkedin.com/in/yourname. Empty shows nothing.');
   f('github', 'GitHub profile', 'Optional. Full address, e.g. https://github.com/yourname. Empty shows nothing.');
   f('resume', 'Resume link', 'Optional. A full address, or the name of a PDF uploaded to the site, e.g. resume.pdf. The build fails if a named file does not exist, so a dead link cannot ship. Empty shows nothing.');
-  f('coop_term', 'Co-op term sought', 'Optional. Shown on the About page, e.g. Winter 2027. Empty shows nothing.');
+  f('coop_term', 'Co-op term sought', 'Optional. Shown on the home page and the About page, e.g. January to April 2027. Empty shows nothing.');
   f('grad_year', 'Graduation year', 'Optional. Shown on the About page, e.g. 2029. Empty shows nothing.');
 
   var box = el('div', 'field');

@@ -3,15 +3,15 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>AFM 291 — Interactive Visual Study System</title>
+<title>AFM 291 Interactive Study System · Alex Rajcoomar</title>
 <style>
 /* ================= DESIGN TOKENS (dataviz reference palette) ================= */
 :root{
   color-scheme:light;
-  --page:#f9f9f7; --surface:#fcfcfb; --ink:#0b0b0b; --ink2:#52514e; --muted:#898781;
+  --page:#f9f9f7; --surface:#fcfcfb; --ink:#0b0b0b; --ink2:#52514e; --muted:#706c6c;
   --grid:#e1e0d9; --line:#c3c2b7; --ring:rgba(11,11,11,.10);
-  --acc:#2a78d6;
-  --t1:#2a78d6; --t2:#eb6834; --t3:#1baf7a; --t4:#eda100; --t5:#e87ba4; --t6:#008300; --t7:#4a3aa7;
+  --acc:#2168b6;
+  --t1:#2168b6; --t2:#eb6834; --t3:#1baf7a; --t4:#eda100; --t5:#e87ba4; --t6:#008300; --t7:#4a3aa7;
   --good:#0ca30c; --goodtx:#006300; --warn:#fab219; --serious:#ec835a; --crit:#d03b3b;
   --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
   --sans:system-ui,-apple-system,"Segoe UI",sans-serif;
@@ -78,10 +78,10 @@ details.audit[open]>summary::after{transform:rotate(90deg)}
 .auditcol li b{color:var(--ink)}
 
 /* ================= BADGES ================= */
-.badge{display:inline-flex;align-items:center;gap:4px;font:700 10.5px var(--sans);letter-spacing:.4px;
+.badge{display:inline-flex;align-items:center;gap:4px;font:700 11px var(--sans);letter-spacing:.4px;
   padding:2px 8px;border-radius:999px;border:1px solid;white-space:nowrap;vertical-align:middle}
-.badge.verify{color:color-mix(in srgb,var(--warn) 60%,var(--ink));border-color:var(--warn);background:color-mix(in srgb,var(--warn) 12%,transparent)}
-.badge.conflict{color:color-mix(in srgb,var(--serious) 70%,var(--ink));border-color:var(--serious);background:color-mix(in srgb,var(--serious) 12%,transparent)}
+.badge.verify{color:color-mix(in srgb,var(--warn) 42%,var(--ink));border-color:var(--warn);background:color-mix(in srgb,var(--warn) 12%,transparent)}
+.badge.conflict{color:color-mix(in srgb,var(--serious) 48%,var(--ink));border-color:var(--serious);background:color-mix(in srgb,var(--serious) 12%,transparent)}
 .badge.open{color:var(--acc);border-color:var(--acc);background:color-mix(in srgb,var(--acc) 10%,transparent)}
 .badge.std{color:var(--ink2);border-color:var(--grid);background:transparent;font-weight:600}
 .badge.tutor{color:var(--t7);border-color:var(--t7);background:color-mix(in srgb,var(--t7) 10%,transparent)}
@@ -94,7 +94,7 @@ details.audit[open]>summary::after{transform:rotate(90deg)}
   font:600 12px var(--sans);color:var(--ink);display:flex;flex-direction:column;gap:3px;min-width:74px;transition:all .12s}
 .snode:hover{border-color:var(--acc);transform:translateY(-1px)}
 .snode.dim{opacity:.28}
-.snode .n{color:var(--acc);font-size:10.5px;font-weight:800}
+.snode .n{color:var(--acc);font-size:11px;font-weight:800}
 .snode .dots{display:flex;gap:3px}
 .snode .dot{width:6px;height:6px;border-radius:50%}
 .sarrow{color:var(--muted);font-size:13px;padding:0 1px}
@@ -125,7 +125,7 @@ details.audit[open]>summary::after{transform:rotate(90deg)}
   font:600 11px var(--sans);padding:3px 10px;cursor:pointer;flex:none}
 .drawtoggle:hover,.card.showdraw .drawtoggle{border-color:var(--acc);color:var(--acc)}
 .crumbs{display:flex;flex-wrap:wrap;gap:5px;margin:7px 0 2px}
-.crumb{font:600 10.5px var(--sans);border:1px solid var(--grid);border-radius:999px;padding:2px 9px;
+.crumb{font:600 11px var(--sans);border:1px solid var(--grid);border-radius:999px;padding:4px 10px;min-height:24px;
   color:var(--ink2);cursor:pointer;background:var(--page)}
 .crumb:hover{border-color:var(--acc);color:var(--acc)}
 .crumb.back{border-style:dashed}
@@ -135,7 +135,7 @@ details.audit[open]>summary::after{transform:rotate(90deg)}
 .why::before{content:"Why it exists — ";font-weight:700;color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.5px}
 .blocks{margin-top:10px;display:grid;gap:10px}
 .bl{border:1px solid var(--grid);border-radius:10px;padding:10px 12px;background:var(--page)}
-.bl .blt{font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.7px;color:var(--muted);margin-bottom:7px;display:flex;align-items:center;gap:6px}
+.bl .blt{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.7px;color:var(--muted);margin-bottom:7px;display:flex;align-items:center;gap:6px}
 .bl .blt::before{font-size:11px}
 .blnote{color:var(--ink2);font-size:12px;margin-top:7px;border-top:1px dashed var(--grid);padding-top:6px}
 
@@ -147,18 +147,18 @@ details.audit[open]>summary::after{transform:rotate(90deg)}
 .branches{margin:4px 0 2px 11px;border-left:2px solid var(--grid);padding-left:13px}
 .branch{margin:7px 0;position:relative}
 .branch::before{content:"";position:absolute;left:-13px;top:9px;width:9px;border-top:2px solid var(--grid)}
-.blabel{display:inline-block;font:800 10px var(--sans);letter-spacing:.5px;border-radius:4px;padding:1px 6px;
+.blabel{display:inline-block;font:800 11px var(--sans);letter-spacing:.5px;border-radius:4px;padding:1px 6px;
   margin-right:6px;background:var(--grid);color:var(--ink2);vertical-align:2px}
 .tleaf{display:inline-block;font-weight:600;font-size:12.5px;border-radius:8px;padding:3px 10px;border:1px solid}
 .tleaf.good{color:var(--goodtx);border-color:var(--good);background:color-mix(in srgb,var(--good) 9%,transparent)}
 .tleaf.bad{color:color-mix(in srgb,var(--crit) 85%,var(--ink));border-color:var(--crit);background:color-mix(in srgb,var(--crit) 8%,transparent)}
-.tleaf.warn{color:color-mix(in srgb,var(--serious) 75%,var(--ink));border-color:var(--serious);background:color-mix(in srgb,var(--serious) 9%,transparent)}
+.tleaf.warn{color:color-mix(in srgb,var(--serious) 52%,var(--ink));border-color:var(--serious);background:color-mix(in srgb,var(--serious) 9%,transparent)}
 .tleaf.neutral{color:var(--ink);border-color:var(--line);background:var(--surface)}
 
 /* --- mechanism --- */
 .bl.mech .blt::before{content:"⟶";color:var(--t3)}
 .mtrack{display:flex;align-items:center;flex-wrap:wrap;gap:5px;margin:4px 0}
-.mtname{flex:none;font:800 10.5px var(--sans);color:var(--ink2);text-transform:uppercase;letter-spacing:.5px;min-width:74px}
+.mtname{flex:none;font:800 11px var(--sans);color:var(--ink2);text-transform:uppercase;letter-spacing:.5px;min-width:74px}
 .stg{border:1px solid var(--line);border-radius:8px;background:var(--surface);padding:5px 10px;font-size:12.5px;font-weight:600}
 .stg .sub{display:block;font-weight:500;font-size:11px;color:var(--ink2);font-family:var(--mono)}
 .stg.hot{border-color:var(--acc);background:color-mix(in srgb,var(--acc) 8%,transparent)}
@@ -232,7 +232,7 @@ details.audit[open]>summary::after{transform:rotate(90deg)}
 .opwide{grid-column:1 / -1}
 .formulas{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:6px}
 .fx{font-family:var(--mono);font-size:11.5px;border:1px solid var(--grid);border-radius:7px;padding:5px 9px;background:var(--page)}
-.fx b{color:var(--acc);font-family:var(--sans);font-size:10.5px;text-transform:uppercase;letter-spacing:.4px;display:block}
+.fx b{color:var(--acc);font-family:var(--sans);font-size:11px;text-transform:uppercase;letter-spacing:.4px;display:block}
 
 /* ================= SEARCH ================= */
 .card.hidden,.module.hidden{display:none}
@@ -289,15 +289,15 @@ footer{margin-top:40px;border-top:1px solid var(--grid);padding-top:12px;color:v
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="manifest" href="site.webmanifest">
 <link rel="canonical" href="https://alexrajcoomar.github.io/afm291-study-system.html">
-<meta property="og:title" content="AFM 291 Interactive Study System — Alex Rajcoomar">
+<meta property="og:title" content="AFM 291 Interactive Study System · Alex Rajcoomar">
 <meta property="og:description" content="The full visual study system for AFM 291, covering the course end to end in one interactive document.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://alexrajcoomar.github.io/afm291-study-system.html">
-<meta property="og:site_name" content="Alex Rajcoomar — portfolio">
+<meta property="og:site_name" content="Alex Rajcoomar · portfolio">
 <meta property="og:image" content="https://alexrajcoomar.github.io/cards/afm291-study-system.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="AFM 291 Interactive Study System — Alex Rajcoomar">
+<meta property="og:image:alt" content="AFM 291 Interactive Study System · Alex Rajcoomar">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://alexrajcoomar.github.io/cards/afm291-study-system.png">
 <script>
@@ -318,7 +318,7 @@ footer{margin-top:40px;border-top:1px solid var(--grid);padding-top:12px;color:v
 <header class="hdr">
   <div class="brand"><span class="logo">◆</span> AFM 291 <span class="sub">Interactive Visual Study System · IFRS &amp; ASPE</span></div>
   <input id="q" type="search" placeholder="Search concepts, standards, tags… ( / )" autocomplete="off">
-  <div class="seg" role="tablist" aria-label="View mode">
+  <div class="seg" role="group" aria-label="View mode">
     <button data-mode="deep" class="on">Deep Study</button>
     <button data-mode="draw">✏ Draw This</button>
     <button data-mode="one">One-Page</button>
@@ -327,14 +327,14 @@ footer{margin-top:40px;border-top:1px solid var(--grid);padding-top:12px;color:v
   <button class="iconbtn" id="printBtn" title="Print / save as PDF">⎙</button>
 </header>
 <main>
-  <h1>AFM 291 — Intermediate Financial Accounting 1</h1>
+  <h1>AFM 291: Intermediate Financial Accounting 1</h1>
   <p class="tagline">Decision engine &amp; paper-first study dashboard · University of Waterloo · built from the audited vault (MOC → Reconciliation → Key Takeaways). Nothing here is invented: every figure traces to a named course file, and every unverified citation keeps its flag.</p>
   <section id="audit"></section>
   <section id="home"></section>
   <div id="searchinfo" hidden></div>
   <section id="content"></section>
   <section id="onepage" hidden></section>
-  <footer>Sources: AFM291_Vault 2 chapter notes · Ch.5/7/8 orphan study guides · Week 3–4 decks (IAS 37) · Week 9 cash-flow materials · Kennedy/Kool workbooks — reconciled 14 Aug 2026, compressed 15 Aug 2026. Standards text checked against ifrs.org / AASB only; <b>all paragraph citations remain [VERIFY] against CPA Canada Handbook Part I</b>. Zero external dependencies — this file runs fully offline.</footer>
+  <footer>Sources: AFM291_Vault 2 chapter notes · Ch.5/7/8 orphan study guides · Week 3–4 decks (IAS 37) · Week 9 cash-flow materials · Kennedy/Kool workbooks, reconciled 14 Aug 2026, compressed 15 Aug 2026. Standards text checked against ifrs.org / AASB only; <b>all paragraph citations remain [VERIFY] against CPA Canada Handbook Part I</b>. Zero external dependencies, this file runs fully offline.</footer>
 </main>
 <script>
 "use strict";
@@ -1701,7 +1701,7 @@ function renderComparisonMatrix(d){
   t.appendChild(hr);
   for(const r of d.rows){
     const tr=el("tr");
-    tr.appendChild(el("td","",r[0]));
+    tr.appendChild((function(){var h=el("th","",r[0]);h.setAttribute("scope","row");return h})());
     for(let i=1;i<r.length;i++)tr.appendChild(el("td","",r[i]));
     t.appendChild(tr);
   }
@@ -1850,7 +1850,7 @@ let activeThread=null;
 function renderHome(){
   const home=$("#home");
   const sp=el("div","panel");
-  sp.appendChild(el("h3","","Course spine — click a node to jump"));
+  sp.appendChild((function(){var h=el("h3","","Course spine — click a node to jump");h.setAttribute("aria-level","2");return h})());
   const row=el("div","spine");
   COURSE.modules.forEach((m,i)=>{
     if(i>0)row.appendChild(el("span","sarrow","→"));
@@ -2010,8 +2010,8 @@ init();
 .vizwrap svg text{fill:var(--ink)}
 .vizcap{font-size:11.5px;color:var(--muted);margin-top:6px;text-align:center;font-style:italic}
 .v-lab{font-size:11px;font-weight:600;letter-spacing:.02em}
-.v-sub{font-size:10px;fill:var(--ink2)}
-.v-tiny{font-size:9.5px;fill:var(--muted);letter-spacing:.04em;text-transform:uppercase}
+.v-sub{font-size:11px;fill:var(--ink2)}
+.v-tiny{font-size:11px;fill:var(--muted);letter-spacing:.04em;text-transform:uppercase}
 .v-num{font-family:var(--mono);font-size:11px}
 .v-box{fill:var(--surface);stroke:var(--line);stroke-width:1}
 .v-rule{stroke:var(--line);stroke-width:1}
@@ -2029,14 +2029,14 @@ init();
 .drbtn.pri:hover{color:#fff;filter:brightness(1.08)}
 .drbtn:disabled{opacity:.4;cursor:default}
 .drbtn:focus-visible,.rcq:focus-visible,.mkbtn:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
-.drtag{font:600 9.5px/1 var(--sans);letter-spacing:.06em;text-transform:uppercase;
+.drtag{font:600 11px/1 var(--sans);letter-spacing:.06em;text-transform:uppercase;
   color:var(--muted);margin-left:auto}
 .drgiven{border:1px solid var(--grid);border-radius:7px;padding:9px 11px;margin-bottom:10px;
   background:color-mix(in srgb,var(--ink) 2.5%,transparent)}
 .drgiven h5{margin:0 0 6px;font:600 11px/1 var(--sans);letter-spacing:.05em;
   text-transform:uppercase;color:var(--muted)}
 .drtable{width:100%;border-collapse:collapse;font-family:var(--mono);font-size:11.5px}
-.drtable th{font:600 9.5px/1.3 var(--sans);letter-spacing:.05em;text-transform:uppercase;
+.drtable th{font:600 11px/1.3 var(--sans);letter-spacing:.05em;text-transform:uppercase;
   color:var(--muted);text-align:right;padding:3px 7px;border-bottom:1px solid var(--grid)}
 .drtable th:first-child{text-align:left}
 .drtable td{padding:3px 7px;text-align:right;border-bottom:1px solid var(--dim)}
@@ -2054,11 +2054,11 @@ init();
 .drmark{font:700 12px/1 var(--sans);width:14px;display:inline-block}
 .drmark.y{color:var(--goodtx)} .drmark.n{color:var(--crit)}
 .drwork{margin-top:10px;border-top:1px dashed var(--line);padding-top:9px}
-.drwork h5{margin:0 0 6px;font:600 10px/1 var(--sans);letter-spacing:.06em;
+.drwork h5{margin:0 0 6px;font:600 11px/1 var(--sans);letter-spacing:.06em;
   text-transform:uppercase;color:var(--muted)}
 .drstep{display:grid;grid-template-columns:20px 1fr auto;gap:8px;align-items:baseline;
   padding:4px 0;border-bottom:1px solid var(--dim);font-size:12px}
-.drstep .n{font:700 10px/1.5 var(--mono);color:var(--muted)}
+.drstep .n{font:700 11px/1.5 var(--mono);color:var(--muted)}
 .drstep .amt{font-family:var(--mono);font-size:11.5px;white-space:nowrap}
 .drstep.hot{background:color-mix(in srgb,var(--warn) 13%,transparent);
   border-radius:4px;padding-inline:6px;margin-inline:-6px}
@@ -2069,7 +2069,7 @@ init();
   background:var(--surface);margin:10px 0}
 .wf svg{display:block;width:100%;height:auto}
 .wfleg{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-top:8px;
-  font-size:10.5px;color:var(--ink2)}
+  font-size:11px;color:var(--ink2)}
 .wfleg span{display:inline-flex;align-items:center;gap:5px}
 .wfleg i{width:11px;height:11px;border-radius:2px;display:inline-block}
 .wfstatus{text-align:center;font:600 11.5px/1.4 var(--sans);margin-top:7px;min-height:17px}
@@ -2080,7 +2080,7 @@ init();
 .tdwrap{border:1px solid var(--line);border-radius:9px;background:var(--surface);
   padding:14px 15px;margin:0 0 14px}
 .tdmeta{display:flex;gap:9px;align-items:center;flex-wrap:wrap;margin-bottom:9px}
-.tdsrc{font:600 9.5px/1 var(--sans);letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+.tdsrc{font:600 11px/1 var(--sans);letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
 .tdclaim{font-size:14px;line-height:1.55;margin:0 0 12px;padding:10px 12px;border-radius:7px;
   background:color-mix(in srgb,var(--crit) 8%,transparent);
   border-left:3px solid var(--crit)}
@@ -2093,7 +2093,7 @@ init();
 
 /* ── retention marking ──────────────────────────────────────── */
 .mkrail{display:inline-flex;gap:2px;margin-left:auto;flex:0 0 auto}
-.mkbtn{font:600 9.5px/1 var(--sans);letter-spacing:.03em;padding:5px 7px;cursor:pointer;
+.mkbtn{font:600 11px/1 var(--sans);letter-spacing:.03em;padding:5px 7px;cursor:pointer;
   border:1px solid var(--grid);background:transparent;color:var(--muted);border-radius:5px}
 .mkbtn:hover{border-color:var(--line);color:var(--ink2)}
 .mkbtn.on[data-mk="weak"]{background:color-mix(in srgb,var(--crit) 16%,transparent);
@@ -2116,7 +2116,7 @@ body:not(.mode-trap) #trapdrill{display:none}
 #trapdrill{max-width:820px;margin:0 auto;padding:16px}
 
 /* progress strip in header */
-.pstrip{display:flex;align-items:center;gap:7px;font:600 10.5px/1 var(--sans);color:var(--muted)}
+.pstrip{display:flex;align-items:center;gap:7px;font:600 11px/1 var(--sans);color:var(--muted)}
 .pbar{width:96px;height:7px;border-radius:4px;background:var(--grid);overflow:hidden;display:flex}
 .pbar i{height:100%;display:block}
 .pbar i.s{background:var(--good)} .pbar i.k{background:var(--warn)} .pbar i.w{background:var(--crit)}
@@ -2137,6 +2137,9 @@ body:not(.mode-trap) #trapdrill{display:none}
 }
 .wf svg rect,.wf svg line{transition:all .42s cubic-bezier(.4,0,.2,1)}
 
+
+/* the widest text block on the page holds the reading measure */
+.blnote{max-width:66ch}
 </style>
 <script>
 /* ══════════ AFM 291 OVERLAY v2 ══════════════════════════════════════════
@@ -2227,7 +2230,7 @@ function defs(){
   return d;
 }
 function newSvg(w,h){
-  const s=S("svg",{viewBox:"0 0 "+w+" "+h,role:"img"});
+  const s=S("svg",{viewBox:"0 0 "+w+" "+h,role:"img","aria-label":"Diagram, drawn by this page"});
   s.appendChild(defs());
   return s;
 }
@@ -2441,7 +2444,7 @@ function drill(conceptId,label,spec){
     body.innerHTML="";
     const q=spec.gen();
     const gv=E("div","drgiven");
-    gv.appendChild(E("h5",null,"Given"));
+    gv.appendChild((function(){var h=E("h5",null,"Given");h.setAttribute("aria-level","4");return h})());
     const t=E("table","drtable");
     for(const row of q.given){
       const tr=E("tr",row[2]?"tot":"");
@@ -2469,7 +2472,7 @@ function drill(conceptId,label,spec){
       inp.addEventListener("keydown",e=>{if(e.key==="Enter")check();});
     }
     const workWrap=E("div","drwork");workWrap.hidden=true;
-    workWrap.appendChild(E("h5",null,"Worked solution"));
+    workWrap.appendChild((function(){var h=E("h5",null,"Worked solution");h.setAttribute("aria-level","4");return h})());
     for(const w of q.work){
       const st=E("div","drstep"+(w[2]?" hot":""));
       st.appendChild(E("span","n",""));
@@ -3128,16 +3131,62 @@ if(D.readyState==="loading")D.addEventListener("DOMContentLoaded",boot);else boo
 
 </script>
 
-
+<!--__long--><link rel="stylesheet" href="long.css?v=0b99e235"><script src="long.js?v=98a5c23b" defer></script><!--/__long-->
 
 <!--__rbp-->
+<!-- The pill styles itself: this block used to live only with the top bar,
+     so the seven tool pages, which carry the pill alone, rendered it as an
+     unstyled link at the very end of the document. Whatever carries the
+     pill now carries its style. -->
+<style id="__rbp-style">
+#__rb-pill{
+  position:fixed;left:14px;bottom:14px;z-index:2147483000;
+  display:inline-flex;align-items:center;gap:.45rem;padding:.58rem .9rem;
+  background:rgba(22,21,15,.93);color:#faf9f6;text-decoration:none;border-radius:99px;
+  font:600 12.5px/1 InterVar,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  border:1px solid rgba(255,255,255,.16);box-shadow:0 6px 22px rgba(0,0,0,.28);
+  opacity:0;transform:translateY(6px);pointer-events:none;
+  transition:opacity .2s ease,transform .2s ease;
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+}
+#__rb-pill.__on{opacity:1;transform:none;pointer-events:auto}
+#__rb-pill:hover{background:#16150f;color:#fff}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) #__rb-pill{background:rgba(247,245,239,.95);color:#131310;border-color:rgba(0,0,0,.2)}
+  :root:not([data-theme="light"]) #__rb-pill:hover{background:#fff;color:#000}
+}
+:root[data-theme="dark"] #__rb-pill{background:rgba(247,245,239,.95);color:#131310;border-color:rgba(0,0,0,.2)}
+:root[data-theme="dark"] #__rb-pill:hover{background:#fff;color:#000}
+@media (prefers-reduced-motion:reduce){#__rb-pill{transition:none}}
+@media print{#__rb-pill{display:none !important}}
+/* a tool carries no bar, so what it was built from stands at the foot of the document */
+#__rb-from{margin:1.25rem 1rem;font:400 13px/1.45 InterVar,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;color:#6f6c63;max-width:70ch}
+#__rb-from b{font-weight:600;color:#55524a}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) #__rb-from{color:#948f85}
+  :root:not([data-theme="light"]) #__rb-from b{color:#c0bcb1}
+}
+:root[data-theme="dark"] #__rb-from{color:#948f85}
+:root[data-theme="dark"] #__rb-from b{color:#c0bcb1}
+</style>
+<!-- With scripts off nothing ever adds the __on class, and the only way
+     back from a tool page vanished. The pill needs its script for the
+     scroll threshold, not for existing. -->
+<noscript><style>#__rb-pill{opacity:1 !important;transform:none !important;pointer-events:auto !important}</style></noscript>
 <a id="__rb-pill" href="afm291.html">&#8592; The vault</a>
+<p id="__rb-from"><b>Built from</b> Built from the audited AFM 291 vault: the chapter notes, the reconciliation and the key takeaways.</p>
 <script>
 (function(){
   var p=document.getElementById('__rb-pill'); if(!p) return;
+  /* On a page with the top bar the pill waits until the bar has scrolled
+     out of reach. On a page without one (the tools carry no bar, because a
+     bar inside a full-screen application sits in the wrong place) the pill
+     is the only way back, so it is there from the first paint: a tool
+     screen shorter than the threshold used to strand the reader entirely. */
+  var TH=document.getElementById('__rb')?160:-1;
   var t=false;
   function run(){ t=false;
-    p.classList.toggle('__on',(window.scrollY||document.documentElement.scrollTop)>420); }
+    p.classList.toggle('__on',(window.scrollY||document.documentElement.scrollTop)>TH); }
   function q(){ if(!t){ t=true; requestAnimationFrame(run); } }
   addEventListener('scroll',q,{passive:true}); run();
 })();
@@ -3155,7 +3204,7 @@ if(D.readyState==="loading")D.addEventListener("DOMContentLoaded",boot);else boo
     function put(key){
       if(t2[key]||Object.keys(t2).length<500){
         t2[key]=(t2[key]||0)+1;
-        localStorage.setItem(k,JSON.stringify(t2));
+        try{localStorage.setItem(k,JSON.stringify(t2));}catch(e){}
       }
     }
     put(u+location.hash);

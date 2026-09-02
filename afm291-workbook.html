@@ -1,0 +1,940 @@
+<!doctype html><html lang="en-CA"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AFM 291 Watch-Along Workbook · Alex Rajcoomar</title>
+<style>
+/* self-hosted, subset to this piece's characters; the manifest in fonts/ records the source */
+@font-face{font-family:"Bricolage Grotesque";font-style:normal;font-weight:600 800;font-display:swap;src:url("fonts/bricolagegrotesque-afm291-workbook.woff2") format("woff2")}
+@font-face{font-family:"Source Serif 4";font-style:normal;font-weight:400 600;font-display:swap;src:url("fonts/sourceserif4-afm291-workbook.woff2") format("woff2")}
+@font-face{font-family:"Source Serif 4";font-style:italic;font-weight:400;font-display:swap;src:url("fonts/sourceserif4-afm291-workbook-italic.woff2") format("woff2")}
+@font-face{font-family:"IBM Plex Mono";font-style:normal;font-weight:400;font-display:swap;src:url("fonts/ibmplexmono-afm291-workbook-400.woff2") format("woff2")}
+@font-face{font-family:"IBM Plex Mono";font-style:normal;font-weight:500;font-display:swap;src:url("fonts/ibmplexmono-afm291-workbook-500.woff2") format("woff2")}
+@font-face{font-family:"IBM Plex Mono";font-style:normal;font-weight:600;font-display:swap;src:url("fonts/ibmplexmono-afm291-workbook-600.woff2") format("woff2")}
+</style>
+<style>
+@page { size: Letter; margin: 15mm 14mm 13mm 14mm; }
+*{box-sizing:border-box}
+body{margin:0;font-family:"Source Serif 4",Georgia,"Times New Roman",serif;font-size:9.6pt;
+     line-height:1.4;color:#14181a;background:#fff;
+     -webkit-print-color-adjust:exact;print-color-adjust:exact;}
+h1,h2,h3,.d{font-family:"Bricolage Grotesque","Helvetica Neue",Arial,sans-serif;}
+.mono,.figs,.eyeb,.lab{font-family:"IBM Plex Mono",ui-monospace,Menlo,monospace;}
+
+/* cover */
+.cover{height:246mm;display:flex;flex-direction:column;page-break-after:always;break-after:page;}
+.cover h1{font-size:40pt;line-height:.95;letter-spacing:-.025em;margin:0 0 6mm;font-weight:800;}
+.kick{font-family:"IBM Plex Mono",monospace;font-size:8pt;letter-spacing:.18em;text-transform:uppercase;
+      color:#0e5a5e;margin:0 0 8mm;}
+.lede{font-size:12pt;line-height:1.45;max-width:120mm;color:#3a4744;margin:0 0 10mm;}
+.howto{border-top:1.2pt solid #14181a;border-bottom:.5pt solid #c9d0ca;padding:5mm 0;margin:0 0 8mm;}
+.howto ol{margin:0;padding-left:5mm;}
+.howto li{margin-bottom:2.2mm;font-size:10pt;}
+.cover-foot{margin-top:auto;font-size:8.5pt;color:#6c7774;border-top:.5pt solid #c9d0ca;padding-top:3mm;}
+
+/* checklist grid */
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:0 8mm;}
+.gcol p{margin:0 0 1.4mm;font-size:8.6pt;display:flex;gap:2mm;align-items:baseline;}
+.gw{font-family:"IBM Plex Mono",monospace;font-size:7.4pt;letter-spacing:.1em;text-transform:uppercase;
+    color:#6c7774;margin:3mm 0 1.6mm;}
+.box{display:inline-block;width:3mm;height:3mm;border:.7pt solid #6b786f;border-radius:.6mm;flex:0 0 auto;
+     position:relative;top:.4mm;}
+
+/* week divider */
+.wk{page-break-before:always;break-before:page;break-after:avoid;page-break-after:avoid;border-bottom:1.2pt solid #14181a;padding-bottom:2.5mm;margin:0 0 5mm;}
+.wk .n{font-family:"IBM Plex Mono",monospace;font-size:8pt;letter-spacing:.16em;text-transform:uppercase;
+       color:#0e5a5e;margin:0 0 1.5mm;}
+.wk h2{font-size:19pt;margin:0;letter-spacing:-.02em;font-weight:800;}
+
+/* recording sheet */
+.rec{page-break-inside:avoid;break-inside:avoid;border:.7pt solid #c9d0ca;border-radius:2mm;padding:4mm 4.5mm;margin:0 0 4.5mm;}
+.rec-h{display:flex;gap:3mm;align-items:baseline;border-bottom:.5pt solid #dde2dc;padding-bottom:2mm;margin-bottom:2.5mm;}
+.eyeb{font-size:7.2pt;letter-spacing:.1em;text-transform:uppercase;background:#0e5a5e;color:#fff;
+      padding:.8mm 1.8mm;border-radius:.8mm;white-space:nowrap;}
+.rec-h h3{font-size:11.5pt;margin:0;flex:1;letter-spacing:-.01em;}
+.wbox{width:3.4mm;height:3.4mm;border:.8pt solid #0e5a5e;border-radius:.6mm;flex:0 0 auto;}
+.thesis{font-style:italic;color:#4a534f;margin:0 0 2.5mm;font-size:9pt;
+        border-left:1.2pt solid #c9d0ca;padding-left:2.5mm;}
+.lab{font-size:7pt;letter-spacing:.12em;text-transform:uppercase;color:#6c7774;margin:0 0 1.5mm;}
+ol.beats{margin:0 0 3mm;padding-left:0;list-style:none;counter-reset:b;}
+ol.beats li{counter-increment:b;position:relative;padding:.5mm 0 .5mm 6.5mm;font-size:9.2pt;line-height:1.35;}
+ol.beats li::before{content:counter(b);position:absolute;left:0;top:.6mm;width:4.2mm;height:4.2mm;
+  border:.6pt solid #9fc0c1;border-radius:50%;color:#0e5a5e;font-family:"IBM Plex Mono",monospace;
+  font-size:6.4pt;display:flex;align-items:center;justify-content:center;}
+.figs{background:#eef4f3;border:.6pt solid #cfdedc;border-radius:1.4mm;padding:2mm 2.6mm;
+      font-size:8.2pt;line-height:1.6;margin:0 0 3mm;}
+.figs b{color:#14181a;}
+.rule{border-bottom:.5pt solid #d5dbd6;height:5.2mm;}
+.rule:first-of-type{border-top:.5pt solid #d5dbd6;}
+.notelab{font-size:7pt;letter-spacing:.12em;text-transform:uppercase;color:#6b786f;margin:0 0 1mm;}
+
+/* On a screen the sheets read as a document; every rule above is the print
+   layout and stays as it is for print. */
+@media screen{
+  html{background:#f3f1ea}
+  body{font-size:15px;line-height:1.5;max-width:52rem;margin:0 auto;padding:1.5rem 1.25rem 4rem;background:#fff}
+  .cover{height:auto;page-break-after:auto;break-after:auto;padding-bottom:2rem;border-bottom:1.2pt solid #14181a;margin-bottom:2rem}
+  .cover h1{font-size:clamp(2.2rem,8vw,3.4rem)}
+  .lede{font-size:1.05rem;max-width:36rem}
+  .howto li{font-size:1rem}
+  .gcol p{font-size:.95rem}
+  .rec-h h3{font-size:1.15rem}
+  .thesis{font-size:1rem}
+  ol.beats li{font-size:1rem;line-height:1.45}
+  .lab{font-size:.75rem}
+  .cover-foot{font-size:.9rem}
+  .wk{page-break-before:auto;break-before:auto;margin-top:3rem}
+  .wk h2{font-size:1.6rem}
+  .companion{margin:1rem 0 0;font-size:.95rem}
+  .lab,.gw,.eyeb,.notelab,.kick,.wk .n{font-size:.8rem;letter-spacing:.1em}
+  .figs{font-size:.9rem;white-space:normal}
+  .rule{font-size:.9rem}
+  .companion a{color:#0e5a5e}
+}
+@media screen and (max-width:700px){
+  .grid{grid-template-columns:1fr;gap:0}
+  .rec{padding:.9rem 1rem}
+  .rec-h{flex-wrap:wrap}
+  .figs{white-space:normal}
+}
+@media print{
+  .companion{display:none}
+}
+</style><!--__meta-->
+<meta name="color-scheme" content="light dark">
+<meta name="description" content="A recording sheet for every pre-lecture video across Weeks 2 to 11: the beats to follow, the figures worth having in front of you, and ruled space for the…">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%2316150f'/><text x='50' y='72' font-size='64' font-family='Helvetica,Arial' font-weight='bold' fill='%23faf9f6' text-anchor='middle'>A</text></svg>">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="site.webmanifest">
+<link rel="canonical" href="https://alexrajcoomar.github.io/afm291-workbook.html">
+<meta property="og:title" content="AFM 291 Watch-Along Workbook · Alex Rajcoomar">
+<meta property="og:description" content="A recording sheet for every pre-lecture video across Weeks 2 to 11: the beats to follow, the figures worth having in front of you, and ruled space for the…">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://alexrajcoomar.github.io/afm291-workbook.html">
+<meta property="og:site_name" content="Alex Rajcoomar · portfolio">
+<meta property="og:image" content="https://alexrajcoomar.github.io/og-card.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="AFM 291 Watch-Along Workbook · Alex Rajcoomar">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://alexrajcoomar.github.io/og-card.png">
+<script>
+(function(){
+  var d=document.documentElement;
+  try{var t=localStorage.getItem('theme'); if(t) d.setAttribute('data-theme',t);}catch(e){}
+  new MutationObserver(function(){
+    try{
+      var v=d.getAttribute('data-theme');
+      if(v) localStorage.setItem('theme',v); else localStorage.removeItem('theme');
+    }catch(e){}
+  }).observe(d,{attributes:true,attributeFilter:['data-theme']});
+})();
+</script>
+<!--/__meta-->
+</head><body>
+<!--__rb-->
+<!-- injected by the site build: a way back into the site from a standalone
+     piece. A static bar at the top, so it is visible on arrival, and a pill
+     that appears once you have scrolled past it, so there is always a way out.
+     Self-contained, because these pages do not load the site stylesheet. -->
+<style id="__rb-style">
+#__rb{
+  box-sizing:border-box;display:flex;flex-wrap:wrap;align-items:center;gap:.6rem 1.25rem;
+  padding:.6rem clamp(1rem,4vw,2rem);border-bottom:1px solid #ddd9cf;background:#faf9f6;
+  font:500 13px/1.35 InterVar,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  color:#55524a;
+}
+#__rb a{color:#14509b;text-decoration:none;display:inline-flex;align-items:center;gap:.4rem}
+#__rb a:hover{text-decoration:underline}
+#__rb .__rb-home{font-weight:640;color:#16150f}
+#__rb .__rb-home i{font-style:normal;font-weight:400;color:#6f6c63}
+#__rb .__rb-right{margin-left:auto;display:flex;gap:1.1rem;flex-wrap:wrap}
+/* the piece's own row of the statement: origin, words, figures, tables, the
+   same figures the home page prints for it, from the same measurement */
+#__rb .__rb-row{color:#6f6c63;font-variant-numeric:tabular-nums;white-space:nowrap}
+#__rb .__rb-row b{font-weight:600;color:#55524a}
+@media (max-width:44rem){#__rb .__rb-row{flex-basis:100%;order:3;white-space:normal}}
+/* what the piece was built from, in the owner's words, from pieces.json */
+#__rb .__rb-from{flex-basis:100%;order:5;font-weight:400;color:#6f6c63;line-height:1.4;max-width:70ch}
+#__rb .__rb-from b{font-weight:600;color:#55524a}
+#__rb .__mark{
+  display:inline-grid;place-items:center;width:1.2rem;height:1.2rem;flex:none;
+  background:#16150f;color:#faf9f6;font-size:.72rem;font-weight:700;
+}
+/* Dark has to answer to two things: the reader's system setting, and the
+   theme button on the page, which sets data-theme on <html>. Keyed to the
+   media query alone, the bar stayed paper-white across the top of an essay
+   the reader had just switched to dark, and read as a rendering fault. The
+   media query is scoped so an explicit light choice wins, and the attribute
+   selector is repeated so an explicit dark choice wins on a light system. */
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) #__rb{background:#131310;border-bottom-color:#2c2b24;color:#c0bcb1}
+  :root:not([data-theme="light"]) #__rb .__rb-home{color:#f7f5ef}
+  :root:not([data-theme="light"]) #__rb .__rb-home i{color:#948f85}
+  :root:not([data-theme="light"]) #__rb .__rb-row{color:#948f85}
+  :root:not([data-theme="light"]) #__rb .__rb-row b{color:#c0bcb1}
+  :root:not([data-theme="light"]) #__rb .__rb-from{color:#948f85}
+  :root:not([data-theme="light"]) #__rb .__rb-from b{color:#c0bcb1}
+  :root:not([data-theme="light"]) #__rb a{color:#85adea}
+  :root:not([data-theme="light"]) #__rb .__mark{background:#f7f5ef;color:#131310}
+}
+:root[data-theme="dark"] #__rb{background:#131310;border-bottom-color:#2c2b24;color:#c0bcb1}
+:root[data-theme="dark"] #__rb .__rb-home{color:#f7f5ef}
+:root[data-theme="dark"] #__rb .__rb-home i{color:#948f85}
+:root[data-theme="dark"] #__rb .__rb-row{color:#948f85}
+:root[data-theme="dark"] #__rb .__rb-row b{color:#c0bcb1}
+:root[data-theme="dark"] #__rb .__rb-from{color:#948f85}
+:root[data-theme="dark"] #__rb .__rb-from b{color:#c0bcb1}
+:root[data-theme="dark"] #__rb a{color:#85adea}
+:root[data-theme="dark"] #__rb .__mark{background:#f7f5ef;color:#131310}
+@media print{#__rb{display:none !important}}
+</style>
+<nav id="__rb" aria-label="Portfolio">
+  <a class="__rb-home" href="index.html"><span class="__mark" aria-hidden="true">A</span>Alex Rajcoomar <i>portfolio</i></a>
+  <span class="__rb-row">Coursework &middot; <b>4,287</b> words &middot; <b>0</b> figures &middot; <b>0</b> tables</span>
+  <span class="__rb-right"><a href="afm291.html">The vault</a><a href="atlas.html">Atlas</a><a href="library.html">All work</a></span>
+  <span class="__rb-from"><b>Built from</b> Built from the AFM 291 pre-lecture recordings, one sheet per recording in the order the videos run, with the figures worth having in front of you printed on each.</span>
+</nav>
+<script>
+/* the trail: which passages this browser has opened. The atlas reads it and
+   rings them; the record lives in localStorage and never leaves the machine. */
+(function(){
+  if(window.__trailed) return; window.__trailed=1;
+  if('serviceWorker' in navigator && location.protocol.indexOf('http')===0){
+    addEventListener('load',function(){setTimeout(function(){
+      navigator.serviceWorker.register('sw.js').catch(function(){});},6000);});
+  }
+  try{
+    var k='atlas.trail';
+    var u=location.pathname.split('/').pop()||'index.html';
+    var t2=JSON.parse(localStorage.getItem(k)||'{}');
+    function put(key){
+      if(t2[key]||Object.keys(t2).length<500){
+        t2[key]=(t2[key]||0)+1;
+        try{localStorage.setItem(k,JSON.stringify(t2));}catch(e){}
+      }
+    }
+    put(u+location.hash);
+    addEventListener('hashchange',function(){ put(u+location.hash); });
+  }catch(e){}
+})();
+</script>
+<!--/__rb-->
+
+<main>
+<section class="cover">
+<p class="kick">Intermediate Financial Accounting 1 &#183; Spring 2026</p>
+<h1 id="watch-along-workbook">Watch-Along<br>Workbook</h1>
+<p class="lede">One sheet per pre-lecture recording, in the order the videos run. Beats to follow, the figures worth having in front of you, and room to write down what to ask about, so you can watch without pausing to transcribe.</p>
+<div class="howto"><ol><li><b>Before you press play</b>, read the beats. Eight lines tells you the shape of the video.</li><li><b>While it runs</b>, the figures are already printed. Don&#8217;t copy numbers; watch what is done to them.</li><li><b>When something slides past</b>, write the question in the ruled space. Do not rewind yet.</li><li><b>After</b>, tick the box, then take your questions to office hours or the Q&amp;A session.</li></ol></div>
+<p class="companion">The print edition, laid out for Letter paper, is the companion <a href="afm291-workbook.pdf">PDF</a>.</p>
+<p class="lab">32 recordings &#183; Weeks 2&#8211;11</p><div class="grid">
+<div class="gcol">
+<p class="gw" style="display:block">Week 2</p>
+<p><span class="box"></span><span>Intro to IFRS revenue recognition</span></p>
+<p><span class="box"></span><span>Significant financing: MicroArm Limited</span></p>
+<p><span class="box"></span><span>Intro to ASPE revenue recognition</span></p>
+<p class="gw" style="display:block">Week 3</p>
+<p><span class="box"></span><span>IFRS revenue recognition, performance over time</span></p>
+<p><span class="box"></span><span>Revenue recognition, warranty concepts</span></p>
+<p><span class="box"></span><span>Liabilities and contingencies</span></p>
+<p><span class="box"></span><span>Warranty problem, the tablets</span></p>
+<p class="gw" style="display:block">Week 4</p>
+<p><span class="box"></span><span>Kennedy Construction, long-term contract</span></p>
+<p><span class="box"></span><span>The accounting cycle for long-term contracts</span></p>
+<p><span class="box"></span><span>Kennedy Construction, the onerous contract</span></p>
+<p><span class="box"></span><span>Contingencies continued, the ASPE side and contingent assets</span></p>
+<p class="gw" style="display:block">Week 5</p>
+<p><span class="box"></span><span>Subsequent events</span></p>
+<p><span class="box"></span><span>Changes in estimates, accounting policies, and prior period errors</span></p>
+<p class="gw" style="display:block">Week 6</p>
+<p><span class="box"></span><span>Inventory, classification and initial measurement</span></p>
+<p><span class="box"></span><span>Inventory, subsequent measurement and errors</span></p>
+</div>
+<div class="gcol">
+<p class="gw" style="display:block">Week 7</p>
+<p><span class="box"></span><span>Introduction to financial assets</span></p>
+<p><span class="box"></span><span>Accounts receivable as a financial asset</span></p>
+<p><span class="box"></span><span>Non-strategic equity investments</span></p>
+<p class="gw" style="display:block">Week 8</p>
+<p><span class="box"></span><span>Debt investments, initial recognition</span></p>
+<p><span class="box"></span><span>Debt investments, interest income</span></p>
+<p><span class="box"></span><span>Non-strategic debt, classification and accounting</span></p>
+<p class="gw" style="display:block">Week 9</p>
+<p><span class="box"></span><span>PP&amp;E, classification and initial measurement</span></p>
+<p><span class="box"></span><span>PP&amp;E, subsequent measurement</span></p>
+<p><span class="box"></span><span>PP&amp;E, IFRS 18 and the statement of cash flows</span></p>
+<p class="gw" style="display:block">Week 10</p>
+<p><span class="box"></span><span>Introduction to the revaluation model</span></p>
+<p><span class="box"></span><span>Revaluation worked, non-depreciable (land)</span></p>
+<p><span class="box"></span><span>Revaluation worked, depreciable assets</span></p>
+<p><span class="box"></span><span>Investment property</span></p>
+<p><span class="box"></span><span>Government grants</span></p>
+<p class="gw" style="display:block">Week 11</p>
+<p><span class="box"></span><span>Intangibles I, classification, control, recognition</span></p>
+<p><span class="box"></span><span>Intangibles II, internally generated</span></p>
+<p><span class="box"></span><span>Intangibles III, subsequent measurement</span></p>
+</div>
+</div>
+<p class="cover-foot">Built from the AFM 291 pre-lecture transcripts, Weeks 2&#8211;11. Week 1 (CPA Canada Handbook, Problem-Solving Approach) and Weeks 12&#8211;13 (impairment, cash flow capstone) are not covered. Companion to the interactive edition.</p>
+</section>
+<section class="wk"><p class="n">Week 2</p><h2 id="revenue-recognition-the-two-models">Revenue recognition: the two models</h2></section>
+<div class="rec">
+<div class="rec-h"><span class="eyeb">W2 &#183; 1</span><h3 id="intro-to-ifrs-revenue-recognition">Intro to IFRS revenue recognition</h3><span class="wbox"></span></div>
+<p class="thesis">ASPE asks "has the entity performed?" IFRS asks "what did you promise in the contract, and have you transferred control of it?"</p>
+<p class="lab">Follow along</p><ol class="beats">
+<li>Two models set side by side: ASPE performance-based, IFRS contract-based</li>
+<li>The standard's objective: nature, amount, timing, uncertainty of revenue cash flows</li>
+<li>Canadian Tire, why one revenue line can't do that job, and what Note 28 adds</li>
+<li>The five steps introduced in order</li>
+<li>Step 1 unpacked, the five sub-criteria for a contract</li>
+<li>Step 2, <em>distinct</em> needs both capable-of and in-context</li>
+<li>Step 3, the four adjustments that move contract price to transaction price</li>
+<li>Steps 4 and 5, allocate on standalone prices, recognise on transfer of control</li>
+</ol>
+<p class="lab">On screen</p><div class="figs">Revenue line <b>$17.7bn</b> (Canadian Tire 2023, Note 28) &middot; Step 1 has <b>5</b> sub-criteria &middot; Step 3 has <b>4</b> price adjustments &middot; Step 2 distinct = <b>capable + context</b></div>
+<p class="notelab">Ask about</p>
+<div class="rule"></div><div class="rule"></div><div class="rule"></div>
+</div>
+<div class="rec">
+<div class="rec-h"><span class="eyeb">W2 &#183; 2</span><h3 id="significant-financing-microarm-limited">Significant financing: MicroArm Limited</h3><span class="wbox"></span></div>
+<p class="thesis">One transaction, two economic activities: selling a tractor and providing a financing service. Report them separately.</p>
+<p class="lab">Follow along</p><ol class="beats">
+<li>Why the recording exists: splitting one payment stream into revenue and interest</li>
+<li>The MicroArm facts, tractor, three payments, 10%</li>
+<li>Step 1 walked against the facts (watch the commercial-substance argument)</li>
+<li>Solving for the annuity payment from today's cash price</li>
+<li>Building the timeline, then totalling the cash</li>
+<li>Excel, the effective interest worksheet, year by year</li>
+<li>Excel, the ASPE straight-line worksheet for comparison</li>
+<li>The matching argument: why IFRS mandates effective interest</li>
+</ol>
+<p class="lab">On screen</p><div class="figs">Cash price <b>85,000</b> &middot; payment <b>34,179.76</b> &times;3 &middot; total cash <b>102,539.28</b> &middot; interest <b>17,539.28</b><br>Effective <b>8,500 / 5,932 / 3,107</b> &middot; Straight-line <b>5,846.43</b> &times;3</div>
+<p class="notelab">Ask about</p>
+<div class="rule"></div><div class="rule"></div><div class="rule"></div>
+</div>
+<div class="rec">
+<div class="rec-h"><span class="eyeb">W2 &#183; 3</span><h3 id="intro-to-aspe-revenue-recognition">Intro to ASPE revenue recognition</h3><span class="wbox"></span></div>
+<p class="thesis">Four criteria, all required. The mnemonic is deliberate and worth using.</p>
+<p class="lab">Follow along</p><ol class="beats">
+<li>&sect;3400 located in Part II of the Handbook</li>
+<li>RCMP introduced as the four criteria</li>
+<li>Performance broken into its three sub-conditions</li>
+<li>Why &sect;3400 is so much shorter than IFRS 15, and what the new appendix added</li>
+</ol>
+<p class="lab">On screen</p><div class="figs"><b>R</b>isks &amp; rewards (goods only) &middot; <b>C</b>ollection assured &middot; <b>M</b>easurable &middot; <b>P</b>erformance<br>Performance = arrangement + delivery/rendered + price fixed or determinable</div>
+<p class="notelab">Ask about</p>
+<div class="rule"></div><div class="rule"></div><div class="rule"></div>
+</div>
+<section class="wk"><p class="n">Week 3</p><h2 id="performance-over-time-warranties-provisions">Performance over time, warranties, provisions</h2></section>
+<div class="rec">
+<div class="rec-h"><span class="eyeb">W3 &#183; 1</span><h3 id="ifrs-revenue-recognition-performance-over-time">IFRS revenue recognition: performance over time</h3><span class="wbox"></span></div>
+<p class="thesis">Step 5 unpacked. Three criteria, any one of which is sufficient; miss all three and you default to a point in time.</p>
+<p class="lab">Follow along</p><ol class="beats">
+<li>Refresher on the five steps, landing on Step 5</li>
+<li>The order of operations: test over-time first, default to point in time</li>
+<li>Criterion (a), simultaneous receipt and consumption; the cleaning contract</li>
+<li>The re-performance test explained</li>
+<li>Criterion (b), asset created on the customer's land</li>
+<li>Criterion (c), no alternative use <em>plus</em> enforceable right to payment</li>
+<li>Measuring progress: input vs output method, applied consistently</li>
+<li>ASPE, percentage of completion vs completed contract, and why it isn't a choice</li>
+</ol>
+<p class="lab">On screen</p><div class="figs"><b>3</b> over-time criteria, any one suffices &middot; none met &rarr; <b>point in time</b><br>ASPE: more than one act &rarr; <b>POC</b>; single act or not estimable &rarr; <b>completed contract</b></div>
+<p class="notelab">Ask about</p>
+<div class="rule"></div><div class="rule"></div><div class="rule"></div>
+</div>
+<div class="rec">
+<div class="rec-h"><span class="eyeb">W3 &#183; 2</span><h3 id="revenue-recognition-warranty-concepts">Revenue recognition: warranty concepts</h3><span class="wbox"></span></div>
+<p class="thesis">Warranties are the course's cleanest example of two separate issues colliding: how many POs, and over time versus point in time.</p>
+<p class="lab">Follow along</p><ol class="beats">
+<li>The two issues warranties illustrate at once</li>
+<li>Assurance warranty, why it fails <em>distinct</em></li>
+<li>One PO, no allocation, point in time, and the matching problem that creates</li>
+<li>Service warranty, why it passes <em>distinct</em></li>
+<li>Reading a standard: appendices, application guidance, illustrative examples</li>
+<li>The separate-purchase shortcut in IFRS 15's application guidance</li>
+<li>ASPE, multiple deliverables, and falling back to the conceptual framework</li>
+</ol>
+<p class="lab">On screen</p><div class="figs">Assurance = <b>not distinct</b>, 1 PO, point in time, accrue a provision<br>Service = <b>distinct</b>, 2 POs, allocate on SSP, over time via unearned revenue</div>
+<p class="notelab">Ask about</p>
+<div class="rule"></div><div class="rule"></div><div class="rule"></div>
+</div>
+<div class="rec">
+<div class="rec-h"><span class="eyeb">W3 &#183; 3</span><h3 id="liabilities-and-contingencies">Liabilities and contingencies</h3><span class="wbox"></span></div>
+<p class="thesis">A provision is not "a liability we're unsure about." It's a liability we definitely owe, where the amount or timing is uncertain.</p>
+<p class="lab">Follow along</p><ol class="beats">
+<li>IAS 37 is under review, the 2024 exposure draft (not examinable)</li>
+<li>The liability definition, near-identical in both frameworks</li>
+<li>The three reporting buckets: provision, disclose, do nothing</li>
+<li>Probability vocabulary, probable is &gt;50%; remote is undefined</li>
+<li>The IAS 37 decision tree walked end to end</li>
+<li>Liability vs contingent liability, the aluminium and warranty pair</li>
+<li>Measuring a provision: most likely / probability-weighted / midpoint</li>
+<li>Canadian Tire's balance sheet provisions and note disclosure</li>
+<li>ASPE &sect;3290, and the paragraph that excludes warranties</li>
+</ol>
+<p class="lab">On screen</p><div class="figs">Provision = present obligation + <b>probable</b> outflow + <b>reliable estimate</b><br>IFRS measurement: single most likely &middot; probability-weighted &middot; <b>midpoint</b> of a range</div>
+<p class="notelab">Ask about</p>
+<div class="rule"></div><div class="rule"></div><div class="rule"></div>
+</div>
+<div class="rec">
+<div class="rec-h"><span class="eyeb">W3 &#183; 4</span><h3 id="warranty-problem-the-tablets">Warranty problem: the tablets</h3><span class="wbox"></span></div>
+<p class="thesis">Everything from Weeks 2 and 3 in one problem: PO count, allocation, dual timing, provisions, and the input method.</p>
+<p class="lab">Follow along</p><ol class="beats">
+<li>Prerequisites named: over time, warranty concepts, contingencies</li>
+<li>Read the problem, pause here</li>
+<li>Tranche A: steps 1&ndash;5 for the 100 assurance-only tablets</li>
+<li>Tranche A journal entries, including the provision and the actual costs</li>
+<li>The IAS 37 three-criteria check applied to the warranty</li>
+<li>Tranche B: two POs, and the standalone-price allocation in Excel</li>
+<li>Tranche B entries, note the split of cash into revenue and unearned</li>
+<li>The input method computed for the service revenue</li>
+<li>The income statement pulled together</li>
+</ol>
+<p class="lab">On screen</p><div class="figs">100 @ <b>500</b> &middot; 150 @ <b>600</b> &middot; cost <b>300</b> &middot; assurance est. <b>25</b>/unit &middot; service est. <b>35</b>/unit<br>SSP <b>500 / 125</b> &rarr; <b>80% / 20%</b> &rarr; <b>480 / 120</b> &middot; actual assurance <b>2,000</b> &middot; actual service <b>2,100</b><br>Input method: <b>2,100 &divide; 5,250 = 40%</b> &rarr; revenue <b>7,200</b></div>
+<p class="notelab">Ask about</p>
+<div class="rule"></div><div class="rule"></div><div class="rule"></div>
+</div>
+<section class="wk"><p class="n">Week 4</p><h2 id="long-term-contracts">Long-term contracts</h2></section>
+<div class="rec">
+<div class="rec-h"><span class="eyeb">W4 &#183; 1</span><h3 id="kennedy-construction-long-term-contract">Kennedy Construction: long-term contract</h3><span class="wbox"></span></div>
+<p class="thesis">A fixed-price contract puts cost risk on the builder. The input method converts cost overruns into a smaller gross profit, prospectively.</p>
+<p class="lab">Follow along</p><ol class="beats">
+<li>Why long-term contracts need this: control over time across fiscal periods</li>
+<li>Fixed price vs cost plus, who bears the cost risk</li>
+<li>One PO, the hospital analogy applied to a warehouse</li>
+<li>Steps 1&ndash;4 disposed of quickly; over-time criterion (b) met</li>
+<li>Year 1, the input method computed</li>
+<li>Year 2, estimates change; note the <em>cumulative</em> basis</li>
+<li>Why Year 1 is never restated (forward reference to IAS 8)</li>
+<li>Year 3, completion and the final numbers</li>
+</ol>
+<p class="lab">On screen</p><div class="figs">Price <b>40M</b> fixed &middot; initial est. cost <b>36M</b><br>Costs <b>6.5 / 18.1 / 13.0</b> &middot; total est. <b>36 / 36.6 / 37.6</b> &middot; progress <b>18.06% / 67.21% / 100%</b><br>Revenue <b>7,222,222 / 19,663,000 / 13,114,778</b> &middot; GP <b>722,222 / 1,563,000 / 114,778</b></div>
+<p class="notelab">Ask about</p>
+<div class="rule"></div><div class="rule"></div><div class="rule"></div>
+</div>
+<div class="rec">
+<div class="rec-h"><span class="eyeb">W4 &#183; 2</span><h3 id="the-accounting-cycle-for-long-term-contracts">The accounting cycle for long-term contracts</h3><span class="wbox"></span></div>
+<p class="thesis">Billing and revenue recognition are entirely separate processes. That is the whole reason the Billings contra account exists.</p>
+<p class="lab">Follow along</p><ol class="beats">
+<li>The five phases, from the textbook chart</li>
+<li>Phase 1, costs into Construction in Progress, not cost of sales</li>
+<li>Phase 2, why billings credit a contra account, not revenue</li>
+<li>Phase 3, collections</li>
+<li>Phase 4, the periodic revenue entry, with gross profit added into CIP</li>
+<li>Phase 5, closing CIP against Billings at completion</li>
+<li>The net balance sheet position each year, asset, then liability, then zero</li>
+</ol>
+<p class="lab">On screen</p><div class="figs">Billings <b>7.2 / 20 / 12.8</b> &middot; collections <b>7 / 19 / 14</b><br>CIP = cost + cumulative GP &rarr; <b>40M</b> &middot; Billings &rarr; <b>40M</b> &middot; net <b>+22,222 / &minus;314,778 / 0</b></div>
+<p class="notelab">Ask about</p>
+<div class="rule"></div><div class="rule"></div><div class="rule"></div>
+</div>
+<div class="rec">
+<div class="rec-h"><span class="eyeb">W4 &#183; 3</span><h3 id="kennedy-construction-the-onerous-contract">Kennedy Construction: the onerous contract</h3><span class="wbox"></span></div>
+<p class="thesis">Same contract, worse costs. When total expected costs exceed the fixed price, you book the whole expected loss now rather than waiting to incur it.</p>
+<p class="lab">Follow along</p><ol class="beats">
+<li>The original numbers recapped, then the revised Year 2 estimates</li>
+<li>The IFRS definition, unavoidable costs and least net cost of exiting</li>
+<li>Why it falls under IAS 37, and the three provision criteria re-applied</li>
+<li>ASPE, expected loss under the revenue guidance instead</li>
+<li>Year 1 unchanged; Year 2 revenue via the same input method</li>
+<li>Where the 697,000 comes from, the user's-eye argument</li>
+<li>Year 3, the reversal, and why it's needed</li>
+</ol>
+<p class="lab">On screen</p><div class="figs">Total est. cost <b>36 / 41.7 / 41.9M</b> &middot; progress <b>18.06% / 59% / 100%</b><br>Revenue <b>7,222,222 / 16,374,900 / 16,402,878</b> &middot; provision <b>+697,000</b> then <b>&minus;697,000</b><br>Cumulative loss <b>1.7M</b> at Y2 &rarr; <b>1.9M</b> actual at Y3</div>
+<p class="notelab">Ask about</p>
+<div class="rule"></div><div class="rule"></div><div class="rule"></div>
+</div>
+<div class="rec">
+<div class="rec-h"><span class="eyeb">W4 &#183; 4</span><h3 id="contingencies-continued-the-aspe-side-and-contin">Contingencies continued: the ASPE side and contingent assets</h3><span class="wbox"></span></div>
+<p class="thesis">Same tree, different thresholds. And the asymmetry between assets and liabilities is a prudence argument you should be able to make out loud.</p>
+<p class="lab">Follow along</p><ol class="beats">
+<li>Reminder of the exposure draft</li>
+<li>The IAS 37 decision tree revisited, all four routes</li>
+<li>The textbook's colour-coded chart as an alternative view</li>
+<li>Measurement recap, and the probable-but-not-measurable lawsuit</li>
+<li>Canless Isotopes worked, watch how insurance fixes the estimate</li>
+<li>ASPE, likely vs probable, and the consequence for recognition counts</li>
+<li>ASPE measurement: minimum of a range, not midpoint</li>
+<li>Contingent assets, virtual certainty, and prudence as the reason</li>
+</ol>
+<p class="lab">On screen</p><div class="figs">IFRS <b>probable</b> (&gt;50%) vs ASPE <b>likely</b> (high) &rarr; more recognised under <b>IFRS</b><br>Range: IFRS <b>midpoint</b>, ASPE <b>minimum</b> &middot; Canless deductible <b>1M</b><br>Contingent assets: IFRS <b>virtual certainty</b>; ASPE <b>never accrued</b></div>
+<p class="notelab">Ask about</p>
+<div class="rule"></div><div class="rule"></div><div class="rule"></div>
+</div>
+<section class="wk"><p class="n">Week 5</p><h2 id="when-new-information-arrives">When new information arrives</h2></section>
+<div class="rec">
+<div class="rec-h"><span class="eyeb">W5 &#183; 1</span><h3 id="subsequent-events">Subsequent events</h3><span class="wbox"></span></div>
+<p class="thesis">One question decides everything: did the condition exist at the reporting date?</p>
+<p class="lab">Follow along</p><ol class="beats">
+<li>Why periodicity creates the problem</li>
+<li>The subsequent events period defined, to authorisation for issue</li>
+<li>Why this standard is on the recommended reading list</li>
+<li>The IAS 10 &para;5 timeline example</li>
+<li>Adjusting vs non-adjusting, the single differentiating question</li>
+<li>The court case run twice, provision booked, then not booked</li>
+</ol>
+<p class="lab">On screen</p><div class="figs">Window: <b>31 Dec X1</b> &rarr; draft <b>28 Feb X2</b> &rarr; board authorises <b>18 Mar X2</b><br>Test: did the <b>condition exist</b> at the reporting date? &middot; Case settles at <b>5M</b></div>
+<p class="notelab">Ask about</p>
+<div class="rule"></div><div class="rule"></div><div class="rule"></div>
+</div>
+<div class="rec">
+<div class="rec-h"><span class="eyeb">W5 &#183; 2</span><h3 id="changes-in-estimates-accounting-policies-and-pri">Changes in estimates, accounting policies, and prior period errors</h3><span class="wbox"></span></div>
+<p class="thesis">Three kinds of change, two treatments. Getting the classification right is the entire question, the treatment follows automatically.</p>
+<p class="lab">Follow along</p><ol class="beats">
+<li>The three changes named up front</li>
+<li>IAS 8 and ASPE &sect;1506 located in the Handbook</li>
+<li>Accounting policies defined; FIFO and investment property as real choices</li>
+<li>Comparability vs consistency, and the earnings-management motive</li>
+<li>The two conditions for a voluntary change &rarr; retrospective</li>
+<li>Changes in estimate, the standard's own examples &rarr; prospective</li>
+<li>Prior period errors, available and should have been used &rarr; retrospective</li>
+<li>The textbook decision tree pulling all three together</li>
+</ol>
+<p class="lab">On screen</p><div class="figs">Policy &rarr; <b>retrospective</b> &middot; Estimate &rarr; <b>prospective</b> &middot; Error &rarr; <b>retrospective</b><br>Voluntary policy change needs <b>both</b>: still reliable <b>and</b> more relevant</div>
+<p class="notelab">Ask about</p>
+<div class="rule"></div><div class="rule"></div><div class="rule"></div>
+</div>
+<section class="wk"><p class="n">Week 6</p><h2 id="inventory">Inventory</h2></section>
+<div class="rec">
+<div class="rec-h"><span class="eyeb">W6 &#183; 1</span><h3 id="inventory-classification-and-initial-measurement">Inventory: classification and initial measurement</h3><span class="wbox"></span></div>
+<p class="thesis">What counts as inventory depends on what the entity is in the ordinary course of business of doing. That is a problem-solving-process question before it's an accounting one.</p>
+<p class="lab">Follow along</p><ol class="beats">
+<li>IAS 2 opened; the standard's architecture pointed out</li>
+<li>The definition, identical wording under ASPE &sect;3031</li>
+<li>Ordinary business activity as the identifying test (the law firm example)</li>
+<li>The asset definition revisited, where LC&amp;NRV and control issues come from</li>
+<li>What goes into cost: product vs period costs</li>
+<li>Problem P6-5, pause and attempt it</li>
+<li>The three inventory types for a manufacturer</li>
+<li>Fixed overhead and normal capacity, the three-scenario walkthrough</li>
+<li>IFRS disclosure requirements, read from the standard</li>
+<li>Linamar's annual report as the worked illustration</li>
+</ol>
+<p class="lab">On screen</p><div class="figs">Fixed OH <b>300,000</b> &divide; normal <b>2,000</b> = <b>$150</b>/unit<br>Below (1,000): capitalise <b>150,000</b>, expense <b>150,000</b> &middot; Above (3,000): rate cut to <b>$100</b></div>
+<p class="notelab">Ask about</p>
+<div class="rule"></div><div class="rule"></div><div class="rule"></div>
+</div>
+<div class="rec">
+<div class="rec-h"><span class="eyeb">W6 &#183; 2</span><h3 id="inventory-subsequent-measurement-and-errors">Inventory: subsequent measurement and errors</h3><span class="wbox"></span></div>
+<p class="thesis">Two subsequent-measurement jobs: split the cost pool between balance sheet and income statement, and test the remainder for impairment.</p>
+<p class="lab">Follow along</p><ol class="beats">
+<li>The two subsequent-measurement jobs named</li>
+<li>The cost flow equation, and perpetual vs periodic systems</li>
+<li>Cost flow assumptions; LIFO prohibited; consistency requirement</li>
+<li>Two quick FIFO / weighted average examples to work yourself</li>
+<li>Lower of cost and NRV, output market, unit basis, reversals allowed</li>
+<li>Inventory errors and the two-period self-correction</li>
+<li>The three situations worked one at a time</li>
+<li>Earnings management, overproduction, capitalising, ignoring impairment</li>
+</ol>
+<p class="lab">On screen</p><div class="figs">NRV = selling price &minus; costs to complete &minus; costs to sell &middot; assessed <b>unit by unit</b><br>A: EI overstated <b>20,000</b> &middot; B: purchase unrecorded <b>25,000</b> &middot; C: consignment <b>40,000</b> in Y2 count</div>
+<p class="notelab">Ask about</p>
+<div class="rule"></div><div class="rule"></div><div class="rule"></div>
+</div>
+<section class="wk"><p class="n">Week 7</p><h2 id="financial-assets-definition-receivables-equity">Financial assets: definition, receivables, equity</h2></section>
+<div class="rec">
+<div class="rec-h"><span class="eyeb">W7 &#183; 1</span><h3 id="introduction-to-financial-assets">Introduction to financial assets</h3><span class="wbox"></span></div>
+<p class="thesis">Inventory has future cash flows too. What financial assets have is a <em>contractual</em> right to them.</p>
+<p class="lab">Follow along</p><ol class="beats">
+<li>What separates a financial asset: a <em>contractual</em> right to cash flows</li>
+<li>The IAS 32 definition, cash, equity of another entity, contractual right</li>
+<li>Cash equivalents, the three-month rule</li>
+<li>Two ways to group: by influence, and by nature of the cash flows</li>
+<li>Strategic investments and the business reasons for them</li>
+<li>The influence continuum: 0&ndash;19 / 20&ndash;50 / &gt;50%</li>
+<li>Significant influence: IFRS presumption vs ASPE's refusal to presume</li>
+<li>Impairment introduced, expected loss vs incurred loss</li>
+</ol>
+<p class="lab">On screen</p><div class="figs">Cash equivalents: <b>&le;3 months</b>, insignificant risk of change in value<br>0&ndash;19% <b>fair value</b> &middot; 20&ndash;50% <b>equity method</b> &middot; &gt;50% <b>consolidation</b> (guidelines, not lines)</div>
+<p class="notelab">Ask about</p>
+<div class="rule"></div><div class="rule"></div><div class="rule"></div>
+</div>
+<div class="rec">
+<div class="rec-h"><span class="eyeb">W7 &#183; 2</span><h3 id="accounts-receivable-as-a-financial-asset">Accounts receivable as a financial asset</h3><span class="wbox"></span></div>
+<p class="thesis">AR is the financial asset you already know, re-read through the four-issue template: recognition, measurement, impairment, derecognition.</p>
+<p class="lab">Follow along</p><ol class="beats">
+<li>Why AR qualifies, the contract with the customer</li>
+<li>The four issues: recognition, measurement, impairment, derecognition</li>
+<li>Three routes off the balance sheet</li>
+<li>Factoring explained, the cash conversion cycle motive</li>
+<li>The one reporting question: have risks and rewards transferred?</li>
+<li>Scope note, you are not responsible for the factoring journal entries</li>
+<li>Expected loss vs incurred loss models</li>
+<li>The simplified approach and the provision matrix</li>
+<li>The two-region worked example, grouping, then forward-looking uplift</li>
+</ol>
+<p class="lab">On screen</p><div class="figs">Risks/rewards <b>transferred</b> &rarr; derecognise &middot; <b>retained</b> &rarr; stays on the balance sheet<br>IFRS <b>expected</b> loss (incl. forward-looking) &middot; ASPE <b>incurred</b> loss (historical + current only)<br>Region 2 uplift <b>&times;1.10</b> &rarr; <b>3.11 / 5.21 / 7.53 / 15.57%</b></div>
+<p class="notelab">Ask about</p>
+<div class="rule"></div><div class="rule"></div><div class="rule"></div>
+</div>
+<div class="rec">
+<div class="rec-h"><span class="eyeb">W7 &#183; 3</span><h3 id="non-strategic-equity-investments">Non-strategic equity investments</h3><span class="wbox"></span></div>
+<p class="thesis">Equity fails SPPI, so it always defaults to FVTPL, and that default is precisely why the standard offers a separate irrevocable OCI election.</p>
+<p class="lab">Follow along</p><ol class="beats">
+<li>Strategic vs non-strategic, for both IFRS and ASPE</li>
+<li>The three-plus-one classification set introduced</li>
+<li>The two criteria: business model and contractual cash flows</li>
+<li>The order of operations, and why equity fails SPPI twice</li>
+<li>FVTPL accounting: transaction costs, holding gains, dividends</li>
+<li>The statement of total comprehensive income and why EPS matters here</li>
+<li>The irrevocable election, its four conditions</li>
+<li>Election accounting, note what changes and what doesn't</li>
+<li>The two decision trees, IFRS then ASPE</li>
+</ol>
+<p class="lab">On screen</p><div class="figs">Equity <b>cannot</b> pass SPPI &rarr; defaults to <b>FVTPL</b><br>FVTPL: transaction costs <b>expensed</b> &middot; Election: transaction costs <b>capitalised</b><br>Dividends &rarr; <b>net income</b> either way &middot; Election gains <b>never recycled</b></div>
+<p class="notelab">Ask about</p>
+<div class="rule"></div><div class="rule"></div><div class="rule"></div>
+</div>
+<section class="wk"><p class="n">Week 8</p><h2 id="debt-investments">Debt investments</h2></section>
+<div class="rec">
+<div class="rec-h"><span class="eyeb">W8 &#183; 1</span><h3 id="debt-investments-initial-recognition">Debt investments: initial recognition</h3><span class="wbox"></span></div>
+<p class="thesis">Buying a bond is buying a stream of future cash flows. The price is simply their present value at the rate the market demands.</p>
+<p class="lab">Follow along</p><ol class="beats">
+<li>The three classifications previewed</li>
+<li>What a bond contract specifies</li>
+<li>Stated/coupon rate vs market/effective rate</li>
+<li>Par, discount, premium, the three relationships</li>
+<li>The Terrace facts introduced</li>
+<li>Pricing as PV of a single sum plus PV of an annuity</li>
+<li>The timeline of cash flows</li>
+<li>Excel, par, then discount, then premium</li>
+<li>Why table factors and Excel differ slightly</li>
+</ol>
+<p class="lab">On screen</p><div class="figs">100 bonds &times; <b>1,000</b> face &middot; <b>5</b> years &middot; coupon <b>6%</b> &rarr; <b>6,000</b>/yr<br>@6.0% &rarr; <b>100,000</b> &middot; @6.5% &rarr; <b>97,922</b> (disc. 2,078) &middot; @5.5% &rarr; <b>102,135</b> (prem. 2,135)</div>
+<p class="notelab">Ask about</p>
+<div class="rule"></div><div class="rule"></div><div class="rule"></div>
+</div>
+<div class="rec">
+<div class="rec-h"><span class="eyeb">W8 &#183; 2</span><h3 id="debt-investments-interest-income">Debt investments: interest income</h3><span class="wbox"></span></div>
+<p class="thesis">When price &#8800; face value, cash interest and interest income diverge. Amortising the difference is what closes the gap.</p>
+<p class="lab">Follow along</p><ol class="beats">
+<li>Why amortised cost is used to isolate the interest mechanics</li>
+<li>The three carrying-amount paths previewed</li>
+<li>Par bond, entries and T-accounts</li>
+<li>IFRS 18 note: interest income sits in the investing category of the P&amp;L</li>
+<li>Discount bond, why interest income exceeds cash interest</li>
+<li>Effective interest computed off the opening carrying amount</li>
+<li>The amortisation table, effective vs straight-line</li>
+<li>Premium bond, the same machinery in reverse</li>
+</ol>
+<p class="lab">On screen</p><div class="figs">Interest income = effective rate &times; <b>opening carrying amount</b><br>Totals: par <b>30,000</b> &middot; discount <b>32,078</b> &middot; premium <b>27,865</b><br>Discount Y1: <b>6.5% &times; 97,922 = 6,365</b>, amortisation <b>365</b> &rarr; <b>98,287</b></div>
+<p class="notelab">Ask about</p>
+<div class="rule"></div><div class="rule"></div><div class="rule"></div>
+</div>
+<div class="rec">
+<div class="rec-h"><span class="eyeb">W8 &#183; 3</span><h3 id="non-strategic-debt-classification-and-accounting">Non-strategic debt: classification and accounting</h3><span class="wbox"></span></div>
+<p class="thesis">Debt is the only instrument that can land in all three buckets. Getting the bucket right decides everything downstream.</p>
+<p class="lab">Follow along</p><ol class="beats">
+<li>Exhibit 7-7, and what the table leaves out</li>
+<li>Classification affects subsequent measurement only; made at acquisition</li>
+<li>The order of operations restated</li>
+<li>Amortised cost, business model and SPPI</li>
+<li>FVOCI, hold to collect <em>and</em> sell</li>
+<li>The three accounting treatments, one slide each</li>
+<li>FVOCI on sale, the reclassification, flagged as hard</li>
+<li>ASPE, why FVOCI can't exist, and what's in scope for 291</li>
+</ol>
+<p class="lab">On screen</p><div class="figs">Transaction costs: AC <b>capitalised</b> &middot; FVOCI <b>capitalised</b> &middot; FVTPL <b>expensed</b><br>Holding G/L: AC <b>none</b> &middot; FVOCI <b>OCI</b> &middot; FVTPL <b>NI</b><br>FVOCI debt on sale &rarr; NI, prior OCI <b>reclassified</b></div>
+<p class="notelab">Ask about</p>
+<div class="rule"></div><div class="rule"></div><div class="rule"></div>
+</div>
+<section class="wk"><p class="n">Week 9</p><h2 id="property-plant-and-equipment">Property, plant and equipment</h2></section>
+<div class="rec">
+<div class="rec-h"><span class="eyeb">W9 &middot; 1</span><h3 id="pp-e-classification-and-initial-measurement">PP&amp;E: classification and initial measurement</h3><span class="wbox"></span></div>
+<p class="thesis">Inventory's cash flows come from sale. Financial assets' come from contract. PP&amp;E's come from <em>use</em>, and that single distinction drives every rule that follows.</p>
+<p class="lab">Follow along</p><ol class="beats">
+<li>The three asset classes compared by source of cash flows</li>
+<li>IAS 16 and &sect;3061 located; standard architecture again</li>
+<li>Scope, five exclusions, including investment property</li>
+<li>The definition: tangible, held for use, more than one period</li>
+<li>Recognition as a second gate, and where ASPE finds the criteria</li>
+<li>What goes into initial cost, including dismantling estimates</li>
+<li>Directly attributable costs, and the demolition example</li>
+<li>IAS 23 borrowing costs, qualifying assets through to disclosure</li>
+<li>The step-by-step capitalisation calculation</li>
+<li>Non-monetary exchanges, the decision tree</li>
+<li>Commercial substance, the trucks and the conveyor belt examples</li>
+</ol>
+<p class="lab">On screen</p><div class="figs">Recognition = <b>probable</b> benefits + <b>reliably measurable</b><br>Interest: IFRS <b>shall</b> &middot; ASPE <b>policy choice</b> &middot; applies to PP&amp;E, <b>inventory</b>, <b>intangibles</b><br>Exchange: fair value of the asset <b>given up</b> is the default</div>
+<p class="notelab">Ask about</p>
+<div class="rule"></div><div class="rule"></div><div class="rule"></div>
+</div>
+<div class="rec">
+<div class="rec-h"><span class="eyeb">W9 &middot; 2</span><h3 id="pp-e-subsequent-measurement">PP&amp;E: subsequent measurement</h3><span class="wbox"></span></div>
+<p class="thesis">One question governs every subsequent expenditure: does it merely maintain the existing service capability, or does it improve future cash flows?</p>
+<p class="lab">Follow along</p><ol class="beats">
+<li>The three subsequent-measurement issues named</li>
+<li>Expense vs capitalise, maintains, or enhances?</li>
+<li>Depreciation as allocation matched to the pattern of use</li>
+<li>When depreciation begins and ceases</li>
+<li>Reviewing the estimates: IFRS annually vs ASPE regularly</li>
+<li>Components, the aircraft example</li>
+<li>Replacing a component, recognition criteria re-applied</li>
+<li>The two-step removal, and the roof illustration</li>
+<li>Impairment raised and deferred to Chapter 10</li>
+</ol>
+<p class="lab">On screen</p><div class="figs">Begins when <b>available for use</b>; ceases at <b>held for sale</b> or derecognition<br>Change in estimate &rarr; <b>prospective</b> (IAS 8) &middot; Replacement: <b>remove the old carrying amount first</b></div>
+<p class="notelab">Ask about</p>
+<div class="rule"></div><div class="rule"></div><div class="rule"></div>
+</div>
+<div class="rec">
+<div class="rec-h"><span class="eyeb">W9 &middot; 3</span><h3 id="pp-e-ifrs-18-and-the-statement-of-cash-flows">PP&amp;E, IFRS 18 and the statement of cash flows</h3><span class="wbox"></span></div>
+<p class="thesis">PP&amp;E income and expenses are <em>operating</em> in the P&amp;L, but the cash is <em>investing</em>. Every indirect-method adjustment follows from that mismatch.</p>
+<p class="lab">Follow along</p><ol class="beats">
+<li>Direct vs indirect method, and why the starting number matters</li>
+<li>IFRS 18 effective 2027, but comparatives mean 2026 counts</li>
+<li>The five P&amp;L categories; specified main business activities excluded</li>
+<li>Operating as the <em>default</em> category</li>
+<li>What the investing category actually contains</li>
+<li>The guidance that puts PP&amp;E in operating</li>
+<li>Cash, by contrast, is investing</li>
+<li>The worked example: T-accounts, then Year 1, then Year 2</li>
+<li>Impairment flagged as the same kind of adjustment</li>
+</ol>
+<p class="lab">On screen</p><div class="figs">Cost <b>1,000,000</b> &middot; residual <b>100,000</b> &middot; 5 yr SL &rarr; <b>180,000</b>/yr<br>NBV at sale <b>820,000</b> &middot; proceeds <b>860,000</b> &rarr; gain <b>40,000</b><br>Indirect starts at <b>operating profit</b> &middot; operating CF = <b>nil</b> both years</div>
+<p class="notelab">Ask about</p>
+<div class="rule"></div><div class="rule"></div><div class="rule"></div>
+</div>
+<section class="wk"><p class="n">Week 10</p><h2 id="fair-value-investment-property-grants">Fair value, investment property, grants</h2></section>
+<div class="rec">
+<div class="rec-h"><span class="eyeb">W10 &middot; 1</span><h3 id="introduction-to-the-revaluation-model">Introduction to the revaluation model</h3><span class="wbox"></span></div>
+<p class="thesis">Three measurement models exist under IFRS, and each asset class gets a choice between exactly two of them.</p>
+<p class="lab">Follow along</p><ol class="beats">
+<li>Three models: cost, revaluation, fair value, and who gets which choice</li>
+<li>Relevance vs reliability as the underlying trade-off</li>
+<li>Apply to an entire <em>class</em>, with examples of classes</li>
+<li>Reliable fair value and sufficient regularity</li>
+<li>Why switching back to cost is so hard</li>
+<li>Intangibles, the active market requirement</li>
+<li>IFRS 13 introduced as separate guidance</li>
+<li>Fair value as an <em>exit price</em> in an orderly transaction</li>
+<li>The three-level hierarchy with worked illustrations</li>
+<li>The OCI vs net income rules, and the graphic</li>
+</ol>
+<p class="lab">On screen</p><div class="figs">PP&amp;E &amp; intangibles: <b>cost or revaluation</b> &middot; Investment property: <b>cost or fair value</b><br>Election by <b>class</b>; tracking <b>asset by asset</b><br>L1 quoted identical &middot; L2 similar observable &middot; L3 unobservable estimates</div>
+<p class="notelab">Ask about</p>
+<div class="rule"></div><div class="rule"></div><div class="rule"></div>
+</div>
+<div class="rec">
+<div class="rec-h"><span class="eyeb">W10 &middot; 2</span><h3 id="revaluation-worked-non-depreciable-land">Revaluation worked: non-depreciable (land)</h3><span class="wbox"></span></div>
+<p class="thesis">Land first, because there is no accumulated depreciation to complicate the entry. Two examples, run in opposite directions.</p>
+<p class="lab">Follow along</p><ol class="beats">
+<li>Why land first: no accumulated depreciation to handle</li>
+<li>Both examples previewed</li>
+<li>Example 1, the cost line graphic explained</li>
+<li>Year 2 decrease booked through net income</li>
+<li>Year 3 increase, reverse through NI first, then OCI</li>
+<li>Year 4 sale, realised gain, and the optional OCI transfer</li>
+<li>The shareholders' equity reconciliation</li>
+<li>The cash flow footnote for the indirect method</li>
+<li>The cost-model comparison, both must end in the same place</li>
+<li>Example 2, the mirror image</li>
+</ol>
+<p class="lab">On screen</p><div class="figs">Ex 1: <b>100,000</b> &rarr; 90,000 (NI &minus;10) &rarr; 150,000 (NI +10, OCI +50) &rarr; sold 160,000 (NI +10)<br>&rarr; <b>RE 60,000, AOCI 0</b>, identical to the cost model<br>Ex 2: <b>300,000</b> &rarr; 350,000 (OCI +50) &rarr; 290,000 (OCI &minus;50, NI &minus;10)</div>
+<p class="notelab">Ask about</p>
+<div class="rule"></div><div class="rule"></div><div class="rule"></div>
+</div>
+<div class="rec">
+<div class="rec-h"><span class="eyeb">W10 &middot; 3</span><h3 id="revaluation-worked-depreciable-assets">Revaluation worked: depreciable assets</h3><span class="wbox"></span></div>
+<p class="thesis">Once the asset depreciates, you must decide what to do with the accumulated depreciation. Two methods, identical net carrying amount, different balance sheet gross-ups.</p>
+<p class="lab">Follow along</p><ol class="beats">
+<li>The question: what to do with accumulated depreciation</li>
+<li>Proportional vs elimination introduced</li>
+<li>Both scenarios previewed</li>
+<li>Building 1, the proportional gross-up computed</li>
+<li>Why the cost / accumulated depreciation relationship is preserved</li>
+<li>The journal entry, and the OCI destination</li>
+<li>The new depreciation base, with the direction sanity-check</li>
+<li>Building 2, elimination at the end of Year 2</li>
+<li>Recalculated depreciation for Years 3 and 4</li>
+<li>Year 4 decrease, reversing the earlier OCI surplus</li>
+<li>One-step vs two-step journal entry forms</li>
+<li>Year 5 sale, and the accumulated OCI transfer</li>
+</ol>
+<p class="lab">On screen</p><div class="figs">B1: cost <b>200,000</b>, 20yr &rarr; NBV <b>150,000</b>, FV <b>300,000</b> = <b>+100%</b> &rarr; new dep. <b>20,000</b><br>B2: cost <b>600,000</b>, res <b>100,000</b>, 10yr &rarr; <b>50,000</b>/yr; revalue <b>530,000</b> &rarr; new dep. <b>53,750</b><br>End Y4 NBV <b>422,500</b> vs FV <b>400,000</b> &rarr; OCI <b>&minus;22,500</b> &middot; AOCI left <b>7,500</b></div>
+<p class="notelab">Ask about</p>
+<div class="rule"></div><div class="rule"></div><div class="rule"></div>
+</div>
+<div class="rec">
+<div class="rec-h"><span class="eyeb">W10 &middot; 4</span><h3 id="investment-property">Investment property</h3><span class="wbox"></span></div>
+<p class="thesis">Land and buildings whose cash flows are independent of everything else the entity owns. That independence is the classification test and the IFRS 18 answer at once.</p>
+<p class="lab">Follow along</p><ol class="beats">
+<li>Where investment property sits among the classifications</li>
+<li>The definition, rentals and/or capital appreciation</li>
+<li>The seniors' housing example, significant services</li>
+<li>The apartment block, incidental services</li>
+<li>Cost or fair value, applied to all investment property</li>
+<li>Fair value model details, and no depreciation</li>
+<li>Change-in-use provisions flagged</li>
+<li>ASPE has none of this</li>
+<li>The fair value hierarchy applied to property</li>
+<li>IAS 40 guidance read; cash flow independence explained</li>
+<li>IFRS 18, why this lands in the <em>investing</em> category</li>
+</ol>
+<p class="lab">On screen</p><div class="figs">Test: services <b>significant</b> (PP&amp;E) vs <b>incidental</b> (investment property)<br>Fair value model &rarr; all changes to <b>net income</b>, <b>no depreciation</b><br>Cost model &rarr; depreciate, but <b>still disclose fair value</b></div>
+<p class="notelab">Ask about</p>
+<div class="rule"></div><div class="rule"></div><div class="rule"></div>
+</div>
+<div class="rec">
+<div class="rec-h"><span class="eyeb">W10 &middot; 5</span><h3 id="government-grants">Government grants</h3><span class="wbox"></span></div>
+<p class="thesis">Grants are earned by satisfying conditions, so they belong in income, matched against the costs they were meant to compensate.</p>
+<p class="lab">Follow along</p><ol class="beats">
+<li>Scope first, tax benefits and agriculture excluded</li>
+<li>What the standard covers, with examples of grant forms</li>
+<li>The two reasonable assurances for recognition</li>
+<li>Receipt is not conclusive evidence; forgivable loans</li>
+<li>Non-cash forms, reduction of a liability</li>
+<li>Capital approach vs income approach, and why income wins</li>
+<li>Grants related to assets: deferred income vs cost reduction</li>
+<li>Grants related to income: other income vs netting</li>
+<li>Disclosure requirements</li>
+</ol>
+<p class="lab">On screen</p><div class="figs">Recognise on reasonable assurance of <b>compliance</b> + <b>receipt</b><br>Asset grant: <b>deferred income</b> or <b>reduce the asset</b> &rarr; lower depreciation<br>Net income and net assets are <b>identical</b> under gross and net</div>
+<p class="notelab">Ask about</p>
+<div class="rule"></div><div class="rule"></div><div class="rule"></div>
+</div>
+<section class="wk"><p class="n">Week 11</p><h2 id="intangible-assets">Intangible assets</h2></section>
+<div class="rec">
+<div class="rec-h"><span class="eyeb">W11 &middot; 1</span><h3 id="intangibles-i-classification-control-recognition">Intangibles I: classification, control, recognition</h3><span class="wbox"></span></div>
+<p class="thesis">Control means two powers, not one: the power to obtain the benefits <em>and</em> the power to stop others obtaining them. Most internally built intangibles fail on the second.</p>
+<p class="lab">Follow along</p><ol class="beats">
+<li>Market value vs balance sheet, the value gap</li>
+<li>CPA Canada's Foresight Commission on intangibles</li>
+<li>Two different reasons something never gets recognised</li>
+<li>Control defined, both powers, usually from legal rights</li>
+<li>iRobot's patents as the clean case</li>
+<li>Training, why control fails</li>
+<li>Customer lists, internally built vs purchased</li>
+<li>IAS 38 and &sect;3064 shown to be harmonised</li>
+<li>The three criteria: identifiable, non-monetary, no physical substance</li>
+<li>Why goodwill is not an intangible</li>
+<li>Recognition criteria, and the separate-acquisition shortcut</li>
+<li>What goes into the cost of a purchased intangible</li>
+</ol>
+<p class="lab">On screen</p><div class="figs">Control = power to <b>obtain</b> benefits + power to <b>restrict others</b><br>Identifiable = <b>separable</b> or from <b>legal rights</b> &rarr; separates intangibles from <b>goodwill</b><br>Purchased at arm&rsquo;s length &rarr; recognition criteria <b>deemed met</b></div>
+<p class="notelab">Ask about</p>
+<div class="rule"></div><div class="rule"></div><div class="rule"></div>
+</div>
+<div class="rec">
+<div class="rec-h"><span class="eyeb">W11 &middot; 2</span><h3 id="intangibles-ii-internally-generated">Intangibles II: internally generated</h3><span class="wbox"></span></div>
+<p class="thesis">Research is expensed because nothing is identified yet. Development is expensed until six things are simultaneously true, and capitalised from that moment forward.</p>
+<p class="lab">Follow along</p><ol class="beats">
+<li>iRobot revisited, developed in-house vs purchased</li>
+<li>The three phases named</li>
+<li>Research defined; why everything is expensed</li>
+<li>Example research activities, note the verbs</li>
+<li>Development defined, with example activities</li>
+<li>Why not everything in development is capitalised</li>
+<li>The six criteria, one at a time, it is a <em>shall</em>, and it is <em>all</em></li>
+<li>The standard's worked example and timeline</li>
+<li>No retroactive capitalisation</li>
+<li>Costs in and costs out</li>
+<li>IFRS shall vs ASPE policy choice</li>
+</ol>
+<p class="lab">On screen</p><div class="figs">Research &rarr; <b>expense</b> &middot; Development &rarr; expense until <b>all six</b>, then capitalise<br>Example: <b>1,000</b> spent, <b>900</b> before the gate, <b>100</b> after &rarr; capitalise <b>100</b> only<br>Excluded: selling, G&amp;A, general overhead, <b>inefficiencies</b>, <b>training</b></div>
+<p class="notelab">Ask about</p>
+<div class="rule"></div><div class="rule"></div><div class="rule"></div>
+</div>
+<div class="rec">
+<div class="rec-h"><span class="eyeb">W11 &middot; 3</span><h3 id="intangibles-iii-subsequent-measurement">Intangibles III: subsequent measurement</h3><span class="wbox"></span></div>
+<p class="thesis">Three questions after recognition: which model, does it amortise, and is it impaired.</p>
+<p class="lab">Follow along</p><ol class="beats">
+<li>The three subsequent-measurement issues</li>
+<li>Cost model vs revaluation model under IAS 38</li>
+<li>The active market requirement, with the rare real examples</li>
+<li>Impairment deferred to Chapter 10; cash-generating units previewed</li>
+<li>Finite vs indefinite useful life</li>
+<li>Indefinite is not infinite, and what follows</li>
+<li>Factors in determining useful life (two slides of examples)</li>
+<li>Legal life as a cap, and renewal options</li>
+<li>Amortisation begins on <em>availability</em>, the patent example</li>
+<li>Method: systematic, defaulting to straight line</li>
+<li>Residual value presumed zero, the two escapes</li>
+<li>ASPE &sect;3064; then derecognition</li>
+</ol>
+<p class="lab">On screen</p><div class="figs">Indefinite &rarr; <b>no amortisation</b>, but <b>test for impairment</b><br>Expected life &lt; legal &rarr; use <b>shorter</b>; expected &gt; legal &rarr; <b>capped by legal</b><br>Residual <b>zero</b> unless third-party commitment, or active market probable at end of life</div>
+<p class="notelab">Ask about</p>
+<div class="rule"></div><div class="rule"></div><div class="rule"></div>
+</div>
+</main>
+<!--__rbp-->
+<!-- The pill styles itself: this block used to live only with the top bar,
+     so the seven tool pages, which carry the pill alone, rendered it as an
+     unstyled link at the very end of the document. Whatever carries the
+     pill now carries its style. -->
+<style id="__rbp-style">
+#__rb-pill{
+  position:fixed;left:14px;bottom:14px;z-index:2147483000;
+  display:inline-flex;align-items:center;gap:.45rem;padding:.58rem .9rem;
+  background:rgba(22,21,15,.93);color:#faf9f6;text-decoration:none;border-radius:99px;
+  font:600 12.5px/1 InterVar,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  border:1px solid rgba(255,255,255,.16);box-shadow:0 6px 22px rgba(0,0,0,.28);
+  opacity:0;transform:translateY(6px);pointer-events:none;
+  transition:opacity .2s ease,transform .2s ease;
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+}
+#__rb-pill.__on{opacity:1;transform:none;pointer-events:auto}
+#__rb-pill:hover{background:#16150f;color:#fff}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) #__rb-pill{background:rgba(247,245,239,.95);color:#131310;border-color:rgba(0,0,0,.2)}
+  :root:not([data-theme="light"]) #__rb-pill:hover{background:#fff;color:#000}
+}
+:root[data-theme="dark"] #__rb-pill{background:rgba(247,245,239,.95);color:#131310;border-color:rgba(0,0,0,.2)}
+:root[data-theme="dark"] #__rb-pill:hover{background:#fff;color:#000}
+@media (prefers-reduced-motion:reduce){#__rb-pill{transition:none}}
+@media print{#__rb-pill{display:none !important}}
+/* a tool carries no bar, so what it was built from stands at the foot of the document */
+#__rb-from{margin:1.25rem 1rem;font:400 13px/1.45 InterVar,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;color:#6f6c63;max-width:70ch}
+#__rb-from b{font-weight:600;color:#55524a}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) #__rb-from{color:#948f85}
+  :root:not([data-theme="light"]) #__rb-from b{color:#c0bcb1}
+}
+:root[data-theme="dark"] #__rb-from{color:#948f85}
+:root[data-theme="dark"] #__rb-from b{color:#c0bcb1}
+</style>
+<!-- With scripts off nothing ever adds the __on class, and the only way
+     back from a tool page vanished. The pill needs its script for the
+     scroll threshold, not for existing. -->
+<noscript><style>#__rb-pill{opacity:1 !important;transform:none !important;pointer-events:auto !important}</style></noscript>
+<a id="__rb-pill" href="afm291.html">&#8592; The vault</a>
+
+<script>
+(function(){
+  var p=document.getElementById('__rb-pill'); if(!p) return;
+  /* On a page with the top bar the pill waits until the bar has scrolled
+     out of reach. On a page without one (the tools carry no bar, because a
+     bar inside a full-screen application sits in the wrong place) the pill
+     is the only way back, so it is there from the first paint: a tool
+     screen shorter than the threshold used to strand the reader entirely. */
+  var TH=document.getElementById('__rb')?160:-1;
+  var t=false;
+  function run(){ t=false;
+    p.classList.toggle('__on',(window.scrollY||document.documentElement.scrollTop)>TH); }
+  function q(){ if(!t){ t=true; requestAnimationFrame(run); } }
+  addEventListener('scroll',q,{passive:true}); run();
+})();
+/* the trail, for the pages that carry only the pill (the tools) */
+(function(){
+  if(window.__trailed) return; window.__trailed=1;
+  if('serviceWorker' in navigator && location.protocol.indexOf('http')===0){
+    addEventListener('load',function(){setTimeout(function(){
+      navigator.serviceWorker.register('sw.js').catch(function(){});},6000);});
+  }
+  try{
+    var k='atlas.trail';
+    var u=location.pathname.split('/').pop()||'index.html';
+    var t2=JSON.parse(localStorage.getItem(k)||'{}');
+    function put(key){
+      if(t2[key]||Object.keys(t2).length<500){
+        t2[key]=(t2[key]||0)+1;
+        try{localStorage.setItem(k,JSON.stringify(t2));}catch(e){}
+      }
+    }
+    put(u+location.hash);
+    addEventListener('hashchange',function(){ put(u+location.hash); });
+  }catch(e){}
+})();
+</script>
+<!--/__rbp-->
+</body></html>

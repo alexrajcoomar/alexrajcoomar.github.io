@@ -60,7 +60,7 @@
     };
     regions.push(reg);
     bySlug[reg.slug] = reg;
-    [].forEach.call(sec.getElementsByClassName("apt"), function (li) {
+    [].forEach.call(sec.querySelectorAll(".areg-l > li"), function (li) {
       var a = li.firstElementChild;
       if (!a || a.tagName !== "A") return;
       var p = (li.getAttribute("data-p") || "0,0,1").split(",").map(Number);
@@ -70,6 +70,10 @@
         lt: a.textContent.trim().toLowerCase(),
         href: a.getAttribute("href"),
         lvl: +(li.getAttribute("data-l") || 3),
+        /* the document's measured words, apportioned to this heading by the
+           share of the document's text under it: the size channel, and the
+           key says it is an apportionment rather than a count of its own */
+        w: +(li.getAttribute("data-w") || 0),
         shared: +(li.getAttribute("data-n") || 1),
         /* the documents that actually carry a shared heading, so pointing at
            one can draw the measured fan to its owners */
@@ -101,6 +105,17 @@
   try {
     FACTS = JSON.parse(document.getElementById("afacts").textContent);
   } catch (e) { FACTS = {}; }
+
+  /* The key row for the trail carries the count: the same marks the ring is
+     drawn on, counted from the record this browser keeps and nothing else.
+     With no record the row keeps its printed wording. */
+  (function () {
+    var el = document.getElementById("aseen");
+    if (!el) return;
+    var n = 0;
+    for (var si = 0; si < pts.length; si++) if (pts[si].seen) n++;
+    if (n) el.textContent = n.toLocaleString("en-CA") + (n === 1 ? " passage" : " passages");
+  })();
 
   /* Links the corpus records between documents, harvested at build time from
      each document's own prose. One entry per linked pair, with the direction
@@ -394,7 +409,9 @@
       return { cam: { yaw: f.yaw, pitch: f.pitch, zoom: 1.22 },
                lit: function (q) {
                  if (p && q === p) return 2.4;
-                 return q.r === g ? 1.7 : 0.92;
+                 /* the receded corpus is keyed on this stop, so it clears
+                    3:1: 1.05 composites --edge to 3.2:1 where 0.92 gave 2.7 */
+                 return q.r === g ? 1.7 : 1.05;
                },
                tone: function (q) { return q.r === g ? "ind" : "field"; },
                /* the whole heading: the label names it whole */
@@ -759,7 +776,9 @@
     var dot = Math.max(-1, Math.min(1, A[0] * B[0] + A[1] * B[1] + A[2] * B[2]));
     var om = Math.acos(dot), so = Math.sin(om) || 1e-6;
     ctx.save();
-    ctx.strokeStyle = tone2(C.ink, 0.34);
+    /* 0.55 of ink composites to 3.9:1 on paper; the 0.34 it was drawn at
+       measured 2.1:1, under the floor for a category the key names */
+    ctx.strokeStyle = tone2(C.ink, 0.55);
     ctx.lineWidth = 1;
     var started = false;
     ctx.beginPath();
@@ -790,7 +809,7 @@
     var px = -dy / dl * 4, py = dx / dl * 4;
     ctx.beginPath();
     ctx.moveTo(s[0] - px, s[1] - py); ctx.lineTo(s[0] + px, s[1] + py);
-    ctx.strokeStyle = tone2(C.ink, 0.55);
+    ctx.strokeStyle = tone2(C.ink, 0.75);
     ctx.lineWidth = 1.2;
     ctx.stroke();
   }
@@ -900,9 +919,9 @@
       }
       var a = (0.10 + 0.80 * t) * Math.min(2.4, boost);
       if (a < 0.02) continue;
-      /* size follows heading level, which is what the first label claims */
-      var lv = 4 - Math.min(4, p.lvl);
-      var rad = (0.75 + lv * 0.3) + 2.0 * t;
+      /* area follows the apportioned word weight, which is what the first
+         label and the key say; heading level is kept in the index, not drawn */
+      var rad = (0.55 + 0.028 * Math.sqrt(p.w)) + 2.0 * t;
       var isHover = hover === p && !peeked;
       var kin = hover && hover.r === p.r && !focus;
       var tone = toneFn ? toneFn(p) : null;
@@ -1783,7 +1802,7 @@
     }
     [].forEach.call(list.querySelectorAll(".areg"), function (sec) {
       var any = 0;
-      [].forEach.call(sec.querySelectorAll(".apt"), function (li) {
+      [].forEach.call(sec.querySelectorAll(".areg-l > li"), function (li) {
         var a = li.querySelector("a");
         var t = (a ? a.textContent : "").toLowerCase();
         var ok = !filter || t.indexOf(filter) > -1 ||
@@ -1886,8 +1905,10 @@
      order, so a sighted keyboard user fell into thirteen hundred stops with no
      visible focus. It is a disclosure now: away while the sphere is showing,
      one labelled control back, and visible with real focus rings when open. */
+  var under = document.getElementById("aunder");
   function setView(globe) {
     stage.hidden = !globe;
+    if (under) under.hidden = !globe;
     /* Wide: the sphere is the view and the index is one control away.
        Narrow: they share the page, collapsed to fifty document rows. During
        the tour it waits: six labels and 1,247 links is a pile, not a

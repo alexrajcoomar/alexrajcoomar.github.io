@@ -200,3 +200,6 @@ header.cm-mast{border-bottom:1px solid var(--rule-strong);padding:52px 0 26px;ma
   .cm-toolbar{display:none !important}
   .claim details{display:block}
 }
+
+/* measure for the record lines: a claim, a concession or a source line is read, not scanned */
+.concession p,.claim-text,.claim-fals,.cm-src,.src{max-width:70ch}

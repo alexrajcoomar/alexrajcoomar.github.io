@@ -2,17 +2,24 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>AFM 291 — Midterm 1 Journal Entry Reference</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700;9..144,900&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<title>AFM 291 Journal Entry Reference · Alex Rajcoomar</title>
 <style>
-  :root {
+/* self-hosted, subset to this piece's characters; the manifest in fonts/ records the source */
+@font-face{font-family:"Fraunces";font-style:normal;font-weight:400 900;font-display:swap;src:url("fonts/fraunces-afm291-journal-entries.woff2") format("woff2")}
+@font-face{font-family:"Source Serif 4";font-style:normal;font-weight:400 600;font-display:swap;src:url("fonts/sourceserif4-afm291-journal-entries.woff2") format("woff2")}
+@font-face{font-family:"Bricolage Grotesque";font-style:normal;font-weight:500 700;font-display:swap;src:url("fonts/bricolagegrotesque-afm291-journal-entries.woff2") format("woff2")}
+@font-face{font-family:"JetBrains Mono";font-style:normal;font-weight:400 600;font-display:swap;src:url("fonts/jetbrainsmono-afm291-journal-entries.woff2") format("woff2")}
+
+/* row labels are header cells for assistive technology; they keep the look of the cells they were */
+tbody th[scope="row"]{font-weight:inherit;text-align:inherit;color:inherit;background:inherit}
+</style>
+<style>
+  :root {--page-ground:#e8e1d1;
     --paper: #FAF7F0;
     --paper-edge: #F2EDE0;
     --ink: #1A1714;
     --ink-soft: #4A4540;
-    --ink-muted: #8A857D;
+    --ink-muted: #6d6867;
     --rule: #D9D2C2;
     --rule-soft: #E8E2D2;
 
@@ -20,7 +27,7 @@
     --demand-tint: #FBEEEB;
     --supply: #3F6B3A;          /* 🟢 Supply: deep moss */
     --supply-tint: #ECF2E8;
-    --ifrs: #A66E2C;            /* 🟡 IFRS: burnt amber */
+    --ifrs: #925f27;            /* 🟡 IFRS: burnt amber */
     --ifrs-tint: #F8EFDD;
     --aspe: #355971;            /* 🔵 ASPE: steel blue */
     --aspe-tint: #E5ECF2;
@@ -34,7 +41,7 @@
   * { box-sizing: border-box; margin: 0; padding: 0; }
 
   html, body {
-    background: #E8E1D1;
+    background:var(--page-ground);
     font-family: "Source Serif 4", Georgia, serif;
     color: var(--ink);
     font-size: 11.5px;
@@ -505,6 +512,73 @@
     .section-label, .card, .grid-2, .grid-2-even, details.test { break-inside: avoid; }
     details.test[open] { break-inside: auto; }
   }
+
+
+/* ---------- Dark palette, derived and audited ---------- */
+/* Light surfaces become deep ones of the same hue, ink becomes near-white, accents are lifted to read on ink;
+   every rule that set a colour as a literal is re-emitted below with the literal mapped the same way. */
+@media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){ color-scheme:dark; --paper:#2f291c; --paper-edge:#262217; --ink:#dfdad5; --ink-soft:#cecac6; --ink-muted:#a09b9a; --rule:#6b5f43; --rule-soft:#776840; --demand:#dc776a; --demand-tint:#2d1f1b; --supply:#b9d3b6; --supply-tint:#1f2918; --ifrs:#d0c1b1; --ifrs-tint:#272217; --aspe:#b6c7d3; --aspe-tint:#182028; --warn:#d2c8b4; --warn-tint:#252116; --dr:#b6c7d3; --cr:#dc776a; --page-ground:#1c1911; }
+:root:not([data-theme="light"]) :where(body){}
+:root:not([data-theme="light"]) .ledger{background:#312c1d}
+:root:not([data-theme="light"]) .decide .rk{background:#312c1d}
+:root:not([data-theme="light"]) .matrix td.rk{background:#312c1d}
+:root:not([data-theme="light"]) #__rb{border-bottom:1px solid #69604a;background:#312c1d;color:#cac8c2}
+:root:not([data-theme="light"]) #__rb a{color:#b3c1d2}
+:root:not([data-theme="light"]) #__rb .__rb-home{color:#e3e1d6}
+:root:not([data-theme="light"]) #__rb .__rb-home i{color:#a29f96}
+:root:not([data-theme="light"]) #__rb .__rb-row{color:#a29f96}
+:root:not([data-theme="light"]) #__rb .__rb-row b{color:#cac8c2}
+:root:not([data-theme="light"]) #__rb .__rb-from{color:#a29f96}
+:root:not([data-theme="light"]) #__rb .__rb-from b{color:#cac8c2}
+:root:not([data-theme="light"]) #__rb .__mark{background:#2a291d;color:#312c1d}
+:root:not([data-theme="light"]) :root[data-theme="dark"] #__rb{background:#272721;border-bottom-color:#292822;color:#595548}
+:root:not([data-theme="light"]) :root[data-theme="dark"] #__rb .__rb-home{color:#2d291b}
+:root:not([data-theme="light"]) :root[data-theme="dark"] #__rb .__rb-home i{color:#c1beb8}
+:root:not([data-theme="light"]) :root[data-theme="dark"] #__rb .__rb-row{color:#c1beb8}
+:root:not([data-theme="light"]) :root[data-theme="dark"] #__rb .__rb-row b{color:#595548}
+:root:not([data-theme="light"]) :root[data-theme="dark"] #__rb .__rb-from{color:#c1beb8}
+:root:not([data-theme="light"]) :root[data-theme="dark"] #__rb .__rb-from b{color:#595548}
+:root:not([data-theme="light"]) :root[data-theme="dark"] #__rb a{color:#384c69}
+:root:not([data-theme="light"]) :root[data-theme="dark"] #__rb .__mark{background:#2d291b;color:#e0e0da}
+:root:not([data-theme="light"]) #__rb-pill{color:#312c1d}
+:root:not([data-theme="light"]) #__rb-pill:hover{background:#2a291d;color:#2b2b2b}
+:root:not([data-theme="light"]) :root[data-theme="dark"] #__rb-pill{color:#e0e0da}
+:root:not([data-theme="light"]) :root[data-theme="dark"] #__rb-pill:hover{background:#2b2b2b;color:#e6e6e6}
+:root:not([data-theme="light"]) #__rb-from{color:#a29f96}
+:root:not([data-theme="light"]) #__rb-from b{color:#cac8c2}
+:root:not([data-theme="light"]) :root[data-theme="dark"] #__rb-from{color:#c1beb8}
+:root:not([data-theme="light"]) :root[data-theme="dark"] #__rb-from b{color:#595548} }
+:root[data-theme="dark"]{ color-scheme:dark; --paper:#2f291c; --paper-edge:#262217; --ink:#dfdad5; --ink-soft:#cecac6; --ink-muted:#a09b9a; --rule:#6b5f43; --rule-soft:#776840; --demand:#dc776a; --demand-tint:#2d1f1b; --supply:#b9d3b6; --supply-tint:#1f2918; --ifrs:#d0c1b1; --ifrs-tint:#272217; --aspe:#b6c7d3; --aspe-tint:#182028; --warn:#d2c8b4; --warn-tint:#252116; --dr:#b6c7d3; --cr:#dc776a; --page-ground:#1c1911; }
+:root[data-theme="dark"] .ledger{background:#312c1d}
+:root[data-theme="dark"] .decide .rk{background:#312c1d}
+:root[data-theme="dark"] .matrix td.rk{background:#312c1d}
+:root[data-theme="dark"] #__rb{border-bottom:1px solid #69604a;background:#312c1d;color:#cac8c2}
+:root[data-theme="dark"] #__rb a{color:#b3c1d2}
+:root[data-theme="dark"] #__rb .__rb-home{color:#e3e1d6}
+:root[data-theme="dark"] #__rb .__rb-home i{color:#a29f96}
+:root[data-theme="dark"] #__rb .__rb-row{color:#a29f96}
+:root[data-theme="dark"] #__rb .__rb-row b{color:#cac8c2}
+:root[data-theme="dark"] #__rb .__rb-from{color:#a29f96}
+:root[data-theme="dark"] #__rb .__rb-from b{color:#cac8c2}
+:root[data-theme="dark"] #__rb .__mark{background:#2a291d;color:#312c1d}
+:root[data-theme="dark"] :root[data-theme="dark"] #__rb{background:#272721;border-bottom-color:#292822;color:#595548}
+:root[data-theme="dark"] :root[data-theme="dark"] #__rb .__rb-home{color:#2d291b}
+:root[data-theme="dark"] :root[data-theme="dark"] #__rb .__rb-home i{color:#c1beb8}
+:root[data-theme="dark"] :root[data-theme="dark"] #__rb .__rb-row{color:#c1beb8}
+:root[data-theme="dark"] :root[data-theme="dark"] #__rb .__rb-row b{color:#595548}
+:root[data-theme="dark"] :root[data-theme="dark"] #__rb .__rb-from{color:#c1beb8}
+:root[data-theme="dark"] :root[data-theme="dark"] #__rb .__rb-from b{color:#595548}
+:root[data-theme="dark"] :root[data-theme="dark"] #__rb a{color:#384c69}
+:root[data-theme="dark"] :root[data-theme="dark"] #__rb .__mark{background:#2d291b;color:#e0e0da}
+:root[data-theme="dark"] #__rb-pill{color:#312c1d}
+:root[data-theme="dark"] #__rb-pill:hover{background:#2a291d;color:#2b2b2b}
+:root[data-theme="dark"] :root[data-theme="dark"] #__rb-pill{color:#e0e0da}
+:root[data-theme="dark"] :root[data-theme="dark"] #__rb-pill:hover{background:#2b2b2b;color:#e6e6e6}
+:root[data-theme="dark"] #__rb-from{color:#a29f96}
+:root[data-theme="dark"] #__rb-from b{color:#cac8c2}
+:root[data-theme="dark"] :root[data-theme="dark"] #__rb-from{color:#c1beb8}
+:root[data-theme="dark"] :root[data-theme="dark"] #__rb-from b{color:#595548}
+@media print{ :root{ --paper:#faf7f0; --paper-edge:#f2ede0; --ink:#1a1714; --ink-soft:#4a4540; --ink-muted:#6d6867; --rule:#d9d2c2; --rule-soft:#e8e2d2; --demand:#b53a2b; --demand-tint:#fbeeeb; --supply:#3f6b3a; --supply-tint:#ecf2e8; --ifrs:#925f27; --ifrs-tint:#f8efdd; --aspe:#355971; --aspe-tint:#e5ecf2; --warn:#8e6a1f; --warn-tint:#f8efd7; --dr:#355971; --cr:#b53a2b; --page-ground:#e8e1d1; } }
 </style>
 
 <style id="__mobile_fit">
@@ -540,15 +614,15 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="manifest" href="site.webmanifest">
 <link rel="canonical" href="https://alexrajcoomar.github.io/afm291-journal-entries.html">
-<meta property="og:title" content="AFM 291 Journal Entry Reference — Alex Rajcoomar">
+<meta property="og:title" content="AFM 291 Journal Entry Reference · Alex Rajcoomar">
 <meta property="og:description" content="A journal entry reference for intermediate financial accounting, organised so the right entry is findable under time pressure.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://alexrajcoomar.github.io/afm291-journal-entries.html">
-<meta property="og:site_name" content="Alex Rajcoomar — portfolio">
+<meta property="og:site_name" content="Alex Rajcoomar · portfolio">
 <meta property="og:image" content="https://alexrajcoomar.github.io/cards/afm291-journal-entries.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="AFM 291 Journal Entry Reference — Alex Rajcoomar">
+<meta property="og:image:alt" content="AFM 291 Journal Entry Reference · Alex Rajcoomar">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://alexrajcoomar.github.io/cards/afm291-journal-entries.png">
 <script>
@@ -583,22 +657,18 @@
 #__rb .__rb-home{font-weight:640;color:#16150f}
 #__rb .__rb-home i{font-style:normal;font-weight:400;color:#6f6c63}
 #__rb .__rb-right{margin-left:auto;display:flex;gap:1.1rem;flex-wrap:wrap}
+/* the piece's own row of the statement: origin, words, figures, tables, the
+   same figures the home page prints for it, from the same measurement */
+#__rb .__rb-row{color:#6f6c63;font-variant-numeric:tabular-nums;white-space:nowrap}
+#__rb .__rb-row b{font-weight:600;color:#55524a}
+@media (max-width:44rem){#__rb .__rb-row{flex-basis:100%;order:3;white-space:normal}}
+/* what the piece was built from, in the owner's words, from pieces.json */
+#__rb .__rb-from{flex-basis:100%;order:5;font-weight:400;color:#6f6c63;line-height:1.4;max-width:70ch}
+#__rb .__rb-from b{font-weight:600;color:#55524a}
 #__rb .__mark{
   display:inline-grid;place-items:center;width:1.2rem;height:1.2rem;flex:none;
   background:#16150f;color:#faf9f6;font-size:.72rem;font-weight:700;
 }
-#__rb-pill{
-  position:fixed;left:14px;bottom:14px;z-index:2147483000;
-  display:inline-flex;align-items:center;gap:.45rem;padding:.58rem .9rem;
-  background:rgba(22,21,15,.93);color:#faf9f6;text-decoration:none;border-radius:99px;
-  font:600 12.5px/1 InterVar,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
-  border:1px solid rgba(255,255,255,.16);box-shadow:0 6px 22px rgba(0,0,0,.28);
-  opacity:0;transform:translateY(6px);pointer-events:none;
-  transition:opacity .2s ease,transform .2s ease;
-  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
-}
-#__rb-pill.__on{opacity:1;transform:none;pointer-events:auto}
-#__rb-pill:hover{background:#16150f;color:#fff}
 /* Dark has to answer to two things: the reader's system setting, and the
    theme button on the page, which sets data-theme on <html>. Keyed to the
    media query alone, the bar stayed paper-white across the top of an essay
@@ -609,25 +679,30 @@
   :root:not([data-theme="light"]) #__rb{background:#131310;border-bottom-color:#2c2b24;color:#c0bcb1}
   :root:not([data-theme="light"]) #__rb .__rb-home{color:#f7f5ef}
   :root:not([data-theme="light"]) #__rb .__rb-home i{color:#948f85}
+  :root:not([data-theme="light"]) #__rb .__rb-row{color:#948f85}
+  :root:not([data-theme="light"]) #__rb .__rb-row b{color:#c0bcb1}
+  :root:not([data-theme="light"]) #__rb .__rb-from{color:#948f85}
+  :root:not([data-theme="light"]) #__rb .__rb-from b{color:#c0bcb1}
   :root:not([data-theme="light"]) #__rb a{color:#85adea}
   :root:not([data-theme="light"]) #__rb .__mark{background:#f7f5ef;color:#131310}
-  :root:not([data-theme="light"]) #__rb-pill{background:rgba(247,245,239,.95);color:#131310;border-color:rgba(0,0,0,.2)}
-  :root:not([data-theme="light"]) #__rb-pill:hover{background:#fff;color:#000}
 }
 :root[data-theme="dark"] #__rb{background:#131310;border-bottom-color:#2c2b24;color:#c0bcb1}
 :root[data-theme="dark"] #__rb .__rb-home{color:#f7f5ef}
 :root[data-theme="dark"] #__rb .__rb-home i{color:#948f85}
+:root[data-theme="dark"] #__rb .__rb-row{color:#948f85}
+:root[data-theme="dark"] #__rb .__rb-row b{color:#c0bcb1}
+:root[data-theme="dark"] #__rb .__rb-from{color:#948f85}
+:root[data-theme="dark"] #__rb .__rb-from b{color:#c0bcb1}
 :root[data-theme="dark"] #__rb a{color:#85adea}
 :root[data-theme="dark"] #__rb .__mark{background:#f7f5ef;color:#131310}
-:root[data-theme="dark"] #__rb-pill{background:rgba(247,245,239,.95);color:#131310;border-color:rgba(0,0,0,.2)}
-:root[data-theme="dark"] #__rb-pill:hover{background:#fff;color:#000}
-@media (prefers-reduced-motion:reduce){#__rb-pill{transition:none}}
-@media print{#__rb,#__rb-pill{display:none !important}}
+@media print{#__rb{display:none !important}}
 </style>
-<div id="__rb">
+<nav id="__rb" aria-label="Portfolio">
   <a class="__rb-home" href="index.html"><span class="__mark" aria-hidden="true">A</span>Alex Rajcoomar <i>portfolio</i></a>
-  <span class="__rb-right"><a href="afm291.html">The vault</a><a href="library.html">All work</a></span>
-</div>
+  <span class="__rb-row">Coursework &middot; <b>1,329</b> words &middot; <b>0</b> figures &middot; <b>4</b> tables</span>
+  <span class="__rb-right"><a href="afm291.html">The vault</a><a href="atlas.html">Atlas</a><a href="library.html">All work</a></span>
+  <span class="__rb-from"><b>Built from</b> Built from my own journal-entry reference and the exam appendix, with AI assistance; the account names and entry forms are taken from them, and the dollar figures are illustrations to be confirmed against the matching problem.</span>
+</nav>
 <script>
 /* the trail: which passages this browser has opened. The atlas reads it and
    rings them; the record lives in localStorage and never leaves the machine. */
@@ -644,7 +719,7 @@
     function put(key){
       if(t2[key]||Object.keys(t2).length<500){
         t2[key]=(t2[key]||0)+1;
-        localStorage.setItem(k,JSON.stringify(t2));
+        try{localStorage.setItem(k,JSON.stringify(t2));}catch(e){}
       }
     }
     put(u+location.hash);
@@ -654,12 +729,12 @@
 </script>
 <!--/__rb-->
 
-<div class="page">
+<div class="page" role="main">
 
   <!-- ============ MASTHEAD ============ -->
   <header class="masthead">
     <div class="masthead-left">
-      <h1 id="afm-291-journal-entries">AFM 291 <span class="accent">— Journal Entries</span></h1>
+      <h1 id="afm-291-journal-entries">AFM 291 <span class="accent">: Journal Entries</span></h1>
       <div class="subtitle">Revenue · Warranties · Provisions · Long-Term Contracts · Onerous Contracts</div>
     </div>
     <div class="masthead-right">
@@ -677,13 +752,13 @@
     <div class="legend-item"><span class="legend-dot dot-cr"></span> Credit (Cr)</div>
   </div>
   <div class="how-strip">
-    Your exam appendix gives the <strong>standards text</strong> (5-step model, B28–B30 warranty rules, IAS 37 / 3290 guidance) but <strong>not the journal entries</strong> — this sheet covers the entries you have to produce from understanding. Dollar figures are illustrations from your reference; confirm them against the matching problem (see Verification Pass at the end).
+    Your exam appendix gives the <strong>standards text</strong> (5-step model, B28–B30 warranty rules, IAS 37 / 3290 guidance) but <strong>not the journal entries</strong>, this sheet covers the entries you have to produce from understanding. 
   </div>
 
   <!-- ============ § 1 WARRANTIES ============ -->
   <div class="section-label">
     <span class="number">§ 01</span>
-    <span class="title">Warranties — Assurance vs Service</span>
+    <span class="title">Warranties: Assurance vs Service</span>
     <span class="rule"></span>
     <span class="tag">IFRS 15 · B28–B30</span>
   </div>
@@ -698,8 +773,8 @@
     <div class="col2">Extra service beyond defects (extended coverage, theft, etc.)</div>
 
     <div class="rk"># of P.O.s</div>
-    <div class="col1"><b>1</b> — the product only</div>
-    <div class="col2"><b>2</b> — product + a separate service P.O.</div>
+    <div class="col1"><b>1</b>, the product only</div>
+    <div class="col2"><b>2</b>, product + a separate service P.O.</div>
 
     <div class="rk">Treatment</div>
     <div class="col1">Warranty is <b>not</b> a P.O. → account under <b>IAS 37 provision</b></div>
@@ -721,14 +796,14 @@
     <div class="card">
       <div class="card-title"><span>Assurance-type Warranty</span><span class="tag">P4-28 illustration</span></div>
 
-      <div class="je-caption"><span class="step">①</span> At sale — 100 tablets @ $500</div>
+      <div class="je-caption"><span class="step">①</span> At sale: 100 tablets @ $500</div>
       <div class="ledger">
         <div class="ledger-head"><span>Account</span><span class="amt">Dr</span><span class="amt">Cr</span></div>
         <div class="je-row"><span class="acct">Cash / AR</span><span class="dr-amt">50,000</span><span class="cr-amt"></span></div>
-        <div class="je-row cr"><span class="acct">Revenue — Tablets</span><span class="dr-amt"></span><span class="cr-amt">50,000</span></div>
+        <div class="je-row cr"><span class="acct">Revenue: Tablets</span><span class="dr-amt"></span><span class="cr-amt">50,000</span></div>
       </div>
 
-      <div class="je-caption"><span class="step">②</span> Record provision — expected $25 / unit</div>
+      <div class="je-caption"><span class="step">②</span> Record provision, expected $25 / unit</div>
       <div class="ledger">
         <div class="ledger-head"><span>Account</span><span class="amt">Dr</span><span class="amt">Cr</span></div>
         <div class="je-row"><span class="acct">Warranty Expense</span><span class="dr-amt">2,500</span><span class="cr-amt"></span></div>
@@ -755,11 +830,11 @@
       <div class="ledger">
         <div class="ledger-head"><span>Account</span><span class="amt">Dr</span><span class="amt">Cr</span></div>
         <div class="je-row"><span class="acct">Cash</span><span class="dr-amt">90,000</span><span class="cr-amt"></span></div>
-        <div class="je-row cr"><span class="acct">Revenue — Tablets</span><span class="dr-amt"></span><span class="cr-amt">72,000</span></div>
+        <div class="je-row cr"><span class="acct">Revenue: Tablets</span><span class="dr-amt"></span><span class="cr-amt">72,000</span></div>
         <div class="je-row cr"><span class="acct">Unearned Service Revenue</span><span class="dr-amt"></span><span class="cr-amt">18,000</span></div>
       </div>
 
-      <div class="je-caption"><span class="step">②</span> Recognize service over time — input method</div>
+      <div class="je-caption"><span class="step">②</span> Recognize service over time, input method</div>
       <div class="ledger">
         <div class="ledger-head"><span>Account</span><span class="amt">Dr</span><span class="amt">Cr</span></div>
         <div class="je-row"><span class="acct">Unearned Service Revenue</span><span class="dr-amt">7,200</span><span class="cr-amt"></span></div>
@@ -783,7 +858,7 @@
 
     <!-- RECOGNITION + JE -->
     <div class="card">
-      <div class="card-title ifrs"><span>IFRS — Recognize a Provision if…</span><span class="tag">all three</span></div>
+      <div class="card-title ifrs"><span>IFRS: Recognize a Provision if…</span><span class="tag">all three</span></div>
       <div class="je-foot" style="margin-top:0;margin-bottom:8px;">
         <strong>1.</strong> Present obligation from a <strong>past (obligating) event</strong> &nbsp;·&nbsp;
         <strong>2.</strong> Outflow of resources is <strong>probable</strong> &nbsp;·&nbsp;
@@ -814,9 +889,9 @@
           <tr><th></th><th>Measurable</th><th>Not measurable (rare)</th></tr>
         </thead>
         <tbody>
-          <tr><td class="rk">Probable</td><td class="yes">Recognize provision</td><td class="mid">Disclose</td></tr>
-          <tr><td class="rk">Possible</td><td class="mid">Disclose contingent liability</td><td class="mid">Disclose</td></tr>
-          <tr><td class="rk">Remote</td><td class="no">No action</td><td class="no">No action</td></tr>
+          <tr><th class="rk" scope="row">Probable</th><td class="yes">Recognize provision</td><td class="mid">Disclose</td></tr>
+          <tr><th class="rk" scope="row">Possible</th><td class="mid">Disclose contingent liability</td><td class="mid">Disclose</td></tr>
+          <tr><th class="rk" scope="row">Remote</th><td class="no">No action</td><td class="no">No action</td></tr>
         </tbody>
       </table>
       <div class="je-foot" style="margin-top:9px;">
@@ -833,23 +908,23 @@
 
   <!-- IFRS vs ASPE comparison -->
   <div class="card">
-    <div class="card-title"><span>IFRS vs ASPE — Contingencies / Losses</span><span class="tag">terminology &amp; measurement</span></div>
+    <div class="card-title"><span>IFRS vs ASPE: Contingencies / Losses</span><span class="tag">terminology &amp; measurement</span></div>
     <table class="cmp">
       <thead>
         <tr><th style="width:24%;"></th><th class="ifrs-col" style="width:38%;">IFRS (IAS 37)</th><th class="aspe-col" style="width:38%;">ASPE (Section 3290)</th></tr>
       </thead>
       <tbody>
-        <tr><td class="lbl">Terminology</td><td>Probable · Possible · Remote</td><td>Likely · Not determinable · Unlikely</td></tr>
-        <tr><td class="lbl">Recognition threshold</td><td><span class="ifrs-text">Probable</span> (&gt; 50%) + reliable estimate</td><td><span class="aspe-text">Likely</span> + reasonably estimable</td></tr>
-        <tr><td class="lbl">Range of estimates</td><td>Best estimate — <b>midpoint</b> of a range</td><td>Use the <b>minimum</b> of the range</td></tr>
-        <tr><td class="lbl">Contingent gains</td><td>Never recognized</td><td>Never accrued (disclose if likely)</td></tr>
-        <tr><td class="lbl">Disclosure</td><td>Unless remote</td><td>Broader — more situations require disclosure</td></tr>
+        <tr><th class="lbl" scope="row">Terminology</th><td>Probable · Possible · Remote</td><td>Likely · Not determinable · Unlikely</td></tr>
+        <tr><th class="lbl" scope="row">Recognition threshold</th><td><span class="ifrs-text">Probable</span> (&gt; 50%) + reliable estimate</td><td><span class="aspe-text">Likely</span> + reasonably estimable</td></tr>
+        <tr><th class="lbl" scope="row">Range of estimates</th><td>Best estimate, <b>midpoint</b> of a range</td><td>Use the <b>minimum</b> of the range</td></tr>
+        <tr><th class="lbl" scope="row">Contingent gains</th><td>Never recognized</td><td>Never accrued (disclose if likely)</td></tr>
+        <tr><th class="lbl" scope="row">Disclosure</th><td>Unless remote</td><td>Broader, more situations require disclosure</td></tr>
       </tbody>
     </table>
     <div class="callout insight" style="margin-top:10px;margin-bottom:0;">
-      <div class="head">💡 Worked application — Canless Isotopes (P11-49)</div>
+      <div class="head">💡 Worked application: Canless Isotopes (P11-49)</div>
       <em>Sued $10M, admits liability, estimates $5M–$6M, has $1M-deductible insurance.</em><br>
-      <span class="ifrs-text">IFRS:</span> recognize a provision of <b>$5.5M</b> (midpoint best estimate); insurance is a <b>separate contingent asset</b> (don't net — recognize only if virtually certain, otherwise disclose).<br>
+      <span class="ifrs-text">IFRS:</span> recognize a provision of <b>$5.5M</b> (midpoint best estimate); insurance is a <b>separate contingent asset</b> (don't net, recognize only if virtually certain, otherwise disclose).<br>
       <span class="aspe-text">ASPE:</span> accrue <b>$5M</b> (minimum of the range); disclose the insurance and the range.
     </div>
   </div>
@@ -863,7 +938,7 @@
   </div>
 
   <div class="callout insight">
-    <div class="head">⚖ Why over time? — IFRS 15.35(b)</div>
+    <div class="head">⚖ Why over time?: IFRS 15.35(b)</div>
     The entity's performance <b>creates or enhances an asset that the customer controls</b> as it is created. (The other two over-time gateways: the customer simultaneously receives &amp; consumes the benefits; or the asset has <b>no alternative use</b> and the entity has an <b>enforceable right to payment</b> for work completed to date.) If none apply → recognize at a <b>point in time</b>.
   </div>
 
@@ -902,7 +977,7 @@
         <div class="je-row cr"><span class="acct">Revenue</span><span class="dr-amt"></span><span class="cr-amt tag-cr">X</span></div>
       </div>
 
-      <div class="je-caption"><span class="step">⑤</span> Completion — close out</div>
+      <div class="je-caption"><span class="step">⑤</span> Completion, close out</div>
       <div class="ledger">
         <div class="ledger-head"><span>Account</span><span class="amt">Dr</span><span class="amt">Cr</span></div>
         <div class="je-row"><span class="acct">Billings on CIP</span><span class="dr-amt tag-dr">X</span><span class="cr-amt"></span></div>
@@ -920,7 +995,7 @@
         <b>Current-year revenue</b> = <code>revenue to date − prior years</code>
       </div>
 
-      <div class="je-caption">Worked Phase ④ — applying 20X1 schedule figures</div>
+      <div class="je-caption">Worked Phase ④, applying 20X1 schedule figures</div>
       <div class="ledger">
         <div class="ledger-head"><span>Account</span><span class="amt">Dr</span><span class="amt">Cr</span></div>
         <div class="je-row"><span class="acct">Cost of Sales</span><span class="dr-amt">6,500,000</span><span class="cr-amt"></span></div>
@@ -939,7 +1014,7 @@
 
   <!-- KENNEDY SCHEDULE -->
   <div class="card">
-    <div class="card-title"><span>Kennedy Construction — Input Method Summary</span><span class="tag">$40M contract · ties to $2.4M final profit</span></div>
+    <div class="card-title"><span>Kennedy Construction: Input Method Summary</span><span class="tag">$40M contract · ties to $2.4M final profit</span></div>
     <table class="sched">
       <thead>
         <tr><th>Year</th><th>% Complete</th><th>Revenue (yr)</th><th>Gross Profit (yr)</th><th>Cum. CIP</th><th>Cum. Billings</th><th>Net Position</th></tr>
@@ -965,7 +1040,7 @@
     <div class="card">
       <div class="card-title"><span>The Rule</span><span class="tag">recognize loss now</span></div>
       <div class="je-foot" style="margin-top:0;">
-        When unavoidable costs of completing the contract <strong>exceed the economic benefits</strong> (total estimated costs &gt; contract revenue), recognize the <strong>entire expected loss immediately</strong> — regardless of % complete or whether work has started. Set up a <strong>Provision for Expected Losses</strong>.
+        When unavoidable costs of completing the contract <strong>exceed the economic benefits</strong> (total estimated costs &gt; contract revenue), recognize the <strong>entire expected loss immediately</strong>, regardless of % complete or whether work has started. Set up a <strong>Provision for Expected Losses</strong>.
       </div>
     </div>
 
@@ -977,14 +1052,14 @@
         <div class="je-row"><span class="acct">Expected Loss (Expense)</span><span class="dr-amt">697,122</span><span class="cr-amt"></span></div>
         <div class="je-row cr"><span class="acct">Provision for Expected Losses</span><span class="dr-amt"></span><span class="cr-amt">697,122</span></div>
       </div>
-      <div class="je-foot">The $697,122 is an illustrative figure — it is a separate scenario, not the profitable Kennedy contract above. Recompute it for your specific problem.</div>
+      <div class="je-foot">The $697,122 is an illustrative figure, it is a separate scenario, not the profitable Kennedy contract above. Recompute it for your specific problem.</div>
     </div>
   </div>
 
   <!-- ============ CHEAT STRIP ============ -->
   <div class="section-label">
     <span class="number">§ 05</span>
-    <span class="title">Which Entry? — One-Glance Triggers</span>
+    <span class="title">Which Entry?: One-Glance Triggers</span>
     <span class="rule"></span>
   </div>
   <div class="cheat">
@@ -998,13 +1073,13 @@
 
   <!-- ============ SELF TEST ============ -->
   <details class="test">
-    <summary>▶ Active recall — name the entry (cover the answers)</summary>
+    <summary>▶ Active recall: name the entry (cover the answers)</summary>
     <ol>
       <li>A product sold with a 2-year warranty that customers <em>cannot</em> buy separately. What entry, if any, relates to the warranty at sale? <span class="ans">→ Dr Warranty Expense / Cr Warranty Provision (best-estimate amount); the product revenue is recognized in full.</span></li>
       <li>You're told a lawsuit loss is "possible but not probable," estimable at $2M. Entry? <span class="ans">→ No journal entry. Disclose a contingent liability.</span></li>
       <li>Period-end on an over-time contract: which account absorbs the period's gross profit, and is it debited or credited? <span class="ans">→ CIP, debited (alongside Dr Cost of Sales, Cr Revenue).</span></li>
       <li>Cumulative CIP $26.9M vs cumulative Billings $27.2M. Asset or liability, and how much? <span class="ans">→ Contract liability of ~$314,754 (Billings exceed CIP).</span></li>
-      <li>IFRS range $5M–$6M with no better estimate within it — what amount do you provide, and how does ASPE differ? <span class="ans">→ IFRS $5.5M (midpoint); ASPE $5M (minimum of the range).</span></li>
+      <li>IFRS range $5M–$6M with no better estimate within it, what amount do you provide, and how does ASPE differ? <span class="ans">→ IFRS $5.5M (midpoint); ASPE $5M (minimum of the range).</span></li>
     </ol>
   </details>
 
@@ -1023,7 +1098,7 @@
       <tr>
         <td>Warranty example unit counts</td>
         <td class="st qq">❓ Inconsistent</td>
-        <td>The assurance illustration uses 100 units / $50,000; the service illustration implies 150 units / $90,000. They're presented as one P4-28 but use different quantities — confirm the exact facts and numbers against your problem set.</td>
+        <td>The assurance illustration uses 100 units / $50,000; the service illustration implies 150 units / $90,000. They're presented as one P4-28 but use different quantities, confirm the exact facts and numbers against your problem set.</td>
       </tr>
       <tr>
         <td>Onerous loss = $697,122</td>
@@ -1048,7 +1123,7 @@
       <tr>
         <td>All journal entry structures</td>
         <td class="st ok">✅ From your materials</td>
-        <td>Account names and entry forms are taken directly from your uploaded reference and the exam appendix. Figures are reproduced as given.</td>
+        <td> Figures are reproduced as given.</td>
       </tr>
     </tbody>
   </table>
@@ -1066,13 +1141,59 @@
 
 
 <!--__rbp-->
+<!-- The pill styles itself: this block used to live only with the top bar,
+     so the seven tool pages, which carry the pill alone, rendered it as an
+     unstyled link at the very end of the document. Whatever carries the
+     pill now carries its style. -->
+<style id="__rbp-style">
+#__rb-pill{
+  position:fixed;left:14px;bottom:14px;z-index:2147483000;
+  display:inline-flex;align-items:center;gap:.45rem;padding:.58rem .9rem;
+  background:rgba(22,21,15,.93);color:#faf9f6;text-decoration:none;border-radius:99px;
+  font:600 12.5px/1 InterVar,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  border:1px solid rgba(255,255,255,.16);box-shadow:0 6px 22px rgba(0,0,0,.28);
+  opacity:0;transform:translateY(6px);pointer-events:none;
+  transition:opacity .2s ease,transform .2s ease;
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+}
+#__rb-pill.__on{opacity:1;transform:none;pointer-events:auto}
+#__rb-pill:hover{background:#16150f;color:#fff}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) #__rb-pill{background:rgba(247,245,239,.95);color:#131310;border-color:rgba(0,0,0,.2)}
+  :root:not([data-theme="light"]) #__rb-pill:hover{background:#fff;color:#000}
+}
+:root[data-theme="dark"] #__rb-pill{background:rgba(247,245,239,.95);color:#131310;border-color:rgba(0,0,0,.2)}
+:root[data-theme="dark"] #__rb-pill:hover{background:#fff;color:#000}
+@media (prefers-reduced-motion:reduce){#__rb-pill{transition:none}}
+@media print{#__rb-pill{display:none !important}}
+/* a tool carries no bar, so what it was built from stands at the foot of the document */
+#__rb-from{margin:1.25rem 1rem;font:400 13px/1.45 InterVar,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;color:#6f6c63;max-width:70ch}
+#__rb-from b{font-weight:600;color:#55524a}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) #__rb-from{color:#948f85}
+  :root:not([data-theme="light"]) #__rb-from b{color:#c0bcb1}
+}
+:root[data-theme="dark"] #__rb-from{color:#948f85}
+:root[data-theme="dark"] #__rb-from b{color:#c0bcb1}
+</style>
+<!-- With scripts off nothing ever adds the __on class, and the only way
+     back from a tool page vanished. The pill needs its script for the
+     scroll threshold, not for existing. -->
+<noscript><style>#__rb-pill{opacity:1 !important;transform:none !important;pointer-events:auto !important}</style></noscript>
 <a id="__rb-pill" href="afm291.html">&#8592; The vault</a>
+
 <script>
 (function(){
   var p=document.getElementById('__rb-pill'); if(!p) return;
+  /* On a page with the top bar the pill waits until the bar has scrolled
+     out of reach. On a page without one (the tools carry no bar, because a
+     bar inside a full-screen application sits in the wrong place) the pill
+     is the only way back, so it is there from the first paint: a tool
+     screen shorter than the threshold used to strand the reader entirely. */
+  var TH=document.getElementById('__rb')?160:-1;
   var t=false;
   function run(){ t=false;
-    p.classList.toggle('__on',(window.scrollY||document.documentElement.scrollTop)>420); }
+    p.classList.toggle('__on',(window.scrollY||document.documentElement.scrollTop)>TH); }
   function q(){ if(!t){ t=true; requestAnimationFrame(run); } }
   addEventListener('scroll',q,{passive:true}); run();
 })();
@@ -1090,7 +1211,7 @@
     function put(key){
       if(t2[key]||Object.keys(t2).length<500){
         t2[key]=(t2[key]||0)+1;
-        localStorage.setItem(k,JSON.stringify(t2));
+        try{localStorage.setItem(k,JSON.stringify(t2));}catch(e){}
       }
     }
     put(u+location.hash);
