@@ -36,7 +36,7 @@
   "details": 15
  },
  "afm291-ch10-fair-value": {
-  "words": 19030,
+  "words": 19010,
   "figures": 0,
   "tables": 45,
   "details": 19
@@ -108,7 +108,7 @@
   "details": 10
  },
  "afm291-study-system": {
-  "words": 14155,
+  "words": 14089,
   "figures": 6,
   "tables": 38,
   "details": 1
@@ -336,7 +336,7 @@
   "details": 0
  },
  "predictive-history": {
-  "words": 9606,
+  "words": 9621,
   "figures": 11,
   "tables": 14,
   "details": 10
