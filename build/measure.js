@@ -107,7 +107,7 @@ for (const slug of Object.keys(metrics)) {
     try {
       metrics[f.replace(/\.html$/, '')] = await page.evaluate(() => {
         const clone = document.body.cloneNode(true);
-        clone.querySelectorAll('script,style,noscript,#__rb,#__rb-pill,header.top,footer.site,.docbar,.toc,nav.main,.cmdk')
+        clone.querySelectorAll('script,style,noscript,#__rb,#__rb-pill,#__rb-from,#__long-idx,.docfrom,header.top,footer.site,.docbar,.toc,nav.main,.cmdk')
              .forEach(n => n.remove());
         const txt = (clone.textContent || '').replace(/\s+/g, ' ').trim();
         const words = txt.split(' ').filter(w => /[A-Za-z0-9]/.test(w)).length;

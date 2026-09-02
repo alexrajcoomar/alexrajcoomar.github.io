@@ -1,0 +1,3346 @@
+{
+ "note": "Hand-written during the content pass. build/ledger.py merges this into content/ledger.json; nothing here is printed on a page except through that file, and every count on a page is computed there.",
+ "pass": {
+  "name": "content/pass-1",
+  "started": "2026-09-02",
+  "baseline": "0f31bdb",
+  "baseline_note": "redesign/statement at 0f31bdb, the tree delivered as portfolio-redesign-statement.zip, not yet on live main."
+ },
+ "pieces": {
+  "flagged-in-hindsight": {
+   "changes": [
+    "key",
+    "em dashes",
+    "built_from",
+    "measure"
+   ],
+   "notes": [
+    "The key in § 1 declared three provenance labels and the piece uses a fourth, FROM MEMORY, once in § 6. The fourth is now declared in the key, in the piece's own words for it (a general concept, no paragraph cited); the sentence that carries it is untouched, and the key's count sentence reads four instead of three.",
+    "Em dashes: 46 replaced by rule (commas 6, parentheses 5, colon 12, colon in a heading 9, comma 14); 4 kept (a nil placeholder standing alone 4).",
+    "Measure: the shared case-method stylesheet now holds concession paragraphs, claim texts, falsifiers and source lines to 70ch (styling only on the frozen pieces); the family's running text was already at 66ch."
+   ],
+   "additions": [
+    {
+     "text": "FROM MEMORY, used once, in § 6, for a general concept stated with no paragraph cited.",
+     "chips": [
+      "FROM MEMORY"
+     ]
+    }
+   ],
+   "count_fixes": [
+    {
+     "from": "Three labels are in use.",
+     "to": "Four labels are in use."
+    }
+   ]
+  },
+  "afm274-capital-structure": {
+   "changes": [
+    "title",
+    "em dashes",
+    "built_from",
+    "main landmark",
+    "heading order",
+    "dark palette"
+   ],
+   "notes": [
+    "Title tag normalised to title, separator, site name. It read “AFM 274 · Chapter 17 — Capital Structure in a Perfect Market (Exam Sheet)”.",
+    "Em dashes: 23 replaced by rule (colon 2, colon in a heading 8, comma 13); 2 kept (a nil placeholder standing alone 2).",
+    "Main landmark: role=\"main\" on div class=\"page\".",
+    "Heading order: 1 headings that skipped a level keep their tag and text and carry aria-level for the level the outline needs (h3 read as level 2).",
+    "A dark palette: the page's eight tokens are redeclared for a dark scheme and for data-theme=\"dark\", the body background becomes a token (--paper), and a print block restores the light tokens so the printed sheet is unchanged.",
+    "Dark palette: 9 colour tokens redeclared for a dark scheme and for data-theme=\"dark\" by rule (surfaces deep, ink near-white, accents lifted), 0 text tokens lifted to 4.5:1 on the darkest surface (#232018); 41 literal colour declarations re-emitted under the same selectors with the literal mapped; 0 inline literal styles left as they are; a print block restores the light tokens. The rendered dark audit's result is recorded beside this note.",
+    "Rendered contrast audit (lh/dark-audit.mjs, headless Chrome at 1440, every visible element with its own text against its nearest opaque background): dark scheme 411 elements checked, 0 below the AA floor; light scheme 0 below the floor."
+   ],
+   "dark_palette": [
+    {
+     "token": "--ink",
+     "light": "#15314b",
+     "dark": "#c4ced7"
+    },
+    {
+     "token": "--accent",
+     "light": "#7a2733",
+     "dark": "#d4b7bb"
+    },
+    {
+     "token": "--text",
+     "light": "#1a1a1a",
+     "dark": "#d8d8d8"
+    },
+    {
+     "token": "--muted",
+     "light": "#4a4a4a",
+     "dark": "#c8c8c8"
+    },
+    {
+     "token": "--panel",
+     "light": "#f3f2ed",
+     "dark": "#29271b"
+    },
+    {
+     "token": "--panel2",
+     "light": "#eceae3",
+     "dark": "#232018"
+    },
+    {
+     "token": "--line",
+     "light": "#bdbab1",
+     "dark": "#57544a"
+    },
+    {
+     "token": "--hair",
+     "light": "#d9d6cd",
+     "dark": "#655f4d"
+    },
+    {
+     "token": "--paper",
+     "light": "#ffffff",
+     "dark": "#2b2b2b"
+    }
+   ]
+  },
+  "afm274-financial-distress": {
+   "changes": [
+    "title",
+    "em dashes",
+    "built_from",
+    "main landmark",
+    "heading order",
+    "table headers",
+    "dark palette"
+   ],
+   "notes": [
+    "Title tag normalised to title, separator, site name. It read “AFM 274 · Chapter 19 — Financial Distress, Agency Costs & Information (Exam Sheet)”.",
+    "Em dashes: 28 replaced by rule (colon 1, colon in a heading 10, comma 17); 0 kept (none).",
+    "Main landmark: role=\"main\" on div class=\"page\".",
+    "Heading order: 1 headings that skipped a level keep their tag and text and carry aria-level for the level the outline needs (h3 read as level 2).",
+    "Table headers: in 2 tables whose header row opens with an empty cell, 5 row-label cells became th scope=\"row\" (tag only; the text is unchanged) so every data cell has a header; a rule keeps them looking as they did.",
+    "A dark palette: the page's eight tokens are redeclared for a dark scheme and for data-theme=\"dark\", the body background becomes a token (--paper), and a print block restores the light tokens so the printed sheet is unchanged.",
+    "Dark palette: 9 colour tokens redeclared for a dark scheme and for data-theme=\"dark\" by rule (surfaces deep, ink near-white, accents lifted), 0 text tokens lifted to 4.5:1 on the darkest surface (#232018); 39 literal colour declarations re-emitted under the same selectors with the literal mapped; 0 inline literal styles left as they are; a print block restores the light tokens. The rendered dark audit's result is recorded beside this note.",
+    "Dark palette: 9 colour tokens redeclared for a dark scheme and for data-theme=\"dark\" by rule (surfaces deep, ink near-white, accents lifted), 0 text tokens lifted to 4.5:1 on the darkest surface (#232018); 39 literal colour declarations re-emitted under the same selectors with the literal mapped; 0 inline literal styles left as they are; a print block restores the light tokens. The rendered dark audit's result is recorded beside this note.",
+    "Dark palette: 9 colour tokens redeclared for a dark scheme and for data-theme=\"dark\" by rule (surfaces deep, ink near-white, accents lifted), 0 text tokens lifted to 4.5:1 on the darkest surface (#232018); 39 literal colour declarations re-emitted under the same selectors with the literal mapped; 0 inline literal styles left as they are; a print block restores the light tokens. The rendered dark audit's result is recorded beside this note.",
+    "Rendered contrast audit (lh/dark-audit.mjs, headless Chrome at 1440, every visible element with its own text against its nearest opaque background): dark scheme 191 elements checked, 0 below the AA floor; light scheme 0 below the floor."
+   ],
+   "dark_palette": [
+    {
+     "token": "--ink",
+     "light": "#15314b",
+     "dark": "#c4ced7"
+    },
+    {
+     "token": "--accent",
+     "light": "#7a2733",
+     "dark": "#d4b7bb"
+    },
+    {
+     "token": "--text",
+     "light": "#1a1a1a",
+     "dark": "#d8d8d8"
+    },
+    {
+     "token": "--muted",
+     "light": "#4a4a4a",
+     "dark": "#c8c8c8"
+    },
+    {
+     "token": "--panel",
+     "light": "#f3f2ed",
+     "dark": "#29271b"
+    },
+    {
+     "token": "--panel2",
+     "light": "#eceae3",
+     "dark": "#232018"
+    },
+    {
+     "token": "--line",
+     "light": "#bdbab1",
+     "dark": "#57544a"
+    },
+    {
+     "token": "--hair",
+     "light": "#d9d6cd",
+     "dark": "#655f4d"
+    },
+    {
+     "token": "--paper",
+     "light": "#ffffff",
+     "dark": "#2b2b2b"
+    }
+   ]
+  },
+  "afm291-field-manual": {
+   "changes": [
+    "title",
+    "em dashes",
+    "built_from",
+    "main landmark",
+    "heading order"
+   ],
+   "notes": [
+    "Title tag normalised to title, separator, site name. It read “AFM 291 — MIDTERM 01 FIELD MANUAL · MT1-FM REV C”.",
+    "Em dashes: 84 replaced by rule (colon 51, colon in a heading 4, comma 29); 0 kept (none).",
+    "Main landmark: the content blocks wrapped in <main>; 1 'body > *' selectors now also match 'main > *'.",
+    "Heading order: 2 headings that skipped a level keep their tag and text and carry aria-level for the level the outline needs (h4 read as level 2, h4 read as level 3)."
+   ],
+   "kept": [
+    "No dark palette added: a print sheet: white sheets on a grey desk, built for paper; a dark scheme would fight the design it was made for."
+   ]
+  },
+  "afm291-inventory-gap-map": {
+   "changes": [
+    "title",
+    "em dashes",
+    "built_from",
+    "main landmark",
+    "contrast",
+    "accessibility"
+   ],
+   "notes": [
+    "Title tag normalised to title, separator, site name. It read “AFM 291 — Inventory & Gap Map”.",
+    "Em dashes: 66 replaced by rule (commas 5, colon 5, colon in a heading 21, comma 35); 0 kept (none).",
+    "Main landmark: role=\"main\" on div class=\"wrap\".",
+    "Colour contrast: variable --tm #84837c to #6c6b68 (4.76:1 on #f3f2ef, 1 uses); variable --good #0ca30c to #0c7b0c (4.86:1 on #e7f6e7, 1 uses); variable --crit #d03b3b to #c32f2f (4.62:1 on #fae5e5, 1 uses); variable --ser #ec835a to #b44b16 (4.74:1 on #fdf1d8, 1 uses); chip background #2a78d6 to #2774ce (4.69:1 on #ffffff, 1 uses). Not resolved here: #49ba49 on #edf8ed (38).",
+    "The three filter selects and the search box carry aria-labels (Filter by week, Filter by verdict, Filter by category, Search file names and notes); no visible text changed."
+   ],
+   "contrast": [
+    {
+     "kind": "variable",
+     "var": "--tm",
+     "from": "#84837c",
+     "to": "#6c6b68",
+     "ratio": 4.76,
+     "uses": 1,
+     "worst_bg": "#f3f2ef",
+     "n": 832
+    },
+    {
+     "kind": "variable",
+     "var": "--good",
+     "from": "#0ca30c",
+     "to": "#0c7b0c",
+     "ratio": 4.86,
+     "uses": 1,
+     "worst_bg": "#e7f6e7",
+     "n": 195
+    },
+    {
+     "kind": "variable",
+     "var": "--crit",
+     "from": "#d03b3b",
+     "to": "#c32f2f",
+     "ratio": 4.62,
+     "uses": 1,
+     "worst_bg": "#fae5e5",
+     "n": 74
+    },
+    {
+     "kind": "variable",
+     "var": "--ser",
+     "from": "#ec835a",
+     "to": "#b44b16",
+     "ratio": 4.74,
+     "uses": 1,
+     "worst_bg": "#fdf1d8",
+     "n": 47
+    },
+    {
+     "kind": "unresolved",
+     "from": "#49ba49",
+     "bgs": [
+      "#edf8ed"
+     ],
+     "n": 38,
+     "note": "colour not found as a literal in the file (computed at runtime or an alpha blend)"
+    },
+    {
+     "kind": "chip background",
+     "from": "#2a78d6",
+     "to": "#2774ce",
+     "ratio": 4.69,
+     "uses": 1,
+     "text": "#ffffff"
+    }
+   ]
+  },
+  "afm291-journal-entries": {
+   "changes": [
+    "title",
+    "em dashes",
+    "strikes",
+    "built_from",
+    "fonts",
+    "main landmark",
+    "table headers",
+    "contrast",
+    "dark palette"
+   ],
+   "notes": [
+    "Title tag normalised to title, separator, site name. It read “AFM 291 — Midterm 1 Journal Entry Reference”.",
+    "Em dashes: 26 replaced by rule (colon 10, colon in a heading 2, comma 14); 0 kept (none).",
+    "2 sentences an assistant addressed to the owner struck; what each said the piece was built from is now the built_from line the bar renders.",
+    "Typefaces self-hosted: Fraunces: Fraunces[SOFT,WONK,opsz,wght].ttf -> fonts/fraunces-afm291-journal-entries.woff2 (82,980 bytes, 110 codepoints); Source Serif 4: SourceSerif4[opsz,wght].ttf -> fonts/sourceserif4-afm291-journal-entries.woff2 (151,624 bytes, 113 codepoints); Bricolage Grotesque: BricolageGrotesque[opsz,wdth,wght].ttf -> fonts/bricolagegrotesque-afm291-journal-entries.woff2 (117,916 bytes, 111 codepoints); JetBrains Mono: JetBrainsMono[wght].ttf -> fonts/jetbrainsmono-afm291-journal-entries.woff2 (34,340 bytes, 113 codepoints). The Google Fonts link and its preconnects are replaced by @font-face rules under the same family names; no other rule in the piece changed.",
+    "Main landmark: role=\"main\" on div class=\"page\".",
+    "Table headers: in 2 tables whose header row opens with an empty cell, 8 row-label cells became th scope=\"row\" (tag only; the text is unchanged) so every data cell has a header; a rule keeps them looking as they did.",
+    "Colour contrast: variable --ink-muted #8a857d to #6d6867 (4.7:1 on #f2ede0, 1 uses); variable --ifrs #a66e2c to #925f27 (4.74:1 on #ecf2e8, 1 uses).",
+    "Dark palette: 20 colour tokens redeclared for a dark scheme and for data-theme=\"dark\" by rule (surfaces deep, ink near-white, accents lifted), 0 text tokens lifted to 4.5:1 on the darkest surface (#1c1911); 37 literal colour declarations re-emitted under the same selectors with the literal mapped; 0 inline literal styles left as they are; a print block restores the light tokens. The rendered dark audit's result is recorded beside this note.",
+    "Rendered contrast audit (lh/dark-audit.mjs, headless Chrome at 1440, every visible element with its own text against its nearest opaque background): dark scheme 366 elements checked, 0 below the AA floor; light scheme 0 below the floor."
+   ],
+   "strikes": [
+    {
+     "text": "Dollar figures are illustrations from your reference; confirm them against the matching problem (see Verification Pass at the end).",
+     "residue": ""
+    },
+    {
+     "text": "Account names and entry forms are taken directly from your uploaded reference and the exam appendix.",
+     "residue": ""
+    }
+   ],
+   "contrast": [
+    {
+     "kind": "variable",
+     "var": "--ink-muted",
+     "from": "#8a857d",
+     "to": "#6d6867",
+     "ratio": 4.7,
+     "uses": 1,
+     "worst_bg": "#f2ede0",
+     "n": 68
+    },
+    {
+     "kind": "variable",
+     "var": "--ifrs",
+     "from": "#a66e2c",
+     "to": "#925f27",
+     "ratio": 4.74,
+     "uses": 1,
+     "worst_bg": "#ecf2e8",
+     "n": 5
+    }
+   ],
+   "dark_palette": [
+    {
+     "token": "--paper",
+     "light": "#faf7f0",
+     "dark": "#2f291c"
+    },
+    {
+     "token": "--paper-edge",
+     "light": "#f2ede0",
+     "dark": "#262217"
+    },
+    {
+     "token": "--ink",
+     "light": "#1a1714",
+     "dark": "#dfdad5"
+    },
+    {
+     "token": "--ink-soft",
+     "light": "#4a4540",
+     "dark": "#cecac6"
+    },
+    {
+     "token": "--ink-muted",
+     "light": "#6d6867",
+     "dark": "#a09b9a"
+    },
+    {
+     "token": "--rule",
+     "light": "#d9d2c2",
+     "dark": "#6b5f43"
+    },
+    {
+     "token": "--rule-soft",
+     "light": "#e8e2d2",
+     "dark": "#776840"
+    },
+    {
+     "token": "--demand",
+     "light": "#b53a2b",
+     "dark": "#dc776a"
+    },
+    {
+     "token": "--demand-tint",
+     "light": "#fbeeeb",
+     "dark": "#2d1f1b"
+    },
+    {
+     "token": "--supply",
+     "light": "#3f6b3a",
+     "dark": "#b9d3b6"
+    },
+    {
+     "token": "--supply-tint",
+     "light": "#ecf2e8",
+     "dark": "#1f2918"
+    },
+    {
+     "token": "--ifrs",
+     "light": "#925f27",
+     "dark": "#d0c1b1"
+    },
+    {
+     "token": "--ifrs-tint",
+     "light": "#f8efdd",
+     "dark": "#272217"
+    },
+    {
+     "token": "--aspe",
+     "light": "#355971",
+     "dark": "#b6c7d3"
+    },
+    {
+     "token": "--aspe-tint",
+     "light": "#e5ecf2",
+     "dark": "#182028"
+    },
+    {
+     "token": "--warn",
+     "light": "#8e6a1f",
+     "dark": "#d2c8b4"
+    },
+    {
+     "token": "--warn-tint",
+     "light": "#f8efd7",
+     "dark": "#252116"
+    },
+    {
+     "token": "--dr",
+     "light": "#355971",
+     "dark": "#b6c7d3"
+    },
+    {
+     "token": "--cr",
+     "light": "#b53a2b",
+     "dark": "#dc776a"
+    },
+    {
+     "token": "--page-ground",
+     "light": "#e8e1d1",
+     "dark": "#1c1911"
+    }
+   ],
+   "kept": [
+    "Second-person and assistant-voice wording left in place: 1 phrases (your textbook, your source, per your instruction, I've flagged) in sentences that carry a gap statement, a verification caveat, a scope decision or a legend; striking them would take the claim or the caveat with them, and paraphrase was ruled out."
+   ]
+  },
+  "afm291-study-system": {
+   "changes": [
+    "title",
+    "em dashes",
+    "built_from",
+    "contrast",
+    "accessibility",
+    "target size",
+    "type floor",
+    "measure"
+   ],
+   "notes": [
+    "Title tag normalised to title, separator, site name. It read “AFM 291 — Interactive Visual Study System”.",
+    "Em dashes: 3 replaced by rule (colon in a heading 1, comma 2); 0 kept (none).",
+    "Colour contrast: variable --muted #898781 to #706c6c (4.67:1 on #f3f3f1, 1 uses); variable --acc #2a78d6 to #2168b6 (4.73:1 on #e4ecf4, 1 uses); variable --t1 #2a78d6 to #2168b6 (4.73:1 on #e4ecf4, 1 uses); chip background #2a78d6 to #2774ce (4.69:1 on #ffffff, 0 uses). Not resolved here: #b46546 on #f8eee9 (10); #9a6f13 on #f9f0dc,#fcf3e0 (4); #a85f42 on #f7ebe4 (1).",
+    "The view-mode switch's role=\"tablist\" became role=\"group\": its buttons are not tabs, and a tab list may not hold plain buttons.",
+    "Breadcrumb buttons (.crumb) are at least 24 px tall: padding 4px 10px and min-height 24px, at 11 px instead of 10.5 px.",
+    "Every declared text size under 11 px (10, 10.5, 9.5 px) is now 11 px, in the stylesheet and in the font shorthands; the SVG micro-labels included.",
+    "The conflict badge mixes 48% of its accent into the ink instead of 70%, clearing contrast like the verify badge and the warning leaf.",
+    "Every diagram the page's script draws with role=\"img\" carries the accessible name \"Diagram, drawn by this page\": the helper that builds them is shared, so a truer per-diagram name would need each caller to pass one, which is listed for the owner. An attribute, not readable text.",
+    "Measure: .blnote, the widest text block the survey found on the page, is held to the reading measure (max-width:66ch)."
+   ],
+   "contrast": [
+    {
+     "kind": "variable",
+     "var": "--muted",
+     "from": "#898781",
+     "to": "#706c6c",
+     "ratio": 4.67,
+     "uses": 1,
+     "worst_bg": "#f3f3f1",
+     "n": 414
+    },
+    {
+     "kind": "variable",
+     "var": "--acc",
+     "from": "#2a78d6",
+     "to": "#2168b6",
+     "ratio": 4.73,
+     "uses": 1,
+     "worst_bg": "#e4ecf4",
+     "n": 26
+    },
+    {
+     "kind": "variable",
+     "var": "--t1",
+     "from": "#2a78d6",
+     "to": "#2168b6",
+     "ratio": 4.73,
+     "uses": 1,
+     "worst_bg": "#e4ecf4",
+     "n": 26
+    },
+    {
+     "kind": "unresolved",
+     "from": "#b46546",
+     "bgs": [
+      "#f8eee9"
+     ],
+     "n": 10,
+     "note": "colour not found as a literal in the file (computed at runtime or an alpha blend)"
+    },
+    {
+     "kind": "chip background",
+     "from": "#2a78d6",
+     "to": "#2774ce",
+     "ratio": 4.69,
+     "uses": 0,
+     "text": "#ffffff"
+    },
+    {
+     "kind": "unresolved",
+     "from": "#9a6f13",
+     "bgs": [
+      "#f9f0dc",
+      "#fcf3e0"
+     ],
+     "n": 4,
+     "note": "colour not found as a literal in the file (computed at runtime or an alpha blend)"
+    },
+    {
+     "kind": "unresolved",
+     "from": "#a85f42",
+     "bgs": [
+      "#f7ebe4"
+     ],
+     "n": 1,
+     "note": "colour not found as a literal in the file (computed at runtime or an alpha blend)"
+    }
+   ]
+  },
+  "crucible-run-0": {
+   "changes": [
+    "title",
+    "built_from",
+    "measure"
+   ],
+   "notes": [
+    "Title tag normalised to title, separator, site name. It read “Crucible Cockpit · Run 0 — The Bank of Canada backtest”.",
+    "Measure: the shared case-method stylesheet now holds concession paragraphs, claim texts, falsifiers and source lines to 70ch (styling only on the frozen pieces); the family's running text was already at 66ch."
+   ]
+  },
+  "crucible-run-b": {
+   "changes": [
+    "title",
+    "built_from",
+    "measure"
+   ],
+   "notes": [
+    "Title tag normalised to title, separator, site name. It read “Crucible Cockpit · Run B — The maturity-wall thesis”.",
+    "Measure: the shared case-method stylesheet now holds concession paragraphs, claim texts, falsifiers and source lines to 70ch (styling only on the frozen pieces); the family's running text was already at 66ch."
+   ]
+  },
+  "crucible-run-c": {
+   "changes": [
+    "title",
+    "built_from",
+    "measure"
+   ],
+   "notes": [
+    "Title tag normalised to title, separator, site name. It read “Crucible Cockpit · Run C — The goodwill-impairment thesis”.",
+    "Measure: the shared case-method stylesheet now holds concession paragraphs, claim texts, falsifiers and source lines to 70ch (styling only on the frozen pieces); the family's running text was already at 66ch."
+   ]
+  },
+  "econ102-exam-trainer": {
+   "changes": [
+    "title",
+    "em dashes",
+    "built_from",
+    "main landmark",
+    "contrast"
+   ],
+   "notes": [
+    "Title tag normalised to title, separator, site name. It read “ECON 102 — Interactive Exam Trainer”.",
+    "Em dashes: 32 replaced by rule (commas 1, colon in a heading 1, comma 30); 38 kept (a nil placeholder standing alone 38).",
+    "Main landmark: role=\"main\" on div class=\"wrap\".",
+    "Colour contrast: variable --s1 #2a78d6 to #226aba (4.71:1 on #eeeeeb, 1 uses); variable --ink-3 #8b8a85 to #6d6969 (4.66:1 on #eeeeeb, 1 uses); variable --s3 #1baf7a to #0e7653 (4.84:1 on #eeeeeb, 1 uses); chip background #2a78d6 to #2774ce (4.69:1 on #ffffff, 0 uses); variable --s2 #eb6834 to #c54614 (4.8:1 on #fcfcfb, 1 uses). Not resolved here: #c0c0be on #f2f2f0 (1)."
+   ],
+   "contrast": [
+    {
+     "kind": "variable",
+     "var": "--s1",
+     "from": "#2a78d6",
+     "to": "#226aba",
+     "ratio": 4.71,
+     "uses": 1,
+     "worst_bg": "#eeeeeb",
+     "n": 28
+    },
+    {
+     "kind": "variable",
+     "var": "--ink-3",
+     "from": "#8b8a85",
+     "to": "#6d6969",
+     "ratio": 4.66,
+     "uses": 1,
+     "worst_bg": "#eeeeeb",
+     "n": 17
+    },
+    {
+     "kind": "variable",
+     "var": "--s3",
+     "from": "#1baf7a",
+     "to": "#0e7653",
+     "ratio": 4.84,
+     "uses": 1,
+     "worst_bg": "#eeeeeb",
+     "n": 18
+    },
+    {
+     "kind": "chip background",
+     "from": "#2a78d6",
+     "to": "#2774ce",
+     "ratio": 4.69,
+     "uses": 0,
+     "text": "#ffffff"
+    },
+    {
+     "kind": "variable",
+     "var": "--s2",
+     "from": "#eb6834",
+     "to": "#c54614",
+     "ratio": 4.8,
+     "uses": 1,
+     "worst_bg": "#fcfcfb",
+     "n": 3
+    },
+    {
+     "kind": "unresolved",
+     "from": "#c0c0be",
+     "bgs": [
+      "#f2f2f0"
+     ],
+     "n": 1,
+     "note": "colour not found as a literal in the file (computed at runtime or an alpha blend)"
+    }
+   ]
+  },
+  "econ102-visual-reference": {
+   "changes": [
+    "title",
+    "em dashes",
+    "built_from",
+    "main landmark",
+    "contrast"
+   ],
+   "notes": [
+    "Title tag normalised to title, separator, site name. It read “ECON 102 — Master Visual Reference”.",
+    "Em dashes: 103 replaced by rule (commas 1, parentheses 1, colon 11, colon in a heading 24, comma 66); 4 kept (a nil placeholder standing alone 4).",
+    "Main landmark: role=\"main\" on div class=\"wrap\".",
+    "Colour contrast: variable --ink-3 #8b8a85 to #6d6969 (4.66:1 on #eeeeeb, 1 uses); variable --s3 #1baf7a to #0f7b56 (4.78:1 on #f4f4f2, 1 uses); variable --s1 #2a78d6 to #246ec2 (4.67:1 on #f4f4f2, 1 uses); variable --s2 #eb6834 to #c04414 (4.68:1 on #f4f4f2, 1 uses)."
+   ],
+   "contrast": [
+    {
+     "kind": "variable",
+     "var": "--ink-3",
+     "from": "#8b8a85",
+     "to": "#6d6969",
+     "ratio": 4.66,
+     "uses": 1,
+     "worst_bg": "#eeeeeb",
+     "n": 50
+    },
+    {
+     "kind": "variable",
+     "var": "--s3",
+     "from": "#1baf7a",
+     "to": "#0f7b56",
+     "ratio": 4.78,
+     "uses": 1,
+     "worst_bg": "#f4f4f2",
+     "n": 17
+    },
+    {
+     "kind": "variable",
+     "var": "--s1",
+     "from": "#2a78d6",
+     "to": "#246ec2",
+     "ratio": 4.67,
+     "uses": 1,
+     "worst_bg": "#f4f4f2",
+     "n": 8
+    },
+    {
+     "kind": "variable",
+     "var": "--s2",
+     "from": "#eb6834",
+     "to": "#c04414",
+     "ratio": 4.68,
+     "uses": 1,
+     "worst_bg": "#f4f4f2",
+     "n": 3
+    }
+   ]
+  },
+  "exam-day-final-load": {
+   "changes": [
+    "title",
+    "em dashes",
+    "built_from",
+    "main landmark",
+    "contrast"
+   ],
+   "notes": [
+    "Title tag normalised to title, separator, site name. It read “Exam Day — Final Load”.",
+    "Em dashes: 10 replaced by rule (colon 2, colon in a heading 2, comma 4, dropped after punctuation 2); 0 kept (none).",
+    "Main landmark: role=\"main\" on div class=\"wrap\".",
+    "Colour contrast: variable --s1 #2a78d6 to #226aba (4.71:1 on #eeeeeb, 1 uses); variable --ink-3 #8b8a85 to #6d6969 (4.66:1 on #eeeeeb, 1 uses); chip background #2a78d6 to #2774ce (4.69:1 on #ffffff, 0 uses); chip background #4a8cdc to #2a74d3 (4.63:1 on #ffffff, 0 uses); variable --s2 #eb6834 to #bb4214 (4.63:1 on #eeeeeb, 1 uses). Not resolved here: #dfebf9 on #2a78d6 (1).",
+    "The corner box's label reads at full strength (opacity .85 removed) and its highlighted terms sit on a darker tint of the box rather than a lighter one."
+   ],
+   "contrast": [
+    {
+     "kind": "variable",
+     "var": "--s1",
+     "from": "#2a78d6",
+     "to": "#226aba",
+     "ratio": 4.71,
+     "uses": 1,
+     "worst_bg": "#eeeeeb",
+     "n": 11
+    },
+    {
+     "kind": "variable",
+     "var": "--ink-3",
+     "from": "#8b8a85",
+     "to": "#6d6969",
+     "ratio": 4.66,
+     "uses": 1,
+     "worst_bg": "#eeeeeb",
+     "n": 7
+    },
+    {
+     "kind": "chip background",
+     "from": "#2a78d6",
+     "to": "#2774ce",
+     "ratio": 4.69,
+     "uses": 0,
+     "text": "#ffffff"
+    },
+    {
+     "kind": "chip background",
+     "from": "#4a8cdc",
+     "to": "#2a74d3",
+     "ratio": 4.63,
+     "uses": 0,
+     "text": "#ffffff"
+    },
+    {
+     "kind": "variable",
+     "var": "--s2",
+     "from": "#eb6834",
+     "to": "#bb4214",
+     "ratio": 4.63,
+     "uses": 1,
+     "worst_bg": "#eeeeeb",
+     "n": 1
+    },
+    {
+     "kind": "unresolved",
+     "from": "#dfebf9",
+     "bgs": [
+      "#2a78d6"
+     ],
+     "n": 1,
+     "note": "colour not found as a literal in the file (computed at runtime or an alpha blend)"
+    }
+   ]
+  },
+  "heartbeat-budget": {
+   "changes": [
+    "title",
+    "built_from",
+    "main landmark",
+    "heading order",
+    "contrast"
+   ],
+   "notes": [
+    "Title tag normalised to title, separator, site name. It read “Does caffeine spend your heartbeat budget?”.",
+    "Main landmark: role=\"main\" on div class=\"wrap\".",
+    "Heading order: 1 headings that skipped a level keep their tag and text and carry aria-level for the level the outline needs (h3 read as level 2).",
+    "Colour contrast: variable --text-muted #898781 to #736f6f (4.71:1 on #f9f9f7, 1 uses)."
+   ],
+   "contrast": [
+    {
+     "kind": "variable",
+     "var": "--text-muted",
+     "from": "#898781",
+     "to": "#736f6f",
+     "ratio": 4.71,
+     "uses": 1,
+     "worst_bg": "#f9f9f7",
+     "n": 39
+    }
+   ]
+  },
+  "monroe-case-file": {
+   "changes": [
+    "title",
+    "em dashes",
+    "built_from",
+    "fonts",
+    "main landmark",
+    "contrast",
+    "dark palette"
+   ],
+   "notes": [
+    "Title tag normalised to title, separator, site name. It read “Case file — Aug 4–5, 1962”.",
+    "Em dashes: 6 replaced by rule (parentheses 1, comma 5); 0 kept (none).",
+    "Typefaces self-hosted: Playfair Display: PlayfairDisplay[wght].ttf -> fonts/playfairdisplay-monroe-case-file.woff2 (36,124 bytes, 111 codepoints); IBM Plex Sans: IBMPlexSans[wdth,wght].ttf -> fonts/ibmplexsans-monroe-case-file.woff2 (48,300 bytes, 111 codepoints); IBM Plex Mono: IBMPlexMono-Regular.ttf -> fonts/ibmplexmono-monroe-case-file-400.woff2 (10,868 bytes, 111 codepoints); IBM Plex Mono: IBMPlexMono-Medium.ttf -> fonts/ibmplexmono-monroe-case-file-500.woff2 (11,052 bytes, 111 codepoints); IBM Plex Mono: IBMPlexMono-SemiBold.ttf -> fonts/ibmplexmono-monroe-case-file-600.woff2 (11,748 bytes, 111 codepoints). The Google Fonts link and its preconnects are replaced by @font-face rules under the same family names; no other rule in the piece changed.",
+    "Main landmark: role=\"main\" on div class=\"wrap\".",
+    "Colour contrast: variable --contested #7a6330 to #725d2e (4.7:1 on #e4dec9, 1 uses); variable --gold #7a6330 to #725d2e (4.7:1 on #e4dec9, 1 uses); variable --muted #82806d to #615f57 (4.75:1 on #e4dec9, 1 uses); chip background #82806d to #767465 (4.71:1 on #ffffff, 0 uses).",
+    "Dark palette: 13 colour tokens redeclared for a dark scheme and for data-theme=\"dark\" by rule (surfaces deep, ink near-white, accents lifted), 0 text tokens lifted to 4.5:1 on the darkest surface (#221f15); 35 literal colour declarations re-emitted under the same selectors with the literal mapped; 0 inline literal styles left as they are; a print block restores the light tokens. The rendered dark audit's result is recorded beside this note.",
+    "Rendered contrast audit (lh/dark-audit.mjs, headless Chrome at 1440, every visible element with its own text against its nearest opaque background): dark scheme 42 elements checked, 0 below the AA floor; light scheme 0 below the floor."
+   ],
+   "contrast": [
+    {
+     "kind": "variable",
+     "var": "--contested",
+     "from": "#7a6330",
+     "to": "#725d2e",
+     "ratio": 4.7,
+     "uses": 1,
+     "worst_bg": "#e4dec9",
+     "n": 2
+    },
+    {
+     "kind": "variable",
+     "var": "--gold",
+     "from": "#7a6330",
+     "to": "#725d2e",
+     "ratio": 4.7,
+     "uses": 1,
+     "worst_bg": "#e4dec9",
+     "n": 2
+    },
+    {
+     "kind": "variable",
+     "var": "--muted",
+     "from": "#82806d",
+     "to": "#615f57",
+     "ratio": 4.75,
+     "uses": 1,
+     "worst_bg": "#e4dec9",
+     "n": 3
+    },
+    {
+     "kind": "chip background",
+     "from": "#82806d",
+     "to": "#767465",
+     "ratio": 4.71,
+     "uses": 0,
+     "text": "#ffffff"
+    }
+   ],
+   "dark_palette": [
+    {
+     "token": "--paper",
+     "light": "#e4dec9",
+     "dark": "#2d291b"
+    },
+    {
+     "token": "--card",
+     "light": "#efeada",
+     "dark": "#221f15"
+    },
+    {
+     "token": "--card-light",
+     "light": "#f7f4e9",
+     "dark": "#2b271a"
+    },
+    {
+     "token": "--ink",
+     "light": "#1c2130",
+     "dark": "#cacedb"
+    },
+    {
+     "token": "--ink-soft",
+     "light": "#4e5468",
+     "dark": "#b8bcca"
+    },
+    {
+     "token": "--muted",
+     "light": "#615f57",
+     "dark": "#c4c3bd"
+    },
+    {
+     "token": "--rule",
+     "light": "#c7be9f",
+     "dark": "#645b3a"
+    },
+    {
+     "token": "--wire",
+     "light": "#9c2b1d",
+     "dark": "#d0b4b1"
+    },
+    {
+     "token": "--wire-deep",
+     "light": "#6b1d12",
+     "dark": "#d9c3c0"
+    },
+    {
+     "token": "--gold",
+     "light": "#725d2e",
+     "dark": "#d4cbb7"
+    },
+    {
+     "token": "--solid",
+     "light": "#1c2130",
+     "dark": "#cacedb"
+    },
+    {
+     "token": "--contested",
+     "light": "#725d2e",
+     "dark": "#d4cbb7"
+    },
+    {
+     "token": "--thin",
+     "light": "#9c2b1d",
+     "dark": "#d0b4b1"
+    }
+   ]
+  },
+  "positive-vs-normative": {
+   "changes": [
+    "title",
+    "em dashes",
+    "built_from",
+    "main landmark",
+    "table headers",
+    "contrast"
+   ],
+   "notes": [
+    "Title tag normalised to title, separator, site name. It read “ECON 102 — Positive vs Normative [Slides 5–6]”.",
+    "Em dashes: 12 replaced by rule (parentheses 1, colon in a heading 2, comma 9); 0 kept (none).",
+    "Main landmark: role=\"main\" on div class=\"wrap\".",
+    "Table headers: in 1 tables whose header row opens with an empty cell, 7 row-label cells became th scope=\"row\" (tag only; the text is unchanged) so every data cell has a header; a rule keeps them looking as they did.",
+    "Colour contrast: variable --pos #1f6feb to #1465e2 (4.67:1 on #eaf2fe, 1 uses); variable --norm #a8600b to #a35d0b (4.63:1 on #fdf3e3, 1 uses)."
+   ],
+   "contrast": [
+    {
+     "kind": "variable",
+     "var": "--pos",
+     "from": "#1f6feb",
+     "to": "#1465e2",
+     "ratio": 4.67,
+     "uses": 1,
+     "worst_bg": "#eaf2fe",
+     "n": 2
+    },
+    {
+     "kind": "variable",
+     "var": "--norm",
+     "from": "#a8600b",
+     "to": "#a35d0b",
+     "ratio": 4.63,
+     "uses": 1,
+     "worst_bg": "#fdf3e3",
+     "n": 1
+    }
+   ]
+  },
+  "practice-arena": {
+   "changes": [
+    "title",
+    "em dashes",
+    "built_from",
+    "heading order",
+    "contrast"
+   ],
+   "notes": [
+    "Title tag normalised to title, separator, site name. It read “AFM 291 — Practice Arena”.",
+    "Em dashes: 4 replaced by rule (comma 4); 0 kept (none).",
+    "Heading order: 1 headings that skipped a level keep their tag and text and carry aria-level for the level the outline needs (h3 read as level 2).",
+    "Colour contrast: variable --muted #898781 to #736f6f (4.71:1 on #f9f9f7, 1 uses); variable --acc #2a78d6 to #2672ca (4.71:1 on #fcfcfb, 1 uses). Not resolved here: #87b2e5 on #fbfbf9 (11); #bbbab6 on #fbfbf9 (11).",
+    "Module tiles: 1 locked-state rules no longer fade the whole tile by opacity (the faded text failed contrast), and the tile's score and number read at 11 px in the ink grey and the accent."
+   ],
+   "contrast": [
+    {
+     "kind": "unresolved",
+     "from": "#87b2e5",
+     "bgs": [
+      "#fbfbf9"
+     ],
+     "n": 11,
+     "note": "colour not found as a literal in the file (computed at runtime or an alpha blend)"
+    },
+    {
+     "kind": "unresolved",
+     "from": "#bbbab6",
+     "bgs": [
+      "#fbfbf9"
+     ],
+     "n": 11,
+     "note": "colour not found as a literal in the file (computed at runtime or an alpha blend)"
+    },
+    {
+     "kind": "variable",
+     "var": "--muted",
+     "from": "#898781",
+     "to": "#736f6f",
+     "ratio": 4.71,
+     "uses": 1,
+     "worst_bg": "#f9f9f7",
+     "n": 2
+    },
+    {
+     "kind": "variable",
+     "var": "--acc",
+     "from": "#2a78d6",
+     "to": "#2672ca",
+     "ratio": 4.71,
+     "uses": 1,
+     "worst_bg": "#fcfcfb",
+     "n": 1
+    }
+   ],
+   "kept": [
+    "Second-person and assistant-voice wording left in place: 1 phrases (your textbook, your source, per your instruction, I've flagged) in sentences that carry a gap statement, a verification caveat, a scope decision or a legend; striking them would take the claim or the caveat with them, and paraphrase was ruled out."
+   ]
+  },
+  "predictive-history-archive": {
+   "changes": [
+    "title",
+    "built_from",
+    "contrast",
+    "heading order"
+   ],
+   "notes": [
+    "Title tag normalised to title, separator, site name. It read “The Prophet and the Record · an adjudication of the Predictive History corpus”.",
+    "Styling only, as the freeze allows: the supersession banner's amber token is darker (#b8730f to #9a5f0c) so its white tag and the amber figures clear contrast, and the banner's table headers no longer sit at opacity .7. No text changed.",
+    "Heading order: 1 headings that skipped a level keep their tag and text and carry aria-level for the level the outline needs (h3 read as level 2).",
+    "Styling only: the muted text token is darker (#6f6d68 to #63615c) so the pattern and mental-model labels clear 4.5:1 on their tinted asides."
+   ]
+  },
+  "skill-forge": {
+   "changes": [
+    "title",
+    "built_from",
+    "heading order",
+    "contrast"
+   ],
+   "notes": [
+    "Title tag normalised to title, separator, site name. It read “AFM 291 · Skill Forge”.",
+    "Heading order: 1 headings that skipped a level keep their tag and text and carry aria-level for the level the outline needs (h3 read as level 2).",
+    "Colour contrast: variable --muted #898781 to #736f6f (4.71:1 on #f9f9f7, 1 uses); variable --acc #2a78d6 to #2672ca (4.71:1 on #fcfcfb, 1 uses). Not resolved here: #87b2e5 on #fbfbf9 (11); #bbbab6 on #fbfbf9 (11).",
+    "Module tiles: 1 locked-state rules no longer fade the whole tile by opacity (the faded text failed contrast), and the tile's score and number read at 11 px in the ink grey and the accent."
+   ],
+   "contrast": [
+    {
+     "kind": "unresolved",
+     "from": "#87b2e5",
+     "bgs": [
+      "#fbfbf9"
+     ],
+     "n": 11,
+     "note": "colour not found as a literal in the file (computed at runtime or an alpha blend)"
+    },
+    {
+     "kind": "unresolved",
+     "from": "#bbbab6",
+     "bgs": [
+      "#fbfbf9"
+     ],
+     "n": 11,
+     "note": "colour not found as a literal in the file (computed at runtime or an alpha blend)"
+    },
+    {
+     "kind": "variable",
+     "var": "--muted",
+     "from": "#898781",
+     "to": "#736f6f",
+     "ratio": 4.71,
+     "uses": 1,
+     "worst_bg": "#f9f9f7",
+     "n": 2
+    },
+    {
+     "kind": "variable",
+     "var": "--acc",
+     "from": "#2a78d6",
+     "to": "#2672ca",
+     "ratio": 4.71,
+     "uses": 1,
+     "worst_bg": "#fcfcfb",
+     "n": 1
+    }
+   ],
+   "kept": [
+    "Second-person and assistant-voice wording left in place: 1 phrases (your textbook, your source, per your instruction, I've flagged) in sentences that carry a gap statement, a verification caveat, a scope decision or a legend; striking them would take the claim or the caveat with them, and paraphrase was ruled out."
+   ]
+  },
+  "crucible-cockpit": {
+   "changes": [
+    "em dashes",
+    "built_from",
+    "measure"
+   ],
+   "notes": [
+    "Em dashes: 6 replaced by rule (parentheses 2, comma 4); 0 kept (none).",
+    "Measure: the shared case-method stylesheet now holds concession paragraphs, claim texts, falsifiers and source lines to 70ch (styling only on the frozen pieces); the family's running text was already at 66ch."
+   ]
+  },
+  "ifrs15-judgment-trainer": {
+   "changes": [
+    "em dashes",
+    "built_from",
+    "fonts",
+    "contrast"
+   ],
+   "notes": [
+    "Em dashes: 0 replaced by rule (); 1 kept (a nil placeholder standing alone 1).",
+    "Typefaces self-hosted: IBM Plex Mono: IBMPlexMono-Regular.ttf -> fonts/ibmplexmono-ifrs15-judgment-trainer-400.woff2 (10,672 bytes, 110 codepoints); IBM Plex Mono: IBMPlexMono-Medium.ttf -> fonts/ibmplexmono-ifrs15-judgment-trainer-500.woff2 (10,928 bytes, 110 codepoints); IBM Plex Sans: IBMPlexSans[wdth,wght].ttf -> fonts/ibmplexsans-ifrs15-judgment-trainer.woff2 (48,232 bytes, 110 codepoints); Spectral: Spectral-Regular.ttf -> fonts/spectral-ifrs15-judgment-trainer-400.woff2 (26,996 bytes, 109 codepoints); Spectral: Spectral-Medium.ttf -> fonts/spectral-ifrs15-judgment-trainer-500.woff2 (28,400 bytes, 109 codepoints); Spectral: Spectral-SemiBold.ttf -> fonts/spectral-ifrs15-judgment-trainer-600.woff2 (28,824 bytes, 109 codepoints); Spectral: Spectral-Italic.ttf -> fonts/spectral-ifrs15-judgment-trainer-400-italic.woff2 (28,084 bytes, 109 codepoints). The Google Fonts link and its preconnects are replaced by @font-face rules under the same family names; no other rule in the piece changed.",
+    "Colour contrast: variable --ink-3 #6b7571 to #656c68 (4.78:1 on #f0f2ef, 1 uses)."
+   ],
+   "contrast": [
+    {
+     "kind": "variable",
+     "var": "--ink-3",
+     "from": "#6b7571",
+     "to": "#656c68",
+     "ratio": 4.78,
+     "uses": 1,
+     "worst_bg": "#f0f2ef",
+     "n": 18
+    }
+   ]
+  },
+  "predictive-history": {
+   "changes": [
+    "em dashes",
+    "built_from",
+    "heading order",
+    "accessibility"
+   ],
+   "notes": [
+    "Em dashes: 8 replaced by rule (commas 1, comma 6, dropped after punctuation 1); 1 kept (inside a quotation 1).",
+    "Heading order: 12 headings that skipped a level keep their tag and text and carry aria-level for the level the outline needs (h5 read as level 2, h5 read as level 3, h5 read as level 4, h5 read as level 3, h5 read as level 4, h5 read as level 3, h5 read as level 4, h5 read as level 3, h5 read as level 4, h5 read as level 3, h5 read as level 4, h4 read as level 3).",
+    "The 15 map nodes' aria-labels now begin with the text each node shows (the name and its fraction), so the accessible name contains the visible label; the rest of each label is unchanged.",
+    "The map aside's two script-written headings carry aria-level 3.",
+    "Each map node's count label (15 of them) is aria-hidden: the node's accessible name already states the count and the resolved share, and the audit's name-mismatch rule reads the two text runs as one word.",
+    "Two last audit items: 12 bare h5 tags the map aside's script writes carry aria-level 3 (the aside sits under a section heading), and a space now separates each map node's name from its count so the visible text reads as two words, which is what the node's accessible name states."
+   ]
+  },
+  "the-trillion-dollar-vintage": {
+   "changes": [
+    "em dashes",
+    "Canadian spelling",
+    "built_from",
+    "heading order",
+    "spacing"
+   ],
+   "notes": [
+    "Em dashes: 209 replaced by rule (commas 19, parentheses 17, colon 30, comma 142, dropped after punctuation 1); 1 kept (inside a quotation 1).",
+    "Canadian spelling: 17 words changed (center to centre 2, favor to favour 1, favorable to favourable 1, favorite to favourite 2, favors to favours 2, fiber to fibre 4, labeled to labelled 2, modeled to modelled 1, modeling to modelling 1, rumor to rumour 1).",
+    "Heading order: 1 headings that skipped a level keep their tag and text and carry aria-level for the level the outline needs (h3 read as level 2).",
+    "Stray space before punctuation removed in 6 places (a non-breaking space or a line break that the dash rules left before a comma or a colon; a space before a semicolon in one publisher name)."
+   ],
+   "spellings": [
+    {
+     "from": "center",
+     "to": "centre"
+    },
+    {
+     "from": "favor",
+     "to": "favour"
+    },
+    {
+     "from": "favorable",
+     "to": "favourable"
+    },
+    {
+     "from": "favorite",
+     "to": "favourite"
+    },
+    {
+     "from": "favors",
+     "to": "favours"
+    },
+    {
+     "from": "fiber",
+     "to": "fibre"
+    },
+    {
+     "from": "labeled",
+     "to": "labelled"
+    },
+    {
+     "from": "modeled",
+     "to": "modelled"
+    },
+    {
+     "from": "modeling",
+     "to": "modelling"
+    },
+    {
+     "from": "rumor",
+     "to": "rumour"
+    }
+   ]
+  },
+  "whose-losses-count": {
+   "changes": [
+    "em dashes",
+    "built_from",
+    "heading order",
+    "table headers",
+    "contrast"
+   ],
+   "notes": [
+    "Em dashes: 30 replaced by rule (commas 4, parentheses 2, colon 6, comma 11, dropped after punctuation 7); 5 kept (a nil placeholder standing alone 1, inside a quotation 4).",
+    "Heading order: 7 headings that skipped a level keep their tag and text and carry aria-level for the level the outline needs (h4 read as level 3, h4 read as level 3, h4 read as level 3, h4 read as level 3, h4 read as level 3, h4 read as level 3, h4 read as level 3).",
+    "Table headers: in 2 tables whose header row opens with an empty cell, 8 row-label cells became th scope=\"row\" (tag only; the text is unchanged) so every data cell has a header; a rule keeps them looking as they did.",
+    "Colour contrast: variable --outside #e34948 to #db2928 (4.69:1 on #fcfcfb, 1 uses); variable --inside #2a78d6 to #2672ca (4.71:1 on #fcfcfb, 1 uses)."
+   ],
+   "contrast": [
+    {
+     "kind": "variable",
+     "var": "--outside",
+     "from": "#e34948",
+     "to": "#db2928",
+     "ratio": 4.69,
+     "uses": 1,
+     "worst_bg": "#fcfcfb",
+     "n": 6
+    },
+    {
+     "kind": "variable",
+     "var": "--inside",
+     "from": "#2a78d6",
+     "to": "#2672ca",
+     "ratio": 4.71,
+     "uses": 1,
+     "worst_bg": "#fcfcfb",
+     "n": 1
+    }
+   ]
+  },
+  "not-significant": {
+   "changes": [
+    "em dashes",
+    "built_from",
+    "main landmark",
+    "contrast"
+   ],
+   "notes": [
+    "Em dashes: 38 replaced by rule (commas 9, parentheses 2, colon 2, colon in a heading 1, comma 20, dropped after punctuation 4); 2 kept (a nil placeholder standing alone 2).",
+    "Main landmark: role=\"main\" on div class=\"wrap\".",
+    "Colour contrast: variable --text-muted #8a8780 to #746f6e (4.74:1 on #fbfaf7, 1 uses)."
+   ],
+   "contrast": [
+    {
+     "kind": "variable",
+     "var": "--text-muted",
+     "from": "#8a8780",
+     "to": "#746f6e",
+     "ratio": 4.74,
+     "uses": 1,
+     "worst_bg": "#fbfaf7",
+     "n": 11
+    }
+   ]
+  },
+  "global-spending-and-wealth": {
+   "changes": [
+    "em dashes",
+    "built_from",
+    "main landmark"
+   ],
+   "notes": [
+    "Em dashes: 4 replaced by rule (parentheses 1, comma 2, dropped after punctuation 1); 18 kept (a nil placeholder standing alone 18).",
+    "One em dash remains inside a data-tip-op attribute (a tooltip the page's script shows on a figure cell); attributes other than alt, title, aria-label and placeholder were not edited, though the entity &mdash; there was normalised to the character.",
+    "Main landmark: role=\"main\" on div class=\"wrap\"."
+   ]
+  },
+  "the-calibrated-mind": {
+   "changes": [
+    "em dashes",
+    "built_from",
+    "table headers"
+   ],
+   "notes": [
+    "Em dashes: 27 replaced by rule (commas 2, colon 3, colon in a heading 3, comma 19); 3 kept (inside a quotation 3).",
+    "Table headers: in 1 tables whose header row opens with an empty cell, 3 row-label cells became th scope=\"row\" (tag only; the text is unchanged) so every data cell has a header; a rule keeps them looking as they did."
+   ]
+  },
+  "afm291": {
+   "changes": [
+    "em dashes",
+    "strikes",
+    "built_from"
+   ],
+   "notes": [
+    "Em dashes: 29 replaced by rule (colon 11, colon in a heading 3, comma 15); 7 kept (a nil placeholder standing alone 7).",
+    "8 sentences an assistant addressed to the owner struck; what each said the piece was built from is now the built_from line the bar renders."
+   ],
+   "strikes": [
+    {
+     "text": "Anything unlabelled is sourced from your textbook.",
+     "residue": ""
+    },
+    {
+     "text": "Upload the chapter.",
+     "residue": ""
+    },
+    {
+     "text": "Upload those pages.",
+     "residue": ""
+    },
+    {
+     "text": "Upload the pages or lecture slides.",
+     "residue": ""
+    },
+    {
+     "text": "Re-upload the exhibit images.",
+     "residue": ""
+    },
+    {
+     "text": "Upload the pages.",
+     "residue": ""
+    },
+    {
+     "text": "Upload the Appendix.",
+     "residue": ""
+    },
+    {
+     "text": "Upload if your syllabus covers it.",
+     "residue": ""
+    }
+   ],
+   "kept": [
+    "Second-person and assistant-voice wording left in place: 3 phrases (your textbook, your source, per your instruction, I've flagged) in sentences that carry a gap statement, a verification caveat, a scope decision or a legend; striking them would take the claim or the caveat with them, and paraphrase was ruled out."
+   ]
+  },
+  "us-canada-legal-architecture": {
+   "changes": [
+    "em dashes",
+    "built_from"
+   ],
+   "notes": [
+    "Em dashes: 32 replaced by rule (parentheses 2, colon 3, colon in a heading 7, comma 20); 2 kept (a nil placeholder standing alone 2)."
+   ]
+  },
+  "law-arena": {
+   "changes": [
+    "em dashes",
+    "built_from",
+    "heading order",
+    "contrast"
+   ],
+   "notes": [
+    "Em dashes: 5 replaced by rule (comma 5); 0 kept (none).",
+    "Heading order: 1 headings that skipped a level keep their tag and text and carry aria-level for the level the outline needs (h3 read as level 2).",
+    "Colour contrast: variable --muted #898781 to #736f6f (4.71:1 on #f9f9f7, 1 uses). Not resolved here: #cc8287 on #fbfbf9 (9); #bbbab6 on #fbfbf9 (9).",
+    "Module tiles: 1 locked-state rules no longer fade the whole tile by opacity (the faded text failed contrast), and the tile's score and number read at 11 px in the ink grey and the accent."
+   ],
+   "contrast": [
+    {
+     "kind": "unresolved",
+     "from": "#cc8287",
+     "bgs": [
+      "#fbfbf9"
+     ],
+     "n": 9,
+     "note": "colour not found as a literal in the file (computed at runtime or an alpha blend)"
+    },
+    {
+     "kind": "unresolved",
+     "from": "#bbbab6",
+     "bgs": [
+      "#fbfbf9"
+     ],
+     "n": 9,
+     "note": "colour not found as a literal in the file (computed at runtime or an alpha blend)"
+    },
+    {
+     "kind": "variable",
+     "var": "--muted",
+     "from": "#898781",
+     "to": "#736f6f",
+     "ratio": 4.71,
+     "uses": 1,
+     "worst_bg": "#f9f9f7",
+     "n": 2
+    }
+   ]
+  },
+  "revenue-recognition": {
+   "changes": [
+    "em dashes",
+    "built_from",
+    "fonts",
+    "contrast",
+    "measure"
+   ],
+   "notes": [
+    "Em dashes: 113 replaced by rule (commas 5, colon 37, colon in a heading 16, comma 55); 2 kept (a nil placeholder standing alone 2).",
+    "Typefaces self-hosted: Playfair Display: PlayfairDisplay[wght].ttf -> fonts/playfairdisplay-revenue-recognition.woff2 (36,328 bytes, 115 codepoints); Source Serif 4: SourceSerif4[opsz,wght].ttf -> fonts/sourceserif4-revenue-recognition.woff2 (152,012 bytes, 118 codepoints); Source Serif 4: SourceSerif4-Italic[opsz,wght].ttf -> fonts/sourceserif4-revenue-recognition-italic.woff2 (128,432 bytes, 118 codepoints); JetBrains Mono: JetBrainsMono[wght].ttf -> fonts/jetbrainsmono-revenue-recognition.woff2 (34,320 bytes, 117 codepoints). The Google Fonts link and its preconnects are replaced by @font-face rules under the same family names; no other rule in the piece changed.",
+    "Colour contrast: variable --gold #c8952a to #d4a032 (4.64:1 on #363e3d, 1 uses); variable --teal #2a8a7a to #2e9a86 (4.63:1 on #16232e, 1 uses); variable --rust #b84a2a to #d66b4d (4.62:1 on #16232e, 1 uses).",
+    "Measure: .cp-a, the widest text block the survey found on the page, is held to the reading measure (max-width:66ch)."
+   ],
+   "contrast": [
+    {
+     "kind": "variable",
+     "var": "--gold",
+     "from": "#c8952a",
+     "to": "#d4a032",
+     "ratio": 4.64,
+     "uses": 1,
+     "worst_bg": "#363e3d",
+     "n": 10
+    },
+    {
+     "kind": "variable",
+     "var": "--teal",
+     "from": "#2a8a7a",
+     "to": "#2e9a86",
+     "ratio": 4.63,
+     "uses": 1,
+     "worst_bg": "#16232e",
+     "n": 19
+    },
+    {
+     "kind": "variable",
+     "var": "--rust",
+     "from": "#b84a2a",
+     "to": "#d66b4d",
+     "ratio": 4.62,
+     "uses": 1,
+     "worst_bg": "#16232e",
+     "n": 3
+    }
+   ],
+   "kept": [
+    "No dark palette added: set on a navy ground by design: it is a dark page already, and its own design is stronger than a derived light one."
+   ]
+  },
+  "afm241-study-reference": {
+   "changes": [
+    "em dashes",
+    "Canadian spelling",
+    "built_from",
+    "main landmark",
+    "contrast",
+    "dark palette"
+   ],
+   "notes": [
+    "Em dashes: 84 replaced by rule (colon 22, colon in a heading 2, comma 60); 1 kept (inside a quotation 1).",
+    "Canadian spelling: 1 words changed (defense to defence 1).",
+    "Main landmark: the content blocks wrapped in <main>.",
+    "Colour contrast: variable --disr #0e7c86 to #0e747c (4.84:1 on #e4f3f4, 1 uses); variable --num #b45309 to #aa4f09 (4.62:1 on #efe9fa, 1 uses). Not resolved here: #dbebed on #0e7c86 (1); #ddebe3 on #1f7a44 (1).",
+    "4 section-header sub-labels no longer sit at opacity .85 on their coloured band; the white text reads at full strength.",
+    "Dark palette: 15 colour tokens redeclared for a dark scheme and for data-theme=\"dark\" by rule (surfaces deep, ink near-white, accents lifted), 0 text tokens lifted to 4.5:1 on the darkest surface (#211a2c); 51 literal colour declarations re-emitted under the same selectors with the literal mapped; 3 inline literal styles left as they are; a print block restores the light tokens. The rendered dark audit's result is recorded beside this note.",
+    "Rendered contrast audit (lh/dark-audit.mjs, headless Chrome at 1440, every visible element with its own text against its nearest opaque background): dark scheme 620 elements checked, 0 below the AA floor; light scheme 0 below the floor."
+   ],
+   "spellings": [
+    {
+     "from": "defense",
+     "to": "defence"
+    }
+   ],
+   "contrast": [
+    {
+     "kind": "variable",
+     "var": "--disr",
+     "from": "#0e7c86",
+     "to": "#0e747c",
+     "ratio": 4.84,
+     "uses": 1,
+     "worst_bg": "#e4f3f4",
+     "n": 10
+    },
+    {
+     "kind": "variable",
+     "var": "--num",
+     "from": "#b45309",
+     "to": "#aa4f09",
+     "ratio": 4.62,
+     "uses": 1,
+     "worst_bg": "#efe9fa",
+     "n": 2
+    },
+    {
+     "kind": "unresolved",
+     "from": "#dbebed",
+     "bgs": [
+      "#0e7c86"
+     ],
+     "n": 1,
+     "note": "colour not found as a literal in the file (computed at runtime or an alpha blend)"
+    },
+    {
+     "kind": "unresolved",
+     "from": "#ddebe3",
+     "bgs": [
+      "#1f7a44"
+     ],
+     "n": 1,
+     "note": "colour not found as a literal in the file (computed at runtime or an alpha blend)"
+    }
+   ],
+   "dark_palette": [
+    {
+     "token": "--ink",
+     "light": "#1a1a1a",
+     "dark": "#d8d8d8"
+    },
+    {
+     "token": "--muted",
+     "light": "#475569",
+     "dark": "#b7c0ce"
+    },
+    {
+     "token": "--line",
+     "light": "#cbd5e1",
+     "dark": "#425872"
+    },
+    {
+     "token": "--found",
+     "light": "#334155",
+     "dark": "#bdc8d7"
+    },
+    {
+     "token": "--found-t",
+     "light": "#eef2f6",
+     "dark": "#1b242c"
+    },
+    {
+     "token": "--disr",
+     "light": "#0e747c",
+     "dark": "#bdd5d7"
+    },
+    {
+     "token": "--disr-t",
+     "light": "#e4f3f4",
+     "dark": "#182728"
+    },
+    {
+     "token": "--ai",
+     "light": "#1f7a44",
+     "dark": "#b9d5c4"
+    },
+    {
+     "token": "--ai-t",
+     "light": "#e6f4ec",
+     "dark": "#18291f"
+    },
+    {
+     "token": "--hype",
+     "light": "#5b3fa8",
+     "dark": "#a08ad6"
+    },
+    {
+     "token": "--hype-t",
+     "light": "#efe9fa",
+     "dark": "#211a2c"
+    },
+    {
+     "token": "--warn",
+     "light": "#c0392b",
+     "dark": "#df7c72"
+    },
+    {
+     "token": "--warn-t",
+     "light": "#fbeae8",
+     "dark": "#2c1c1a"
+    },
+    {
+     "token": "--num",
+     "light": "#aa4f09",
+     "dark": "#d1c0b2"
+    },
+    {
+     "token": "--page-ground",
+     "light": "#ffffff",
+     "dark": "#2b2b2b"
+    }
+   ]
+  },
+  "afm241-cheat-sheet": {
+   "changes": [
+    "em dashes",
+    "built_from",
+    "main landmark",
+    "contrast",
+    "dark palette"
+   ],
+   "notes": [
+    "Em dashes: 11 replaced by rule (colon 1, comma 10); 0 kept (none).",
+    "Main landmark: the content blocks wrapped in <main>.",
+    "Colour contrast: variable --amber #f59e0b to #9c680a (4.77:1 on #ffffff, 1 uses); variable --emer #059669 to #05825d (4.66:1 on #fffafa, 1 uses); variable --mut #64748b to #5c6b7f (4.78:1 on #f3eefe, 1 uses); chip background #059669 to #05825d (4.82:1 on #ffffff, 1 uses); chip background #0d9488 to #0d8078 (4.8:1 on #ffffff, 11 uses); chip background #f59e0b to #9c680a (4.77:1 on #ffffff, 0 uses).",
+    "Dark palette: 15 colour tokens redeclared for a dark scheme and for data-theme=\"dark\" by rule (surfaces deep, ink near-white, accents lifted), 0 text tokens lifted to 4.5:1 on the darkest surface (#221c2f); 46 literal colour declarations re-emitted under the same selectors with the literal mapped; 0 inline literal styles left as they are; a print block restores the light tokens. The rendered dark audit's result is recorded beside this note.",
+    "Rendered contrast audit (lh/dark-audit.mjs, headless Chrome at 1440, every visible element with its own text against its nearest opaque background): dark scheme 164 elements checked, 0 below the AA floor; light scheme 0 below the floor."
+   ],
+   "contrast": [
+    {
+     "kind": "variable",
+     "var": "--amber",
+     "from": "#f59e0b",
+     "to": "#9c680a",
+     "ratio": 4.77,
+     "uses": 1,
+     "worst_bg": "#ffffff",
+     "n": 8
+    },
+    {
+     "kind": "variable",
+     "var": "--emer",
+     "from": "#059669",
+     "to": "#05825d",
+     "ratio": 4.66,
+     "uses": 1,
+     "worst_bg": "#fffafa",
+     "n": 19
+    },
+    {
+     "kind": "variable",
+     "var": "--mut",
+     "from": "#64748b",
+     "to": "#5c6b7f",
+     "ratio": 4.78,
+     "uses": 1,
+     "worst_bg": "#f3eefe",
+     "n": 6
+    },
+    {
+     "kind": "chip background",
+     "from": "#059669",
+     "to": "#05825d",
+     "ratio": 4.82,
+     "uses": 1,
+     "text": "#ffffff"
+    },
+    {
+     "kind": "chip background",
+     "from": "#0d9488",
+     "to": "#0d8078",
+     "ratio": 4.8,
+     "uses": 11,
+     "text": "#ffffff"
+    },
+    {
+     "kind": "chip background",
+     "from": "#f59e0b",
+     "to": "#9c680a",
+     "ratio": 4.77,
+     "uses": 0,
+     "text": "#ffffff"
+    }
+   ],
+   "dark_palette": [
+    {
+     "token": "--ink",
+     "light": "#0f172a",
+     "dark": "#cfd4df"
+    },
+    {
+     "token": "--body",
+     "light": "#1e293b",
+     "dark": "#c6cdd9"
+    },
+    {
+     "token": "--mut",
+     "light": "#5c6b7f",
+     "dark": "#919eb0"
+    },
+    {
+     "token": "--line",
+     "light": "#e2e8f0",
+     "dark": "#435b7c"
+    },
+    {
+     "token": "--amber",
+     "light": "#9c680a",
+     "dark": "#d3c9b6"
+    },
+    {
+     "token": "--teal",
+     "light": "#0d8078",
+     "dark": "#bcd7d5"
+    },
+    {
+     "token": "--teal-t",
+     "light": "#ecfdfa",
+     "dark": "#1c2e2b"
+    },
+    {
+     "token": "--violet",
+     "light": "#7c3aed",
+     "dark": "#ae86f4"
+    },
+    {
+     "token": "--violet-t",
+     "light": "#f3eefe",
+     "dark": "#221c2f"
+    },
+    {
+     "token": "--emer",
+     "light": "#05825d",
+     "dark": "#bdd8d0"
+    },
+    {
+     "token": "--emer-t",
+     "light": "#e9f9f1",
+     "dark": "#1a2c23"
+    },
+    {
+     "token": "--red",
+     "light": "#dc2626",
+     "dark": "#ea7e7e"
+    },
+    {
+     "token": "--red-t",
+     "light": "#fef2f2",
+     "dark": "#311d1d"
+    },
+    {
+     "token": "--slate",
+     "light": "#334155",
+     "dark": "#bdc8d7"
+    },
+    {
+     "token": "--page-ground",
+     "light": "#ffffff",
+     "dark": "#2b2b2b"
+    }
+   ]
+  },
+  "hype-cycle": {
+   "changes": [
+    "em dashes",
+    "built_from",
+    "main landmark",
+    "contrast",
+    "dark palette"
+   ],
+   "notes": [
+    "Em dashes: 21 replaced by rule (colon 1, colon in a heading 3, comma 17); 0 kept (none).",
+    "Main landmark: the content blocks wrapped in <main>.",
+    "Colour contrast: variable --red #dc2626 to #d62222 (4.67:1 on #fef2f2, 1 uses).",
+    "Dark palette: 12 colour tokens redeclared for a dark scheme and for data-theme=\"dark\" by rule (surfaces deep, ink near-white, accents lifted), 0 text tokens lifted to 4.5:1 on the darkest surface (#211b2e); 40 literal colour declarations re-emitted under the same selectors with the literal mapped; 0 inline literal styles left as they are; a print block restores the light tokens. The rendered dark audit's result is recorded beside this note.",
+    "Rendered contrast audit (lh/dark-audit.mjs, headless Chrome at 1440, every visible element with its own text against its nearest opaque background): dark scheme 133 elements checked, 0 below the AA floor; light scheme 0 below the floor."
+   ],
+   "contrast": [
+    {
+     "kind": "variable",
+     "var": "--red",
+     "from": "#dc2626",
+     "to": "#d62222",
+     "ratio": 4.67,
+     "uses": 1,
+     "worst_bg": "#fef2f2",
+     "n": 3
+    }
+   ],
+   "dark_palette": [
+    {
+     "token": "--ink",
+     "light": "#0f172a",
+     "dark": "#cfd4df"
+    },
+    {
+     "token": "--body",
+     "light": "#1e293b",
+     "dark": "#c6cdd9"
+    },
+    {
+     "token": "--mut",
+     "light": "#64748b",
+     "dark": "#9da8b8"
+    },
+    {
+     "token": "--line",
+     "light": "#e2e8f0",
+     "dark": "#435b7c"
+    },
+    {
+     "token": "--violet",
+     "light": "#5b3fa8",
+     "dark": "#a08ad6"
+    },
+    {
+     "token": "--violet-t",
+     "light": "#f1ecfb",
+     "dark": "#211b2e"
+    },
+    {
+     "token": "--teal",
+     "light": "#0d9488",
+     "dark": "#b7d4d1"
+    },
+    {
+     "token": "--amber",
+     "light": "#b45309",
+     "dark": "#d0beb0"
+    },
+    {
+     "token": "--red",
+     "light": "#d62222",
+     "dark": "#e97575"
+    },
+    {
+     "token": "--red-t",
+     "light": "#fef2f2",
+     "dark": "#311d1d"
+    },
+    {
+     "token": "--green",
+     "light": "#047857",
+     "dark": "#c0d9d2"
+    },
+    {
+     "token": "--page-ground",
+     "light": "#ffffff",
+     "dark": "#2b2b2b"
+    }
+   ]
+  },
+  "afm291-ch1-theory-and-analytics": {
+   "changes": [
+    "em dashes",
+    "Canadian spelling",
+    "strikes",
+    "built_from",
+    "table headers"
+   ],
+   "notes": [
+    "Em dashes: 204 replaced by rule (commas 10, parentheses 4, colon 13, colon in a heading 52, comma 125); 6 kept (inside a quotation 6).",
+    "Canadian spelling: 2 words changed (labeled to labelled 2).",
+    "4 sentences an assistant addressed to the owner struck; what each said the piece was built from is now the built_from line the bar renders.",
+    "Table headers: in 3 tables whose header row opens with an empty cell, 13 row-label cells became th scope=\"row\" (tag only; the text is unchanged) so every data cell has a header; a rule keeps them looking as they did."
+   ],
+   "spellings": [
+    {
+     "from": "labeled",
+     "to": "labelled"
+    }
+   ],
+   "strikes": [
+    {
+     "text": "This guide is built directly from the Chapter 1 text you uploaded and the four exhibit images you provided (the Sailing/Accounting/Textbook-structure table, Exhibit 1-1, Exhibit 1-2, and Exhibit 1-3).",
+     "residue": ""
+    },
+    {
+     "text": "If your version of the chapter has those missing pages, upload them and I can tighten that section to match the authors' exact wording and examples.",
+     "residue": ""
+    },
+    {
+     "text": "Reminder of the one open item: if you have access to chapter pages ~14–21 (the detailed LO 1-7/1-8/1-9 material), share them and I'll rebuild that portion of Part E from the authors' actual text rather than the supplementary framework used here.",
+     "residue": ""
+    },
+    {
+     "text": "Remaining gaps: pages 14–21 (LO 1-7, 1-8, 1-9) , upload to close.",
+     "residue": "Remaining gaps: pages 14–21 (LO 1-7, 1-8, 1-9)."
+    }
+   ],
+   "kept": [
+    "Second-person and assistant-voice wording left in place: 6 phrases (your textbook, your source, per your instruction, I've flagged) in sentences that carry a gap statement, a verification caveat, a scope decision or a legend; striking them would take the claim or the caveat with them, and paraphrase was ruled out."
+   ]
+  },
+  "afm291-ch2-conceptual-frameworks": {
+   "changes": [
+    "em dashes",
+    "Canadian spelling",
+    "strikes",
+    "built_from",
+    "table headers"
+   ],
+   "notes": [
+    "Em dashes: 280 replaced by rule (commas 5, parentheses 3, colon 32, colon in a heading 71, comma 169); 12 kept (a nil placeholder standing alone 3, inside a quotation 9).",
+    "Canadian spelling: 15 words changed (fulfill to fulfil 1, fulfillment to fulfilment 14).",
+    "2 sentences an assistant addressed to the owner struck; what each said the piece was built from is now the built_from line the bar renders.",
+    "Table headers: in 6 tables whose header row opens with an empty cell, 17 row-label cells became th scope=\"row\" (tag only; the text is unchanged) so every data cell has a header; a rule keeps them looking as they did."
+   ],
+   "spellings": [
+    {
+     "from": "fulfill",
+     "to": "fulfil"
+    },
+    {
+     "from": "fulfillment",
+     "to": "fulfilment"
+    }
+   ],
+   "strikes": [
+    {
+     "text": "This guide is built from the complete Chapter 2 text you uploaded (which runs intact from the Learning Objectives through \"H. Answers to Checkpoint Questions\") plus the ten exhibit images you provided (2-1, 2-2, 2-3, 2-7, 2-8, 2-9, 2-10, 2-11, 2-12, 2-13, and the References table).",
+     "residue": ""
+    },
+    {
+     "text": "Open item: if you have access to this chapter's actual Appendix (the full capital-maintenance narrative behind Exhibits 2-12/2-13), share it and I'll fold in the authors' own explanation alongside my reconstruction above.",
+     "residue": ""
+    }
+   ],
+   "kept": [
+    "Second-person and assistant-voice wording left in place: 22 phrases (your textbook, your source, per your instruction, I've flagged) in sentences that carry a gap statement, a verification caveat, a scope decision or a legend; striking them would take the claim or the caveat with them, and paraphrase was ruled out."
+   ]
+  },
+  "afm291-ch3-accrual-accounting": {
+   "changes": [
+    "em dashes",
+    "strikes",
+    "built_from",
+    "table headers"
+   ],
+   "notes": [
+    "Em dashes: 263 replaced by rule (commas 6, parentheses 2, colon 28, colon in a heading 79, comma 148); 37 kept (a nil placeholder standing alone 31, inside a quotation 6).",
+    "3 sentences an assistant addressed to the owner struck; what each said the piece was built from is now the built_from line the bar renders.",
+    "Table headers: in 10 tables whose header row opens with an empty cell, 129 row-label cells became th scope=\"row\" (tag only; the text is unchanged) so every data cell has a header; a rule keeps them looking as they did."
+   ],
+   "strikes": [
+    {
+     "text": "Your uploaded file (and your Week 5 class plan) both confirm this excerpt intentionally starts at Section E and runs through Section I , matching your syllabus's assigned reading (\"pages 91–120, Section E Periodicity to and including Section H Substantive Differences\"; Section I on IFRS 18 is a bonus beyond that range).",
+     "residue": ""
+    },
+    {
+     "text": "If you want the actual detailed figures for Exhibits 3-21 through 3-26 (total assets, total equity, net income, EPS, OCI breakdown, etc.), the reliable path is to either re-upload the specific exhibit images so I can read the numbers directly, or, since Canadian Tire Corporation is a real public company (TSX: CTC.A), pull its FY2022 audited consolidated financial statements from a verified source (SEDAR+ or Canadian Tire's investor relations site) rather than relying on anyone's memory of the figures.",
+     "residue": ""
+    },
+    {
+     "text": "Open items: (1) send Exhibits 3-25/3-26 (Canadian Tire's full detailed cash flow and equity statements) or 3-28/3-29 (Illustrator Ltd. under IFRS 18) if you have them: I only had condensed or no data for these, as flagged above; (2) if your course also assigns Sections A–D (cash vs. accrual basics, the three cash cycles) or the chapter's Appendix, upload those and I'll extend this guide to match.",
+     "residue": ""
+    }
+   ],
+   "kept": [
+    "Second-person and assistant-voice wording left in place: 15 phrases (your textbook, your source, per your instruction, I've flagged) in sentences that carry a gap statement, a verification caveat, a scope decision or a legend; striking them would take the claim or the caveat with them, and paraphrase was ruled out."
+   ]
+  },
+  "afm291-ch4-revenue-recognition": {
+   "changes": [
+    "em dashes",
+    "Canadian spelling",
+    "strikes",
+    "built_from",
+    "table headers"
+   ],
+   "notes": [
+    "Em dashes: 273 replaced by rule (commas 8, parentheses 4, colon 42, colon in a heading 53, comma 166); 18 kept (a nil placeholder standing alone 14, inside a quotation 4).",
+    "Canadian spelling: 3 words changed (fulfill to fulfil 1, fulfillment to fulfilment 2).",
+    "4 sentences an assistant addressed to the owner struck; what each said the piece was built from is now the built_from line the bar renders.",
+    "Table headers: in 6 tables whose header row opens with an empty cell, 19 row-label cells became th scope=\"row\" (tag only; the text is unchanged) so every data cell has a header; a rule keeps them looking as they did."
+   ],
+   "spellings": [
+    {
+     "from": "fulfill",
+     "to": "fulfil"
+    },
+    {
+     "from": "fulfillment",
+     "to": "fulfilment"
+    }
+   ],
+   "strikes": [
+    {
+     "text": "Built from your complete Chapt 4.txt upload (runs intact from Section A through Section L: References) plus ~20 exhibit images and your Weeks 2–4 class-plan screenshots.",
+     "residue": ""
+    },
+    {
+     "text": "If you want that covered, upload that chapter separately.",
+     "residue": ""
+    },
+    {
+     "text": "If you have the actual Kennedy Construction numbers (from lecture slides or the missing textbook pages), send them and I'll rebuild this section properly with the real worked example.",
+     "residue": ""
+    },
+    {
+     "text": "Two open items: (1) the Kennedy Construction onerous-contract worked example (Exhibits 4-23–4-27), send those pages/slides and I'll rebuild Week 4's gap section properly; (2) the \"Liabilities & Contingencies\" material in your Weeks 3–4 syllabus isn't part of Chapter 4, upload that chapter if you'd like the same treatment for it.",
+     "residue": ""
+    }
+   ],
+   "kept": [
+    "Second-person and assistant-voice wording left in place: 21 phrases (your textbook, your source, per your instruction, I've flagged) in sentences that carry a gap statement, a verification caveat, a scope decision or a legend; striking them would take the claim or the caveat with them, and paraphrase was ruled out."
+   ]
+  },
+  "afm291-ch6-inventories": {
+   "changes": [
+    "em dashes",
+    "strikes",
+    "built_from",
+    "table headers"
+   ],
+   "notes": [
+    "Em dashes: 307 replaced by rule (commas 6, parentheses 3, colon 29, colon in a heading 106, comma 163); 8 kept (a nil placeholder standing alone 3, inside a quotation 5).",
+    "1 sentence an assistant addressed to the owner struck; what each said the piece was built from is now the built_from line the bar renders.",
+    "Table headers: in 13 tables whose header row opens with an empty cell, 80 row-label cells became th scope=\"row\" (tag only; the text is unchanged) so every data cell has a header; a rule keeps them looking as they did."
+   ],
+   "strikes": [
+    {
+     "text": "Open items: (1) if your instructor confirms the exact intended scope of \"Manufactured Goods to Section C\" differently from my reading (see the Note on Sources at the top), let me know and I'll adjust; (2) I don't have Chapter 5, which your Week 6 class plan pairs with this chapter, upload it if you'd like a matching guide before Midterm #1 on Tuesday, June 16.",
+     "residue": ""
+    }
+   ],
+   "kept": [
+    "Second-person and assistant-voice wording left in place: 37 phrases (your textbook, your source, per your instruction, I've flagged) in sentences that carry a gap statement, a verification caveat, a scope decision or a legend; striking them would take the claim or the caveat with them, and paraphrase was ruled out."
+   ]
+  },
+  "afm291-ch9-intangibles-and-goodwill": {
+   "changes": [
+    "em dashes",
+    "Canadian spelling",
+    "strikes",
+    "built_from",
+    "table headers"
+   ],
+   "notes": [
+    "Em dashes: 314 replaced by rule (commas 5, parentheses 4, colon 48, colon in a heading 80, comma 177); 5 kept (a nil placeholder standing alone 1, inside a quotation 4).",
+    "Canadian spelling: 2 words changed (labeled to labelled 2).",
+    "3 sentences an assistant addressed to the owner struck; what each said the piece was built from is now the built_from line the bar renders.",
+    "Table headers: in 8 tables whose header row opens with an empty cell, 30 row-label cells became th scope=\"row\" (tag only; the text is unchanged) so every data cell has a header; a rule keeps them looking as they did."
+   ],
+   "spellings": [
+    {
+     "from": "labeled",
+     "to": "labelled"
+    }
+   ],
+   "strikes": [
+    {
+     "text": "A naming mismatch I'm flagging, not silently fixing: your message's opening instruction says \"create a comprehensive summary of Chapter 6,\" but the uploaded file is named Chapt 9.txt , its title is \"Chapter 9: Intangible Assets, Goodwill, Mineral Resources, and Government Grants,\" every exhibit number is in the 9-series (9-4, 9-6, 9-7, 9-8, 9-13–9-16), your Week 11 class plan image explicitly says \"Parts of Ch. 9,\" and your own objective sentence at the end of the message says \"fully understand Chapter 9.\"",
+     "residue": ""
+    },
+    {
+     "text": "I've built this guide for Chapter 9 ; let me know if I've misread your intent.",
+     "residue": ""
+    },
+    {
+     "text": "Open items: (1) confirm with your instructor whether \"Chapter 6\" in your message was indeed a copy-paste slip, as I've assumed; (2) if you want the literal six IAS 38 ¶57 development-cost criteria (rather than Airbus's four-bullet paraphrase), that's worth checking directly against the standard or your course notes, since my source material doesn't enumerate them; (3) if your course later circles back to Sections F/G in more depth, or if Exhibits 9-1–9-3 turn out to matter for an assignment, upload the relevant pages and I'll extend this guide.",
+     "residue": ""
+    }
+   ],
+   "kept": [
+    "Second-person and assistant-voice wording left in place: 41 phrases (your textbook, your source, per your instruction, I've flagged) in sentences that carry a gap statement, a verification caveat, a scope decision or a legend; striking them would take the claim or the caveat with them, and paraphrase was ruled out."
+   ]
+  },
+  "afm291-ch10-fair-value": {
+   "changes": [
+    "em dashes",
+    "Canadian spelling",
+    "strikes",
+    "built_from",
+    "table headers",
+    "spacing"
+   ],
+   "notes": [
+    "Em dashes: 381 replaced by rule (commas 8, parentheses 6, colon 36, colon in a heading 111, comma 220); 13 kept (a nil placeholder standing alone 4, inside a quotation 9).",
+    "Canadian spelling: 2 words changed (color to colour 1, labeling to labelling 1).",
+    "6 sentences an assistant addressed to the owner struck; what each said the piece was built from is now the built_from line the bar renders.",
+    "Table headers: in 22 tables whose header row opens with an empty cell, 89 row-label cells became th scope=\"row\" (tag only; the text is unchanged) so every data cell has a header; a rule keeps them looking as they did.",
+    "Stray space before punctuation removed in 20 places: the dash rules had left a space before the colon in the Instructor's Note callout titles.",
+    "Table headers: in 2 tables whose header row opens with an empty cell, 20 row-label cells became th scope=\"row\" (tag only; the text is unchanged) so every data cell has a header; a rule keeps them looking as they did."
+   ],
+   "spellings": [
+    {
+     "from": "color",
+     "to": "colour"
+    },
+    {
+     "from": "labeling",
+     "to": "labelling"
+    }
+   ],
+   "strikes": [
+    {
+     "text": "Scheduling clarity: your message calls this \"Week 10,\" but your Chapter 9 guide's Week 11 checklist image showed Chapter 9 assigned for Week 11 (July 20–24).",
+     "residue": ""
+    },
+    {
+     "text": "Chapter 10 logically follows in Week 12 (July 27–31) , next week, not a past week.",
+     "residue": ""
+    },
+    {
+     "text": "I'm treating \"Week 10\" as shorthand for \"the Chapter 10 week,\" not literally the course's 10th week.",
+     "residue": ""
+    },
+    {
+     "text": "This also explains why you have no PBL/lecture notes yet: Week 12 hasn't happened, so those materials presumably haven't been distributed yet.",
+     "residue": ""
+    },
+    {
+     "text": "Nothing to worry about, just flagging so the labelling doesn't confuse you later.",
+     "residue": ""
+    },
+    {
+     "text": "If your Week 12 lecture or PBL scenario (once released) emphasizes anything not covered above, or uses different terminology/examples, let me know and I'll fold it in.",
+     "residue": ""
+    }
+   ],
+   "kept": [
+    "Second-person and assistant-voice wording left in place: 48 phrases (your textbook, your source, per your instruction, I've flagged) in sentences that carry a gap statement, a verification caveat, a scope decision or a legend; striking them would take the claim or the caveat with them, and paraphrase was ruled out."
+   ]
+  },
+  "afm291-key-takeaways": {
+   "changes": [
+    "em dashes",
+    "Canadian spelling",
+    "built_from"
+   ],
+   "notes": [
+    "Em dashes: 327 replaced by rule (commas 30, parentheses 12, colon 24, colon in a heading 72, comma 189); 9 kept (a nil placeholder standing alone 2, inside a quotation 7).",
+    "Canadian spelling: 4 words changed (behavior to behaviour 1, favorite to favourite 1, fulfillment to fulfilment 1, labeled to labelled 1)."
+   ],
+   "spellings": [
+    {
+     "from": "behavior",
+     "to": "behaviour"
+    },
+    {
+     "from": "favorite",
+     "to": "favourite"
+    },
+    {
+     "from": "fulfillment",
+     "to": "fulfilment"
+    },
+    {
+     "from": "labeled",
+     "to": "labelled"
+    }
+   ]
+  },
+  "afm291-study-plan": {
+   "changes": [
+    "em dashes",
+    "strikes",
+    "built_from"
+   ],
+   "notes": [
+    "Em dashes: 86 replaced by rule (commas 2, colon 15, colon in a heading 21, comma 48); 4 kept (a nil placeholder standing alone 3, inside a quotation 1).",
+    "1 sentence an assistant addressed to the owner struck; what each said the piece was built from is now the built_from line the bar renders."
+   ],
+   "strikes": [
+    {
+     "text": "Bring me the scores and I will re-weight the four weeks; the plan below assumes a flat profile until you do.",
+     "residue": "The plan below assumes a flat profile."
+    }
+   ],
+   "kept": [
+    "Second-person and assistant-voice wording left in place: 1 phrases (your textbook, your source, per your instruction, I've flagged) in sentences that carry a gap statement, a verification caveat, a scope decision or a legend; striking them would take the claim or the caveat with them, and paraphrase was ruled out."
+   ]
+  },
+  "afm291-reconciliation": {
+   "changes": [
+    "em dashes",
+    "built_from"
+   ],
+   "notes": [
+    "Em dashes: 72 replaced by rule (commas 2, parentheses 3, colon 12, colon in a heading 17, comma 38); 12 kept (a nil placeholder standing alone 3, inside a quotation 9)."
+   ],
+   "kept": [
+    "Second-person and assistant-voice wording left in place: 4 phrases (your textbook, your source, per your instruction, I've flagged) in sentences that carry a gap statement, a verification caveat, a scope decision or a legend; striking them would take the claim or the caveat with them, and paraphrase was ruled out."
+   ]
+  },
+  "afm291-w7-financial-assets": {
+   "changes": [
+    "em dashes",
+    "built_from",
+    "heading order"
+   ],
+   "notes": [
+    "Em dashes: 114 replaced by rule (commas 1, parentheses 1, colon 11, colon in a heading 38, comma 63); 5 kept (a nil placeholder standing alone 3, inside a quotation 2).",
+    "Heading order: 1 headings that skipped a level keep their tag and text and carry aria-level for the level the outline needs (h4 read as level 3)."
+   ]
+  },
+  "afm291-w7-cases": {
+   "changes": [
+    "em dashes",
+    "built_from"
+   ],
+   "notes": [
+    "Em dashes: 81 replaced by rule (commas 1, colon 10, colon in a heading 40, comma 30); 11 kept (a nil placeholder standing alone 8, inside a quotation 3)."
+   ]
+  },
+  "afm291-w8-financial-assets": {
+   "changes": [
+    "em dashes",
+    "built_from"
+   ],
+   "notes": [
+    "Em dashes: 130 replaced by rule (commas 4, parentheses 1, colon 8, colon in a heading 68, comma 49); 6 kept (a nil placeholder standing alone 6)."
+   ]
+  },
+  "afm291-w8-cases": {
+   "changes": [
+    "em dashes",
+    "built_from"
+   ],
+   "notes": [
+    "Em dashes: 94 replaced by rule (commas 1, parentheses 2, colon 8, colon in a heading 41, comma 42); 5 kept (a nil placeholder standing alone 5)."
+   ]
+  },
+  "afm291-w9-ppe": {
+   "changes": [
+    "em dashes",
+    "built_from"
+   ],
+   "notes": [
+    "Em dashes: 130 replaced by rule (commas 4, parentheses 1, colon 15, colon in a heading 51, comma 59); 2 kept (a nil placeholder standing alone 2)."
+   ]
+  },
+  "afm291-w9-cases": {
+   "changes": [
+    "em dashes",
+    "built_from"
+   ],
+   "notes": [
+    "Em dashes: 153 replaced by rule (colon 27, colon in a heading 73, comma 53); 1 kept (inside a quotation 1)."
+   ]
+  },
+  "kennedy-dossier": {
+   "changes": [
+    "em dashes",
+    "built_from",
+    "fonts",
+    "main landmark",
+    "contrast",
+    "dark palette"
+   ],
+   "notes": [
+    "Em dashes: 8 replaced by rule (commas 1, colon 1, comma 6); 0 kept (none).",
+    "Typefaces self-hosted: Playfair Display: PlayfairDisplay[wght].ttf -> fonts/playfairdisplay-kennedy-dossier.woff2 (35,904 bytes, 110 codepoints); IBM Plex Sans: IBMPlexSans[wdth,wght].ttf -> fonts/ibmplexsans-kennedy-dossier.woff2 (48,232 bytes, 110 codepoints); IBM Plex Mono: IBMPlexMono-Regular.ttf -> fonts/ibmplexmono-kennedy-dossier-400.woff2 (10,672 bytes, 110 codepoints); IBM Plex Mono: IBMPlexMono-Medium.ttf -> fonts/ibmplexmono-kennedy-dossier-500.woff2 (10,928 bytes, 110 codepoints); IBM Plex Mono: IBMPlexMono-SemiBold.ttf -> fonts/ibmplexmono-kennedy-dossier-600.woff2 (11,584 bytes, 110 codepoints). The Google Fonts link and its preconnects are replaced by @font-face rules under the same family names; no other rule in the piece changed.",
+    "Main landmark: role=\"main\" on div class=\"wrap\".",
+    "Colour contrast: variable --gold #7a6330 to #725d2e (4.7:1 on #e4dec9, 1 uses); variable --muted #82806d to #615f57 (4.75:1 on #e4dec9, 1 uses).",
+    "Dark palette: 10 colour tokens redeclared for a dark scheme and for data-theme=\"dark\" by rule (surfaces deep, ink near-white, accents lifted), 0 text tokens lifted to 4.5:1 on the darkest surface (#221f15); 37 literal colour declarations re-emitted under the same selectors with the literal mapped; 0 inline literal styles left as they are; a print block restores the light tokens. The rendered dark audit's result is recorded beside this note.",
+    "Rendered contrast audit (lh/dark-audit.mjs, headless Chrome at 1440, every visible element with its own text against its nearest opaque background): dark scheme 106 elements checked, 0 below the AA floor; light scheme 0 below the floor."
+   ],
+   "contrast": [
+    {
+     "kind": "variable",
+     "var": "--gold",
+     "from": "#7a6330",
+     "to": "#725d2e",
+     "ratio": 4.7,
+     "uses": 1,
+     "worst_bg": "#e4dec9",
+     "n": 3
+    },
+    {
+     "kind": "variable",
+     "var": "--muted",
+     "from": "#82806d",
+     "to": "#615f57",
+     "ratio": 4.75,
+     "uses": 1,
+     "worst_bg": "#e4dec9",
+     "n": 4
+    }
+   ],
+   "dark_palette": [
+    {
+     "token": "--paper",
+     "light": "#e4dec9",
+     "dark": "#2d291b"
+    },
+    {
+     "token": "--card",
+     "light": "#efeada",
+     "dark": "#221f15"
+    },
+    {
+     "token": "--card-light",
+     "light": "#f7f4e9",
+     "dark": "#2b271a"
+    },
+    {
+     "token": "--ink",
+     "light": "#1c2130",
+     "dark": "#cacedb"
+    },
+    {
+     "token": "--ink-soft",
+     "light": "#4e5468",
+     "dark": "#b8bcca"
+    },
+    {
+     "token": "--muted",
+     "light": "#615f57",
+     "dark": "#c4c3bd"
+    },
+    {
+     "token": "--rule",
+     "light": "#c7be9f",
+     "dark": "#645b3a"
+    },
+    {
+     "token": "--wire",
+     "light": "#9c2b1d",
+     "dark": "#d0b4b1"
+    },
+    {
+     "token": "--wire-deep",
+     "light": "#6b1d12",
+     "dark": "#d9c3c0"
+    },
+    {
+     "token": "--gold",
+     "light": "#725d2e",
+     "dark": "#d4cbb7"
+    }
+   ]
+  },
+  "how-to-judge-a-president": {
+   "changes": [
+    "em dashes",
+    "built_from"
+   ],
+   "notes": [
+    "Em dashes: 120 replaced by rule (commas 8, parentheses 13, colon 12, colon in a heading 18, comma 69); 6 kept (inside a quotation 6)."
+   ]
+  },
+  "leadership-evaluation-kit": {
+   "changes": [
+    "em dashes",
+    "Canadian spelling",
+    "built_from",
+    "heading order"
+   ],
+   "notes": [
+    "Em dashes: 102 replaced by rule (commas 8, parentheses 2, colon 4, colon in a heading 41, comma 47); 2 kept (inside a quotation 2).",
+    "Canadian spelling: 12 words changed (behavior to behaviour 1, defense to defence 2, favor to favour 2, favorable to favourable 3, labeled to labelled 2, labeling to labelling 2).",
+    "Heading order: 3 headings that skipped a level keep their tag and text and carry aria-level for the level the outline needs (h3 read as level 2, h4 read as level 3, h4 read as level 3)."
+   ],
+   "spellings": [
+    {
+     "from": "behavior",
+     "to": "behaviour"
+    },
+    {
+     "from": "defense",
+     "to": "defence"
+    },
+    {
+     "from": "favor",
+     "to": "favour"
+    },
+    {
+     "from": "favorable",
+     "to": "favourable"
+    },
+    {
+     "from": "labeled",
+     "to": "labelled"
+    },
+    {
+     "from": "labeling",
+     "to": "labelling"
+    }
+   ]
+  },
+  "ifrs15-verification-memo": {
+   "changes": [
+    "strikes",
+    "built_from"
+   ],
+   "strikes": [
+    {
+     "text": "The IE paragraph numbers exist in Part I and could be added if you want that level of pinpoint.",
+     "residue": ""
+    }
+   ],
+   "notes": [
+    "1 sentence an assistant addressed to the owner struck; what each said the piece was built from is now the built_from line the bar renders."
+   ]
+  },
+  "brittle-network": {
+   "changes": [
+    "built_from",
+    "measure"
+   ],
+   "notes": [
+    "Measure: the shared case-method stylesheet now holds concession paragraphs, claim texts, falsifiers and source lines to 70ch (styling only on the frozen pieces); the family's running text was already at 66ch.",
+    "Measure: .disc-note, the widest text block the survey found on the page, is held to the reading measure (max-width:66ch)."
+   ]
+  },
+  "price-of-divergence": {
+   "changes": [
+    "built_from",
+    "measure"
+   ],
+   "notes": [
+    "Measure: the shared case-method stylesheet now holds concession paragraphs, claim texts, falsifiers and source lines to 70ch (styling only on the frozen pieces); the family's running text was already at 66ch."
+   ]
+  },
+  "five-shall-paragraphs": {
+   "changes": [
+    "built_from",
+    "fonts",
+    "contrast",
+    "spacing"
+   ],
+   "notes": [
+    "Typefaces self-hosted: Source Serif 4: SourceSerif4[opsz,wght].ttf -> fonts/sourceserif4-five-shall-paragraphs.woff2 (154,764 bytes, 116 codepoints); Source Serif 4: SourceSerif4-Italic[opsz,wght].ttf -> fonts/sourceserif4-five-shall-paragraphs-italic.woff2 (130,668 bytes, 116 codepoints); Libre Franklin: LibreFranklin[wght].ttf -> fonts/librefranklin-five-shall-paragraphs.woff2 (20,592 bytes, 111 codepoints); IBM Plex Mono: IBMPlexMono-Regular.ttf -> fonts/ibmplexmono-five-shall-paragraphs-400.woff2 (10,976 bytes, 114 codepoints); IBM Plex Mono: IBMPlexMono-Medium.ttf -> fonts/ibmplexmono-five-shall-paragraphs-500.woff2 (11,220 bytes, 114 codepoints); IBM Plex Mono: IBMPlexMono-SemiBold.ttf -> fonts/ibmplexmono-five-shall-paragraphs-600.woff2 (11,840 bytes, 114 codepoints). The Google Fonts link and its preconnects are replaced by @font-face rules under the same family names; no other rule in the piece changed.",
+    "Colour contrast: variable --ink-faint #7a8296 to #656c7e (4.65:1 on #edf1fc, 1 uses).",
+    "Stray space before punctuation removed in 1 places (a non-breaking space or a line break that the dash rules left before a comma or a colon; a space before a semicolon in one publisher name)."
+   ],
+   "contrast": [
+    {
+     "kind": "variable",
+     "var": "--ink-faint",
+     "from": "#7a8296",
+     "to": "#656c7e",
+     "ratio": 4.65,
+     "uses": 1,
+     "worst_bg": "#edf1fc",
+     "n": 286
+    }
+   ]
+  },
+  "zakaria-putin-audited": {
+   "changes": [
+    "built_from",
+    "fonts",
+    "main landmark",
+    "heading order",
+    "contrast"
+   ],
+   "notes": [
+    "Typefaces self-hosted: IBM Plex Mono: IBMPlexMono-Regular.ttf -> fonts/ibmplexmono-zakaria-putin-audited-400.woff2 (11,088 bytes, 112 codepoints); IBM Plex Mono: IBMPlexMono-Medium.ttf -> fonts/ibmplexmono-zakaria-putin-audited-500.woff2 (11,404 bytes, 112 codepoints); IBM Plex Mono: IBMPlexMono-SemiBold.ttf -> fonts/ibmplexmono-zakaria-putin-audited-600.woff2 (12,044 bytes, 112 codepoints); IBM Plex Sans: IBMPlexSans[wdth,wght].ttf -> fonts/ibmplexsans-zakaria-putin-audited.woff2 (49,956 bytes, 112 codepoints); Spectral: Spectral-Regular.ttf -> fonts/spectral-zakaria-putin-audited-400.woff2 (27,536 bytes, 111 codepoints); Spectral: Spectral-SemiBold.ttf -> fonts/spectral-zakaria-putin-audited-600.woff2 (29,372 bytes, 111 codepoints); Spectral: Spectral-Bold.ttf -> fonts/spectral-zakaria-putin-audited-700.woff2 (29,456 bytes, 111 codepoints); Spectral: Spectral-Italic.ttf -> fonts/spectral-zakaria-putin-audited-400-italic.woff2 (28,720 bytes, 111 codepoints). The Google Fonts link and its preconnects are replaced by @font-face rules under the same family names; no other rule in the piece changed.",
+    "Main landmark: role=\"main\" on div class=\"wrap\".",
+    "Heading order: 1 headings that skipped a level keep their tag and text and carry aria-level for the level the outline needs (h4 read as level 3).",
+    "Colour contrast: variable --ink-3 #79837e to #6a6e6a (4.72:1 on #f3f5f1, 1 uses)."
+   ],
+   "contrast": [
+    {
+     "kind": "variable",
+     "var": "--ink-3",
+     "from": "#79837e",
+     "to": "#6a6e6a",
+     "ratio": 4.72,
+     "uses": 1,
+     "worst_bg": "#f3f5f1",
+     "n": 27
+    }
+   ]
+  },
+  "daily-learning-cockpit": {
+   "changes": [
+    "built_from",
+    "contrast",
+    "heading order"
+   ],
+   "notes": [
+    "Colour contrast: variable --muted #898781 to #736f6f (4.71:1 on #f9f9f7, 1 uses); variable --acc #2a78d6 to #236cbe (4.66:1 on #ebf1f8, 1 uses); chip background #2a78d6 to #2774ce (4.69:1 on #ffffff, 0 uses).",
+    "The 2 h3 headings the page's script writes carry aria-level=\"2\", the level the outline needs under the page's h1."
+   ],
+   "contrast": [
+    {
+     "kind": "variable",
+     "var": "--muted",
+     "from": "#898781",
+     "to": "#736f6f",
+     "ratio": 4.71,
+     "uses": 1,
+     "worst_bg": "#f9f9f7",
+     "n": 9
+    },
+    {
+     "kind": "variable",
+     "var": "--acc",
+     "from": "#2a78d6",
+     "to": "#236cbe",
+     "ratio": 4.66,
+     "uses": 1,
+     "worst_bg": "#ebf1f8",
+     "n": 1
+    },
+    {
+     "kind": "chip background",
+     "from": "#2a78d6",
+     "to": "#2774ce",
+     "ratio": 4.69,
+     "uses": 0,
+     "text": "#ffffff"
+    }
+   ]
+  },
+  "the-delayed-test": {
+   "changes": [
+    "built_from",
+    "heading order"
+   ],
+   "notes": [
+    "Heading order: 3 headings that skipped a level keep their tag and text and carry aria-level for the level the outline needs (h3 read as level 2, h4 read as level 3, h4 read as level 3)."
+   ]
+  },
+  "business-law-primer": {
+   "changes": [
+    "built_from",
+    "heading order",
+    "measure"
+   ],
+   "notes": [
+    "Heading order: 7 headings that skipped a level keep their tag and text and carry aria-level for the level the outline needs (h5 read as level 4, h5 read as level 4, h5 read as level 4, h5 read as level 4, h5 read as level 4, h5 read as level 3, h5 read as level 4).",
+    "Measure: .meta, the widest text block the survey found on the page, is held to the reading measure (max-width:70ch)."
+   ]
+  },
+  "epistemic-quality-directive": {
+   "changes": [
+    "new",
+    "converted"
+   ],
+   "notes": [
+    "Converted from pending/epistemic-quality-directive-v1.3.md by scripts/md2piece.py in the session's scratchpad (reproduced in LEDGER.md), in the conventions of the converted notes: site header and document bar, contents rail, masthead with chips, heading anchors in the Atlas's slug rule, the build-owned conversion sentence, footer and search block. No text was changed; the phrase \"claim-audit engine build\" in the header paragraph is linked to crucible-cockpit.html so the Atlas draws the edge. Placed on the independent shelf as Reference, after the three Crucible runs."
+   ]
+  },
+  "afm291-workbook": {
+   "changes": [
+    "new",
+    "viewport",
+    "screen layout",
+    "em dashes",
+    "fonts",
+    "main landmark",
+    "contrast"
+   ],
+   "notes": [
+    "Taken from pending/afm291-workbook.html unchanged in text. Added a viewport meta, a screen-only stylesheet block (the print layout is untouched and applies under print), a one-line companion link to the PDF on the cover, and lang en-CA. The PDF is copied beside it as afm291-workbook.pdf and joins the offline manifest by the existing rule. Course Reference under AFM 291.",
+    "Em dashes: 166 replaced by rule (colon 5, colon in a heading 21, comma 140); 0 kept (none).",
+    "Typefaces self-hosted: Bricolage Grotesque: BricolageGrotesque[opsz,wdth,wght].ttf -> fonts/bricolagegrotesque-afm291-workbook.woff2 (119,132 bytes, 115 codepoints); Source Serif 4: SourceSerif4[opsz,wght].ttf -> fonts/sourceserif4-afm291-workbook.woff2 (152,724 bytes, 116 codepoints); Source Serif 4: SourceSerif4-Italic[opsz,wght].ttf -> fonts/sourceserif4-afm291-workbook-italic.woff2 (129,320 bytes, 116 codepoints); IBM Plex Mono: IBMPlexMono-Regular.ttf -> fonts/ibmplexmono-afm291-workbook-400.woff2 (11,096 bytes, 116 codepoints); IBM Plex Mono: IBMPlexMono-Medium.ttf -> fonts/ibmplexmono-afm291-workbook-500.woff2 (11,348 bytes, 116 codepoints); IBM Plex Mono: IBMPlexMono-SemiBold.ttf -> fonts/ibmplexmono-afm291-workbook-600.woff2 (12,024 bytes, 116 codepoints). The Google Fonts link and its preconnects are replaced by @font-face rules under the same family names; no other rule in the piece changed.",
+    "Main landmark: the content blocks wrapped in <main>.",
+    "Colour contrast: literal #6e7a77 to #6c7774 (4.64:1 on #ffffff, 3 uses); literal #8d9891 to #6b786f (4.62:1 on #ffffff, 2 uses)."
+   ],
+   "contrast": [
+    {
+     "kind": "literal",
+     "from": "#6e7a77",
+     "to": "#6c7774",
+     "ratio": 4.64,
+     "uses": 3,
+     "worst_bg": "#ffffff",
+     "n": 76
+    },
+    {
+     "kind": "literal",
+     "from": "#8d9891",
+     "to": "#6b786f",
+     "ratio": 4.62,
+     "uses": 2,
+     "worst_bg": "#ffffff",
+     "n": 32
+    }
+   ],
+   "kept": [
+    "No dark palette added: a print-first workbook whose screen layout is a document view of the sheets; kept light so the screen matches the paper."
+   ]
+  },
+  "transformers-study-guide": {
+   "changes": [
+    "new",
+    "strikes",
+    "fonts",
+    "main landmark",
+    "contrast",
+    "dark palette",
+    "heading order"
+   ],
+   "notes": [
+    "Taken from pending/transformers-study-guide.html. Two sentences an assistant addressed to the owner are struck and replaced by the built_from line; declared below. Personal Reference. Its Google Fonts link is replaced by self-hosted faces in the font commits.",
+    "Typefaces self-hosted: IBM Plex Mono: IBMPlexMono-Regular.ttf -> fonts/ibmplexmono-transformers-study-guide-400.woff2 (10,992 bytes, 114 codepoints); IBM Plex Mono: IBMPlexMono-Medium.ttf -> fonts/ibmplexmono-transformers-study-guide-500.woff2 (11,180 bytes, 114 codepoints); IBM Plex Mono: IBMPlexMono-SemiBold.ttf -> fonts/ibmplexmono-transformers-study-guide-600.woff2 (11,924 bytes, 114 codepoints); IBM Plex Sans Condensed: IBMPlexSansCondensed-Regular.ttf -> fonts/ibmplexsanscondensed-transformers-study-guide-400.woff2 (13,844 bytes, 114 codepoints); IBM Plex Sans Condensed: IBMPlexSansCondensed-Medium.ttf -> fonts/ibmplexsanscondensed-transformers-study-guide-500.woff2 (14,068 bytes, 114 codepoints); IBM Plex Sans Condensed: IBMPlexSansCondensed-SemiBold.ttf -> fonts/ibmplexsanscondensed-transformers-study-guide-600.woff2 (13,888 bytes, 114 codepoints); IBM Plex Sans Condensed: IBMPlexSansCondensed-Bold.ttf -> fonts/ibmplexsanscondensed-transformers-study-guide-700.woff2 (13,512 bytes, 114 codepoints); IBM Plex Serif: IBMPlexSerif-Regular.ttf -> fonts/ibmplexserif-transformers-study-guide-400.woff2 (14,212 bytes, 114 codepoints); IBM Plex Serif: IBMPlexSerif-SemiBold.ttf -> fonts/ibmplexserif-transformers-study-guide-600.woff2 (14,844 bytes, 114 codepoints); IBM Plex Serif: IBMPlexSerif-Italic.ttf -> fonts/ibmplexserif-transformers-study-guide-400-italic.woff2 (15,232 bytes, 114 codepoints). The Google Fonts link and its preconnects are replaced by @font-face rules under the same family names; no other rule in the piece changed.",
+    "Main landmark: role=\"main\" on div class=\"wrap\".",
+    "Colour contrast: chip background #a7696d to #a36367 (4.63:1 on #ffffff, 0 uses); chip background #a8722a to #9c6927 (4.7:1 on #ffffff, 1 uses).",
+    "Dark palette: 10 colour tokens redeclared for a dark scheme and for data-theme=\"dark\" by rule (surfaces deep, ink near-white, accents lifted), 0 text tokens lifted to 4.5:1 on the darkest surface (#151e14); 46 literal colour declarations re-emitted under the same selectors with the literal mapped; 5 inline literal styles left as they are; a print block restores the light tokens. The rendered dark audit's result is recorded beside this note.",
+    "Rendered contrast audit (lh/dark-audit.mjs, headless Chrome at 1440, every visible element with its own text against its nearest opaque background): dark scheme 290 elements checked, 0 below the AA floor; light scheme 1 below the floor (one matrix cell: white on a translucent rust tint at 4.31:1, part of the guide's heat-map colouring, left as it is).",
+    "The mask grids' 1 h4 headings, written by the page's own script under the h2, carry aria-level 3."
+   ],
+   "strikes": [
+    {
+     "text": "Study guide · built from your uploaded digest",
+     "residue": "Study guide"
+    },
+    {
+     "text": "Carry these corrections into your notes, not the original wording",
+     "residue": ""
+    }
+   ],
+   "contrast": [
+    {
+     "kind": "chip background",
+     "from": "#a7696d",
+     "to": "#a36367",
+     "ratio": 4.63,
+     "uses": 0,
+     "text": "#ffffff"
+    },
+    {
+     "kind": "chip background",
+     "from": "#a8722a",
+     "to": "#9c6927",
+     "ratio": 4.7,
+     "uses": 1,
+     "text": "#ffffff"
+    }
+   ],
+   "dark_palette": [
+    {
+     "token": "--ink",
+     "light": "#14201e",
+     "dark": "#d1e0de"
+    },
+    {
+     "token": "--ink-soft",
+     "light": "#4b5c55",
+     "dark": "#becac5"
+    },
+    {
+     "token": "--paper",
+     "light": "#eef2ec",
+     "dark": "#20281b"
+    },
+    {
+     "token": "--ledger",
+     "light": "#dce7db",
+     "dark": "#151e14"
+    },
+    {
+     "token": "--ledger-2",
+     "light": "#e6eee5",
+     "dark": "#192518"
+    },
+    {
+     "token": "--rule",
+     "light": "#a9bca8",
+     "dark": "#465945"
+    },
+    {
+     "token": "--rule-soft",
+     "light": "#c4d3c3",
+     "dark": "#4b6449"
+    },
+    {
+     "token": "--blue",
+     "light": "#1f3a5f",
+     "dark": "#c0cad9"
+    },
+    {
+     "token": "--red",
+     "light": "#8c2f39",
+     "dark": "#d0b0b4"
+    },
+    {
+     "token": "--amber",
+     "light": "#9c6927",
+     "dark": "#cfc1ae"
+    }
+   ]
+  },
+  "french-a1-cafe": {
+   "changes": [
+    "new",
+    "converted",
+    "em dashes",
+    "table headers"
+   ],
+   "notes": [
+    "Converted from pending/french-a1-unit01-cafe-interactions.md by scripts/md2piece.py: blockquotes became callouts (the warning sign became a Watch out callout), the answer key's twelve blocks became collapsed details in the checkpoint style, tables are wrapped for horizontal scrolling. French dialogue tirets (the dash that opens a line of dialogue) are kept as French punctuation; em dashes in the English prose follow the site rule. Personal Reference.",
+    "Em dashes: 82 replaced by rule (commas 1, colon 10, colon in a heading 26, comma 44, comma (other) 1); 19 kept (a dialogue tiret opening a line 14, a nil placeholder standing alone 3, inside a quotation 2).",
+    "Table headers: in 3 tables whose header row opens with an empty cell, 10 row-label cells became th scope=\"row\" (tag only; the text is unchanged) so every data cell has a header; a rule keeps them looking as they did."
+   ]
+  }
+ },
+ "shell": [
+  {
+   "commit": "The invariance check",
+   "what": "build/invariance.py and content/invariants.json: the record of every numeral, reference, label, chip, anchor id, URL, heading and result sentence per piece, taken from the delivered tree at 0f31bdb; check 15 refuses any undeclared movement. Tested by mutating a copy of afm241-cheat-sheet.html: a numeral, a word in a sentence and an anchor id each failed the check; an em dash replaced by a comma passed."
+  },
+  {
+   "commit": "The change ledger",
+   "what": "build/ledger.py writes content/ledger.json from the files and these notes; the colophon prints one sentence from its summary; check 16 refuses a stale ledger."
+  },
+  {
+   "commit": "site.css pruned",
+   "what": "106 dead rule blocks removed (hero, stats, rail, features, system grid, flagship, course and matrix tables, specimen ladder and boundary, lead, figure strip and tiles, pv chips, search hint and recent rows, skill markers). site.css 105,500 to 97,250 bytes; gzipped 27,652 to 26,021. Proof: computed styles of every element on 13 pages that load site.css (the nine generated pages and four converted pieces), 24 properties each, compared before and after at 1440 and at 390 in headless Chrome: 0 differences across 13,000 elements per width."
+  },
+  {
+   "commit": "Check 13 to two digits",
+   "what": "Two-digit numerals in shell copy are held to the registry; row positions are cut out; strings in the registry register their small numerals. 809 numerals checked on the generated pages; nothing needed to change."
+  },
+  {
+   "commit": "The 18 title tags",
+   "what": "Normalised to title, separator, site name; the old text of each is in the piece's entry."
+  },
+  {
+   "commit": "FROM MEMORY declared",
+   "what": "Flagged in Hindsight's key names the fourth label; declared as an addition and a count fix."
+  },
+  {
+   "commit": "Em dashes out of 46 pieces",
+   "what": "By rule (scripts/emdash.py in the session's scratchpad, reproduced in LEDGER.md): a pair of spaced dashes in one sentence becomes commas, or parentheses when the phrase carries a comma or opens with a figure; a single spaced dash becomes a comma before a lowercase continuation and a colon before a capital, a digit, a currency sign, a quotation mark or a bracket, and a colon in any heading, callout title or table head; a dash between digits becomes an en dash; a dash standing alone (a nil cell, a verdict chip) is kept; a dash inside a quotation is kept; nothing inside script, style, pre, code or SVG is touched; the six frozen pieces are untouched. The invariance record's sentence split was made blind to dashes and colons beside a sentence end, and the record was rewritten from commit 0f31bdb, so a changed dash cannot move a sentence boundary while a changed word still fails the check."
+  },
+  {
+   "commit": "The four pending documents",
+   "what": "Inter re-subset: the French unit uses guillemets, accented capitals and IPA symbols the shipped subset lacked, and check 10 refused the build. The source is the inter-ui 4.1.1 npm package, whose InterVariable.woff2 reports Version 4.001;git-9221beed3, the same Inter build the shipped subset reports. Subset with pyftsubset (fontTools 4.60.2) to the union of the old 243 codepoints and every character the pages now show that Inter can render, 264 codepoints, with the same seven layout features the shipped file carried (calt, ccmp, frac, subs, sups, tnum, zero): 84,752 bytes to 80,352. build/font-subset-cmap.txt rewritten from the new file's cmap; build/font-full-cmap.txt equals the package's full cmap, 2,852."
+  },
+  {
+   "commit": "Interiors: dark palettes",
+   "what": "Nine pieces had no dark palette in their own stylesheet. Each now redeclares its colour tokens for a dark scheme and for the site's dark toggle by rule (surfaces deep in the same hue, ink near-white, accents lifted), re-emits every rule that set a colour as a literal with the literal mapped the same way under the same selector, gives an inline literal a derived --dk the dark block reads, and restores the light tokens under print. Every page was then audited rendered in both schemes; the numbers are in each piece's entry. Three pieces keep no dark palette on purpose: the revenue guide is dark by design, the field manual and the workbook are print sheets. The row-header rule from the table pass now also inherits the cell's background, which the audit caught on the distress sheet (a navy header background had leaked onto the converted row labels in light mode)."
+  },
+  {
+   "commit": "reader.html rebuilt",
+   "what": "build/reader_build.py wrote to a path from another machine; it now writes reader.html beside the pieces and was run on the finished tree (9.6 MB, every listed piece embedded). Its title carried an em dash and does not now. reader.html is left out of the cache-all offline manifest because it is the other offline route (a file for the phone's Files app) and would have doubled the installed copy. Check 6 (one top-level heading per document body) now counts per embedded body, because the reader carries every converted note's body in one file."
+  },
+  {
+   "commit": "Reserved Font Names, the Atlas key and one count",
+   "what": "Every self-hosted subset and the Inter subset renamed internally to a Portfolio alias (section 6c), fonts/manifest.json carries internal_name and sha256 per file and check 18 holds the files to them; the Atlas key and context/ARCHITECTURE.md say positions are deterministic for a given corpus, not that they never change; section 8's count of built_from lines that read Not declared on file is printed from content/pieces.json."
+  }
+ ],
+ "scans": [
+  "Stale counts about the site inside piece bodies: scanned every listed piece for a two- or three-digit numeral beside pieces, essays, documents, pages, files, guides, references or tools, and for site, portfolio, vault or library near such a numeral; none found. The footers and search placeholders that carried 48 were already build-owned before this pass.",
+  "In-page anchors: every href=\"#id\" in every listed piece resolves to an id in the same file; 0 dead.",
+  "Typos: a list of common misspellings found none; the only hits were Canadian spellings (labelled, cancelling) and labeled, which the Canadian pass corrects.",
+  "American spellings outside quotation marks: -ize forms are Canadian (the CPA Canada Handbook and Canadian Oxford use recognize, capitalize, amortization) and were left; the -our, -re, -ce, fulfil and fibre families were changed where they were not part of a proper noun or a quotation.",
+  "reader.html carries 1,782 em dashes: it embeds every listed piece verbatim, so the dashes of the six frozen pieces and of the tools' scripts travel with it; it is not a piece and is not measured or listed."
+ ],
+ "measurement": [
+  "Metrics were measured locally with CI's own script, build/measure.js, run under its documented PW_CHROMIUM option pointing at Google Chrome 152 (Playwright's bundled Chromium cannot launch under this machine's sandbox). content/fingerprints.json was cleared so every page was opened: 68 of 68 pages, 650,614 words on the site including the three transcripts. The 38 pieces this pass did not touch re-measured to exactly the counts CI had recorded, which is the evidence that the local run and CI count the same way. The 26 changed pieces moved by the words the strikes removed and the punctuation the em-dash rules changed; the four new pieces were measured for the first time. One rule in measure.js changed: the built_from line the build renders (the masthead block on converted notes, the paragraph beside a tool's pill) is chrome and is excluded from the count like the return bar and the footer; the colophon's definition of a word now names the chrome the count leaves out.",
+  "Final Lighthouse across the 65 pieces (mobile, one run each, the final tree served gzipped): accessibility 100 on 64 of 65; the one below is the transformers guide at 96 for one heat-map cell at 4.31:1. Before the pass it was 100 on 29 of the 65 measured pages (27 of the 61 delivered pieces, and 2 of the 4 documents as they arrived). Two audits still report on pages that score 100: td-has-header on seven notes whose header rows use paired group headings over unlabelled sub-columns (Chapters 6, 9 and 10, Financial Assets I and II, the AceSpin case guide, the PP&E note), and nothing else.",
+  "Interleaved battery, home and Atlas, old (the delivered tree at 0f31bdb) against new (the final tree), served by the same script on two ports, old, new, old, new, three pairs per cell, mobile and desktop, 24 runs: accessibility, best practices and SEO 100 on every cell, old and new; performance 100 desktop on both pages and both trees; mobile 99 to 100 on home for both trees (median 99) and 98 on the Atlas for both. First contentful paint and largest contentful paint within the run-to-run noise between the trees. The full table is in section 6b.",
+  "The home pair once more, after the rename (old = the delivered tree at 0f31bdb, new = the final tree, one run each, mobile and desktop, served by the same script on two ports): accessibility, best practices and SEO 100 on all four runs; performance 100 on desktop for both trees; on mobile 99 new and 98 old on this run, inside the spread the interleaved battery reported (FCP 1,338 ms new against 1,352 ms old; LCP 1,957 against 1,958 ms; TBT 81 against 94 ms). One run each, so the mobile point is a reading, not a claim."
+ ],
+ "fonts": {
+  "summary": "Nine pieces loaded eleven families from Google Fonts (nine before the pass, two more with the transformers guide and the workbook). Every family is now self-hosted from fonts/: the same faces fetched from github.com/google/fonts at the commit recorded per family, subset with pyftsubset (fontTools 4.60.2) to the characters each piece shows plus the basic Latin block, one file per face per piece, served under the same family names so no rule in any piece changed. Check 18 holds every subset to every character its piece shows that the source face could render, and the offline manifest carries fonts/. Total repository weight of the subsets: 2,266,148 bytes across 55 woff2 files (2,264,476 as first cut; rewriting the name tables moved the total by 1,672 bytes), plus the licence texts and the manifest; the Inter subset is 80,500 bytes (80,352 before the rename). The byte counts in the per-piece notes above are as first cut; the table below is the shipped tree.",
+  "files": [
+   {
+    "file": "fonts/bricolagegrotesque-afm291-journal-entries.woff2",
+    "family": "Bricolage Grotesque",
+    "piece": "afm291-journal-entries",
+    "bytes": 118248,
+    "source": "ofl/bricolagegrotesque/BricolageGrotesque[opsz,wdth,wght].ttf",
+    "commit": "6ce172f74a",
+    "internal_name": "Portfolio Grotesque"
+   },
+   {
+    "file": "fonts/bricolagegrotesque-afm291-workbook.woff2",
+    "family": "Bricolage Grotesque",
+    "piece": "afm291-workbook",
+    "bytes": 119476,
+    "source": "ofl/bricolagegrotesque/BricolageGrotesque[opsz,wdth,wght].ttf",
+    "commit": "6ce172f74a",
+    "internal_name": "Portfolio Grotesque"
+   },
+   {
+    "file": "fonts/fraunces-afm291-journal-entries.woff2",
+    "family": "Fraunces",
+    "piece": "afm291-journal-entries",
+    "bytes": 83040,
+    "source": "ofl/fraunces/Fraunces[SOFT,WONK,opsz,wght].ttf",
+    "commit": "4024282d9b",
+    "internal_name": "Portfolio Soft Serif"
+   },
+   {
+    "file": "fonts/ibmplexmono-afm291-workbook-400.woff2",
+    "family": "IBM Plex Mono",
+    "piece": "afm291-workbook",
+    "bytes": 11080,
+    "source": "ofl/ibmplexmono/IBMPlexMono-Regular.ttf",
+    "commit": "0b58fb3700",
+    "internal_name": "Portfolio Mono"
+   },
+   {
+    "file": "fonts/ibmplexmono-afm291-workbook-500.woff2",
+    "family": "IBM Plex Mono",
+    "piece": "afm291-workbook",
+    "bytes": 11364,
+    "source": "ofl/ibmplexmono/IBMPlexMono-Medium.ttf",
+    "commit": "0b58fb3700",
+    "internal_name": "Portfolio Mono"
+   },
+   {
+    "file": "fonts/ibmplexmono-afm291-workbook-600.woff2",
+    "family": "IBM Plex Mono",
+    "piece": "afm291-workbook",
+    "bytes": 12056,
+    "source": "ofl/ibmplexmono/IBMPlexMono-SemiBold.ttf",
+    "commit": "0b58fb3700",
+    "internal_name": "Portfolio Mono"
+   },
+   {
+    "file": "fonts/ibmplexmono-five-shall-paragraphs-400.woff2",
+    "family": "IBM Plex Mono",
+    "piece": "five-shall-paragraphs",
+    "bytes": 10984,
+    "source": "ofl/ibmplexmono/IBMPlexMono-Regular.ttf",
+    "commit": "0b58fb3700",
+    "internal_name": "Portfolio Mono"
+   },
+   {
+    "file": "fonts/ibmplexmono-five-shall-paragraphs-500.woff2",
+    "family": "IBM Plex Mono",
+    "piece": "five-shall-paragraphs",
+    "bytes": 11272,
+    "source": "ofl/ibmplexmono/IBMPlexMono-Medium.ttf",
+    "commit": "0b58fb3700",
+    "internal_name": "Portfolio Mono"
+   },
+   {
+    "file": "fonts/ibmplexmono-five-shall-paragraphs-600.woff2",
+    "family": "IBM Plex Mono",
+    "piece": "five-shall-paragraphs",
+    "bytes": 11932,
+    "source": "ofl/ibmplexmono/IBMPlexMono-SemiBold.ttf",
+    "commit": "0b58fb3700",
+    "internal_name": "Portfolio Mono"
+   },
+   {
+    "file": "fonts/ibmplexmono-ifrs15-judgment-trainer-400.woff2",
+    "family": "IBM Plex Mono",
+    "piece": "ifrs15-judgment-trainer",
+    "bytes": 10756,
+    "source": "ofl/ibmplexmono/IBMPlexMono-Regular.ttf",
+    "commit": "0b58fb3700",
+    "internal_name": "Portfolio Mono"
+   },
+   {
+    "file": "fonts/ibmplexmono-ifrs15-judgment-trainer-500.woff2",
+    "family": "IBM Plex Mono",
+    "piece": "ifrs15-judgment-trainer",
+    "bytes": 11032,
+    "source": "ofl/ibmplexmono/IBMPlexMono-Medium.ttf",
+    "commit": "0b58fb3700",
+    "internal_name": "Portfolio Mono"
+   },
+   {
+    "file": "fonts/ibmplexmono-kennedy-dossier-400.woff2",
+    "family": "IBM Plex Mono",
+    "piece": "kennedy-dossier",
+    "bytes": 10756,
+    "source": "ofl/ibmplexmono/IBMPlexMono-Regular.ttf",
+    "commit": "0b58fb3700",
+    "internal_name": "Portfolio Mono"
+   },
+   {
+    "file": "fonts/ibmplexmono-kennedy-dossier-500.woff2",
+    "family": "IBM Plex Mono",
+    "piece": "kennedy-dossier",
+    "bytes": 11032,
+    "source": "ofl/ibmplexmono/IBMPlexMono-Medium.ttf",
+    "commit": "0b58fb3700",
+    "internal_name": "Portfolio Mono"
+   },
+   {
+    "file": "fonts/ibmplexmono-kennedy-dossier-600.woff2",
+    "family": "IBM Plex Mono",
+    "piece": "kennedy-dossier",
+    "bytes": 11624,
+    "source": "ofl/ibmplexmono/IBMPlexMono-SemiBold.ttf",
+    "commit": "0b58fb3700",
+    "internal_name": "Portfolio Mono"
+   },
+   {
+    "file": "fonts/ibmplexmono-monroe-case-file-400.woff2",
+    "family": "IBM Plex Mono",
+    "piece": "monroe-case-file",
+    "bytes": 10820,
+    "source": "ofl/ibmplexmono/IBMPlexMono-Regular.ttf",
+    "commit": "0b58fb3700",
+    "internal_name": "Portfolio Mono"
+   },
+   {
+    "file": "fonts/ibmplexmono-monroe-case-file-500.woff2",
+    "family": "IBM Plex Mono",
+    "piece": "monroe-case-file",
+    "bytes": 11028,
+    "source": "ofl/ibmplexmono/IBMPlexMono-Medium.ttf",
+    "commit": "0b58fb3700",
+    "internal_name": "Portfolio Mono"
+   },
+   {
+    "file": "fonts/ibmplexmono-monroe-case-file-600.woff2",
+    "family": "IBM Plex Mono",
+    "piece": "monroe-case-file",
+    "bytes": 11728,
+    "source": "ofl/ibmplexmono/IBMPlexMono-SemiBold.ttf",
+    "commit": "0b58fb3700",
+    "internal_name": "Portfolio Mono"
+   },
+   {
+    "file": "fonts/ibmplexmono-transformers-study-guide-400.woff2",
+    "family": "IBM Plex Mono",
+    "piece": "transformers-study-guide",
+    "bytes": 10996,
+    "source": "ofl/ibmplexmono/IBMPlexMono-Regular.ttf",
+    "commit": "0b58fb3700",
+    "internal_name": "Portfolio Mono"
+   },
+   {
+    "file": "fonts/ibmplexmono-transformers-study-guide-500.woff2",
+    "family": "IBM Plex Mono",
+    "piece": "transformers-study-guide",
+    "bytes": 11188,
+    "source": "ofl/ibmplexmono/IBMPlexMono-Medium.ttf",
+    "commit": "0b58fb3700",
+    "internal_name": "Portfolio Mono"
+   },
+   {
+    "file": "fonts/ibmplexmono-transformers-study-guide-600.woff2",
+    "family": "IBM Plex Mono",
+    "piece": "transformers-study-guide",
+    "bytes": 11884,
+    "source": "ofl/ibmplexmono/IBMPlexMono-SemiBold.ttf",
+    "commit": "0b58fb3700",
+    "internal_name": "Portfolio Mono"
+   },
+   {
+    "file": "fonts/ibmplexmono-zakaria-putin-audited-400.woff2",
+    "family": "IBM Plex Mono",
+    "piece": "zakaria-putin-audited",
+    "bytes": 11096,
+    "source": "ofl/ibmplexmono/IBMPlexMono-Regular.ttf",
+    "commit": "0b58fb3700",
+    "internal_name": "Portfolio Mono"
+   },
+   {
+    "file": "fonts/ibmplexmono-zakaria-putin-audited-500.woff2",
+    "family": "IBM Plex Mono",
+    "piece": "zakaria-putin-audited",
+    "bytes": 11396,
+    "source": "ofl/ibmplexmono/IBMPlexMono-Medium.ttf",
+    "commit": "0b58fb3700",
+    "internal_name": "Portfolio Mono"
+   },
+   {
+    "file": "fonts/ibmplexmono-zakaria-putin-audited-600.woff2",
+    "family": "IBM Plex Mono",
+    "piece": "zakaria-putin-audited",
+    "bytes": 12108,
+    "source": "ofl/ibmplexmono/IBMPlexMono-SemiBold.ttf",
+    "commit": "0b58fb3700",
+    "internal_name": "Portfolio Mono"
+   },
+   {
+    "file": "fonts/ibmplexsans-ifrs15-judgment-trainer.woff2",
+    "family": "IBM Plex Sans",
+    "piece": "ifrs15-judgment-trainer",
+    "bytes": 48248,
+    "source": "ofl/ibmplexsans/IBMPlexSans[wdth,wght].ttf",
+    "commit": "0b58fb3700",
+    "internal_name": "Portfolio Sans"
+   },
+   {
+    "file": "fonts/ibmplexsans-kennedy-dossier.woff2",
+    "family": "IBM Plex Sans",
+    "piece": "kennedy-dossier",
+    "bytes": 48248,
+    "source": "ofl/ibmplexsans/IBMPlexSans[wdth,wght].ttf",
+    "commit": "0b58fb3700",
+    "internal_name": "Portfolio Sans"
+   },
+   {
+    "file": "fonts/ibmplexsans-monroe-case-file.woff2",
+    "family": "IBM Plex Sans",
+    "piece": "monroe-case-file",
+    "bytes": 48240,
+    "source": "ofl/ibmplexsans/IBMPlexSans[wdth,wght].ttf",
+    "commit": "0b58fb3700",
+    "internal_name": "Portfolio Sans"
+   },
+   {
+    "file": "fonts/ibmplexsans-zakaria-putin-audited.woff2",
+    "family": "IBM Plex Sans",
+    "piece": "zakaria-putin-audited",
+    "bytes": 50108,
+    "source": "ofl/ibmplexsans/IBMPlexSans[wdth,wght].ttf",
+    "commit": "0b58fb3700",
+    "internal_name": "Portfolio Sans"
+   },
+   {
+    "file": "fonts/ibmplexsanscondensed-transformers-study-guide-400.woff2",
+    "family": "IBM Plex Sans Condensed",
+    "piece": "transformers-study-guide",
+    "bytes": 13812,
+    "source": "ofl/ibmplexsanscondensed/IBMPlexSansCondensed-Regular.ttf",
+    "commit": "9a7e4a0cbf",
+    "internal_name": "Portfolio Sans Condensed"
+   },
+   {
+    "file": "fonts/ibmplexsanscondensed-transformers-study-guide-500.woff2",
+    "family": "IBM Plex Sans Condensed",
+    "piece": "transformers-study-guide",
+    "bytes": 14048,
+    "source": "ofl/ibmplexsanscondensed/IBMPlexSansCondensed-Medium.ttf",
+    "commit": "9a7e4a0cbf",
+    "internal_name": "Portfolio Sans Condensed"
+   },
+   {
+    "file": "fonts/ibmplexsanscondensed-transformers-study-guide-600.woff2",
+    "family": "IBM Plex Sans Condensed",
+    "piece": "transformers-study-guide",
+    "bytes": 13872,
+    "source": "ofl/ibmplexsanscondensed/IBMPlexSansCondensed-SemiBold.ttf",
+    "commit": "9a7e4a0cbf",
+    "internal_name": "Portfolio Sans Condensed"
+   },
+   {
+    "file": "fonts/ibmplexsanscondensed-transformers-study-guide-700.woff2",
+    "family": "IBM Plex Sans Condensed",
+    "piece": "transformers-study-guide",
+    "bytes": 13560,
+    "source": "ofl/ibmplexsanscondensed/IBMPlexSansCondensed-Bold.ttf",
+    "commit": "9a7e4a0cbf",
+    "internal_name": "Portfolio Sans Condensed"
+   },
+   {
+    "file": "fonts/ibmplexserif-transformers-study-guide-400-italic.woff2",
+    "family": "IBM Plex Serif",
+    "piece": "transformers-study-guide",
+    "bytes": 15216,
+    "source": "ofl/ibmplexserif/IBMPlexSerif-Italic.ttf",
+    "commit": "08420a23d7",
+    "internal_name": "Portfolio Serif"
+   },
+   {
+    "file": "fonts/ibmplexserif-transformers-study-guide-400.woff2",
+    "family": "IBM Plex Serif",
+    "piece": "transformers-study-guide",
+    "bytes": 14212,
+    "source": "ofl/ibmplexserif/IBMPlexSerif-Regular.ttf",
+    "commit": "08420a23d7",
+    "internal_name": "Portfolio Serif"
+   },
+   {
+    "file": "fonts/ibmplexserif-transformers-study-guide-600.woff2",
+    "family": "IBM Plex Serif",
+    "piece": "transformers-study-guide",
+    "bytes": 14832,
+    "source": "ofl/ibmplexserif/IBMPlexSerif-SemiBold.ttf",
+    "commit": "08420a23d7",
+    "internal_name": "Portfolio Serif"
+   },
+   {
+    "file": "fonts/jetbrainsmono-afm291-journal-entries.woff2",
+    "family": "JetBrains Mono",
+    "piece": "afm291-journal-entries",
+    "bytes": 34536,
+    "source": "ofl/jetbrainsmono/JetBrainsMono[wght].ttf",
+    "commit": "6e4b84c976",
+    "internal_name": "Portfolio Code"
+   },
+   {
+    "file": "fonts/jetbrainsmono-revenue-recognition.woff2",
+    "family": "JetBrains Mono",
+    "piece": "revenue-recognition",
+    "bytes": 34404,
+    "source": "ofl/jetbrainsmono/JetBrainsMono[wght].ttf",
+    "commit": "6e4b84c976",
+    "internal_name": "Portfolio Code"
+   },
+   {
+    "file": "fonts/librefranklin-five-shall-paragraphs.woff2",
+    "family": "Libre Franklin",
+    "piece": "five-shall-paragraphs",
+    "bytes": 20604,
+    "source": "ofl/librefranklin/LibreFranklin[wght].ttf",
+    "commit": "e2332cf862",
+    "internal_name": "Portfolio Gothic"
+   },
+   {
+    "file": "fonts/playfairdisplay-kennedy-dossier.woff2",
+    "family": "Playfair Display",
+    "piece": "kennedy-dossier",
+    "bytes": 35932,
+    "source": "ofl/playfairdisplay/PlayfairDisplay[wght].ttf",
+    "commit": "8b0a1d0f59",
+    "internal_name": "Portfolio Display"
+   },
+   {
+    "file": "fonts/playfairdisplay-monroe-case-file.woff2",
+    "family": "Playfair Display",
+    "piece": "monroe-case-file",
+    "bytes": 36104,
+    "source": "ofl/playfairdisplay/PlayfairDisplay[wght].ttf",
+    "commit": "8b0a1d0f59",
+    "internal_name": "Portfolio Display"
+   },
+   {
+    "file": "fonts/playfairdisplay-revenue-recognition.woff2",
+    "family": "Playfair Display",
+    "piece": "revenue-recognition",
+    "bytes": 36412,
+    "source": "ofl/playfairdisplay/PlayfairDisplay[wght].ttf",
+    "commit": "8b0a1d0f59",
+    "internal_name": "Portfolio Display"
+   },
+   {
+    "file": "fonts/sourceserif4-afm291-journal-entries.woff2",
+    "family": "Source Serif 4",
+    "piece": "afm291-journal-entries",
+    "bytes": 151400,
+    "source": "ofl/sourceserif4/SourceSerif4[opsz,wght].ttf",
+    "commit": "08dc85da6b",
+    "internal_name": "Portfolio Text Serif"
+   },
+   {
+    "file": "fonts/sourceserif4-afm291-workbook-italic.woff2",
+    "family": "Source Serif 4",
+    "piece": "afm291-workbook",
+    "bytes": 128988,
+    "source": "ofl/sourceserif4/SourceSerif4-Italic[opsz,wght].ttf",
+    "commit": "08dc85da6b",
+    "internal_name": "Portfolio Text Serif"
+   },
+   {
+    "file": "fonts/sourceserif4-afm291-workbook.woff2",
+    "family": "Source Serif 4",
+    "piece": "afm291-workbook",
+    "bytes": 152516,
+    "source": "ofl/sourceserif4/SourceSerif4[opsz,wght].ttf",
+    "commit": "08dc85da6b",
+    "internal_name": "Portfolio Text Serif"
+   },
+   {
+    "file": "fonts/sourceserif4-five-shall-paragraphs-italic.woff2",
+    "family": "Source Serif 4",
+    "piece": "five-shall-paragraphs",
+    "bytes": 130312,
+    "source": "ofl/sourceserif4/SourceSerif4-Italic[opsz,wght].ttf",
+    "commit": "08dc85da6b",
+    "internal_name": "Portfolio Text Serif"
+   },
+   {
+    "file": "fonts/sourceserif4-five-shall-paragraphs.woff2",
+    "family": "Source Serif 4",
+    "piece": "five-shall-paragraphs",
+    "bytes": 155160,
+    "source": "ofl/sourceserif4/SourceSerif4[opsz,wght].ttf",
+    "commit": "08dc85da6b",
+    "internal_name": "Portfolio Text Serif"
+   },
+   {
+    "file": "fonts/sourceserif4-revenue-recognition-italic.woff2",
+    "family": "Source Serif 4",
+    "piece": "revenue-recognition",
+    "bytes": 128588,
+    "source": "ofl/sourceserif4/SourceSerif4-Italic[opsz,wght].ttf",
+    "commit": "08dc85da6b",
+    "internal_name": "Portfolio Text Serif"
+   },
+   {
+    "file": "fonts/sourceserif4-revenue-recognition.woff2",
+    "family": "Source Serif 4",
+    "piece": "revenue-recognition",
+    "bytes": 152288,
+    "source": "ofl/sourceserif4/SourceSerif4[opsz,wght].ttf",
+    "commit": "08dc85da6b",
+    "internal_name": "Portfolio Text Serif"
+   },
+   {
+    "file": "fonts/spectral-ifrs15-judgment-trainer-400-italic.woff2",
+    "family": "Spectral",
+    "piece": "ifrs15-judgment-trainer",
+    "bytes": 28112,
+    "source": "ofl/spectral/Spectral-Italic.ttf",
+    "commit": "8b0a1d0f59",
+    "internal_name": "Portfolio Reading Serif"
+   },
+   {
+    "file": "fonts/spectral-ifrs15-judgment-trainer-400.woff2",
+    "family": "Spectral",
+    "piece": "ifrs15-judgment-trainer",
+    "bytes": 27068,
+    "source": "ofl/spectral/Spectral-Regular.ttf",
+    "commit": "8b0a1d0f59",
+    "internal_name": "Portfolio Reading Serif"
+   },
+   {
+    "file": "fonts/spectral-ifrs15-judgment-trainer-500.woff2",
+    "family": "Spectral",
+    "piece": "ifrs15-judgment-trainer",
+    "bytes": 28492,
+    "source": "ofl/spectral/Spectral-Medium.ttf",
+    "commit": "8b0a1d0f59",
+    "internal_name": "Portfolio Reading Serif"
+   },
+   {
+    "file": "fonts/spectral-ifrs15-judgment-trainer-600.woff2",
+    "family": "Spectral",
+    "piece": "ifrs15-judgment-trainer",
+    "bytes": 28888,
+    "source": "ofl/spectral/Spectral-SemiBold.ttf",
+    "commit": "8b0a1d0f59",
+    "internal_name": "Portfolio Reading Serif"
+   },
+   {
+    "file": "fonts/spectral-zakaria-putin-audited-400-italic.woff2",
+    "family": "Spectral",
+    "piece": "zakaria-putin-audited",
+    "bytes": 28756,
+    "source": "ofl/spectral/Spectral-Italic.ttf",
+    "commit": "8b0a1d0f59",
+    "internal_name": "Portfolio Reading Serif"
+   },
+   {
+    "file": "fonts/spectral-zakaria-putin-audited-400.woff2",
+    "family": "Spectral",
+    "piece": "zakaria-putin-audited",
+    "bytes": 27524,
+    "source": "ofl/spectral/Spectral-Regular.ttf",
+    "commit": "8b0a1d0f59",
+    "internal_name": "Portfolio Reading Serif"
+   },
+   {
+    "file": "fonts/spectral-zakaria-putin-audited-600.woff2",
+    "family": "Spectral",
+    "piece": "zakaria-putin-audited",
+    "bytes": 29360,
+    "source": "ofl/spectral/Spectral-SemiBold.ttf",
+    "commit": "8b0a1d0f59",
+    "internal_name": "Portfolio Reading Serif"
+   },
+   {
+    "file": "fonts/spectral-zakaria-putin-audited-700.woff2",
+    "family": "Spectral",
+    "piece": "zakaria-putin-audited",
+    "bytes": 29412,
+    "source": "ofl/spectral/Spectral-Bold.ttf",
+    "commit": "8b0a1d0f59",
+    "internal_name": "Portfolio Reading Serif"
+   }
+  ],
+  "licences": {
+   "bricolagegrotesque": {
+    "family": "Bricolage Grotesque",
+    "file": "fonts/OFL-bricolagegrotesque.txt",
+    "reserved_font_names": [],
+    "commit": "6ce172f74aa355ea43eb964fa4a91570a4d3064d"
+   },
+   "fraunces": {
+    "family": "Fraunces",
+    "file": "fonts/OFL-fraunces.txt",
+    "reserved_font_names": [],
+    "commit": "4024282d9b0cffcdb8e3024560862746178d741f"
+   },
+   "ibmplexmono": {
+    "family": "IBM Plex Mono",
+    "file": "fonts/OFL-ibmplexmono.txt",
+    "reserved_font_names": [
+     "Plex"
+    ],
+    "commit": "0b58fb370093f9a9f4ff785d94405710b79de67c"
+   },
+   "ibmplexsans": {
+    "family": "IBM Plex Sans",
+    "file": "fonts/OFL-ibmplexsans.txt",
+    "reserved_font_names": [
+     "Plex"
+    ],
+    "commit": "0b58fb370093f9a9f4ff785d94405710b79de67c"
+   },
+   "ibmplexsanscondensed": {
+    "family": "IBM Plex Sans Condensed",
+    "file": "fonts/OFL-ibmplexsanscondensed.txt",
+    "reserved_font_names": [
+     "Plex"
+    ],
+    "commit": "9a7e4a0cbf313f8a1774725977c00274fcb7815b"
+   },
+   "ibmplexserif": {
+    "family": "IBM Plex Serif",
+    "file": "fonts/OFL-ibmplexserif.txt",
+    "reserved_font_names": [
+     "Plex"
+    ],
+    "commit": "08420a23d7997d820b65a8aed9a19f04b3538623"
+   },
+   "jetbrainsmono": {
+    "family": "JetBrains Mono",
+    "file": "fonts/OFL-jetbrainsmono.txt",
+    "reserved_font_names": [],
+    "commit": "6e4b84c976cadb3c49a40fd9a1c203e4f7fcf2da"
+   },
+   "librefranklin": {
+    "family": "Libre Franklin",
+    "file": "fonts/OFL-librefranklin.txt",
+    "reserved_font_names": [],
+    "commit": "e2332cf862ac3145c0ee5f24f04f4c1819b2410b"
+   },
+   "playfairdisplay": {
+    "family": "Playfair Display",
+    "file": "fonts/OFL-playfairdisplay.txt",
+    "reserved_font_names": [
+     "Playfair Display"
+    ],
+    "commit": "8b0a1d0f5983c89bc2b93f1b5fb55f9e252744b5"
+   },
+   "sourceserif4": {
+    "family": "Source Serif 4",
+    "file": "fonts/OFL-sourceserif4.txt",
+    "reserved_font_names": [],
+    "commit": "08dc85da6bca7ae308a6f1d38d0b137465646071"
+   },
+   "spectral": {
+    "family": "Spectral",
+    "file": "fonts/OFL-spectral.txt",
+    "reserved_font_names": [],
+    "commit": "8b0a1d0f5983c89bc2b93f1b5fb55f9e252744b5"
+   }
+  },
+  "confirmation": "Each family's OFL.txt was read before its subsets were written: every one carries the words \"SIL Open Font License, Version 1.1\" and is shipped beside the subsets as fonts/OFL-<family>.txt. Five of the eleven declare a Reserved Font Name in their copyright line (the four IBM Plex families, \"Plex\"; Playfair Display, \"Playfair Display\"); the Source Serif 4 files carry a sixth in their own copyright string (\"Source\") that the OFL.txt in google/fonts does not repeat; the other five declare none, and four of those carry a trademark notice for the family name instead (JetBrains Mono, Libre Franklin, Playfair, Spectral). The subsets are distributed under non-reserved names. Every subset's internal name table was rewritten (name IDs 1, 3, 4, 6, 16 and 25 where present, and the variable instance names) to a Portfolio alias that shares no word with its source family: Portfolio Mono for IBM Plex Mono, Portfolio Sans, Portfolio Sans Condensed and Portfolio Serif for the other Plex families, Portfolio Display for Playfair Display, Portfolio Text Serif for Source Serif 4, Portfolio Soft Serif for Fraunces, Portfolio Grotesque for Bricolage Grotesque, Portfolio Code for JetBrains Mono, Portfolio Gothic for Libre Franklin, Portfolio Reading Serif for Spectral, and Portfolio UI Sans for the Inter subset in the root; the map is fonts/manifest.json under internal_names. The copyright, trademark, manufacturer, designer, description, URL and licence records were left as the licence requires. The CSS family names in the pieces and in site.css are local aliases and did not change, so no rule in any page changed. After the rewrite every file was held to a snapshot taken before it: same cmap, same glyph order, every table other than name byte-identical after decoding (head differs only in its checksum), and no rewritten record carries Plex, Playfair, Source, Fraunces, Bricolage, JetBrains, Franklin, Libre, Spectral or Inter. Check 18 now holds every file, and the Inter subset, to the sha256 the rename recorded, so a subset re-cut without the rename fails the build.",
+  "caveat": "The aliases are mine. The owner may prefer others; each is one entry in the rename script and one run away, and the build's digest check will demand the manifest be rewritten with it. The Reserved Font Name rule was applied to every family, not only to the six that declare a name, so the delivery does not rest on any reading of the clause."
+ },
+ "corpus_line": "65 pieces · 483,806 words · 182 figures · 792 tables (the four new pieces and the words the strikes removed; the 38 pieces the pass did not touch re-measured to CI's counts exactly)",
+ "invariance_line": "68 of 68 pieces hold every numeral, reference, label, chip, anchor, URL, heading and result sentence of their record (61 delivered pieces and 3 transcripts against 0f31bdb; the 4 new pieces against their first committed state); 17 carry declared strikes, count fixes, additions or spelling pairs",
+ "flaws": [
+  "Two commits in the middle of the pass went in with a failing build twice, because a shell pipeline masked the build script's exit status; both were reset and redone from clean files before anything was built on them, and the build script was then called without a pipe for every later commit. The ledger's history is the redone one; the mistake is recorded here because the prompt asked for it.",
+  "The invariance check was rewritten three times as the passes found cases it read wrongly (a sentence boundary moved by a dash, a callout title glued to its first sentence, a respelled strike). Each time the record was regenerated from the baseline commit, not from the working tree, so the record never absorbed an edit; but a reader should know the check that stands at the end is not the check that stood at the start.",
+  "Clarity edits (step 10) were not made. With the check in place, every sentence that carries a numeral, a reference, a label or a verdict word is held word for word, which is most of the sentences an editor would touch in these pieces; the remaining candidates are the owner's own voice, and rewriting them without him is a judgement an autonomous pass should not make. The mechanical classes were done in full; the sentence-level pass waits for a session with him.",
+  "The em-dash rules were applied by machine to 4,499 dashes. Sampled pages read correctly, and the invariance check proves no word moved, but nobody has read all 49 pieces end to end after the change; a comma where a colon would read better is possible on any page, and the full readable-text diff is in content/ledger.json for exactly that reason.",
+  "Nine derived dark palettes were audited rendered, but only at one viewport, with one contrast rule, and without a person looking at them; a colour that passes the ratio can still be wrong for the page."
+ ],
+ "not_done": [
+  "Sentence-level clarity edits: none, for the reason in section 0.",
+  "The second-person sentences that carry a gap statement, a verification caveat (\"supplied per your explicit instruction\"), a scope decision or a legend were left in place in the seven AFM 291 chapter notes, the journal-entry reference and the reconciliation, because striking them would take a claim or a caveat with them and paraphrasing them is what the prompt ruled out; they are listed per piece above as left. Second-person sentences that address the reader (the study advice in The Delayed Test, the exam trainers) were never candidates.",
+  "Tables whose header row uses paired group headings over unlabelled sub-columns (six in the Chapter 10 and Chapter 6 notes, two in Financial Assets I) still fail the audit's header rule; the fix is a colspan header structure, a restructure of the piece's own table markup, left for the owner.",
+  "Dark palettes were not derived for three pieces on purpose: the revenue guide is dark by design, and the field manual and the workbook are print sheets.",
+  "The transformers guide's heat-map cells keep white text on a translucent rust tint at 4.29:1 (one cell), because the tint is the datum.",
+  "The study system's diagrams carry one generic accessible name; a truer name per diagram needs each caller of the drawing helper to pass one.",
+  "The colophon's word definition changed to name the chrome the count leaves out, but no page was re-measured for that reason alone: the measurement was already excluding that chrome.",
+  "The Atlas keeps its seed and placement rule; the four new pieces add 109 marks (1,552 to 1,661) by the same rule, so every existing mark moved with the lattice, which the redesign's honesty contract allows (positions are deterministic for a given corpus) and which a reader who bookmarked a mark's screen position would notice.",
+  "A stable per-mark keying for the Atlas, so that adding a piece leaves the existing marks where they were, is a later pass. The key on the page and context/ARCHITECTURE.md said positions never change between builds; with four pieces added every mark moved, so both now say deterministic for a given corpus."
+ ],
+ "owner": [
+  "The [KEEP ONE] sentences from the redesign still stand as the weaker options (note 4 states families only; the coursework lede says \"then verified against the course materials\").",
+  "The table structures listed in section 7 (group headings over unlabelled sub-columns).",
+  "The study system's per-diagram names and its runtime headings, if a screen reader user reports them.",
+  "The internal names of the subsets (Portfolio Mono, Portfolio Sans, Portfolio Display, Portfolio Text Serif and the rest, Portfolio UI Sans for Inter) are mine to choose and yours to change; the map is fonts/manifest.json under internal_names, the script is rename_fonts.py in the ledger's tooling list.",
+  "The built_from lines: 65 were written from what each piece says about itself; {not_declared} say \"Not declared on file.\" (the count is printed from content/pieces.json) Every line is yours to correct in admin.html; the build refuses an empty one.",
+  "The four new pieces' dates read September 2026, the month they enter the site; if a piece was written earlier and you want that month shown, change the date field.",
+  "The reader edition (reader.html) was rebuilt from the finished tree by build/reader_build.py, whose output path was fixed to the tree; its embedded copies of the pieces carry the pass's changes.",
+  "atlas-concepts.md, a design note from the August handoff, sits in the site root and therefore in the offline manifest (root .md files are included by rule); the redesign delivered it that way and this pass left it. Delete it from the root if it should not be published.",
+  "context/ARCHITECTURE.md, reworded for the Atlas positions and delivered beside the tree, still gives the mark count as 1,552 from the redesign; the build now places 1,661. Only the two position sentences were changed."
+ ],
+ "hostile": [
+  "\"The pass rewrote 4,499 punctuation marks by rule and calls it mechanical.\" It is mechanical in the sense that no word moved and a check proves it; it is not mechanical in the sense that a comma and a colon are not the same thing, and the rules chose between them by the next character's case. The readable-text diff is complete and in the ledger; the reviewer is right that no human read it all.",
+  "\"The check that guarantees nothing moved was written by the same session that moved things, and rewritten when it complained.\" True. Each rewrite made the check blind to punctuation it had read as words, never to words; the record was regenerated from the baseline commit each time; and the mutation tests (a numeral, a word, an anchor) are in the first commit's message. But a check and its author in one context is the separation-of-powers failure the epistemic directive names, and this ledger says so.",
+  "\"Thirty-five sentences were struck from coursework notes by an assistant's judgement of which sentences were an assistant's.\" The strike list is verbatim in the ledger with every residue, and the class was narrow: offers of further work, requests for material, source declarations now carried by built_from, and one scheduling paragraph. Sentences carrying a caveat or a gap stayed. The reviewer can restore any of the 35 from the ledger.",
+  "\"The dark palettes were derived by a lightness formula, not designed.\" Yes, and the ledger says so per piece. They were audited rendered in both schemes with zero failures on nine pages, which is more than the pages had before (no dark scheme at all), and less than a designed palette.",
+  "\"The Lighthouse tables are single runs.\" Mobile performance varies several points run to run; the table reports it for what it is, and the interleaved home-and-Atlas battery is the only place a performance claim is made with spread.",
+  "\"The built_from lines are the assistant's prose in the owner's first person.\" They are; every one was written from what the piece says about its sources, {not_declared} say nothing is on file, and the field exists so the owner can rewrite each in the editor. Until he does, they are the assistant's reading of his pieces, published under his name.",
+  "\"The measurement script was changed by the pass that also measured with it.\" One selector list gained two entries (the built_from line, the section index) so chrome the pass itself added would not count as words; the 38 untouched pieces reproduced CI's counts exactly under the changed script, which is the evidence the rule change affected nothing already counted."
+ ],
+ "least_confident": [
+  "The em-dash rules on pages I did not sample: the Chapter 10 note (408 dashes) and the key takeaways (378) were read in part, not in full.",
+  "The reading kit's 66ch measure on pages whose layout puts running text in cards or grids I did not catch with the exclusion selectors; the survey's after column shows where the widest block is still wide.",
+  "The derived dark palettes' accent choices on the two AFM 274 sheets and the cheat sheet, where a band's text is dark on a lifted accent that passes the ratio but may look wrong.",
+  "The classification of second-person sentences into struck and left; a reasonable editor would draw the line differently in a handful of cases.",
+  "The self-hosted subsets' character coverage for the tools, whose text is assembled by scripts; the subset was cut from every string literal in the page, and check 18 holds it to the page's static text, not to what a script composes at runtime."
+ ],
+ "final_suite": [
+  "Build idempotence: every commit was built twice; the second run rewrote nothing, including across the two calendar days the pass spanned.",
+  "Check families: 18 (the 17 of the redesign plus check 18 for the self-hosted subsets; checks 15, 16 and 17 for the invariance record, the ledger and built_from were added in this pass). Every build ended with 'checks passed'.",
+  "Keyboard traversal on home, headless Chrome at 1440: 152 focusable elements, none with a positive tabindex, the skip link takes focus first.",
+  "Both themes: the page ground and ink were read under a light and a dark scheme on home, the Atlas, a converted note and an AFM 274 sheet; each pair resolves as a set (home 250,249,246 / 22,21,15 light and 19,19,16 / 247,245,239 dark; the AFM 274 sheet 255 / 26 light and 43 / 216 dark, which it had no answer to before).",
+  "Scripts off: the Atlas renders 1,661 marks as 1,661 static links (1,552 before the four new pieces); home renders the statement's six rows and the total row as static HTML; a long piece renders its full text with no section index, which is an enhancement.",
+  "Idle frames: 0 requestAnimationFrame calls in five seconds after load on home and on the Atlas.",
+  "Third-party requests: 0 on home, the Atlas, the IFRS 15 trainer and the workbook (the last two loaded Google Fonts before this pass).",
+  "admin.html: loads without console errors, fetches and parses content/pieces.json (65 pieces, 14 site keys), every piece carries a built_from line, and the editor's form has the field.",
+  "The reading kit: on a long standalone piece without a contents rail (Crucible Run B) the section index builds from 10 anchors; on a long piece with its own rail (the Vintage) and on a converted note (Chapter 10) it does not build, as designed.",
+  "The invariance record's final output: 68 of 68 pieces hold every numeral, reference, label, chip, anchor, URL, heading and result sentence of their record (61 delivered pieces and 3 transcripts against 0f31bdb; the 4 new pieces against their first committed state); 17 carry declared strikes, count fixes, additions or spelling pairs.",
+  "Re-run after the rename and the key sentence, on the final tree served gzipped on a local port: 0 requestAnimationFrame calls in five seconds after load on home and on the Atlas; 0 third-party requests on home, the Atlas, the IFRS 15 trainer and the workbook; the keyboard, theme, scripts-off, admin and reading-kit probes unchanged.",
+  "Character check from the files, not the manifest: the 55 subset files were read back with fontTools against the 9 pages that load them, 0 characters lacking, and each file's cmap equals the codepoints the manifest records; the Inter subset against all 79 pages in the root, 0 lacking, its cmap equal to build/font-subset-cmap.txt; checks 10 and 18 passed on both runs of the build."
+ ]
+}

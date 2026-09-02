@@ -6,11 +6,17 @@ This script never touches a piece's own HTML except to give it a way back
 into the site, and it never touches the stylesheet. Run by the GitHub
 Action on every push, so the site relists itself.
 """
-import datetime, hashlib, html, json, os, re, sys
+import datetime, hashlib, html, json, os, re, struct, sys
 
 ROOT    = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 CONTENT = json.load(open(os.path.join(ROOT, "content", "pieces.json"), encoding="utf-8"))
 METRICS = json.load(open(os.path.join(ROOT, "content", "metrics.json"), encoding="utf-8"))
+# the change ledger of the last content pass; written by build/ledger.py,
+# read here for one computed sentence on the colophon and for check 16
+try:
+    LEDGER = json.load(open(os.path.join(ROOT, "content", "ledger.json"), encoding="utf-8"))
+except Exception:
+    LEDGER = {}
 HERE    = os.path.dirname(os.path.abspath(__file__))
 STRIP   = json.load(open(os.path.join(HERE, "figures.json"), encoding="utf-8"))
 OUT     = ROOT
@@ -21,6 +27,17 @@ SHORT    = S["short"]
 EMAIL    = S["email"]
 SITE_URL = S["url"]
 BORN     = tuple(int(x) for x in S["born"].split("-"))
+# Recruiter fields. All optional: an empty value renders nothing, so the
+# owner fills them in pieces.json (or the editor) when he has them, and no
+# placeholder can ever look production-ready.
+RESUME    = (S.get("resume") or "").strip()
+LINKEDIN  = (S.get("linkedin") or "").strip()
+GITHUB    = (S.get("github") or "").strip()
+COOP_TERM = (S.get("coop_term") or "").strip()
+GRAD_YEAR = (S.get("grad_year") or "").strip()
+# Term standing, e.g. 2B: the fact a co-op recruiter screens on. Owner input,
+# like the name; an empty value renders nothing.
+STANDING  = (S.get("standing") or "").strip()
 WPM      = 230
 DOC_MIN  = 1200
 TODAY    = datetime.date.today()
@@ -29,6 +46,14 @@ TODAY    = datetime.date.today()
 # the footer of every page used to print the old address while linking to the
 # new one, which is the single contradiction this site cannot afford.
 HOST     = SITE_URL.split("//", 1)[-1].rstrip("/")
+
+# The colophon describes the font subset in numbers, so those numbers are
+# measured from the shipped file and the cmap the subset was cut to, the same
+# way every other figure on the site is measured rather than typed.
+FONT_BYTES = os.path.getsize(os.path.join(ROOT, "InterVariable-sub.woff2"))
+FONT_CODEPOINTS = len([c for c in open(
+    os.path.join(HERE, "font-subset-cmap.txt"), encoding="utf-8"
+).read().strip().split(",") if c != ""])
 
 def reading_minutes(w): return max(1, round(w / WPM))
 
@@ -82,10 +107,13 @@ def kwords(n):
 
 # ------------------------------------------------------------ shell ----
 import atlas as atlas_mod
+import invariance
 
-NAV = [("index.html","Home"),("research.html","Research"),("coursework.html","Coursework"),
-       ("tools.html","Tools"),("library.html","Library"),("atlas.html","Atlas"),
-       ("about.html","About")]
+# Five entries. The four shelves are one statement filtered four ways and are
+# reached from the statement's own subtotal rows and from Work, which is the
+# whole of it; Notes is the colophon, where every column is defined.
+NAV = [("index.html","Home"),("library.html","Work"),("atlas.html","Atlas"),
+       ("about.html","About"),("colophon.html","Notes")]
 
 # Research, Coursework and Tools are one sequence and each said so on its
 # own -- "Section 01", "Section 02", "Section 03" -- without ever showing
@@ -140,7 +168,7 @@ def _digest(text):
 def stamp_assets(generated):
     """generated: name -> the text this build is about to write. Anything not
     generated is read from disk, because it is hand-written and already there."""
-    for name in ("site.css", "figures.css", "site.js", "atlas.js"):
+    for name in ("site.css", "figures.css", "site.js", "atlas.js", "long.css", "long.js"):
         if name in generated:
             ASSET_V[name] = _digest(generated[name])
             continue
@@ -165,12 +193,12 @@ def head(title, desc, page, extra=""):
 <meta property="og:title" content="{esc(title)}">
 <meta property="og:description" content="{esc(desc)}">
 <meta property="og:type" content="website">
-<meta property="og:site_name" content="{esc(SHORT)} — portfolio">
+<meta property="og:site_name" content="{esc(SHORT)} · portfolio">
 <meta property="og:url" content="{SITE_URL}/{'' if page=='index.html' else page}">
 <meta property="og:image" content="{SITE_URL}/og-card.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="{esc(SHORT)} — portfolio">
+<meta property="og:image:alt" content="{esc(SHORT)} · portfolio">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="{SITE_URL}/og-card.png">
 <link rel="canonical" href="{SITE_URL}/{'' if page=='index.html' else page}">
@@ -185,7 +213,11 @@ def head(title, desc, page, extra=""):
    embedded contexts throw on storage access. */
 (function(){{try{{var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);}}catch(e){{}}
 document.documentElement.className+=' js';}})();
-</script>{extra}
+</script>
+<!-- A control that can do nothing is worse than no control: with scripts
+     off, the script-driven surfaces hide rather than sit dead. Everything
+     they reach remains reachable as plain links and server-rendered lists. -->
+<noscript><style>.hbtns,#keysbtn,.tools-bar,#corpusread,#atlasmini,.jsonly,.offline-controls{{display:none !important}}</style></noscript>{extra}
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -222,23 +254,23 @@ def foot():
       <p class="small fnote">Accounting and Financial Management, Analytics stream, University of Waterloo. {len(P)} published pieces: research, interactive tools and references, all of them running rather than described.</p>
       <p class="small"><a class="inlink" href="mailto:{EMAIL}">{EMAIL}</a></p>
     </div>
-    <div>
+    <nav aria-label="Sections, from the footer">
       <h2>Sections</h2>
       <a href="research.html">Research and writing</a>
       <a href="coursework.html">Coursework</a>
       <a href="tools.html">Interactive tools</a>
       <a href="library.html">Full library</a>
-    </div>
-    <div>
+    </nav>
+    <nav aria-label="About this site">
       <h2>This site</h2>
       <a href="about.html">About and contact</a>
       <a href="colophon.html">Colophon and method</a>
       <a href="{SITE_URL}">{HOST}</a>
-    </div>
+    </nav>
   </div>
   <div class="fine">
     <span>&copy; {TODAY.year} {esc(NAME)}</span>
-    <span><b>{len(P)}</b> pieces &middot; <b>{TOTAL_WORDS:,}</b> words &middot; <b>{TOTAL_FIGS}</b> figures &middot; hand-written HTML and CSS, no framework &middot; <button id="keysbtn" type="button" class="linkbtn">keyboard</button></span>
+    <span><b>{len(P)}</b> pieces &middot; <b>{TOTAL_WORDS:,}</b> words &middot; <b>{TOTAL_FIGS}</b> figures &middot; no framework, nothing external at runtime, one build you can read &middot; <button id="keysbtn" type="button" class="linkbtn">keyboard</button></span>
   </div>
 </footer>
 
@@ -246,7 +278,7 @@ def foot():
      without it, and the button is the same route as the keyboard. -->
 <div class="cmdk" id="cmdk" hidden role="dialog" aria-modal="true" aria-label="Search all work">
   <div class="cmdk-panel">
-    <input id="cmdk-input" type="text" placeholder="Search {len(P)} pieces by title, course or topic" autocomplete="off" spellcheck="false" aria-controls="cmdk-list">
+    <input id="cmdk-input" type="text" placeholder="Search {len(P)} pieces by title, course or topic" autocomplete="off" spellcheck="false" role="combobox" aria-expanded="false" aria-autocomplete="list" aria-controls="cmdk-list">
     <ul class="cmdk-list" id="cmdk-list" role="listbox" aria-label="Results"></ul>
     <div class="cmdk-foot">
       <span><kbd>&#8593;</kbd><kbd>&#8595;</kbd> move</span><span><kbd>Enter</kbd> open</span><span><kbd>Esc</kbd> close</span>
@@ -270,6 +302,9 @@ def foot():
       <dt><kbd>g</kbd> <kbd>a</kbd></dt><dd>About</dd>
       <dt><kbd>?</kbd></dt><dd>This list</dd>
     </dl>
+    <p class="keys-pref"><label><input type="checkbox" id="keysingles" checked>
+      Single-key shortcuts. Turn these off if a key press where you did not
+      mean one keeps opening things; search stays on <kbd>&#8984;</kbd><kbd>K</kbd>.</label></p>
     <button class="close" type="button">Close</button>
   </div>
 </div>
@@ -282,6 +317,145 @@ window.WORK = {WORKJSON};
 """
 
 # ------------------------------------------------------ components ----
+# The statement: one grammar for the home page, the four shelves and the
+# chrome inside a piece. A row is a title and three measured figures; a
+# subtotal is an origin; the total is the corpus line. Every number is
+# metrics.json or a sum of it, and checks 12 and 13 hold them.
+
+def n(x):
+    return f"{x:,}"
+
+def stmt_cells(w, f, t):
+    return (f'<td class="n">{n(w)}</td><td class="n fig">{f}<span class="tb"> &middot; {t}</span></td>'
+            f'<td class="n tab">{t}</td>')
+
+def flagged_lift(p):
+    """The one graft from the Specimen thesis: the result line of Flagged in
+    Hindsight, read from the piece's own result element at build time and
+    registered with the caption check. If the element is not there, there is
+    no line; nothing is typed in its place."""
+    try:
+        raw = open(os.path.join(OUT, p["url"]), encoding="utf-8", errors="ignore").read()
+    except OSError:
+        return None
+    m = re.search(r'<div class="big-stat">(.*?)</div>', raw, re.S)
+    if not m:
+        return None
+    inner = re.sub(r"<br\s*/?>", " ", m.group(1))
+    num = re.sub(r"<small>.*", "", inner, flags=re.S).strip()
+    sm = re.search(r"<small>(.*?)</small>", inner, re.S)
+    txt = re.sub(r"\s+", " ", html.unescape(re.sub(r"<[^>]+>", "", sm.group(1)))).strip() if sm else ""
+    if not num:
+        return None
+    CAPTIONS.append((num + " " + txt, p["url"]))
+    return num, txt
+
+def stmt_row(p, lift=None):
+    sub = f'<span class="s">{esc(p["s"])}</span>' if p.get("s") else ""
+    out = (f'<tr class="item{" haslift" if lift else ""}"><th scope="row"><a href="{p["url"]}">{esc(p["t"])}</a>{sub}</th>'
+           + stmt_cells(p["words"], p["figures"], p["tables"]) + "</tr>")
+    if lift:
+        out += (f'\n<tr class="liftrow"><td colspan="4"><span class="lift"><b>{esc(lift[0])}</b> {esc(lift[1])}</span></td></tr>')
+    return out
+
+def stmt_subrow(label, d, href, note=None, cls="sub", sub2=""):
+    nr = f'<a class="nref" href="#n{note}" aria-label="Note {note}">{note}</a>' if note else ""
+    s2 = f'<span class="sub2">{esc(sub2)}</span>' if sub2 else ""
+    return (f'<tr class="{cls}"><th scope="row"><a href="{href}">{esc(label)}</a>{nr}{s2}</th>'
+            + stmt_cells(d["words"], d["figures"], d["tables"]) + "</tr>")
+
+def stmt_head_cells():
+    return ('<thead><tr><th scope="col">Piece</th>'
+            '<th scope="col" class="n"><a href="colophon.html#n1">Words<span class="nref">1</span></a></th>'
+            '<th scope="col" class="n fig"><a href="colophon.html#n1">Figures<span class="tb tbh"><span class="dot">&middot; </span>tables</span><span class="nref">1</span></a></th>'
+            '<th scope="col" class="n tab"><a href="colophon.html#n1">Tables<span class="nref">1</span></a></th></tr></thead>')
+
+def shelf_row(k, p, extra=""):
+    """A full statement row for a shelf or the library: the title, the
+    owner's one-line subtitle, the declared rule from the demo field verbatim
+    or the computed absence, the three figures, and whatever the shelf lifts
+    beside the piece. The data attributes are the library's filter and sort
+    contract in site.js."""
+    tags = "".join(f'<span class="tag">{esc(t)}</span>' for t in p["tags"])
+    hay = " ".join([p["t"], p["s"], p["blurb"], " ".join(p["tags"]), p["k"], p["c"],
+                    SURF_LABEL[p["surface"]]]).lower()
+    rule = (f'<p class="rule">{esc(p["demo"])}</p>' if p.get("demo")
+            else '<p class="rule none">No declared rule on file.</p>')
+    return f"""      <li data-kind="{p['k'].lower()}" data-course="{esc(p['c'])}" data-surface="{p['surface']}" data-search="{esc(hay)}" data-words="{p['words']}" data-figs="{p['figures']}" data-title="{esc(p['t'].lower())}">
+        <div class="sr">
+          <div class="sr-t">
+            <span class="num tnum">{k:02d}</span>
+            <h3><a href="{p['url']}">{esc(p['t'])}</a></h3>
+            <p class="s">{esc(p['s'])}</p>
+            {rule}
+            <p class="meta">{kind_chip(p)}{surf(p)}<span class="metadate">{esc(p['d'])}</span>{tags}</p>
+            {extra}
+          </div>
+          <div class="sr-n"><span class="tnum">{n(p['words'])}</span><span class="tnum">{p['figures']}</span><span class="tnum">{p['tables']}</span></div>
+        </div>
+      </li>"""
+
+def shelf_list_head():
+    return ('      <li class="sr-head" aria-hidden="true"><div class="sr"><div class="sr-t">Piece</div>'
+            '<div class="sr-n"><span>Words</span><span>Figures</span><span>Tables</span></div></div></li>')
+
+def shelf_subtotal(label, items, href=None):
+    w = sum(p["words"] for p in items); f = sum(p["figures"] for p in items); t = sum(p["tables"] for p in items)
+    lab = f'<a href="{href}">{esc(label)}</a>' if href else esc(label)
+    return (f'      <li class="sr-sub"><div class="sr"><div class="sr-t">{lab}</div>'
+            f'<div class="sr-n"><span class="tnum">{n(w)}</span><span class="tnum">{f}</span><span class="tnum">{t}</span></div></div></li>')
+
+# figures lifted out of pieces, shown beside the piece they belong to
+LIFTS = {
+    "whose-losses-count": ("fs-wlc", "Blue is inside the number, red is outside",
+        "Seven literatures making the same boundary decision, drawn on one vertical rule. Whatever falls to the right of it is real and appears on no ledger. Open outlines are results not distinguishable from zero, drawn at full size rather than shrunk away."),
+    "not-significant": ("fs-ns1", "Solid reaches a ledger, open does not",
+        "Deceive an investor and the market takes 7.53 times what the law does. Injure a stranger who does not trade with you and the share price moves 0.24 per cent, which is not significant. The essay is built on that gap."),
+    "the-trillion-dollar-vintage": ("fs-tv1", "The fork is never closed",
+        "Two ways of pricing the same vintage, 2.3 times apart, carried side by side to the end rather than averaged. The refused marker between them is the point: no instrument measured that value, so nothing is drawn there."),
+    "predictive-history": ("fs-ph1", "An interval that overlaps is not a difference",
+        "The obvious reading is that writing a verdict rubric lifted agreement from 53 per cent to 96. It did not. Only the second and third rows hold the record constant, and between those two the rubric is worth four points with the intervals overlapping. The other forty-three points are the record and the number of raters, which is a different claim entirely."),
+}
+
+def identity_block():
+    aff = S.get("affiliation") or []
+    uni = esc(aff[0]) if aff else ""
+    school = esc(aff[1]) if len(aff) > 1 else ""
+    st = f'<b>{esc(STANDING)}</b>, ' if STANDING else ""
+    standing = (f'<p class="standing">{st}<span class="ph">Accounting and Financial Management (Analytics)'
+                + (f', {uni}' if uni else '') + '</span><span class="dt">Accounting and Financial Management, Analytics stream'
+                + (f'<br>{school}, {uni}' if (school or uni) else '') + '</span></p>')
+    facts = []
+    if COOP_TERM:
+        facts.append(f'<p class="term">Co-op term: {esc(COOP_TERM)}</p>')
+    if GRAD_YEAR:
+        facts.append(f'<p class="term">Graduating {esc(GRAD_YEAR)}</p>')
+    links = profile_links("") + [f'<a href="mailto:{esc(EMAIL)}">{esc(EMAIL)}</a>']
+    return (f'<h1 class="name">{esc(SHORT)}</h1>\n    {standing}\n    '
+            + "\n    ".join(facts) + (chr(10) + "    " if facts else "")
+            + f'<p class="links">{"".join(links)}</p>\n'
+            f'    <p class="thesis">{S["headline"]}</p>\n'
+            f'    <p class="method">Every figure below is counted from the published files by the build, never typed. '
+            f'The notes define each column and state every exception.</p>')
+
+def google_font_families():
+    """Which family each of the pieces that load Google Fonts asks for, read
+    from the link in the piece itself."""
+    fams = {}
+    for p in P:
+        try:
+            t = open(os.path.join(OUT, p["url"]), encoding="utf-8", errors="ignore").read()
+        except OSError:
+            continue
+        if "fonts.googleapis" not in t:
+            continue
+        found = []
+        for href in re.findall(r'href="([^"]*fonts\.googleapis[^"]*)"', t):
+            for fam in re.findall(r"family=([^&:\"]+)", html.unescape(href)):
+                found.append(fam.replace("+", " ").strip())
+        fams[p["slug"]] = sorted(set(found)) or ["a family the link does not name"]
+    return fams
+
 SURF_LABEL = {"independent":"Independent","course":"Coursework","personal":"Personal"}
 
 def surf(p):
@@ -333,14 +507,35 @@ def row(n, p):
         </a>
       </li>"""
 
-def feature(p, delay=0):
-    return f"""      <a class="feature rise" style="transition-delay:{delay}ms" href="{p['url']}">
+def feature(p, delay=0, h=3):
+    # The whole card stays clickable through the stretched title link, but the
+    # link itself is the title, so a screen reader's link list announces a
+    # name rather than the card's entire text: the old whole-card anchor made
+    # the ~90-word blurb part of every link's accessible name.
+    # The heading level is a parameter because the same card sits under an h2
+    # band head on most pages and under an h3 course head on coursework.html,
+    # where an h3 card would read as the course's sibling rather than its
+    # member.
+    return f"""      <article class="feature rise" style="transition-delay:{delay}ms">
         <span class="kindrow">{kind_chip(p)}{surf(p)}</span>
-        <h3>{esc(p['t'])}</h3>
+        <h{h}><a class="cardlink" href="{p['url']}">{esc(p['t'])}</a></h{h}>
         <p>{esc(p['blurb'])}</p>
         {sig(p, with_surface=False)}
         <span class="go">Open <span class="arrow" aria-hidden="true">&#8594;</span></span>
-      </a>"""
+      </article>"""
+
+
+def feature_compact(p, delay=0):
+    # The home page is the skim surface, so its cards carry the standfirst
+    # rather than the full blurb; the blurbs stay on the section pages and in
+    # the library, one click away, where the reader has chosen depth.
+    return f"""      <article class="feature feature-c rise" style="transition-delay:{delay}ms">
+        <span class="kindrow">{kind_chip(p)}{surf(p)}</span>
+        <h3><a class="cardlink" href="{p['url']}">{esc(p['t'])}</a></h3>
+        <p>{esc(p['s'])}</p>
+        {sig(p, with_surface=False)}
+        <span class="go">Open <span class="arrow" aria-hidden="true">&#8594;</span></span>
+      </article>"""
 
 
 def _smallest_label(d):
@@ -374,9 +569,17 @@ def strip_svg(fid):
     art  = w * 1.10
     floor = min(art, art * (10.5 / _smallest_label(d)))
     svg = svg.replace("<svg ", f'<svg style="max-width:{art:.0f}px;min-width:{floor:.0f}px" ', 1)
+    # The source page wires its .hit groups to a tooltip script that the
+    # shell does not carry, so the lifted copy must not promise interaction
+    # it cannot deliver: no tab stop, no nested img role inside the figure's
+    # own img role, and no aria-label either, which is prohibited on a plain
+    # group. The figure's own label and caption carry the description.
+    svg = re.sub(r'<g class="hit" tabindex="0" role="img" aria-label="[^"]*"',
+                 '<g class="hit"', svg)
     return svg
 
 def lifted(fid, rule, title, note, href):
+    CAPTIONS.append((rule + " " + note, href))
     """A figure lifted out of its own document together with the CSS rules its
     classes depend on, shown at the size it was drawn for."""
     d = STRIP[fid]
@@ -438,7 +641,6 @@ def fit(sid):
 """The corpus figure. Static SVG, generated at build time, so it renders
 with JavaScript disabled and prints. Geometry is computed here rather than
 hand-written, which is what keeps labels from colliding."""
-import html
 
 
 UNIT   = 500      # words per square. Declared once, never rescaled.
@@ -474,7 +676,10 @@ def corpus_svg():
     h = y + 4.0
     w = x0 + plotw + GAPW + NUMW
 
-    out = [f'<svg viewBox="0 0 {w:.0f} {h:.0f}" width="100%" role="img" '
+    # role="group", not "img": an img role marks its descendants
+    # presentational, and every row in this drawing is a real link. A group
+    # keeps the label and leaves the links to be what they are.
+    out = [f'<svg viewBox="0 0 {w:.0f} {h:.0f}" width="100%" role="group" '
            f'aria-label="Every published document drawn at one square per {UNIT} words. '
            f'Independent work is drawn solid, coursework as open outlines. '
            f'The independent block and the coursework block are close to the same size." '
@@ -554,8 +759,26 @@ def corpus_table():
             + "".join(rows) + '</tbody></table>')
 
 def group_totals():
+    """Words per origin over the documents the corpus figure draws, which is
+    every piece at or above DOC_MIN words. This is the drawing's own total and
+    it excludes the undrawn pieces by construction; the statement's subtotals
+    come from surface_totals() below, which excludes nothing."""
     docs = [p for p in P if p["is_doc"]]
     return {k: sum(p["words"] for p in docs if p["surface"] == k) for k, _, _ in GROUPS}
+
+
+def surface_totals():
+    """Pieces, words, figures and tables per origin over all listed pieces. The
+    three rows add to the corpus line exactly, and a check refuses the build
+    if they ever stop doing so; this is what every page that names an origin
+    total prints, so the same quantity cannot carry two values."""
+    out = {}
+    for k, _, _ in GROUPS:
+        xs = [p for p in P if p["surface"] == k]
+        out[k] = {"n": len(xs), "words": sum(p["words"] for p in xs),
+                  "figures": sum(p["figures"] for p in xs),
+                  "tables": sum(p["tables"] for p in xs)}
+    return out
 
 
 class _FigsShim:
@@ -563,118 +786,130 @@ class _FigsShim:
     corpus_svg = staticmethod(corpus_svg)
     corpus_table = staticmethod(corpus_table)
     group_totals = staticmethod(group_totals)
+    surface_totals = staticmethod(surface_totals)
 figs = _FigsShim()
+ST = surface_totals()
+
+def exceptions():
+    """Every way the site's own rules are not the whole story, counted from
+    the files rather than remembered: pieces that load a typeface from Google
+    Fonts, pieces under the drawing floor, transcripts measured but not
+    listed, and the tools that stand on two shelves."""
+    fonts, kinds = [], {"md": 0, "doc": 0}
+    for p in P:
+        path = os.path.join(OUT, p["url"])
+        try:
+            t = open(path, encoding="utf-8", errors="ignore").read()
+        except OSError:
+            continue
+        if "fonts.googleapis" in t:
+            fonts.append(p)
+        m = re.search(r"<!--__docend (md|doc)-->", t)
+        if m:
+            kinds[m.group(1)] += 1
+        elif "Converted from my own Word document" in t:
+            kinds["doc"] += 1
+        elif "Converted from my own markdown note" in t:
+            kinds["md"] += 1
+    undrawn = [p for p in P if not p["is_doc"]]
+    listed = {p["slug"] for p in P}
+    transcripts = sorted(k for k in METRICS if k not in listed)
+    return {"fonts": fonts, "undrawn": undrawn,
+            "undrawn_words": sum(p["words"] for p in undrawn),
+            "transcripts": transcripts, "kinds": kinds,
+            "tools": [p for p in P if p["k"] == "Tool"]}
+
+# Every caption the shell lifts out of a piece is registered here with the
+# piece it cites, so the numeral check can hold the caption to the piece's
+# own text rather than trusting the template.
+CAPTIONS = []
 
 # ------------------------------------------------------------ pages ----
 def page_index():
-    recent = [p for p in P if p["surface"] != "personal"][:4]
     feats  = [p for p in P if p["featured"]][:6]
     gt = figs.group_totals()
-    indep_share = round(gt["independent"] / (gt["independent"] + gt["course"] + gt["personal"]) * 100)
+    ex = exceptions()
+    fams = google_font_families()
     ATLAS_N, ATLAS_PTS, ATLAS_SHARED = atlas_teaser_bits()
+    n_undrawn = len(ex["undrawn"])
 
-    rail = "".join(f"""      <a href="{p['url']}">
-        <div class="rt">{esc(p['t'])}</div>
-        <div class="rm">{kind_chip(p)}{'<span class="pwa" title="Installs to a phone home screen">Installable</span>' if p['pwa'] else ''}<span>{esc(p['d'])}</span></div>
-      </a>""" for p in recent)
+    rows = []
+    for p in feats:
+        lift = flagged_lift(p) if p["slug"] == "flagged-in-hindsight" else None
+        rows.append(stmt_row(p, lift))
+    n_feat_ind = sum(1 for p in feats if p["surface"] == "independent")
+    ind = ST["independent"]
+    more = ind["n"] - n_feat_ind
+    subs = [
+        stmt_subrow(f"Independent, {ind['n']}", ind, "research.html", 2),
+        stmt_subrow(f"Coursework, {ST['course']['n']}", ST["course"], "coursework.html", 2),
+        stmt_subrow(f"Personal, {ST['personal']['n']}", ST["personal"], "library.html#personal", 3),
+        stmt_subrow(f"All work, {len(P)} pieces",
+                    {"words": TOTAL_WORDS, "figures": TOTAL_FIGS, "tables": TOTAL_TBLS},
+                    "library.html", None, cls="total"),
+    ]
+    # families by count, most pieces first, ties by name
+    famcount = {}
+    for fs in fams.values():
+        for f in fs:
+            famcount[f] = famcount.get(f, 0) + 1
+    fam_line = ", ".join(f"{esc(f)} on {c}" for f, c in sorted(famcount.items(), key=lambda x: (-x[1], x[0])))
+    # the sentence exists only while the count it states is above zero: when
+    # every typeface is self-hosted the exception is gone, not reworded
+    fonts_sentence = (f"{len(ex['fonts'])} pieces load a typeface from Google Fonts, {fam_line}; "
+                      f"everything else on the site makes no external request."
+                      if ex["fonts"] else
+                      "No piece loads a typeface from another origin; nothing on the site makes an external request.")
 
-    body = f"""<div class="hero shell">
-  <div class="hero-grid">
-    <div class="hero-head">
-      <p class="eyebrow accent rise">Portfolio &middot; Waterloo AFM Analytics</p>
-      <h1 class="display rise" style="transition-delay:60ms">I make arguments you can <em>audit</em>.</h1>
-    </div>
-    <div class="hero-globe rise" style="transition-delay:150ms">
-      <div class="tease-globe" id="atlasmini" data-pts="{ATLAS_PTS}" aria-hidden="true"></div>
-      <p class="globe-cap"><a class="inlink" href="atlas.html">Every section of everything, on one
-        sphere: {ATLAS_N} sections, every one a link <span aria-hidden="true">&#8594;</span></a></p>
-      <noscript><p class="note">The sphere needs a browser that runs scripts.
-        The <a class="inlink" href="atlas.html">full index</a> does not.</p></noscript>
-    </div>
-    <div class="hero-body">
-      <p class="lede rise" style="transition-delay:120ms">
-        I am Alex Rajcoomar, <span data-age="{BORN[0]}-{BORN[1]:02d}-{BORN[2]:02d}">{AGE}</span>, an Accounting
-        and Financial Management student in the Analytics stream at the University of Waterloo.
-        Everything here is something I built and use. In the research, every figure carries the
-        source it came from, derived numbers are labelled as derived, and where two sources
-        disagree both are shown rather than averaged. Nothing is a screenshot: every item opens
-        and runs.
-      </p>
-      <div class="stats rise" style="transition-delay:180ms">
-        <div><b class="tnum">{len(P)}</b><span>published pieces</span></div>
-        <div><b class="tnum">{kwords(TOTAL_WORDS)}</b><span>words, {TOTAL_FIGS} figures</span></div>
-        <div><b class="tnum">{TOTAL_TBLS}</b><span>tables, {CHECKPOINTS} checkpoint questions</span></div>
-        <div><b class="tnum">{N_TOOLS}</b><span>interactive tools, {N_PWA} installable</span></div>
-      </div>
-      <p class="hero-contact rise" style="transition-delay:220ms">
-        <a class="inlink" href="mailto:leesharamrajcoomar@gmail.com">leesharamrajcoomar@gmail.com</a>
-        <span aria-hidden="true">&middot;</span>
-        <a class="inlink" href="about.html">About me</a>
-      </p>
-    </div>
-    <aside class="rail rise hero-rail" style="transition-delay:240ms" aria-label="Most recent work">
-      <div class="railhead"><span class="dot" aria-hidden="true"></span>Most recent</div>
-{rail}
-      <a class="allwork" href="library.html">All {len(P)} pieces <span aria-hidden="true">&#8594;</span></a>
-    </aside>
+    body = f"""<div class="hero shell stmt-hero">
+  <div class="id">
+    {identity_block()}
+  </div>
+  <div class="stmt">
+    <h2>Statement of work <span><a href="#notes">Notes 1 to 6 &#8595;</a></span></h2>
+    <table class="st">
+      {stmt_head_cells()}
+      <tbody>
+{chr(10).join(rows)}
+{chr(10).join(subs)}
+      </tbody>
+    </table>
+  </div>
+  <div class="globe">
+    <div class="tease-globe" id="atlasmini" data-pts="{ATLAS_PTS}" aria-hidden="true"></div>
+    <p class="globe-cap"><a class="inlink" href="atlas.html">{ATLAS_N} sections, every one a link <span aria-hidden="true">&#8594;</span></a></p>
+    <noscript><p class="note">The sphere needs a browser that runs scripts.
+      The <a class="inlink" href="atlas.html">full index</a> does not.</p></noscript>
   </div>
 </div>
 
-<section class="band shell">
-  <div class="sechead">
-    <h2>Start here</h2>
-    <p class="note">The three sections, and what is in each. If you have ten minutes, open the first piece under research.</p>
-    <span class="count">3 sections</span>
-  </div>
-  <div class="features">
-      <a class="feature rise" href="research.html">
-        <span class="kindrow"><span class="kind">Research and writing</span></span>
-        <h3>Independent research</h3>
-        <p>Four data essays and a study edition, each with its own declared rule for what its marks mean, plus the method pieces on how the work gets built and audited.</p>
-        <span class="go">{N_INDEP} pieces <span class="arrow" aria-hidden="true">&#8594;</span></span>
-      </a>      <a class="feature rise" href="tools.html">
-        <span class="kindrow"><span class="kind">Interactive tools</span></span>
-        <h3>{N_TOOLS} things you can use</h3>
-        <p>Interactive trainers and daily instruments. {N_PWA} of them install to a phone home screen.</p>
-        <span class="go">{N_TOOLS} pieces <span class="arrow" aria-hidden="true">&#8594;</span></span>
-      </a>      <a class="feature rise" href="coursework.html">
-        <span class="kindrow"><span class="kind">Coursework</span></span>
-        <h3>Grouped by course</h3>
-        <p>Every reference and trainer, sorted into the {len(COURSES)} courses they were built for, with a coverage table.</p>
-        <span class="go">{N_COURSE} pieces <span class="arrow" aria-hidden="true">&#8594;</span></span>
-      </a>
-  </div>
-</section>
-
-<section class="band shell">
-  <div class="sechead">
-    <h2>Selected work</h2>
-    <p class="note">Chosen because together they show the widest range: a study edition, an audited final, a negative result, a comparative primer, and the tools people actually use.</p>
-    <span class="count">{len(feats)} of {len(P)}</span>
-  </div>
-  <div class="features">
-{chr(10).join(feature(p, n*45) for n, p in enumerate(feats))}
-  </div>
+<section class="notes shell" id="notes" aria-labelledby="notes-h">
+  <h2 id="notes-h">Notes to the statement</h2>
+  <ol>
+    <li id="n1"><b>Basis of measurement.</b> Words are the text of the rendered page after its own scripts have run, with script, style and noscript blocks removed and collapsed answers included. A figure is a top-level drawing covering at least 6,000 square units. A table is a table. All three are counted in a headless browser after the page's own scripts have run. <a href="colophon.html#n1">The definitions in full.</a></li>
+    <li id="n2"><b>Origin.</b> Independent means I chose the question and finished it without a course asking for it: {ind['n']} pieces, the {n_feat_ind} above and {more} more on the <a href="research.html">research shelf</a>. Coursework means built while taking one of {len(COURSES)} courses, for the assessment that was coming: {ST['course']['n']} pieces, built from my course materials with AI assistance and then verified. Anything built alongside a course is filed as coursework even where the question was my own.</li>
+    <li id="n3"><b>Personal.</b> {ST['personal']['n']} pieces read and written for their own sake, with no claim on either shelf. They are counted above and listed in the <a href="library.html#personal">library</a>, not here.</li>
+    <li id="n4"><b>Exceptions.</b> {fonts_sentence} {n_undrawn} pieces render under {DOC_MIN:,} words and are counted above but not drawn below; together they hold {ex['undrawn_words']:,} words. {len(ex['transcripts'])} run transcripts are measured but not listed. The {N_TOOLS} interactive tools sit on the shelf of the course or research that produced them and are counted once. <a href="colophon.html#exceptions">The exceptions, by name.</a></li>
+    <li id="n5"><b>The index.</b> {ATLAS_N} section headings from the {len(P)} documents, placed on one sphere, every mark a link into its passage. <a href="atlas.html">The Atlas.</a></li>
+    <li id="n6"><b>The drawing.</b> The statement drawn to scale below, one square {figs.UNIT} words, solid for independent work, an open outline for coursework, lighter for personal. The square never rescales, so a long piece is long on the page.</li>
+  </ol>
 </section>
 
 <section class="band shell" id="corpus">
   <div class="sechead">
-    <h2>The corpus, drawn to scale</h2>
+    <h2>The statement, drawn to scale <a class="nref" href="#n6">6</a></h2>
     <p class="note">Every document on this site, measured from the files themselves rather than estimated.</p>
     <span class="count">{TOTAL_WORDS:,} words</span>
   </div>
   <div class="corpus">
+    <a class="skip" href="#corpus-table">Skip the drawing to the table of its numbers</a>
     <div class="plot rise">
       {figs.corpus_svg()}
     </div>
-    <aside class="rail-app">
+    <aside class="rail-app" aria-label="How to read the figure">
       <h3>How to read it</h3>
       <p><b>One square is {figs.UNIT} words.</b> The square never rescales, so a long piece is
       long on the page.</p>
-      <!-- Populated on hover or keyboard focus of a row in the figure. It sits
-           in the flow with a resting state, so the rail does not jump when the
-           reader's pointer enters the drawing, and it is a live region so the
-           readout is announced rather than only seen. -->
       <div class="cf-read" id="corpusread" aria-live="polite">
         <div class="cf-rest">Point at a row, or tab into the drawing, to read the document it belongs to.</div>
         <div class="cf-out" hidden>
@@ -686,69 +921,19 @@ def page_index():
       </div>
       <div class="key">
         <span><i aria-hidden="true"></i>Solid: independent work</span>
-        <span><i class="half" aria-hidden="true"></i>Solid, lighter: personal interest</span>
         <span><i class="open" aria-hidden="true"></i>Open outline: coursework</span>
+        <span><i class="half" aria-hidden="true"></i>Solid, lighter: personal interest</span>
       </div>
-      <p>{gt['course']:,} words were written for a course, most of it one course rebuilt end to
-      end. {gt['independent']:,} were written because I wanted the answer and nobody asked for
-      them. The two blocks are not the same size, and the drawing says so rather than the
-      caption.</p>
-      <p>Four of the drill engines are not drawn: they render a few hundred words and hold the
-      rest in code, so a word count would understate them badly. They are counted on the
-      <a class="inlink" href="tools.html">tools page</a> instead.</p>
+      <p>Of the words drawn here, {gt['course']:,} were written for a course, most of it one course
+      rebuilt end to end, and {gt['independent']:,} because I wanted the answer and nobody asked for
+      them. The {n_undrawn} pieces under the floor are counted in the statement above and not drawn.</p>
       <p><a class="openlink" href="colophon.html">How every number here is measured &#8594;</a></p>
     </aside>
   </div>
-  <details class="tv spaced">
+  <details class="tv spaced" id="corpus-table">
     <summary>The numbers behind the figure</summary>
     {figs.corpus_table()}
   </details>
-</section>
-
-<section class="band shell">
-  <div class="sechead">
-    <h2>Three marks, three rules</h2>
-    <p class="note">Each piece declares one rule for what its marks mean, states it once near the top,
-    and then holds it for the whole document. These three figures are lifted unchanged out of the
-    pieces they belong to, colour rules and all. A fourth rule sits with the corpus figure
-    above: it borrows the fixed unit from <a href="global-spending-and-wealth.html">Global Spending and
-    Wealth</a>, where one square is one trillion dollars and never rescales.</p>
-    <span class="count">3 of {TOTAL_FIGS}</span>
-  </div>
-  <div class="specs">
-{lifted("fs-wlc", "Blue is inside the number, red is outside",
-        "Whose Losses Count",
-        "Seven literatures making the same boundary decision, drawn on one vertical rule. Whatever falls to the right of it is real and appears on no ledger. Open outlines are results not distinguishable from zero, drawn at full size rather than shrunk away.",
-        "whose-losses-count.html")}
-{lifted("fs-ns1", "Solid reaches a ledger, open does not",
-        "Not Significant",
-        "Deceive an investor and the market takes 7.53 times what the law does. Injure a stranger who does not trade with you and the share price moves 0.24 per cent, which is not significant. The essay is built on that gap.",
-        "not-significant.html")}
-{lifted("fs-tv1", "The fork is never closed",
-        "The Trillion-Dollar Vintage",
-        "Two ways of pricing the same vintage, 2.3 times apart, carried side by side to the end rather than averaged. The refused marker between them is the point: no instrument measured that value, so nothing is drawn there.",
-        "the-trillion-dollar-vintage.html")}
-  </div>
-</section>
-
-<section class="band shell">
-  <div class="sechead">
-    <h2>And one that failed</h2>
-    <p class="note">The three above are the grammar. This is what happened when the same method was
-    turned on itself: the instrument was run against the falsification test it had specified for
-    itself before it knew the answer, and it did not pass. The figure is the reason the headline
-    finding is published in its narrow form.</p>
-    <span class="count">Method</span>
-  </div>
-  <div class="specs">
-{lifted("fs-ph1", "An interval that overlaps is not a difference",
-        "Predictive History",
-        "The obvious reading is that writing a verdict rubric lifted agreement from 53 per cent to 96. "
-        "It did not. Only the second and third rows hold the record constant, and between those two "
-        "the rubric is worth four points with the intervals overlapping. The other forty-three points "
-        "are the record and the number of raters, which is a different claim entirely.",
-        "predictive-history.html")}
-  </div>
 </section>
 
 <section class="band shell" id="note">
@@ -760,7 +945,7 @@ def page_index():
   </div>
 </section>
 """
-    return head(f"{SHORT} — portfolio",
+    return head(f"{SHORT} \u00b7 portfolio",
                 f"Research, study tools and references by Alex Rajcoomar, Accounting "
                 f"and Financial Management at Waterloo. {len(P)} pieces, "
                 f"{TOTAL_WORDS:,} words, all of them running.",
@@ -778,123 +963,70 @@ SPECIMEN_OF = {"the-trillion-dollar-vintage": (
 
 def page_research():
     items = [p for p in P if p["surface"] == "independent"]
-    # the largest, not the first: the note beside this slot says "the largest
-    # thing here", and a positional lead makes that sentence false the moment
-    # anything is published above it
-    lead = max(items, key=lambda x: x["words"])
-    rest = [x for x in items if x is not lead]
-    gt = figs.group_totals()
-
-    spec = SPECIMEN_OF.get(lead["slug"])
-    leadfig = ""
-    if spec:
-        leadfig = (f'<div id="{spec[0]}">\n'
-                   f'      <div class="fig">{fit(spec[0])}</div>\n'
-                   f'      <p class="figcap">{esc(spec[1])}</p>\n'
-                   f'    </div>')
-
-    blocks = []
-    for p in rest:
-        demo = (f'<div class="demo"><b>What it demonstrates</b>{esc(p["demo"])}</div>'
-                if p["demo"] else "")
-        blocks.append(f"""    <article class="lead rise ruled">
-      <div class="lt">
-        <span class="kindrow">{kind_chip(p)}<span class="metadate">{esc(p['d'])}</span></span>
-        <h3><a href="{p['url']}">{esc(p['t'])}</a></h3>
-        <p class="sub">{esc(p['s'])}</p>
-        <p class="blurb">{esc(p['blurb'])}</p>
-        {sig(p, with_surface=False)}
-      </div>
-      <div>{demo}<a class="open" href="{p['url']}">Open the piece <span aria-hidden="true">&#8594;</span></a></div>
-    </article>""")
-
+    iw = sum(p["words"] for p in items)
+    n_essay = sum(1 for p in items if p["k"] == "Essay")
+    n_ref   = sum(1 for p in items if p["k"] == "Reference")
+    n_tool  = sum(1 for p in items if p["k"] == "Tool")
+    rows = [shelf_list_head()]
+    for k, p in enumerate(items, 1):
+        extra = ""
+        if p["slug"] in LIFTS:
+            fid, rule, note = LIFTS[p["slug"]]
+            extra = lifted(fid, rule, p["t"], note, p["url"])
+        spec = SPECIMEN_OF.get(p["slug"])
+        if spec:
+            CAPTIONS.append((spec[1], p["url"]))
+            extra += (f'<div class="specimen" id="{spec[0]}"><div class="fig">{fit(spec[0])}</div>'
+                      f'<p class="figcap">{esc(spec[1])}</p></div>')
+        rows.append(shelf_row(k, p, extra))
+    rows.append(shelf_subtotal(f"Independent, {len(items)} pieces", items))
     body = f"""<div class="hero tight shell">
   {section_eyebrow("research.html")}
   <h1 class="h1">Research and writing</h1>
   <p class="lede">{len(items)} pieces where the argument is the point. Every one of them started because
   I did not believe a claim, or could not find two jurisdictions held apart properly, and the fastest
-  way to find out was to build the thing. {gt['independent']:,} words, none of them assigned.</p>
+  way to find out was to build the thing. {iw:,} words, none of them assigned. The order is mine; the
+  figures are the build's.</p>
 {section_guide("research.html")}
-  <div class="stats">
-    <div><b class="tnum">{len(items)}</b><span>independent pieces</span></div>
-    <div><b class="tnum">{gt['independent']:,}</b><span>words</span></div>
-    <div><b class="tnum">{sum(p['figures'] for p in items)}</b><span>figures, hand-built</span></div>
-    <div><b class="tnum">{sum(p['tables'] for p in items)}</b><span>tables of underlying numbers</span></div>
-  </div>
 </div>
-
 <section class="band shell">
   <div class="sechead">
-    <h2>The lead piece</h2>
-    <p class="note">The largest thing here, and the one that shows the method at full size.</p>
-    <span class="count">{str(lead['mins']) + ' min' if lead['mins'] else esc(lead['k'])}</span>
+    <h2>The independent shelf</h2>
+    <p class="note">The statement, filtered to the work nobody assigned. Each row carries the piece's own
+    declared rule, verbatim from the record, and the figures lifted from four of them.</p>
+    <span class="count">{len(items)} of {len(P)}</span>
   </div>
-  <article class="lead">
-    <div class="lt">
-      <span class="kindrow">{kind_chip(lead)}{surf(lead)}<span class="metadate">{esc(lead['d'])}</span></span>
-      <h3><a href="{lead['url']}">{esc(lead['t'])}</a></h3>
-      <p class="sub">{esc(lead['s'])}</p>
-      <p class="blurb">{esc(lead['blurb'])}</p>
-      <div class="demo"><b>What it demonstrates</b>{esc(lead['demo'])}</div>
-      {sig(lead, with_surface=False)}
-      <p class="plate-nav"><a class="pbtn pbtn-go" href="{lead['url']}">Open the study edition <span aria-hidden="true">&#8594;</span></a></p>
-    </div>
-    {leadfig}
-  </article>
-</section>
-
-<section class="band shell">
-  <div class="sechead">
-    <h2>The rest</h2>
-    <p class="note">Newest first. Each opens as a self-contained page.</p>
-    <span class="count">{len(rest)} pieces</span>
-  </div>
-  <div class="stack">
-{chr(10).join(blocks)}
-  </div>
-</section>
-
-<section class="band shell">
-  <div class="sechead"><h2>The rules the figures follow</h2><span class="count">Method</span></div>
-  <div class="prose measure">
-    <p>Each piece declares one rule for what its marks mean, states it once near the top, and then
-    holds it for the whole document. The rule is derived from what that particular research is about,
-    so no two pieces share one.</p>
-    <ul>
-      <li><strong>Global Spending and Wealth:</strong> one square is one trillion US dollars, declared once and never rescaled.</li>
-      <li><strong>Not Significant:</strong> solid marks are quantities that reach someone's books; open outlines at full size are quantities that are real and appear on no invoice.</li>
-      <li><strong>The Trillion-Dollar Vintage:</strong> the fork between the two anchors is never closed, and a mark that arithmetic produced rather than an instrument measured is drawn open.</li>
-      <li><strong>Whose Losses Count:</strong> blue is inside the accounting boundary and priced, red is outside it.</li>
-    </ul>
-    <p>The same discipline runs through this site: the corpus figure on the
-    <a href="index.html#corpus">home page</a> declares its own unit, and the
-    <a href="colophon.html">colophon</a> states how every number on the site is measured.</p>
-    <p class="plate-nav"><a class="pbtn" href="coursework.html">Coursework <span aria-hidden="true">&#8594;</span></a>
-    <a class="pbtn" href="tools.html">Interactive tools <span aria-hidden="true">&#8594;</span></a></p>
-  </div>
+  <ol class="index stmt-list">
+{chr(10).join(rows)}
+  </ol>
 </section>
 """
-    return head(f"Research and writing — {SHORT}",
-                f"{len(items)} independent research pieces by Alex Rajcoomar: data essays, a study edition "
-                f"and an audited final, {gt['independent']:,} words, every figure carrying its source.",
+    return head(f"Research and writing \u00b7 {SHORT}",
+                f"{len(items)} independent research pieces by Alex Rajcoomar: {n_essay} essays, "
+                f"{n_ref} references and {n_tool} tool{'s' if n_tool != 1 else ''}, "
+                f"{iw:,} words, every figure carrying its source.",
                 "research.html") + body + foot()
 
 def page_tools():
     items = [p for p in P if p["k"] == "Tool"]
+    n_drill = sum(1 for p in items if not p["is_doc"])
+    n_full  = len(items) - n_drill
+    rows = [shelf_list_head()] + [shelf_row(k, p) for k, p in enumerate(items, 1)]
+    rows.append(shelf_subtotal(f"Tools, {len(items)} pieces, counted once on their own shelves", items))
     body = f"""<div class="hero tight shell">
   {section_eyebrow("tools.html")}
   <h1 class="h1">Interactive tools</h1>
   <p class="lede">{len(items)} things you use rather than read. {N_PWA} of them install to a phone home
-  screen. Four are drill engines that hold their question banks in code, so they carry no reading
-  time: a drill has no length, only a session. The other two render a full document on load and are
-  measured like one.</p>
+  screen. {n_drill} are drill engines that hold their question banks in code, so they carry no reading
+  time: a drill has no length, only a session. The other {n_full} render{'s' if n_full == 1 else ''} a full document on load and
+  {'is' if n_full == 1 else 'are'} measured like one.</p>
 {section_guide("tools.html")}
 </div>
 <section class="band shell">
-  <div class="sechead"><h2>All {len(items)}</h2><p class="note">Each opens and runs in the browser. Nothing to install unless you want the home-screen icon.</p><span class="count">{len(items)} tools</span></div>
-  <div class="features">
-{chr(10).join(feature(p, n*45) for n, p in enumerate(items))}
-  </div>
+  <div class="sechead"><h2>The tools</h2><p class="note">Each opens and runs in the browser. Every tool also stands on the shelf of the course or research that produced it, and every total counts it once.</p><span class="count">{len(items)} tools</span></div>
+  <ol class="index stmt-list">
+{chr(10).join(rows)}
+  </ol>
 </section>
 <section class="band shell">
   <div class="sechead"><h2>Installing one</h2><span class="count">How to</span></div>
@@ -902,17 +1034,23 @@ def page_tools():
     <p>On a phone, open the tool and choose <em>Add to Home Screen</em> from the share menu. It gets an
     icon and opens without browser chrome. Progress is stored in that browser only: nothing is
     uploaded, and clearing site data clears the progress with it.</p>
-    <p class="plate-nav"><a class="pbtn" href="coursework.html">&#8592; Coursework</a>
-    <a class="pbtn" href="library.html">The full library <span aria-hidden="true">&#8594;</span></a></p>
   </div>
 </section>
 """
-    return head(f"Interactive tools — {SHORT}",
+    return head(f"Interactive tools \u00b7 {SHORT}",
                 f"{len(items)} interactive study tools built by Alex Rajcoomar, {N_PWA} of them installable to a phone home screen.",
                 "tools.html") + body + foot()
 
+def built_from_counts(items):
+    """From the built_from lines: how many name AI assistance, how many
+    declare no source on file. Counted from the field, never typed."""
+    n_ai = sum(1 for p in items if "AI assistance" in (p.get("built_from") or ""))
+    n_nd = sum(1 for p in items if (p.get("built_from") or "").strip() == "Not declared on file.")
+    return n_ai, n_nd
+
 def page_coursework():
     items = [p for p in P if p["surface"] == "course"]
+    n_ai, n_nd = built_from_counts(items)
     rows_c = []
     for c in COURSES:
         cs = [p for p in items if p["c"] == c]
@@ -927,33 +1065,38 @@ def page_coursework():
     rows_c.append(f'<tr class="grp"><th scope="row">All courses</th><td class="tnum">{tot_i}</td>'
                   f'<td class="tnum">{len(items)-tot_i}</td><td class="tnum">{len(items)}</td>'
                   f'<td class="tnum">{tot_w:,}</td></tr>')
-
     groups = []
+    k = 0
     for c in COURSES:
-        cs = sorted([p for p in items if p["c"] == c], key=lambda p: (p["k"] != "Tool", -p["words"]))
+        cs = [p for p in items if p["c"] == c]
+        rows = [shelf_list_head()]
+        for p in cs:
+            k += 1
+            rows.append(shelf_row(k, p))
+        rows.append(shelf_subtotal(f"{c}, {len(cs)} piece{'s' if len(cs) != 1 else ''}", cs))
         groups.append(f"""  <div class="grouphead"><h3>{esc(c)}</h3>
     <p class="gnote">{len(cs)} piece{'s' if len(cs)!=1 else ''}, {sum(p['words'] for p in cs):,} words.</p>
     <span class="gcount">{len(cs)}</span></div>
-  <div class="features">
-{chr(10).join(feature(p) for p in cs)}
-  </div>""")
-
+  <ol class="index stmt-list">
+{chr(10).join(rows)}
+  </ol>""")
     body = f"""<div class="hero tight shell">
   {section_eyebrow("coursework.html")}
   <h1 class="h1">Coursework</h1>
   <p class="lede">{len(items)} pieces across {len(COURSES)} courses, each one built while taking the course
-  rather than afterwards. References are organised for retrieval under time pressure, not for reading
-  front to back, which is why several of them are deliberately compressed to what fits on a page.</p>
+  rather than afterwards. Built from my course materials, {n_ai} of the {len(items)} with AI assistance,
+  then verified against the course materials; each piece states on its own bar what it was built from,
+  and {n_nd} of them declare no source on file. References are organised for retrieval under time pressure,
+  not for reading front to back, which is why several of them are deliberately compressed to what fits on a page.</p>
 {section_guide("coursework.html")}
 </div>
-
 <section class="band shell">
   <div class="sechead"><h2>Coverage</h2><p class="note">What exists per course, counted from the files themselves.</p><span class="count">{len(items)} of {len(P)}</span></div>
   <p class="note measure prose">Word counts exclude the question banks inside the interactive
   tools, because those live in code rather than prose, so the tool-heavy courses read lower than they are.
   The remaining {len(P)-len(items)} pieces are not tied to one course: {N_INDEP} under
   <a href="research.html">research</a> and the {N_PERSONAL} read for
-  their own sake in the <a href="library.html">library</a>.</p>
+  their own sake in the <a href="library.html#personal">library</a>.</p>
   <div class="tw"><table class="ctab">
     <thead><tr><th scope="col">Course</th><th scope="col" class="tnum">Interactive</th>
     <th scope="col" class="tnum">References</th><th scope="col" class="tnum">Total</th>
@@ -961,13 +1104,12 @@ def page_coursework():
     <tbody>{''.join(rows_c)}</tbody>
   </table></div>
 </section>
-
 <section class="band shell">
-  <div class="sechead"><h2>By course</h2><p class="note">Tools first, then references, longest first.</p><span class="count">{len(COURSES)} courses</span></div>
+  <div class="sechead"><h2>By course</h2><p class="note">The statement, filtered to each course, in the order the pieces were published.</p><span class="count">{len(COURSES)} courses</span></div>
 {chr(10).join(groups)}
 </section>
 """
-    return head(f"Coursework — {SHORT}",
+    return head(f"Coursework \u00b7 {SHORT}",
                 f"{len(items)} references and trainers across {len(COURSES)} courses, with a coverage table counted from the files.",
                 "coursework.html") + body + foot()
 
@@ -976,32 +1118,33 @@ def page_library():
     notes = {
       "independent": "Chosen, scoped and finished without a course asking for it.",
       "course": "Built while taking the course, for the assessment that was coming.",
-      "personal": "Read and written for its own sake.",
+      "personal": "Read and written for its own sake. Reachable here, and only here.",
     }
-    n = 0; blocks = []
+    k = 0; blocks = []
     for key in order:
         items = [p for p in P if p["surface"] == key]
         if not items: continue
         w = sum(p["words"] for p in items)
-        rows = []
+        rows = [shelf_list_head()]
         for p in items:
-            n += 1
-            rows.append(row(n, p))
-        blocks.append(f"""  <section class="lgroup" data-group="{key}">
+            k += 1
+            rows.append(shelf_row(k, p))
+        rows.append(shelf_subtotal(f"{SURF_LABEL[key]}, {len(items)} pieces", items))
+        blocks.append(f"""  <section class="lgroup" data-group="{key}" id="{key}">
     <div class="grouphead"><h2>{SURF_LABEL[key]}</h2>
       <p class="gnote">{esc(notes[key])}</p>
       <span class="gcount">{len(items)} pieces &middot; {w:,} words</span></div>
-    <ol class="index">
+    <ol class="index stmt-list">
 {chr(10).join(rows)}
     </ol>
   </section>""")
 
     body = f"""<div class="hero tight shell">
-  <p class="eyebrow accent">Library</p>
-  <h1 class="h1">Everything, in one place.</h1>
-  <p class="lede">All {len(P)} pieces, split by what asked for them. Every item carries how long it takes
-  to read, how much apparatus it holds, and how dense that makes it. The
-  <a href="colophon.html">colophon</a> gives the definitions.</p>
+  <p class="eyebrow accent">Work</p>
+  <h1 class="h1">The whole statement.</h1>
+  <p class="lede">All {len(P)} pieces, split by what asked for them, every row carrying the piece's
+  measured words, figures and tables and its own declared rule. The three origins add to the corpus
+  line, {TOTAL_WORDS:,} words, and the <a href="colophon.html">notes</a> define each column.</p>
 </div>
 <section class="shell stack-end">
   <div class="tools-bar">
@@ -1012,6 +1155,12 @@ def page_library():
       <button class="chip" type="button" data-f="essay" aria-pressed="false">Essays</button>
       <button class="chip" type="button" data-f="tool" aria-pressed="false">Tools</button>
       <button class="chip" type="button" data-f="reference" aria-pressed="false">References</button>
+    </div>
+    <div class="chipset" id="chips-surface" role="group" aria-label="Filter by what asked for the work">
+      <button class="chip" type="button" data-f="all" aria-pressed="true">Any origin</button>
+      <button class="chip" type="button" data-f="independent" aria-pressed="false">Independent</button>
+      <button class="chip" type="button" data-f="course" aria-pressed="false">Coursework</button>
+      <button class="chip" type="button" data-f="personal" aria-pressed="false">Personal</button>
     </div>
     <div class="sortset">
       <label class="sr" for="sort">Order</label>
@@ -1029,13 +1178,37 @@ def page_library():
   <p class="resultnote" id="noresults" hidden>Nothing matches that. Try a shorter word, or a course code.</p>
 </section>
 """
-    return head(f"Library — {SHORT}",
-                f"All {len(P)} pieces by Alex Rajcoomar, split into independent work and coursework, with reading time and density on each.",
+    return head(f"Work \u00b7 {SHORT}",
+                f"All {len(P)} pieces by Alex Rajcoomar as one statement of work: measured words, figures and tables on every row, split by origin.",
                 "library.html") + body + foot()
+
+def profile_links(css="inlink"):
+    """The optional recruiter links, each rendered only where a value
+    exists in pieces.json's site block."""
+    out = []
+    if LINKEDIN:
+        out.append(f'<a class="{css}" href="{esc(LINKEDIN)}">LinkedIn</a>')
+    if GITHUB:
+        out.append(f'<a class="{css}" href="{esc(GITHUB)}">GitHub</a>')
+    if RESUME:
+        out.append(f'<a class="{css}" href="{esc(RESUME)}">Resume</a>')
+    return out
+
 
 def page_about():
     gt = figs.group_totals()
-    indep_share = round(gt["independent"] / (gt["independent"] + gt["course"] + gt["personal"]) * 100)
+    afm = [p for p in P if p["c"] == "AFM 291"]
+    # Optional recruiter rows: absent values render nothing at all, so the
+    # section carries no empty shelves while the owner has not filled them.
+    seek_bits = []
+    if COOP_TERM:
+        seek_bits.append(f'<div><b>Seeking</b><span>{esc(COOP_TERM)}</span></div>')
+    if GRAD_YEAR:
+        seek_bits.append(f'<div><b>Graduation</b><span class="tnum">{esc(GRAD_YEAR)}</span></div>')
+    if profile_links():
+        seek_bits.append('<div><b>Profiles</b><span>'
+                         + ' &middot; '.join(profile_links()) + '</span></div>')
+    recruit_rows = ("\n    " + "\n    ".join(seek_bits)) if seek_bits else ""
     body = f"""<div class="hero tight shell">
   <p class="eyebrow accent">About</p>
   <div class="namerow">
@@ -1046,9 +1219,9 @@ def page_about():
       <span class="affil-school">School of Accounting and Finance</span>
     </div>
   </div>
-  <p class="lede">Alex, <span data-age="{BORN[0]}-{BORN[1]:02d}-{BORN[2]:02d}">{AGE}</span>, an Accounting
-  and Financial Management student in the Analytics stream at the University of Waterloo. I build the
-  thing I need, then leave it running here.</p>
+  <p class="lede">Alex, {(esc(STANDING) + ", ") if STANDING else ""}an Accounting and Financial Management
+  student in the Analytics stream at the University of Waterloo. I build the thing I need, then leave it
+  running here.</p>
 </div>
 
 <section class="band shell">
@@ -1059,7 +1232,7 @@ def page_about():
     <div><b>Focus</b><span>Financial reporting under IFRS and ASPE, Canadian tax, and the analytics side of accounting.</span></div>
     <div><b>Standing interests</b><span>The science of learning, judgment under uncertainty, and capital cycles. Outside coursework, AI in medicine and commercial spaceflight.</span></div>
     <div><b>Contact</b><span><a class="inlink" href="mailto:{EMAIL}">{EMAIL}</a></span></div>
-    <div><b>This site</b><span><a class="inlink" href="{SITE_URL}">{HOST}</a></span></div>
+    <div><b>This site</b><span><a class="inlink" href="{SITE_URL}">{HOST}</a></span></div>{recruit_rows}
   </div>
 </section>
 
@@ -1097,12 +1270,12 @@ def page_about():
     those sit in a downloads folder, they live here, running, where anyone can use them.</p>
 
     <p>Two things are worth separating. One course, AFM 291, has been rebuilt here end to end:
-    eleven documents, {gt['course']:,} words, every chapter running the same structure so a topic
-    can be found the same way twice. Alongside it sits {gt['independent']:,} words of research
+    {len(afm)} pieces, {sum(x['words'] for x in afm):,} words, every chapter running the same structure so a topic
+    can be found the same way twice. Alongside it sits {ST['independent']['words']:,} words of research
     nobody assigned. The corpus figure on the <a href="index.html#corpus">home page</a> draws that
     split rather than claiming it.</p>
 
-    <h2>How the work is organised</h2>
+    <h3>How the work is organised</h3>
     <ul>
       <li><strong>Research and writing</strong> holds the pieces where the argument is the point, plus
       the method work on how the rest gets built and audited.</li>
@@ -1112,7 +1285,7 @@ def page_about():
       phone home screen.</li>
     </ul>
 
-    <h2>A note on the material</h2>
+    <h3>A note on the material</h3>
     <p>These are my own artefacts, written by me for my own use. They are not course materials,
     not official solutions, and not a substitute for the standards themselves. Where a figure or a
     rule matters, check the primary source: the CPA Canada Handbook, the Income Tax Act, or the CRA.</p>
@@ -1122,19 +1295,65 @@ def page_about():
   </div>
 </section>
 """
-    return head(f"About — {SHORT}",
+    return head(f"About · {SHORT}",
                 "Alex Rajcoomar, Accounting and Financial Management student in the Analytics stream at the University of Waterloo.",
                 "about.html", extra="\n" + jsonld_person()) + body + foot()
 
+# One selection rule for the full-offline copy, stated once: the colophon's
+# "about N MB" and the manifest the service worker reads were two copies of
+# this logic evaluated at different points in the build, which is how they
+# could drift. The skip set also keeps repo documentation out of a reader's
+# phone: the handoff notes and the README serve the repository, not an
+# offline reader (mscore.py stays: a piece ships it on purpose).
+OFFLINE_EXT  = (".html", ".css", ".js", ".woff2", ".webmanifest",
+                ".pdf", ".md", ".csv", ".py", ".png")
+OFFLINE_SKIP = {"og-card.png", "sw.js", "admin.html", "404.html", "reader.html",
+                "HANDOFF.md", "README.md"}
+
+def offline_files():
+    root = [f for f in os.listdir(OUT)
+            if f.endswith(OFFLINE_EXT) and f not in OFFLINE_SKIP
+            and os.path.isfile(os.path.join(OUT, f))]
+    # the self-hosted typefaces the pieces load, so an offline copy renders them
+    fdir = os.path.join(OUT, "fonts")
+    fonts = ["fonts/" + f for f in os.listdir(fdir)] if os.path.isdir(fdir) else []
+    return sorted(root + [f for f in fonts if f.endswith((".woff2", ".json", ".txt"))])
+
+def pass_sentence():
+    """One sentence about the last content pass, from content/ledger.json:
+    how many pieces a machine-assisted pass edited for copy, how many for
+    styling only, how many it left alone. The classes are recomputed from the
+    files on every build (check 16), so this cannot be typed or go stale."""
+    sm = (LEDGER.get("summary") or {})
+    ps = (LEDGER.get("pass") or {})
+    if not sm or not ps.get("started"):
+        return ""
+    try:
+        d = datetime.date.fromisoformat(ps["started"])
+        started = f"{d.day} {d.strftime('%B')} {d.year}"
+    except ValueError:
+        started = ps["started"]
+    return (f'<p id="pass">The content pass that began on {esc(started)} was carried out by an AI '
+            f'assistant under a check that holds every numeral, citation, provenance label, anchor and '
+            f'result sentence of every piece to a record. Of the {sm["pieces"]} pieces it could touch, '
+            f'{sm["copy"]} received copy edits, {sm["styling"]} received styling only, {sm["untouched"]} '
+            f'were left untouched, and {sm["new"]} were added in the pass. The ledger of every change '
+            f'is <code>content/ledger.json</code>.</p>')
+
 def page_colophon():
     gt = figs.group_totals()
-    _ext = (".html", ".css", ".js", ".woff2", ".webmanifest",
-            ".pdf", ".md", ".csv", ".py", ".png")
-    _skip = {"og-card.png", "sw.js", "admin.html", "404.html"}
+    ex = exceptions()
+    fams = google_font_families()
+    font_list = ", ".join('<a href="%s">%s</a> (%s)' % (p["url"], esc(p["t"]), esc(", ".join(fams.get(p["slug"], []))))
+                          for p in ex["fonts"])
+    tr_list = ", ".join('<a href="%s.html">%s</a>' % (k, esc(k)) for k in ex["transcripts"])
+    # counted from the files: the item is absent, not reworded, when the count is zero
+    x1 = (f'<li id="x1">{len(ex["fonts"])} pieces load a typeface from Google Fonts, the family in brackets: {font_list}.\n'
+          f'      Everything else on the site makes no external request.</li>' if ex["fonts"] else
+          '<li id="x1">No piece loads a typeface from another origin: every face the site uses is self-hosted, '
+          'subset to the characters each piece shows, and the build fails on any character a subset lacks.</li>')
     OFF_MB = round(sum(
-        os.path.getsize(os.path.join(OUT, f)) for f in os.listdir(OUT)
-        if f.endswith(_ext) and f not in _skip
-        and os.path.isfile(os.path.join(OUT, f))) / 1048576)
+        os.path.getsize(os.path.join(OUT, f)) for f in offline_files()) / 1048576)
     body = f"""<div class="hero tight shell">
   <p class="eyebrow accent">Colophon</p>
   <h1 class="h1">How this site is built, and how it counts.</h1>
@@ -1146,9 +1365,12 @@ def page_colophon():
   <div class="sechead"><h2>The measurements</h2><span class="count">Definitions</span></div>
   <div class="prose measure">
     <dl>
-      <dt>Words</dt>
-      <dd>The text a reader can select, taken from the rendered document with
-      <code>&lt;script&gt;</code>, <code>&lt;style&gt;</code> and <code>&lt;noscript&gt;</code> removed.
+      <dt id="n1">Words</dt>
+      <dd>The text of the rendered document after its own scripts have run, with
+      <code>&lt;script&gt;</code>, <code>&lt;style&gt;</code> and <code>&lt;noscript&gt;</code> removed and
+      collapsed answers included, whether or not a reader has opened them.
+      The site's own chrome around a piece is not counted: the header, the return bar, the footer,
+      the contents rail, the search dialog and the line that says what the piece was built from.
       A word is a whitespace-separated token containing at least one letter or digit. Question banks
       inside the interactive tools are held in code, so they are not counted anywhere: the tools read
       as {min(p['words'] for p in P if p['k']=='Tool')} to {max(p['words'] for p in P if p['k']=='Tool')}
@@ -1201,8 +1423,11 @@ def page_colophon():
       the running text, and every mark that means something also differs in fill or shape.</dd>
 
       <dt>Typography</dt>
-      <dd>Inter Variable, loaded from a public CDN with a metric-matched fallback so the page does not
-      reflow when the webfont lands. If the CDN fails, the site keeps working on the system stack.</dd>
+      <dd>Inter Variable, subset to the {FONT_CODEPOINTS} characters the corpus actually uses and
+      self-hosted at {FONT_BYTES:,} bytes, with a metric-matched fallback face so the page does not
+      reflow when the font lands. If the file fails to load, the site keeps working on the system
+      stack. The build fails on any page character the subset lacks, so the number above is checked
+      rather than believed.</dd>
 
       <dt>Surfaces</dt>
       <dd>Warm paper, near-black ink, hairline rules, one accent, no rounded corners, no drop shadows,
@@ -1215,8 +1440,9 @@ def page_colophon():
 <section class="band shell colo">
   <div class="sechead"><h2>How it is built</h2><span class="count">Technical</span></div>
   <div class="prose measure">
-    <p>Hand-written HTML, CSS and JavaScript. No framework, no build step on the reader's side, no
-    tracking, no cookies, no analytics. {len(P)} pieces served as static files by GitHub Pages.
+    <p>No framework, no runtime dependency, and nothing loaded from another origin except where
+    the exceptions below say so. No tracking, no cookies, no analytics. {len(P)} pieces served as
+    static files by GitHub Pages.
     The {len(SHELL_PAGES)} pages the build generates, this one included, share one stylesheet and one
     script; each piece carries its own styling inside itself, so a change to the site's look cannot
     reach into a piece and a broken piece cannot reach the site.</p>
@@ -1227,25 +1453,34 @@ def page_colophon():
     page comes from. Nothing here is typed in by hand, which is the only way the counts stay true.</p>
     <p>Figures are static SVG generated at build time, so every chart renders with JavaScript disabled.
     JavaScript adds only enhancements: the theme toggle, the search palette, the library filters, the
-    reveal-on-scroll, and the age in the first sentence of the home page, which is computed from a date
-    so the sentence does not go stale.</p>
+    reveal-on-scroll, and the count of passages this browser has opened on the Atlas.</p>
     <p>Accessibility: skip link, visible focus, headings in order, every figure labelled, colour never
     load-bearing on its own, and reduced-motion respected. Every page prints: sticky elements release,
     revealed content is forced visible, and figures avoid breaking across pages.</p>
-    <p>Six of these pages began as Word documents. Those files carry their structure in font size
-    rather than in heading styles, so a second converter works out the heading levels per document
-    from the sizes it finds, then carries the tables, the inline diagrams and the run-in headings
-    across in document order.</p>
-    <p>Sixteen more began as markdown notes and are converted to HTML at build time by a
-    converter written for this site: it handles the callout syntax the notes use, turns every
-    checkpoint question into a collapsed block a reader has to open, resolves internal note links to
-    published pages, and carries evidence tags through as visible chips. An earlier draft of this site
-    fetched the markdown in the browser instead. Converting at build time is better: the text is in
-    the page, so it prints, it can be searched, it survives JavaScript being off, and it can be
-    measured like everything else.</p>
+    <p>{ex['kinds']['doc']} of these pages began as Word documents and {ex['kinds']['md']} as markdown
+    notes. Each was converted once, by a script that lives outside this repository, and the HTML it
+    produced is the record: it is what the build counts, what the Atlas harvests and what a reader
+    saves. Nothing is converted at build time. The build does own the sentence at the foot of each
+    converted piece that says so, and the footer under it, and it proves on every run that the text
+    outside those two blocks is byte for byte what it was.</p>
+    {pass_sentence()}
     <p>The corpus as of this build: {len(P)} pieces, {TOTAL_WORDS:,} words, {TOTAL_FIGS} figures,
-    {TOTAL_TBLS} tables and {CHECKPOINTS} checkpoint questions. {gt['independent']:,} of those words
+    {TOTAL_TBLS} tables and {CHECKPOINTS} checkpoint questions. {ST['independent']['words']:,} of those words
     were not assigned by anyone.</p>
+  </div>
+</section>
+
+<section class="band shell colo" id="exceptions">
+  <div class="sechead"><h2>The exceptions</h2><span class="count">Counted, not remembered</span></div>
+  <div class="prose measure">
+    <ol class="excs">
+      {x1}
+      <li>{len(ex['undrawn'])} pieces render under {DOC_MIN:,} words. They are counted in every total and
+      not drawn in the corpus figure; together they hold {ex['undrawn_words']:,} words.</li>
+      <li>{len(ex['transcripts'])} run transcripts are measured but not listed: {tr_list}.</li>
+      <li>The {len(ex['tools'])} interactive tools stand on the shelf of the course or research that
+      produced them and on the tools shelf. Every total counts each of them once.</li>
+    </ol>
   </div>
 </section>
 
@@ -1254,9 +1489,9 @@ def page_colophon():
   <div class="prose measure">
     <p>This site installs. In Safari on a phone, open the share sheet and choose
     <b>Add to Home Screen</b>: the site becomes an app icon, and every page you
-    have visited already works with no connection. To hold the whole site
-    — every piece, the atlas, the tools, the data files — press the button
-    below once while online. Everything refreshes itself quietly whenever the
+    have visited already works with no connection. To hold all of it, every
+    piece, the atlas, the tools and the data files, press the button below
+    once while online. Everything refreshes itself quietly whenever the
     installed copy is opened with a connection.</p>
     <p class="offline-controls">
       <button type="button" id="offline-save" class="linkbtn">Keep the whole site on this phone</button>
@@ -1269,7 +1504,7 @@ def page_colophon():
   </div>
 </section>
 """
-    return head(f"Colophon — {SHORT}",
+    return head(f"Colophon · {SHORT}",
                 "How this site is built, and the exact definition behind every number on it.",
                 "colophon.html") + body + foot()
 
@@ -1361,22 +1596,18 @@ RETURN_BAR = """
 #__rb .__rb-home{font-weight:640;color:#16150f}
 #__rb .__rb-home i{font-style:normal;font-weight:400;color:#6f6c63}
 #__rb .__rb-right{margin-left:auto;display:flex;gap:1.1rem;flex-wrap:wrap}
+/* the piece's own row of the statement: origin, words, figures, tables, the
+   same figures the home page prints for it, from the same measurement */
+#__rb .__rb-row{color:#6f6c63;font-variant-numeric:tabular-nums;white-space:nowrap}
+#__rb .__rb-row b{font-weight:600;color:#55524a}
+@media (max-width:44rem){#__rb .__rb-row{flex-basis:100%;order:3;white-space:normal}}
+/* what the piece was built from, in the owner's words, from pieces.json */
+#__rb .__rb-from{flex-basis:100%;order:5;font-weight:400;color:#6f6c63;line-height:1.4;max-width:70ch}
+#__rb .__rb-from b{font-weight:600;color:#55524a}
 #__rb .__mark{
   display:inline-grid;place-items:center;width:1.2rem;height:1.2rem;flex:none;
   background:#16150f;color:#faf9f6;font-size:.72rem;font-weight:700;
 }
-#__rb-pill{
-  position:fixed;left:14px;bottom:14px;z-index:2147483000;
-  display:inline-flex;align-items:center;gap:.45rem;padding:.58rem .9rem;
-  background:rgba(22,21,15,.93);color:#faf9f6;text-decoration:none;border-radius:99px;
-  font:600 12.5px/1 InterVar,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
-  border:1px solid rgba(255,255,255,.16);box-shadow:0 6px 22px rgba(0,0,0,.28);
-  opacity:0;transform:translateY(6px);pointer-events:none;
-  transition:opacity .2s ease,transform .2s ease;
-  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
-}
-#__rb-pill.__on{opacity:1;transform:none;pointer-events:auto}
-#__rb-pill:hover{background:#16150f;color:#fff}
 /* Dark has to answer to two things: the reader's system setting, and the
    theme button on the page, which sets data-theme on <html>. Keyed to the
    media query alone, the bar stayed paper-white across the top of an essay
@@ -1387,25 +1618,30 @@ RETURN_BAR = """
   :root:not([data-theme="light"]) #__rb{background:#131310;border-bottom-color:#2c2b24;color:#c0bcb1}
   :root:not([data-theme="light"]) #__rb .__rb-home{color:#f7f5ef}
   :root:not([data-theme="light"]) #__rb .__rb-home i{color:#948f85}
+  :root:not([data-theme="light"]) #__rb .__rb-row{color:#948f85}
+  :root:not([data-theme="light"]) #__rb .__rb-row b{color:#c0bcb1}
+  :root:not([data-theme="light"]) #__rb .__rb-from{color:#948f85}
+  :root:not([data-theme="light"]) #__rb .__rb-from b{color:#c0bcb1}
   :root:not([data-theme="light"]) #__rb a{color:#85adea}
   :root:not([data-theme="light"]) #__rb .__mark{background:#f7f5ef;color:#131310}
-  :root:not([data-theme="light"]) #__rb-pill{background:rgba(247,245,239,.95);color:#131310;border-color:rgba(0,0,0,.2)}
-  :root:not([data-theme="light"]) #__rb-pill:hover{background:#fff;color:#000}
 }
 :root[data-theme="dark"] #__rb{background:#131310;border-bottom-color:#2c2b24;color:#c0bcb1}
 :root[data-theme="dark"] #__rb .__rb-home{color:#f7f5ef}
 :root[data-theme="dark"] #__rb .__rb-home i{color:#948f85}
+:root[data-theme="dark"] #__rb .__rb-row{color:#948f85}
+:root[data-theme="dark"] #__rb .__rb-row b{color:#c0bcb1}
+:root[data-theme="dark"] #__rb .__rb-from{color:#948f85}
+:root[data-theme="dark"] #__rb .__rb-from b{color:#c0bcb1}
 :root[data-theme="dark"] #__rb a{color:#85adea}
 :root[data-theme="dark"] #__rb .__mark{background:#f7f5ef;color:#131310}
-:root[data-theme="dark"] #__rb-pill{background:rgba(247,245,239,.95);color:#131310;border-color:rgba(0,0,0,.2)}
-:root[data-theme="dark"] #__rb-pill:hover{background:#fff;color:#000}
-@media (prefers-reduced-motion:reduce){#__rb-pill{transition:none}}
-@media print{#__rb,#__rb-pill{display:none !important}}
+@media print{#__rb{display:none !important}}
 </style>
-<div id="__rb">
+<nav id="__rb" aria-label="Portfolio">
   <a class="__rb-home" href="index.html"><span class="__mark" aria-hidden="true">A</span>Alex Rajcoomar <i>portfolio</i></a>
-  <span class="__rb-right"><a href="__UP__">__UPNAME__</a><a href="library.html">All work</a></span>
-</div>
+  <span class="__rb-row">__ROW__</span>
+  <span class="__rb-right"><a href="__UP__">__UPNAME__</a><a href="atlas.html">Atlas</a><a href="library.html">All work</a></span>
+  __FROM__
+</nav>
 <script>
 /* the trail: which passages this browser has opened. The atlas reads it and
    rings them; the record lives in localStorage and never leaves the machine. */
@@ -1422,7 +1658,7 @@ RETURN_BAR = """
     function put(key){
       if(t2[key]||Object.keys(t2).length<500){
         t2[key]=(t2[key]||0)+1;
-        localStorage.setItem(k,JSON.stringify(t2));
+        try{localStorage.setItem(k,JSON.stringify(t2));}catch(e){}
       }
     }
     put(u+location.hash);
@@ -1435,13 +1671,59 @@ RETURN_BAR = """
 
 RETURN_PILL = """
 <!--__rbp-->
+<!-- The pill styles itself: this block used to live only with the top bar,
+     so the seven tool pages, which carry the pill alone, rendered it as an
+     unstyled link at the very end of the document. Whatever carries the
+     pill now carries its style. -->
+<style id="__rbp-style">
+#__rb-pill{
+  position:fixed;left:14px;bottom:14px;z-index:2147483000;
+  display:inline-flex;align-items:center;gap:.45rem;padding:.58rem .9rem;
+  background:rgba(22,21,15,.93);color:#faf9f6;text-decoration:none;border-radius:99px;
+  font:600 12.5px/1 InterVar,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  border:1px solid rgba(255,255,255,.16);box-shadow:0 6px 22px rgba(0,0,0,.28);
+  opacity:0;transform:translateY(6px);pointer-events:none;
+  transition:opacity .2s ease,transform .2s ease;
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+}
+#__rb-pill.__on{opacity:1;transform:none;pointer-events:auto}
+#__rb-pill:hover{background:#16150f;color:#fff}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) #__rb-pill{background:rgba(247,245,239,.95);color:#131310;border-color:rgba(0,0,0,.2)}
+  :root:not([data-theme="light"]) #__rb-pill:hover{background:#fff;color:#000}
+}
+:root[data-theme="dark"] #__rb-pill{background:rgba(247,245,239,.95);color:#131310;border-color:rgba(0,0,0,.2)}
+:root[data-theme="dark"] #__rb-pill:hover{background:#fff;color:#000}
+@media (prefers-reduced-motion:reduce){#__rb-pill{transition:none}}
+@media print{#__rb-pill{display:none !important}}
+/* a tool carries no bar, so what it was built from stands at the foot of the document */
+#__rb-from{margin:1.25rem 1rem;font:400 13px/1.45 InterVar,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;color:#6f6c63;max-width:70ch}
+#__rb-from b{font-weight:600;color:#55524a}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) #__rb-from{color:#948f85}
+  :root:not([data-theme="light"]) #__rb-from b{color:#c0bcb1}
+}
+:root[data-theme="dark"] #__rb-from{color:#948f85}
+:root[data-theme="dark"] #__rb-from b{color:#c0bcb1}
+</style>
+<!-- With scripts off nothing ever adds the __on class, and the only way
+     back from a tool page vanished. The pill needs its script for the
+     scroll threshold, not for existing. -->
+<noscript><style>#__rb-pill{opacity:1 !important;transform:none !important;pointer-events:auto !important}</style></noscript>
 <a id="__rb-pill" href="__UP__">&#8592; __UPNAME__</a>
+__FROM__
 <script>
 (function(){
   var p=document.getElementById('__rb-pill'); if(!p) return;
+  /* On a page with the top bar the pill waits until the bar has scrolled
+     out of reach. On a page without one (the tools carry no bar, because a
+     bar inside a full-screen application sits in the wrong place) the pill
+     is the only way back, so it is there from the first paint: a tool
+     screen shorter than the threshold used to strand the reader entirely. */
+  var TH=document.getElementById('__rb')?160:-1;
   var t=false;
   function run(){ t=false;
-    p.classList.toggle('__on',(window.scrollY||document.documentElement.scrollTop)>420); }
+    p.classList.toggle('__on',(window.scrollY||document.documentElement.scrollTop)>TH); }
   function q(){ if(!t){ t=true; requestAnimationFrame(run); } }
   addEventListener('scroll',q,{passive:true}); run();
 })();
@@ -1459,7 +1741,7 @@ RETURN_PILL = """
     function put(key){
       if(t2[key]||Object.keys(t2).length<500){
         t2[key]=(t2[key]||0)+1;
-        localStorage.setItem(k,JSON.stringify(t2));
+        try{localStorage.setItem(k,JSON.stringify(t2));}catch(e){}
       }
     }
     put(u+location.hash);
@@ -1482,6 +1764,7 @@ _INJECTED = [
     r"<!-- injected by the site build.*?-->",
     r'<style id="__rb-style">.*?</style>',
     r'<div id="__rb">.*?</div>',
+    r'<nav id="__rb".*?</nav>',
     r'<span class="__rb-right">.*?</span>\s*</div>',
     r'<a id="__rb-pill"[^>]*>.*?</a>',
     r"<script>\s*\(function\(\)\{\s*var p=document\.getElementById\('__rb-pill'\).*?</script>",
@@ -1523,7 +1806,69 @@ def _body_tag(text):
         pos = end + 3
 
 
-def add_return(path, up="index.html", upname="Home", bar=True):
+def piece_row(p):
+    if not p:
+        return ""
+    return (f'{SURF_LABEL[p["surface"]]} &middot; <b>{p["words"]:,}</b> words &middot; '
+            f'<b>{p["figures"]}</b> figures &middot; <b>{p["tables"]}</b> tables')
+
+def piece_from(p):
+    """The built_from line, one per piece, in the owner's words. Rendered by
+    the build so it can never drift from content/pieces.json; check 17 refuses
+    a piece without one, or one with an em dash."""
+    if not p or not (p.get("built_from") or "").strip():
+        return ""
+    return f'<span class="__rb-from"><b>Built from</b> {esc(p["built_from"].strip())}</span>'
+
+_FROM_BLOCK = re.compile(r"\s*<!--__from-->.*?<!--/__from-->", re.S)
+
+def own_from(path, p):
+    """A converted note carries the site's own header and no bar, so its
+    built_from line stands in the masthead, in a block the build owns. The
+    block is refilled on every run and written only when it changes."""
+    if not p or not (p.get("built_from") or "").strip():
+        return False
+    text = open(path, encoding="utf-8", errors="ignore").read()
+    block = ('<!--__from--><p class="docfrom"><b>Built from</b> %s</p><!--/__from-->'
+             % esc(p["built_from"].strip()))
+    new = _FROM_BLOCK.sub("", text)
+    m = re.search(r'(<div class="docmeta">.*?</div>)(\s*</header>)', new, re.S)
+    if not m:
+        m = re.search(r'(<p class="dek">.*?</p>)(\s*</header>)', new, re.S)
+    if not m:
+        return False
+    new = new[:m.end(1)] + "\n        " + block + new[m.end(1):]
+    if new != text:
+        os.chmod(path, 0o644)
+        open(path, "w", encoding="utf-8").write(new)
+    return True
+
+
+LONG_WORDS = 5000
+_LONG_BLOCK = re.compile(r"\s*<!--__long-->.*?<!--/__long-->", re.S)
+
+def own_long(path, p):
+    """The reading kit for a piece over LONG_WORDS measured words: a section
+    index built from the same anchors the Atlas harvests, a reading position
+    kept in localStorage, a 66ch measure for running text, tabular figures in
+    tables only, and print rules that keep figures whole. One owned block
+    before </body>, refilled on every run; removed if the piece falls under
+    the threshold."""
+    text = open(path, encoding="utf-8", errors="ignore").read()
+    long_ = bool(p) and int(p.get("words") or 0) > LONG_WORDS
+    block = ('<!--__long--><link rel="stylesheet" href="%s"><script src="%s" defer></script><!--/__long-->'
+             % (asset("long.css"), asset("long.js"))) if long_ else ""
+    new = _LONG_BLOCK.sub("", text)
+    if block:
+        i = new.lower().rfind("</body>")
+        new = (new[:i] + "\n" + block + "\n" + new[i:]) if i != -1 else new + block
+    if new != text:
+        os.chmod(path, 0o644)
+        open(path, "w", encoding="utf-8").write(new)
+    return long_
+
+
+def add_return(path, up="index.html", upname="Home", bar=True, p=None):
     """Give a standalone piece a way back into the site. Any earlier injection
     is stripped first, so a page never ends up carrying two."""
     try:
@@ -1534,14 +1879,157 @@ def add_return(path, up="index.html", upname="Home", bar=True):
     text = strip_injected(text)
 
     pill = RETURN_PILL.replace("__UP__", up).replace("__UPNAME__", upname)
+    # the bar carries the built_from line where there is a bar; a tool, which
+    # carries the pill alone, carries the line at the foot of its document
+    pill = pill.replace("__FROM__", "" if bar else piece_from(p).replace('class="__rb-from"', 'id="__rb-from"').replace("<span", "<p").replace("</span>", "</p>"))
     if bar:
-        top = RETURN_BAR.replace("__UP__", up).replace("__UPNAME__", upname)
+        top = (RETURN_BAR.replace("__UP__", up).replace("__UPNAME__", upname)
+               .replace("__ROW__", piece_row(p)).replace("__FROM__", piece_from(p)))
         m = _body_tag(text)
         text = (text[:m.end()] + top + text[m.end():]) if m else (top + text)
     i = text.lower().rfind("</body>")
     text = (text[:i] + pill + text[i:]) if i != -1 else (text + pill)
     if text != before:
         open(path, "w", encoding="utf-8").write(text)
+
+
+# ------------------------------------------- converted pieces' own chrome ----
+# Twenty-two pieces were converted from notes and carried a copy of the site
+# footer made on the day of conversion, so each one told a reader the site
+# held 48 pieces long after it held 61, and each said it was converted at
+# build time, which no build step does. The sentence and the footer are chrome
+# and the build owns them now, inside two marked blocks. Nothing outside the
+# blocks is touched, and the pass proves it: the readable text of the piece
+# with the blocks cut out is compared before and after, byte for byte.
+DOCEND = {
+    "md": ("Converted once from my own markdown note by a script outside this "
+           "repository. The HTML is the record, and this page is the published "
+           "form of it. <a href=\"colophon.html\">How the site counts it</a>."),
+    "doc": ("Converted once from my own Word document by a script outside this "
+            "repository. The HTML is the record, and this page is the published "
+            "form of it. <a href=\"colophon.html\">How the site counts it</a>."),
+}
+TAIL_PROBLEMS = []
+TAIL_KINDS = {}
+
+def _piece_footer():
+    """The generated pages' footer, with the three heading ids the hand-copied
+    footers carried, so an anchor that resolved yesterday resolves today."""
+    m = re.search(r'<footer class="site">.*?</footer>', foot(), re.S)
+    f = m.group(0)
+    # No keyboard button and, below, no keyboard sheet: the measurement counts
+    # hidden text, so a sheet of shortcut prose in 22 pieces would add some
+    # forty invisible "words" to each of them. A piece keeps the dialog and
+    # the manifest it always carried and nothing that is not read.
+    f = re.sub(r'\s*&middot;\s*<button id="keysbtn"[^>]*>keyboard</button>', "", f)
+    f = f.replace('<h2>%s</h2>' % esc(SHORT), '<h2 id="alex-rajcoomar">%s</h2>' % esc(SHORT), 1)
+    f = f.replace('<h2>Sections</h2>', '<h2 id="sections">Sections</h2>', 1)
+    f = f.replace('<h2>This site</h2>', '<h2 id="this-site">This site</h2>', 1)
+    return f
+
+_DOCEND_OLD = re.compile(r'<p class="docend">.*?</p>', re.S)
+_DOCEND_NEW = re.compile(r'<!--__docend (md|doc)-->.*?<!--/__docend-->', re.S)
+_FOOT_OLD = re.compile(r'<footer class="site">.*?</footer>', re.S)
+_FOOT_NEW = re.compile(r'<!--__foot-->.*?<!--/__foot-->', re.S)
+# the search dialog and its manifest, hand-copied on the day of conversion:
+# the manifest listed 48 pieces and the box said so in its placeholder
+_TAIL_OLD = re.compile(r'<!-- Search across every piece\..*?<script>\s*window\.WORK\s*=.*?</script>', re.S)
+_TAIL_NEW = re.compile(r'<!--__tail-->.*?<!--/__tail-->', re.S)
+
+def _piece_tail():
+    """The generated pages' search dialog, keyboard sheet and manifest, which
+    is everything foot() emits between the footer and the script tag."""
+    m = re.search(r'</footer>\s*(.*?)\s*<script src="site\.js', foot(), re.S)
+    tail = m.group(1)
+    tail = re.sub(r'<!-- The keyboard routes.*?<div class="keys" id="keysheet".*?</div>\s*</div>\s*', "", tail, flags=re.S)
+    return tail
+
+def _outside_tail(text):
+    """The file with the two owned regions cut out: raw bytes, and the readable
+    text of what remains."""
+    t = _DOCEND_NEW.sub("", text)
+    t = _DOCEND_OLD.sub("", t)
+    t = _FOOT_NEW.sub("", t)
+    t = _FOOT_OLD.sub("", t)
+    t = _TAIL_NEW.sub("", t)
+    t = _TAIL_OLD.sub("", t)
+    r = re.sub(r"<(script|style)\b[^>]*>.*?</\1>", "", t, flags=re.S | re.I)
+    r = re.sub(r"\s+", " ", html.unescape(re.sub(r"<[^>]+>", " ", r))).strip()
+    return t, r
+
+def own_tail(path):
+    """Rewrite the conversion sentence and the footer of a converted piece.
+    Returns True if the file carries the blocks. Idempotent: the markers are
+    found and refilled, so a second run writes nothing."""
+    text = open(path, encoding="utf-8", errors="ignore").read()
+    m = _DOCEND_NEW.search(text)
+    if m:
+        kind = m.group(1)
+    else:
+        m = _DOCEND_OLD.search(text)
+        if not m:
+            return False
+        kind = "doc" if "Word document" in m.group(0) else "md"
+    mf = _FOOT_NEW.search(text) or _FOOT_OLD.search(text)
+    if not mf:
+        return False
+    raw_before, read_before = _outside_tail(text)
+    new_docend = '<!--__docend %s--><p class="docend">%s</p><!--/__docend-->' % (kind, DOCEND[kind])
+    text = text[:m.start()] + new_docend + text[m.end():]
+    mf = _FOOT_NEW.search(text) or _FOOT_OLD.search(text)
+    text = text[:mf.start()] + "<!--__foot-->" + _piece_footer() + "<!--/__foot-->" + text[mf.end():]
+    mt = _TAIL_NEW.search(text) or _TAIL_OLD.search(text)
+    if mt:
+        text = text[:mt.start()] + "<!--__tail-->" + _piece_tail() + "<!--/__tail-->" + text[mt.end():]
+    raw_after, read_after = _outside_tail(text)
+    f = os.path.basename(path)
+    if raw_before != raw_after:
+        TAIL_PROBLEMS.append("%s: bytes outside the owned blocks changed" % f)
+    if read_before != read_after:
+        TAIL_PROBLEMS.append("%s: readable text outside the owned blocks changed" % f)
+    TAIL_KINDS[f] = kind
+    old = open(path, encoding="utf-8", errors="ignore").read()
+    if text != old:
+        os.chmod(path, 0o644)
+        open(path, "w", encoding="utf-8").write(text)
+    return True
+
+
+# ------------------------------------------------------- piece titles ----
+# The <title> of a piece was hand-written on the day the piece was made and
+# carried its own separator and suffix. The build owns it now the way it
+# owns the meta block, but only where the tag read as the piece's title plus
+# a separator plus a suffix; a tag that says something else is content and
+# is listed for the owner instead.
+_TITLE = re.compile(r"<title>(.*?)</title>", re.S | re.I)
+TITLE_SKIPPED = []
+TITLE_ALONE = []
+TITLE_PROBLEMS = []
+
+def own_title(path, p):
+    text = open(path, encoding="utf-8", errors="ignore").read()
+    m = _TITLE.search(text)
+    if not m:
+        return False
+    cur = re.sub(r"\s+", " ", html.unescape(m.group(1))).strip()
+    want = "%s \u00b7 %s" % (p["t"], SHORT)
+    if cur == want:
+        return True
+    t = p["t"].strip()
+    if cur == t:
+        # the title alone, no separator and no suffix: nothing to own
+        TITLE_ALONE.append(p["slug"])
+        return False
+    rest = cur[len(t):] if cur.startswith(t) else None
+    if rest is None or not re.match(r"^\s*[\u2014\u2013\u00b7|:-]\s+.+$", rest):
+        TITLE_SKIPPED.append((p["slug"], cur))
+        return False
+    new = text[:m.start()] + "<title>%s</title>" % esc(want) + text[m.end():]
+    if text[:m.start()] + text[m.end():] != new[:m.start()] + new[m.start() + len("<title>%s</title>" % esc(want)):]:
+        TITLE_PROBLEMS.append("%s: bytes outside <title> changed" % os.path.basename(path))
+    os.chmod(path, 0o644)
+    open(path, "w", encoding="utf-8").write(new)
+    return True
 
 
 # --------------------------------------------------- piece page heads ----
@@ -1595,7 +2083,7 @@ def head_block(p):
     # mid-word by the engine rather than mid-sentence by us.
     if len(desc) > 160:
         desc = desc[:157].rsplit(" ", 1)[0].rstrip(",;:") + "\u2026"
-    title = f'{p["t"]} \u2014 {SHORT}'
+    title = f'{p["t"]} \u00b7 {SHORT}'
     return f"""{_HEAD_START}
 <meta name="color-scheme" content="{p.get('_scheme', 'light dark')}">
 <meta name="description" content="{esc(desc)}">
@@ -1607,11 +2095,11 @@ def head_block(p):
 <meta property="og:description" content="{esc(desc)}">
 <meta property="og:type" content="article">
 <meta property="og:url" content="{url}">
-<meta property="og:site_name" content="{esc(SHORT)} \u2014 portfolio">
+<meta property="og:site_name" content="{esc(SHORT)} \u00b7 portfolio">
 <meta property="og:image" content="{SITE_URL}/{_card_for(p)}">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="{esc(p["t"])} \u2014 {esc(SHORT)}">
+<meta property="og:image:alt" content="{esc(p["t"])} \u00b7 {esc(SHORT)}">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="{SITE_URL}/{_card_for(p)}">
 {THEME_JS}
@@ -1701,6 +2189,94 @@ def fix_stale_host(path):
         open(path, "w", encoding="utf-8").write(fixed)
         return True
     return False
+
+
+# The shared assets carry a content digest in their URL on every generated
+# page, so a deploy can never serve yesterday's stylesheet against today's
+# markup. The pieces that link those same assets referenced them bare, which
+# is exactly that failure, made one visit longer by the service worker's
+# cache-first strategy. Rewritten to the current digest on every build;
+# idempotent because the digest is a function of the asset's content.
+_ASSET_LINK = re.compile(
+    r'\b(href|src)="(site\.css|figures\.css|site\.js|atlas\.js)(\?v=[0-9a-f]{8})?"')
+
+def version_assets(path):
+    try:
+        text = open(path, encoding="utf-8", errors="ignore").read()
+    except Exception:
+        return False
+    fixed = _ASSET_LINK.sub(lambda m: f'{m.group(1)}="{asset(m.group(2))}"', text)
+    if fixed != text:
+        os.chmod(path, 0o644)
+        open(path, "w", encoding="utf-8").write(fixed)
+        return True
+    return False
+
+
+# The converted notes carry two h1s: the site masthead's, copied in when the
+# note was converted, and the document's own inside .docbody. Two h1s make
+# the document read as two documents to heading navigation. The masthead is
+# site furniture, so its h1 is demoted to a styled paragraph; the document's
+# own h1, which is content, stays the page's one h1.
+_DOCMAST_H1 = re.compile(
+    r'(<header class="docmast">.*?)<h1>(.*?)</h1>', re.S)
+
+def demote_docmast_h1(path):
+    try:
+        text = open(path, encoding="utf-8", errors="ignore").read()
+    except Exception:
+        return False
+    fixed = _DOCMAST_H1.sub(r'\1<p class="docmast-h1">\2</p>', text, count=1)
+    if fixed != text:
+        os.chmod(path, 0o644)
+        open(path, "w", encoding="utf-8").write(fixed)
+        return True
+    return False
+
+
+# An image with no declared size claims no space until it loads, and the
+# prose below it jumps down when it does. The size is measured from the
+# file's own PNG header rather than typed, the same way every other number
+# here is, and the declared height stays honest because site.css keeps
+# img{height:auto}. Idempotent: a tag that already carries a width is left
+# exactly as it is.
+_IMG_TAG = re.compile(r"<img\b[^>]*>")
+
+def _png_size(fp):
+    try:
+        with open(fp, "rb") as fh:
+            head = fh.read(24)
+    except OSError:
+        return None
+    if head[:8] != b"\x89PNG\r\n\x1a\n" or head[12:16] != b"IHDR":
+        return None
+    w, h = struct.unpack(">II", head[16:24])
+    return (w, h) if w and h else None
+
+def size_images(path):
+    try:
+        text = open(path, encoding="utf-8", errors="ignore").read()
+    except Exception:
+        return 0
+    count = [0]
+    def fix(m):
+        tag = m.group(0)
+        if "width=" in tag or "height=" in tag:
+            return tag
+        src = re.search(r'src="([^"/]+\.png)"', tag)
+        if not src:
+            return tag
+        wh = _png_size(os.path.join(OUT, src.group(1)))
+        if not wh:
+            return tag
+        count[0] += 1
+        end = "/>" if tag.endswith("/>") else ">"
+        return tag[:-len(end)].rstrip() + f' width="{wh[0]}" height="{wh[1]}"' + end
+    fixed = _IMG_TAG.sub(fix, text)
+    if count[0] and fixed != text:
+        os.chmod(path, 0o644)
+        open(path, "w", encoding="utf-8").write(fixed)
+    return count[0]
 
 
 
@@ -1812,7 +2388,7 @@ def add_returns_everywhere():
         else:
             where[p["url"]] = ("coursework.html", "Coursework")
     tools = {p["url"] for p in P if p["k"] == "Tool"}
-    n = heads = navs = figs_named = 0
+    n = heads = navs = figs_named = tails = titles = longs = 0
     # The nav runs over every hand-maintained page, including the two that
     # carry their own navigation and are skipped below. A page the reader can
     # land on and cannot leave for the Atlas is the defect being fixed, and
@@ -1821,6 +2397,10 @@ def add_returns_everywhere():
         if f.endswith(".html") and f not in SHELL_PAGES:
             if normalise_nav(os.path.join(OUT, f)):
                 navs += 1
+            if own_tail(os.path.join(OUT, f)):
+                tails += 1
+            if f in by_url and own_title(os.path.join(OUT, f), by_url[f]):
+                titles += 1
             # The typeface is self-hosted: any page still preloading it from
             # the CDN is rewritten to the local subset, so no request leaves
             # the origin. Runs on every hand-maintained page, reader.html
@@ -1846,13 +2426,19 @@ def add_returns_everywhere():
         if f in by_url and normalise_head(path, by_url[f]):
             heads += 1
         fix_stale_host(path)
+        version_assets(path)
         figs_named += label_figures(path)
+        size_images(path)
+        demote_docmast_h1(path)
+        longs += own_long(path, by_url.get(f))
         if 'class="docbar"' in open(path, encoding="utf-8", errors="ignore").read():
+            own_from(path, by_url.get(f))
             continue                      # converted notes already carry full navigation
         up, upname = where.get(f, ("index.html", "Home"))
-        add_return(path, up, upname, bar=f not in tools)
+        add_return(path, up, upname, bar=f not in tools, p=by_url.get(f))
         n += 1
-    return n, heads, navs, figs_named
+    add_returns_everywhere.longs = longs
+    return n, heads, navs, figs_named, tails, titles
 
 
 # --------------------------------------------------------------- write ----
@@ -1865,7 +2451,7 @@ ATLAS_BODY = r"""<section class="band atlas-band" id="atlas">
 
       <script type="application/json" id="afacts">{facts}</script>
 
-      <noscript><style>#aplates article[hidden]{{display:block !important}}</style></noscript>
+      <noscript><style>#aplates article[hidden]{{display:block !important}}#astage{{display:none}}</style></noscript>
       <div class="plates" id="aplates">
 {plates}
       </div>
@@ -1902,13 +2488,16 @@ ATLAS_BODY = r"""<section class="band atlas-band" id="atlas">
             <li><i class="ak ak-cou"></i>Coursework, drawn as an outline</li>
             <li><i class="ak ak-too"></i>Tools, one mark each, standing off the sphere: not headings</li>
             <li class="akey-wide"><i class="ak ak-shr"></i>Headings carried by more than one document, standing off the surface by how many carry them; point at one and the fan to its documents is drawn</li>
-            <li class="akey-wide"><i class="ak ak-vis"></i>Passages this browser has opened, ringed. The record stays in this browser</li>
+            <li class="akey-wide"><i class="ak ak-vis"></i><span id="aseen">Passages</span> this browser has opened, ringed. The record stays in this browser</li>
             <li class="akey-wide"><i class="ak ak-lnk"></i>Point at any mark and chords join its document to the documents its text links, or that link it; each chord's tick sits nearer the linked one</li>
           </ul>
-          <p class="akey-note">Size follows heading level. A document's area grows with
-          the number of sections it holds. Nothing is sampled and nothing is capped.
-          Left alone, the camera surveys the shelf, holding each document for a time
-          proportional to its size; touch anything and it is yours.</p>
+          <p class="akey-note">A mark's area is apportioned from its document's measured word count by
+          the share of the document's static text under that heading; it is not a per-section
+          measurement. Heading level is no longer drawn on the sphere and is kept in the index
+          beside it. A document's area grows with its section count, and a heading several
+          documents carry is placed once, between them. Positions are deterministic for a given
+          corpus: the same pieces and headings give the same sphere on every build, and adding or
+          removing a piece re-spaces the lattice and moves every mark.</p>
         </div>
         <p class="replay"><button type="button" id="preplay" class="linkbtn">Replay the six labels</button></p>
       </div>
@@ -1916,6 +2505,7 @@ ATLAS_BODY = r"""<section class="band atlas-band" id="atlas">
       <div class="atlas-doc" id="adoc" hidden></div>
     </div>
 
+    <div class="atlas-stagewrap" id="astagewrap">
     <div class="atlas-stage" id="astage">
       <canvas id="acanvas" aria-hidden="true"></canvas>
       <div class="atlas-labels" id="alabels" aria-hidden="true"></div>
@@ -1924,10 +2514,17 @@ ATLAS_BODY = r"""<section class="band atlas-band" id="atlas">
         <button type="button" id="acrumbout" class="crumb-out">&#8592; All {ndoc} documents</button>
         <span class="crumb-now" id="acrumbnow"></span>
       </div>
+    </div>
+    <!-- The hint, the caption and the stage key sit under the sphere, not
+         in its box: on a phone the box is the sphere's whole height, and
+         anything placed inside it lands on the marks. At desktop widths they
+         are positioned against the wrap, which is the stage's own box. -->
+    <div class="atlas-under" id="aunder">
       <p class="atlas-hint" id="ahint">Drag to turn it, or press <kbd>&#8594;</kbd> for the next label.</p>
       <p class="atlas-cap" id="acap"></p>
       <button type="button" class="arestore" id="arestore" hidden>Restore the framing</button>
       <div class="stagekey" id="astagekey" hidden></div>
+    </div>
     </div>
   </div>
 
@@ -1950,9 +2547,18 @@ ATLAS = {"points": [], "regions": []}
 SURF_NAME = {"independent": "Independent", "course": "Coursework",
              "personal": "Personal interest"}
 
+def p3(v):
+    """A unit-sphere position at three decimals, trailing zeros dropped, the
+    same function the check uses to read it back."""
+    return ",".join(("%.3f" % x).rstrip("0").rstrip(".") or "0" for x in v)
+
+
+_by_slug_all = {p["slug"]: p for p in P}
+
 def page_atlas():
     pts, regs = ATLAS["points"], ATLAS["regions"]
     F = atlas_mod.facts(pts, regs)
+    ATLAS["facts"] = F
     LABELS = atlas_mod.labels(F)
 
     by = {}
@@ -1970,16 +2576,24 @@ def page_atlas():
     blocks = []
     for r in ordered:
         items = by[r["s"]]
+        # The list implies the class, a missing level means the ordinary
+        # third level, and three decimals place a mark within a fifth of a
+        # pixel at the largest radius the page draws. Nothing about the data
+        # changes; check 11a reads every mark back against the placement.
         lis = "\n".join(
-            '<li class="apt" data-p="%s,%s,%s" data-l="%d"%s%s><a href="%s">%s</a></li>'
-            % (q["p"][0], q["p"][1], q["p"][2], q["l"],
+            '<li data-p="%s" data-w="%d"%s%s%s><a href="%s">%s</a></li>'
+            % (p3(q["p"]), q.get("w", 0),
+               (' data-l="%d"' % q["l"]) if q["l"] != 3 else "",
                (' data-n="%d"' % q["n"]) if q["n"] > 1 else "",
                (' data-o="%s"' % ",".join(q["o"])) if q.get("o") else "",
                q["u"], esc(q["t"]))
             for q in items)
         word = "section" if len(items) == 1 else "sections"
+        pc = _by_slug_all.get(r["s"])
+        row = ("%s words &#183; %d figures &#183; %d tables"
+               % (format(pc["words"], ","), pc["figures"], pc["tables"])) if pc else ""
         meta = " &#183; ".join(x for x in (
-            esc(r["k"]), esc(r["c"] or SURF_NAME[r["surface"]]), esc(r["d"])) if x)
+            esc(r["k"]), esc(r["c"] or SURF_NAME[r["surface"]]), esc(r["d"]), row) if x)
         blocks.append(
             '      <section class="areg" data-s="%s" data-k="%s" data-surface="%s"\n'
             '        data-c="%s,%s,%s" data-t="%s" data-u="%s">\n'
@@ -2027,7 +2641,7 @@ def page_atlas():
                                    .format(format(F["total"], ","), F["docs"],
                                            F["indD"], F["perD"], F["couD"])),
                              blocks="\n".join(blocks))
-    return head("Atlas — " + SHORT,
+    return head("Atlas · " + SHORT,
                 "All %s sections of all %d documents on this site, placed on a "
                 "sphere by the document they belong to and linked to the passage "
                 "itself." % (format(nsec, ","), ndoc),
@@ -2035,11 +2649,12 @@ def page_atlas():
                 extra='<script src="' + asset("atlas.js") + '" defer></script>') + body + foot()
 
 
-# Level 3 is what a heading is unless the document says otherwise: 743 of
-# the 1,247 points carry it. Writing it out on every point would cost 1,247
-# bytes to say "ordinary" 743 times, so it is the value a missing digit
-# means, and only the 504 points that differ pay for the difference.
-TEASER_DEFAULT_LEVEL = 3
+# The teaser's size band: the Atlas draws radius 0.55 + 0.028 * sqrt(words),
+# and at teaser scale that rule is quantised to ten bands on sqrt(words) so
+# a missing digit, the smallest band, is the common case and costs nothing.
+def teaser_band(w):
+    import math
+    return min(9, int(math.sqrt(max(0, w)) / 13))
 
 def atlas_teaser_bits():
     """The home page draws the same sphere small, so the payload is the same
@@ -2048,19 +2663,19 @@ def atlas_teaser_bits():
     well under a pixel, and it keeps the whole thing near six kilobytes over
     the wire.
 
-    The fourth field carries the kind letter and, when the heading is not a
-    third-level one, the level digit straight after it: "i" is an ordinary
-    heading in independent work, "i1" the same document's top-level heading.
-    The atlas draws a mark's radius from its heading level and the teaser
-    drew every mark the same size, so the home page and the atlas were
-    making different claims about the same 1,247 points."""
+    The fourth field carries the kind letter and, when the mark's apportioned
+    word weight puts it above the smallest size band, a band digit straight
+    after it: "i" is a mark in independent work in the smallest band, "i2"
+    the same kind two bands up. The bands are the Atlas's own size rule
+    quantised, so the home page and the atlas make the same claim about the
+    same points; check 11a holds the positions to the placement pass."""
     code = {"independent": "i", "personal": "p", "course": "c"}
     surf = {r["s"]: ("t" if r["k"] == "Tool" else code[r["surface"]])
             for r in ATLAS["regions"]}
     out = []
     for q in ATLAS["points"]:
-        lvl = min(4, max(1, int(q["l"])))
-        mark = surf[q["s"]] + ("" if lvl == TEASER_DEFAULT_LEVEL else str(lvl))
+        band = teaser_band(q.get("w", 0))
+        mark = surf[q["s"]] + ("" if band == 0 else str(band))
         out.append("%.2f,%.2f,%.2f,%s" % (q["p"][0], q["p"][1], q["p"][2], mark))
     return (format(len(ATLAS["points"]), ","), ";".join(out),
             format(len([q for q in ATLAS["points"] if q["n"] > 1]), ","))
@@ -2074,7 +2689,7 @@ def page_404():
   <p class="eyebrow accent">404</p>
   <h1 class="display lost-h">That page is not here.</h1>
   <p class="lede">The address may have a typo, or the piece may have been renamed. The library holds
-  all {len(P)} pieces, and pressing <kbd>/</kbd> searches them from anywhere.</p>
+  all {len(P)} pieces<span class="jsonly">, and pressing <kbd>/</kbd> searches them from anywhere</span>.</p>
   <p class="plate-nav">
     <a class="pbtn pbtn-go" href="library.html">Open the library <span aria-hidden="true">&#8594;</span></a>
     <a class="pbtn" href="index.html">&#8592; Home</a>
@@ -2082,9 +2697,15 @@ def page_404():
   </p>
 </div>
 """
-    return head("Page not found \u2014 " + SHORT,
-                f"That address is not on this site. The library holds all {len(P)} pieces.",
-                "404.html") + body + foot()
+    out = head("Page not found \u00b7 " + SHORT,
+               f"That address is not on this site. The library holds all {len(P)} pieces.",
+               "404.html") + body + foot()
+    # GitHub Pages serves this file's content at ANY missing path, including
+    # nested ones, where relative URLs stop resolving: /foo/bar rendered the
+    # page unstyled with every link broken. Every static relative reference
+    # is therefore made root-relative here. Fragment, absolute, data: and
+    # mailto: URLs pass through untouched.
+    return re.sub(r'\b(href|src)="(?!https?:|/|#|data:|mailto:)', r'\1="/', out)
 
 
 # ------------------------------------------------------- service worker ----
@@ -2225,21 +2846,39 @@ self.addEventListener("message", e => {{
 
 
 # ----------------------------------------------------- sitemap, robots ----
+_MONTHS = {m: i for i, m in enumerate(
+    ["January", "February", "March", "April", "May", "June", "July", "August",
+     "September", "October", "November", "December"], 1)}
+
+def piece_month(d):
+    """A piece's own date, "August 2026", as the sitemap's YYYY-MM, or None
+    when the field does not carry a month. The build date is never used: a
+    sitemap stamped with the day of the last build claims every page changed
+    that day, and it rewrote itself on the first run of every new day."""
+    m = re.match(r"([A-Z][a-z]+)\s+(\d{4})$", (d or "").strip())
+    if not m or m.group(1) not in _MONTHS:
+        return None
+    return "%s-%02d" % (m.group(2), _MONTHS[m.group(1)])
+
 def page_sitemap():
     """Every address on the site, in one file, so a search engine does not have
     to guess which of fifty-eight files matter. Generated from the same list
-    that builds the pages, so a piece cannot be listed here and missing there."""
-    urls = [("", "1.0")] + [(p, "0.8") for p in SHELL_PAGES if p != "index.html"]
-    urls += [(x["url"], "0.7" if x["featured"] else "0.6") for x in P]
+    that builds the pages, so a piece cannot be listed here and missing there.
+    lastmod is each piece's own month; the generated pages carry the latest
+    piece month, because that is when their content last changed."""
+    months = {x["url"]: piece_month(x.get("d")) for x in P}
+    have = [m for m in months.values() if m]
+    latest = max(have) if have else None
+    urls = [("", "1.0", latest)] + [(p, "0.8", latest) for p in SHELL_PAGES if p != "index.html"]
+    urls += [(x["url"], "0.7" if x["featured"] else "0.6", months[x["url"]]) for x in P]
     seen, rows = set(), []
-    stamp = TODAY.isoformat()
-    for loc, pri in urls:
+    for loc, pri, stamp in urls:
         if loc in seen or loc == "404.html":
             continue
         seen.add(loc)
         rows.append(f"  <url>\n    <loc>{SITE_URL}/{loc}</loc>\n"
-                    f"    <lastmod>{stamp}</lastmod>\n"
-                    f"    <priority>{pri}</priority>\n  </url>")
+                    + (f"    <lastmod>{stamp}</lastmod>\n" if stamp else "")
+                    + f"    <priority>{pri}</priority>\n  </url>")
     return ('<?xml version="1.0" encoding="UTF-8"?>\n'
             '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
             + "\n".join(rows) + "\n</urlset>\n")
@@ -2255,7 +2894,7 @@ def jsonld_site():
     data = {
         "@context": "https://schema.org",
         "@type": "WebSite",
-        "name": f"{SHORT} — portfolio",
+        "name": f"{SHORT} · portfolio",
         "url": SITE_URL + "/",
         "inLanguage": "en-CA",
         "author": {"@type": "Person", "name": NAME},
@@ -2279,6 +2918,9 @@ def jsonld_person():
         "knowsAbout": ["Financial reporting under IFRS and ASPE",
                        "Canadian taxation", "Accounting analytics"],
     }
+    same_as = [u for u in (LINKEDIN, GITHUB) if u]
+    if same_as:
+        data["sameAs"] = same_as
     return ('<script type="application/ld+json">'
             + json.dumps(data, separators=(",", ":")).replace("</", "<\\/")
             + "</script>")
@@ -2299,14 +2941,17 @@ SHELL_PAGES = ("index.html", "research.html", "coursework.html", "tools.html",
 
 def check_site():
     problems, files = [], set(os.listdir(OUT))
-    for sub in ("cards",):
+    for sub in ("cards", "fonts"):
         if os.path.isdir(os.path.join(OUT, sub)):
             files |= {sub + "/" + f for f in os.listdir(os.path.join(OUT, sub))}
 
     def local(u):
         if not u or re.match(r"^(https?:|mailto:|tel:|#|data:|//|javascript:)", u):
             return None
-        return u.split("#")[0].split("?")[0] or None
+        # The site is served at the domain root, so a root-relative URL names
+        # the same file its bare form does. 404.html uses them on purpose:
+        # GitHub Pages serves that page at any missing path, at any depth.
+        return u.lstrip("/").split("#")[0].split("?")[0] or None
 
     for f in sorted(os.listdir(OUT)):
         if not f.endswith(".html"):
@@ -2382,10 +3027,15 @@ def check_site():
         i = text.find('class="docbody"')
         if i == -1:
             continue
-        n = len(re.findall(r"<h1[\s>]", text[i:]))
-        if n > 1:
-            problems.append(f"{f}: {n} top-level headings in the document body; "
-                            f"all but the first are hidden by the stylesheet")
+        # per document body: the reader edition embeds every converted note,
+        # each with its own body and its own single heading
+        bodies = re.findall(r'<article class="docbody"[^>]*>(.*?)</article>', text, re.S)
+        counts = [len(re.findall(r"<h1[\s>]", b)) for b in bodies] if bodies else [len(re.findall(r"<h1[\s>]", text[i:]))]
+        for n in counts:
+            if n > 1:
+                problems.append(f"{f}: {n} top-level headings in a document body; "
+                                f"all but the first are hidden by the stylesheet")
+                break
 
     # 7. the head has to hold. Every generated tag can be correct and still be
     # useless if the browser has already closed <head> before reaching it: one
@@ -2426,7 +3076,7 @@ def check_site():
     apath = os.path.join(OUT, "atlas.html")
     if os.path.exists(apath):
         atext = open(apath, encoding="utf-8", errors="ignore").read()
-        marks = re.findall(r'class="apt"[^>]*>\s*<a href="([^"]+)"', atext)
+        marks = re.findall(r'<li data-p="[^"]*"[^>]*>\s*<a href="([^"]+)"', atext)
         want = {}
         for href in marks:
             f, _, frag = href.partition("#")
@@ -2482,7 +3132,336 @@ def check_site():
                 "not Inter; re-subset InterVariable-sub.woff2" % (ord(ch), ch, f))
     except FileNotFoundError:
         problems.append("font subset: build/font-*-cmap.txt missing")
+
+    # 11. the injected chrome carries the palette as literals, because the
+    # standalone pieces do not load site.css. Nothing kept the two in
+    # agreement: a palette change in the stylesheet would ship every piece
+    # with last year's chrome. Every colour the chrome states must therefore
+    # exist somewhere in site.css's own vocabulary (white and black are
+    # allowed: the pill states them on purpose, on surfaces that never
+    # change with the palette).
+    def _hexes(text):
+        out = set()
+        for h in re.findall(r'#([0-9a-fA-F]{6})\b', text):
+            out.add(h.lower())
+        for h in re.findall(r'#([0-9a-fA-F]{3})\b(?![0-9a-fA-F])', text):
+            out.add("".join(c * 2 for c in h.lower()))
+        for r, g, b in re.findall(r'rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)', text):
+            out.add("%02x%02x%02x" % (int(r), int(g), int(b)))
+        return out
+    try:
+        _vocab = _hexes(open(os.path.join(OUT, "site.css"), encoding="utf-8").read())
+        _stray = (_hexes(RETURN_BAR) | _hexes(RETURN_PILL)) - _vocab - {"ffffff", "000000"}
+        for h in sorted(_stray):
+            problems.append("injected chrome: #%s is not a colour site.css knows; "
+                            "the chrome palette in build_site.py has drifted from "
+                            "the stylesheet" % h)
+    except FileNotFoundError:
+        problems.append("injected chrome: site.css missing, palette unverifiable")
+    # 11a. one placement, two renderers, one picture. The Atlas page's marks
+    # and the home page's teaser payload are both read back from the built
+    # files and held to the points place() produced: the same count, and the
+    # same positions at the precision each carries. A heading harvested from
+    # the build's own chrome once put a 1,553rd mark on the sphere and passed
+    # every other check, because its anchor resolved.
+    pts = ATLAS.get("points") or []
+    apath = os.path.join(OUT, "atlas.html")
+    if pts and os.path.exists(apath):
+        atext = open(apath, encoding="utf-8", errors="ignore").read()
+        marks = re.findall(r'<li data-p="([^"]+)"', atext)
+        links = re.findall(r'<li data-p="[^"]*"[^>]*>\s*<a href="[^"]+"', atext)
+        if len(marks) != len(pts) or len(links) != len(pts):
+            problems.append("atlas.html: %d marks and %d links read back, %d points placed"
+                            % (len(marks), len(links), len(pts)))
+        want = {p3(q["p"]) for q in pts}
+        stray = [m for m in marks if m not in want]
+        if stray:
+            problems.append("atlas.html: %d mark(s) at positions the placement did not produce, first %s"
+                            % (len(stray), stray[0]))
+    ipath = os.path.join(OUT, "index.html")
+    if pts and os.path.exists(ipath):
+        itext = open(ipath, encoding="utf-8", errors="ignore").read()
+        m = re.search(r'data-pts="([^"]*)"', itext)
+        tease = [x for x in (m.group(1).split(";") if m else []) if x]
+        if len(tease) != len(pts):
+            problems.append("index.html: teaser carries %d marks, %d points placed" % (len(tease), len(pts)))
+        want2 = {"%.2f,%.2f,%.2f" % (q["p"][0], q["p"][1], q["p"][2]) for q in pts}
+        stray2 = [x for x in tease if ",".join(x.split(",")[:3]) not in want2]
+        if stray2:
+            problems.append("index.html: %d teaser mark(s) at positions the placement did not produce, first %s"
+                            % (len(stray2), stray2[0]))
+
+    # 11a2. the weights add back. Every mark's apportioned word weight is read
+    # from the built page and summed; the sum must equal the corpus line, because
+    # each document's weights add to its measured count and a shared heading
+    # carries the sum of its owners' shares.
+    if pts and os.path.exists(apath):
+        ws = [int(x) for x in re.findall(r'<li data-p="[^"]*" data-w="(\d+)"', atext)]
+        if len(ws) != len(pts):
+            problems.append("atlas.html: %d marks carry a weight, %d points placed" % (len(ws), len(pts)))
+        elif sum(ws) != TOTAL_WORDS:
+            problems.append("atlas.html: mark weights add to %s, the corpus line says %s"
+                            % (format(sum(ws), ","), format(TOTAL_WORDS, ",")))
+
+    # 11b. the converted pieces' owned blocks changed nothing outside themselves
+    for line in TAIL_PROBLEMS:
+        problems.append("converted piece: " + line)
+    for line in TITLE_PROBLEMS:
+        problems.append("piece title: " + line)
+
+    # 12. the statement's subtotals add to the corpus line. Three origins, one
+    # total, and the arithmetic is the reader's to check on the page, so the
+    # build checks it first.
+    st = surface_totals()
+    for key, tot in (("n", len(P)), ("words", TOTAL_WORDS),
+                     ("figures", TOTAL_FIGS), ("tables", TOTAL_TBLS)):
+        got = sum(st[k][key] for k in st)
+        if got != tot:
+            problems.append("origin totals: %s add to %s, the corpus line says %s"
+                            % (key, got, tot))
+
+    # 14. a superlative in the owner's fields is held to the data. "The largest
+    # essay" and "X is the largest piece on the site" are claims a build can
+    # test, so it does: the piece carrying "largest essay" must be the essay
+    # with the most words, and a piece named as the largest on the site must
+    # have the most words of all. A field that stops being true fails the
+    # build rather than staying published.
+    essays = [x for x in P if x["k"] == "Essay"]
+    top_essay = max(essays, key=lambda x: x["words"]) if essays else None
+    top_piece = max(P, key=lambda x: x["words"])
+    for x in P:
+        text = " ".join(str(x.get(k) or "") for k in ("s", "blurb", "demo"))
+        if re.search(r"\blargest essay\b", text, re.I) and top_essay and x is not top_essay:
+            problems.append("content/pieces.json: %s calls itself the largest essay; %s is, at %s words"
+                            % (x["slug"], top_essay["slug"], format(top_essay["words"], ",")))
+        for m in re.finditer(r"([A-Z][^.()]*?) is the largest piece on the site", text):
+            named = m.group(1).strip().lower()
+            # a piece may be named by its title, or by its title before the colon
+            full = top_piece["t"].lower()
+            if named not in (full, full.split(":")[0].strip()):
+                problems.append("content/pieces.json: %s says %s is the largest piece; %s is, at %s words"
+                                % (x["slug"], named, top_piece["t"], format(top_piece["words"], ",")))
+
+    # 13. no numeral in shell copy is typed. Every numeral of two or more
+    # digits, or carrying a decimal or a thousands separator, on a generated
+    # page must be a value the build computed, or a figure a piece states in
+    # its own text where the shell quotes that piece. One-digit numerals are
+    # left alone: note references and the small counts of a sentence.
+    for line in _typed_numerals():
+        problems.append(line)
+
+    # 15. nothing a piece claims has moved. Every numeral, reference,
+    # provenance label, chip, anchor id, URL, heading and result sentence in
+    # every piece is held to the record in content/invariants.json; a strike
+    # or a stale-count fix must be declared in content/ledger.json for the
+    # piece, and the record is renewed only by hand (build/invariance.py).
+    inv_problems, inv_summary = invariance.check(OUT, P, extra=exceptions()["transcripts"])
+    problems.extend(inv_problems)
+    check_site.invariance = inv_summary
+
+    # 18. every self-hosted typeface carries every character its piece shows.
+    # fonts/manifest.json records each subset's codepoints and the size of
+    # the source's full cmap; a character the piece shows that the source
+    # could render and the subset cannot would fall to the fallback face.
+    # The manifest is written by the subsetting script, never by hand.
+    mpath = os.path.join(OUT, "fonts", "manifest.json")
+    if os.path.exists(mpath):
+        try:
+            man = json.load(open(mpath, encoding="utf-8"))
+        except Exception:
+            man = None
+            problems.append("fonts/manifest.json: unreadable")
+        if man:
+            by_piece = {}
+            for fname, rec in (man.get("files") or {}).items():
+                if not os.path.exists(os.path.join(OUT, fname)):
+                    problems.append("fonts/manifest.json: %s is listed but missing" % fname)
+                    continue
+                by_piece.setdefault(rec["piece"], []).append((fname, rec))
+            for p in P:
+                recs = by_piece.get(p["slug"])
+                if not recs:
+                    continue
+                raw = open(os.path.join(OUT, p["url"]), encoding="utf-8", errors="ignore").read()
+                if "fonts.googleapis" in raw:
+                    problems.append("%s: still loads Google Fonts although fonts/ carries its faces" % p["url"])
+                shown = re.sub(r"<style\b[^>]*>.*?</style>", " ", raw, flags=re.S | re.I)
+                shown = html.unescape(re.sub(r"<[^>]+>", " ", shown))
+                cps = {ord(c) for c in set(shown) if ord(c) > 32}
+                for fname, rec in recs:
+                    have = set(rec.get("codepoints") or [])
+                    # only characters the face could render matter: a character
+                    # outside the family's own repertoire falls back under any
+                    # hosting, so the manifest carries each source's cmap
+                    fam_cmap = set(((man.get("families") or {}).get(rec.get("family_dir")) or {}).get("cmap") or [])
+                    lacking = sorted(c for c in cps if c not in have and c in fam_cmap)
+                    for c in lacking[:3]:
+                        problems.append("font subset: U+%04X (%r) in %s is not in %s; re-subset" % (c, chr(c), p["url"], fname))
+            for fname in sorted(os.listdir(os.path.join(OUT, "fonts"))):
+                if fname.endswith(".woff2") and ("fonts/" + fname) not in (man.get("files") or {}):
+                    problems.append("fonts/%s: not in the manifest" % fname)
+
+            # the subsets are distributed under non-reserved internal names
+            # (a subset is a Modified Version under the OFL); the rename
+            # script records each file's alias and sha256, and a file re-cut
+            # without the rename would carry the source's reserved name, so
+            # every file is held to the recorded digest
+            for fname, rec in (man.get("files") or {}).items():
+                fp = os.path.join(OUT, fname)
+                if not os.path.exists(fp):
+                    continue
+                if not rec.get("internal_name"):
+                    problems.append("fonts/manifest.json: %s has no internal_name; run the rename" % fname)
+                digest = hashlib.sha256(open(fp, "rb").read()).hexdigest()
+                if digest != rec.get("sha256"):
+                    problems.append("fonts/manifest.json: %s does not match its recorded sha256; run the rename" % fname)
+            inter = man.get("inter") or {}
+            if inter.get("file"):
+                ip = os.path.join(OUT, inter["file"])
+                if not os.path.exists(ip) or hashlib.sha256(open(ip, "rb").read()).hexdigest() != inter.get("sha256"):
+                    problems.append("%s: does not match the sha256 in fonts/manifest.json; run the rename" % inter["file"])
+
+    # 17. every listed piece states what it was built from, in the owner's
+    # voice: the field is present and never carries an em dash
+    for p in P:
+        bf = (p.get("built_from") or "").strip()
+        if not bf:
+            problems.append("content/pieces.json: %s has no built_from line" % p["slug"])
+        elif "\u2014" in bf:
+            problems.append("content/pieces.json: %s built_from carries an em dash" % p["slug"])
+
+    # 16. the ledger's class for every piece is what the files show. The
+    # colophon prints the ledger's summary, so a stale ledger would print a
+    # count the tree does not support; build/ledger.py rewrites it.
+    if LEDGER:
+        live = invariance.classes(OUT, P)
+        for slug, cls in live.items():
+            said = ((LEDGER.get("pieces") or {}).get(slug) or {}).get("class")
+            if said != cls:
+                problems.append("content/ledger.json: %s is %s, the files say %s; run build/ledger.py"
+                                % (slug, said or "missing", cls))
     return sorted(set(problems))
+
+
+_NUM = re.compile(r"(?<![\w.])(\d{1,3}(?:,\d{3})+(?:\.\d+)?|\d+\.\d+|\d{3,})(?![\w])")
+# two-digit numerals, held to the same registry wherever they stand in shell
+# prose; one-digit numerals stay free (note references, "the 6 above")
+_SMALL = re.compile(r"(?<![\w.,])(\d{2})(?![\w.,%])")
+
+
+def _readable_text(path):
+    raw = open(path, encoding="utf-8", errors="ignore").read()
+    raw = re.sub(r"<(script|style|svg)\b[^>]*>.*?</\1>", " ", raw, flags=re.S | re.I)
+    return html.unescape(re.sub(r"<[^>]+>", " ", raw))
+
+
+def _num(s):
+    return round(float(s.replace(",", "")), 6)
+
+
+def _piece_numbers(url):
+    """Every numeral a piece states in its own readable text, as values, so a
+    shell caption that says 0.20 matches a piece that says 0.2."""
+    path = os.path.join(OUT, url)
+    if not os.path.exists(path):
+        return set()
+    return {_num(x) for x in _NUM.findall(_readable_text(path))} | \
+        {_num(x) for x in re.findall(r"(?<![\w.])(\d{1,2}(?:\.\d+)?)(?![\w])", _readable_text(path))}
+
+
+def _known_numbers():
+    vals = set()
+    def add(x):
+        if isinstance(x, bool):
+            return
+        if isinstance(x, (int, float)):
+            vals.add(round(float(x), 6)); vals.add(float(round(x)))
+        elif isinstance(x, dict):
+            for v in x.values(): add(v)
+        elif isinstance(x, (list, tuple, set)):
+            for v in x: add(v)
+        elif isinstance(x, str):
+            for m in _NUM.findall(x): vals.add(_num(m))
+            for m in _SMALL.findall(x): vals.add(_num(m))
+    add([len(P), TOTAL_WORDS, TOTAL_FIGS, TOTAL_TBLS, CHECKPOINTS, DOC_MIN, WPM,
+         FONT_BYTES, FONT_CODEPOINTS, N_TOOLS, N_PWA, N_INDEP, N_COURSE, N_PERSONAL,
+         len(COURSES), UNIT, len(SHELL_PAGES), 404])
+    # the colophon's definitions: figure area floor, density bands and floor
+    add([6000, 1.0, 3.0, 400])
+    add(figs.group_totals()); add(surface_totals())
+    for p in P:
+        add([p["words"], p["figures"], p["tables"], p["apparatus"],
+             p.get("mins"), reading_minutes(p["words"])])
+    for c in COURSES:
+        cs = [p for p in P if p["c"] == c]
+        add([len(cs), sum(p["words"] for p in cs), sum(p["figures"] for p in cs),
+             sum(p["tables"] for p in cs),
+             sum(1 for p in cs if p["k"] == "Tool"), sum(1 for p in cs if p["k"] != "Tool")])
+        add(re.findall(r"\d+", c))
+    # the shelves' own subtotals: per kind, and per kind within an origin
+    for kind in ("Essay", "Reference", "Tool"):
+        ks = [p for p in P if p["k"] == kind]
+        add([len(ks), sum(p["words"] for p in ks), sum(p["figures"] for p in ks), sum(p["tables"] for p in ks)])
+    cru = [p for p in P if p["slug"] in ("crucible-run-0", "crucible-run-b", "crucible-run-c")]
+    add(sum(p["words"] for p in cru))
+    add(len(ATLAS.get("points") or [])); add(ATLAS.get("facts") or {})
+    for r in ATLAS.get("regions") or []:
+        add(r.get("n"))
+    off = offline_files()
+    add([len(off), round(sum(os.path.getsize(os.path.join(OUT, f)) for f in off) / 1048576)])
+    ex = exceptions()
+    add([len(ex["fonts"]), len(ex["undrawn"]), ex["undrawn_words"], len(ex["transcripts"]),
+         len(ex["tools"]), ex["kinds"]["md"], ex["kinds"]["doc"]])
+    add(LEDGER.get("summary") or {})
+    add(built_from_counts([p for p in P if p["surface"] == "course"]))
+    return vals
+
+
+def _typed_numerals():
+    out = []
+    known = _known_numbers()
+    years = {float(y) for y in range(1900, 2031)}
+    # what the shell quotes from pieces: the owner's own fields, and lifted captions
+    quoted = set()
+    for p in P:
+        stated = _piece_numbers(p["url"])
+        for k in ("t", "s", "blurb", "demo", "tags"):
+            field = " ".join(p.get(k) or []) if k == "tags" else str(p.get(k) or "")
+            for m in _NUM.findall(field) + _SMALL.findall(field):
+                if _num(m) in stated:
+                    quoted.add(_num(m))
+                else:
+                    out.append("content/pieces.json: %s.%s quotes %s, which %s does not state"
+                               % (p["slug"], k, m, p["url"]))
+    for text, href in CAPTIONS:
+        stated = _piece_numbers(href)
+        for m in _NUM.findall(text) + _SMALL.findall(text):
+            if _num(m) in stated:
+                quoted.add(_num(m))
+            else:
+                out.append("lifted caption for %s quotes %s, which the piece does not state"
+                           % (href, m))
+    checked = 0
+    for f in SHELL_PAGES:
+        path = os.path.join(OUT, f)
+        if not os.path.exists(path):
+            continue
+        raw = open(path, encoding="utf-8", errors="ignore").read()
+        # the atlas index is the pieces' own headings, which are content
+        raw = re.sub(r'<section class="areg".*?</section>', " ", raw, flags=re.S)
+        raw = re.sub(r"<(script|style|svg)\b[^>]*>.*?</\1>", " ", raw, flags=re.S | re.I)
+        # the statement rows are numbered by position, which is a count of
+        # the list, not a quantity; the number is cut out before the scan
+        raw = re.sub(r'<span class="num tnum">\d+</span>', " ", raw)
+        text = html.unescape(re.sub(r"<[^>]+>", " ", raw))
+        for m in _NUM.findall(text) + _SMALL.findall(text):
+            checked += 1
+            v = _num(m)
+            if v in known or v in years or v in quoted:
+                continue
+            out.append("%s: prints %s, which the build did not compute and no piece states" % (f, m))
+    _typed_numerals.checked = checked
+    return out
 
 
 def main():
@@ -2523,22 +3502,14 @@ def main():
         if os.path.exists(path):
             fit_mobile(path, css)
 
-    n, heads, navs, figs_named = add_returns_everywhere()
+    n, heads, navs, figs_named, tails, titles = add_returns_everywhere()
 
     # After the pieces, not before: the service worker's version is a digest of
     # the files it caches, and the pass above edits three of them. Generated
     # first, the digest described the previous build and the file never settled.
     # The full-offline manifest: every file a reader needs to hold the whole
-    # site on a phone. Root files by reading-relevant extension; the preview
-    # cards, admin data, and build internals stay out, because they serve
-    # crawlers and editors, not an offline reader.
-    _off_ext = (".html", ".css", ".js", ".woff2", ".webmanifest",
-                ".pdf", ".md", ".csv", ".py", ".png")
-    _off_skip = {"og-card.png", "sw.js", "admin.html", "404.html"}
-    off_files = sorted(
-        f for f in os.listdir(OUT)
-        if f.endswith(_off_ext) and f not in _off_skip
-        and os.path.isfile(os.path.join(OUT, f)))
+    # site on a phone, from the one selection rule offline_files() states.
+    off_files = offline_files()
     _oh = hashlib.sha1()
     for f in off_files:
         _oh.update((f + str(os.path.getsize(os.path.join(OUT, f)))).encode())
@@ -2566,8 +3537,24 @@ def main():
               f"{'piece' if navs == 1 else 'pieces'}")
     print(f"return navigation checked on {n} standalone pieces, "
           f"head metadata written on {heads}")
+    if titles or TITLE_SKIPPED:
+        print(f"page title owned on {titles} pieces; the title alone on {len(TITLE_ALONE)}; "
+              f"left as written on {len(TITLE_SKIPPED)}" + (":" if TITLE_SKIPPED else ""))
+        for slug, cur in TITLE_SKIPPED:
+            print(f"  {slug}: {cur}")
+    if getattr(add_returns_everywhere, "longs", 0):
+        print(f"reading kit (section index, reading position, 66ch measure, print rules) on "
+              f"{add_returns_everywhere.longs} pieces over {LONG_WORDS:,} words")
+    if tails:
+        ok = tails - len({x.split(":")[0] for x in TAIL_PROBLEMS})
+        print(f"conversion sentence, footer and search block owned on {tails} converted pieces; "
+              f"text outside the blocks byte-identical on {ok} of {tails}")
 
     problems = check_site()
+    inv = getattr(check_site, "invariance", None)
+    if inv:
+        print(f"invariance: {inv['held']} of {inv['checked']} pieces hold every numeral, reference, "
+              f"label, anchor and result sentence of their record; {inv['declared']} carry declared strikes")
     if problems:
         print(f"\n{len(problems)} problem(s) found. The site was written, but this is broken:")
         for line in problems[:40]:

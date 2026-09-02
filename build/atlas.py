@@ -35,6 +35,7 @@ CHROME_REPEATS = 3
 CHROME_WORDS = {
     "contents", "table of contents", "on this page", "in this section",
     "navigation", "menu", "search", "index", "jump to", "skip to content",
+    "keyboard",
 }
 
 # Tools are applications. Their headings are controls, not passages, so a tool
@@ -68,7 +69,13 @@ def _readable(text):
     and any navigation the piece carries of its own."""
     t = re.sub(r"<!--__rb-->.*?<!--/__rb-->", "", text, flags=re.S)
     t = re.sub(r"<!--__meta-->.*?<!--/__meta-->", "", t, flags=re.S)
+    # every block the build writes into a piece is chrome, whatever it holds:
+    # the keyboard sheet inside the owned tail carries an <h2>, and the day
+    # the tail was first written it became a "section" of 22 documents
+    t = re.sub(r"<!--__(?:docend[^>]*|foot|tail|from|long)-->.*?<!--/__(?:docend|foot|tail|from|long)-->", "", t, flags=re.S)
     t = re.sub(r"<(script|style)\b[^>]*>.*?</\1>", "", t, flags=re.S | re.I)
+    # dialogs are controls, not passages
+    t = re.sub(r'<div\b[^>]*role="dialog"[^>]*>.*?</div>\s*</div>\s*</div>', "", t, flags=re.S | re.I)
     t = re.sub(r"<nav\b[^>]*>.*?</nav>", "", t, flags=re.S | re.I)
     # The site footer is part of each converted document's own markup, not an
     # injected block, so it survived every other filter and put three of its
@@ -80,12 +87,42 @@ def _readable(text):
     return t
 
 
+def _words(fragment):
+    txt = html.unescape(_TAG.sub(" ", fragment))
+    return sum(1 for w in txt.split() if re.search(r"[A-Za-z0-9]", w))
+
+
+def _apportion(total, shares):
+    """Split a measured total across sections in proportion to their shares,
+    in whole words that add back to the total exactly (largest remainder).
+    A document with no text under any kept heading splits evenly."""
+    n = len(shares)
+    if not n:
+        return []
+    ssum = sum(shares)
+    if ssum <= 0:
+        shares = [1] * n
+        ssum = n
+    raw = [total * x / ssum for x in shares]
+    out = [int(x) for x in raw]
+    short = total - sum(out)
+    for i in sorted(range(n), key=lambda i: raw[i] - out[i], reverse=True)[:short]:
+        out[i] += 1
+    return out
+
+
 def harvest(out_dir, pieces):
     """Give every section an anchor, and return the list of sections.
 
     Idempotent: an id already in the file is kept, so links handed out today
     still resolve after the next build. Only headings the build had to name
     itself are written, and a second run writes nothing.
+
+    Each section also carries a weight: the document's measured word count
+    from metrics.json, apportioned across its kept headings by the share of
+    the document's static text that sits under each heading before the next
+    one. It is an apportionment, not a measurement of the section, and the
+    key says so. A document's weights add back to its measured count exactly.
     """
     sections, wrote = [], 0
     for p in pieces:
@@ -100,15 +137,16 @@ def harvest(out_dir, pieces):
         counts = {}
         for _, _, txt, _ in found:
             counts[txt.lower()] = counts.get(txt.lower(), 0) + 1
+        measured = int(p.get("words") or 0)
 
         if p["k"] in ONE_POINT_KINDS:
             sections.append({"t": p["t"], "url": p["url"], "id": "",
-                             "slug": p["slug"], "lvl": 1})
+                             "slug": p["slug"], "lvl": 1, "w": measured})
             continue
 
         used = set(_ID.findall(raw))
-        edits, seen = [], set()
-        for lvl, attrs, txt, span in found:
+        edits, seen, kept = [], set(), []
+        for i, (lvl, attrs, txt, span) in enumerate(found):
             low = txt.lower()
             if (not txt or len(txt) < 3 or low in CHROME_WORDS
                     or counts[low] >= CHROME_REPEATS or low in seen):
@@ -124,8 +162,12 @@ def harvest(out_dir, pieces):
             else:
                 anchor = _slug(txt, used)
                 edits.append((body[span[0]:span[1]], lvl, anchor))
+            nxt = found[i + 1][3][0] if i + 1 < len(found) else len(body)
+            kept.append(_words(body[span[1]:nxt]))
             sections.append({"t": txt, "url": p["url"], "id": anchor,
                              "slug": p["slug"], "lvl": lvl})
+        for sec, w in zip(sections[len(sections) - len(kept):], _apportion(measured, kept)):
+            sec["w"] = w
 
         if edits:
             for original, lvl, anchor in edits:
@@ -211,12 +253,17 @@ def place(sections, pieces):
                         for i in range(3)))
 
         done.add(key)
+        # a heading several documents carry is one mark, and its weight is
+        # the sum of what it holds in each of them
+        wsum = sum(x.get("w", 0) for x in sections
+                   if x["t"].lower() == key) if len(shared[key]) > 1 else s.get("w", 0)
         placed.append({
             "t": s["t"],
             "u": s["url"] + ("#" + s["id"] if s["id"] else ""),
             "s": s["slug"],
             "l": s["lvl"],
             "n": len(shared[key]),
+            "w": int(wsum),
             "p": [round(v[0], 4), round(v[1], 4), round(v[2], 4)],
         })
         # which documents actually carry a shared heading. The merged point
@@ -549,8 +596,11 @@ def labels(F):
                         round(F["flagCap"]), _esc(F["flagOne"]["t"])),
                 "{} of the {} marks are headings somebody typed into a "
                 "document; the other {} are whole tools, placed as one mark "
-                "each, and a tool opens the tool. Size follows heading "
-                "level, and nothing is sampled and nothing is capped."
+                "each, and a tool opens the tool. A mark's area is apportioned "
+                "from its document's measured word count by the share of the "
+                "document's text under that heading, so a big mark is a long "
+                "section by that rule and not a count of its own. Nothing is "
+                "sampled and nothing is capped."
                 .format(_n(F["headN"]), _n(F["total"]), F["toolN"]),
             ],
         },
