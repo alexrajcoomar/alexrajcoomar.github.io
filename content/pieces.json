@@ -39,7 +39,7 @@
    ],
    "blurb": "Five Canadian accounting frauds with completed regulatory or judicial findings (Sino-Forest, Nortel, Poseidon Concepts, Livent, Philip Services), put back through the Beneish M-Score on the filings that existed before each collapse. Zero of three computable test years flag at the standard cut-off, and the piece types every miss by its cause: threshold, mechanism, model scope, or archive failure. Every figure carries a provenance label, and the computation ships with the page.",
    "demo": "An interactive bench rebuilds each score from the filed figures and lets the reader drag the cut-off to watch sensitivity buy false positives.",
-   "built_from": "Built from the primary filings, the regulators' decisions and court records, and the text of the standards, with the Beneish coefficients taken from three reproductions that agree; every figure carries its label."
+   "built_from": "the primary filings, the regulators' decisions and court records, and the text of the standards, with the Beneish coefficients taken from three reproductions that agree; every figure carries its label."
   },
   {
    "slug": "crucible-cockpit",
@@ -205,7 +205,7 @@
    ],
    "blurb": "A drill on revenue recognition under IFRS 15: 29 determinate items scored against the standard and 33 judgment items that show their reasoning, every answer carrying its paragraph or illustrative example, verified against Part I of the CPA Canada Handbook, 2026 Edition. Each item names the trap beside the treatment, because the wrong answer you almost gave is the thing worth studying.",
    "demo": "The bank distinguishes what the standard settles from what it leaves to judgment, and scores only the former: a trainer that scores nothing teaches nothing, and one that scores judgment calls teaches something false.",
-   "built_from": "Built from the full text of IFRS 15 and its illustrative examples in Part I of the CPA Canada Handbook, four IFRIC agenda decisions and two CSA staff notices; the verification memo records what was read."
+   "built_from": "the full text of IFRS 15 and its illustrative examples in Part I of the CPA Canada Handbook, four IFRIC agenda decisions and two CSA staff notices; the verification memo records what was read."
   },
   {
    "slug": "ifrs15-verification-memo",
@@ -225,7 +225,7 @@
    ],
    "blurb": "What was actually read to build the trainer: the full standard and all 65 illustrative examples in Part I of the CPA Canada Handbook, the four IFRIC agenda decisions read in full against the four left as leads, what the CSA staff notices really say, and the gaps recorded as gaps. Two verification passes are documented, including the correction each one forced.",
    "demo": "",
-   "built_from": "Built from a reading of IFRS 15 in full, its illustrative examples in Part I of the CPA Canada Handbook, and the four IFRIC agenda decisions, item by item against the trainer's bank."
+   "built_from": "a reading of IFRS 15 in full, its illustrative examples in Part I of the CPA Canada Handbook, and the four IFRIC agenda decisions, item by item against the trainer's bank."
   },
   {
    "slug": "five-shall-paragraphs",
@@ -245,7 +245,7 @@
    ],
    "blurb": "A research pack on materiality and audit sampling under the Canadian Auditing Standards, built around the small set of paragraphs that actually say shall. The five-per-cent-of-income benchmark, the performance materiality haircut and the clearly-trivial threshold are traced to where they really come from, which is firm methodology and habit rather than the standards themselves.",
    "demo": "",
-   "built_from": "Built from the Canadian Auditing Standards' own paragraphs, with every non-Canadian source carrying a jurisdiction chip and everything reported without the source text in hand listed together in its own section."
+   "built_from": "the Canadian Auditing Standards' own paragraphs, with every non-Canadian source carrying a jurisdiction chip and everything reported without the source text in hand listed together in its own section."
   },
   {
    "slug": "zakaria-putin-audited",
@@ -265,7 +265,7 @@
    ],
    "blurb": "CNN's Inside the Mind of Vladimir Putin, audited claim by claim four years on: four claims hold, four are overstated or unverified, one is factually wrong, and nine were overtaken by events. The history survives; every present tense in the film has expired, and the audit separates the three questions that is-this-still-valid bundles together.",
    "demo": "",
-   "built_from": "Built from the CNN programme's claims, checked one by one against primary sources four years on; what could not be confirmed is marked."
+   "built_from": "the CNN programme's claims, checked one by one against primary sources four years on; what could not be confirmed is marked."
   },
   {
    "slug": "predictive-history",
@@ -285,7 +285,7 @@
    "featured": true,
    "pwa": false,
    "url": "predictive-history.html",
-   "built_from": "Built from the source document's claims, each carrying a verdict graded by three independent raters, with the audit instrument run against its own falsification test."
+   "built_from": "the source document's claims, each carrying a verdict graded by three independent raters, with the audit instrument run against its own falsification test."
   },
   {
    "slug": "predictive-history-archive",
@@ -325,7 +325,7 @@
    "featured": true,
    "pwa": false,
    "url": "the-trillion-dollar-vintage.html",
-   "built_from": "Built from two documents in a strict chain of custody, the adjudication and the evidence pack it stands on, with every number, probability, ruling and conclusion transcribed unchanged and its evidence label kept."
+   "built_from": "two documents in a strict chain of custody, the adjudication and the evidence pack it stands on, with every number, probability, ruling and conclusion transcribed unchanged and its evidence label kept."
   },
   {
    "slug": "whose-losses-count",
@@ -345,7 +345,7 @@
    "featured": false,
    "pwa": false,
    "url": "whose-losses-count.html",
-   "built_from": "Built from an audited research dossier compiled on 6 August 2026, with each figure traced to the dossier section it came from and graded as retrieved."
+   "built_from": "an audited research dossier compiled on 6 August 2026, with each figure traced to the dossier section it came from and graded as retrieved."
   },
   {
    "slug": "not-significant",
@@ -365,7 +365,7 @@
    "featured": false,
    "pwa": false,
    "url": "not-significant.html",
-   "built_from": "Built from an audited research dossier compiled on 6 August 2026, with no new research; the source spine at the foot of the page traces every figure and quotation."
+   "built_from": "an audited research dossier compiled on 6 August 2026, with no new research; the source spine at the foot of the page traces every figure and quotation."
   },
   {
    "slug": "global-spending-and-wealth",
@@ -385,7 +385,7 @@
    "featured": false,
    "pwa": false,
    "url": "global-spending-and-wealth.html",
-   "built_from": "Built from one report, Global Spending and Wealth: Scale, Structure, Concentration, compiled on 17 August 2026, at the precision it published and with each figure's provenance tag intact."
+   "built_from": "one report, Global Spending and Wealth: Scale, Structure, Concentration, compiled on 17 August 2026, at the precision it published and with each figure's provenance tag intact."
   },
   {
    "slug": "heartbeat-budget",
@@ -404,7 +404,7 @@
    "featured": false,
    "pwa": false,
    "url": "heartbeat-budget.html",
-   "built_from": "Built from the population studies it names: the UK Biobank mortality cohort, the arrhythmia cohort with its Mendelian randomisation, and the mammalian metabolic scaling data."
+   "built_from": "the population studies it names: the UK Biobank mortality cohort, the arrhythmia cohort with its Mendelian randomisation, and the mammalian metabolic scaling data."
   },
   {
    "slug": "exam-day-final-load",
@@ -463,7 +463,7 @@
    "featured": false,
    "pwa": false,
    "url": "the-delayed-test.html",
-   "built_from": "Built from the files of six adversarial research panels, with each Verified tag carried forward from the source file's own check and nothing re-verified independently."
+   "built_from": "the files of six adversarial research panels, with each Verified tag carried forward from the source file's own check and nothing re-verified independently."
   },
   {
    "slug": "the-calibrated-mind",
@@ -502,7 +502,7 @@
    "featured": false,
    "pwa": false,
    "url": "afm291.html",
-   "built_from": "Built from my AFM 291 textbook, course slides and class plans, with AI assistance; anything unlabelled in the vault comes from the textbook, and anything added beyond it is labelled inline."
+   "built_from": "my AFM 291 textbook, course slides and class plans, with AI assistance; anything unlabelled in the vault comes from the textbook, and anything added beyond it is labelled inline."
   },
   {
    "slug": "us-canada-legal-architecture",
@@ -541,7 +541,7 @@
    "featured": false,
    "pwa": false,
    "url": "business-law-primer.html",
-   "built_from": "Built from the statutes, cases and standards it cites, listed in its sources section, with the Canadian and American positions kept apart; the items I could not confirm to a primary source are flagged [VERIFY]."
+   "built_from": "the statutes, cases and standards it cites, listed in its sources section, with the Canadian and American positions kept apart; the items I could not confirm to a primary source are flagged [VERIFY]."
   },
   {
    "slug": "law-arena",
@@ -560,7 +560,7 @@
    "featured": false,
    "pwa": true,
    "url": "law-arena.html",
-   "built_from": "Built from the reviewed business-law primer, the 15 August 2026 revision; an answer resting on a point the primer marks [VERIFY] keeps the flag."
+   "built_from": "the reviewed business-law primer, the 15 August 2026 revision; an answer resting on a point the primer marks [VERIFY] keeps the flag."
   },
   {
    "slug": "skill-forge",
@@ -599,7 +599,7 @@
    "featured": false,
    "pwa": false,
    "url": "afm291-study-system.html",
-   "built_from": "Built from the audited AFM 291 vault: the chapter notes, the reconciliation and the key takeaways."
+   "built_from": "the audited AFM 291 vault: the chapter notes, the reconciliation and the key takeaways."
   },
   {
    "slug": "practice-arena",
@@ -637,7 +637,7 @@
    "featured": false,
    "pwa": false,
    "url": "econ102-exam-trainer.html",
-   "built_from": "Built from the ECON 102 course slides; where a figure here and the slides disagree, the slides govern."
+   "built_from": "the ECON 102 course slides; where a figure here and the slides disagree, the slides govern."
   },
   {
    "slug": "revenue-recognition",
@@ -694,7 +694,7 @@
    "featured": false,
    "pwa": false,
    "url": "afm291-journal-entries.html",
-   "built_from": "Built from my own journal-entry reference and the exam appendix, with AI assistance; the account names and entry forms are taken from them, and the dollar figures are illustrations to be confirmed against the matching problem."
+   "built_from": "my own journal-entry reference and the exam appendix, with AI assistance; the account names and entry forms are taken from them, and the dollar figures are illustrations to be confirmed against the matching problem."
   },
   {
    "slug": "afm291-inventory-gap-map",
@@ -713,7 +713,7 @@
    "featured": false,
    "pwa": false,
    "url": "afm291-inventory-gap-map.html",
-   "built_from": "Built from an audit of my course folder against the syllabus: every pre-lecture recording, lecture deck, PBL scenario and sample solution assigned for Weeks 1 through 11, with the gaps listed."
+   "built_from": "an audit of my course folder against the syllabus: every pre-lecture recording, lecture deck, PBL scenario and sample solution assigned for Weeks 1 through 11, with the gaps listed."
   },
   {
    "slug": "afm274-capital-structure",
@@ -751,7 +751,7 @@
    "featured": false,
    "pwa": false,
    "url": "afm274-financial-distress.html",
-   "built_from": "Built from the AFM 274 lecture slides; all numbers from the slides, internally verified."
+   "built_from": "the AFM 274 lecture slides; all numbers from the slides, internally verified."
   },
   {
    "slug": "afm241-study-reference",
@@ -770,7 +770,7 @@
    "featured": false,
    "pwa": false,
    "url": "afm241-study-reference.html",
-   "built_from": "Built from the AFM 241 course materials for Weeks 1 to 7, with the figures reproduced from them."
+   "built_from": "the AFM 241 course materials for Weeks 1 to 7, with the figures reproduced from them."
   },
   {
    "slug": "afm241-cheat-sheet",
@@ -789,7 +789,7 @@
    "featured": false,
    "pwa": false,
    "url": "afm241-cheat-sheet.html",
-   "built_from": "Built from the AFM 241 course slides, with the figures as the slides give them."
+   "built_from": "the AFM 241 course slides, with the figures as the slides give them."
   },
   {
    "slug": "hype-cycle",
@@ -827,7 +827,7 @@
    "featured": false,
    "pwa": false,
    "url": "econ102-visual-reference.html",
-   "built_from": "Built from the complete ECON 102 slide deck of January 2026 by Kate Rybczynski."
+   "built_from": "the complete ECON 102 slide deck of January 2026 by Kate Rybczynski."
   },
   {
    "slug": "positive-vs-normative",
@@ -846,7 +846,7 @@
    "featured": false,
    "pwa": false,
    "url": "positive-vs-normative.html",
-   "built_from": "Built from slides 5 and 6 of the ECON 102 deck."
+   "built_from": "slides 5 and 6 of the ECON 102 deck."
   },
   {
    "slug": "afm291-ch1-theory-and-analytics",
@@ -865,7 +865,7 @@
    "featured": false,
    "pwa": false,
    "url": "afm291-ch1-theory-and-analytics.html",
-   "built_from": "Built from my upload of the Chapter 1 text and four exhibit images, with AI assistance; the pages missing from the upload are reconstructed from the chapter's own summary and labelled as supplementary."
+   "built_from": "my upload of the Chapter 1 text and four exhibit images, with AI assistance; the pages missing from the upload are reconstructed from the chapter's own summary and labelled as supplementary."
   },
   {
    "slug": "afm291-ch2-conceptual-frameworks",
@@ -885,7 +885,7 @@
    "featured": false,
    "pwa": false,
    "url": "afm291-ch2-conceptual-frameworks.html",
-   "built_from": "Built from my upload of the complete Chapter 2 text and ten exhibit images, with AI assistance; the appendix narrative behind two exhibits was not in the upload and is marked as a gap."
+   "built_from": "my upload of the complete Chapter 2 text and ten exhibit images, with AI assistance; the appendix narrative behind two exhibits was not in the upload and is marked as a gap."
   },
   {
    "slug": "afm291-ch3-accrual-accounting",
@@ -904,7 +904,7 @@
    "featured": false,
    "pwa": false,
    "url": "afm291-ch3-accrual-accounting.html",
-   "built_from": "Built from my upload of the Chapter 3 excerpt, sections E to I, and the Week 5 class plan, with AI assistance; the Canadian Tire exhibits survive only as placeholders and are marked as such."
+   "built_from": "my upload of the Chapter 3 excerpt, sections E to I, and the Week 5 class plan, with AI assistance; the Canadian Tire exhibits survive only as placeholders and are marked as such."
   },
   {
    "slug": "afm291-ch4-revenue-recognition",
@@ -923,7 +923,7 @@
    "featured": false,
    "pwa": false,
    "url": "afm291-ch4-revenue-recognition.html",
-   "built_from": "Built from my upload of the complete Chapter 4 text, about twenty exhibit images and the Weeks 2 to 4 class plans, with AI assistance; the missing exhibit range is marked as missing rather than invented."
+   "built_from": "my upload of the complete Chapter 4 text, about twenty exhibit images and the Weeks 2 to 4 class plans, with AI assistance; the missing exhibit range is marked as missing rather than invented."
   },
   {
    "slug": "afm291-ch6-inventories",
@@ -942,7 +942,7 @@
    "featured": false,
    "pwa": false,
    "url": "afm291-ch6-inventories.html",
-   "built_from": "Built from my upload of the Chapter 6 text and exhibit images, with AI assistance, plus a foundations refresher and practice problems constructed for practice and labelled as supplementary."
+   "built_from": "my upload of the Chapter 6 text and exhibit images, with AI assistance, plus a foundations refresher and practice problems constructed for practice and labelled as supplementary."
   },
   {
    "slug": "afm291-ch9-intangibles-and-goodwill",
@@ -961,7 +961,7 @@
    "featured": false,
    "pwa": false,
    "url": "afm291-ch9-intangibles-and-goodwill.html",
-   "built_from": "Built from my upload of the Chapter 9 text and exhibit images, with AI assistance; three opening exhibits absent from the text are marked so, and the development criteria supplied on instruction are flagged [VERIFY]."
+   "built_from": "my upload of the Chapter 9 text and exhibit images, with AI assistance; three opening exhibits absent from the text are marked so, and the development criteria supplied on instruction are flagged [VERIFY]."
   },
   {
    "slug": "afm291-ch10-fair-value",
@@ -981,7 +981,7 @@
    "featured": false,
    "pwa": false,
    "url": "afm291-ch10-fair-value.html",
-   "built_from": "Built from my upload of the complete Chapter 10 text, with AI assistance and no lecture or PBL material for the chapter; the rules supplied on instruction are marked as not independently re-confirmed."
+   "built_from": "my upload of the complete Chapter 10 text, with AI assistance and no lecture or PBL material for the chapter; the rules supplied on instruction are marked as not independently re-confirmed."
   },
   {
    "slug": "afm291-key-takeaways",
@@ -1001,7 +1001,7 @@
    "featured": false,
    "pwa": false,
    "url": "afm291-key-takeaways.html",
-   "built_from": "Built from the seven vault chapter notes, the three orphan files in the course folder and the course-folder material for the two topics with no note, with AI assistance; where the sources contradict each other the sheet flags the conflict and does not guess."
+   "built_from": "the seven vault chapter notes, the three orphan files in the course folder and the course-folder material for the two topics with no note, with AI assistance; where the sources contradict each other the sheet flags the conflict and does not guess."
   },
   {
    "slug": "afm291-study-plan",
@@ -1020,7 +1020,7 @@
    "featured": false,
    "pwa": false,
    "url": "afm291-study-plan.html",
-   "built_from": "Built from the reconciliation of the two course indexes, with AI assistance: a diagnostic first, then a sequence around the holes it found."
+   "built_from": "the reconciliation of the two course indexes, with AI assistance: a diagnostic first, then a sequence around the holes it found."
   },
   {
    "slug": "afm291-reconciliation",
@@ -1039,7 +1039,7 @@
    "featured": false,
    "pwa": false,
    "url": "afm291-reconciliation.html",
-   "built_from": "Built from the two indexes of the course, the chapter-note MOC and the inventory and gap map, reconciled conflict by conflict."
+   "built_from": "the two indexes of the course, the chapter-note MOC and the inventory and gap map, reconciled conflict by conflict."
   },
   {
    "slug": "afm291-w7-financial-assets",
@@ -1058,7 +1058,7 @@
    "featured": false,
    "pwa": false,
    "url": "afm291-w7-financial-assets.html",
-   "built_from": "Built from the AFM 291 Spring 2026 Week 7 lecture deck and pre-lecture decks, the Nutrien 2024 annual report excerpts as the deck reproduces them, and the standards as quoted in the course slides."
+   "built_from": "the AFM 291 Spring 2026 Week 7 lecture deck and pre-lecture decks, the Nutrien 2024 annual report excerpts as the deck reproduces them, and the standards as quoted in the course slides."
   },
   {
    "slug": "afm291-w7-cases",
@@ -1096,7 +1096,7 @@
    "featured": false,
    "pwa": false,
    "url": "afm291-w8-financial-assets.html",
-   "built_from": "Built from the Week 8 lecture deck, the textbook's Terrace example and the standards as quoted in the course slides; every schedule and journal entry amount was recomputed and reconciled to the source materials and the posted PBL sample solution."
+   "built_from": "the Week 8 lecture deck, the textbook's Terrace example and the standards as quoted in the course slides; every schedule and journal entry amount was recomputed and reconciled to the source materials and the posted PBL sample solution."
   },
   {
    "slug": "afm291-w8-cases",
@@ -1135,7 +1135,7 @@
    "featured": false,
    "pwa": false,
    "url": "afm291-w9-ppe.html",
-   "built_from": "Built from the Week 9 lecture deck and pre-lecture decks, the CPA Canada Handbook extracts quoted in the slides, textbook Chapter 8 and the AceSpin PBL with its sample solution, as its sources section lists."
+   "built_from": "the Week 9 lecture deck and pre-lecture decks, the CPA Canada Handbook extracts quoted in the slides, textbook Chapter 8 and the AceSpin PBL with its sample solution, as its sources section lists."
   },
   {
    "slug": "afm291-w9-cases",
@@ -1174,7 +1174,7 @@
    ],
    "blurb": "A recording sheet for every pre-lecture video across Weeks 2 to 11: the beats to follow, the figures worth having in front of you, and ruled space for the questions that slide past, so a video can be watched without pausing to transcribe. The print edition is the companion PDF.",
    "demo": "",
-   "built_from": "Built from the AFM 291 pre-lecture recordings, one sheet per recording in the order the videos run, with the figures worth having in front of you printed on each."
+   "built_from": "the AFM 291 pre-lecture recordings, one sheet per recording in the order the videos run, with the figures worth having in front of you printed on each."
   },
   {
    "slug": "kennedy-dossier",
@@ -1212,7 +1212,7 @@
    "featured": false,
    "pwa": false,
    "url": "monroe-case-file.html",
-   "built_from": "Built from the investigative record and the published accounts of the night, with what is established kept apart from what is claimed."
+   "built_from": "the investigative record and the published accounts of the night, with what is established kept apart from what is claimed."
   },
   {
    "slug": "how-to-judge-a-president",
@@ -1231,7 +1231,7 @@
    "featured": false,
    "pwa": false,
    "url": "how-to-judge-a-president.html",
-   "built_from": "Built from a long leadership assessment, with its evaluation frameworks taught apart from its verdict."
+   "built_from": "a long leadership assessment, with its evaluation frameworks taught apart from its verdict."
   },
   {
    "slug": "leadership-evaluation-kit",
@@ -1250,7 +1250,7 @@
    "featured": false,
    "pwa": false,
    "url": "leadership-evaluation-kit.html",
-   "built_from": "Built from a five-stage audit of one evaluation framework, including a rescoring on partial evidence."
+   "built_from": "a five-stage audit of one evaluation framework, including a rescoring on partial evidence."
   },
   {
    "slug": "transformers-study-guide",
@@ -1270,7 +1270,7 @@
    ],
    "blurb": "A study guide that collapses the eight sections of a digest into one mechanism: the attention worksheet with live token controls, why the scaling term is there, the block that repeats, and how GPT, BERT and T5 differ almost entirely in the mask. It closes with what the source document gets wrong and a retrieval-practice set.",
    "demo": "",
-   "built_from": "Built from my uploaded digest of the attention paper, with AI assistance; the section on what the source document gets wrong carries the corrections."
+   "built_from": "my uploaded digest of the attention paper, with AI assistance; the section on what the source document gets wrong carries the corrections."
   },
   {
    "slug": "french-a1-cafe",
