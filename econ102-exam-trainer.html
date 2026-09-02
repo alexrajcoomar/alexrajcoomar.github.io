@@ -3,15 +3,15 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>ECON 102 — Interactive Exam Trainer</title>
+<title>ECON 102 Interactive Exam Trainer · Alex Rajcoomar</title>
 <style>
 :root{
   color-scheme: light;
   --bg:#fcfcfb; --panel:#f4f4f2; --panel2:#eeeeeb;
-  --ink-1:#0b0b0b; --ink-2:#52514e; --ink-3:#8b8a85; --ink-4:#c9c8c3; --line:#dcdbd6;
-  --s1:#2a78d6;  /* supply / primary curve */
-  --s2:#eb6834;  /* demand / second curve */
-  --s3:#1baf7a;  /* outcome, annotation */
+  --ink-1:#0b0b0b; --ink-2:#52514e; --ink-3:#6d6969; --ink-4:#c9c8c3; --line:#dcdbd6;
+  --s1:#226aba;  /* supply / primary curve */
+  --s2:#c54614;  /* demand / second curve */
+  --s3:#0e7653;  /* outcome, annotation */
   --flag:#8b1a1a; --flag-bg:#fbecec;
   --gold:#8a6300; --gold-bg:#fdf5e4;
   --ok-bg:#e7f4ee;
@@ -134,7 +134,7 @@ svg{display:block;width:100%;height:auto;overflow:visible}
 .stepbox .b{font-size:14px;line-height:1.55;color:var(--ink-2)}
 .score{display:grid;grid-template-columns:repeat(5,1fr);gap:7px;margin-bottom:10px}
 .sc{background:var(--panel2);border-radius:8px;padding:9px 2px;text-align:center;transition:.2s}
-.sc.pending{opacity:.32}
+.sc.pending{opacity:1;border:1px dashed var(--line);color:var(--ink-3)}
 .sc .k{font-size:11px;color:var(--ink-2);font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;margin-bottom:2px}
 .sc .a{font-size:21px;font-weight:700;line-height:1}
 .sc .a.up{color:var(--s3)}
@@ -172,15 +172,15 @@ footer{margin-top:40px;padding-top:18px;border-top:1px solid var(--line);
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="manifest" href="site.webmanifest">
 <link rel="canonical" href="https://alexrajcoomar.github.io/econ102-exam-trainer.html">
-<meta property="og:title" content="ECON 102 Interactive Exam Trainer — Alex Rajcoomar">
+<meta property="og:title" content="ECON 102 Interactive Exam Trainer · Alex Rajcoomar">
 <meta property="og:description" content="An exam trainer for introductory macroeconomics: work the question, check the reasoning, repeat.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://alexrajcoomar.github.io/econ102-exam-trainer.html">
-<meta property="og:site_name" content="Alex Rajcoomar — portfolio">
+<meta property="og:site_name" content="Alex Rajcoomar · portfolio">
 <meta property="og:image" content="https://alexrajcoomar.github.io/cards/econ102-exam-trainer.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="ECON 102 Interactive Exam Trainer — Alex Rajcoomar">
+<meta property="og:image:alt" content="ECON 102 Interactive Exam Trainer · Alex Rajcoomar">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://alexrajcoomar.github.io/cards/econ102-exam-trainer.png">
 <script>
@@ -211,10 +211,10 @@ footer{margin-top:40px;padding-top:18px;border-top:1px solid var(--line);
   <a href="#drill">Final drill</a>
 </div></nav>
 
-<div class="wrap">
+<div class="wrap" role="main">
 <header class="mast">
-  <h1>ECON 102 — Interactive Exam Trainer</h1>
-  <p class="sub">Eight mechanisms you can operate. Companion to the Master Visual Reference — same notation, same slide numbers.</p>
+  <h1>ECON 102: Interactive Exam Trainer</h1>
+  <p class="sub">Eight mechanisms you can operate. Companion to the Master Visual Reference, same notation, same slide numbers.</p>
 </header>
 
 <div class="plan">
@@ -223,7 +223,7 @@ footer{margin-top:40px;padding-top:18px;border-top:1px solid var(--line);
     <li><strong>Predict before you drag.</strong> Say the direction out loud, then move the slider. A wrong prediction is worth more than a correct read.</li>
     <li><strong>Module 4 is the exam.</strong> Every comparative-static question is one of those five shocks. Step each one twice.</li>
     <li><strong>Read the red card in every module.</strong> Those are the errors that actually cost marks.</li>
-    <li>Finish on the <a href="#drill" style="color:var(--s1)">final drill</a> — cold, out loud, no notes.</li>
+    <li>Finish on the <a href="#drill" style="color:var(--s1)">final drill</a>, cold, out loud, no notes.</li>
   </ol>
 </div>
 
@@ -282,10 +282,10 @@ footer{margin-top:40px;padding-top:18px;border-top:1px solid var(--line);
   </div>
 
   <div class="cards">
-    <div class="cd tk"><b>Takeaway</b>The firm hires until <span class="m">MPN = w</span>. So the right-hand curve is not a separate object — labour demand simply <em>is</em> the MPN curve with the real wage read off the vertical axis.</div>
+    <div class="cd tk"><b>Takeaway</b>The firm hires until <span class="m">MPN = w</span>. So the right-hand curve is not a separate object, labour demand simply <em>is</em> the MPN curve with the real wage read off the vertical axis.</div>
     <div class="cd pf"><b>Pitfall</b>Reading MPN off the vertical axis of the left panel. That axis is <span class="m">Y</span>. MPN is steepness, not level. Second trap: changing <span class="m">N</span> moves you <em>along</em> the curve; changing <span class="m">A</span> or <span class="m">K</span> <em>shifts</em> it.</div>
     <div class="cd wy"><b>Why it works this way</b>Capital <span class="m">K</span> is fixed in the short run. Each extra worker shares the same machines, so each adds less than the last. That is diminishing returns, and it is why the curve bends over and MPN falls.</div>
-    <div class="cd hk"><b>Hook</b>“Slope, not height.” And <span class="m">A</span> <em>multiplies</em>, so a productivity shock steepens the curve at <em>every</em> N — it never tilts just one end. That is exactly why <span class="m">N&#8202;ᴰ</span> shifts rather than pivots.</div>
+    <div class="cd hk"><b>Hook</b>“Slope, not height.” And <span class="m">A</span> <em>multiplies</em>, so a productivity shock steepens the curve at <em>every</em> N, it never tilts just one end. That is exactly why <span class="m">N&#8202;ᴰ</span> shifts rather than pivots.</div>
   </div>
 </section>
 
@@ -293,7 +293,7 @@ footer{margin-top:40px;padding-top:18px;border-top:1px solid var(--line);
 <section class="mod" id="m2">
   <div class="eyebrow">Reference part 2.2 · slides 88, 106–109</div>
   <h2>Labour market: market clearing vs sticky wage</h2>
-  <p class="thesis">Unemployment is the <strong>horizontal gap</strong> at the prevailing wage. Under market clearing that gap is zero <em>by construction</em> — so pick your framework before you draw.</p>
+  <p class="thesis">Unemployment is the <strong>horizontal gap</strong> at the prevailing wage. Under market clearing that gap is zero <em>by construction</em>, so pick your framework before you draw.</p>
 
   <div class="widget">
     <div class="btnrow">
@@ -338,9 +338,9 @@ footer{margin-top:40px;padding-top:18px;border-top:1px solid var(--line);
 
   <div class="cards">
     <div class="cd tk"><b>Takeaway</b>Same shock, two frameworks, two different answers. Under clearing the wage absorbs it and <span class="m">U = 0</span> always. Under stickiness the wage refuses to fall and the shock lands on <em>employment</em> instead.</div>
-    <div class="cd pf"><b>Pitfall</b>Plotting <span class="m">N&#8202;ᴰ = 120 − 4w</span> as written. Price sits on the vertical axis, so you graph the <strong>inverse</strong>: <span class="m">w = 30 − N/4</span>. Second trap: wages stick only <em>above</em> <span class="m">w*</span> — push demand right and the wage rises normally. Try it.</div>
+    <div class="cd pf"><b>Pitfall</b>Plotting <span class="m">N&#8202;ᴰ = 120 − 4w</span> as written. Price sits on the vertical axis, so you graph the <strong>inverse</strong>: <span class="m">w = 30 − N/4</span>. Second trap: wages stick only <em>above</em> <span class="m">w*</span>, push demand right and the wage rises normally. Try it.</div>
     <div class="cd wy"><b>Why it works this way</b>A free wage arbitrages any gap away instantly. Unemployment therefore needs something that <em>stops</em> the wage falling: contracts, minimum wages, or efficiency wages paid deliberately above clearing to cut turnover and raise effort.</div>
-    <div class="cd hk"><b>Hook</b>“Gap equals unemployment.” If the question contains the word unemployment at all, the market-clearing model cannot answer it — that is a whole-question decision, not a partial-credit one.</div>
+    <div class="cd hk"><b>Hook</b>“Gap equals unemployment.” If the question contains the word unemployment at all, the market-clearing model cannot answer it, that is a whole-question decision, not a partial-credit one.</div>
   </div>
 </section>
 
@@ -358,15 +358,15 @@ footer{margin-top:40px;padding-top:18px;border-top:1px solid var(--line);
     </div>
     <div class="ctrls">
       <div class="ctrl">
-        <div class="lab"><span><span class="m">cu</span> — the <strong>public</strong> holds cash</span><span class="val" id="m3cuv">0.67</span></div>
+        <div class="lab"><span><span class="m">cu</span>, the <strong>public</strong> holds cash</span><span class="val" id="m3cuv">0.67</span></div>
         <input type="range" id="m3cu" min="0" max="3" value="0.67" step="0.01" aria-label="Currency to deposit ratio">
       </div>
       <div class="ctrl">
-        <div class="lab"><span><span class="m">res</span> — the <strong>banks</strong> hold reserves</span><span class="val" id="m3resv">0.30</span></div>
+        <div class="lab"><span><span class="m">res</span>, the <strong>banks</strong> hold reserves</span><span class="val" id="m3resv">0.30</span></div>
         <input type="range" id="m3res" min="0.05" max="0.6" value="0.3" step="0.01" aria-label="Reserve to deposit ratio">
       </div>
       <div class="ctrl">
-        <div class="lab"><span><span class="m">BASE</span> — the <strong>central bank</strong> sets it</span><span class="val" id="m3basev">580,000</span></div>
+        <div class="lab"><span><span class="m">BASE</span>, the <strong>central bank</strong> sets it</span><span class="val" id="m3basev">580,000</span></div>
         <input type="range" id="m3base" min="100000" max="1000000" value="580000" step="10000" aria-label="Monetary base">
       </div>
     </div>
@@ -391,10 +391,10 @@ footer{margin-top:40px;padding-top:18px;border-top:1px solid var(--line);
   </div>
 
   <div class="cards">
-    <div class="cd tk"><b>Takeaway</b><span class="m">M = BASE × mm</span>. Two of the three dials — <span class="m">cu</span> and <span class="m">res</span> — sit outside the central bank entirely, which is why the money supply is only partly a policy variable.</div>
+    <div class="cd tk"><b>Takeaway</b><span class="m">M = BASE × mm</span>. Two of the three dials, <span class="m">cu</span> and <span class="m">res</span>, sit outside the central bank entirely, which is why the money supply is only partly a policy variable.</div>
     <div class="cd pf"><b>Pitfall</b>Using <span class="m">1/res</span>. That is the special case <span class="m">cu = 0</span>. Watch the bottom line of the readout: at the Q40 values the shortcut gives <span class="m">3.33</span> against a true <span class="m">1.724</span>. Nearly double.</div>
     <div class="cd wy"><b>Why it works this way</b>Cash in wallets has leaked out of the banking system and cannot be re-lent. Higher <span class="m">cu</span> means more leakage per round, so the deposit-creation chain dies sooner and the multiplier shrinks.</div>
-    <div class="cd hk"><b>Hook</b>Name the actor, not the letter: <strong>public</strong> · <strong>banks</strong> · <strong>central bank</strong>. Two shifts can look identical on the asset-market graph — you earn the marks by naming which actor moved.</div>
+    <div class="cd hk"><b>Hook</b>Name the actor, not the letter: <strong>public</strong> · <strong>banks</strong> · <strong>central bank</strong>. Two shifts can look identical on the asset-market graph, you earn the marks by naming which actor moved.</div>
   </div>
 </section>
 
@@ -402,7 +402,7 @@ footer{margin-top:40px;padding-top:18px;border-top:1px solid var(--line);
 <section class="mod" id="m4">
   <div class="eyebrow">Reference part 5 · slides 212–220 · the analytical core</div>
   <h2>The three-market engine</h2>
-  <p class="thesis">Every comparative static in this course is one of these five shocks. Step it through and watch the <strong>scorecard</strong> fill in — that scorecard is the answer format.</p>
+  <p class="thesis">Every comparative static in this course is one of these five shocks. Step it through and watch the <strong>scorecard</strong> fill in, that scorecard is the answer format.</p>
 
   <div class="widget">
     <div class="btnrow" id="m4shocks"></div>
@@ -429,7 +429,7 @@ footer{margin-top:40px;padding-top:18px;border-top:1px solid var(--line);
   </div>
 
   <div class="cards">
-    <div class="cd tk"><b>Takeaway</b>One real interest rate must hold economy-wide. When a market gives you an ambiguous <span class="m">r</span>, you do not guess — you take the sign from whichever market pins it unambiguously, and the ambiguous market is <em>forced</em> to agree.</div>
+    <div class="cd tk"><b>Takeaway</b>One real interest rate must hold economy-wide. When a market gives you an ambiguous <span class="m">r</span>, you do not guess, you take the sign from whichever market pins it unambiguously, and the ambiguous market is <em>forced</em> to agree.</div>
     <div class="cd pf"><b>Pitfall</b>Calling the labour-market move under <span class="m">G↑</span> a shift. It is a <strong>movement along</strong> <span class="m">N&#8202;ᴰ</span>: the nominal wage never moved, only <span class="m">P</span> did, so the real wage slid down an unchanged curve. Also: “temporary” kills the <span class="m">MPK&#8202;ᶠ</span> channel, so <span class="m">I&#8202;ᴰ</span> does not shift for that reason.</div>
     <div class="cd wy"><b>Why it works this way</b>Under rigidity the price level does the job the nominal wage refuses to do. That single sentence is why money and fiscal policy have real effects here and none at all under market clearing.</div>
     <div class="cd hk"><b>Hook</b>Two general rules, not five memorised rows. <strong>Clearing:</strong> <span class="m">P</span> moves <em>opposite</em> to output. <strong>Rigidity + demand shock:</strong> <span class="m">P</span> and <span class="m">Y</span> move <em>together</em>. Same direction ⇒ determinate; opposite ⇒ ambiguous.</div>
@@ -445,7 +445,7 @@ footer{margin-top:40px;padding-top:18px;border-top:1px solid var(--line);
       <tr><td>M ↑</td><td>sticky wage</td><td class="up">↑</td><td class="dn">W/P ↓</td><td class="up">↑</td><td class="dn">↓</td><td class="up">↑</td></tr>
     </tbody>
   </table>
-  <p class="note"><strong>Note on the A↑ row.</strong> A rightward <span class="m">N&#8202;ᴰ</span> shift along an upward-sloping <span class="m">N&#8202;ˢ</span> must <em>raise</em> <span class="m">w*</span> — that is what the geometry gives and what the graph in the solutions shows. The Q47 answer text says it falls. Flag it if it comes up; do not memorise the contradiction.</p>
+  <p class="note"><strong>Note on the A↑ row.</strong> A rightward <span class="m">N&#8202;ᴰ</span> shift along an upward-sloping <span class="m">N&#8202;ˢ</span> must <em>raise</em> <span class="m">w*</span>, that is what the geometry gives and what the graph in the solutions shows. The Q47 answer text says it falls. Flag it if it comes up; do not memorise the contradiction.</p>
 </section>
 
 <!-- ================= MODULE 5 ================= -->
@@ -493,8 +493,8 @@ footer{margin-top:40px;padding-top:18px;border-top:1px solid var(--line);
 
   <div class="cards">
     <div class="cd tk"><b>Takeaway</b>Look at where the new variable sits in the algebra, not at what it is called. Added to the equation ⇒ the intercept moves ⇒ parallel shift. Multiplied through ⇒ the slope changes ⇒ pivot about the anchor.</div>
-    <div class="cd pf"><b>Pitfall</b>Drawing an income tax as a parallel shift. <span class="m">N&#8202;ˢ = (1−t)w</span> multiplies the wage, so it rotates about the <strong>origin</strong>, which never moves. The payroll tax <span class="m">MPN = (1+τ)w</span> rotates labour demand about its <strong>N-intercept</strong> — set <span class="m">w = 0</span> and N stays at 120 for any τ.</div>
-    <div class="cd wy"><b>Why it works this way</b>A payroll tax raises the firm's cost of an hour of labour without touching what that hour produces. It hits marginal <em>cost</em>, not <span class="m">MPN</span> — which is exactly why the curve rotates instead of shifting bodily.</div>
+    <div class="cd pf"><b>Pitfall</b>Drawing an income tax as a parallel shift. <span class="m">N&#8202;ˢ = (1−t)w</span> multiplies the wage, so it rotates about the <strong>origin</strong>, which never moves. The payroll tax <span class="m">MPN = (1+τ)w</span> rotates labour demand about its <strong>N-intercept</strong>, set <span class="m">w = 0</span> and N stays at 120 for any τ.</div>
+    <div class="cd wy"><b>Why it works this way</b>A payroll tax raises the firm's cost of an hour of labour without touching what that hour produces. It hits marginal <em>cost</em>, not <span class="m">MPN</span>, which is exactly why the curve rotates instead of shifting bodily.</div>
     <div class="cd hk"><b>Hook</b>“Add ⇒ slide. Multiply ⇒ rotate.” Then find the anchor: the point where the tax term does nothing. For workers that is <span class="m">w = 0</span> at the origin; for firms it is where <span class="m">w = 0</span> on the demand curve.</div>
   </div>
 </section>
@@ -538,7 +538,7 @@ footer{margin-top:40px;padding-top:18px;border-top:1px solid var(--line);
       <text class="curvelab" fill="var(--s1)" id="m6rulelab" x="580" y="0">the rule</text>
     </svg>
     <div class="legend">
-      <span><i style="border-color:var(--ink-3);border-top-style:dashed"></i>slope 1 — real rate never moves</span>
+      <span><i style="border-color:var(--ink-3);border-top-style:dashed"></i>slope 1, real rate never moves</span>
       <span><i style="border-color:var(--s1)"></i>the rule as set</span>
     </div>
 
@@ -551,7 +551,7 @@ footer{margin-top:40px;padding-top:18px;border-top:1px solid var(--line);
   </div>
 
   <div class="cards">
-    <div class="cd tk"><b>Takeaway</b>Only the <em>real</em> rate changes anyone's behaviour. Raising <span class="m">i</span> one-for-one with <span class="m">π</span> leaves <span class="m">r</span> exactly where it was — the central bank would have moved the lever and done nothing at all.</div>
+    <div class="cd tk"><b>Takeaway</b>Only the <em>real</em> rate changes anyone's behaviour. Raising <span class="m">i</span> one-for-one with <span class="m">π</span> leaves <span class="m">r</span> exactly where it was, the central bank would have moved the lever and done nothing at all.</div>
     <div class="cd pf"><b>Pitfall</b>Answering “it raises rates when inflation is high.” Every rule does that. The examinable property is that it raises them by <strong>more than one-for-one</strong>. Set the third slider to 0.9 and read the real rate: policy is now <em>loosening</em> into a boom.</div>
     <div class="cd wy"><b>Why it works this way</b>Inflation erodes the real burden of a fixed nominal rate. To lean against a boom the bank must out-run that erosion, so the nominal rate has to climb faster than prices are climbing.</div>
     <div class="cd hk"><b>Hook</b>“More than one-for-one.” Anchor check you can do in your head: <span class="m">π = 2</span>, <span class="m">y = 0</span> ⇒ <span class="m">i = 4</span>, so <span class="m">r = 2</span>. If your arithmetic does not land there, you dropped a term.</div>
@@ -562,7 +562,7 @@ footer{margin-top:40px;padding-top:18px;border-top:1px solid var(--line);
 <section class="mod" id="m7">
   <div class="eyebrow">Reference part 8.2 · slides 280–285</div>
   <h2>Exchange rates: the direction trap</h2>
-  <p class="thesis"><span class="m">e_nom</span> = units of <strong>foreign</strong> currency per <strong>one CAD</strong>. Up means the CAD <em>strengthens</em>. Most outside material quotes the reciprocal — one inversion flips every FX answer you write.</p>
+  <p class="thesis"><span class="m">e_nom</span> = units of <strong>foreign</strong> currency per <strong>one CAD</strong>. Up means the CAD <em>strengthens</em>. Most outside material quotes the reciprocal, one inversion flips every FX answer you write.</p>
 
   <div class="widget">
     <div class="btnrow">
@@ -572,7 +572,7 @@ footer{margin-top:40px;padding-top:18px;border-top:1px solid var(--line);
 
     <div id="m7p1">
       <div class="ctrls"><div class="ctrl" style="flex-basis:100%">
-        <div class="lab"><span><span class="m">e_nom</span> — foreign currency per 1 CAD &nbsp;<span style="color:var(--ink-3)">(baseline 1.10)</span></span><span class="val" id="m7ev">1.25</span></div>
+        <div class="lab"><span><span class="m">e_nom</span>, foreign currency per 1 CAD &nbsp;<span style="color:var(--ink-3)">(baseline 1.10)</span></span><span class="val" id="m7ev">1.25</span></div>
         <input type="range" id="m7e" min="0.7" max="1.5" value="1.25" step="0.01" aria-label="Nominal exchange rate">
       </div></div>
       <div class="reads">
@@ -608,8 +608,8 @@ footer{margin-top:40px;padding-top:18px;border-top:1px solid var(--line);
   </div>
 
   <div class="cards">
-    <div class="cd tk"><b>Takeaway</b>A nominal depreciation is <strong>not</strong> a real depreciation. Real competitiveness is <span class="m">e = e_nom × P/P_for</span> — if the depreciating country's inflation outruns its currency fall, its goods get relatively <em>dearer</em>.</div>
-    <div class="cd pf"><b>Pitfall</b>Importing the US convention. Write the definition at the top of your page before you touch an FX question. Second trap: one instrument cannot hit two targets — the Bank of Canada cannot push the exchange rate and inflation independently. Both answers are “no”.</div>
+    <div class="cd tk"><b>Takeaway</b>A nominal depreciation is <strong>not</strong> a real depreciation. Real competitiveness is <span class="m">e = e_nom × P/P_for</span>, if the depreciating country's inflation outruns its currency fall, its goods get relatively <em>dearer</em>.</div>
+    <div class="cd pf"><b>Pitfall</b>Importing the US convention. Write the definition at the top of your page before you touch an FX question. Second trap: one instrument cannot hit two targets, the Bank of Canada cannot push the exchange rate and inflation independently. Both answers are “no”.</div>
     <div class="cd wy"><b>Why it works this way</b>What a buyer actually compares is two <em>price tags</em> converted into one currency. The exchange rate is only the converter; the price levels are the tags. Move the tags fast enough and the converter stops mattering.</div>
     <div class="cd hk"><b>Hook</b>“Up means the dollar buys more.” For PPP: implied rate = foreign price ÷ domestic price. A Big Mac at 5,200 won and USD 5.58 implies <span class="m">932</span> won; the market charges <span class="m">1,274</span>, so the won is undervalued by about <span class="m">27%</span>.</div>
   </div>
@@ -619,7 +619,7 @@ footer{margin-top:40px;padding-top:18px;border-top:1px solid var(--line);
 <section class="mod" id="m8">
   <div class="eyebrow">Reference part 6.3 · slides 238–243</div>
   <h2>Lorenz curve and the Gini</h2>
-  <p class="thesis"><span class="m">Gini = A/(A+B)</span> — the sag below the 45° line as a share of the whole triangle. Zero is perfect equality. Compute it with trapezoids; it always comes out clean.</p>
+  <p class="thesis"><span class="m">Gini = A/(A+B)</span>, the sag below the 45° line as a share of the whole triangle. Zero is perfect equality. Compute it with trapezoids; it always comes out clean.</p>
 
   <div class="widget">
     <div class="btnrow">
@@ -661,8 +661,8 @@ footer{margin-top:40px;padding-top:18px;border-top:1px solid var(--line);
 
   <div class="cards">
     <div class="cd tk"><b>Takeaway</b>The method, not the number: cumulate the shares, take strips of width 20, each strip is <span class="m">(height₁+height₂)/2 × 20</span>, sum them, then <span class="m">Gini = (5000 − sum)/5000</span>.</div>
-    <div class="cd pf"><b>Pitfall</b>Treating the Gini as the whole story. Press Distribution A then B — different distributions, <em>identical</em> Gini of 0.380. The companion trap: if the already-poor get poorer, the poverty <strong>rate does not move at all</strong>, because a headcount is blind to depth.</div>
-    <div class="cd wy"><b>Why it works this way</b>The 45° line is what the curve would be if every fifth of the population held exactly a fifth of the income. The further the curve sags away from it, the more income has pooled at the top — so the sag <em>is</em> the inequality.</div>
+    <div class="cd pf"><b>Pitfall</b>Treating the Gini as the whole story. Press Distribution A then B, different distributions, <em>identical</em> Gini of 0.380. The companion trap: if the already-poor get poorer, the poverty <strong>rate does not move at all</strong>, because a headcount is blind to depth.</div>
+    <div class="cd wy"><b>Why it works this way</b>The 45° line is what the curve would be if every fifth of the population held exactly a fifth of the income. The further the curve sags away from it, the more income has pooled at the top, so the sag <em>is</em> the inequality.</div>
     <div class="cd hk"><b>Hook</b>“Lower Gini, more equal.” The denominator is always 5,000 in these units, so the only thing you actually have to compute is the trapezoid sum.</div>
   </div>
 </section>
@@ -671,7 +671,7 @@ footer{margin-top:40px;padding-top:18px;border-top:1px solid var(--line);
 <section class="mod" id="drill">
   <div class="eyebrow">Last twenty minutes</div>
   <h2>Say these out loud, cold</h2>
-  <p class="thesis">Reading is not revision. If any line below is slow or wrong, go back to that module — the number tells you which one.</p>
+  <p class="thesis">Reading is not revision. If any line below is slow or wrong, go back to that module, the number tells you which one.</p>
 
   <div class="warnbar"><b>Before you write anything in an FX question:</b> copy the definition at the top of your page. <span class="m">e_nom</span> = foreign currency per 1 CAD; up means the CAD strengthens.</div>
 
@@ -685,24 +685,24 @@ footer{margin-top:40px;padding-top:18px;border-top:1px solid var(--line);
       <tr><td>Negative supply shock, clearing: give N, w, Y, r*, P in that order.</td><td class="m">4</td></tr>
       <tr><td>Under <span class="m">G↑</span>, is the labour-market move a shift or a movement along? Why?</td><td class="m">4</td></tr>
       <tr><td>The asset market is ambiguous. What resolves it, and why are you allowed to do that?</td><td class="m">4</td></tr>
-      <tr><td>A <em>temporary</em> rise in MPK — what happens to <span class="m">I&#8202;ᴰ</span>?</td><td class="m">4</td></tr>
+      <tr><td>A <em>temporary</em> rise in MPK, what happens to <span class="m">I&#8202;ᴰ</span>?</td><td class="m">4</td></tr>
       <tr><td>Income tax on workers: shift or pivot, and about which point?</td><td class="m">5</td></tr>
       <tr><td>Why must the inflation coefficient exceed 1?</td><td class="m">6</td></tr>
-      <tr><td>Nominal depreciation with very high domestic inflation — cheaper in real terms?</td><td class="m">7</td></tr>
+      <tr><td>Nominal depreciation with very high domestic inflation, cheaper in real terms?</td><td class="m">7</td></tr>
       <tr><td>The already-poor get poorer. What happens to the poverty rate?</td><td class="m">8</td></tr>
     </tbody>
   </table>
 
   <div class="cards">
     <div class="cd tk"><b>Answering technique</b>Name the <em>mechanism</em>, not the direction. “A ↑ raises MPN at every N, so <span class="m">N&#8202;ᴰ</span> shifts right” earns the mark; “A ↑ increases demand” does not.</div>
-    <div class="cd pf"><b>Do not hedge</b>State the ambiguity, then commit. On a paper offering options, circle exactly one — unless “ambiguous” is itself one of the options, in which case it is the right answer.</div>
+    <div class="cd pf"><b>Do not hedge</b>State the ambiguity, then commit. On a paper offering options, circle exactly one, unless “ambiguous” is itself one of the options, in which case it is the right answer.</div>
     <div class="cd wy"><b>Arithmetic check</b>No calculators means the numbers are designed to come out clean. An ugly decimal is a signal you slipped, not a signal to round.</div>
     <div class="cd hk"><b>The eight mantras</b>Divide by P · intercept shifts, slope pivots · clearing puts P opposite to Y · one r* economy-wide · same direction determinate, opposite ambiguous · divide by the <em>earlier</em> P · “temporary” never touches <span class="m">MPK&#8202;ᶠ</span> · cu, res, BASE.</div>
   </div>
 </section>
 
 <footer>
-  <p>Built as a companion to the ECON 102 Master Visual Reference — same notation, same slide numbering, same conventions. Figures are schematics drawn to make the mechanism legible; where a figure here and the course slides disagree, the slides govern.</p>
+  <p>Built as a companion to the ECON 102 Master Visual Reference, same notation, same slide numbering, same conventions. Figures are schematics drawn to make the mechanism legible; where a figure here and the course slides disagree, the slides govern.</p>
   <p>Two items flagged as unresolved in the reference remain unresolved here: the real exchange rate on slide 281 and the direction of <span class="m">w*</span> in the Q47 solution. Ask rather than memorise a contradiction.</p>
 </footer>
 </div>
@@ -1145,13 +1145,59 @@ function pick(list,el){ list.forEach(function(b){ b.classList.toggle('on', b===e
 
 
 <!--__rbp-->
+<!-- The pill styles itself: this block used to live only with the top bar,
+     so the seven tool pages, which carry the pill alone, rendered it as an
+     unstyled link at the very end of the document. Whatever carries the
+     pill now carries its style. -->
+<style id="__rbp-style">
+#__rb-pill{
+  position:fixed;left:14px;bottom:14px;z-index:2147483000;
+  display:inline-flex;align-items:center;gap:.45rem;padding:.58rem .9rem;
+  background:rgba(22,21,15,.93);color:#faf9f6;text-decoration:none;border-radius:99px;
+  font:600 12.5px/1 InterVar,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  border:1px solid rgba(255,255,255,.16);box-shadow:0 6px 22px rgba(0,0,0,.28);
+  opacity:0;transform:translateY(6px);pointer-events:none;
+  transition:opacity .2s ease,transform .2s ease;
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+}
+#__rb-pill.__on{opacity:1;transform:none;pointer-events:auto}
+#__rb-pill:hover{background:#16150f;color:#fff}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) #__rb-pill{background:rgba(247,245,239,.95);color:#131310;border-color:rgba(0,0,0,.2)}
+  :root:not([data-theme="light"]) #__rb-pill:hover{background:#fff;color:#000}
+}
+:root[data-theme="dark"] #__rb-pill{background:rgba(247,245,239,.95);color:#131310;border-color:rgba(0,0,0,.2)}
+:root[data-theme="dark"] #__rb-pill:hover{background:#fff;color:#000}
+@media (prefers-reduced-motion:reduce){#__rb-pill{transition:none}}
+@media print{#__rb-pill{display:none !important}}
+/* a tool carries no bar, so what it was built from stands at the foot of the document */
+#__rb-from{margin:1.25rem 1rem;font:400 13px/1.45 InterVar,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;color:#6f6c63;max-width:70ch}
+#__rb-from b{font-weight:600;color:#55524a}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) #__rb-from{color:#948f85}
+  :root:not([data-theme="light"]) #__rb-from b{color:#c0bcb1}
+}
+:root[data-theme="dark"] #__rb-from{color:#948f85}
+:root[data-theme="dark"] #__rb-from b{color:#c0bcb1}
+</style>
+<!-- With scripts off nothing ever adds the __on class, and the only way
+     back from a tool page vanished. The pill needs its script for the
+     scroll threshold, not for existing. -->
+<noscript><style>#__rb-pill{opacity:1 !important;transform:none !important;pointer-events:auto !important}</style></noscript>
 <a id="__rb-pill" href="coursework.html">&#8592; Coursework</a>
+<p id="__rb-from"><b>Built from</b> Built from the ECON 102 course slides; where a figure here and the slides disagree, the slides govern.</p>
 <script>
 (function(){
   var p=document.getElementById('__rb-pill'); if(!p) return;
+  /* On a page with the top bar the pill waits until the bar has scrolled
+     out of reach. On a page without one (the tools carry no bar, because a
+     bar inside a full-screen application sits in the wrong place) the pill
+     is the only way back, so it is there from the first paint: a tool
+     screen shorter than the threshold used to strand the reader entirely. */
+  var TH=document.getElementById('__rb')?160:-1;
   var t=false;
   function run(){ t=false;
-    p.classList.toggle('__on',(window.scrollY||document.documentElement.scrollTop)>420); }
+    p.classList.toggle('__on',(window.scrollY||document.documentElement.scrollTop)>TH); }
   function q(){ if(!t){ t=true; requestAnimationFrame(run); } }
   addEventListener('scroll',q,{passive:true}); run();
 })();
@@ -1169,7 +1215,7 @@ function pick(list,el){ list.forEach(function(b){ b.classList.toggle('on', b===e
     function put(key){
       if(t2[key]||Object.keys(t2).length<500){
         t2[key]=(t2[key]||0)+1;
-        localStorage.setItem(k,JSON.stringify(t2));
+        try{localStorage.setItem(k,JSON.stringify(t2));}catch(e){}
       }
     }
     put(u+location.hash);

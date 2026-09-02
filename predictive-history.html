@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="dark"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Predictive History: the map, and the method that audits it</title>
+<title>Predictive History · Alex Rajcoomar</title>
 <style>
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
@@ -401,15 +401,15 @@ figure.lens .plot{opacity:var(--figlens,1);transition:opacity var(--dur)}
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="manifest" href="site.webmanifest">
 <link rel="canonical" href="https://alexrajcoomar.github.io/predictive-history.html">
-<meta property="og:title" content="Predictive History — Alex Rajcoomar">
+<meta property="og:title" content="Predictive History · Alex Rajcoomar">
 <meta property="og:description" content="Fifteen systems and 148 couplings, annotated by an audit instrument that was run against its own falsification test and failed it. Every one of eighty…">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://alexrajcoomar.github.io/predictive-history.html">
-<meta property="og:site_name" content="Alex Rajcoomar — portfolio">
+<meta property="og:site_name" content="Alex Rajcoomar · portfolio">
 <meta property="og:image" content="https://alexrajcoomar.github.io/cards/predictive-history.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Predictive History — Alex Rajcoomar">
+<meta property="og:image:alt" content="Predictive History · Alex Rajcoomar">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://alexrajcoomar.github.io/cards/predictive-history.png">
 <script>
@@ -444,22 +444,18 @@ figure.lens .plot{opacity:var(--figlens,1);transition:opacity var(--dur)}
 #__rb .__rb-home{font-weight:640;color:#16150f}
 #__rb .__rb-home i{font-style:normal;font-weight:400;color:#6f6c63}
 #__rb .__rb-right{margin-left:auto;display:flex;gap:1.1rem;flex-wrap:wrap}
+/* the piece's own row of the statement: origin, words, figures, tables, the
+   same figures the home page prints for it, from the same measurement */
+#__rb .__rb-row{color:#6f6c63;font-variant-numeric:tabular-nums;white-space:nowrap}
+#__rb .__rb-row b{font-weight:600;color:#55524a}
+@media (max-width:44rem){#__rb .__rb-row{flex-basis:100%;order:3;white-space:normal}}
+/* what the piece was built from, in the owner's words, from pieces.json */
+#__rb .__rb-from{flex-basis:100%;order:5;font-weight:400;color:#6f6c63;line-height:1.4;max-width:70ch}
+#__rb .__rb-from b{font-weight:600;color:#55524a}
 #__rb .__mark{
   display:inline-grid;place-items:center;width:1.2rem;height:1.2rem;flex:none;
   background:#16150f;color:#faf9f6;font-size:.72rem;font-weight:700;
 }
-#__rb-pill{
-  position:fixed;left:14px;bottom:14px;z-index:2147483000;
-  display:inline-flex;align-items:center;gap:.45rem;padding:.58rem .9rem;
-  background:rgba(22,21,15,.93);color:#faf9f6;text-decoration:none;border-radius:99px;
-  font:600 12.5px/1 InterVar,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
-  border:1px solid rgba(255,255,255,.16);box-shadow:0 6px 22px rgba(0,0,0,.28);
-  opacity:0;transform:translateY(6px);pointer-events:none;
-  transition:opacity .2s ease,transform .2s ease;
-  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
-}
-#__rb-pill.__on{opacity:1;transform:none;pointer-events:auto}
-#__rb-pill:hover{background:#16150f;color:#fff}
 /* Dark has to answer to two things: the reader's system setting, and the
    theme button on the page, which sets data-theme on <html>. Keyed to the
    media query alone, the bar stayed paper-white across the top of an essay
@@ -470,25 +466,30 @@ figure.lens .plot{opacity:var(--figlens,1);transition:opacity var(--dur)}
   :root:not([data-theme="light"]) #__rb{background:#131310;border-bottom-color:#2c2b24;color:#c0bcb1}
   :root:not([data-theme="light"]) #__rb .__rb-home{color:#f7f5ef}
   :root:not([data-theme="light"]) #__rb .__rb-home i{color:#948f85}
+  :root:not([data-theme="light"]) #__rb .__rb-row{color:#948f85}
+  :root:not([data-theme="light"]) #__rb .__rb-row b{color:#c0bcb1}
+  :root:not([data-theme="light"]) #__rb .__rb-from{color:#948f85}
+  :root:not([data-theme="light"]) #__rb .__rb-from b{color:#c0bcb1}
   :root:not([data-theme="light"]) #__rb a{color:#85adea}
   :root:not([data-theme="light"]) #__rb .__mark{background:#f7f5ef;color:#131310}
-  :root:not([data-theme="light"]) #__rb-pill{background:rgba(247,245,239,.95);color:#131310;border-color:rgba(0,0,0,.2)}
-  :root:not([data-theme="light"]) #__rb-pill:hover{background:#fff;color:#000}
 }
 :root[data-theme="dark"] #__rb{background:#131310;border-bottom-color:#2c2b24;color:#c0bcb1}
 :root[data-theme="dark"] #__rb .__rb-home{color:#f7f5ef}
 :root[data-theme="dark"] #__rb .__rb-home i{color:#948f85}
+:root[data-theme="dark"] #__rb .__rb-row{color:#948f85}
+:root[data-theme="dark"] #__rb .__rb-row b{color:#c0bcb1}
+:root[data-theme="dark"] #__rb .__rb-from{color:#948f85}
+:root[data-theme="dark"] #__rb .__rb-from b{color:#c0bcb1}
 :root[data-theme="dark"] #__rb a{color:#85adea}
 :root[data-theme="dark"] #__rb .__mark{background:#f7f5ef;color:#131310}
-:root[data-theme="dark"] #__rb-pill{background:rgba(247,245,239,.95);color:#131310;border-color:rgba(0,0,0,.2)}
-:root[data-theme="dark"] #__rb-pill:hover{background:#fff;color:#000}
-@media (prefers-reduced-motion:reduce){#__rb-pill{transition:none}}
-@media print{#__rb,#__rb-pill{display:none !important}}
+@media print{#__rb{display:none !important}}
 </style>
-<div id="__rb">
+<nav id="__rb" aria-label="Portfolio">
   <a class="__rb-home" href="index.html"><span class="__mark" aria-hidden="true">A</span>Alex Rajcoomar <i>portfolio</i></a>
-  <span class="__rb-right"><a href="research.html">Research</a><a href="library.html">All work</a></span>
-</div>
+  <span class="__rb-row">Independent &middot; <b>9,606</b> words &middot; <b>11</b> figures &middot; <b>14</b> tables</span>
+  <span class="__rb-right"><a href="research.html">Research</a><a href="atlas.html">Atlas</a><a href="library.html">All work</a></span>
+  <span class="__rb-from"><b>Built from</b> Built from the source document&#x27;s claims, each carrying a verdict graded by three independent raters, with the audit instrument run against its own falsification test.</span>
+</nav>
 <script>
 /* the trail: which passages this browser has opened. The atlas reads it and
    rings them; the record lives in localStorage and never leaves the machine. */
@@ -505,7 +506,7 @@ figure.lens .plot{opacity:var(--figlens,1);transition:opacity var(--dur)}
     function put(key){
       if(t2[key]||Object.keys(t2).length<500){
         t2[key]=(t2[key]||0)+1;
-        localStorage.setItem(k,JSON.stringify(t2));
+        try{localStorage.setItem(k,JSON.stringify(t2));}catch(e){}
       }
     }
     put(u+location.hash);
@@ -537,7 +538,7 @@ figure.lens .plot{opacity:var(--figlens,1);transition:opacity var(--dur)}
   <p class="byline"><span>18 August 2026</span><span>80 claims · 80 rated</span><span>15 systems · 148 couplings</span><span><button class="linkish" id="valBtn" type="button">validator: 123 checks, 0 failures, 5 known blind spots</button></span></p>
 </div>
 <aside class="hero-aside">
-  <h5>How the eighty resolved</h5>
+  <h5 aria-level="2">How the eighty resolved</h5>
   <div class="ribbon" role="img" aria-label="Verdict distribution across the rated corpus"><span style="width:25.00%;background:var(--v-conf)" title="Confirmed: 20"></span><span style="width:7.50%;background:var(--v-cip)" title="Confirmed In Part: 6"></span><span style="width:21.25%;background:var(--v-core)" title="Core Inference: 17"></span><span style="width:2.50%;background:var(--v-part)" title="Partial: 2"></span><span style="width:6.25%;background:var(--v-open)" title="Unresolved: 5"></span><span style="width:3.75%;background:var(--v-nie)" title="Not In Evidence: 3"></span><span style="width:7.50%;background:var(--v-ctd)" title="Contradicted To Date: 6"></span><span style="width:23.75%;background:var(--v-contra)" title="Contradicted: 19"></span><span style="width:2.50%;background:var(--v-af)" title="Antecedent Failed: 2"></span></div>
   <div class="ribkey"><span><i style="background:var(--v-conf)"></i>confirmed 20</span> <span><i style="background:var(--v-cip)"></i>confirmed in part 6</span> <span><i style="background:var(--v-core)"></i>core inference 17</span> <span><i style="background:var(--v-part)"></i>partial 2</span> <span><i style="background:var(--v-open)"></i>unresolved 5</span> <span><i style="background:var(--v-nie)"></i>not in evidence 3</span> <span><i style="background:var(--v-ctd)"></i>contradicted to date 6</span> <span><i style="background:var(--v-contra)"></i>contradicted 19</span> <span><i style="background:var(--v-af)"></i>antecedent failed 2</span></div>
   <p class="metaphor"><b>One colour rule, used everywhere.</b> <span class="mk outline"></span>Amber, open outline: what the source asserted. <span class="mk solid"></span>Blue, solid: what the record shows. Blue intensity on the map is how far the record confirms. Nothing else borrows these two colours.</p>
@@ -584,12 +585,12 @@ project originally led with is reported further down, together with the reason i
 not be read as a rank order.</p>
 </div>
 <aside class="arail">
-<h5>The two rates</h5>
+<h5 aria-level="3">The two rates</h5>
 <p class="big">58%</p><p>predicate-asserting claims confirmed, 14 of 24</p>
 <p class="iv">95% interval 39&#8211;76%</p>
 <p class="big">12%</p><p>conclusion-bearing claims confirmed, 6 of 49</p>
 <p class="iv">95% interval 6&#8211;24%</p>
-<h5>Why this pair and not the five-row order</h5>
+<h5 aria-level="4">Why this pair and not the five-row order</h5>
 <p>These two intervals do not overlap. Every adjacent pair in the five-row descent does.</p>
 </aside>
 </div>
@@ -782,21 +783,21 @@ not be read as a rank order.</p>
 <path class="edge" data-s="climate" data-t="money" d="M440.0,640.0 C440.0,509.0 384.3,509.0 293.3,378.0"><title>climate → money: stranded assets; insurance repricing</title></path>
 <path class="edge" data-s="climate" data-t="state_capacity" d="M440.0,640.0 C440.0,609.0 523.6,609.0 660.0,578.0"><title>climate → state_capacity: disaster response load</title></path>
 </g><g id="nodes">
-<g class="node t3" data-id="energy" data-rate="67" tabindex="0" role="button" aria-label="Energy, layer 0, 67% confirmed on 3 resolved claims"><rect x="110.0" y="40.0" width="132" height="38" rx="2"/><text class="nlab" x="176.0" y="58.0" text-anchor="middle">Energy</text><text class="ncnt" x="176.0" y="70.0" text-anchor="middle">2/3</text></g>
-<g class="node t1" data-id="food" data-rate="33" tabindex="0" role="button" aria-label="Food &amp; fertiliser, layer 0, 33% confirmed on 3 resolved claims"><rect x="286.0" y="40.0" width="132" height="38" rx="2"/><text class="nlab" x="352.0" y="58.0" text-anchor="middle">Food &amp; fertiliser</text><text class="ncnt" x="352.0" y="70.0" text-anchor="middle">1/3</text></g>
-<g class="node nodata" data-id="water" data-rate="" tabindex="0" role="button" aria-label="Water, layer 0, no claims filed"><rect x="462.0" y="40.0" width="132" height="38" rx="2"/><text class="nlab" x="528.0" y="58.0" text-anchor="middle">Water</text><text class="ncnt" x="528.0" y="70.0" text-anchor="middle">no claims</text></g>
-<g class="node nodata" data-id="minerals" data-rate="" tabindex="0" role="button" aria-label="Critical minerals, layer 0, no claims filed"><rect x="638.0" y="40.0" width="132" height="38" rx="2"/><text class="nlab" x="704.0" y="58.0" text-anchor="middle">Critical minerals</text><text class="ncnt" x="704.0" y="70.0" text-anchor="middle">no claims</text></g>
-<g class="node t1" data-id="trade" data-rate="29" tabindex="0" role="button" aria-label="Trade &amp; logistics, layer 1, 29% confirmed on 7 resolved claims"><rect x="227.3" y="140.0" width="132" height="38" rx="2"/><text class="nlab" x="293.3" y="158.0" text-anchor="middle">Trade &amp; logistics</text><text class="ncnt" x="293.3" y="170.0" text-anchor="middle">2/7</text></g>
-<g class="node nodata" data-id="networks" data-rate="" tabindex="0" role="button" aria-label="Physical networks, layer 1, no claims filed"><rect x="520.7" y="140.0" width="132" height="38" rx="2"/><text class="nlab" x="586.7" y="158.0" text-anchor="middle">Physical networks</text><text class="ncnt" x="586.7" y="170.0" text-anchor="middle">no claims</text></g>
-<g class="node t0 thin" data-id="compute" data-rate="0" tabindex="0" role="button" aria-label="Semiconductors &amp; compute, layer 2, 0% confirmed on 1 resolved claims, below the minimum for a stable rate"><rect x="374.0" y="240.0" width="132" height="38" rx="2"/><text class="nlab" x="440.0" y="258.0" text-anchor="middle">Semiconductors &amp; compute</text><text class="ncnt" x="440.0" y="270.0" text-anchor="middle">0/1*</text></g>
-<g class="node t1" data-id="money" data-rate="33" tabindex="0" role="button" aria-label="Money &amp; dollar liquidity, layer 3, 33% confirmed on 9 resolved claims"><rect x="227.3" y="340.0" width="132" height="38" rx="2"/><text class="nlab" x="293.3" y="358.0" text-anchor="middle">Money &amp; dollar liquidity</text><text class="ncnt" x="293.3" y="370.0" text-anchor="middle">3/9</text></g>
-<g class="node nodata" data-id="fiscal" data-rate="" tabindex="0" role="button" aria-label="Debt, fiscal &amp; state capacity, layer 3, no claims filed"><rect x="520.7" y="340.0" width="132" height="38" rx="2"/><text class="nlab" x="586.7" y="358.0" text-anchor="middle">Debt, fiscal &amp; state capacity</text><text class="ncnt" x="586.7" y="370.0" text-anchor="middle">no claims</text></g>
-<g class="node t1" data-id="demography" data-rate="25" tabindex="0" role="button" aria-label="Demography, layer 4, 25% confirmed on 8 resolved claims"><rect x="227.3" y="440.0" width="132" height="38" rx="2"/><text class="nlab" x="293.3" y="458.0" text-anchor="middle">Demography</text><text class="ncnt" x="293.3" y="470.0" text-anchor="middle">2/8</text></g>
-<g class="node nodata" data-id="health" data-rate="" tabindex="0" role="button" aria-label="Public health &amp; biosecurity, layer 4, no claims filed"><rect x="520.7" y="440.0" width="132" height="38" rx="2"/><text class="nlab" x="586.7" y="458.0" text-anchor="middle">Public health &amp; biosecurity</text><text class="ncnt" x="586.7" y="470.0" text-anchor="middle">no claims</text></g>
-<g class="node t2" data-id="institutions" data-rate="40" tabindex="0" role="button" aria-label="Institutions &amp; law, layer 5, 40% confirmed on 15 resolved claims"><rect x="154.0" y="540.0" width="132" height="38" rx="2"/><text class="nlab" x="220.0" y="558.0" text-anchor="middle">Institutions &amp; law</text><text class="ncnt" x="220.0" y="570.0" text-anchor="middle">6/15</text></g>
-<g class="node t1" data-id="information" data-rate="33" tabindex="0" role="button" aria-label="Information ecosystems, layer 5, 33% confirmed on 6 resolved claims"><rect x="374.0" y="540.0" width="132" height="38" rx="2"/><text class="nlab" x="440.0" y="558.0" text-anchor="middle">Information ecosystems</text><text class="ncnt" x="440.0" y="570.0" text-anchor="middle">2/6</text></g>
-<g class="node t0" data-id="state_capacity" data-rate="5" tabindex="0" role="button" aria-label="State capacity &amp; geopolitics, layer 5, 5% confirmed on 19 resolved claims"><rect x="594.0" y="540.0" width="132" height="38" rx="2"/><text class="nlab" x="660.0" y="558.0" text-anchor="middle">State capacity &amp; geopolitics</text><text class="ncnt" x="660.0" y="570.0" text-anchor="middle">1/19</text></g>
-<g class="node nodata" data-id="climate" data-rate="" tabindex="0" role="button" aria-label="Climate &amp; the energy transition, layer 6, no claims filed"><rect x="374.0" y="640.0" width="132" height="38" rx="2"/><text class="nlab" x="440.0" y="658.0" text-anchor="middle">Climate &amp; the energy transition</text><text class="ncnt" x="440.0" y="670.0" text-anchor="middle">no claims</text></g>
+<g class="node t3" data-id="energy" data-rate="67" tabindex="0" role="button" aria-label="Energy 2/3, layer 0, 67% confirmed on 3 resolved claims"><rect x="110.0" y="40.0" width="132" height="38" rx="2"/><text class="nlab" x="176.0" y="58.0" text-anchor="middle">Energy</text> <text class="ncnt" aria-hidden="true" x="176.0" y="70.0" text-anchor="middle">2/3</text></g>
+<g class="node t1" data-id="food" data-rate="33" tabindex="0" role="button" aria-label="Food &amp; fertiliser 1/3, layer 0, 33% confirmed on 3 resolved claims"><rect x="286.0" y="40.0" width="132" height="38" rx="2"/><text class="nlab" x="352.0" y="58.0" text-anchor="middle">Food &amp; fertiliser</text> <text class="ncnt" aria-hidden="true" x="352.0" y="70.0" text-anchor="middle">1/3</text></g>
+<g class="node nodata" data-id="water" data-rate="" tabindex="0" role="button" aria-label="Water no claims, layer 0, no claims filed"><rect x="462.0" y="40.0" width="132" height="38" rx="2"/><text class="nlab" x="528.0" y="58.0" text-anchor="middle">Water</text> <text class="ncnt" aria-hidden="true" x="528.0" y="70.0" text-anchor="middle">no claims</text></g>
+<g class="node nodata" data-id="minerals" data-rate="" tabindex="0" role="button" aria-label="Critical minerals no claims, layer 0, no claims filed"><rect x="638.0" y="40.0" width="132" height="38" rx="2"/><text class="nlab" x="704.0" y="58.0" text-anchor="middle">Critical minerals</text> <text class="ncnt" aria-hidden="true" x="704.0" y="70.0" text-anchor="middle">no claims</text></g>
+<g class="node t1" data-id="trade" data-rate="29" tabindex="0" role="button" aria-label="Trade &amp; logistics 2/7, layer 1, 29% confirmed on 7 resolved claims"><rect x="227.3" y="140.0" width="132" height="38" rx="2"/><text class="nlab" x="293.3" y="158.0" text-anchor="middle">Trade &amp; logistics</text> <text class="ncnt" aria-hidden="true" x="293.3" y="170.0" text-anchor="middle">2/7</text></g>
+<g class="node nodata" data-id="networks" data-rate="" tabindex="0" role="button" aria-label="Physical networks no claims, layer 1, no claims filed"><rect x="520.7" y="140.0" width="132" height="38" rx="2"/><text class="nlab" x="586.7" y="158.0" text-anchor="middle">Physical networks</text> <text class="ncnt" aria-hidden="true" x="586.7" y="170.0" text-anchor="middle">no claims</text></g>
+<g class="node t0 thin" data-id="compute" data-rate="0" tabindex="0" role="button" aria-label="Semiconductors &amp; compute 0/1*, layer 2, 0% confirmed on 1 resolved claims, below the minimum for a stable rate"><rect x="374.0" y="240.0" width="132" height="38" rx="2"/><text class="nlab" x="440.0" y="258.0" text-anchor="middle">Semiconductors &amp; compute</text> <text class="ncnt" aria-hidden="true" x="440.0" y="270.0" text-anchor="middle">0/1*</text></g>
+<g class="node t1" data-id="money" data-rate="33" tabindex="0" role="button" aria-label="Money &amp; dollar liquidity 3/9, layer 3, 33% confirmed on 9 resolved claims"><rect x="227.3" y="340.0" width="132" height="38" rx="2"/><text class="nlab" x="293.3" y="358.0" text-anchor="middle">Money &amp; dollar liquidity</text> <text class="ncnt" aria-hidden="true" x="293.3" y="370.0" text-anchor="middle">3/9</text></g>
+<g class="node nodata" data-id="fiscal" data-rate="" tabindex="0" role="button" aria-label="Debt, fiscal &amp; state capacity no claims, fiscal &amp; state capacity, layer 3, no claims filed"><rect x="520.7" y="340.0" width="132" height="38" rx="2"/><text class="nlab" x="586.7" y="358.0" text-anchor="middle">Debt, fiscal &amp; state capacity</text> <text class="ncnt" aria-hidden="true" x="586.7" y="370.0" text-anchor="middle">no claims</text></g>
+<g class="node t1" data-id="demography" data-rate="25" tabindex="0" role="button" aria-label="Demography 2/8, layer 4, 25% confirmed on 8 resolved claims"><rect x="227.3" y="440.0" width="132" height="38" rx="2"/><text class="nlab" x="293.3" y="458.0" text-anchor="middle">Demography</text> <text class="ncnt" aria-hidden="true" x="293.3" y="470.0" text-anchor="middle">2/8</text></g>
+<g class="node nodata" data-id="health" data-rate="" tabindex="0" role="button" aria-label="Public health &amp; biosecurity no claims, layer 4, no claims filed"><rect x="520.7" y="440.0" width="132" height="38" rx="2"/><text class="nlab" x="586.7" y="458.0" text-anchor="middle">Public health &amp; biosecurity</text> <text class="ncnt" aria-hidden="true" x="586.7" y="470.0" text-anchor="middle">no claims</text></g>
+<g class="node t2" data-id="institutions" data-rate="40" tabindex="0" role="button" aria-label="Institutions &amp; law 6/15, layer 5, 40% confirmed on 15 resolved claims"><rect x="154.0" y="540.0" width="132" height="38" rx="2"/><text class="nlab" x="220.0" y="558.0" text-anchor="middle">Institutions &amp; law</text> <text class="ncnt" aria-hidden="true" x="220.0" y="570.0" text-anchor="middle">6/15</text></g>
+<g class="node t1" data-id="information" data-rate="33" tabindex="0" role="button" aria-label="Information ecosystems 2/6, layer 5, 33% confirmed on 6 resolved claims"><rect x="374.0" y="540.0" width="132" height="38" rx="2"/><text class="nlab" x="440.0" y="558.0" text-anchor="middle">Information ecosystems</text> <text class="ncnt" aria-hidden="true" x="440.0" y="570.0" text-anchor="middle">2/6</text></g>
+<g class="node t0" data-id="state_capacity" data-rate="5" tabindex="0" role="button" aria-label="State capacity &amp; geopolitics 1/19, layer 5, 5% confirmed on 19 resolved claims"><rect x="594.0" y="540.0" width="132" height="38" rx="2"/><text class="nlab" x="660.0" y="558.0" text-anchor="middle">State capacity &amp; geopolitics</text> <text class="ncnt" aria-hidden="true" x="660.0" y="570.0" text-anchor="middle">1/19</text></g>
+<g class="node nodata" data-id="climate" data-rate="" tabindex="0" role="button" aria-label="Climate &amp; the energy transition no claims, layer 6, no claims filed"><rect x="374.0" y="640.0" width="132" height="38" rx="2"/><text class="nlab" x="440.0" y="658.0" text-anchor="middle">Climate &amp; the energy transition</text> <text class="ncnt" aria-hidden="true" x="440.0" y="670.0" text-anchor="middle">no claims</text></g>
 </g></svg></div>
   <aside class="mapinfo" id="mapinfo" aria-live="polite"></aside>
 </div>
@@ -820,15 +821,15 @@ not be read as a rank order.</p>
 <div class="noncoup" style="border-color:var(--rule-2);border-left-color:var(--ink-3)"><div style="font-family:var(--sans);font-size:.63rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);margin-bottom:.35rem">Chain 2</div><div style="font-size:.95rem;font-weight:600;margin-bottom:.5rem">Gas → nitrogen → next year&#x27;s harvest</div><div style="font-family:var(--sans);font-size:.74rem;line-height:1.7;color:var(--ink-2);margin-bottom:.6rem"><b>Gulf gas disruption</b> <span class="arrow">→</span> <b>ammonia/urea production falls</b> <span class="arrow">→</span> <b>fertiliser prices spike</b> <span class="arrow">→</span> <b>application rates fall in price-sensitive geographies</b> <span class="arrow">→</span> <b>yields fall in the following season</b> <span class="arrow">→</span> <b>food prices rise</b> <span class="arrow">→</span> <b>export restrictions</b> <span class="arrow">→</span> <b>further price rises</b></div><div style="font-size:.82rem;color:var(--ink-3);line-height:1.5"><b style="color:var(--ink-2)">Breaks if:</b> ex-Gulf nitrogen capacity (US Gulf Coast, Russia, North Africa) can be dispatched at scale within a season; or if the affected geographies have fertiliser stocks. <b style="color:var(--ink-2)">Watch:</b> urea benchmark prices, Indian and Brazilian application rates, and the count of active export restrictions.</div></div>
 <div class="noncoup" style="border-color:var(--rule-2);border-left-color:var(--ink-3)"><div style="font-family:var(--sans);font-size:.63rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);margin-bottom:.35rem">Chain 3</div><div style="font-size:.95rem;font-weight:600;margin-bottom:.5rem">Court ruling → mass movement</div><div style="font-family:var(--sans);font-size:.74rem;line-height:1.7;color:var(--ink-2);margin-bottom:.6rem"><b>Legal doctrine clarified</b> <span class="arrow">→</span> <b>a specific mode of entry becomes procedurally distinct</b> <span class="arrow">→</span> <b>information propagates</b> <span class="arrow">→</span> <b>behaviour concentrates on the seam</b> <span class="arrow">→</span> <b>capacity is overwhelmed</b> <span class="arrow">→</span> <b>political crisis</b> <span class="arrow">→</span> <b>legislative response</b></div><div style="font-size:.82rem;color:var(--ink-3);line-height:1.5"><b style="color:var(--ink-2)">Breaks if:</b> the ruling is legislatively reversed, or if the information does not propagate. <b style="color:var(--ink-2)">Watch:</b> high-court dockets in migration, tax, employment and environmental law; and the lag between decision and dissemination, which is where the warning time lives.</div></div>
 <div class="noncoup" style="border-color:var(--rule-2);border-left-color:var(--ink-3)"><div style="font-family:var(--sans);font-size:.63rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);margin-bottom:.35rem">Chain 4</div><div style="font-size:.95rem;font-weight:600;margin-bottom:.5rem">Export control → indigenous capability → lost leverage</div><div style="font-family:var(--sans);font-size:.74rem;line-height:1.7;color:var(--ink-2);margin-bottom:.6rem"><b>Control imposed</b> <span class="arrow">→</span> <b>controlled party&#x27;s cost of imports rises</b> <span class="arrow">→</span> <b>indigenous investment becomes rational at the new price</b> <span class="arrow">→</span> <b>capability is built over 5–10 years</b> <span class="arrow">→</span> <b>leverage expires</b> <span class="arrow">→</span> <b>controller must escalate or accept parity</b></div><div style="font-size:.82rem;color:var(--ink-3);line-height:1.5"><b style="color:var(--ink-2)">Breaks if:</b> the technology has a genuine physical barrier to replication (EUV lithography is the strongest candidate anywhere) or if the controlled party&#x27;s capital allocation fails. <b style="color:var(--ink-2)">Watch:</b> ex-controller capacity commissioned, not announced.</div></div>
-<div class="noncoup" style="border-color:var(--rule-2);border-left-color:var(--ink-3)"><div style="font-family:var(--sans);font-size:.63rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);margin-bottom:.35rem">Chain 5</div><div style="font-size:.95rem;font-weight:600;margin-bottom:.5rem">Demography → fiscal → institutional legitimacy</div><div style="font-family:var(--sans);font-size:.74rem;line-height:1.7;color:var(--ink-2);margin-bottom:.6rem"><b>Fertility falls</b> <span class="arrow">→</span> <b>cohort sizes shrink</b> <span class="arrow">→</span> <b>dependency ratio rises</b> <span class="arrow">→</span> <b>pension and health commitments outgrow the tax base</b> <span class="arrow">→</span> <b>taxes rise on a shrinking working-age population, or benefits are cut</b> <span class="arrow">→</span> <b>intergenerational conflict</b> <span class="arrow">→</span> <b>migration becomes the only fast lever</b> <span class="arrow">→</span> <b>migration politics destabilises governing coalitions</b></div><div style="font-size:.82rem;color:var(--ink-3);line-height:1.5"><b style="color:var(--ink-2)">Breaks if:</b> fertility recovers (no policy has reliably achieved this), or if productivity growth outruns the dependency ratio (possible; §9 is the candidate), or if migration is politically absorbed. <b style="color:var(--ink-2)">Watch:</b> care-sector vacancy rates and interest-to-revenue ratios — both lead the political symptoms by years.</div></div>
-<div class="noncoup" style="border-color:var(--rule-2);border-left-color:var(--ink-3)"><div style="font-family:var(--sans);font-size:.63rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);margin-bottom:.35rem">Chain 6</div><div style="font-size:.95rem;font-weight:600;margin-bottom:.5rem">Compute capex → macro concentration → funding fragility</div><div style="font-family:var(--sans);font-size:.74rem;line-height:1.7;color:var(--ink-2);margin-bottom:.6rem"><b>AI capex boom</b> <span class="arrow">→</span> <b>a large share of investment and growth concentrates in a few firms and one supply chain</b> <span class="arrow">→</span> <b>valuations capitalise expected returns</b> <span class="arrow">→</span> <b>funding conditions tighten (possibly via Chain 1)</b> <span class="arrow">→</span> <b>capex is deferred</b> <span class="arrow">→</span> <b>growth contribution reverses</b></div><div style="font-size:.82rem;color:var(--ink-3);line-height:1.5"><b style="color:var(--ink-2)">Breaks if:</b> AI revenue growth validates the capex on the assumed timeline; or if the financing stays equity-funded. <b style="color:var(--ink-2)">Watch:</b> the share of AI infrastructure funded by debt and private credit rather than operating cash flow — the single most informative available indicator of whether this is a boom or a bubble, and one that is reported quarterly.</div></div>
+<div class="noncoup" style="border-color:var(--rule-2);border-left-color:var(--ink-3)"><div style="font-family:var(--sans);font-size:.63rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);margin-bottom:.35rem">Chain 5</div><div style="font-size:.95rem;font-weight:600;margin-bottom:.5rem">Demography → fiscal → institutional legitimacy</div><div style="font-family:var(--sans);font-size:.74rem;line-height:1.7;color:var(--ink-2);margin-bottom:.6rem"><b>Fertility falls</b> <span class="arrow">→</span> <b>cohort sizes shrink</b> <span class="arrow">→</span> <b>dependency ratio rises</b> <span class="arrow">→</span> <b>pension and health commitments outgrow the tax base</b> <span class="arrow">→</span> <b>taxes rise on a shrinking working-age population, or benefits are cut</b> <span class="arrow">→</span> <b>intergenerational conflict</b> <span class="arrow">→</span> <b>migration becomes the only fast lever</b> <span class="arrow">→</span> <b>migration politics destabilises governing coalitions</b></div><div style="font-size:.82rem;color:var(--ink-3);line-height:1.5"><b style="color:var(--ink-2)">Breaks if:</b> fertility recovers (no policy has reliably achieved this), or if productivity growth outruns the dependency ratio (possible; §9 is the candidate), or if migration is politically absorbed. <b style="color:var(--ink-2)">Watch:</b> care-sector vacancy rates and interest-to-revenue ratios, both lead the political symptoms by years.</div></div>
+<div class="noncoup" style="border-color:var(--rule-2);border-left-color:var(--ink-3)"><div style="font-family:var(--sans);font-size:.63rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);margin-bottom:.35rem">Chain 6</div><div style="font-size:.95rem;font-weight:600;margin-bottom:.5rem">Compute capex → macro concentration → funding fragility</div><div style="font-family:var(--sans);font-size:.74rem;line-height:1.7;color:var(--ink-2);margin-bottom:.6rem"><b>AI capex boom</b> <span class="arrow">→</span> <b>a large share of investment and growth concentrates in a few firms and one supply chain</b> <span class="arrow">→</span> <b>valuations capitalise expected returns</b> <span class="arrow">→</span> <b>funding conditions tighten (possibly via Chain 1)</b> <span class="arrow">→</span> <b>capex is deferred</b> <span class="arrow">→</span> <b>growth contribution reverses</b></div><div style="font-size:.82rem;color:var(--ink-3);line-height:1.5"><b style="color:var(--ink-2)">Breaks if:</b> AI revenue growth validates the capex on the assumed timeline; or if the financing stays equity-funded. <b style="color:var(--ink-2)">Watch:</b> the share of AI infrastructure funded by debt and private credit rather than operating cash flow, the single most informative available indicator of whether this is a boom or a bubble, and one that is reported quarterly.</div></div>
 </section>
 
 <section class="blk"><p class="pnum">The map</p><h2 id="three-couplings-people-assert-that-do-not-hold">Three couplings people assert that do not hold</h2>
 <p>These are marked distinctly because asserting a coupling that is not there is the most common way a confident map goes wrong. The struck line is the assertion; beneath it is what the evidence supports instead.</p>
-<div class="noncoup"><div class="as">Interdependence prevents war.</div><div class="co">The 1990s formulation — that trade linkage makes conflict prohibitively costly — was substantially falsified by 2022. What interdependence actually does is raise the cost of conflict and change its form, shifting it toward economic coercion, chokepoint leverage and sub-threshold action. It does not prevent it. The corrected version is more useful than the original and is what §16&#x27;s shift from military to supply-chain leverage describes.</div></div>
-<div class="noncoup"><div class="as">Resource scarcity causes war.</div><div class="co">The empirical literature is much weaker than the intuition. Resource revenues correlate strongly with civil conflict (the resource curse); resource scarcity correlates weakly with interstate conflict, and shared-basin water disputes have historically produced far more treaties than wars. The mechanism that actually operates runs through state capacity and institutional quality, not through the resource — which means the intervening variable, not the resource, is what to watch.</div></div>
-<div class="noncoup"><div class="as">Migration surges are engineered.</div><div class="co">Sometimes they are — weaponised migration is a real instrument with documented cases. But the base rate strongly favours the boring generator: a legal change, an economic shock, a network effect, or a smuggling-price change. The Ceuta case is the specimen: a real, documented, US-linked political project to transfer the enclaves existed, and it did not cause the surge. Both facts are true. Holding them simultaneously is the entire skill. --- # PART IV · READING THE FUTURE</div></div>
+<div class="noncoup"><div class="as">Interdependence prevents war.</div><div class="co">The 1990s formulation, that trade linkage makes conflict prohibitively costly, was substantially falsified by 2022. What interdependence actually does is raise the cost of conflict and change its form, shifting it toward economic coercion, chokepoint leverage and sub-threshold action. It does not prevent it. The corrected version is more useful than the original and is what §16&#x27;s shift from military to supply-chain leverage describes.</div></div>
+<div class="noncoup"><div class="as">Resource scarcity causes war.</div><div class="co">The empirical literature is much weaker than the intuition. Resource revenues correlate strongly with civil conflict (the resource curse); resource scarcity correlates weakly with interstate conflict, and shared-basin water disputes have historically produced far more treaties than wars. The mechanism that actually operates runs through state capacity and institutional quality, not through the resource, which means the intervening variable, not the resource, is what to watch.</div></div>
+<div class="noncoup"><div class="as">Migration surges are engineered.</div><div class="co">Sometimes they are, weaponised migration is a real instrument with documented cases. But the base rate strongly favours the boring generator: a legal change, an economic shock, a network effect, or a smuggling-price change. The Ceuta case is the specimen: a real, documented, US-linked political project to transfer the enclaves existed, and it did not cause the surge. Both facts are true. Holding them simultaneously is the entire skill. --- # PART IV · READING THE FUTURE</div></div>
 </section>
 
 <section class="blk"><p class="pnum">The join</p><h2 id="how-the-method-annotates-the-map">How the method annotates the map</h2>
@@ -870,10 +871,10 @@ provenance will be wrong in both directions: credulous where the tone is confide
 dismissive where it is confident about something true.</p></div>
 </div>
 <aside class="arail">
-<h5>The corpus</h5>
+<h5 aria-level="3">The corpus</h5>
 <ul><li>80 load-bearing claims</li><li>56 conclusion-bearing, 70%</li>
 <li>24 predicate-only</li><li>five claim types</li><li>9 of 15 systems touched</li></ul>
-<h5>What was refused</h5>
+<h5 aria-level="4">What was refused</h5>
 <p>Occult and metaphysical material was set aside rather than rated. A document should refuse where it cannot judge.</p>
 </aside>
 </div>
@@ -939,9 +940,9 @@ pillar of the published defence strategy that he reported <em>word for word</em>
 says what the document <em>means</em>, that fails.</p></div>
 </div>
 <aside class="arail">
-<h5>Where confirmation lives</h5>
+<h5 aria-level="3">Where confirmation lives</h5>
 <p class="big">58%</p><p>the predicate rate. Everything in this section is made of it.</p>
-<h5>Read next</h5>
+<h5 aria-level="4">Read next</h5>
 <p>The transmission chain described here is drawn on the map as a named chain, with the single step that would break it.</p>
 </aside>
 </div>
@@ -986,11 +987,11 @@ ruling, it is a preference. That is the whole reason this project rates 80 claim
 separately rather than rating a man.</p></div>
 </div>
 <aside class="arail">
-<h5>The cost of the substitution</h5>
+<h5 aria-level="3">The cost of the substitution</h5>
 <p class="big">9%</p><p>causal claims confirmed, 3 of 32</p>
 <p class="iv">95% interval 3&#8211;24%</p>
 <p>49% of the corpus is causal, so this is not a marginal category. It is the largest one.</p>
-<h5>The honest caveat</h5>
+<h5 aria-level="4">The honest caveat</h5>
 <p>Roughly half this gradient is structural rather than a property of the source. The control arm is in the method path.</p>
 </aside>
 </div>
@@ -1261,13 +1262,13 @@ separately rather than rating a man.</p></div>
 <tr tabindex="0" data-id="DOLLAR-SANCTIONS-GOLD-ROTATION" data-v="CORE_INFERENCE" data-t="institutional" data-s="conclusion_bearing" data-p="0" data-sys="money" data-split="0" data-q=""><td>DOLLAR-SANCTIONS-GOLD-ROTATION</td><td><span class="mk outline"></span>Sanctioning Russia broke dollar neutrality and drove a rotation into gold</td><td><span class="vd CORE_INFERENCE">CORE INFERENCE</span></td><td>Institutions</td><td>conclusion</td><td><span class="pdot "></span>none</td><td><span class="cons unan" title="all three raters agreed"><i></i><i></i><i></i></span></td></tr>
 <tr tabindex="0" data-id="EURODOLLAR-UNCOUNTABLE" data-v="CONFIRMED" data-t="institutional" data-s="predicate_only" data-p="1" data-sys="money" data-split="0" data-q=""><td>EURODOLLAR-UNCOUNTABLE</td><td><span class="mk solid"></span>The Eurodollar stock cannot be counted</td><td><span class="vd CONFIRMED">CONFIRMED</span></td><td>Institutions</td><td>predicate</td><td><span class="pdot doc"></span>1 src</td><td><span class="cons unan" title="all three raters agreed"><i></i><i></i><i></i></span></td></tr>
 <tr tabindex="0" data-id="JAPAN-LIQUIDITY-NODE" data-v="CORE_INFERENCE" data-t="institutional" data-s="conclusion_bearing" data-p="0" data-sys="money" data-split="1" data-q="gap"><td>JAPAN-LIQUIDITY-NODE</td><td><span class="mk outline"></span><span class="qm gap" title="ships a direct quotation that resolves to no source">“</span>Japan is the world&#x27;s liquidity node via the yen carry trade, exposed through Gulf energy</td><td><span class="vd CORE_INFERENCE">CORE INFERENCE</span></td><td>Institutions</td><td>conclusion</td><td><span class="pdot "></span>none</td><td><span class="cons split" title="panel split, verdict is a majority"><i></i><i></i><i></i></span></td></tr>
-<tr tabindex="0" data-id="YEN-US-INTERVENTION" data-v="CONFIRMED_IN_PART" data-t="institutional" data-s="conclusion_bearing" data-p="1" data-sys="money" data-split="0" data-q=""><td>YEN-US-INTERVENTION</td><td><span class="mk solid"></span>The US has intervened to save a foreign currency — a sign of desperation</td><td><span class="vd CONFIRMED_IN_PART">CONFIRMED IN PART</span></td><td>Institutions</td><td>conclusion</td><td><span class="pdot doc"></span>1 src</td><td><span class="cons unan" title="all three raters agreed"><i></i><i></i><i></i></span></td></tr>
+<tr tabindex="0" data-id="YEN-US-INTERVENTION" data-v="CONFIRMED_IN_PART" data-t="institutional" data-s="conclusion_bearing" data-p="1" data-sys="money" data-split="0" data-q=""><td>YEN-US-INTERVENTION</td><td><span class="mk solid"></span>The US has intervened to save a foreign currency, a sign of desperation</td><td><span class="vd CONFIRMED_IN_PART">CONFIRMED IN PART</span></td><td>Institutions</td><td>conclusion</td><td><span class="pdot doc"></span>1 src</td><td><span class="cons unan" title="all three raters agreed"><i></i><i></i><i></i></span></td></tr>
 <tr tabindex="0" data-id="CEUTA-MOROCCO-PRECEDENT" data-v="CONFIRMED" data-t="institutional" data-s="predicate_only" data-p="0" data-sys="demography" data-split="0" data-q=""><td>CEUTA-MOROCCO-PRECEDENT</td><td><span class="mk outline"></span>Morocco has weaponized migration before</td><td><span class="vd CONFIRMED">CONFIRMED</span></td><td>Institutions</td><td>predicate</td><td><span class="pdot "></span>none</td><td><span class="cons unan" title="all three raters agreed"><i></i><i></i><i></i></span></td></tr>
 <tr tabindex="0" data-id="CEUTA-ITALY-SCHENGEN" data-v="CONTRADICTED" data-t="institutional" data-s="conclusion_bearing" data-p="0" data-sys="institutions" data-split="0" data-q=""><td>CEUTA-ITALY-SCHENGEN</td><td><span class="mk outline"></span>Italy reimposed border controls, attacking free movement</td><td><span class="vd CONTRADICTED">CONTRADICTED</span></td><td>Institutions</td><td>conclusion</td><td><span class="pdot "></span>none</td><td><span class="cons unan" title="all three raters agreed"><i></i><i></i><i></i></span></td></tr>
 <tr tabindex="0" data-id="CAPITAL-DEFINITIONAL-SPLIT" data-v="CONFIRMED" data-t="institutional" data-s="conclusion_bearing" data-p="0" data-sys="money" data-split="1" data-q=""><td>CAPITAL-DEFINITIONAL-SPLIT</td><td><span class="mk outline"></span>Capitalism and transnational capitalism are different things</td><td><span class="vd CONFIRMED">CONFIRMED</span></td><td>Institutions</td><td>conclusion</td><td><span class="pdot "></span>none</td><td><span class="cons split" title="panel split, verdict is a majority"><i></i><i></i><i></i></span></td></tr>
 <tr tabindex="0" data-id="MILEI-CHABAD-TIES" data-v="CONFIRMED_IN_PART" data-t="institutional" data-s="predicate_only" data-p="1" data-sys="information" data-split="0" data-q=""><td>MILEI-CHABAD-TIES</td><td><span class="mk solid"></span>Milei is Chabad-Lubavitch; first foreign visit to Schneerson&#x27;s grave; Netanyahu backed Argentina</td><td><span class="vd CONFIRMED_IN_PART">CONFIRMED IN PART</span></td><td>Institutions</td><td>predicate</td><td><span class="pdot doc"></span>1 src</td><td><span class="cons unan" title="all three raters agreed"><i></i><i></i><i></i></span></td></tr>
 <tr tabindex="0" data-id="NDS-PILLAR-INDUSTRIAL-BASE" data-v="CONFIRMED" data-t="document_text" data-s="predicate_only" data-p="0" data-sys="institutions" data-split="0" data-q="gap"><td>NDS-PILLAR-INDUSTRIAL-BASE</td><td><span class="mk outline"></span><span class="qm gap" title="ships a direct quotation that resolves to no source">“</span>Its pillars include &quot;supercharge the US defense industrial base&quot;</td><td><span class="vd CONFIRMED">CONFIRMED</span></td><td>Documents</td><td>predicate</td><td><span class="pdot "></span>none</td><td><span class="cons unan" title="all three raters agreed"><i></i><i></i><i></i></span></td></tr>
-<tr tabindex="0" data-id="NSS-DONROE-COROLLARY" data-v="CONFIRMED" data-t="document_text" data-s="conclusion_bearing" data-p="1" data-sys="institutions" data-split="0" data-q="src"><td>NSS-DONROE-COROLLARY</td><td><span class="mk solid"></span><span class="qm src" title="ships a direct quotation the record backs">“</span>A &quot;Donroe Doctrine&quot; — Trump&#x27;s corollary to Monroe</td><td><span class="vd CONFIRMED">CONFIRMED</span></td><td>Documents</td><td>conclusion</td><td><span class="pdot doc"></span>1 src</td><td><span class="cons unan" title="all three raters agreed"><i></i><i></i><i></i></span></td></tr>
+<tr tabindex="0" data-id="NSS-DONROE-COROLLARY" data-v="CONFIRMED" data-t="document_text" data-s="conclusion_bearing" data-p="1" data-sys="institutions" data-split="0" data-q="src"><td>NSS-DONROE-COROLLARY</td><td><span class="mk solid"></span><span class="qm src" title="ships a direct quotation the record backs">“</span>A &quot;Donroe Doctrine&quot; Trump&#x27;s corollary to Monroe</td><td><span class="vd CONFIRMED">CONFIRMED</span></td><td>Documents</td><td>conclusion</td><td><span class="pdot doc"></span>1 src</td><td><span class="cons unan" title="all three raters agreed"><i></i><i></i><i></i></span></td></tr>
 <tr tabindex="0" data-id="NDS-KEY-TERRAIN" data-v="CORE_INFERENCE" data-t="document_text" data-s="predicate_only" data-p="0" data-sys="state_capacity" data-split="0" data-q=""><td>NDS-KEY-TERRAIN</td><td><span class="mk outline"></span>Greenland, Panama and the Arctic are targets</td><td><span class="vd CORE_INFERENCE">CORE INFERENCE</span></td><td>Documents</td><td>predicate</td><td><span class="pdot "></span>none</td><td><span class="cons unan" title="all three raters agreed"><i></i><i></i><i></i></span></td></tr>
 <tr tabindex="0" data-id="CEUTA-AEI-BRIEF" data-v="CONFIRMED" data-t="document_text" data-s="predicate_only" data-p="1" data-sys="information" data-split="0" data-q=""><td>CEUTA-AEI-BRIEF</td><td><span class="mk solid"></span>An AEI brief laid out the method: bulldozers, unarmed entry, raise the flag</td><td><span class="vd CONFIRMED">CONFIRMED</span></td><td>Documents</td><td>predicate</td><td><span class="pdot doc"></span>1 src</td><td><span class="cons unan" title="all three raters agreed"><i></i><i></i><i></i></span></td></tr>
 <tr tabindex="0" data-id="CAPITAL-BOE-1694" data-v="CORE_INFERENCE" data-t="document_text" data-s="conclusion_bearing" data-p="0" data-sys="money" data-split="0" data-q=""><td>CAPITAL-BOE-1694</td><td><span class="mk outline"></span>Bank of England 1694 and the Glorious Revolution created modern finance</td><td><span class="vd CORE_INFERENCE">CORE INFERENCE</span></td><td>Documents</td><td>conclusion</td><td><span class="pdot "></span>none</td><td><span class="cons unan" title="all three raters agreed"><i></i><i></i><i></i></span></td></tr>
@@ -1313,7 +1314,7 @@ separately rather than rating a man.</p></div>
 <tr tabindex="0" data-id="WAR-IS-ESCHATOLOGICAL" data-v="CORE_INFERENCE" data-t="causal" data-s="conclusion_bearing" data-p="0" data-sys="information" data-split="0" data-q=""><td>WAR-IS-ESCHATOLOGICAL</td><td><span class="mk outline"></span>The Iran war is eschatological, not material</td><td><span class="vd CORE_INFERENCE">CORE INFERENCE</span></td><td>Causes</td><td>conclusion</td><td><span class="pdot "></span>none</td><td><span class="cons unan" title="all three raters agreed"><i></i><i></i><i></i></span></td></tr>
 <tr tabindex="0" data-id="IRAN-2TN-COUNTERFACTUAL" data-v="ANTECEDENT_FAILED" data-t="causal" data-s="conclusion_bearing" data-p="0" data-sys="money" data-split="0" data-q=""><td>IRAN-2TN-COUNTERFACTUAL</td><td><span class="mk outline"></span>$2 tn to Iran plus containing Israel would end the war</td><td><span class="vd ANTECEDENT_FAILED">ANTECEDENT FAILED</span></td><td>Causes</td><td>conclusion</td><td><span class="pdot "></span>none</td><td><span class="cons unan" title="all three raters agreed"><i></i><i></i><i></i></span></td></tr>
 <tr tabindex="0" data-id="ANTISEMITISM-ENGINEERED" data-v="NOT_IN_EVIDENCE" data-t="causal" data-s="conclusion_bearing" data-p="0" data-sys="information" data-split="0" data-q=""><td>ANTISEMITISM-ENGINEERED</td><td><span class="mk outline"></span>Antisemitism is being deliberately engendered to force diaspora return</td><td><span class="vd NOT_IN_EVIDENCE">NOT IN EVIDENCE</span></td><td>Causes</td><td>conclusion</td><td><span class="pdot "></span>none</td><td><span class="cons unan" title="all three raters agreed"><i></i><i></i><i></i></span></td></tr>
-<tr tabindex="0" data-id="BRONZE-SEA-PEOPLES-AGENT" data-v="CONTRADICTED" data-t="causal" data-s="conclusion_bearing" data-p="0" data-sys="demography" data-split="0" data-q=""><td>BRONZE-SEA-PEOPLES-AGENT</td><td><span class="mk outline"></span>The Sea Peoples overwhelmed civilizations — and refugees will do it again</td><td><span class="vd CONTRADICTED">CONTRADICTED</span></td><td>Causes</td><td>conclusion</td><td><span class="pdot "></span>none</td><td><span class="cons unan" title="all three raters agreed"><i></i><i></i><i></i></span></td></tr>
+<tr tabindex="0" data-id="BRONZE-SEA-PEOPLES-AGENT" data-v="CONTRADICTED" data-t="causal" data-s="conclusion_bearing" data-p="0" data-sys="demography" data-split="0" data-q=""><td>BRONZE-SEA-PEOPLES-AGENT</td><td><span class="mk outline"></span>The Sea Peoples overwhelmed civilizations, and refugees will do it again</td><td><span class="vd CONTRADICTED">CONTRADICTED</span></td><td>Causes</td><td>conclusion</td><td><span class="pdot "></span>none</td><td><span class="cons unan" title="all three raters agreed"><i></i><i></i><i></i></span></td></tr>
 <tr tabindex="0" data-id="FERTILIZER-UNDERMODELLED" data-v="CONFIRMED" data-t="causal" data-s="conclusion_bearing" data-p="0" data-sys="food" data-split="0" data-q=""><td>FERTILIZER-UNDERMODELLED</td><td><span class="mk outline"></span>The fertilizer channel is dangerously under-modelled</td><td><span class="vd CONFIRMED">CONFIRMED</span></td><td>Causes</td><td>conclusion</td><td><span class="pdot "></span>none</td><td><span class="cons unan" title="all three raters agreed"><i></i><i></i><i></i></span></td></tr>
 <tr tabindex="0" data-id="FERTILIZER-GULF-SUBSTITUTION" data-v="CORE_INFERENCE" data-t="causal" data-s="conclusion_bearing" data-p="0" data-sys="food" data-split="0" data-q=""><td>FERTILIZER-GULF-SUBSTITUTION</td><td><span class="mk outline"></span>Losing Gulf exports ≈ losing synthetic fertilizer</td><td><span class="vd CORE_INFERENCE">CORE INFERENCE</span></td><td>Causes</td><td>conclusion</td><td><span class="pdot "></span>none</td><td><span class="cons unan" title="all three raters agreed"><i></i><i></i><i></i></span></td></tr>
 <tr tabindex="0" data-id="CALHOUN-HUMAN-GENERALIZATION" data-v="CONTRADICTED" data-t="causal" data-s="conclusion_bearing" data-p="0" data-sys="demography" data-split="0" data-q="gap"><td>CALHOUN-HUMAN-GENERALIZATION</td><td><span class="mk outline"></span><span class="qm gap" title="ships a direct quotation that resolves to no source">“</span>Therefore young men will form groups and produce urban warfare</td><td><span class="vd CONTRADICTED">CONTRADICTED</span></td><td>Causes</td><td>conclusion</td><td><span class="pdot "></span>none</td><td><span class="cons unan" title="all three raters agreed"><i></i><i></i><i></i></span></td></tr>
@@ -1396,11 +1397,11 @@ on exactly one corpus. That limitation is stated at full strength in the failed-
 path.</p>
 </div>
 <aside class="arail">
-<h5>The two questions</h5>
+<h5 aria-level="3">The two questions</h5>
 <p>1 &middot; How was this obtained?</p><p>2 &middot; Does the conclusion follow from it?</p>
-<h5>Cost</h5>
+<h5 aria-level="4">Cost</h5>
 <p class="big">~4s</p><p>per claim, which is the whole apparatus.</p>
-<h5>Try it</h5>
+<h5 aria-level="3">Try it</h5>
 <p>The practice path serves you a claim with both stored verdicts hidden.</p>
 </aside>
 </div>
@@ -1653,7 +1654,7 @@ path.</p>
 <p class="note">The 22% panel-to-author divergence is why every rate in this edition is labelled provisional rather than settled. By this project's own declared threshold, that figure is a fail.</p>
 
 <div class="gaps">
-<h4 id="two-gaps-still-open-stated-rather-than-skipped">Two gaps still open, stated rather than skipped</h4>
+<h4 id="two-gaps-still-open-stated-rather-than-skipped" aria-level="3">Two gaps still open, stated rather than skipped</h4>
 <ol>
 <li><b>The extraction audit has not run.</b> It needs the raw L0 transcripts, which are not in this repository. Without it nobody can say whether these are the right 80 claims or whether any claim text is a misquote. It is also the only fix for the two deepest validator blind spots, a falsified record and a falsified claim, both of which pass a green build today.</li>
 <li><b>No rater from outside this model family has been on the panel.</b> Every rater, classifier and auditor here is an instance of the same family as the author. Same-family agreement cannot distinguish a correct adjudication from a shared prior. This is the single change that would let the rates move from provisional to settled.</li>
@@ -1884,13 +1885,13 @@ const CLAIMS={"IRAN-WAR-START-DATE":{"claim":"The war began 28 February 2026","r
  /* ============================================================= PANELS */
  function paneIntro(){
    const un=Object.keys(SYS).filter(k=>!(RATES[k]&&RATES[k].n));
-   info.innerHTML='<h5>The map</h5><p style="color:var(--ink-2);font-size:.82rem;line-height:1.55;margin:0 0 .8rem">'
+   info.innerHTML='<h5 aria-level="3">The map</h5><p style="color:var(--ink-2);font-size:.82rem;line-height:1.55;margin:0 0 .8rem">'
    +'Select a system to light its couplings, filter the ledger to its claims, and mark it on the figures.</p>'
-   +'<h5>Reading the tint</h5><ul>'
+   +'<h5 aria-level="3">Reading the tint</h5><ul>'
    +'<li>Blue intensity is the confirmation rate of claims filed against that system, on the resolved denominator</li>'
    +'<li>Hatched systems have <b>no claims filed at all</b> ('+un.length+' of '+Object.keys(SYS).length+')</li>'
    +'<li>An asterisk marks fewer than '+MINN+' resolved claims, where the rate is not a measurement</li></ul>'
-   +'<h5>Reading the edges</h5><ul><li><b>Dashed</b> transmits <i>into</i> the selected system</li>'
+   +'<h5 aria-level="3">Reading the edges</h5><ul><li><b>Dashed</b> transmits <i>into</i> the selected system</li>'
    +'<li><b>Solid</b> transmits <i>out of</i> it</li>'
    +'<li style="color:var(--ink-3)">Direction never borrows the amber/blue pair, which means assertion versus record and nothing else.</li></ul>';
  }
@@ -1904,14 +1905,14 @@ const CLAIMS={"IRAN-WAR-START-DATE":{"claim":"The war began 28 February 2026","r
      +`<br><span style="color:var(--ink-3);font-size:.7rem">${c.prov?'source on file':'no retrievable citation'}</span></li>`).join('')
      :'<li style="color:var(--warn)">No claims were filed against this system. The map says it is load-bearing; the corpus is silent on it.</li>';
    const rate=r&&r.rate!=null
-     ? `<h5>Confirmation rate</h5><p style="margin:0 0 .8rem"><span style="font-size:1.5rem;color:var(--ink)">${r.rate}%</span>
+     ? `<h5 aria-level="3">Confirmation rate</h5><p style="margin:0 0 .8rem"><span style="font-size:1.5rem;color:var(--ink)">${r.rate}%</span>
         <span style="color:var(--ink-3)"> · ${r.conf} of ${r.res} resolved${r.thin?' · below '+MINN+', not a stable rate':''}</span></p>`
-     : '<h5>Confirmation rate</h5><p style="margin:0 0 .8rem;color:var(--warn)">No claims filed, so there is no rate.</p>';
+     : '<h5 aria-level="3">Confirmation rate</h5><p style="margin:0 0 .8rem;color:var(--warn)">No claims filed, so there is no rate.</p>';
    info.innerHTML=`<div class="nm">${s.name}</div><div class="ly">Layer ${s.layer}</div>`+rate
-    +`<h5>Transmits into</h5><ul>${li(s.out,'→')}</ul>`
-    +`<h5>Receives from</h5><ul>${li(s.in,'←')}</ul>`
-    +`<h5>Adjudicated claims (${s.claims.length})</h5><ul>${cl}</ul>`
-    +(s.indicators.length?`<h5>Indicators</h5><ul>${s.indicators.map(i=>`<li>${esc(i)}</li>`).join('')}</ul>`:'');
+    +`<h5 aria-level="3">Transmits into</h5><ul>${li(s.out,'→')}</ul>`
+    +`<h5 aria-level="3">Receives from</h5><ul>${li(s.in,'←')}</ul>`
+    +`<h5 aria-level="3">Adjudicated claims (${s.claims.length})</h5><ul>${cl}</ul>`
+    +(s.indicators.length?`<h5 aria-level="3">Indicators</h5><ul>${s.indicators.map(i=>`<li>${esc(i)}</li>`).join('')}</ul>`:'');
    info.querySelectorAll('[data-goclaim]').forEach(a=>a.onclick=ev=>{
      ev.preventDefault();STATE.claim=a.dataset.goclaim;STATE.path='method';render();
      const tr=rows.find(t=>t.dataset.id===STATE.claim);if(tr){openDetail(tr,true);tr.scrollIntoView({block:'center',behavior:RM.matches?'auto':'smooth'});}
@@ -1921,10 +1922,10 @@ const CLAIMS={"IRAN-WAR-START-DATE":{"claim":"The war began 28 February 2026","r
    const ch=CHAINS.find(c=>c.n===n);if(!ch)return;
    info.innerHTML=`<div class="nm">Chain ${ch.n}</div><div class="ly">${ch.requires_no_coordination?'requires no coordination':'transmission chain'}</div>`
     +`<p style="font-size:.85rem;color:var(--ink-2);line-height:1.5">${esc(ch.title)}</p>`
-    +`<h5>Steps</h5><ul>${ch.steps.map(s=>`<li>${esc(s)}</li>`).join('')}</ul>`
-    +(ch.breaks_if?`<h5>Breaks if</h5><p style="font-size:.8rem;color:var(--ink-2);margin:0 0 .8rem">${esc(ch.breaks_if)}</p>`:'')
-    +(ch.watch?`<h5>Watch</h5><p style="font-size:.8rem;color:var(--ink-2);margin:0">${esc(ch.watch)}</p>`:'')
-    +`<h5>Path on the map</h5><ul>${(ch.path_edges||[]).map(e=>`<li>${NAMES[e.from]||e.from} <span class="arrow">→</span> ${NAMES[e.to]||e.to}`
+    +`<h5 aria-level="3">Steps</h5><ul>${ch.steps.map(s=>`<li>${esc(s)}</li>`).join('')}</ul>`
+    +(ch.breaks_if?`<h5 aria-level="3">Breaks if</h5><p style="font-size:.8rem;color:var(--ink-2);margin:0 0 .8rem">${esc(ch.breaks_if)}</p>`:'')
+    +(ch.watch?`<h5 aria-level="3">Watch</h5><p style="font-size:.8rem;color:var(--ink-2);margin:0">${esc(ch.watch)}</p>`:'')
+    +`<h5 aria-level="3">Path on the map</h5><ul>${(ch.path_edges||[]).map(e=>`<li>${NAMES[e.from]||e.from} <span class="arrow">→</span> ${NAMES[e.to]||e.to}`
        +(e.in_matrix?'':' <span style="color:var(--bad)">not a coupling edge in the matrix</span>')+`</li>`).join('')||'<li style="color:var(--ink-3)">no step names a registry system</li>'}</ul>`;
  }
 
@@ -2308,14 +2309,62 @@ const CLAIMS={"IRAN-WAR-START-DATE":{"claim":"The war began 28 February 2026","r
 
 </script>
 
+<!--__long--><link rel="stylesheet" href="long.css?v=0b99e235"><script src="long.js?v=98a5c23b" defer></script><!--/__long-->
+
 <!--__rbp-->
+<!-- The pill styles itself: this block used to live only with the top bar,
+     so the seven tool pages, which carry the pill alone, rendered it as an
+     unstyled link at the very end of the document. Whatever carries the
+     pill now carries its style. -->
+<style id="__rbp-style">
+#__rb-pill{
+  position:fixed;left:14px;bottom:14px;z-index:2147483000;
+  display:inline-flex;align-items:center;gap:.45rem;padding:.58rem .9rem;
+  background:rgba(22,21,15,.93);color:#faf9f6;text-decoration:none;border-radius:99px;
+  font:600 12.5px/1 InterVar,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  border:1px solid rgba(255,255,255,.16);box-shadow:0 6px 22px rgba(0,0,0,.28);
+  opacity:0;transform:translateY(6px);pointer-events:none;
+  transition:opacity .2s ease,transform .2s ease;
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+}
+#__rb-pill.__on{opacity:1;transform:none;pointer-events:auto}
+#__rb-pill:hover{background:#16150f;color:#fff}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) #__rb-pill{background:rgba(247,245,239,.95);color:#131310;border-color:rgba(0,0,0,.2)}
+  :root:not([data-theme="light"]) #__rb-pill:hover{background:#fff;color:#000}
+}
+:root[data-theme="dark"] #__rb-pill{background:rgba(247,245,239,.95);color:#131310;border-color:rgba(0,0,0,.2)}
+:root[data-theme="dark"] #__rb-pill:hover{background:#fff;color:#000}
+@media (prefers-reduced-motion:reduce){#__rb-pill{transition:none}}
+@media print{#__rb-pill{display:none !important}}
+/* a tool carries no bar, so what it was built from stands at the foot of the document */
+#__rb-from{margin:1.25rem 1rem;font:400 13px/1.45 InterVar,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;color:#6f6c63;max-width:70ch}
+#__rb-from b{font-weight:600;color:#55524a}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) #__rb-from{color:#948f85}
+  :root:not([data-theme="light"]) #__rb-from b{color:#c0bcb1}
+}
+:root[data-theme="dark"] #__rb-from{color:#948f85}
+:root[data-theme="dark"] #__rb-from b{color:#c0bcb1}
+</style>
+<!-- With scripts off nothing ever adds the __on class, and the only way
+     back from a tool page vanished. The pill needs its script for the
+     scroll threshold, not for existing. -->
+<noscript><style>#__rb-pill{opacity:1 !important;transform:none !important;pointer-events:auto !important}</style></noscript>
 <a id="__rb-pill" href="research.html">&#8592; Research</a>
+
 <script>
 (function(){
   var p=document.getElementById('__rb-pill'); if(!p) return;
+  /* On a page with the top bar the pill waits until the bar has scrolled
+     out of reach. On a page without one (the tools carry no bar, because a
+     bar inside a full-screen application sits in the wrong place) the pill
+     is the only way back, so it is there from the first paint: a tool
+     screen shorter than the threshold used to strand the reader entirely. */
+  var TH=document.getElementById('__rb')?160:-1;
   var t=false;
   function run(){ t=false;
-    p.classList.toggle('__on',(window.scrollY||document.documentElement.scrollTop)>420); }
+    p.classList.toggle('__on',(window.scrollY||document.documentElement.scrollTop)>TH); }
   function q(){ if(!t){ t=true; requestAnimationFrame(run); } }
   addEventListener('scroll',q,{passive:true}); run();
 })();
@@ -2333,7 +2382,7 @@ const CLAIMS={"IRAN-WAR-START-DATE":{"claim":"The war began 28 February 2026","r
     function put(key){
       if(t2[key]||Object.keys(t2).length<500){
         t2[key]=(t2[key]||0)+1;
-        localStorage.setItem(k,JSON.stringify(t2));
+        try{localStorage.setItem(k,JSON.stringify(t2));}catch(e){}
       }
     }
     put(u+location.hash);

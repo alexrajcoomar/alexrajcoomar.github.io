@@ -3,15 +3,15 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>ECON 102 — Master Visual Reference</title>
+<title>ECON 102 Master Visual Reference · Alex Rajcoomar</title>
 <style>
 :root{
   color-scheme: light;
   --bg:#fcfcfb; --panel:#f4f4f2; --panel2:#eeeeeb;
-  --ink-1:#0b0b0b; --ink-2:#52514e; --ink-3:#8b8a85; --ink-4:#c9c8c3; --line:#dcdbd6;
-  --s1:#2a78d6;  /* supply family */
-  --s2:#eb6834;  /* demand family */
-  --s3:#1baf7a;  /* outcome / annotation */
+  --ink-1:#0b0b0b; --ink-2:#52514e; --ink-3:#6d6969; --ink-4:#c9c8c3; --line:#dcdbd6;
+  --s1:#246ec2;  /* supply family */
+  --s2:#c04414;  /* demand family */
+  --s3:#0f7b56;  /* outcome / annotation */
   --flag:#8b1a1a; --flag-bg:#fbecec;
   --gold:#8a6300; --gold-bg:#fdf5e4;
 }
@@ -234,15 +234,15 @@ footer{margin-top:52px;padding-top:18px;border-top:1px solid var(--line);
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="manifest" href="site.webmanifest">
 <link rel="canonical" href="https://alexrajcoomar.github.io/econ102-visual-reference.html">
-<meta property="og:title" content="ECON 102 Master Visual Reference — Alex Rajcoomar">
+<meta property="og:title" content="ECON 102 Master Visual Reference · Alex Rajcoomar">
 <meta property="og:description" content="A single visual reference for the macro models: what each diagram shows, which curve moves, and what it means.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://alexrajcoomar.github.io/econ102-visual-reference.html">
-<meta property="og:site_name" content="Alex Rajcoomar — portfolio">
+<meta property="og:site_name" content="Alex Rajcoomar · portfolio">
 <meta property="og:image" content="https://alexrajcoomar.github.io/cards/econ102-visual-reference.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="ECON 102 Master Visual Reference — Alex Rajcoomar">
+<meta property="og:image:alt" content="ECON 102 Master Visual Reference · Alex Rajcoomar">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://alexrajcoomar.github.io/cards/econ102-visual-reference.png">
 <script>
@@ -277,22 +277,18 @@ footer{margin-top:52px;padding-top:18px;border-top:1px solid var(--line);
 #__rb .__rb-home{font-weight:640;color:#16150f}
 #__rb .__rb-home i{font-style:normal;font-weight:400;color:#6f6c63}
 #__rb .__rb-right{margin-left:auto;display:flex;gap:1.1rem;flex-wrap:wrap}
+/* the piece's own row of the statement: origin, words, figures, tables, the
+   same figures the home page prints for it, from the same measurement */
+#__rb .__rb-row{color:#6f6c63;font-variant-numeric:tabular-nums;white-space:nowrap}
+#__rb .__rb-row b{font-weight:600;color:#55524a}
+@media (max-width:44rem){#__rb .__rb-row{flex-basis:100%;order:3;white-space:normal}}
+/* what the piece was built from, in the owner's words, from pieces.json */
+#__rb .__rb-from{flex-basis:100%;order:5;font-weight:400;color:#6f6c63;line-height:1.4;max-width:70ch}
+#__rb .__rb-from b{font-weight:600;color:#55524a}
 #__rb .__mark{
   display:inline-grid;place-items:center;width:1.2rem;height:1.2rem;flex:none;
   background:#16150f;color:#faf9f6;font-size:.72rem;font-weight:700;
 }
-#__rb-pill{
-  position:fixed;left:14px;bottom:14px;z-index:2147483000;
-  display:inline-flex;align-items:center;gap:.45rem;padding:.58rem .9rem;
-  background:rgba(22,21,15,.93);color:#faf9f6;text-decoration:none;border-radius:99px;
-  font:600 12.5px/1 InterVar,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
-  border:1px solid rgba(255,255,255,.16);box-shadow:0 6px 22px rgba(0,0,0,.28);
-  opacity:0;transform:translateY(6px);pointer-events:none;
-  transition:opacity .2s ease,transform .2s ease;
-  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
-}
-#__rb-pill.__on{opacity:1;transform:none;pointer-events:auto}
-#__rb-pill:hover{background:#16150f;color:#fff}
 /* Dark has to answer to two things: the reader's system setting, and the
    theme button on the page, which sets data-theme on <html>. Keyed to the
    media query alone, the bar stayed paper-white across the top of an essay
@@ -303,25 +299,30 @@ footer{margin-top:52px;padding-top:18px;border-top:1px solid var(--line);
   :root:not([data-theme="light"]) #__rb{background:#131310;border-bottom-color:#2c2b24;color:#c0bcb1}
   :root:not([data-theme="light"]) #__rb .__rb-home{color:#f7f5ef}
   :root:not([data-theme="light"]) #__rb .__rb-home i{color:#948f85}
+  :root:not([data-theme="light"]) #__rb .__rb-row{color:#948f85}
+  :root:not([data-theme="light"]) #__rb .__rb-row b{color:#c0bcb1}
+  :root:not([data-theme="light"]) #__rb .__rb-from{color:#948f85}
+  :root:not([data-theme="light"]) #__rb .__rb-from b{color:#c0bcb1}
   :root:not([data-theme="light"]) #__rb a{color:#85adea}
   :root:not([data-theme="light"]) #__rb .__mark{background:#f7f5ef;color:#131310}
-  :root:not([data-theme="light"]) #__rb-pill{background:rgba(247,245,239,.95);color:#131310;border-color:rgba(0,0,0,.2)}
-  :root:not([data-theme="light"]) #__rb-pill:hover{background:#fff;color:#000}
 }
 :root[data-theme="dark"] #__rb{background:#131310;border-bottom-color:#2c2b24;color:#c0bcb1}
 :root[data-theme="dark"] #__rb .__rb-home{color:#f7f5ef}
 :root[data-theme="dark"] #__rb .__rb-home i{color:#948f85}
+:root[data-theme="dark"] #__rb .__rb-row{color:#948f85}
+:root[data-theme="dark"] #__rb .__rb-row b{color:#c0bcb1}
+:root[data-theme="dark"] #__rb .__rb-from{color:#948f85}
+:root[data-theme="dark"] #__rb .__rb-from b{color:#c0bcb1}
 :root[data-theme="dark"] #__rb a{color:#85adea}
 :root[data-theme="dark"] #__rb .__mark{background:#f7f5ef;color:#131310}
-:root[data-theme="dark"] #__rb-pill{background:rgba(247,245,239,.95);color:#131310;border-color:rgba(0,0,0,.2)}
-:root[data-theme="dark"] #__rb-pill:hover{background:#fff;color:#000}
-@media (prefers-reduced-motion:reduce){#__rb-pill{transition:none}}
-@media print{#__rb,#__rb-pill{display:none !important}}
+@media print{#__rb{display:none !important}}
 </style>
-<div id="__rb">
+<nav id="__rb" aria-label="Portfolio">
   <a class="__rb-home" href="index.html"><span class="__mark" aria-hidden="true">A</span>Alex Rajcoomar <i>portfolio</i></a>
-  <span class="__rb-right"><a href="coursework.html">Coursework</a><a href="library.html">All work</a></span>
-</div>
+  <span class="__rb-row">Coursework &middot; <b>5,908</b> words &middot; <b>21</b> figures &middot; <b>12</b> tables</span>
+  <span class="__rb-right"><a href="coursework.html">Coursework</a><a href="atlas.html">Atlas</a><a href="library.html">All work</a></span>
+  <span class="__rb-from"><b>Built from</b> Built from the complete ECON 102 slide deck of January 2026 by Kate Rybczynski.</span>
+</nav>
 <script>
 /* the trail: which passages this browser has opened. The atlas reads it and
    rings them; the record lives in localStorage and never leaves the machine. */
@@ -338,7 +339,7 @@ footer{margin-top:52px;padding-top:18px;border-top:1px solid var(--line);
     function put(key){
       if(t2[key]||Object.keys(t2).length<500){
         t2[key]=(t2[key]||0)+1;
-        localStorage.setItem(k,JSON.stringify(t2));
+        try{localStorage.setItem(k,JSON.stringify(t2));}catch(e){}
       }
     }
     put(u+location.hash);
@@ -348,10 +349,10 @@ footer{margin-top:52px;padding-top:18px;border-top:1px solid var(--line);
 </script>
 <!--/__rb-->
 
-<div class="wrap">
+<div class="wrap" role="main">
 
 <div class="mast">
-  <h1 id="econ-102-master-visual-reference">ECON 102 — Master Visual Reference</h1>
+  <h1 id="econ-102-master-visual-reference">ECON 102: Master Visual Reference</h1>
   <p>Introduction to Macroeconomics · University of Waterloo · Prof. Kate Rybczynski · built from the 338-slide deck (<span class="c">ECON102slides2026CompleteJan4.pdf</span>). PDF page = printed slide number.</p>
 </div>
 
@@ -362,26 +363,26 @@ footer{margin-top:52px;padding-top:18px;border-top:1px solid var(--line);
 </div>
 
 <div class="core">
-  <b>How to drill this.</b> Grey blocks like <span class="rv">this one</span> are hidden answers — click to reveal
+  <b>How to drill this.</b> Grey blocks like <span class="rv">this one</span> are hidden answers, click to reveal
   (buttons bottom-right reveal or re-hide everything). <strong>Pass 1:</strong> read a part, work its numbered
   SELF-TESTs on paper before revealing. <strong>Pass 2</strong> (next day): redo only the self-tests, then run the
-  Gauntlet at the end of Part 9. <strong>Pass 3:</strong> reproduce Maps 1–2 and Figures 2–6 on blank paper — the
+  Gauntlet at the end of Part 9. <strong>Pass 3:</strong> reproduce Maps 1–2 and Figures 2–6 on blank paper, the
   exam is a blank page. Printing reveals every answer, so print only after drilling.
 </div>
 
 <nav>
   <div class="nh">Contents</div>
   <ol>
-    <li><a href="#p1">Foundations — accounting &amp; measurement</a></li>
-    <li><a href="#p2">Foundations — production &amp; the labour market</a></li>
+    <li><a href="#p1">Foundations: accounting &amp; measurement</a></li>
+    <li><a href="#p2">Foundations: production &amp; the labour market</a></li>
     <li><a href="#p3">Saving, investment &amp; the goods market</a></li>
     <li><a href="#p4">Money, the asset market &amp; inflation</a></li>
-    <li><a href="#p5">The three markets together — the analytical core</a></li>
+    <li><a href="#p5">The three markets together: the analytical core</a></li>
     <li><a href="#p6">Trends, cycles, growth &amp; inequality</a></li>
     <li><a href="#p7">Monetary &amp; fiscal policy</a></li>
     <li><a href="#p8">International, exchange rates &amp; BoP</a></li>
     <li><a href="#p9">Graphing technique &amp; exam craft</a></li>
-    <li><a href="#p10">Errata — flag these</a></li>
+    <li><a href="#p10">Errata: flag these</a></li>
   </ol>
 </nav>
 
@@ -394,7 +395,7 @@ footer{margin-top:52px;padding-top:18px;border-top:1px solid var(--line);
 
 <!-- ============================================================ 1 -->
 <section id="p1">
-<h2 id="part-1-sections-i-ii-foundations-accounting-meas"><span class="pt">Part 1 · Sections I–II</span>Foundations — accounting &amp; measurement</h2>
+<h2 id="part-1-sections-i-ii-foundations-accounting-meas"><span class="pt">Part 1 · Sections I–II</span>Foundations: accounting &amp; measurement</h2>
 
 <h3 id="s-1-1-the-national-accounts-identities-17-33">1.1 The national accounts identities <span class="c">[17–33]</span></h3>
 <pre>GDP = C + I + G + NX                        [17]
@@ -439,9 +440,9 @@ Fisher    = (Laspeyres × Paasche)^½ ; chain by multiplying   [41–42]
 r(after tax) = (1 − t)·i − πᵉ                                [132]</pre>
 
 <div class="warn"><b>Denominator trap.</b> π divides by <strong>P(t)</strong>, the <em>earlier</em> period.
-Q11: (1.20 − 1.15)/1.15 = <strong>4.35%</strong>. Dividing by 1.20 gives 4.17% — wrong. No calculators, so no safety net.</div>
+Q11: (1.20 − 1.15)/1.15 = <strong>4.35%</strong>. Dividing by 1.20 gives 4.17%, wrong. No calculators, so no safety net.</div>
 
-<p><strong>Real vs nominal is one operation — divide by P</strong> [34]:</p>
+<p><strong>Real vs nominal is one operation, divide by P</strong> [34]:</p>
 <table>
 <thead><tr><th>Concept</th><th>Nominal</th><th>Real</th><th>Link</th></tr></thead>
 <tbody>
@@ -456,18 +457,18 @@ Q11: (1.20 − 1.15)/1.15 = <strong>4.35%</strong>. Dividing by 1.20 gives 4.17%
 <div class="qbox">
   <div class="qt">Self-test</div>
   Nominal GDP falls 21% while the single good's price falls 11%. Is real GDP growth base-dependent?<br>
-  → <span class="rv">No — with one good, real growth is −11.1% on <em>any</em> base year. Q23. And note the published answer box says −11.1% for <em>nominal</em> growth; the correct nominal figure is −21%.</span>
+  → <span class="rv">No, with one good, real growth is −11.1% on <em>any</em> base year. Q23. And note the published answer box says −11.1% for <em>nominal</em> growth; the correct nominal figure is −21%.</span>
 </div>
 
-<div class="gold"><b>GDP's two-sided critique</b> — both directions are examinable.
+<div class="gold"><b>GDP's two-sided critique</b>, both directions are examinable.
 <strong>Under</strong>-estimates: home production, the underground economy [Q7, Q8].
-<strong>Over</strong>-estimates: remedial/defensive spending — paying to clean up damage counts as output [Q7b, Q8b].
+<strong>Over</strong>-estimates: remedial/defensive spending, paying to clean up damage counts as output [Q7b, Q8b].
 StatCan puts unpaid household work at roughly <strong>25%–37% of GDP</strong> (2019). Cite the percentages, not the dollar figure.</div>
 </section>
 
 <!-- ============================================================ 2 -->
 <section id="p2">
-<h2 id="part-2-sections-iii-iv-foundations-production-th"><span class="pt">Part 2 · Sections III–IV</span>Foundations — production &amp; the labour market</h2>
+<h2 id="part-2-sections-iii-iv-foundations-production-th"><span class="pt">Part 2 · Sections III–IV</span>Foundations: production &amp; the labour market</h2>
 
 <h3 id="s-2-1-the-production-function-67-75">2.1 The production function <span class="c">[67–75]</span></h3>
 <div class="eq">Y = F(A, K, N) &nbsp;&nbsp;often&nbsp;&nbsp; Y = A · F(K, N) = A·K<sup>α</sup>·N<sup>1−α</sup></div>
@@ -494,7 +495,7 @@ A   = Y / F(K,N)     ← A is a RESIDUAL             [71]
     <text class="ts" x="30" y="129">Y₁</text>
     <text class="ts" x="200" y="200">MPN falls as N rises → diminishing returns</text>
   </svg>
-  <figcaption><b>MPN is the slope, not the height.</b> The curve flattens as N rises, so MPN falls — diminishing
+  <figcaption><b>MPN is the slope, not the height.</b> The curve flattens as N rises, so MPN falls: diminishing
   returns [70]. A higher <b>A</b> (or K) raises the slope at <em>every</em> N, which is why a productivity shock
   shifts labour demand [74].</figcaption>
 </figure>
@@ -502,7 +503,7 @@ A   = Y / F(K,N)     ← A is a RESIDUAL             [71]
 <div class="qbox">
   <div class="qt">Self-test</div>
   TFP growth is computed assuming Y = AKN<sup>0.5</sup> when the truth is Y = AK<sup>0.5</sup>N<sup>0.5</sup>. Does the error matter?<br>
-  → <span class="rv">Enormously — Q16 gives 300% vs 900%. Slide 72: "this calculation method will be incorrect if we are wrong about the functional form." A is a residual, so every specification error lands in A.</span>
+  → <span class="rv">Enormously: Q16 gives 300% vs 900%. Slide 72: "this calculation method will be incorrect if we are wrong about the functional form." A is a residual, so every specification error lands in A.</span>
 </div>
 
 <h3 id="s-2-2-labour-demand-and-the-hiring-rule-80-99">2.2 Labour demand and the hiring rule <span class="c">[80–99]</span></h3>
@@ -518,7 +519,7 @@ FE = Y* = A·F(K, N*)                                      [105]</pre>
 </div>
 
 <figure>
-  <div class="figtitle">Figure 2 · Labour market — market clearing vs sticky wage <span class="c">[88, 106–108]</span></div>
+  <div class="figtitle">Figure 2 · Labour market, market clearing vs sticky wage <span class="c">[88, 106–108]</span></div>
   <div class="panels two">
     <svg viewBox="0 0 320 235" role="img" aria-label="Market clearing labour market with supply and demand intersecting at w star and N star">
       <text class="tb" x="8" y="14">A · Market clearing</text>
@@ -561,16 +562,16 @@ FE = Y* = A·F(K, N*)                                      [105]</pre>
     </svg>
   </div>
   <figcaption><b>Unemployment = N<sup>S</sup> − N<sup>D</sup> at the prevailing wage</b> [106]. In panel A the two are equal by
-  construction, so unemployment is <em>always zero</em> — you cannot answer an unemployment question inside that
+  construction, so unemployment is <em>always zero</em>: you cannot answer an unemployment question inside that
   framework. In panel B the wage is stuck above the new clearing level and the horizontal gap is the unemployment.
-  <b>Wages stick only when above w*</b> — wages below w* are not stuck [107].</figcaption>
+  <b>Wages stick only when above w*</b>: wages below w* are not stuck [107].</figcaption>
 </figure>
 
 <pre>Slide 108 worked:  N^S = 3w, wage stuck at w = 10, N^D falls to 28 − w
                    N^S = 3(10) = 30 ;  N^D = 28 − 10 = 18
                    Unemployment = 30 − 18 = 12</pre>
 
-<div class="gold"><b>Why wages stick</b> [109]: institutional factors — wage floors, negotiated contracts — plus
+<div class="gold"><b>Why wages stick</b> [109]: institutional factors (wage floors, negotiated contracts) plus
 <strong>efficiency wages</strong>: firms pay above clearing to cut turnover, attract and retain better workers, and raise effort.
 Cross-link: efficiency wages need wage <em>dispersion</em> to work, which is why slide 245 says some inequality may be
 necessary to motivate effort.</div>
@@ -590,7 +591,7 @@ Participation rate      = LF ÷ working-age population
 Unemployment rate (R4)  = Unemployed ÷ LF
 Employment ratio        = Employed ÷ working-age population</pre>
 <p><strong>Types</strong> [117]: frictional (brief, between jobs) · structural (longer, capability or demand-shift) ·
-cyclical (fluctuation around FE). <strong>Natural rate = frictional + structural</strong> — cyclical excluded.</p>
+cyclical (fluctuation around FE). <strong>Natural rate = frictional + structural</strong>, cyclical excluded.</p>
 <p><strong>Measures</strong> [119]: R1 (≥1 yr) · R2 (≥3 mo) · R3 (US definition) · <strong>R4 official</strong> ·
 R5 (+discouraged) · R7 (+involuntary part-time). Measurement issues [118]: discouraged workers, underemployment, long-term unemployment.</p>
 <p><strong>Four drivers of changes in unemployment</strong> [122]: 1 participation-rate changes · 2 structural change ·
@@ -599,7 +600,7 @@ R5 (+discouraged) · R7 (+involuntary part-time). Measurement issues [118]: disc
 <div class="qbox">
   <div class="qt">Self-test</div>
   Unemployment stays at 100 people but the measured rate rises from 10% to 11.1%. What happened?<br>
-  → <span class="rv">The labour force shrank. Q23(f). The rate is U ÷ LF — a smaller denominator raises the rate with no change in the number unemployed. This is driver 1 on slide 122.</span>
+  → <span class="rv">The labour force shrank. Q23(f). The rate is U ÷ LF, a smaller denominator raises the rate with no change in the number unemployed. This is driver 1 on slide 122.</span>
 </div>
 </section>
 
@@ -681,7 +682,7 @@ mm = <strong>1.724</strong>. Use <span class="m">(cu+1)/(cu+res)</span>.</div>
   <div class="dial"><b>res</b>the BANKS choose reserves vs lending</div>
   <div class="dial"><b>BASE</b>the CENTRAL BANK sets it directly</div>
 </div>
-<p class="c" style="font-size:13px;margin-top:-6px">Three actors, three dials [180] — Q41 wants one move from each: cu ↓, res ↓, or an open-market purchase all raise M.</p>
+<p class="c" style="font-size:13px;margin-top:-6px">Three actors, three dials [180]: Q41 wants one move from each: cu ↓, res ↓, or an open-market purchase all raise M.</p>
 
 <figure>
   <div class="figtitle">Figure 4 · Asset market equilibrium <span class="c">[165, 187]</span></div>
@@ -699,13 +700,12 @@ mm = <strong>1.724</strong>. Use <span class="m">(cu+1)/(cu+res)</span>.</div>
     <text class="ts" x="196" y="80">quantity = BASE × mm —</text>
     <text class="ts" x="196" y="93">central bank, banks, public [178–180]</text>
   </svg>
-  <figcaption><b>The vertical axis is the REAL rate r</b>, not the nominal rate. Real money supply M/P is vertical —
-  the quantity is set by policy and the banking system, not by r. Money demand L(·) slopes down because a higher r
+  <figcaption><b>The vertical axis is the REAL rate r</b>, not the nominal rate. Real money supply M/P is vertical:   the quantity is set by policy and the banking system, not by r. Money demand L(·) slopes down because a higher r
   raises the opportunity cost of holding money, and shifts <em>right</em> when Y rises.</figcaption>
 </figure>
 
 <div class="warn"><b>Erratum [187, 189].</b> Those two slides label the vertical axis "M/P" but the values on it are r*.
-The axis is <strong>r</strong>. Slides 214, 218 and 337 have it right — draw it their way.</div>
+The axis is <strong>r</strong>. Slides 214, 218 and 337 have it right, draw it their way.</div>
 
 <table>
 <thead><tr><th>Shock</th><th>Curve</th><th>Direction</th><th>r*</th><th>Q</th></tr></thead>
@@ -716,12 +716,12 @@ The axis is <strong>r</strong>. Slides 214, 218 and 337 have it right — draw i
 <tr><td>Y rises</td><td>L(·)</td><td>right</td><td class="up">↑</td><td class="n">—</td></tr>
 </tbody>
 </table>
-<p class="c" style="font-size:13px">Note Q35(b) and Q35(c) look <em>identical</em> on the graph — different causes, same shift.</p>
+<p class="c" style="font-size:13px">Note Q35(b) and Q35(c) look <em>identical</em> on the graph, different causes, same shift.</p>
 
 <div class="qbox">
   <div class="qt">Self-test</div>
   Q35(b) contractionary policy and Q35(c) a rise in cu produce identical graphs. What distinguishes them?<br>
-  → <span class="rv">Only the actor. Both shift M/P left and raise r*: in (b) the central bank shrinks BASE; in (c) the public raises cu, shrinking mm = (cu+1)/(cu+res). The graph cannot tell you which happened — name the mechanism to earn the marks [180].</span>
+  → <span class="rv">Only the actor. Both shift M/P left and raise r*: in (b) the central bank shrinks BASE; in (c) the public raises cu, shrinking mm = (cu+1)/(cu+res). The graph cannot tell you which happened, name the mechanism to earn the marks [180].</span>
 </div>
 
 <div class="qbox">
@@ -745,7 +745,7 @@ and the <strong>central bank</strong> (BASE, via open market operations). Q41 as
 consistency is what resolves within-market ambiguity [212, 214, 334].</div>
 
 <figure>
-  <div class="figtitle">Choosing the framework — decide this BEFORE drawing anything</div>
+  <div class="figtitle">Choosing the framework, decide this BEFORE drawing anything</div>
   <svg class="wide" viewBox="0 0 760 292" role="img" aria-label="Decision tree for choosing between market clearing, sticky wage and search and matching frameworks">
     <defs><marker id="arrC" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 z" style="fill:var(--ink-3)"/></marker></defs>
     <rect class="nd" x="230" y="18" width="300" height="36" rx="8"/>
@@ -780,10 +780,10 @@ consistency is what resolves within-market ambiguity [212, 214, 334].</div>
   right-hand branches. Choosing the wrong box loses the whole question, not part of it.</figcaption>
 </figure>
 
-<h3 id="s-5-1-temporary-negative-supply-shock-market-clear">5.1 Temporary negative supply shock — market clearing <span class="c">[212–215]</span></h3>
+<h3 id="s-5-1-temporary-negative-supply-shock-market-clear">5.1 Temporary negative supply shock: market clearing <span class="c">[212–215]</span></h3>
 
 <figure>
-  <div class="figtitle">Map 1 · The causal chain — temporary A ↓, market clearing <span class="c">[212–214]</span></div>
+  <div class="figtitle">Map 1 · The causal chain, temporary A ↓, market clearing <span class="c">[212–214]</span></div>
   <svg class="wide" viewBox="0 0 760 344" role="img" aria-label="Causal map of a negative supply shock propagating from the labour market through output, goods and prices to the asset market">
     <defs><marker id="arrA" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 z" style="fill:var(--ink-3)"/></marker></defs>
     <text class="lanetag" x="24" y="16">LABOUR — THE SHOCK ENTERS</text>
@@ -827,7 +827,7 @@ consistency is what resolves within-market ambiguity [212, 214, 334].</div>
   </svg>
   <figcaption><b>Read it top to bottom, then say it out loud without looking.</b> One shock, four stages: labour sets
   N*, output falls, the goods market prices the scarcity of saving (r ↑) while excess demand raises P, and the asset
-  market is forced to agree. The <b>pinned</b> box is the whole trick — within-market ambiguity is resolved by the
+  market is forced to agree. The <b>pinned</b> box is the whole trick: within-market ambiguity is resolved by the
   market that is NOT ambiguous.</figcaption>
 </figure>
 
@@ -898,7 +898,7 @@ consistency is what resolves within-market ambiguity [212, 214, 334].</div>
     </svg>
   </div>
   <figcaption><b>The asset market alone cannot sign r.</b> P rises so M/P falls (pushes r up) but Y falls so L(·) falls
-  (pushes r down). The <em>goods</em> market pins r ↑ unambiguously — therefore the M/P effect <b>must</b> dominate in the
+  (pushes r down). The <em>goods</em> market pins r ↑ unambiguously, therefore the M/P effect <b>must</b> dominate in the
   asset market. That is the argument slide 212 makes, and it is the template for every ambiguous question in this course. <span class="hint">Blank-paper rep: draw all three panels from Map 1 without looking, then check here.</span></figcaption>
 </figure>
 
@@ -914,10 +914,10 @@ Recessionary: Y is falling.</pre>
 Criticised for (1) reliance on productivity shocks <em>which are unknown</em>, (2) predicting <strong>money neutrality</strong>,
 (3) predicting <strong>zero unemployment</strong>.</div>
 
-<h3 id="s-5-2-increase-in-g-sticky-wage-216-219-333-338">5.2 Increase in G — sticky wage <span class="c">[216–219, 333–338]</span></h3>
+<h3 id="s-5-2-increase-in-g-sticky-wage-216-219-333-338">5.2 Increase in G: sticky wage <span class="c">[216–219, 333–338]</span></h3>
 
 <figure>
-  <div class="figtitle">Map 2 · The causal chain — G ↑, sticky wage <span class="c">[217–219]</span></div>
+  <div class="figtitle">Map 2 · The causal chain: G ↑, sticky wage <span class="c">[217–219]</span></div>
   <svg class="wide" viewBox="0 0 760 306" role="img" aria-label="Causal map of a government spending increase under nominal wage rigidity">
     <defs><marker id="arrB" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 z" style="fill:var(--ink-3)"/></marker></defs>
     <text class="lanetag" x="24" y="16">GOODS — THE SHOCK ENTERS</text>
@@ -1030,7 +1030,7 @@ Criticised for (1) reliance on productivity shocks <em>which are unknown</em>, (
       <text class="ts" x="52" y="232" fill="var(--s3)">W/P falls ⇒ move DOWN ALONG N<tspan baseline-shift="super" font-size="7">D</tspan> ⇒ N and Y rise</text>
     </svg>
   </div>
-  <figcaption><b>The engine is the real wage.</b> W is stuck in nominal terms, P rises, so <b>W/P falls</b> — firms move
+  <figcaption><b>The engine is the real wage.</b> W is stuck in nominal terms, P rises, so <b>W/P falls</b>: firms move
   <em>down along</em> N<sup>D</sup>, employment rises, and Y rises with it. Nothing about the worker's nominal wage changed.
   Note also that Y ↑ shifts L(·) right and pushes S<sup>D</sup> partly back right, <b>but neither override the original shift</b> [217].</figcaption>
 </figure>
@@ -1043,8 +1043,7 @@ Numerically [335–336]:
   G = 100  → P = 1.39, Y = 686, r* = 0.625, S = 68.7, C = 517, N = 7</pre>
 
 <div class="warn"><b>Wage rigidity is one-directional</b> [219]. The nominal wage is rigid <em>downward</em> only.
-If the price rise were very large, the most you would see is employment rising to where N<sup>S</sup> = N<sup>D</sup> —
-it cannot overshoot into excess labour demand. Never draw N past the clearing point.</div>
+If the price rise were very large, the most you would see is employment rising to where N<sup>S</sup> = N<sup>D</sup>, it cannot overshoot into excess labour demand. Never draw N past the clearing point.</div>
 
 <h3 id="s-5-3-the-shock-playbook">5.3 The shock playbook</h3>
 <table>
@@ -1057,7 +1056,7 @@ it cannot overshoot into excess labour demand. Never draw N past the clearing po
 <tr><td>Increase in M</td><td class="n">Sticky wage</td><td class="up">↑</td><td class="dn">W/P ↓</td><td class="up">↑</td><td class="dn">↓</td><td class="up">↑</td></tr>
 </tbody>
 </table>
-<p class="c" style="font-size:13px">* See errata — the Q47 solution says w* falls; a rightward N<sup>D</sup> shift along an upward N<sup>S</sup> should <em>raise</em> w*, and its own graph shows w₂* above w₁*. Unresolved.</p>
+<p class="c" style="font-size:13px">* See errata, the Q47 solution says w* falls; a rightward N<sup>D</sup> shift along an upward N<sup>S</sup> should <em>raise</em> w*, and its own graph shows w₂* above w₁*. Unresolved.</p>
 
 <div class="core"><b>Sort every shock two ways:</b> supply or demand × market-clearing or rigid.
 <strong>Supply shock + clearing ⇒ P falls.</strong> <strong>Demand shock + rigidity ⇒ P rises.</strong>
@@ -1067,20 +1066,20 @@ And: two changes in the same direction ⇒ determinate; opposite directions ⇒ 
 <table>
 <thead><tr><th>Model</th><th>Unemployment?</th><th>Money neutral?</th><th>Real wage</th><th>Weak point</th></tr></thead>
 <tbody>
-<tr><td>Market clearing</td><td>No — always zero [106]</td><td>Yes</td><td class="n">—</td><td class="n">Cannot model unemployment</td></tr>
+<tr><td>Market clearing</td><td>No, always zero [106]</td><td>Yes</td><td class="n">—</td><td class="n">Cannot model unemployment</td></tr>
 <tr><td>Sticky wage</td><td>Yes, if w stuck above w* [107]</td><td><strong>No</strong> [220]</td><td class="n">Counter-cyclical</td><td class="n">Predicts countercyclical real wages [220]</td></tr>
 <tr><td>Search &amp; matching</td><td>Always [110–112]</td><td class="n">—</td><td class="n">Bargaining</td><td class="n">Wage needs a bargaining assumption</td></tr>
 <tr><td>RBC (supply shocks)</td><td>No [215]</td><td>Yes</td><td class="n">Pro-cyclical</td><td class="n">A unobservable; zero unemployment</td></tr>
 </tbody>
 </table>
-<p>Each model repairs the other's main flaw. RBC's three failures are exactly what sticky wage fixes — and sticky
+<p>Each model repairs the other's main flaw. RBC's three failures are exactly what sticky wage fixes, and sticky
 wage breaks the real-wage prediction instead. <strong>Q42's release valve:</strong> real-wage cyclicality is empirically
 <em>contested</em> (models disagree; composition effects), so neither is cleanly refuted there.</p>
 
 <div class="qbox">
   <div class="qt">Self-test</div>
   Under a temporary <em>positive</em> supply shock with market clearing, what happens to N*, Y*, r*, I*, P?<br>
-  → <span class="rv">Q47: N* ↑, Y* ↑, r* ↓, I* ↑ (movement along I<sup>D</sup>), P ↓. Mirror image of slides 212–215. The w* direction is the disputed one — see errata.</span>
+  → <span class="rv">Q47: N* ↑, Y* ↑, r* ↓, I* ↑ (movement along I<sup>D</sup>), P ↓. Mirror image of slides 212–215. The w* direction is the disputed one, see errata.</span>
 </div>
 </section>
 
@@ -1120,7 +1119,7 @@ wage breaks the real-wage prediction instead. <strong>Q42's release valve:</stro
   </svg>
   <figcaption><b>Cycles are recurrent and persistent</b> [207], measured <b>peak-to-peak or trough-to-trough</b> [196],
   and quantified along <b>depth</b> [198], <b>length/speed</b> [199] and <b>duration</b> [200–201].
-  <b>There is no universally used definition of a recession</b> [202] — magnitude, duration and scope, with experts
+  <b>There is no universally used definition of a recession</b> [202]: magnitude, duration and scope, with experts
   sometimes divided, and the label usually applied only in hindsight [203].</figcaption>
 </figure>
 
@@ -1130,7 +1129,7 @@ co-movement). <strong>Timing</strong> [208]: leading (moves before) · lagging (
 and inflation; financial variables.</p>
 
 <h3 id="s-6-2-what-drives-growth-225-229">6.2 What drives growth <span class="c">[225–229]</span></h3>
-<p>Slide 225: <em>"there are three elements which influence growth"</em> — read straight off Y = F(A, K, N).</p>
+<p>Slide 225: <em>"there are three elements which influence growth"</em>, read straight off Y = F(A, K, N).</p>
 <table>
 <thead><tr><th>Source</th><th>Mechanism</th><th>Catch</th></tr></thead>
 <tbody>
@@ -1171,19 +1170,19 @@ to a balanced growth path [227]. <strong>Saving raises the level, not the perman
   </svg>
   <figcaption><b>Why saving can't buy permanent growth:</b> a higher saving rate moves the steady-state K and lifts
   growth <em>temporarily</em>, but diminishing MPK drags the economy back to the balanced path [227]. Escape requires
-  <b>A</b> — and if A is endogenous, convergence itself is no longer guaranteed [228].</figcaption>
+  <b>A</b>: and if A is endogenous, convergence itself is no longer guaranteed [228].</figcaption>
 </figure>
 
 <div class="qbox">
   <div class="qt">Self-test</div>
   Two countries share A, N and the saving rate; one holds a quarter of the other's capital stock. Which grows faster?<br>
-  → <span class="rv">The low-K country [Q49 — Lomond]. Lower K ⇒ higher MPK ⇒ each unit of investment buys more output growth ⇒ it converges upward toward the shared balanced growth path [226–227].</span>
+  → <span class="rv">The low-K country [Q49: Lomond]. Lower K ⇒ higher MPK ⇒ each unit of investment buys more output growth ⇒ it converges upward toward the shared balanced growth path [226–227].</span>
 </div>
 
 <div class="gold"><b>Growth's drawbacks are examinable</b> [232–233]: structural unemployment and associated human losses,
 obsolescence of capital, unsustainability and environmental degradation, potential decreases in well-being, and
 <strong>increasing inequality</strong>. Slide 233 asks <em>"Growth for whom?"</em>; slide 234 leaves the growth–inequality
-relationship deliberately <strong>unresolved</strong> — present it as contested.</div>
+relationship deliberately <strong>unresolved</strong>, present it as contested.</div>
 
 <h3 id="s-6-3-measuring-inequality-238-243">6.3 Measuring inequality <span class="c">[238–243]</span></h3>
 
@@ -1210,19 +1209,19 @@ relationship deliberately <strong>unresolved</strong> — present it as conteste
     <text class="ts" x="46" y="244">0</text>
   </svg>
   <figcaption>
-  <b>Gini = A ÷ (A + B)</b> — "the area between the 45° line and the Lorenz curve" over "the area below the 45° line" [238].
+  <b>Gini = A ÷ (A + B)</b>: "the area between the 45° line and the Lorenz curve" over "the area below the 45° line" [238].
   Since A + B = ½, this equals <b>1 − 2 × (area under the Lorenz curve)</b>. Perfect equality ⇒ curve = 45° line ⇒
   <b>Gini = 0</b> [239]. <b>Lower Gini = more equality.</b>
   </figcaption>
 </figure>
 
 <div class="qbox">
-  <div class="qt">Self-test — do this by hand, no calculator</div>
+  <div class="qt">Self-test, do this by hand, no calculator</div>
   Quintile income shares 5 / 10 / 15 / 25 / 45. Compute the Gini using trapezoids.<br>
   → <span class="rv">Cumulative income: 5, 15, 30, 55, 100. Trapezoid strips of width 20:
   (0+5)/2·20 = 50 · (5+15)/2·20 = 200 · (15+30)/2·20 = 450 · (30+55)/2·20 = 850 · (55+100)/2·20 = 1550.
-  Sum = 3100. Area under the 45° line = 5000. Gini = (5000 − 3100)/5000 = <strong>0.3800</strong> — matches slide 240 exactly.</span>
-  <div class="hint">Each strip = (height₁ + height₂)/2 × width. Learn this method — it always comes out clean.</div>
+  Sum = 3100. Area under the 45° line = 5000. Gini = (5000 − 3100)/5000 = <strong>0.3800</strong>, matches slide 240 exactly.</span>
+  <div class="hint">Each strip = (height₁ + height₂)/2 × width. Learn this method, it always comes out clean.</div>
 </div>
 
 <table>
@@ -1230,7 +1229,7 @@ relationship deliberately <strong>unresolved</strong> — present it as conteste
 <tbody>
 <tr><td><strong>Gini</strong> [238–242]</td><td class="n">Intuitive; one number</td><td class="n">Different distributions can give the same Gini</td></tr>
 <tr><td><strong>Theil</strong> / generalized entropy [242]</td><td class="n">Invariant to population size and income scale; <strong>additively decomposable</strong>; rank preserving</td><td class="n">Less intuitive; top/bottom sensitivity depends on weights; not directly comparable</td></tr>
-<tr><td><strong>Decile ratios</strong> (90-10) [243]</td><td class="n">Intuitive</td><td class="n">Do not use all information — blind between the deciles</td></tr>
+<tr><td><strong>Decile ratios</strong> (90-10) [243]</td><td class="n">Intuitive</td><td class="n">Do not use all information, blind between the deciles</td></tr>
 <tr><td><strong>Consumption</strong> inequality [244]</td><td class="n">End result of wage, income and wealth; better welfare summary</td><td class="n">Also reflects choice</td></tr>
 </tbody>
 </table>
@@ -1238,15 +1237,14 @@ relationship deliberately <strong>unresolved</strong> — present it as conteste
 <h3 id="s-6-4-poverty-235-237">6.4 Poverty <span class="c">[235–237]</span></h3>
 <p><strong>Poverty = deprivation of resources</strong>, including the means to participate politically and socially;
 clearly a <em>relative</em> measure once you take the fuller dimensionality [235]. Canada's official measure is the
-<strong>Market Basket Measure</strong> — income needed for a basket meeting basic needs, adjusted for location and family
+<strong>Market Basket Measure</strong>, income needed for a basket meeting basic needs, adjusted for location and family
 size [236]. Large urban Ontario, 2020: <strong>$23,153</strong> single · <strong>$46,306</strong> four-person.</p>
 
-<div class="warn"><b>Q52 — the sharpest distributional trap.</b> If the already-poor get poorer, the poverty
+<div class="warn"><b>Q52, the sharpest distributional trap.</b> If the already-poor get poorer, the poverty
 <strong>rate does not change</strong>. A headcount is insensitive to <strong>depth</strong>. This is the cleanest illustration
 of why one statistic hides distributional change.</div>
 
-<div class="gold"><b>Poverty vs inequality</b> [245]: some inequality may be <em>necessary to motivate effort</em> —
-"efficiency wages would not be effective without wage differences." But inequality may carry negative health and wellbeing
+<div class="gold"><b>Poverty vs inequality</b> [245]: some inequality may be <em>necessary to motivate effort</em>: "efficiency wages would not be effective without wage differences." But inequality may carry negative health and wellbeing
 implications, so intervening on it may matter in its own right. Poverty may be the simpler trigger for intervention.
 Both sides are hers; present both.</div>
 </section>
@@ -1262,7 +1260,7 @@ BoC target <strong>2%</strong> [251]. Too low a target risks contracting the eco
 <pre>π high/rising → raise i_ON → prime rate ↑ → borrowing dearer
               → C and I demanded fall → inflation slows       [250]
 π low/falling → lower i_ON → borrowing cheaper → C, I ↑ → prices bolstered</pre>
-<p><strong>Other tools</strong> [252]: <strong>QE</strong> — buy government bonds, raising their price and lowering
+<p><strong>Other tools</strong> [252]: <strong>QE</strong>, buy government bonds, raising their price and lowering
 returns; payment increases settlement balances (reserves). <strong>QT</strong> reverses by selling or letting bonds mature.
 Plus financial regulation.</p>
 
@@ -1273,7 +1271,7 @@ one-for-one with inflation, so the <strong>real</strong> rate rises when inflati
 one-for-one would be destabilising. Sanity check: at π = 2%, y = 0 ⇒ i = 4% nominal, 2% real.</div>
 
 <figure>
-  <div class="figtitle">The Taylor property, drawn — slope 1.5 vs slope 1 <span class="c">[255]</span></div>
+  <div class="figtitle">The Taylor property, drawn, slope 1.5 vs slope 1 <span class="c">[255]</span></div>
   <svg viewBox="0 0 380 262" role="img" aria-label="Taylor rule line with slope 1.5 crossing a slope-one reference line at the two percent inflation target">
     <line class="ax" x1="56" y1="22" x2="56" y2="210"/>
     <line class="ax" x1="56" y1="210" x2="344" y2="210"/>
@@ -1302,19 +1300,19 @@ one-for-one would be destabilising. Sanity check: at π = 2%, y = 0 ⇒ i = 4% n
     <text class="tt" x="200" y="257" text-anchor="middle">a rule with slope &lt; 1 would CUT the real rate as inflation rose — destabilising.</text>
   </svg>
   <figcaption>Check the anchor: π = 2%, y = 0 ⇒ i = 0.02 + 0.02 + 0 + 0 = <b>4%</b>, so r = 2%. Above target the
-  Taylor line pulls away from the slope-1 line — that vertical gap IS the extra real-rate response.</figcaption>
+  Taylor line pulls away from the slope-1 line: that vertical gap IS the extra real-rate response.</figcaption>
 </figure>
 
 <div class="qbox">
   <div class="qt">Self-test</div>
   Inflation runs at 4% with output at FE (y = 0). What does the Taylor rule set, and what happened to r?<br>
-  → <span class="rv">i = 0.04 + 0.02 + 0 + 0.5(0.04 − 0.02) = <strong>7%</strong>. r = i − π = <strong>3%</strong> — a full point above the 2% neutral stance. The rule leans against the boom precisely because ∂i/∂π = 1.5 [255].</span>
+  → <span class="rv">i = 0.04 + 0.02 + 0 + 0.5(0.04 − 0.02) = <strong>7%</strong>. r = i − π = <strong>3%</strong>, a full point above the 2% neutral stance. The rule leans against the boom precisely because ∂i/∂π = 1.5 [255].</span>
 </div>
 
 <p><strong>Rules vs discretion</strong> [256]. Rules: lags make outcomes and timing unpredictable; rules improve credibility.
 Discretion: the system is too complex for a simple rule; improving forecasts can improve policy.
-<strong>Effectiveness constraints</strong> [253–254]: <strong>lags</strong> — hard to pick the policy and to assess it;
-<strong>credibility</strong> — disinflating without a recession requires being believed. Slide 253: monetary policy
+<strong>Effectiveness constraints</strong> [253–254]: <strong>lags</strong>, hard to pick the policy and to assess it;
+<strong>credibility</strong>, disinflating without a recession requires being believed. Slide 253: monetary policy
 "may not always be the most effective option, particularly with respect to combatting recessions."</p>
 
 <h3 id="s-7-2-fiscal-policy-257-262">7.2 Fiscal policy <span class="c">[257–262]</span></h3>
@@ -1327,7 +1325,7 @@ Fiscal policy = changing G, T, or tax rates            [257]</pre>
 <strong>Drawbacks</strong> [259]: deficits · <strong>inflexible mechanism</strong> · lags · inflation ·
 <strong>distortions leading to inefficiencies</strong>.</p>
 
-<div class="gold"><b>Automatic stabilizers</b> [260] — "budgetary provisions which allow G and T to rise/fall automatically
+<div class="gold"><b>Automatic stabilizers</b> [260]: "budgetary provisions which allow G and T to rise/fall automatically
 with economic fluctuation." Examples: <strong>Employment Insurance and taxes</strong>. They exist to defeat the
 <em>decision-lag</em> drawback, which is the entire answer to Q55. Slide 260 also defines <strong>seignorage</strong>:
 raising money to fund spending by printing money.</p></div>
@@ -1335,17 +1333,17 @@ raising money to fund spending by printing money.</p></div>
 <p><strong>Targeted policies</strong> [261–262]. Lower unemployment: job training, reform EI, reduce market interference,
 monetary and fiscal policy. Lower inflation: monetary policy, direct wage/price controls (Keynesian).</p>
 
-<div class="core"><b>The Lucas critique</b> [263] — the deepest slide in the section.
+<div class="core"><b>The Lucas critique</b> [263], the deepest slide in the section.
 <em>"When you introduce a policy, you change people's behaviour, so if you are not modelling behaviours (those objectives
 which generate the curves) your predictions could be inaccurate."</em> Curves come from optimisation under constraints [57];
 policy changes constraints; so policy moves the very curves you used to predict it. Pair with credibility [254] and the
-flattened Phillips curve [193] — three views of one idea.</div>
+flattened Phillips curve [193], three views of one idea.</div>
 
 <div class="qbox">
   <div class="qt">Self-test</div>
   A government must choose between a discretionary stimulus package and a standing food relief program that scales with
   need. Which does the course favour, and on what single ground?<br>
-  → <span class="rv">The food relief program — it is an <strong>automatic stabilizer</strong>, so it defeats the decision-lag drawback [259–260]. Q55.</span>
+  → <span class="rv">The food relief program, it is an <strong>automatic stabilizer</strong>, so it defeats the decision-lag drawback [259–260]. Q55.</span>
 </div>
 </section>
 
@@ -1361,9 +1359,9 @@ CA + KA = 0    ← true BY DEFINITION              [269]
 But in the data, CA + KA ≠ 0 → statistical discrepancy   [270]</pre>
 
 <div class="core"><b>This is double-entry bookkeeping at national scale.</b> CA + KA = 0 has the same status as
-Assets = Liabilities + Equity — an identity enforced by construction, not an equilibrium condition. Every international
+Assets = Liabilities + Equity, an identity enforced by construction, not an equilibrium condition. Every international
 transaction is recorded twice with opposite signs. The <strong>statistical discrepancy</strong> [270] is the national
-suspense account — and it is the same lesson as the discrepancy in the three GDP approaches [16, 20, 21].
+suspense account, and it is the same lesson as the discrepancy in the three GDP approaches [16, 20, 21].
 <strong>She teaches this twice.</strong></div>
 
 <pre>S = GNP − C − G = C+I+G+NX+NFP − C − G = I + NX + NFP = I + CA   [272]
@@ -1371,7 +1369,7 @@ Open goods market:  S^D = I^D + CA ;  with NFP = 0:  S^D = I^D + NX   [273]
                     NX = S^D − I^D                                     [274]</pre>
 
 <figure>
-  <div class="figtitle">Figure 9 · Open-economy goods market — NX = S<sup>D</sup> − I<sup>D</sup> <span class="c">[275]</span></div>
+  <div class="figtitle">Figure 9 · Open-economy goods market: NX = S<sup>D</sup> − I<sup>D</sup> <span class="c">[275]</span></div>
   <svg viewBox="0 0 400 268" role="img" aria-label="Open economy: net export demand crosses saving minus investment left of zero, giving a trade deficit">
     <line class="ax" x1="56" y1="20" x2="56" y2="212"/>
     <line class="ax" x1="56" y1="212" x2="380" y2="212"/>
@@ -1391,7 +1389,7 @@ Open goods market:  S^D = I^D + CA ;  with NFP = 0:  S^D = I^D + NX   [273]
     <text class="ts" x="56" y="252" fill="var(--s3)">NX* sits LEFT of zero ⇒ NX &lt; 0 ⇒ trade deficit ⇒ CA deficit ⇒ net borrower</text>
   </svg>
   <figcaption><b>A trade deficit is simply saving falling short of investment.</b> The country funds the gap by borrowing
-  abroad — hence <b>net borrower</b> (Q56). The current account is the <em>flow</em>; net foreign assets [33] is the
+  abroad: hence <b>net borrower</b> (Q56). The current account is the <em>flow</em>; net foreign assets [33] is the
   <em>stock</em> it accumulates into. Same relationship as saving → wealth, one level up.</figcaption>
 </figure>
 
@@ -1409,11 +1407,11 @@ of your page before starting any FX question.</div>
   <div class="fxdef">e_nom = units of FOREIGN currency per 1 unit of DOMESTIC (CAD) &nbsp;[280]</div>
   <div class="fxrow" style="color:var(--s3)">e_nom ↑ &nbsp;⇒&nbsp; 1 CAD buys MORE foreign &nbsp;⇒&nbsp; CAD APPRECIATES</div>
   <div class="fxrow" style="color:var(--s2)">e_nom ↓ &nbsp;⇒&nbsp; 1 CAD buys LESS foreign &nbsp;⇒&nbsp; CAD DEPRECIATES</div>
-  <div style="font-size:12.5px;color:var(--ink-2);margin-top:8px">US-oriented sources usually quote the reciprocal (CAD per USD). Reproduce this box at the top of the page before any FX question — one inversion flips every answer in Q58–Q66.</div>
+  <div style="font-size:12.5px;color:var(--ink-2);margin-top:8px">US-oriented sources usually quote the reciprocal (CAD per USD). Reproduce this box at the top of the page before any FX question, one inversion flips every answer in Q58–Q66.</div>
 </div>
 
 <div class="core"><b>One instrument, one target</b> [303–304, 307]. The Bank of Canada <strong>cannot</strong> lower the
-exchange rate and lower inflation simultaneously — Q59 and Q60 both answer <strong>no</strong>. The same policy rate that
+exchange rate and lower inflation simultaneously: Q59 and Q60 both answer <strong>no</strong>. The same policy rate that
 fights domestic inflation also moves the currency. This is why FX translation risk on CAD-listed holdings is not
 avoidable by policy.</div>
 
@@ -1421,13 +1419,13 @@ avoidable by policy.</div>
   <div class="qt">Self-test</div>
   Mexican pesos depreciate against CAD; Canadian inflation is 50% and Mexican inflation 200%. Has Mexico become
   cheaper in real terms?<br>
-  → <span class="rv">No — the opposite. Q62: Mexico moves from ½ to <strong>⅔</strong> of the Canadian price. A <strong>nominal depreciation is not a real depreciation</strong> when the depreciating country's inflation outruns it.</span>
+  → <span class="rv">No, the opposite. Q62: Mexico moves from ½ to <strong>⅔</strong> of the Canadian price. A <strong>nominal depreciation is not a real depreciation</strong> when the depreciating country's inflation outruns it.</span>
 </div>
 
 <div class="qbox">
-  <div class="qt">Self-test — clean arithmetic, no calculator</div>
+  <div class="qt">Self-test, clean arithmetic, no calculator</div>
   A Big Mac costs 5,200 won in Seoul and USD 5.58 in the US; the market rate is 1,274 won/USD. Valued how?<br>
-  → <span class="rv">Implied PPP rate = 5200 ÷ 5.58 = <strong>931.9 won/USD</strong>. The market demands 1,274 — far more won per dollar than PPP implies — so the won is <strong>undervalued ≈ 27%</strong> [Q61].</span>
+  → <span class="rv">Implied PPP rate = 5200 ÷ 5.58 = <strong>931.9 won/USD</strong>. The market demands 1,274, far more won per dollar than PPP implies, so the won is <strong>undervalued ≈ 27%</strong> [Q61].</span>
 </div>
 
 <p><strong>Classify every FX shock</strong> [Q58]: does it move the <strong>demand</strong> for the currency or the
@@ -1443,7 +1441,7 @@ one country's NX rise is the other's fall.</p>
 <p><strong>A variable in the intercept shifts. A variable in the slope pivots.</strong></p>
 
 <figure>
-  <div class="figtitle">Figure 10 · Shift vs pivot — and where each tax lands</div>
+  <div class="figtitle">Figure 10 · Shift vs pivot, and where each tax lands</div>
   <div class="panels two">
     <svg viewBox="0 0 320 230" role="img" aria-label="Parallel shift of a labour supply curve">
       <text class="tb" x="4" y="13">Shift — parallel</text>
@@ -1473,22 +1471,22 @@ one country's NX rise is the other's fall.</p>
     </svg>
   </div>
   <figcaption>
-  <b>Income tax on workers</b> — N<sup>S</sup> = (1−t)w — <b>pivots labour supply about the origin</b> [99, Q19c, Q65].
-  <b>Payroll tax on firms</b> — MPN = (1+τ)w — <b>pivots labour demand about its N-intercept</b>: set w = 0 and
+  <b>Income tax on workers</b>: N<sup>S</sup> = (1−t)w, <b>pivots labour supply about the origin</b> [99, Q19c, Q65].
+  <b>Payroll tax on firms</b>: MPN = (1+τ)w, <b>pivots labour demand about its N-intercept</b>: set w = 0 and
   N = 120 for any τ (practice midterm Q3c). Both pivot because both <em>scale w</em>. <b>Wealth shifts</b> supply, because
   it moves the intercept.
   </figcaption>
 </figure>
 
 <h3 id="s-9-2-the-graphing-convention-88-312">9.2 The graphing convention <span class="c">[88, 312]</span></h3>
-<div class="warn"><b>Price goes on the vertical axis, so you plot the INVERSE function</b> — still labelled
+<div class="warn"><b>Price goes on the vertical axis, so you plot the INVERSE function</b>, still labelled
 N<sup>D</sup> / N<sup>S</sup>. Given N<sup>D</sup> = 500 − 20w, you graph <span class="m">w = 25 − N/20</span>.
 Plotting the function as written puts the wrong variable on the wrong axis and costs the graph marks.</div>
 
 <h3 id="s-9-3-colour-convention-in-her-deck-57-58-92-95-12">9.3 Colour convention in her deck <span class="c">[57–58, 92–95, 128–129, 317–319]</span></h3>
 <p><strong>Black = essential. Grey = supplementary</strong> ("FYI only – not required" / "you will NOT be required to do
 any calculus"). Navy = hyperlinks. Green/blue on graphs = emphasis. Grey appears on only ~45 of 338 slides.
-<strong>Where the deck says in words that something is not required, believe the words</strong> — slide 332 is black but
+<strong>Where the deck says in words that something is not required, believe the words</strong>, slide 332 is black but
 says it will not be tested.</p>
 
 <h3 id="s-9-4-how-to-answer-well">9.4 How to answer well</h3>
@@ -1497,67 +1495,67 @@ says it will not be tested.</p>
 <tbody>
 <tr><td><strong>Name the mechanism, not just the direction</strong></td><td class="n">"A ↑ raises MPN at every N, so N<sup>D</sup> shifts right" beats "A ↑ increases demand"</td></tr>
 <tr><td><strong>Distinguish a shift from a movement along</strong></td><td class="n">Most marks in the course turn on this one distinction</td></tr>
-<tr><td><strong>State ambiguity — then pick one</strong></td><td class="n">Say what it depends on, but on a paper offering options, <strong>circle exactly one. Hedging is penalised.</strong> Where "ambiguous" is itself an option (Q3d, Q4d), choosing it is correct</td></tr>
+<tr><td><strong>State ambiguity, then pick one</strong></td><td class="n">Say what it depends on, but on a paper offering options, <strong>circle exactly one. Hedging is penalised.</strong> Where "ambiguous" is itself an option (Q3d, Q4d), choosing it is correct</td></tr>
 <tr><td><strong>Check the comparison base</strong></td><td class="n">Midterm Q4(d) compares to part (b), not part (c)</td></tr>
 <tr><td><strong>Use cross-market consistency</strong></td><td class="n">r* equal economy-wide resolves within-market ambiguity</td></tr>
 <tr><td><strong>Watch for "temporary"</strong></td><td class="n">Kills the MPK<sup>f</sup> channel but not the p<sub>k</sub> channel</td></tr>
 <tr><td><strong>Check the exponent sum</strong></td><td class="n">Before assuming constant returns to scale</td></tr>
-<tr><td><strong>Criticism is examinable</strong></td><td class="n">Learning outcome 5. Use the four model-evaluation criteria [63] — criterion 1 says assumptions must be <em>appropriate for the research question</em>, not merely realistic</td></tr>
+<tr><td><strong>Criticism is examinable</strong></td><td class="n">Learning outcome 5. Use the four model-evaluation criteria [63], criterion 1 says assumptions must be <em>appropriate for the research question</em>, not merely realistic</td></tr>
 <tr><td><strong>Arithmetic must come out clean</strong></td><td class="n">No calculators ⇒ ugly numbers mean you made an error</td></tr>
 </tbody>
 </table>
 
-<div class="gold"><b>The best cross-section connections</b> [334] — these are what turn a good answer into a top one:
+<div class="gold"><b>The best cross-section connections</b> [334], these are what turn a good answer into a top one:
 Lucas critique [263] ↔ constrained maximisation [57] · credibility [254] ↔ flattened Phillips curve [193] ·
 efficiency wages [109] ↔ "some inequality motivates effort" [245] · technology growth [232] ↔ structural unemployment [117] ·
 A-as-residual [71] ↔ the first RBC criticism [215] · statistical discrepancy [16, 20] ↔ CA + KA ≠ 0 [270] ·
 "disciplines" vs "ties up" monetary policy [307] ↔ rules vs discretion [256].</div>
 
-<h3 id="s-9-5-the-eight-mantras-say-them-don-t-read-them">9.5 The eight mantras — say them, don't read them</h3>
+<h3 id="s-9-5-the-eight-mantras-say-them-don-t-read-them">9.5 The eight mantras: say them, don't read them</h3>
 <div class="chips">
   <div class="chip">Divide by P<small>nominal → real, everywhere [34]</small></div>
   <div class="chip">Intercept shifts, slope pivots<small>taxes scale w ⇒ pivots [317]</small></div>
   <div class="chip">Supply + clearing ⇒ P ↓<small>demand + rigidity ⇒ P ↑ [212, 217]</small></div>
   <div class="chip">One r* for the whole economy<small>cross-market consistency [212]</small></div>
-  <div class="chip">Same direction ⇒ determinate<small>opposite ⇒ ambiguous — check each variable</small></div>
+  <div class="chip">Same direction ⇒ determinate<small>opposite ⇒ ambiguous, check each variable</small></div>
   <div class="chip">Divide by the EARLIER P<small>π = ΔP / P(t) [35]</small></div>
   <div class="chip">"Temporary" never touches MPK<sup>f</sup><small>only the p_k channel moves I^D [Q32b]</small></div>
   <div class="chip">cu · res · BASE<small>public · banks · central bank [180]</small></div>
 </div>
 
-<h3 id="s-9-6-the-gauntlet-twelve-cold-questions-whole-cou">9.6 The gauntlet — twelve cold questions, whole course</h3>
+<h3 id="s-9-6-the-gauntlet-twelve-cold-questions-whole-cou">9.6 The gauntlet: twelve cold questions, whole course</h3>
 <p style="font-size:14px;color:var(--ink-2);margin-bottom:10px">Answer aloud before revealing. Wrong or slow ⇒ reread that part today.</p>
 <table>
 <thead><tr><th style="width:52%">Prompt</th><th>Answer</th></tr></thead>
 <tbody>
-<tr><td>Anne Murray performs in Vienna — Canada's GDP, GNP, or both?</td><td><span class="rv">GNP only — a Canadian factor of production working abroad [Q6, 25]</span></td></tr>
+<tr><td>Anne Murray performs in Vienna: Canada's GDP, GNP, or both?</td><td><span class="rv">GNP only, a Canadian factor of production working abroad [Q6, 25]</span></td></tr>
 <tr><td>The public abandons banks and holds all currency. M = ?</td><td><span class="rv">mm → 1, so M = BASE [Q39, 178]</span></td></tr>
-<tr><td>A temporary rise in MPK — what happens to I^D?</td><td><span class="rv">Nothing via the MPK^f channel (K* unchanged); only a p_k change would shift it [Q32b, 141–149]</span></td></tr>
-<tr><td>M ↑ under sticky wage: N, W/P, Y, r*, P?</td><td><span class="rv">N ↑ · W/P ↓ · Y ↑ · r* ↓ · P ↑ — and I* rises by movement ALONG I^D [Q44]</span></td></tr>
-<tr><td>Minimum wage set exactly AT w* — employment and unemployment?</td><td><span class="rv">Employment unchanged, unemployment zero [midterm Q4b]</span></td></tr>
-<tr><td>The already-poor get poorer. The poverty rate does…?</td><td><span class="rv">Nothing — a headcount is blind to depth [Q52]</span></td></tr>
-<tr><td>Can the BoC cut the exchange rate AND inflation together?</td><td><span class="rv">No — one instrument cannot hit two targets [Q59/60, 303–307]</span></td></tr>
+<tr><td>A temporary rise in MPK, what happens to I^D?</td><td><span class="rv">Nothing via the MPK^f channel (K* unchanged); only a p_k change would shift it [Q32b, 141–149]</span></td></tr>
+<tr><td>M ↑ under sticky wage: N, W/P, Y, r*, P?</td><td><span class="rv">N ↑ · W/P ↓ · Y ↑ · r* ↓ · P ↑, and I* rises by movement ALONG I^D [Q44]</span></td></tr>
+<tr><td>Minimum wage set exactly AT w*, employment and unemployment?</td><td><span class="rv">Employment unchanged, unemployment zero [midterm Q4b]</span></td></tr>
+<tr><td>The already-poor get poorer. The poverty rate does…?</td><td><span class="rv">Nothing, a headcount is blind to depth [Q52]</span></td></tr>
+<tr><td>Can the BoC cut the exchange rate AND inflation together?</td><td><span class="rv">No, one instrument cannot hit two targets [Q59/60, 303–307]</span></td></tr>
 <tr><td>Income tax rises in an open economy: r and NX?</td><td><span class="rv">r ↑ unambiguously (S^D left and NX^D right agree); NX ambiguous [Q65]</span></td></tr>
-<tr><td>Two effects push a variable in opposite directions ⇒ ?</td><td><span class="rv">Ambiguous — unless another market pins it [212]. Same direction ⇒ determinate.</span></td></tr>
-<tr><td>Natural rate of unemployment = ?</td><td><span class="rv">Frictional + structural — cyclical excluded [117]</span></td></tr>
-<tr><td>Deflation with a stuck nominal wage is…?</td><td><span class="rv">Contractionary — P ↓ raises W/P, so employment falls [219 logic, run in reverse]</span></td></tr>
-<tr><td>The statistical discrepancy appears twice in this course — where?</td><td><span class="rv">The three GDP approaches disagreeing in data [16, 20] and CA + KA ≠ 0 in data [270]</span></td></tr>
+<tr><td>Two effects push a variable in opposite directions ⇒ ?</td><td><span class="rv">Ambiguous, unless another market pins it [212]. Same direction ⇒ determinate.</span></td></tr>
+<tr><td>Natural rate of unemployment = ?</td><td><span class="rv">Frictional + structural, cyclical excluded [117]</span></td></tr>
+<tr><td>Deflation with a stuck nominal wage is…?</td><td><span class="rv">Contractionary: P ↓ raises W/P, so employment falls [219 logic, run in reverse]</span></td></tr>
+<tr><td>The statistical discrepancy appears twice in this course, where?</td><td><span class="rv">The three GDP approaches disagreeing in data [16, 20] and CA + KA ≠ 0 in data [270]</span></td></tr>
 </tbody>
 </table>
 </section>
 
 <!-- ============================================================ 10 -->
 <section id="p10">
-<h2 id="part-10-errata-flag-these"><span class="pt">Part 10</span>Errata — flag these</h2>
+<h2 id="part-10-errata-flag-these"><span class="pt">Part 10</span>Errata: flag these</h2>
 
 <h3 id="in-the-slides">In the slides</h3>
 <table>
 <thead><tr><th>Slide</th><th>Says</th><th>Should be</th></tr></thead>
 <tbody>
-<tr><td class="m">[191]</td><td>In heated growth, "the central bank could <strong>reduce</strong> the overnight rate"</td><td><strong>Raise.</strong> Slide 250 is correct — cite 250</td></tr>
+<tr><td class="m">[191]</td><td>In heated growth, "the central bank could <strong>reduce</strong> the overnight rate"</td><td><strong>Raise.</strong> Slide 250 is correct, cite 250</td></tr>
 <tr><td class="m">[187, 189]</td><td>Vertical axis labelled "M/P" but carrying r* values</td><td>The axis is <strong>r</strong> (214, 218, 337 correct)</td></tr>
 <tr><td class="m">[185]</td><td>Refers to "section XIII"</td><td>Section <strong>VIII</strong></td></tr>
-<tr><td class="m">[281]</td><td>Real exchange rate given as 1.167</td><td>Her own numbers (0.7 × 2.00 / 1.30) give <strong>1.077</strong>. <strong>Unresolved — ask her</strong></td></tr>
+<tr><td class="m">[281]</td><td>Real exchange rate given as 1.167</td><td>Her own numbers (0.7 × 2.00 / 1.30) give <strong>1.077</strong>. <strong>Unresolved, ask her</strong></td></tr>
 <tr><td class="m">[184]</td><td>"the deposit rate = the target rate"</td><td>Correct when written; since <strong>January 2025</strong> the deposit rate sits <strong>5bp below</strong> target</td></tr>
 </tbody>
 </table>
@@ -1567,7 +1565,7 @@ A-as-residual [71] ↔ the first RBC criticism [215] · statistical discrepancy 
 <thead><tr><th>Question</th><th>Issue</th></tr></thead>
 <tbody>
 <tr><td class="m">Q23(a)</td><td>Answer box says −11.1%; correct <strong>nominal</strong> GDP growth is <strong>−21%</strong> (the worked line says so). Also writes 65,000 where 8000 × 8 = <strong>64,000</strong>. Most consequential error in the set</td></tr>
-<tr><td class="m">Q47</td><td>Reports w* <strong>falling</strong> after a rightward N<sup>D</sup> shift along an upward N<sup>S</sup>; it should <strong>rise</strong>, and the graph labels w₂* above w₁*. <strong>Unresolved — ask her</strong></td></tr>
+<tr><td class="m">Q47</td><td>Reports w* <strong>falling</strong> after a rightward N<sup>D</sup> shift along an upward N<sup>S</sup>; it should <strong>rise</strong>, and the graph labels w₂* above w₁*. <strong>Unresolved, ask her</strong></td></tr>
 <tr><td class="m">Q11(b)</td><td>Inflation given as 4%; exact <strong>4.35%</strong></td></tr>
 <tr><td class="m">Q11(d)</td><td>Writes "r = 0.03 − 0.04 = −1"; should be <strong>−0.01</strong></td></tr>
 <tr><td class="m">Q17(c)</td><td>Writes "(100 − 280)/1"; should be <strong>(300 − 280)/1</strong></td></tr>
@@ -1575,16 +1573,16 @@ A-as-residual [71] ↔ the first RBC criticism [215] · statistical discrepancy 
 <tr><td class="m">Q15 / Q33</td><td>Rounding: TFP growth −4.39% (given −4%); r* 0.2353 / 0.4706 (given 0.24 / 0.47)</td></tr>
 </tbody>
 </table>
-<p><strong>Practice midterm solutions: no errors found</strong> — two cosmetic typos only.</p>
+<p><strong>Practice midterm solutions: no errors found</strong>, two cosmetic typos only.</p>
 
-<div class="warn"><b>Two remain unresolved</b> — slide 281's real exchange rate and Q47's w* direction.
+<div class="warn"><b>Two remain unresolved</b>, slide 281's real exchange rate and Q47's w* direction.
 Email Prof. Rybczynski rather than memorising a contradiction.</div>
 </section>
 
 <footer>
   <p><strong>Sources.</strong> All slide references are to <em>ECON102slides2026CompleteJan4.pdf</em> (338 slides;
   PDF page = printed slide number). Study-question references are to <em>ECON102studyquestionsApr3.pdf</em> (Q1–Q67).
-  Figures are redrawn schematics of her graphs, not reproductions — geometry is illustrative, the labels and
+  Figures are redrawn schematics of her graphs, not reproductions, geometry is illustrative, the labels and
   relationships are hers.</p>
   <p><strong>Not official course material.</strong> Where a redrawn figure and her slide disagree, her slide governs.
   Her outline asks you not to learn models or notation from outside sources; everything here uses her notation from her deck.</p>
@@ -1611,16 +1609,62 @@ if (ha) ha.addEventListener('click', function(){
 });
 </script>
 
-
+<!--__long--><link rel="stylesheet" href="long.css?v=0b99e235"><script src="long.js?v=98a5c23b" defer></script><!--/__long-->
 
 <!--__rbp-->
+<!-- The pill styles itself: this block used to live only with the top bar,
+     so the seven tool pages, which carry the pill alone, rendered it as an
+     unstyled link at the very end of the document. Whatever carries the
+     pill now carries its style. -->
+<style id="__rbp-style">
+#__rb-pill{
+  position:fixed;left:14px;bottom:14px;z-index:2147483000;
+  display:inline-flex;align-items:center;gap:.45rem;padding:.58rem .9rem;
+  background:rgba(22,21,15,.93);color:#faf9f6;text-decoration:none;border-radius:99px;
+  font:600 12.5px/1 InterVar,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  border:1px solid rgba(255,255,255,.16);box-shadow:0 6px 22px rgba(0,0,0,.28);
+  opacity:0;transform:translateY(6px);pointer-events:none;
+  transition:opacity .2s ease,transform .2s ease;
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+}
+#__rb-pill.__on{opacity:1;transform:none;pointer-events:auto}
+#__rb-pill:hover{background:#16150f;color:#fff}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) #__rb-pill{background:rgba(247,245,239,.95);color:#131310;border-color:rgba(0,0,0,.2)}
+  :root:not([data-theme="light"]) #__rb-pill:hover{background:#fff;color:#000}
+}
+:root[data-theme="dark"] #__rb-pill{background:rgba(247,245,239,.95);color:#131310;border-color:rgba(0,0,0,.2)}
+:root[data-theme="dark"] #__rb-pill:hover{background:#fff;color:#000}
+@media (prefers-reduced-motion:reduce){#__rb-pill{transition:none}}
+@media print{#__rb-pill{display:none !important}}
+/* a tool carries no bar, so what it was built from stands at the foot of the document */
+#__rb-from{margin:1.25rem 1rem;font:400 13px/1.45 InterVar,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;color:#6f6c63;max-width:70ch}
+#__rb-from b{font-weight:600;color:#55524a}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) #__rb-from{color:#948f85}
+  :root:not([data-theme="light"]) #__rb-from b{color:#c0bcb1}
+}
+:root[data-theme="dark"] #__rb-from{color:#948f85}
+:root[data-theme="dark"] #__rb-from b{color:#c0bcb1}
+</style>
+<!-- With scripts off nothing ever adds the __on class, and the only way
+     back from a tool page vanished. The pill needs its script for the
+     scroll threshold, not for existing. -->
+<noscript><style>#__rb-pill{opacity:1 !important;transform:none !important;pointer-events:auto !important}</style></noscript>
 <a id="__rb-pill" href="coursework.html">&#8592; Coursework</a>
+
 <script>
 (function(){
   var p=document.getElementById('__rb-pill'); if(!p) return;
+  /* On a page with the top bar the pill waits until the bar has scrolled
+     out of reach. On a page without one (the tools carry no bar, because a
+     bar inside a full-screen application sits in the wrong place) the pill
+     is the only way back, so it is there from the first paint: a tool
+     screen shorter than the threshold used to strand the reader entirely. */
+  var TH=document.getElementById('__rb')?160:-1;
   var t=false;
   function run(){ t=false;
-    p.classList.toggle('__on',(window.scrollY||document.documentElement.scrollTop)>420); }
+    p.classList.toggle('__on',(window.scrollY||document.documentElement.scrollTop)>TH); }
   function q(){ if(!t){ t=true; requestAnimationFrame(run); } }
   addEventListener('scroll',q,{passive:true}); run();
 })();
@@ -1638,7 +1682,7 @@ if (ha) ha.addEventListener('click', function(){
     function put(key){
       if(t2[key]||Object.keys(t2).length<500){
         t2[key]=(t2[key]||0)+1;
-        localStorage.setItem(k,JSON.stringify(t2));
+        try{localStorage.setItem(k,JSON.stringify(t2));}catch(e){}
       }
     }
     put(u+location.hash);

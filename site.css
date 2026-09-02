@@ -324,10 +324,6 @@ nav.main a[aria-current="page"]{color:var(--ink);border-bottom-color:var(--accen
    A value repeated six times in the markup is a rule that has not
    been written down yet. */
 .hero.tight{padding-block:clamp(2.5rem,5vw,4rem) 1rem}
-.hero .stats{margin-top:2rem}
-.hero-contact{margin:1.1rem 0 0;font-size:.88rem;color:var(--ink-2)}
-.hero-contact .inlink{color:inherit}
-.hero-contact .inlink:hover{color:var(--accent)}
 
 /* the standing call to action, previously four different inline style
    attributes saying the same four declarations */
@@ -335,11 +331,8 @@ a.open,.openlink{
   font-size:var(--btn-size);font-weight:var(--btn-weight);color:var(--accent);text-decoration:none
 }
 a.open:hover,.openlink:hover{text-decoration:underline}
-.stack{display:grid;gap:var(--gap)}
 .stack-end{padding-bottom:4rem}
-.ruled{border-top:1px solid var(--rule);padding-top:var(--gap)}
 .spaced{margin-top:1rem}
-.centred{text-align:center}
 .facts.wide{max-width:46rem}
 .fnote{max-width:26rem;color:var(--ink-2)}
 /* One rule for a link that has to carry the accent outside .prose,
@@ -353,58 +346,14 @@ a.open:hover,.openlink:hover{text-decoration:underline}
    size, both previously inline */
 .hero.lost{padding-block:clamp(3rem,8vw,6rem) 2rem}
 .lost-h{font-size:clamp(2rem,5vw,3.4rem)}
-.hero-grid{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);
-  grid-template-areas:"head globe" "body globe" "body rail";
-  gap:1rem clamp(2rem,5vw,4.5rem);align-items:start}
-.hero-head{grid-area:head}
-.hero-globe{grid-area:globe}
-.hero-body{grid-area:body}
-.hero-rail{grid-area:rail}
 /* on a phone the sphere follows the name: identity, then the proof of it */
 @media (max-width:60rem){
   .hero-grid{grid-template-columns:minmax(0,1fr);
     grid-template-areas:"head" "globe" "body" "rail"}
 }
-.hero-globe .tease-globe{max-height:min(38vh,21rem);cursor:grab}
 .globe-cap{margin:.3rem 0 0;font-size:.85rem;line-height:1.5;color:var(--ink-2);max-width:26em}
 .globe-cap .inlink{color:inherit}
 .globe-cap .inlink:hover{color:var(--accent)}
-
-/* the statistics strip: hairline separated, tabular, honest */
-.stats{
-  display:grid;grid-template-columns:repeat(4,minmax(0,1fr));
-  border-top:1px solid var(--ink);margin-top:2.5rem
-}
-.stats div{padding:1rem 1rem 1rem 0;border-right:1px solid var(--rule)}
-.stats div:last-child{border-right:0}
-.stats b{
-  display:block;font-size:clamp(1.7rem,3.4vw,2.6rem);font-weight:680;
-  letter-spacing:-.03em;line-height:1;font-variant-numeric:tabular-nums
-}
-.stats span{display:block;font-size:.8rem;color:var(--ink-3);margin-top:.35rem;letter-spacing:.02em}
-@media (max-width:44rem){
-  .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .stats div{border-bottom:1px solid var(--rule)}
-  .stats div:nth-child(2n){border-right:0}
-}
-
-/* recent rail */
-.rail{border-top:1px solid var(--ink);padding-top:.9rem}
-.railhead{
-  font-size:.76rem;font-weight:680;letter-spacing:.13em;text-transform:uppercase;
-  color:var(--ink-3);margin-bottom:.35rem;display:flex;align-items:center;gap:.5rem
-}
-.railhead .dot{width:.42rem;height:.42rem;background:var(--accent);flex:none}
-.rail a{
-  display:block;text-decoration:none;padding:.7rem 0;border-bottom:1px solid var(--rule)
-}
-.rail a:hover .rt{color:var(--accent)}
-.rail .rt{font-weight:600;font-size:.98rem;letter-spacing:-.01em}
-.rail .rm{display:flex;gap:.5rem;align-items:center;margin-top:.28rem;
-  font-variant-numeric:tabular-nums}
-.rail .allwork{
-  border-bottom:0;font-size:.86rem;font-weight:620;color:var(--accent);padding-top:.8rem
-}
 
 /* --------------------------- section headers --------------------------- */
 section.band{padding-block:clamp(2.75rem,5vw,4.5rem)}
@@ -427,16 +376,13 @@ section.band + section.band{border-top:1px solid var(--rule)}
 .kind-reference::before{clip-path:polygon(50% 0,100% 100%,0 100%)}
 .tag{white-space:nowrap}
 .tag + .tag::before{content:"·";margin-right:.42rem;color:var(--rule-strong)}
-.pwa{border:1px solid var(--tool);color:var(--tool);padding:.05rem .3rem}
-
 /* ---------------------------- feature cards ---------------------------- */
-.features{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,20rem),1fr));gap:0}
+
 .feature{
   display:flex;flex-direction:column;text-decoration:none;
   padding:1.5rem 1.6rem 1.4rem 0;border-top:1px solid var(--rule);
   position:relative
 }
-.features .feature{border-right:1px solid var(--rule);padding-right:1.6rem}
 .feature::after{
   content:"";position:absolute;left:0;top:-1px;height:2px;width:0;background:var(--accent);
   transition:width var(--t-in) var(--ease-move)
@@ -464,39 +410,10 @@ section.band + section.band{border-top:1px solid var(--rule)}
 }
 .feature .arrow{transition:transform var(--t-fast) var(--ease-move)}
 .feature:hover .arrow{transform:translateX(3px)}
-
 /* ------------------------- the system band ------------------------
    Four artifacts of one system in a row: the hub and its runs. The
    same hairline grammar as the feature grid, one line of title and
    one measured metadata line each. */
-.sysgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,15rem),1fr));gap:0}
-.sysitem{
-  display:flex;flex-direction:column;gap:.35rem;text-decoration:none;
-  padding:1.1rem 1.4rem 1.05rem 0;border-top:1px solid var(--rule);position:relative
-}
-.sysgrid .sysitem{border-right:1px solid var(--rule);padding-right:1.4rem}
-.sysitem::after{
-  content:"";position:absolute;left:0;top:-1px;height:2px;width:0;background:var(--accent);
-  transition:width var(--t-in) var(--ease-move)
-}
-.sysitem:hover::after,.sysitem:focus-visible::after{width:100%}
-.sysitem .sys-t{font-weight:600;font-size:.96rem;letter-spacing:-.01em;line-height:1.35;
-  transition:color var(--t-fast) ease}
-.sysitem:hover .sys-t{color:var(--accent)}
-.sysitem .sys-m b{color:var(--ink-2)}
-
-/* big flagship feature */
-.flagship{
-  display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(1.5rem,4vw,3.5rem);
-  text-decoration:none;border-top:2px solid var(--ink);padding-top:1.6rem;margin-bottom:2.5rem
-}
-.flagship h3{font-size:clamp(1.5rem,3vw,2.1rem);letter-spacing:-.03em;margin:.5rem 0 .7rem;max-width:24ch}
-.flagship p{color:var(--ink-2);font-size:1rem;margin:0 0 1rem}
-.flagship .demo{
-  border-left:2px solid var(--accent);padding-left:1rem;font-size:.94rem;color:var(--ink-2)
-}
-.flagship .demo b{display:block;margin-bottom:.2rem}
-@media (max-width:56rem){ .flagship{grid-template-columns:minmax(0,1fr)} }
 
 /* ----------------------------- index rows ----------------------------- */
 ol.index{list-style:none;margin:0;padding:0;counter-reset:row}
@@ -528,30 +445,7 @@ ol.index li:last-child{border-bottom:1px solid var(--rule)}
   .row .side{grid-column:2;flex-direction:row;align-items:center;gap:.6rem;padding-top:.4rem}
   .row .side .arrow{opacity:1}
 }
-
 /* ---------------------------- course groups ---------------------------- */
-.course{padding-block:2.25rem}
-.course + .course{border-top:1px solid var(--rule)}
-.coursehead{display:flex;align-items:baseline;gap:1rem;flex-wrap:wrap;margin-bottom:.4rem}
-.coursehead h3{
-  font-size:clamp(1.25rem,2.4vw,1.6rem);letter-spacing:-.025em;margin:0
-}
-.coursehead .code{
-  font-size:.78rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)
-}
-.coursehead .n{font-size:.8rem;color:var(--ink-3);margin-left:auto;font-variant-numeric:tabular-nums}
-.course > p.note{color:var(--ink-2);font-size:.95rem;max-width:46rem;margin:0 0 1.2rem}
-
-/* coverage matrix, generated from the inventory */
-.matrix{border:1px solid var(--rule);border-collapse:collapse;width:100%;margin:0 0 2.5rem;font-size:.88rem}
-.matrix caption{text-align:left;font-size:.85rem;color:var(--ink-2);padding-bottom:.6rem}
-.matrix th,.matrix td{border:1px solid var(--rule);padding:.55rem .7rem;text-align:left}
-.matrix thead th{background:var(--panel);white-space:nowrap}
-.matrix tbody th{font-weight:620;white-space:nowrap}
-.matrix td{text-align:center;font-variant-numeric:tabular-nums;color:var(--ink-2)}
-.matrix td.has{color:var(--ink);font-weight:640}
-.matrix td.none{color:var(--ink-3)}
-.matrix tfoot td,.matrix tfoot th{background:var(--panel);font-weight:640;color:var(--ink)}
 
 /* ------------------------------- filters ------------------------------- */
 .tools-bar{
@@ -776,7 +670,6 @@ footer.site .fine b{font-weight:600;color:var(--ink-2)}
   .hero{padding-block:0 1rem}
 }
 
-
 /* ==================================================================
    ADDED IN THE AUGUST 2026 PASS
    Signature lines (reading time and density), the surface split,
@@ -867,11 +760,10 @@ footer.site .fine b{font-weight:600;color:var(--ink-2)}
 .ctab .tnum{text-align:right;font-variant-numeric:tabular-nums}
 .ctab a{color:var(--ink);text-decoration:none;border-bottom:1px solid var(--rule-strong)}
 .ctab a:hover{border-bottom-color:var(--accent);color:var(--accent)}
-
 /* --------------------------------------------------- specimens ---
    Real figures, lifted unchanged out of the pieces they belong to.
    Each one is shown with the single rule that governs its marks. */
-.specs{display:grid;grid-template-columns:minmax(0,1fr);gap:calc(var(--gap) * 1.6)}
+
 .spec{display:block;min-width:0}
 .spec + .spec{border-top:1px solid var(--rule);padding-top:calc(var(--gap) * 1.6)}
 .spec figcaption{display:grid;gap:.4rem var(--gap);padding-top:.9rem}
@@ -892,41 +784,15 @@ footer.site .fine b{font-weight:600;color:var(--ink-2)}
   color:var(--ink-2);max-width:var(--plate-measure)}
 .spec a.open{font-size:.8125rem;font-weight:560;color:var(--accent);text-decoration:none}
 .spec a.open:hover{text-decoration:underline}
-
-/* per-specimen colour scopes: the variables each lifted figure expects */
-#spec-ladder{--baseline:#999;--gridline:#ccc}
 #spec-vintage{--own-1:#86b6ef;--own-3:#2a78d6;--own-4:#1c5cab;--own-5:#104281}
-#spec-boundary{--inside:#2a78d6;--outside:#e34948}
 @media (prefers-color-scheme:dark){
-  :root:where(:not([data-theme="light"])) #spec-ladder{--baseline:#383835;--gridline:#2c2c2a}
   :root:where(:not([data-theme="light"])) #spec-vintage{--own-1:#cde2fb;--own-3:#6da7ec;--own-4:#3987e5;--own-5:#256abf}
-  :root:where(:not([data-theme="light"])) #spec-boundary{--inside:#3987e5;--outside:#e66767}
 }
-:root[data-theme="dark"] #spec-ladder{--baseline:#383835;--gridline:#2c2c2a}
 :root[data-theme="dark"] #spec-vintage{--own-1:#cde2fb;--own-3:#6da7ec;--own-4:#3987e5;--own-5:#256abf}
-:root[data-theme="dark"] #spec-boundary{--inside:#3987e5;--outside:#e66767}
 /* the lifted figures inherit the page surface rather than their own */
 .spec svg{--surface-1:var(--paper)}
-
 /* ------------------------------------------------ lead feature ---
    One piece at the top of Research, at the size it earns. */
-.lead{display:grid;grid-template-columns:minmax(0,1fr);gap:var(--gap);
-  align-items:start;padding-bottom:var(--gap)}
-.lead > *{min-width:0}
-@media (min-width:62rem){.lead{grid-template-columns:minmax(0,1.05fr) minmax(0,1fr)}}
-.lead .lt h3{margin:.35rem 0 .5rem;font-size:clamp(1.5rem,3.2vw,2.125rem);letter-spacing:-.026em;line-height:1.1}
-.lead .lt h3 a{color:inherit;text-decoration:none}
-.lead .lt h3 a:hover{color:var(--accent)}
-.lead .lt .sub{color:var(--ink-2);font-size:1.0625rem;margin:0 0 .9rem}
-.lead .lt p.blurb{margin:0 0 .9rem;color:var(--ink-2);max-width:34rem}
-.lead .demo{
-  border-left:2px solid var(--accent);padding:.15rem 0 .15rem .9rem;
-  margin:0 0 1rem;font-size:.9375rem;color:var(--ink-2);max-width:34rem;
-}
-.lead .demo b{display:block;margin-bottom:.25rem}
-.lead .fig{border-top:2px solid var(--ink);padding-top:1rem;overflow-x:auto}
-.lead .fig svg{width:100%;height:auto;display:block;min-width:24rem;margin:0 auto}
-.lead .figcap{font-size:.75rem;color:var(--ink-3);padding-top:.6rem;border-top:1px solid var(--rule);margin-top:.6rem}
 
 /* ------------------------------------------------ section index --
    Research, Coursework and Tools each said "Section 01", "Section
@@ -973,35 +839,10 @@ details.tv > summary::before{content:"+";color:var(--ink-3);font-weight:640}
 details.tv[open] > summary::before{content:"\2212"}
 details.tv > summary:hover{color:var(--accent)}
 details.tv[open]{padding-bottom:1rem}
-
 /* ------------------------------------------------- figure strip ----
    Six real figures, lifted out of the pieces they belong to and shown
    at a uniform tile height. Each keeps its own colour variables, which
    the build writes into a scope named for the tile. */
-.figstrip{
-  display:grid;gap:1px;background:var(--rule);
-  border:1px solid var(--rule);
-  grid-template-columns:repeat(auto-fit,minmax(min(100%,17rem),1fr));
-}
-a.figtile{
-  background:var(--paper);display:flex;flex-direction:column;
-  text-decoration:none;color:inherit;padding:1rem 1rem .9rem;
-  transition:background var(--t-fast) ease;min-width:0;
-}
-a.figtile:hover{background:var(--panel)}
-a.figtile:focus-visible{outline:2px solid var(--accent);outline-offset:-3px}
-.ft-frame{
-  display:block;height:11rem;overflow:hidden;
-  border-bottom:1px solid var(--rule);padding-bottom:.85rem;margin-bottom:.75rem;
-}
-.ft-frame svg{width:100%;height:100%;display:block}
-.ft-cap{display:block;min-width:0}
-.ft-cap b{
-  display:block;font-size:.9375rem;font-weight:600;letter-spacing:-.012em;
-  line-height:1.3;color:var(--ink);
-}
-.ft-cap > span{display:block;margin-top:.25rem}
-a.figtile:hover .ft-cap b{color:var(--accent)}
 
 /* ------------------------------------------------ hero globe ---
    The sphere sits in the hero now, first thing on every screen. The
@@ -1123,6 +964,9 @@ a.figtile:hover .ft-cap b{color:var(--accent)}
   border:1px solid var(--rule-strong);color:var(--ink-3);padding:.12rem .45rem;white-space:nowrap;
 }
 .docmeta .mchip b{color:var(--ink-2);font-weight:620}
+/* what the note was built from, in the owner's words, written by the build from pieces.json */
+.docmast .docfrom{margin:.9rem 0 0;font-size:.875rem;line-height:1.5;color:var(--ink-3);max-width:66ch}
+.docmast .docfrom b{color:var(--ink-2);font-weight:620}
 
 /* ------------------------------------------------------------ doc body --- */
 .docbody{
@@ -1147,6 +991,11 @@ a.figtile:hover .ft-cap b{color:var(--accent)}
    a rule at this level those headings fell back to the browser default and
    read as bold body text. */
 .docbody h5{margin:1.25rem 0 .4rem;font-size:.875rem;font-weight:640;color:var(--ink-2);letter-spacing:.01em;scroll-margin-top:7.25rem}
+/* running text holds a 66ch measure; tables, figures and code keep the
+   column's full width, because a table has the width its columns need */
+.docbody p,.docbody li,.docbody dd,.docbody blockquote{max-width:66ch}
+.docbody td p,.docbody th p,.docbody .cal .cb p{max-width:none}
+.docbody table{font-variant-numeric:tabular-nums}
 .docbody p{margin:0 0 1rem;color:var(--ink-2)}
 .docbody strong{color:var(--ink);font-weight:620}
 .docbody a:not(.pbtn){color:var(--accent);text-underline-offset:2px}
@@ -1172,6 +1021,8 @@ a.figtile:hover .ft-cap b{color:var(--accent)}
   text-align:left;padding:.45rem .6rem;border-bottom:1px solid var(--rule);vertical-align:top;
 }
 .docbody thead th{border-bottom:1px solid var(--rule-strong)}
+/* row labels are header cells for assistive technology; they keep the look of the cells they were */
+.docbody tbody th[scope="row"]{font-weight:inherit;text-align:inherit;color:inherit;background:inherit}
 .docbody tbody tr:hover{background:var(--panel)}
 .docbody .tw{overflow-x:auto;margin:0 0 1.25rem;-webkit-overflow-scrolling:touch}
 .docbody .tw table{min-width:34rem}
@@ -1223,14 +1074,13 @@ details.cal-q .cb > *:first-child{margin-top:.8rem}
 .pv{
   display:inline-block;padding:.02rem .35rem;border:1px solid currentColor;vertical-align:.06em;
 }
-.pv-v{color:var(--tool)} .pv-i{color:var(--ref)} .pv-m{color:var(--ink-3)} .pv-u{color:#c0392b}
+.pv-v{color:var(--tool)}
 /* Same dark lift the danger callout already gets: #c0392b reads 3.4:1 on
    dark paper, under AA for text, and this chip is the smallest text on
    the site with the job of flagging unverified content. */
 @media (prefers-color-scheme:dark){
   :root:where(:not([data-theme="light"])) .pv-u{color:#e66767}
 }
-:root[data-theme="dark"] .pv-u{color:#e66767}
 
 /* ------------------------------------------------------------- endnote --- */
 .docend{
@@ -1317,12 +1167,10 @@ details.cal-q .cb > *:first-child{margin-top:.8rem}
 .cf-bar{display:block;height:3px;background:var(--panel-2);margin-top:.5rem;overflow:hidden}
 .cf-bar i{display:block;height:100%;width:0;background:var(--accent);
   transition:width var(--t-in) var(--ease-move)}
-
 /* ---------------------------- counted numerals ---------------
    The oversized figures are the loudest thing on the page, so
    they arrive rather than appear. They count once, on first
    sight, and only when the reader has not asked for less motion. */
-.stats b.tnum{font-variant-numeric:tabular-nums}
 
 /* ---------------------------- rows ---------------------------
    The arrow already moved on hover. The rule under a row now
@@ -1381,12 +1229,7 @@ details.cal-q .cb > *:first-child{margin-top:.8rem}
 @supports (background:color-mix(in srgb,red 10%,transparent)){
   .cmdk-list mark{background:color-mix(in srgb,var(--accent) 18%,transparent)}
 }
-.cmdk-hint{
-  margin-left:auto;font-size:.6875rem;color:var(--ink-3);
-  border:1px solid var(--rule);padding:.05rem .3rem;white-space:nowrap
-}
 .cmdk-list li a{align-items:center}
-.cmdk-recent{font-size:.6875rem;color:var(--ink-3)}
 
 /* ---------------------------- shortcuts sheet ---------------- */
 .keys{
@@ -1566,18 +1409,18 @@ body.atlas-free .atlas-h1{font-size:clamp(1.2rem,1.7vw,1.42rem);max-width:24em;
 /* ---- the plates ---- */
 .plate{border-top:1px solid var(--ink);padding-top:.85rem;animation:plate-in .45s ease both}
 @keyframes plate-in{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
-.plate-n{margin:0 0 .5rem;font-size:.72rem;letter-spacing:.14em;color:var(--ink-3);
+.plate-n{margin:0 0 .5rem;font-size:.72rem;letter-spacing:.08em;color:var(--ink-3);
   font-variant-numeric:tabular-nums}
-.plate-n b{color:var(--ink);font-weight:660}
+.plate-n b{color:var(--accent);font-weight:640}
 .plate-h{font-size:clamp(1.15rem,1.85vw,1.45rem);line-height:1.18;margin:0 0 .7rem;
   font-weight:650;letter-spacing:-.012em;max-width:20em}
-.plate p{margin:0 0 .7rem;font-size:.93rem;line-height:1.58;color:var(--ink-2);max-width:34em}
+.plate p{margin:0 0 .7rem;font-size:.92rem;line-height:1.5;color:var(--ink-2);max-width:34em}
 .plate p b{color:var(--ink);font-weight:600}
 .plate p i{font-style:normal;color:var(--ink);border-bottom:1px solid var(--rule)}
 
 /* the whole sequence, always visible: progress, contents and skip at once */
 .guide{margin-top:1.05rem;border-top:1px solid var(--rule);padding-top:.6rem}
-.guide-h{margin:0 0 .45rem;font-size:.7rem;text-transform:uppercase;letter-spacing:.12em;
+.guide-h{margin:0 0 .45rem;font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;
   color:var(--ink-3);font-weight:640;display:flex;justify-content:space-between}
 .guide-c{font-weight:450;letter-spacing:.06em}
 .guide ol{list-style:none;margin:0;padding:0;
@@ -1620,7 +1463,7 @@ body.atlas-free .atlas-h1{font-size:clamp(1.2rem,1.7vw,1.42rem);max-width:24em;
 .atlas-count{font-size:.84rem;color:var(--ink-2);margin:.6rem 0 0}
 .atlas-key{border-top:1px solid var(--rule);padding-top:.85rem;margin-top:1.1rem}
 .akey-list{list-style:none;margin:0 0 .6rem;padding:0;display:flex;gap:.3rem 1.1rem;
-  flex-wrap:wrap;font-size:.82rem;color:var(--ink-2)}
+  flex-wrap:wrap;font-size:.85rem;color:var(--ink-2)}
 .akey-list li{display:flex;align-items:center;gap:.4rem}
 .ak{width:.6rem;height:.6rem;border-radius:50%;flex:none;display:inline-block}
 .ak-ind{background:var(--accent)}
@@ -1647,7 +1490,7 @@ body.atlas-free .atlas-h1{font-size:clamp(1.2rem,1.7vw,1.42rem);max-width:24em;
 /* the one entry that needs a sentence gets its own line and hangs its swatch */
 .akey-list li.akey-wide{flex:1 1 100%;align-items:flex-start}
 .akey-list li.akey-wide .ak{margin-top:-.05rem}
-.akey-note{font-size:.8rem;color:var(--ink-3);margin:0;line-height:1.5}
+.akey-note{font-size:.85rem;color:var(--ink-2);margin:0;line-height:1.5}
 .replay{margin:.9rem 0 0;font-size:.82rem}
 /* Flown into one document, a key for the whole corpus and an invitation to
    replay the tour are both about somewhere else. */
@@ -1712,6 +1555,7 @@ body.atlas-indoc .atlas-key,body.atlas-indoc .replay{display:none}
 .adoc-b[data-surface="course"]::before{border:1.2px solid var(--ink-3)}
 
 /* ---- the stage ---- */
+.atlas-stagewrap{position:relative}
 .atlas-stage{position:relative;width:100%;aspect-ratio:1/0.84;
   max-height:min(72vh,42rem);touch-action:none}
 /* The column used to run out well above the stage and leave a band of nothing
@@ -1781,10 +1625,6 @@ body.atlas-indoc .atlas-key,body.atlas-indoc .replay{display:none}
   text-align:left;justify-items:start}
 .sk::before{content:"";width:.55rem;height:.55rem;border-radius:50%;flex:none;
   margin-top:.32rem}
-.sk-ind::before{background:var(--accent)}
-.sk-warn::before{background:var(--ref)}
-.sk-ring::before{border:1.4px solid var(--ref)}
-.sk-dim::before,.sk-field::before{background:var(--edge)}
 
 /* ---- the index ---- */
 .atlas-list{margin-top:2.25rem;display:grid;gap:1.9rem}
@@ -1831,7 +1671,8 @@ body.atlas-indoc .atlas-key,body.atlas-indoc .replay{display:none}
   /* the sphere leads on a narrow screen, because the label under it is about
      the thing above it */
   .atlas-grid{grid-template-columns:minmax(0,1fr)}
-  .atlas-stage{order:-1;aspect-ratio:1/0.90;max-height:46vh;margin-bottom:.35rem;
+  .atlas-stagewrap{order:-1}
+  .atlas-stage{aspect-ratio:1/0.90;max-height:46vh;margin-bottom:.35rem;
     display:flex;flex-direction:column;justify-content:flex-end}
   .atlas-h1{font-size:clamp(1.5rem,5.2vw,2rem);margin-top:.2rem}
   body.atlas-free .atlas-h1{font-size:1.12rem;margin-bottom:.7rem}
@@ -1887,4 +1728,119 @@ body.atlas-indoc .atlas-key,body.atlas-indoc .replay{display:none}
   /* on paper the sphere is a figure, not an instrument: the drag hint and
      the tour controls print as dead furniture and are dropped */
   .atlas-hint,.plate-nav,.atlas-controls,.arestore{display:none !important}
+}
+
+/* ==================================================================
+   THE STATEMENT. One grammar for the home page, the four shelves and the
+   chrome inside a piece: a row is a title and three measured figures, a
+   subtotal is an origin, the total is the corpus line. Hairline between
+   line items, a single rule above a subtotal, a double rule under the
+   total, tabular numerals on numeric cells only (Inter's tabular feature
+   also widens the hyphen), and column heads that cite a note. The notes
+   are the colophon renumbered; the Atlas's plates and key take the same
+   type so the sphere and the statement read as one system.
+   ================================================================== */
+.stmt-hero{display:grid;gap:1.4rem;padding-block:1.25rem 1.5rem;grid-template-areas:"id" "stmt" "globe"}
+.stmt-hero .id{grid-area:id}.stmt-hero .stmt{grid-area:stmt}.stmt-hero .globe{grid-area:globe}
+@media (min-width:64rem){.stmt-hero{grid-template-columns:minmax(0,23rem) minmax(0,1fr);grid-template-areas:"id stmt" "globe stmt";gap:1.5rem 4rem;padding-block:3rem 2.5rem;align-content:start}}
+.id .name{font-size:1.65rem;font-weight:700;letter-spacing:-.022em;line-height:1.1;margin:0}
+.id p{margin:.45rem 0 0;font-size:.95rem;line-height:1.4;color:var(--ink-2)}
+.id .standing b{color:var(--ink);font-weight:600}
+.id .links{display:flex;flex-wrap:wrap;gap:.3rem .9rem;margin-top:.7rem;font-size:.9rem}
+.id .links a{color:var(--accent);text-decoration:underline;text-decoration-color:color-mix(in srgb,var(--accent) 45%,transparent);text-underline-offset:.15em}
+.id .thesis{font-size:1.4rem;font-weight:600;letter-spacing:-.018em;line-height:1.25;margin:1rem 0 0;color:var(--ink);text-wrap:balance}
+.id .thesis em{font-style:normal;color:var(--accent)}
+.id .method{display:none;font-size:.9rem;color:var(--ink-2);margin-top:.7rem;line-height:1.5}
+@media (min-width:64rem){.id .name{font-size:2rem}.id .thesis{font-size:1.6rem;margin-top:2rem}.id .method{display:block}}
+.standing .ph{display:none}.standing .dt{display:inline}
+@media (max-width:44rem){.standing .ph{display:inline}.standing .dt{display:none}}
+.stmt h2{font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;font-weight:560;color:var(--ink-3);margin:0 0 .35rem;display:flex;justify-content:space-between;gap:1rem}
+.stmt h2 span{font-weight:400;text-transform:none;letter-spacing:0;white-space:nowrap}
+.stmt h2 span a{color:var(--accent);text-decoration:none}
+table.st{width:100%;border-collapse:collapse}
+table.st th,table.st td{text-align:left;vertical-align:top;padding:.5rem 0}
+table.st thead th{font-size:.68rem;text-transform:uppercase;letter-spacing:.08em;font-weight:560;color:var(--ink-3);border-bottom:1px solid var(--ink);padding-bottom:.4rem}
+table.st thead th a{color:inherit;text-decoration:none;border-bottom:1px dotted var(--edge)}
+table.st thead th .nref{display:none}
+table.st thead th.n,table.st td.n{text-align:right;white-space:nowrap;padding-left:.9rem}
+table.st td.n{font-variant-numeric:tabular-nums;font-size:.9rem;line-height:1.45;color:var(--ink)}
+table.st tr.item th{font-weight:520;font-size:.95rem;line-height:1.3}
+table.st tr.item th a{color:var(--ink);text-decoration:none;border-bottom:1px solid transparent}
+table.st tr.item th a:hover{border-bottom-color:var(--accent)}
+table.st tr.item th,table.st tr.item td{border-bottom:1px solid var(--rule)}
+table.st .s{display:none}
+table.st tr.haslift th,table.st tr.haslift td{border-bottom:0;padding-bottom:.15rem}
+table.st tr.liftrow td{padding-top:0;border-bottom:1px solid var(--rule)}
+.lift{display:block;font-weight:400;font-size:.85rem;color:var(--ink-2);line-height:1.35}
+.lift b{font-weight:640;color:var(--ink);font-variant-numeric:tabular-nums}
+table.st tr.sub th,table.st tr.sub td{border-top:1px solid var(--edge);border-bottom:0;font-weight:600;padding-top:.55rem;padding-bottom:.35rem;font-size:.92rem}
+table.st tr.sub + tr.sub th,table.st tr.sub + tr.sub td{border-top:0}
+table.st tr.sub th a,table.st tr.total th a{color:inherit;text-decoration:none}
+table.st tr.sub th a:hover,table.st tr.total th a:hover{color:var(--accent)}
+table.st tr.sub td,table.st tr.total td{font-variant-numeric:tabular-nums}
+table.st tr.total th,table.st tr.total td{border-top:1px solid var(--ink);border-bottom:3px double var(--ink);font-weight:700;font-size:.98rem;padding:.55rem 0}
+.sub2{font-weight:400}.sub2::before{content:": "}
+.nref{font-size:.68em;vertical-align:super;line-height:0;color:var(--accent);margin-left:.1rem;text-decoration:none}
+/* a note reference is a link the size of a superscript: the box a finger
+   gets is 24px each way, laid over the text without moving it. It is a plain
+   inline, not an inline-block: an atomic inline box carries a break
+   opportunity on both sides even with no space, and at 390px the reference
+   was breaking onto a line of its own under the subtotal label */
+a.nref{position:relative;display:inline;padding:.75rem .45rem;margin:0 -.35rem 0 -.2rem;line-height:0}
+.nref::before{content:"["}.nref::after{content:"]"}
+.sechead h2 .nref{font-size:.5em}
+.tb{display:none}
+@media (min-width:64rem){table.st .s{display:block;font-weight:400;font-size:.85rem;color:var(--ink-2);margin-top:.15rem}table.st thead th .nref{display:inline}}
+@media (max-width:44rem){.tb{display:inline}.tbh{display:block}.tbh .dot{display:none}table.st .tab{display:none}table.st tr.item th{font-size:.92rem}table.st td.n{font-size:.88rem}.sub2{display:block;font-size:.82rem;color:var(--ink-2)}.sub2::before,.nref+.sub2::before{content:""}}
+.stmt-hero .globe .tease-globe{aspect-ratio:1/0.9;max-height:min(46vh,26rem);cursor:grab;touch-action:pan-y}
+@media (max-width:44rem){.stmt-hero .globe{margin-top:.5rem}}
+.notes{padding:0 0 2rem;border-top:1px solid var(--rule);margin-top:.5rem}
+.notes h2{font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;font-weight:560;color:var(--ink-3);margin:1.4rem 0 .6rem}
+.notes ol{margin:0;padding:0;list-style:none;counter-reset:note;display:grid;gap:.9rem}
+@media (min-width:64rem){.notes ol{grid-template-columns:1fr 1fr;gap:1.2rem 3rem}}
+.notes li{counter-increment:note;font-size:.92rem;line-height:1.5;color:var(--ink-2);padding-left:1.6rem;position:relative}
+.notes li::before{content:counter(note);position:absolute;left:0;top:.1em;font-size:.72rem;font-weight:640;color:var(--accent);font-variant-numeric:tabular-nums}
+.notes li b{color:var(--ink);font-weight:600}
+.notes li a{color:var(--accent)}
+/* the colophon's exceptions carry their numbers the same way */
+.excs{margin:0;padding:0;list-style:none;counter-reset:exc;display:grid;gap:.9rem}
+.excs li{counter-increment:exc;padding-left:1.6rem;position:relative}
+.excs li::before{content:counter(exc);position:absolute;left:0;top:.15em;font-size:.72rem;font-weight:640;color:var(--accent);font-variant-numeric:tabular-nums}
+/* shelf rows: the statement filtered, one row per piece with its rule */
+.stmt-list{list-style:none;margin:0;padding:0}
+.stmt-list > li{border-bottom:1px solid var(--rule)}
+.stmt-list .sr{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:.5rem 1.2rem;padding:.85rem 0;align-items:start}
+.stmt-list .sr-t{min-width:0}
+.stmt-list .sr-t .num{display:inline-block;font-size:.72rem;color:var(--ink-3);letter-spacing:.06em;margin-right:.5rem;vertical-align:.12em}
+.stmt-list h3{display:inline;font-size:1.02rem;font-weight:600;letter-spacing:-.012em;margin:0;line-height:1.3}
+.stmt-list h3 a{color:var(--ink);text-decoration:none}
+.stmt-list h3 a:hover{color:var(--accent)}
+.stmt-list .s{margin:.2rem 0 0;font-size:.9rem;color:var(--ink-2);line-height:1.4}
+.stmt-list .rule{margin:.4rem 0 0;font-size:.9rem;color:var(--ink-2);line-height:1.5;max-width:44em}
+.stmt-list .rule.none{color:var(--ink-3);font-style:italic}
+.stmt-list .meta{display:flex;flex-wrap:wrap;gap:.35rem .7rem;align-items:center;margin:.5rem 0 0}
+.stmt-list .sr-n{display:grid;grid-template-columns:repeat(3,auto);gap:.9rem;justify-content:end;text-align:right;font-size:.92rem;color:var(--ink);white-space:nowrap;padding-top:.15rem}
+.stmt-list .sr-n span{min-width:2.6rem}
+.stmt-list .sr-n span:first-child{min-width:4.4rem}
+.stmt-list .sr-head .sr{padding:.3rem 0 .4rem}
+.stmt-list .sr-head .sr-t,.stmt-list .sr-head .sr-n span{font-size:.68rem;text-transform:uppercase;letter-spacing:.08em;font-weight:560;color:var(--ink-3)}
+.stmt-list > li.sr-head{border-bottom:1px solid var(--ink)}
+.stmt-list .sr-sub .sr{padding:.6rem 0 .5rem;font-weight:600}
+.stmt-list > li.sr-sub{border-top:1px solid var(--edge);border-bottom:3px double var(--ink)}
+.stmt-list .sr-sub a{color:inherit;text-decoration:none}
+.stmt-list .spec,.stmt-list .specimen{margin-top:1rem}
+@media (max-width:44rem){
+  .stmt-list .sr{grid-template-columns:minmax(0,1fr)}
+  .stmt-list .sr-n{justify-content:start;text-align:left;padding-top:0;gap:.3rem 1rem;grid-template-columns:repeat(3,auto)}
+  .stmt-list .sr-n span{min-width:0}
+  .stmt-list .sr-n span:nth-child(1)::after{content:" words";color:var(--ink-3);font-size:.78rem}
+  .stmt-list .sr-n span:nth-child(2)::after{content:" figures";color:var(--ink-3);font-size:.78rem}
+  .stmt-list .sr-n span:nth-child(3)::after{content:" tables";color:var(--ink-3);font-size:.78rem}
+  .stmt-list .sr-head{display:none}
+}
+/* the nav: five entries, and on a phone they wrap under the brand rather
+   than clipping off the right edge, which is what the old strip did */
+@media (max-width:44rem){
+  header.top nav.main{flex-basis:100%;order:3;display:flex;flex-wrap:wrap;gap:.2rem 1rem;overflow:visible;-webkit-mask-image:none;mask-image:none}
+  header.top .bar{flex-wrap:wrap;gap:.3rem 1.25rem}
 }

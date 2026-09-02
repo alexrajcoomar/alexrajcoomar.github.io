@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>The Trillion-Dollar Vintage &#183; a study edition of the AI capital-cycle adjudication</title>
+<title>The Trillion-Dollar Vintage · Alex Rajcoomar</title>
 <link rel="preload" href="InterVariable-sub.woff2" as="font" type="font/woff2" crossorigin>
 <style>
 /* ===================================================================
@@ -486,15 +486,15 @@ ol.pidx a:hover{border-bottom-color:var(--text-primary)}
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="manifest" href="site.webmanifest">
 <link rel="canonical" href="https://alexrajcoomar.github.io/the-trillion-dollar-vintage.html">
-<meta property="og:title" content="The Trillion-Dollar Vintage — Alex Rajcoomar">
+<meta property="og:title" content="The Trillion-Dollar Vintage · Alex Rajcoomar">
 <meta property="og:description" content="Seventeen figures built from the analysis&#x27;s own numbers, under one rule: the fork between the two anchors is never closed, and any mark that arithmetic…">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://alexrajcoomar.github.io/the-trillion-dollar-vintage.html">
-<meta property="og:site_name" content="Alex Rajcoomar — portfolio">
+<meta property="og:site_name" content="Alex Rajcoomar · portfolio">
 <meta property="og:image" content="https://alexrajcoomar.github.io/cards/the-trillion-dollar-vintage.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="The Trillion-Dollar Vintage — Alex Rajcoomar">
+<meta property="og:image:alt" content="The Trillion-Dollar Vintage · Alex Rajcoomar">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://alexrajcoomar.github.io/cards/the-trillion-dollar-vintage.png">
 <script>
@@ -529,22 +529,18 @@ ol.pidx a:hover{border-bottom-color:var(--text-primary)}
 #__rb .__rb-home{font-weight:640;color:#16150f}
 #__rb .__rb-home i{font-style:normal;font-weight:400;color:#6f6c63}
 #__rb .__rb-right{margin-left:auto;display:flex;gap:1.1rem;flex-wrap:wrap}
+/* the piece's own row of the statement: origin, words, figures, tables, the
+   same figures the home page prints for it, from the same measurement */
+#__rb .__rb-row{color:#6f6c63;font-variant-numeric:tabular-nums;white-space:nowrap}
+#__rb .__rb-row b{font-weight:600;color:#55524a}
+@media (max-width:44rem){#__rb .__rb-row{flex-basis:100%;order:3;white-space:normal}}
+/* what the piece was built from, in the owner's words, from pieces.json */
+#__rb .__rb-from{flex-basis:100%;order:5;font-weight:400;color:#6f6c63;line-height:1.4;max-width:70ch}
+#__rb .__rb-from b{font-weight:600;color:#55524a}
 #__rb .__mark{
   display:inline-grid;place-items:center;width:1.2rem;height:1.2rem;flex:none;
   background:#16150f;color:#faf9f6;font-size:.72rem;font-weight:700;
 }
-#__rb-pill{
-  position:fixed;left:14px;bottom:14px;z-index:2147483000;
-  display:inline-flex;align-items:center;gap:.45rem;padding:.58rem .9rem;
-  background:rgba(22,21,15,.93);color:#faf9f6;text-decoration:none;border-radius:99px;
-  font:600 12.5px/1 InterVar,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
-  border:1px solid rgba(255,255,255,.16);box-shadow:0 6px 22px rgba(0,0,0,.28);
-  opacity:0;transform:translateY(6px);pointer-events:none;
-  transition:opacity .2s ease,transform .2s ease;
-  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
-}
-#__rb-pill.__on{opacity:1;transform:none;pointer-events:auto}
-#__rb-pill:hover{background:#16150f;color:#fff}
 /* Dark has to answer to two things: the reader's system setting, and the
    theme button on the page, which sets data-theme on <html>. Keyed to the
    media query alone, the bar stayed paper-white across the top of an essay
@@ -555,25 +551,30 @@ ol.pidx a:hover{border-bottom-color:var(--text-primary)}
   :root:not([data-theme="light"]) #__rb{background:#131310;border-bottom-color:#2c2b24;color:#c0bcb1}
   :root:not([data-theme="light"]) #__rb .__rb-home{color:#f7f5ef}
   :root:not([data-theme="light"]) #__rb .__rb-home i{color:#948f85}
+  :root:not([data-theme="light"]) #__rb .__rb-row{color:#948f85}
+  :root:not([data-theme="light"]) #__rb .__rb-row b{color:#c0bcb1}
+  :root:not([data-theme="light"]) #__rb .__rb-from{color:#948f85}
+  :root:not([data-theme="light"]) #__rb .__rb-from b{color:#c0bcb1}
   :root:not([data-theme="light"]) #__rb a{color:#85adea}
   :root:not([data-theme="light"]) #__rb .__mark{background:#f7f5ef;color:#131310}
-  :root:not([data-theme="light"]) #__rb-pill{background:rgba(247,245,239,.95);color:#131310;border-color:rgba(0,0,0,.2)}
-  :root:not([data-theme="light"]) #__rb-pill:hover{background:#fff;color:#000}
 }
 :root[data-theme="dark"] #__rb{background:#131310;border-bottom-color:#2c2b24;color:#c0bcb1}
 :root[data-theme="dark"] #__rb .__rb-home{color:#f7f5ef}
 :root[data-theme="dark"] #__rb .__rb-home i{color:#948f85}
+:root[data-theme="dark"] #__rb .__rb-row{color:#948f85}
+:root[data-theme="dark"] #__rb .__rb-row b{color:#c0bcb1}
+:root[data-theme="dark"] #__rb .__rb-from{color:#948f85}
+:root[data-theme="dark"] #__rb .__rb-from b{color:#c0bcb1}
 :root[data-theme="dark"] #__rb a{color:#85adea}
 :root[data-theme="dark"] #__rb .__mark{background:#f7f5ef;color:#131310}
-:root[data-theme="dark"] #__rb-pill{background:rgba(247,245,239,.95);color:#131310;border-color:rgba(0,0,0,.2)}
-:root[data-theme="dark"] #__rb-pill:hover{background:#fff;color:#000}
-@media (prefers-reduced-motion:reduce){#__rb-pill{transition:none}}
-@media print{#__rb,#__rb-pill{display:none !important}}
+@media print{#__rb{display:none !important}}
 </style>
-<div id="__rb">
+<nav id="__rb" aria-label="Portfolio">
   <a class="__rb-home" href="index.html"><span class="__mark" aria-hidden="true">A</span>Alex Rajcoomar <i>portfolio</i></a>
-  <span class="__rb-right"><a href="research.html">Research</a><a href="library.html">All work</a></span>
-</div>
+  <span class="__rb-row">Independent &middot; <b>18,610</b> words &middot; <b>16</b> figures &middot; <b>15</b> tables</span>
+  <span class="__rb-right"><a href="research.html">Research</a><a href="atlas.html">Atlas</a><a href="library.html">All work</a></span>
+  <span class="__rb-from"><b>Built from</b> Built from two documents in a strict chain of custody, the adjudication and the evidence pack it stands on, with every number, probability, ruling and conclusion transcribed unchanged and its evidence label kept.</span>
+</nav>
 <script>
 /* the trail: which passages this browser has opened. The atlas reads it and
    rings them; the record lives in localStorage and never leaves the machine. */
@@ -590,7 +591,7 @@ ol.pidx a:hover{border-bottom-color:var(--text-primary)}
     function put(key){
       if(t2[key]||Object.keys(t2).length<500){
         t2[key]=(t2[key]||0)+1;
-        localStorage.setItem(k,JSON.stringify(t2));
+        try{localStorage.setItem(k,JSON.stringify(t2));}catch(e){}
       }
     }
     put(u+location.hash);
@@ -651,17 +652,17 @@ ol.pidx a:hover{border-bottom-color:var(--text-primary)}
 
 
 <section class="sec" id="prov">
-  <div class="sec-head"><span class="snum ui">&#8226;</span><h3 id="provenance">Provenance</h3></div>
+  <div class="sec-head"><span class="snum ui">&#8226;</span><h3 id="provenance" aria-level="2">Provenance</h3></div>
   <p><b>Chain of custody.</b> This is the definitive edition of a document with a strict chain of custody:
-  it redesigns <em>Run 2 of 2 &mdash; Adjudication</em> (10 August 2026), which itself stands on a no-verdict
+  it redesigns <em>Run 2 of 2: Adjudication</em> (10 August 2026), which itself stands on a no-verdict
   Evidence Pack assembled the same day. Every number, probability, ruling, and conclusion is transcribed
   unchanged from those two documents. The evidence labels travel with their facts deliberately. Where the
-  original flags a figure as unverified, the flag is kept &mdash; the flags are part of the curriculum.
+  original flags a figure as unverified, the flag is kept, the flags are part of the curriculum.
   Section references of the form &sect;x.y point to the underlying Evidence Pack.</p>
 
   <p><b>How to read this.</b> Six parts, in order. After each numbered section stands a <b>Mental Model</b>
   box: three to six sentences built to outlast the details. Threaded through the text are thirteen numbered
-  <b>Patterns</b> &mdash; the reasoning moves the analysis runs on, stated explicitly so you can carry them
+  <b>Patterns</b>, the reasoning moves the analysis runs on, stated explicitly so you can carry them
   to problems that have nothing to do with GPUs. Dense tables carry a one-line takeaway; Parts III through V
   open with a bearing line so you always know where you stand. Part VI is the retention layer: twelve claims
   worth knowing cold in six months, a one-page monitoring card, and the single most important intellectual
@@ -728,8 +729,8 @@ ol.pidx a:hover{border-bottom-color:var(--text-primary)}
 <section class="sec" id="s0">
   <div class="sec-head"><span class="snum ui">0</span><h3 id="a-trillion-dollars-mid-air">A trillion dollars, mid-air</h3></div>
 
-  <p>Between the first weeks of 2023 and the middle of 2026, five technology companies &mdash; Microsoft,
-  Alphabet, Amazon, Meta, Oracle &mdash; together with a second tier of specialist builders, committed
+  <p>Between the first weeks of 2023 and the middle of 2026, five technology companies (Microsoft,
+  Alphabet, Amazon, Meta, Oracle) together with a second tier of specialist builders, committed
   roughly a trillion US dollars of actual cash to the infrastructure of artificial intelligence. The
   adjudicated figure for this cohort of capital, designated <b>V</b>, is <b>$1,082 billion</b> as originally
   constructed and <b>$990 billion</b> after one allocation assumption is corrected (low&ndash;high bands:
@@ -744,9 +745,9 @@ ol.pidx a:hover{border-bottom-color:var(--text-primary)}
   correlated. Britain laid its railways in the mania of the 1840s; investors surrendered roughly a third of
   their capital, and the network kept growing for some seventy years after the panic that funded it had been
   forgotten. America electrified; the holding-company pyramids that financed the current collapsed. The
-  internet received its fiber from companies that did not survive the gift. In each case the technology
+  internet received its fibre from companies that did not survive the gift. In each case the technology
   triumphed while much of the capital perished, and the settlement was written in the same clause every
-  time: <b>users retained the network. Users retained the grid. Users retained the fiber.</b> The value of a
+  time: <b>users retained the network. Users retained the grid. Users retained the fibre.</b> The value of a
   transformative technology and the return on the capital that builds it are separate variables, and the
   historical base rate is that the second resolves against whoever owned the fastest-depreciating assets at
   the highest cost of capital.</p>
@@ -756,22 +757,21 @@ ol.pidx a:hover{border-bottom-color:var(--text-primary)}
   companies actually disclose. The evidence is incomplete by construction. No company reports how much of
   its capital spending is AI. No company reports how hard its fleet actually works. The most-cited revenue
   figure of the most-discussed private lab cannot be verified from any primary source. The temptation of
-  that position is to caulk every gap with confidence. The discipline of this analysis is that it declines
-  &mdash; every time &mdash; and writes <b>&ldquo;not in evidence&rdquo;</b> instead.</p>
+  that position is to caulk every gap with confidence. The discipline of this analysis is that it declines, every time, and writes <b>&ldquo;not in evidence&rdquo;</b> instead.</p>
 
-  <p>Its verdict, stated here so you can watch it being earned rather than asserted: <b>H2 &mdash; the
+  <p>Its verdict, stated here so you can watch it being earned rather than asserted: <b>H2, the
   technology is real and the capital returns are inadequate</b>, with the destruction tail concentrated in
   one owner class and one funding structure rather than smeared across the vintage. The probability-weighted
   return on a vintage dollar is <b>+1.27%</b> unlevered, set against required returns of
   <b>8.13&ndash;16.97%</b> depending on who owns the asset. About <b>76%</b> of the vintage fails its
   hurdle; only <b>48%</b> destroys equity outright. The modal outcome is neither boom nor bust but something
   history photographs poorly: a trillion dollars of real, functioning infrastructure earning less than its
-  cost of capital &mdash; a slow, orderly transfer of value from the owners of capital to the users of
+  cost of capital, a slow, orderly transfer of value from the owners of capital to the users of
   intelligence.</p>
 
   <p>Why this deserves several hours of your attention: the situation recurs. Every generation gets one or
   two capital cycles of this magnitude, and the people who read them correctly do so with a specific,
-  learnable toolkit &mdash; how to define what you are measuring before you measure it, how to weigh two
+  learnable toolkit, how to define what you are measuring before you measure it, how to weigh two
   instruments that disagree by 2.3&#215;, how to reason about evidence you can only partly observe, how to
   separate what a business is worth from what its price assumes. This document is that toolkit, demonstrated
   on live ammunition.</p>
@@ -795,14 +795,13 @@ ol.pidx a:hover{border-bottom-color:var(--text-primary)}
   stand trial:</p>
 
   <ul>
-    <li><b>H1</b> &mdash; a productive general-purpose-technology buildout: the capital earns adequate
+    <li><b>H1</b>, a productive general-purpose-technology buildout: the capital earns adequate
     returns.</li>
-    <li><b>H2</b> &mdash; the technology is real, but the capital returns are poor.</li>
-    <li><b>H3</b> &mdash; a reflexive, circularly-financed cycle ending in material capital destruction.</li>
+    <li><b>H2</b>, the technology is real, but the capital returns are poor.</li>
+    <li><b>H3</b>, a reflexive, circularly-financed cycle ending in material capital destruction.</li>
   </ul>
 
-  <p>Notice what the triad accomplishes. It is exhaustive along the dimension that matters &mdash;
-  <em>what happens to the money</em> &mdash; and it grants the middle hypothesis a name. Most public debate
+  <p>Notice what the triad accomplishes. It is exhaustive along the dimension that matters,   <em>what happens to the money</em>, and it grants the middle hypothesis a name. Most public debate
   admits only H1 and H3, boom or fraud. The middle world, in which everything works and the capital still
   loses, is the one history keeps choosing, and it is invisible to anyone whose question admits only two
   answers.</p>
@@ -811,22 +810,20 @@ ol.pidx a:hover{border-bottom-color:var(--text-primary)}
   deliverables:</p>
 
   <ul>
-    <li><b>Q1.</b> What share of Vintage V &mdash; the 2023&ndash;2026 incurred capital &mdash; fails to
+    <li><b>Q1.</b> What share of Vintage V, the 2023&ndash;2026 incurred capital, fails to
     earn its owner's unlevered cost of capital? Stated as a probability distribution: P(failure share
     exceeds 30%), P(exceeds 50%), P(exceeds 70%).</li>
-    <li><b>Q2.</b> How much of the ecosystem's measured revenue is <em>endogenous</em> &mdash; funded by
-    other participants of the same ecosystem rather than by outside customers &mdash; and, separately, how
+    <li><b>Q2.</b> How much of the ecosystem's measured revenue is <em>endogenous</em>, funded by
+    other participants of the same ecosystem rather than by outside customers, and, separately, how
     exposed is <em>future</em> revenue to financed counterparties?</li>
     <li><b>Q3.</b> Four dated tail probabilities: a capability plateau by a defined date under a defined
     proxy; external end-user revenue below a defined dollar bar in 2030; demand shortfall conditional on no
     plateau; fleet validation conditional on a plateau.</li>
   </ul>
-<aside class="pat rise" id="p1"><p class="pat-k">Pattern &#8470;1</p><p><b>Convert the vibe into a random variable.</b> Before arguing, define the quantity, the threshold, the date, and what would count as evidence. If a question cannot be wrong, sharpen it until it can be. Everything downstream &mdash; the weights, the dashboard, the reversal thresholds &mdash; becomes possible only because the question was forced into this shape first.</p></aside>
+<aside class="pat rise" id="p1"><p class="pat-k">Pattern &#8470;1</p><p><b>Convert the vibe into a random variable.</b> Before arguing, define the quantity, the threshold, the date, and what would count as evidence. If a question cannot be wrong, sharpen it until it can be. Everything downstream (the weights, the dashboard, the reversal thresholds) becomes possible only because the question was forced into this shape first.</p></aside>
   <p>The architecture matters as much as the questions. The work was split into two runs executed as
-  deliberately separate exercises. <b>Run 1</b> assembled an Evidence Pack under a strict no-verdict rule
-  &mdash; no probabilities, no allocation views, no synthesis toward a conclusion; classification and
-  retrieval only, every figure labeled by how it was obtained. <b>Run 2</b> &mdash; the document taught here
-  &mdash; was then confined to that Pack as its <em>exclusive factual base</em>. Anything Run 2 needed that
+  deliberately separate exercises. <b>Run 1</b> assembled an Evidence Pack under a strict no-verdict rule, no probabilities, no allocation views, no synthesis toward a conclusion; classification and
+  retrieval only, every figure labelled by how it was obtained. <b>Run 2</b>, the document taught here, was then confined to that Pack as its <em>exclusive factual base</em>. Anything Run 2 needed that
   the Pack lacked had to be retrieved and logged in a Gap Log with source and access date, or declared
   <b>not in evidence</b>. Five retrievals were logged; one of them was retrieved, judged confounded, and
   explicitly <em>rejected rather than used</em>.</p>
@@ -835,8 +832,8 @@ ol.pidx a:hover{border-bottom-color:var(--text-primary)}
   knows where the argument lands will, without ever noticing, collect the facts that land it there. Freezing
   the factual base before the verdict phase opens is the analytical counterpart of a clinical trial's
   pre-registration: it converts <em>trust me</em> into <em>audit me</em>. The same logic produces the
-  <b>supersession check</b> &mdash; did anything material publish between the evidence date and the verdict
-  date? here the window was zero days, and it was checked rather than assumed &mdash; and the
+  <b>supersession check</b> (did anything material publish between the evidence date and the verdict
+  date? here the window was zero days, and it was checked rather than assumed) and the
   <b>disagreement rule</b>: if the verdict phase finds a defect in the evidence phase, it may neither
   silently repair it nor silently inherit it. It must flag the defect, quantify the effect, and report both
   figures.</p>
@@ -850,15 +847,14 @@ ol.pidx a:hover{border-bottom-color:var(--text-primary)}
   of custody for facts.</p>
 
   <p><b>Every number wears its provenance.</b> <span class="tag"><svg class="gl" aria-hidden="true"><use href="#g-F"/></svg>F</span> means retrieved fact, dated and sourced. <span class="tag"><svg class="gl" aria-hidden="true"><use href="#g-E"/></svg>E</span> means
-  estimate, assumptions stated. <span class="tag"><svg class="gl" aria-hidden="true"><use href="#g-I"/></svg>I</span> means inference. <span class="tag"><svg class="gl" aria-hidden="true"><use href="#g-S"/></svg>S</span> means speculative or rumoured &mdash;
-  supply-chain chatter, unconfirmed channel checks. Sources are tiered from T1 (audited SEC filings) down to
+  estimate, assumptions stated. <span class="tag"><svg class="gl" aria-hidden="true"><use href="#g-I"/></svg>I</span> means inference. <span class="tag"><svg class="gl" aria-hidden="true"><use href="#g-S"/></svg>S</span> means speculative or rumoured,   supply-chain chatter, unconfirmed channel checks. Sources are tiered from T1 (audited SEC filings) down to
   T7 (industry and sell-side data). This is not decoration; the labels do work later. When two anchors
   disagree, <em>which one is built from <span class="tag"><svg class="gl" aria-hidden="true"><use href="#g-F"/></svg>F</span> and which from <span class="tag"><svg class="gl" aria-hidden="true"><use href="#g-S"/></svg>S</span> becomes an argument with
-  consequences</em>. A fact that has forgotten how it was obtained is a rumor with tenure.</p>
+  consequences</em>. A fact that has forgotten how it was obtained is a rumour with tenure.</p>
 
   <p><b>The demand firewall.</b> The most consequential classification rule in the exercise: money is sorted
-  by <em>origin</em>, and two categories &mdash; internal corporate cash redeployed (e1) and capital raised
-  in the markets (e2) &mdash; are real external money that is <b>never counted as demand</b>. A hyperscaler
+  by <em>origin</em>, and two categories, internal corporate cash redeployed (e1) and capital raised
+  in the markets (e2), are real external money that is <b>never counted as demand</b>. A hyperscaler
   spending $100 billion on GPUs is not evidence that end users want $100 billion of AI; it is a costly
   forecast issued by roughly five correlated decision-makers holding superior private information and a
   plausible bias toward overbuilding. Their capex is admitted as <em>biased evidence about demand</em>,
@@ -871,35 +867,33 @@ ol.pidx a:hover{border-bottom-color:var(--text-primary)}
   inflate measured demand, revenue, capex, or asset values relative to what external cash alone would
   support</b>. Apply that bar honestly and most of the celebrated edges <em>fail it</em>. Oracle&ndash;OpenAI
   fails: a large contract alone is not circularity, and no Oracle equity in OpenAI was retrieved. Meta's $27
-  billion Blue Owl joint venture fails as circularity &mdash; the capital is genuinely external &mdash;
-  though it passes as off-balance-sheet leverage, a different problem filed under a different name.
+  billion Blue Owl joint venture fails as circularity, the capital is genuinely external,   though it passes as off-balance-sheet leverage, a different problem filed under a different name.
   Broadcom&ndash;OpenAI fails: nothing retrieved. What survives is smaller and sharper, above all a single
   edge: <b>NVIDIA is contractually obligated to purchase CoreWeave's residual unsold capacity through 2032
-  &mdash; $6.3 billion &mdash; and that customer contract is itself pledged as collateral for CoreWeave's
+  ($6.3 billion) and that customer contract is itself pledged as collateral for CoreWeave's
   borrowing.</b> A vendor manufacturing demand for its customer's output, with the manufactured demand
-  securing the customer's debt. That is what a genuine circular edge looks like &mdash; and its rarity in
+  securing the customer's debt. That is what a genuine circular edge looks like, and its rarity in
   the evidence is itself a finding.</p>
 
   <p><b>The disagreement rule, demonstrated.</b> Run 2 found a real defect in the Pack. The Pack concedes
-  that Amazon's AI share of capex can only be bounded at 40&ndash;70% &mdash; weaker than the 70&ndash;90%
-  band assigned to the other four firms &mdash; and then applies a uniform 80% to all five when constructing
+  that Amazon's AI share of capex can only be bounded at 40&ndash;70%, weaker than the 70&ndash;90%
+  band assigned to the other four firms, and then applies a uniform 80% to all five when constructing
   V. Amazon is the largest single spender in the vintage. The correction: V's base falls from <b>$1,082
   billion to $990 billion (&minus;8.5%)</b>. Then the pedagogically important part: the effect on the
-  verdict was computed rather than presumed, and it is nearly nil &mdash; the failure share moves by less
+  verdict was computed rather than presumed, and it is nearly nil, the failure share moves by less
   than 2 percentage points and the headline probabilities do not move at all, because Amazon's capital sits
   in the same owner class either way. Both figures travel through the document side by side.
-  <em>Flag, quantify, report both</em> &mdash; never silently fix, never silently propagate.</p>
+  <em>Flag, quantify, report both</em>, never silently fix, never silently propagate.</p>
 
   <p><b>&ldquo;Not in evidence,&rdquo; even when everyone knows the number.</b> Anthropic's ubiquitous
-  figures &mdash; a $47 billion revenue run-rate, a $65 billion Series H at a $965 billion valuation &mdash;
-  appear throughout the press and in <em>no primary source anywhere</em>. The company's own newsroom carries
+  figures (a $47 billion revenue run-rate, a $65 billion Series H at a $965 billion valuation)   appear throughout the press and in <em>no primary source anywhere</em>. The company's own newsroom carries
   neither. What it does carry, dated 1 June 2026, is the announcement of a confidentially submitted draft
-  S-1 &mdash; a filing that discloses no figures and is not public. The analysis therefore rules the
+  S-1, a filing that discloses no figures and is not public. The analysis therefore rules the
   run-rate unverifiable, flags the contamination it causes (external end-user revenue at the cloud layer is
   partly anchored to it), and notes the dated path to resolution: confidential S-1s become public shortly
   before a roadshow. To refuse a number every journalist repeats, while specifying exactly when the refusal
-  will expire &mdash; that is evidentiary discipline under social pressure.</p>
-<aside class="mm rise"><p class="mm-k">Mental model &#183; Facts have supply chains</p><p>Treat every figure like a shipment: it has an origin, a handler, and a condition on arrival, and you should be able to produce the paperwork. Label facts by how you know them; sort money by where it originated; refuse structures-as-stories in favor of structures that measurably inflate; and when the crowd's favorite number lacks a primary source, say so and date when that will change. The analyst's edge is rarely secret information. It is custody discipline over public information.</p></aside>
+  will expire, that is evidentiary discipline under social pressure.</p>
+<aside class="mm rise"><p class="mm-k">Mental model &#183; Facts have supply chains</p><p>Treat every figure like a shipment: it has an origin, a handler, and a condition on arrival, and you should be able to produce the paperwork. Label facts by how you know them; sort money by where it originated; refuse structures-as-stories in favour of structures that measurably inflate; and when the crowd's favourite number lacks a primary source, say so and date when that will change. The analyst's edge is rarely secret information. It is custody discipline over public information.</p></aside>
 </section>
 
 <div class="part-open rise" id="pII">
@@ -913,11 +907,11 @@ ol.pidx a:hover{border-bottom-color:var(--text-primary)}
   
   <p><b>Vintage V</b> is defined before it is measured, because the definition is the largest single lever
   on every downstream number. In: accelerators, networking, servers, data-centre shells, land and grid
-  interconnection held by market participants, and merchant power dedicated to AI load &mdash; capital whose
+  interconnection held by market participants, and merchant power dedicated to AI load, capital whose
   owner bears residual and obsolescence risk. Out: regulated utility capex (ratepayers bear that risk; it is
   reported separately, roughly $1.3 trillion forecast for 2026&ndash;2030); announced-but-uncontracted
   commitments (not incurred); and guided future spending (V is actuals only).</p>
-<aside class="pat rise" id="p3"><p class="pat-k">Pattern &#8470;3</p><p><b>The unit of account decides the answer.</b> &ldquo;AI capex&rdquo; with no boundary can be made any size an argument requires. Define the cohort &mdash; whose capital, incurred when, bearing which risks &mdash; and disagreement becomes checkable. This is the same move as defining a wine vintage or a loan cohort: returns mean something only relative to a closed population.</p></aside>
+<aside class="pat rise" id="p3"><p class="pat-k">Pattern &#8470;3</p><p><b>The unit of account decides the answer.</b> &ldquo;AI capex&rdquo; with no boundary can be made any size an argument requires. Define the cohort (whose capital, incurred when, bearing which risks) and disagreement becomes checkable. This is the same move as defining a wine vintage or a loan cohort: returns mean something only relative to a closed population.</p></aside>
   <p>Now open a vintage dollar, because its composition is its fate.</p>
 
 <figure class="fig rise" id="f1">
@@ -941,12 +935,12 @@ ol.pidx a:hover{border-bottom-color:var(--text-primary)}
   &ldquo;data centre,&rdquo; you picture the building; the building is a fifth of the money. Which is why
   the asset-life question will prove to be one of the two hinges on which the entire verdict turns.</p>
 
-  <p>One further structural fact before the machinery starts: <b>28&ndash;40% of V &mdash; $303&ndash;433
-  billion &mdash; is construction in progress.</b> Capital spent, resting in assets not yet in service,
+  <p>One further structural fact before the machinery starts: <b>28&ndash;40% of V: $303&ndash;433
+  billion, is construction in progress.</b> Capital spent, resting in assets not yet in service,
   whose return clock has not started. Only two of the five firms disclose the figure at all (Alphabet:
   $122.8 billion; Oracle: $40.0 billion, up from $16.5 billion in a single year); the band for the rest is
-  modeled, and no firm discloses what event triggers &ldquo;placed in service.&rdquo; A third of the vintage
-  consists of planes in the air that have not landed &mdash; and, as the adjudication will show, this fact
+  modelled, and no firm discloses what event triggers &ldquo;placed in service.&rdquo; A third of the vintage
+  consists of planes in the air that have not landed, and, as the adjudication will show, this fact
   cuts against <em>both</em> the bull and the bear in ways neither side welcomes.</p>
 
   <p>Ownership, finally, because returns will be judged owner by owner.</p>
@@ -966,15 +960,15 @@ ol.pidx a:hover{border-bottom-color:var(--text-primary)}
   <p class="takeaway">Four-fifths of the vintage sits with owners structurally built to survive it. Whatever the verdict turns out to be, who absorbs it is already legible here.</p>
   <figcaption>The open segment is capital that is real, incurred, and modelled rather than disclosed. Under the second rule of this page, that gets an outline at full size, not a faded fill.</figcaption>
   <details class="tv "><summary>Ownership table</summary><div class="tw"><table><caption>Share of V by owner class, on both bases. Source: &sect;3.</caption><thead><tr><th>Owner class</th><th class="n">Original</th><th class="n">Amazon-adjusted</th><th class="n">Unlevered hurdle</th></tr></thead><tbody><tr><td>Hyperscalers ex-Oracle</td><td class="n">81.6%</td><td class="n">79.9%</td><td class="n">9.86%</td></tr><tr><td>Oracle</td><td class="n">7.3%</td><td class="n">8.0%</td><td class="n">10.41%</td></tr><tr><td>Neoclouds (GPU-as-a-service)</td><td class="n">8.9%</td><td class="n">9.7%</td><td class="n">16.97%</td></tr><tr><td>REIT / landlord</td><td class="n">2.2%</td><td class="n">2.4%</td><td class="n">8.13%</td></tr></tbody></table></div></details>
-</figure><aside class="mm rise"><p class="mm-k">Mental model &#183; Composition is destiny</p><p>Before asking whether capital will earn a return, ask what the capital physically is and how quickly it evaporates. A dollar that is 57% five-year silicon is a categorically different bet from a dollar of forty-year conduit, however identically the word &ldquo;infrastructure&rdquo; is draped over both. And always locate the construction-in-progress slice: capital with an unstarted return clock bears a risk &mdash; never entering service at economics resembling the plan &mdash; that appears in no income statement until it is too late to matter.</p></aside>
+</figure><aside class="mm rise"><p class="mm-k">Mental model &#183; Composition is destiny</p><p>Before asking whether capital will earn a return, ask what the capital physically is and how quickly it evaporates. A dollar that is 57% five-year silicon is a categorically different bet from a dollar of forty-year conduit, however identically the word &ldquo;infrastructure&rdquo; is draped over both. And always locate the construction-in-progress slice: capital with an unstarted return clock bears a risk, never entering service at economics resembling the plan, that appears in no income statement until it is too late to matter.</p></aside>
 </section>
 
 <section class="sec" id="s4">
   <div class="sec-head"><span class="snum ui">4</span><h3 id="the-hurdle-is-a-property-of-the-owner">The hurdle is a property of the owner</h3></div>
   
   <p>Here is the move that separates this analysis from nearly everything written about AI economics:
-  <b>the same physical asset is required to earn different returns depending on who owns it</b> &mdash; not
-  as a modeling preference, but as an observed market fact.</p>
+  <b>the same physical asset is required to earn different returns depending on who owns it</b>, not
+  as a modelling preference, but as an observed market fact.</p>
 
   <p>Each owner class receives an unlevered cost of capital built from its own market beta and balance sheet
   (10-year Treasury 4.69%, equity risk premium 4.28%, both dated and sourced).</p>
@@ -996,10 +990,9 @@ ol.pidx a:hover{border-bottom-color:var(--text-primary)}
   <details class="tv "><summary>Cost-of-capital table</summary><div class="tw"><table><caption>Unlevered hurdle and observed cost of debt by owner class. Source: &sect;4.</caption><thead><tr><th>Owner class</th><th class="n">Unlevered hurdle</th><th class="n">Observed cost of debt</th></tr></thead><tbody><tr><td>DC REIT / landlord</td><td class="n">8.13%</td><td class="n">Equinix 4.56%</td></tr><tr><td>Merchant power</td><td class="n">8.79%</td><td class="n">Vistra 5.21%</td></tr><tr><td>Hyperscaler ex-Oracle</td><td class="n">9.86%</td><td class="n">~6.8%</td></tr><tr><td>Oracle</td><td class="n">10.41%</td><td class="n">~6.3%</td></tr><tr><td>Neocloud</td><td class="n">16.97%</td><td class="n">CoreWeave 9.625%</td></tr></tbody></table></div></details>
 </figure>
   <p>Read the extremes. A REIT and a neocloud can own physically similar capacity, and the market charges
-  one <b>4.56%</b> for senior debt and the other <b>9.625%</b> &mdash; a spread of <b>506 basis points</b>
+  one <b>4.56%</b> for senior debt and the other <b>9.625%</b>, a spread of <b>506 basis points</b>
   on the same class of collateral. The equity market performs the equivalent operation through beta. Nothing
-  about the silicon differs; everything about the <em>claim structure around the silicon</em> does &mdash;
-  leverage, customer concentration, contract duration, corporate history.</p>
+  about the silicon differs; everything about the <em>claim structure around the silicon</em> does,   leverage, customer concentration, contract duration, corporate history.</p>
 
   <p>Now re-lever, and meet the number that will organize the entire verdict: the unlevered return at which
   each owner's <em>equity</em> return crosses zero.</p>
@@ -1022,9 +1015,9 @@ ol.pidx a:hover{border-bottom-color:var(--text-primary)}
 </figure>
   <p>A hyperscaler, nearly unlevered, destroys equity only if the vintage earns less than 0.37%: almost any
   positive outcome preserves principal. A neocloud, levered at 41.5% debt costing 9.625%, destroys equity
-  below 4.00% &mdash; more than ten times the threshold, on the identical asset. Leverage does not change
+  below 4.00%, more than ten times the threshold, on the identical asset. Leverage does not change
   what the asset earns; it changes <em>who survives</em> what the asset earns.</p>
-<aside class="pat rise" id="p4"><p class="pat-k">Pattern &#8470;4</p><p><b>Hurdles attach to owners, not assets.</b> &ldquo;Will AI infrastructure earn its cost of capital?&rdquo; is ill-posed, because there is no single cost of capital. Decompose every capital-cycle question by owner class, and let each class carry its own hurdle, funding cost, and survival threshold. Most cycle damage is not the asset failing; it is the marginal owner's structure failing around an asset that muddles through.</p></aside><aside class="mm rise"><p class="mm-k">Mental model &#183; Same asset, different bets</p><p>The market's own prices &mdash; 4.56% versus 9.625% debt against similar collateral &mdash; prove that ownership structure, not asset identity, sets required returns. Whenever a boom distributes one asset class into many kinds of hands, rank the hands from lowest survival threshold to highest. The verdict on the asset can be mediocre while the verdict on the weakest hands is fatal, and both verdicts can be read off structure <em>before</em> a single piece of demand evidence arrives.</p></aside>
+<aside class="pat rise" id="p4"><p class="pat-k">Pattern &#8470;4</p><p><b>Hurdles attach to owners, not assets.</b> &ldquo;Will AI infrastructure earn its cost of capital?&rdquo; is ill-posed, because there is no single cost of capital. Decompose every capital-cycle question by owner class, and let each class carry its own hurdle, funding cost, and survival threshold. Most cycle damage is not the asset failing; it is the marginal owner's structure failing around an asset that muddles through.</p></aside><aside class="mm rise"><p class="mm-k">Mental model &#183; Same asset, different bets</p><p>The market's own prices (4.56% versus 9.625% debt against similar collateral) prove that ownership structure, not asset identity, sets required returns. Whenever a boom distributes one asset class into many kinds of hands, rank the hands from lowest survival threshold to highest. The verdict on the asset can be mediocre while the verdict on the weakest hands is fatal, and both verdicts can be read off structure <em>before</em> a single piece of demand evidence arrives.</p></aside>
 </section>
 
 <section class="sec" id="s5">
@@ -1033,16 +1026,16 @@ ol.pidx a:hover{border-bottom-color:var(--text-primary)}
   <p>Everything to this point is scaffolding. Here is the load-bearing problem.</p>
 
   <p>To model the return on a vintage dollar you need one number above all others: the <b>gross revenue
-  yield</b> &mdash; annual revenue per dollar of installed capital. The Evidence Pack constructed that
+  yield</b>, annual revenue per dollar of installed capital. The Evidence Pack constructed that
   number two independent ways, and the two constructions refuse to agree.</p>
 
-  <p><b>Anchor A &mdash; realized, from a filer.</b> CoreWeave, the one company that discloses both revenue
+  <p><b>Anchor A, realized, from a filer.</b> CoreWeave, the one company that discloses both revenue
   and active capacity, generated an annualized <b>$8.99 million per active megawatt</b> (the average of
-  $8.73&ndash;9.25M across three quarters &mdash; <span class="tag"><svg class="gl" aria-hidden="true"><use href="#g-F"/></svg>F</span>, from filings). Divide by an all-in build cost of
-  $50M/MW (<span class="tag"><svg class="gl" aria-hidden="true"><use href="#g-S"/></svg>S</span> &mdash; no filer discloses it) and the yield is <b>18.0% per year</b>.</p>
+  $8.73&ndash;9.25M across three quarters: <span class="tag"><svg class="gl" aria-hidden="true"><use href="#g-F"/></svg>F</span>, from filings). Divide by an all-in build cost of
+  $50M/MW (<span class="tag"><svg class="gl" aria-hidden="true"><use href="#g-S"/></svg>S</span>, no filer discloses it) and the yield is <b>18.0% per year</b>.</p>
 
-  <p><b>Anchor B &mdash; constructed, from market prices.</b> A GB200 NVL72 rack at $3.0 million (<span class="tag"><svg class="gl" aria-hidden="true"><use href="#g-S"/></svg>S</span>,
-  supply-chain rumour) drawing 132 kW implies $22.7M of accelerator per MW &mdash; $39.9M/MW all-in at the
+  <p><b>Anchor B, constructed, from market prices.</b> A GB200 NVL72 rack at $3.0 million (<span class="tag"><svg class="gl" aria-hidden="true"><use href="#g-S"/></svg>S</span>,
+  supply-chain rumour) drawing 132 kW implies $22.7M of accelerator per MW: $39.9M/MW all-in at the
   57% component weight; rent the GPUs at $3.50/GPU-hour around the clock and revenue reaches $16.7M/MW/year.
   Yield: <b>41.9% per year</b>.</p>
 
@@ -1063,10 +1056,9 @@ ol.pidx a:hover{border-bottom-color:var(--text-primary)}
   <details class="tv "><summary>Anchor construction</summary><div class="tw"><table><caption>Both derivations, step by step. Source: &sect;5.</caption><thead><tr><th>Step</th><th>Anchor A</th><th>Anchor B</th></tr></thead><tbody><tr><td>Revenue input</td><td>$8.99 M per active MW [F]</td><td>$3.50/GPU-hour &#215; 8,760 h [S]</td></tr><tr><td>Revenue per MW per year</td><td>$8.99 M</td><td>$16.7 M [I]</td></tr><tr><td>Cost input</td><td>$50 M per MW all-in [S]</td><td>$3.0 M rack, 132 kW [S]</td></tr><tr><td>Cost per MW</td><td>$50.0 M</td><td>$22.7 M accelerator &#247; 0.57 = $39.9 M [I]</td></tr><tr><td>Gross revenue yield</td><td>18.0% per year</td><td>41.9% per year</td></tr><tr><td>Weight in the verdict</td><td>0.40</td><td>0.60</td></tr></tbody></table></div></details>
 </figure>
   <p>The ratio between the anchors is <b>2.3&#215;</b>. That is not a rounding disagreement. It is two
-  instruments reporting different worlds. Feed each anchor through the same cash-flow model &mdash;
-  component weights from &sect;3, a 60% cash margin (<span class="tag"><svg class="gl" aria-hidden="true"><use href="#g-E"/></svg>E</span>, unsourced; no filer discloses AI-fleet operating
+  instruments reporting different worlds. Feed each anchor through the same cash-flow model,   component weights from &sect;3, a 60% cash margin (<span class="tag"><svg class="gl" aria-hidden="true"><use href="#g-E"/></svg>E</span>, unsourced; no filer discloses AI-fleet operating
   margin either), residual values at the accelerator's end of life, three accelerator lives, three
-  utilization/revenue scenarios &mdash; and you obtain the pair of grids on which the entire verdict turns.
+  utilization/revenue scenarios, and you obtain the pair of grids on which the entire verdict turns.
   Failure is judged against each owner's hurdle from &sect;4; a cell's failure share is the slice of V whose
   owner-class hurdle exceeds that cell's IRR.</p>
 
@@ -1087,14 +1079,13 @@ ol.pidx a:hover{border-bottom-color:var(--text-primary)}
   <details class="tv "><summary>The IRR grid</summary><div class="tw"><table><caption>Unlevered IRR by anchor, accelerator life and scenario, with each cell's share of V failing its owner-class hurdle. Source: &sect;5.</caption><thead><tr><th>Cell</th><th class="n">Anchor A IRR</th><th class="n">A: share of V failing</th><th class="n">Anchor B IRR</th><th class="n">B: share of V failing</th></tr></thead><tbody><tr><td>2-year life, low</td><td class="n">&minus;18.8%</td><td class="n">100%</td><td class="n">&minus;6.2%</td><td class="n">100%</td></tr><tr><td>2-year life, base</td><td class="n">&minus;15.6%</td><td class="n">100%</td><td class="n">+0.9%</td><td class="n">100%</td></tr><tr><td>2-year life, high</td><td class="n">&minus;13.1%</td><td class="n">100%</td><td class="n">+2.1%</td><td class="n">100%</td></tr><tr><td>3-year life, low</td><td class="n">&minus;16.9%</td><td class="n">100%</td><td class="n">&minus;3.5%</td><td class="n">100%</td></tr><tr><td>3-year life, base</td><td class="n">&minus;12.6%</td><td class="n">100%</td><td class="n">+5.8%</td><td class="n">100%</td></tr><tr><td>3-year life, high</td><td class="n">&minus;9.0%</td><td class="n">100%</td><td class="n">+8.2%</td><td class="n">97.8%</td></tr><tr><td>5-year life, low</td><td class="n">&minus;12.5%</td><td class="n">100%</td><td class="n">+1.5%</td><td class="n">100%</td></tr><tr><td>5-year life, base</td><td class="n">&minus;6.0%</td><td class="n">100%</td><td class="n"><b>+13.9%</b></td><td class="n"><b>8.9%</b></td></tr><tr><td>5-year life, high</td><td class="n">&minus;0.4%</td><td class="n">100%</td><td class="n">+18.5%</td><td class="n">0%</td></tr></tbody></table></div></details>
 </figure>
   <p>Stare at this table until it becomes uncomfortable. <b>Under Anchor A, 100% of the vintage fails in
-  every single cell</b> &mdash; even at five-year lives and high utilization; even after applying the most
-  favorable published sensitivity (+6.5 points), A's best cell reaches only +6.1%, still beneath the lowest
-  hurdle in the set (8.13%). <b>Under Anchor B at the five-year life, the base case earns +13.9% &mdash;
-  clearing the hyperscaler hurdle by more than 300 basis points.</b> The bucket assignment for the entire
+  every single cell</b>, even at five-year lives and high utilization; even after applying the most
+  favourable published sensitivity (+6.5 points), A's best cell reaches only +6.1%, still beneath the lowest
+  hurdle in the set (8.13%). <b>Under Anchor B at the five-year life, the base case earns +13.9%,   clearing the hyperscaler hurdle by more than 300 basis points.</b> The bucket assignment for the entire
   trillion dollars flips on which instrument you believe.</p>
 
   <p>Which should you believe? Now the evidence labels earn their keep. Anchor A's <em>revenue</em> is
-  <span class="tag"><svg class="gl" aria-hidden="true"><use href="#g-F"/></svg>F</span> &mdash; a real company's filed numbers. Anchor B is <span class="tag"><svg class="gl" aria-hidden="true"><use href="#g-S"/></svg>S</span> on <em>both</em> sides: rumoured rack
+  <span class="tag"><svg class="gl" aria-hidden="true"><use href="#g-F"/></svg>F</span>, a real company's filed numbers. Anchor B is <span class="tag"><svg class="gl" aria-hidden="true"><use href="#g-S"/></svg>S</span> on <em>both</em> sides: rumoured rack
   price, marketplace rental rate. Strict source discipline says A. And yet the Pack designates <b>B as the
   base case</b>, on three dated, independent observations that are very hard to reconcile with a world in
   which A's level is correct:</p>
@@ -1105,13 +1096,12 @@ ol.pidx a:hover{border-bottom-color:var(--text-primary)}
     <b>SOFR+225bp with a Moody's A3 rating</b>, roughly 750bp tighter than the same borrower's first
     facility. Lenders underwriting a first-lien claim do not price uniformly negative unlevered returns at
     investment grade.</li>
-    <li><b>Six-year-old hardware refuses to die.</b> A100 accelerators &mdash; 2020 silicon &mdash; are
+    <li><b>Six-year-old hardware refuses to die.</b> A100 accelerators (2020 silicon) are
     &ldquo;completely sold out,&rdquo; never retired at AWS, still carrying over $20 billion per quarter of
     NVIDIA's data-centre revenue in prior-generation product, with rental rates <em>rising</em> through 2026.
     An asset class that failed to earn its cost of capital in its first vintage does not reprice upward in
     year six.</li>
-    <li><b>The one realized per-unit revenue series held flat through a 70% capacity expansion</b> &mdash;
-    precisely where oversupply economics predicted compression.</li>
+    <li><b>The one realized per-unit revenue series held flat through a 70% capacity expansion</b>,     precisely where oversupply economics predicted compression.</li>
   </ol>
 
   <p>Meanwhile, A's likely defect is identifiable but not curable from public data: its &ldquo;active
@@ -1122,13 +1112,13 @@ ol.pidx a:hover{border-bottom-color:var(--text-primary)}
   dissolved.</p>
 
   <p>And now the move this entire study edition exists to teach. The reflexively &ldquo;sophisticated&rdquo;
-  response is to interpolate &mdash; split the difference, blend a ~30% yield, build one tidy grid. The
+  response is to interpolate, split the difference, blend a ~30% yield, build one tidy grid. The
   analysis <b>refuses</b>: <em>&ldquo;A defect that is half-corrected argues for a mid-anchor, and no
   mid-anchor cell exists in the Pack. I do not interpolate one.&rdquo;</em> A blended anchor would be a
-  measurement no instrument took &mdash; data invented by arithmetic, wearing moderation as a costume.
+  measurement no instrument took, data invented by arithmetic, wearing moderation as a costume.
   Instead the fork is carried into the verdict intact: 60% weight on B, 40% on A, both grids alive, the
   downside branch treated as live rather than discarded.</p>
-<aside class="pat rise" id="p5"><p class="pat-k">Pattern &#8470;5</p><p><b>When instruments disagree irreconcilably, carry the fork.</b> Averaging two incompatible measurements manufactures a third world that neither instrument observed, and it quietly deletes the most decision-relevant fact you possess: <em>that reality is currently one of two very different places</em>. Keep both branches, weight them explicitly, and hunt for the observable variable that will eventually announce which branch you inhabit.</p></aside><aside class="mm rise"><p class="mm-k">Mental model &#183; The gap is the finding</p><p>When two honest constructions of the same quantity differ by 2.3&#215;, the difference is not noise to be averaged away; it is the single most informative object in the analysis. Diagnose <em>why</em> they differ &mdash; definitions, denominators, contract-versus-spot pricing. Designate a base case with declared weights and dated justification. Preserve the loser as the live downside. And the moment you feel the urge to blend irreconcilable numbers into one comfortable figure, recognize what you are watching: yourself, destroying information to relieve anxiety.</p></aside>
+<aside class="pat rise" id="p5"><p class="pat-k">Pattern &#8470;5</p><p><b>When instruments disagree irreconcilably, carry the fork.</b> Averaging two incompatible measurements manufactures a third world that neither instrument observed, and it quietly deletes the most decision-relevant fact you possess: <em>that reality is currently one of two very different places</em>. Keep both branches, weight them explicitly, and hunt for the observable variable that will eventually announce which branch you inhabit.</p></aside><aside class="mm rise"><p class="mm-k">Mental model &#183; The gap is the finding</p><p>When two honest constructions of the same quantity differ by 2.3&#215;, the difference is not noise to be averaged away; it is the single most informative object in the analysis. Diagnose <em>why</em> they differ, definitions, denominators, contract-versus-spot pricing. Designate a base case with declared weights and dated justification. Preserve the loser as the live downside. And the moment you feel the urge to blend irreconcilable numbers into one comfortable figure, recognize what you are watching: yourself, destroying information to relieve anxiety.</p></aside>
 </section>
 
 <div class="part-open rise" id="pIII">
@@ -1140,11 +1130,11 @@ ol.pidx a:hover{border-bottom-color:var(--text-primary)}
 <div class="glance rise">
   <p class="mm-k">At a glance</p>
   <p><b>Q1.</b> <b>75.6%</b> of the vintage fails its owner-class hurdle in the base case, and P(failure
-  share &gt; 30%) = P(&gt; 50%) = P(&gt; 70%) = <b>0.743</b> &mdash; one probability three times, because
+  share &gt; 30%) = P(&gt; 50%) = P(&gt; 70%) = <b>0.743</b>, one probability three times, because
   the distribution is bimodal (no scenario yields a failure share between 8.9% and 97.8%), so the real
   question is <em>which branch</em>, not <em>how much</em>.</p>
   <p><b>Q2.</b> The endogenous share of revenue is <b>at least 31.8%</b> of the cloud layer and <b>12.4%</b>
-  of the silicon layer &mdash; structural lower bounds, with ceilings of 44.9% and 22.6%.</p>
+  of the silicon layer, structural lower bounds, with ceilings of 44.9% and 22.6%.</p>
   <p><b>Q3.</b> The probability that external end-user revenue falls short of the <b>$475 billion</b> per
   year that validates the vintage by 2030 is <b>0.70</b>. Probability-weighted unlevered return on a vintage
   dollar: <b>+1.27%</b>.</p>
@@ -1154,16 +1144,16 @@ ol.pidx a:hover{border-bottom-color:var(--text-primary)}
 <section class="sec" id="s6">
   <div class="sec-head"><span class="snum ui">6</span><h3 id="q1-seventy-six-per-cent-and-why-all-three-thresh">Q1: seventy-six per cent, and why all three thresholds agree</h3></div>
   
-  <p>To aggregate the grids into an answer, weights must be assigned &mdash; and here the analysis imposes a
+  <p>To aggregate the grids into an answer, weights must be assigned, and here the analysis imposes a
   constitutional rule on itself: <b>no implicit weights anywhere</b>. Every weight is declared before use,
   tied to evidence, and stress-tested under alternatives.</p>
 
-  <p><b>The declared weights.</b> Anchor: <b>A 0.40 / B 0.60</b> &mdash; B is the designated base case, held
+  <p><b>The declared weights.</b> Anchor: <b>A 0.40 / B 0.60</b>: B is the designated base case, held
   near the middle because A is better sourced and B's designation rests on triangulation rather than
-  measurement. Accelerator life: <b>5y 0.55 / 3y 0.33 / 2y 0.12</b> &mdash; disclosed depreciation lives
+  measurement. Accelerator life: <b>5y 0.55 / 3y 0.33 / 2y 0.12</b>, disclosed depreciation lives
   cluster at 5&ndash;6 years across all five reporters, and the two-year story is contradicted by both the
   disclosure record and six-year-old hardware still clearing $5,400 on the executed secondary market.
-  Scenario: <b>base 0.50 / high 0.28 / low 0.22</b> &mdash; &ldquo;sold out&rdquo; statements from four
+  Scenario: <b>base 0.50 / high 0.28 / low 0.22</b>: &ldquo;sold out&rdquo; statements from four
   operators argue against the low case, but commercial-commitment language is not a utilization measurement,
   so the up-case is capped for resting on the weakest species of evidence in the base.</p>
 
@@ -1184,18 +1174,17 @@ ol.pidx a:hover{border-bottom-color:var(--text-primary)}
   <details class="tv "><summary>Q1 result table</summary><div class="tw"><table><caption>Failure share and threshold probabilities under declared weights. Source: &sect;6.</caption><thead><tr><th></th><th class="n">low</th><th class="n">base</th><th class="n">high</th></tr></thead><tbody><tr><td>Share of V failing its owner-class hurdle</td><td class="n">70.5%</td><td class="n"><b>75.6%</b></td><td class="n">76.8%</td></tr><tr><td>P(failure share &gt; 30%)</td><td class="n">0.687</td><td class="n"><b>0.743</b></td><td class="n">0.743</td></tr><tr><td>P(failure share &gt; 50%)</td><td class="n">0.687</td><td class="n"><b>0.743</b></td><td class="n">0.743</td></tr><tr><td>P(failure share &gt; 70%)</td><td class="n">0.687</td><td class="n"><b>0.743</b></td><td class="n">0.743</td></tr></tbody></table></div></details>
 </figure>
   <p>Your eye should snag at once: the probability is <em>identical at all three thresholds</em>. That is
-  not indolence. Return to the grid: its cells produce failure shares of 0%, 8.9%, 97.8%, or 100% &mdash;
-  <b>nothing between 8.9% and 97.8%</b>. The distribution is bimodal. Either nearly all of the vintage fails
+  not indolence. Return to the grid: its cells produce failure shares of 0%, 8.9%, 97.8%, or 100%,   <b>nothing between 8.9% and 97.8%</b>. The distribution is bimodal. Either nearly all of the vintage fails
   (the A branch, plus B's weaker cells) or nearly none of it does (B at the five-year life). Any threshold
   drawn between 8.9% and 97.8% slices the same two clumps of probability. The honest answer to &ldquo;P(more
-  than 30%)? more than 50%? more than 70%?&rdquo; is one number, three times &mdash; and the analysis says
+  than 30%)? more than 50%? more than 70%?&rdquo; is one number, three times, and the analysis says
   so plainly: <em>manufacturing three different probabilities here would be false precision.</em></p>
-<aside class="pat rise" id="p6"><p class="pat-k">Pattern &#8470;6</p><p><b>Report the distribution you actually have.</b> If the evidence generates a fork, the answer is fork-shaped. Producing smooth, threshold-by-threshold gradations the underlying grid cannot support is fabrication with extra steps &mdash; and it conceals the most actionable fact available, which is that the operative question is <em>which branch</em>, not <em>how much</em>.</p></aside>
+<aside class="pat rise" id="p6"><p class="pat-k">Pattern &#8470;6</p><p><b>Report the distribution you actually have.</b> If the evidence generates a fork, the answer is fork-shaped. Producing smooth, threshold-by-threshold gradations the underlying grid cannot support is fabrication with extra steps, and it conceals the most actionable fact available, which is that the operative question is <em>which branch</em>, not <em>how much</em>.</p></aside>
   <p>The expected unlevered IRR under these weights is <b>+1.27%</b>. Notice what species of number that is.
   The nearest cells in the entire grid are +0.9 and +1.5: the mean of a fork lands in the valley between its
-  modes, a forecast of a world almost no scenario produces. The figure is reported &mdash; it powers the
-  equity arithmetic &mdash; but the verdict never pretends the vintage will <em>earn</em> 1.27%. It will
-  earn roughly &minus;13% or roughly +14% at the branch base cases; the mean is merely the fork's center of
+  modes, a forecast of a world almost no scenario produces. The figure is reported, it powers the
+  equity arithmetic, but the verdict never pretends the vintage will <em>earn</em> 1.27%. It will
+  earn roughly &minus;13% or roughly +14% at the branch base cases; the mean is merely the fork's centre of
   mass.</p>
 
 <figure class="fig rise" id="f8">
@@ -1214,14 +1203,14 @@ ol.pidx a:hover{border-bottom-color:var(--text-primary)}
   <figcaption>The zero-width mark on the Amazon row is not an omission. It is the result: a defect that moved $92 billion of capital moved the probability by 0.000 and the failure share by 0.1 points.</figcaption>
   <details class="tv "><summary>Sensitivity table</summary><div class="tw"><table><caption>What moves the answer, and what does not. Source: &sect;6.</caption><thead><tr><th>Assumption</th><th>Range tested</th><th class="n">P(&gt;30%) moves</th><th class="n">Failure share moves</th></tr></thead><tbody><tr><td>P(Anchor A)</td><td>0.20 &#8594; 0.60</td><td class="n">0.657 &#8594; 0.828</td><td class="n">67.5% &#8594; 83.7%</td></tr><tr><td>Weight on 5-year life</td><td>0.75 &#8594; 0.35</td><td class="n">0.649 &#8594; 0.836</td><td class="n">66.8% &#8594; 84.4%</td></tr><tr><td>Amazon attribution (the D-1 defect)</td><td>80% &#8594; 55%</td><td class="n">0.743 &#8594; 0.743</td><td class="n">75.6% &#8594; 75.7%</td></tr><tr><td>Scenario weights</td><td>base 0.40&#8211;0.60</td><td class="n">&plusmn;0.02</td><td class="n">&plusmn;2pp</td></tr></tbody></table></div></details>
 </figure>
-  <p>The two levers that matter are the anchor and the asset life &mdash; both <em>supply-side</em>
+  <p>The two levers that matter are the anchor and the asset life, both <em>supply-side</em>
   questions about what the asset is worth and how long it endures. The utilization-and-demand scenario, the
-  subject of the entire public debate, moves the verdict by &plusmn;2 points. This inversion &mdash; the
-  answer lives where the discourse isn't &mdash; is one of the analysis's quietest and most valuable
+  subject of the entire public debate, moves the verdict by &plusmn;2 points. This inversion, the
+  answer lives where the discourse isn't, is one of the analysis's quietest and most valuable
   results.</p>
 
-  <p><b>The stress test.</b> Under the required alternative weighting &mdash; <em>evidence-tier-first</em>,
-  which mechanically privileges the better-sourced anchor (A to 0.55) &mdash; the failure share rises to
+  <p><b>The stress test.</b> Under the required alternative weighting, <em>evidence-tier-first</em>,
+  which mechanically privileges the better-sourced anchor (A to 0.55), the failure share rises to
   <b>84.0%</b> and the probability to <b>0.831</b>. Under a bull-tilted <em>base-case-dominant</em>
   weighting (A to 0.25, the five-year life to 0.65): <b>62.1%</b> and <b>0.600</b>. The full envelope across
   all three defensible weightings: <b>failure share 62&ndash;84%, probability 0.60&ndash;0.83</b>. The
@@ -1250,28 +1239,28 @@ ol.pidx a:hover{border-bottom-color:var(--text-primary)}
 </figure>
   <ul>
     <li>Share of V <b>failing its hurdle: 75.6%.</b></li>
-    <li>Share of V <b>destroying equity outright: 48.0%</b> &mdash; and conditional on Anchor B alone, just
+    <li>Share of V <b>destroying equity outright: 48.0%</b>, and conditional on Anchor B alone, just
     <b>13.3%</b>; conditional on A, 100%.</li>
-    <li>The band between the two tests: <b>27.6% of V &mdash; roughly $299 billion (original basis; $273
-    billion adjusted) &mdash; earns a positive return below its cost of capital.</b></li>
+    <li>The band between the two tests: <b>27.6% of V, roughly $299 billion (original basis; $273
+    billion adjusted), earns a positive return below its cost of capital.</b></li>
   </ul>
 
   <p>That band is the modal world. Not a crash: functioning data centres, paying customers, positive cash
-  flows &mdash; and returns that quietly fail to compensate the capital that built them. This is H2's
+  flows, and returns that quietly fail to compensate the capital that built them. This is H2's
   signature, and it is why &ldquo;bubble: yes or no?&rdquo; misses the likeliest outcome entirely. Purgatory
   does not photograph well, so nobody predicts it.</p>
-<aside class="mm rise"><p class="mm-k">Mental model &#183; Three verdicts, not one</p><p>Answer any capital-cycle question at three severities: does it beat the hurdle (value creation), does it beat zero equity return (capital preservation), and what sits between (the purgatory band). Here: 76% fails the hurdle, 48% destroys equity, and the ~$299 billion between is the modal outcome. Collapsing the three into one number &mdash; &ldquo;bubble&rdquo; or &ldquo;fine&rdquo; &mdash; destroys precisely the structure an allocator needs, because the three verdicts price differently and wound different people.</p></aside>
+<aside class="mm rise"><p class="mm-k">Mental model &#183; Three verdicts, not one</p><p>Answer any capital-cycle question at three severities: does it beat the hurdle (value creation), does it beat zero equity return (capital preservation), and what sits between (the purgatory band). Here: 76% fails the hurdle, 48% destroys equity, and the ~$299 billion between is the modal outcome. Collapsing the three into one number: &ldquo;bubble&rdquo; or &ldquo;fine&rdquo; destroys precisely the structure an allocator needs, because the three verdicts price differently and wound different people.</p></aside>
 </section>
 
 <section class="sec" id="s7">
   <div class="sec-head"><span class="snum ui">7</span><h3 id="q2-circularity-bounded">Q2: circularity, bounded</h3></div>
   
-  <p>The bear's favorite word is &ldquo;circular&rdquo;: the money travels in a ring and the revenue is an
+  <p>The bear's favourite word is &ldquo;circular&rdquo;: the money travels in a ring and the revenue is an
   apparition. The analysis's contribution is to dissolve the word into two <em>different</em> quantities
-  that the discourse chronically conflates &mdash; and then to bound each one honestly.</p>
+  that the discourse chronically conflates, and then to bound each one honestly.</p>
 
   <div class="callout"><p><b>The distinction, in spirit verbatim:</b> the endogenous share <b>(b+c)</b>
-  measures <b>historical inflation</b> &mdash; the share of <em>already-recognised</em> revenue funded
+  measures <b>historical inflation</b>, the share of <em>already-recognised</em> revenue funded
   directly by another ecosystem participant (b) or supported by ecosystem credit (c). Backward-looking.
   <b>Forward dependence</b> measures the exposure of <em>future</em> revenue to counterparties whose own
   funding is ecosystem-linked. It is <b>not</b> a claim that past demand was inflated by that fraction.
@@ -1295,28 +1284,28 @@ ol.pidx a:hover{border-bottom-color:var(--text-primary)}
   <details class="tv "><summary>Endogenous share</summary><div class="tw"><table><caption>Direct, credit-supported, unclassifiable and the arithmetic ceiling, by layer. Source: &sect;7.</caption><thead><tr><th>Layer</th><th class="n">(b) direct</th><th class="n">(c) credit-supported</th><th class="n">(b+c) lower bound</th><th class="n">(d) unclassifiable</th><th class="n">Arithmetic ceiling</th></tr></thead><tbody><tr><td>Cloud / compute</td><td class="n">18.7%</td><td class="n">13.1%</td><td class="n"><b>31.8%</b></td><td class="n">13.1%</td><td class="n"><b>44.9%</b></td></tr><tr><td>Semiconductor (restated)</td><td class="n">4.4%</td><td class="n">8.0%</td><td class="n"><b>12.4%</b></td><td class="n">10.2%</td><td class="n"><b>22.6%</b></td></tr></tbody></table></div></details>
 </figure>
   <p>Why &ldquo;lower bound&rdquo;? Because disclosed financing structures are observable and undisclosed
-  ones are not &mdash; <b>the measurement error is one-sided</b>. Every future revelation moves the number
+  ones are not, <b>the measurement error is one-sided</b>. Every future revelation moves the number
   up, never down. The bear brief leaned its full weight on exactly this, and the adjudicator's ruling is a
   sentence worth memorizing: <em>the bear is entitled to the direction and nothing else.</em> <b>One-sided
-  error establishes the sign of a revision, never its size.</b> The honest posture is an interval &mdash; at
-  least 31.8%, at most 44.9% at the cloud layer &mdash; with <em>no point estimate placed inside it</em>,
+  error establishes the sign of a revision, never its size.</b> The honest posture is an interval (at
+  least 31.8%, at most 44.9% at the cloud layer) with <em>no point estimate placed inside it</em>,
   because no evidence locates one.</p>
-<aside class="pat rise" id="p7"><p class="pat-k">Pattern &#8470;7</p><p><b>One-sided observability yields bounds, not points.</b> When you can see only part of a phenomenon and the invisible remainder all pushes one way, you have earned a floor and a ceiling &mdash; nothing more. Converting &ldquo;we cannot see it all&rdquo; into &ldquo;therefore it is enormous&rdquo; is the same fabrication as ignoring it, with the sign reversed.</p></aside>
+<aside class="pat rise" id="p7"><p class="pat-k">Pattern &#8470;7</p><p><b>One-sided observability yields bounds, not points.</b> When you can see only part of a phenomenon and the invisible remainder all pushes one way, you have earned a floor and a ceiling, nothing more. Converting &ldquo;we cannot see it all&rdquo; into &ldquo;therefore it is enormous&rdquo; is the same fabrication as ignoring it, with the sign reversed.</p></aside>
   <p>Three constraints then cage the bear's expansion of these numbers. Even at the ceiling, <b>55.1% of
   cloud-layer revenue is non-endogenous</b>. The unclassifiable bucket (d) is no reservoir of hidden
-  circularity &mdash; its stated contents (Google Cloud AI, Azure's non-OpenAI AI) are, on any reading,
+  circularity, its stated contents (Google Cloud AI, Azure's non-OpenAI AI) are, on any reading,
   mostly enterprise cash. And the supply-chain reconciliation points the <em>wrong way for the bear</em>:
-  measured chip-vendor revenue is <b>smaller</b> than customers' silicon-bound capex &mdash; the opposite of
+  measured chip-vendor revenue is <b>smaller</b> than customers' silicon-bound capex, the opposite of
   what channel-stuffing produces.</p>
 
   <p>Then arrives the most instructive empirical moment in the document. The Pack's top-ranked gap was
-  Broadcom's AI revenue &mdash; an entire missing vendor. Run 2 retrieved it: <b>$10.8 billion in the
+  Broadcom's AI revenue, an entire missing vendor. Run 2 retrieved it: <b>$10.8 billion in the
   quarter ended 3 May 2026, +143% year-over-year</b> (with guidance to $16.0 billion, over +200%, the
   following quarter). Adding it enlarged the identified revenue base from $327.7 to $370.9 billion,
   collapsed the reconciliation residual from 26&ndash;56% to <b>11.4&ndash;38.0%</b>, and moved the
   semiconductor layer's endogenous share <b>down</b>, from 14.0% to 12.4%. Sit with that. Closing the
-  scariest data gap made the scary number <em>smaller</em>. The Pack had predicted precisely this &mdash; it
-  diagnosed the residual as missing suppliers, not hidden inflation &mdash; and the prediction paid. When a
+  scariest data gap made the scary number <em>smaller</em>. The Pack had predicted precisely this (it
+  diagnosed the residual as missing suppliers, not hidden inflation) and the prediction paid. When a
   framework tells you in advance which way an unknown will break, and it breaks that way, the framework is
   earning its keep.</p>
 
@@ -1336,45 +1325,43 @@ ol.pidx a:hover{border-bottom-color:var(--text-primary)}
   <figcaption>The width of that range is a disclosure fact, not an analytical one. That distinction is worth more than the number.</figcaption>
   <details class="tv "><summary>Forward dependence</summary><div class="tw"><table><caption>Exposure and backstop at the cloud layer. Source: &sect;7.</caption><thead><tr><th>Quantity</th><th class="n">Value</th><th>Basis</th></tr></thead><tbody><tr><td>Identified cloud revenue base</td><td class="n">$78.3 bn</td><td>The denominator</td></tr><tr><td>Forward dependence, floor</td><td class="n">30.8%</td><td>Microsoft&#8211;OpenAI, cleanly identified</td></tr><tr><td>Forward dependence, ceiling</td><td class="n">85.8%</td><td>Every undisclosed share breaking maximally bad</td></tr><tr><td>Displayed midpoint</td><td class="n">55.1%</td><td>An assumption with no evidentiary basis</td></tr><tr><td>Recapture rate</td><td class="n">15&#8211;25%, central 20%</td><td>Third-party credit support</td></tr><tr><td>Exposed and unsupported</td><td class="n">24.6&#8211;68.6%</td><td>Net of recapture</td></tr></tbody></table></div></details>
 </figure>
-  <p><b>Forward dependence &mdash; the separate quantity.</b> Of the cloud layer's identified $78.3 billion
+  <p><b>Forward dependence, the separate quantity.</b> Of the cloud layer's identified $78.3 billion
   revenue base, how much comes from counterparties that are themselves financed by the ecosystem? The floor,
-  cleanly identified: <b>30.8%</b> &mdash; Microsoft's $24.1 billion of FY26 revenue from OpenAI, set
+  cleanly identified: <b>30.8%</b>: Microsoft's $24.1 billion of FY26 revenue from OpenAI, set
   against $11.6 billion of cumulative funding <em>into</em> OpenAI, with roughly $6 billion of it standing as
   an uncollected receivable. The ceiling, if every undisclosed counterparty share breaks maximally bad:
-  <b>85.8%</b>. The midpoint the original displays (55.1%) is explicitly labeled an assumption with no
-  evidentiary basis &mdash; italicized in the source as decoration, not data. The honest statement: <em>the
+  <b>85.8%</b>. The midpoint the original displays (55.1%) is explicitly labelled an assumption with no
+  evidentiary basis, italicized in the source as decoration, not data. The honest statement: <em>the
   width of that range is a disclosure fact, not an analytical one.</em></p>
 
-  <p>Against the exposure stands a defended <b>central recapture rate of 15&ndash;25%, central 20%</b>
-  &mdash; the fraction of exposed revenue protected by third-party credit support, anchored to observable
+  <p>Against the exposure stands a defended <b>central recapture rate of 15&ndash;25%, central 20%</b>, the fraction of exposed revenue protected by third-party credit support, anchored to observable
   contract features. The explicitly supported exposures (Google's $1.4B + $1.8B lease backstops, NVIDIA's
   $6.3B residual obligation and $3.5B in guarantees, Meta's residual-value guarantee) are small beside the
   unsupported ones (Microsoft&ndash;OpenAI; Oracle's undisclosed OpenAI share of a $638 billion backlog;
   CoreWeave's $99.4 billion backlog). Net: <b>24.6%&ndash;68.6% of the identified base is exposed and
-  unsupported &mdash; roughly four-fifths of whatever is exposed carries no backstop at all.</b></p>
+  unsupported, roughly four-fifths of whatever is exposed carries no backstop at all.</b></p>
 
   <p>A measurement footnote that generalizes far beyond AI: a run-rate is one month multiplied by twelve;
   recognized revenue is what actually happened; and the two are routinely a large multiple apart. The only
   hyperscaler that disclosed an isolated AI run-rate at all was AWS (&gt;$25 billion). Whenever anyone
-  quotes an AI revenue figure at you, your first question is now reflexive: <em>run-rate or recognized
-  &mdash; and says who?</em></p>
-<aside class="mm rise"><p class="mm-k">Mental model &#183; Two clocks, one word</p><p>&ldquo;Circularity&rdquo; hides two measurements: how much of yesterday's revenue was the ecosystem paying itself (a stock, bounded at 31.8&ndash;44.9% for the cloud layer), and how much of tomorrow's revenue depends on counterparties the ecosystem is funding (a flow, 30.8&ndash;85.8% exposed, roughly 80% of it unbackstopped). The first says the past was partly self-dealt but majority-real. The second says the future rests on a concentrated, largely uninsured counterparty spine. Different quantities, different risks, different falsifiers &mdash; and anyone who quotes one as the other is confused or selling something.</p></aside>
+  quotes an AI revenue figure at you, your first question is now reflexive: <em>run-rate or recognized, and says who?</em></p>
+<aside class="mm rise"><p class="mm-k">Mental model &#183; Two clocks, one word</p><p>&ldquo;Circularity&rdquo; hides two measurements: how much of yesterday's revenue was the ecosystem paying itself (a stock, bounded at 31.8&ndash;44.9% for the cloud layer), and how much of tomorrow's revenue depends on counterparties the ecosystem is funding (a flow, 30.8&ndash;85.8% exposed, roughly 80% of it unbackstopped). The first says the past was partly self-dealt but majority-real. The second says the future rests on a concentrated, largely uninsured counterparty spine. Different quantities, different risks, different falsifiers, and anyone who quotes one as the other is confused or selling something.</p></aside>
 </section>
 
 <section class="sec" id="s8">
   <div class="sec-head"><span class="snum ui">8</span><h3 id="q3-tails-with-dates">Q3: tails with dates</h3></div>
   
   <p>Vague fears cannot be adjudicated. The analysis compels its four tail risks into dated, proxied,
-  internally consistent probabilities &mdash; and shows every derivation.</p>
+  internally consistent probabilities, and shows every derivation.</p>
 
-  <p><b>Tail 1 &mdash; P(frontier capability plateau by 31 Dec 2028) = 0.15</b> (band 0.08&ndash;0.25).
+  <p><b>Tail 1: P(frontier capability plateau by 31 Dec 2028) = 0.15</b> (band 0.08&ndash;0.25).
   Since no capability benchmark exists in the evidence base, the proxy is defined before the probability is
-  assigned &mdash; and it is an <em>economics-of-delivery</em> proxy, flagged openly as the thinnest of the
+  assigned, and it is an <em>economics-of-delivery</em> proxy, flagged openly as the thinnest of the
   four. A plateau requires <b>both</b> legs: frontier API pricing failing to halve (to $1.25 per million
   input tokens from $2.50), <b>and</b> per-GPU inference throughput failing to double (to ~11,700 tokens/s/GPU
   from a measured 5,842), by the date. Either leg would demand a sharp deceleration from trend: pricing fell
   92% across the prior three years ($30 &#8594; $2.50); measured throughput rose 4.66&#215; across roughly
-  two hardware generations; and ASML is adding 30% EUV capacity in each of 2027 and 2028 &mdash; the supply
+  two hardware generations; and ASML is adding 30% EUV capacity in each of 2027 and 2028, the supply
   chain is being tooled for continuation.</p>
 
 <figure class="fig rise" id="f12">
@@ -1393,8 +1380,8 @@ ol.pidx a:hover{border-bottom-color:var(--text-primary)}
   <figcaption>The path from the generous $50 billion base starts on an open marker, because $50 billion is granted rather than identified. The identified base is $26.3 billion.</figcaption>
   <details class="tv "><summary>The annuity derivation</summary><div class="tw"><table><caption>How the revenue bar is computed, at two asset lives. Source: &sect;8.</caption><thead><tr><th>Step</th><th class="n">Five-year life</th><th class="n">Eight-year life</th></tr></thead><tbody><tr><td>Vintage V</td><td class="n">$1,082 bn</td><td class="n">$1,082 bn</td></tr><tr><td>Annuity factor at the 9.86% hurdle</td><td class="n">0.2629</td><td class="n">0.1865</td></tr><tr><td>Cash margin required per year</td><td class="n">$284 bn</td><td class="n">$202 bn</td></tr><tr><td>At a 60% cash margin, revenue required</td><td class="n"><b>$474 bn</b></td><td class="n"><b>$336 bn</b></td></tr><tr><td>Required CAGR from $26.3 bn over 4.4 years</td><td class="n">93.0%</td><td class="n">78.5%</td></tr><tr><td>Required CAGR from a generous $50 bn base</td><td class="n">66.8%</td><td class="n">not derived</td></tr></tbody></table></div></details>
 </figure>
-  <p><b>Tail 2 &mdash; P(external AI end-user revenue below $475 billion in calendar 2030) = 0.70</b> (band
-  0.55&ndash;0.85). The bar is <em>derived, not asserted</em> &mdash; follow the annuity logic, because this
+  <p><b>Tail 2: P(external AI end-user revenue below $475 billion in calendar 2030) = 0.70</b> (band
+  0.55&ndash;0.85). The bar is <em>derived, not asserted</em>, follow the annuity logic, because this
   is the transferable skill. For V alone ($1,082B) to return its cost of capital at the hyperscaler hurdle
   (9.86%) over a five-year life, it must yield $1,082B &#215; 0.2629 (the annuity factor) = <b>$284 billion
   of cash margin per year</b>, which at the 60% cash margin requires <b>$474 billion of revenue per
@@ -1402,11 +1389,11 @@ ol.pidx a:hover{border-bottom-color:var(--text-primary)}
   admits, is <b>$26.3 billion</b> annualized. Reaching the bar by end-2030 demands a <b>93.0% compound
   growth rate sustained for 4.4 years with zero deceleration</b>; grant a generous $50 billion true base for
   undisclosed lines and the requirement is still <b>66.8%</b>. Current growth genuinely runs in that
-  neighborhood &mdash; AWS's AI line at triple digits, paid enterprise adoption up from 35% to 50.4% in a
-  year &mdash; but against it stands the best-sourced demand evidence in the base: Census data (~20,000
+  neighborhood (AWS's AI line at triple digits, paid enterprise adoption up from 35% to 50.4% in a
+  year) but against it stands the best-sourced demand evidence in the base: Census data (~20,000
   firms per wave) showing 17&ndash;20% of firms using AI at all, <b>57% of users running it in three or
   fewer business functions</b>, and a median paid spend of <b>$11.38 per employee per month</b> against a
-  top-1% figure of $7,449 &mdash; a 654&#215; depth gap. Breadth without depth, racing a 93% required
+  top-1% figure of $7,449, a 654&#215; depth gap. Breadth without depth, racing a 93% required
   compound rate.</p>
 
 <figure class="fig rise" id="f13">
@@ -1425,18 +1412,16 @@ ol.pidx a:hover{border-bottom-color:var(--text-primary)}
   <figcaption>That Tail 3 sits a mere 3.5 points below the unconditional 0.70 encodes a thesis: the binding constraint is diffusion and monetisation, not capability. Models improving does not compress an enterprise integration cycle.</figcaption>
   <details class="tv "><summary>The four tails</summary><div class="tw"><table><caption>Dated tail probabilities with declared bands. Source: &sect;8.</caption><thead><tr><th>Tail</th><th>Event</th><th class="n">P</th><th class="n">Band</th></tr></thead><tbody><tr><td>1</td><td>Frontier capability plateau by 31 Dec 2028</td><td class="n">0.15</td><td class="n">0.08&#8211;0.25</td></tr><tr><td>2</td><td>External AI end-user revenue below $475 bn in calendar 2030</td><td class="n">0.70</td><td class="n">0.55&#8211;0.85</td></tr><tr><td>3</td><td>Demand shortfall, conditional on no plateau</td><td class="n">0.66</td><td class="n">0.50&#8211;0.80</td></tr><tr><td>4</td><td>Installed fleet validated, conditional on a plateau</td><td class="n">0.18</td><td class="n">0.10&#8211;0.30</td></tr></tbody></table></div></details>
 </figure>
-  <p><b>Tail 3 &mdash; P(demand shortfall | no plateau) = 0.66</b> (band 0.50&ndash;0.80). Derived for
+  <p><b>Tail 3: P(demand shortfall | no plateau) = 0.66</b> (band 0.50&ndash;0.80). Derived for
   coherence rather than assembled from mood: with P(plateau) = 0.15 and P(shortfall | plateau) declared at
   0.90, arithmetic forces (0.70 &minus; 0.15 &#215; 0.90) / 0.85 = <b>0.665</b>. That it sits a mere 3.5
   points below the unconditional 0.70 encodes a thesis: <b>the binding constraint is diffusion and
   monetization, not capability</b>. Models improving does not compress an enterprise integration cycle.</p>
 
-  <p><b>Tail 4 &mdash; P(installed fleet validated | plateau) = 0.18</b> (band 0.10&ndash;0.30) &mdash;
-  <em>higher</em> than the naive 0.10, for a quantified reason: <b>a plateau is two-sided for installed
+  <p><b>Tail 4: P(installed fleet validated | plateau) = 0.18</b> (band 0.10&ndash;0.30),   <em>higher</em> than the naive 0.10, for a quantified reason: <b>a plateau is two-sided for installed
   capital.</b> No next generation means no obsolescence; the fleet's life extends, and at an eight-year life
   the revenue bar drops 29%, from $474B to <b>$336 billion</b> (annuity factor 0.1865), trimming the
-  required growth rate to 78.5%. A plateau caps the demand path while protecting residuals and utilization
-  &mdash; the same mechanism as the A100s sold out in year six. The two effects substantially offset. Most
+  required growth rate to 78.5%. A plateau caps the demand path while protecting residuals and utilization, the same mechanism as the A100s sold out in year six. The two effects substantially offset. Most
   commentary treats &ldquo;plateau&rdquo; as pure downside for AI capital; the arithmetic says it is a
   trade.</p>
 
@@ -1445,7 +1430,7 @@ ol.pidx a:hover{border-bottom-color:var(--text-primary)}
   <b>0.300</b>. Two paths, built from different sections of the evidence and never tuned to each other, land
   within 4.3 points. When independent derivations of the same quantity agree, the number begins to deserve
   your trust.</p>
-<aside class="pat rise" id="p8"><p class="pat-k">Pattern &#8470;8</p><p><b>Date the tail, define the proxy, then assign the number.</b> An undated fear is unfalsifiable and therefore permanent. The sequence is mechanical: fix the date; define what counts as the event before you know which way the definition cuts; derive thresholds from your own economics rather than from round numbers; and force your probabilities to cohere under the laws of conditional probability. Fears that survive the process are risks. Fears that do not were moods.</p></aside><aside class="mm rise"><p class="mm-k">Mental model &#183; The bar comes from the annuity, not the narrative</p><p>The single most reusable computation in this document: capital stock &#215; annuity factor at the hurdle &#247; margin = the revenue the world must produce for the capital to have been worth deploying. One line of arithmetic converts &ldquo;is the demand there?&rdquo; from an opinion contest into a growth requirement &mdash; here, 67&ndash;93% compounded for 4.4 years &mdash; checkable against measured adoption depth. And remember the plateau's two-sidedness: for installed capital, the end of progress is partly a gift, because nothing new arrives to make the old fleet worthless.</p></aside>
+<aside class="pat rise" id="p8"><p class="pat-k">Pattern &#8470;8</p><p><b>Date the tail, define the proxy, then assign the number.</b> An undated fear is unfalsifiable and therefore permanent. The sequence is mechanical: fix the date; define what counts as the event before you know which way the definition cuts; derive thresholds from your own economics rather than from round numbers; and force your probabilities to cohere under the laws of conditional probability. Fears that survive the process are risks. Fears that do not were moods.</p></aside><aside class="mm rise"><p class="mm-k">Mental model &#183; The bar comes from the annuity, not the narrative</p><p>The single most reusable computation in this document: capital stock &#215; annuity factor at the hurdle &#247; margin = the revenue the world must produce for the capital to have been worth deploying. One line of arithmetic converts &ldquo;is the demand there?&rdquo; from an opinion contest into a growth requirement, here, 67&ndash;93% compounded for 4.4 years, checkable against measured adoption depth. And remember the plateau's two-sidedness: for installed capital, the end of progress is partly a gift, because nothing new arrives to make the old fleet worthless.</p></aside>
 </section>
 
 <div class="part-open rise" id="pIV">
@@ -1461,37 +1446,37 @@ ol.pidx a:hover{border-bottom-color:var(--text-primary)}
   briefs are argued in good faith, from the evidence base, with every claim leading on a figure. The bull's
   seven exhibits:</p>
 
-  <p><b>B1 &mdash; Old chips refuse to die.</b> A100 silicon is six years old, &ldquo;completely sold
+  <p><b>B1: Old chips refuse to die.</b> A100 silicon is six years old, &ldquo;completely sold
   out,&rdquo; never retired at AWS, still generating over $20 billion per quarter of NVIDIA data-centre
-  revenue in prior-generation product &mdash; with rentals <em>rising</em> in 2026 and executed secondary
+  revenue in prior-generation product, with rentals <em>rising</em> in 2026 and executed secondary
   sales at $5,400. If year-six hardware earns like this, the five-year-life column is the correct one, and
-  Anchor B's base cell &mdash; +13.9%, above hurdle by 300 basis points &mdash; is the world we are in.</p>
+  Anchor B's base cell (+13.9%, above hurdle by 300 basis points) is the world we are in.</p>
 
-  <p><b>B2 &mdash; The one measured yield series did not compress.</b> CoreWeave's revenue per active MW
+  <p><b>B2: The one measured yield series did not compress.</b> CoreWeave's revenue per active MW
   held at $9.25 &#8594; $8.73 &#8594; $8.99 million across three quarters while active power grew ~70%;
   backlog per contracted MW <em>rose</em> 48%. The oversupply thesis issued exactly one testable prediction
-  in the whole evidence base &mdash; per-unit yield compression &mdash; and in the one place it could be
+  in the whole evidence base, per-unit yield compression, and in the one place it could be
   tested, it failed.</p>
 
-  <p><b>B3 &mdash; Contracts with cash attached.</b> IREN receives ~45% customer <em>prepayment</em> of GPU
+  <p><b>B3: Contracts with cash attached.</b> IREN receives ~45% customer <em>prepayment</em> of GPU
   capex on ~85% of a &gt;$4B target. Applied Digital holds $36.2 billion of fifteen-year non-cancellable
   take-or-pay against 175 MW live. Microsoft's commercial backlog stands at $678 billion. Buyers do not
   prepay for capacity they doubt.</p>
 
-  <p><b>B4 &mdash; The physical constraint is the tell.</b> GE Vernova holds 116 GW of contracted gas
-  capacity &mdash; deposits paid &mdash; against roughly 20 GW per year of production; grid equipment books
+  <p><b>B4: The physical constraint is the tell.</b> GE Vernova holds 116 GW of contracted gas
+  capacity, deposits paid, against roughly 20 GW per year of production; grid equipment books
   at 1.57&#215; billings; Meta signed twenty-year nuclear agreements with prepayment. <em>You cannot
   simultaneously have a supply throttle this tight and an oversupply.</em></p>
 
-  <p><b>B5 &mdash; The same firms ran this play before, benignly.</b> Cloud capex 2010&ndash;2020: the same
-  companies, the same asset class, life-extensions then too &mdash; and the returns came. Alphabet's capex
+  <p><b>B5: The same firms ran this play before, benignly.</b> Cloud capex 2010&ndash;2020: the same
+  companies, the same asset class, life-extensions then too, and the returns came. Alphabet's capex
   even <em>fell</em> two years running (2019&ndash;20) with no destruction event.</p>
 
-  <p><b>B6 &mdash; Depreciation is conservative.</b> Four life-extensions since 2021 track hardware that
+  <p><b>B6: Depreciation is conservative.</b> Four life-extensions since 2021 track hardware that
   demonstrably still earns at year six; if true economic life is 6&ndash;8 years rather than five, the grids
   <em>understate</em> IRR by harvesting residuals too early.</p>
 
-  <p><b>B7 &mdash; Credit, the leading indicator, is calm at investment grade.</b> High-yield spreads at
+  <p><b>B7: Credit, the leading indicator, is calm at investment grade.</b> High-yield spreads at
   2.71%, investment-grade at 0.78%, both tightening; GPU-and-contract collateral rated A3 at SOFR+225.
   Markets expecting uniform capital destruction do not price its collateral this way.</p>
 
@@ -1500,44 +1485,44 @@ ol.pidx a:hover{border-bottom-color:var(--text-primary)}
 <section class="sec" id="s10">
   <div class="sec-head"><span class="snum ui">10</span><h3 id="the-bear-at-full-strength">The bear at full strength</h3></div>
   
-  <p><b>R1 &mdash; The funding mix broke from the benign analogue, measurably.</b> Across 2010&ndash;2020
+  <p><b>R1: The funding mix broke from the benign analogue, measurably.</b> Across 2010&ndash;2020
   the same firms' capex/OCF peaked at 90.6% and <em>never</em> crossed 100%; funding was internal
   throughout. Now: Oracle at <b>174.1%</b>, Amazon at <b>107.2%</b>, 31% of cumulative big-5 capex
-  issuance-funded, Alphabet 26% &#8594; 71% in a single year, Meta 0 &#8594; 51% &mdash; and <b>$1,090
+  issuance-funded, Alphabet 26% &#8594; 71% in a single year, Meta 0 &#8594; 51%, and <b>$1,090
   billion of leases signed but not yet commenced</b> sitting outside every balance sheet, $329.1 billion of
   it at Microsoft alone. The one quantified, same-firm, same-asset contrast with the benign precedent has
   crossed its line.</p>
 
-  <p><b>R2 &mdash; Deflation strands capital without any demand disappointment at all.</b> Next-generation
+  <p><b>R2: Deflation strands capital without any demand disappointment at all.</b> Next-generation
   pricing (GB300 at $83&ndash;90k per GPU against GB200 at $39&ndash;47k, for 1.45&#215; the throughput)
   implies <em>worsening</em> performance per dollar; ASML adds 30% EUV capacity in 2027 and again in 2028;
   the memory complex sits at historic peak margins (Micron 84.6% gross, SK hynix 76% operating) that
   mean-revert. Falling replacement cost lowers the installed fleet's rental value with demand fully intact.
   Rentals <em>did</em> fall 24&ndash;33% through 2025.</p>
 
-  <p><b>R3 &mdash; The backlog is concentrated exactly where the credit is thinnest.</b> CoreWeave: a single
+  <p><b>R3: The backlog is concentrated exactly where the credit is thinnest.</b> CoreWeave: a single
   customer (Microsoft) supplied ~67% of revenue; the headline &ldquo;backlog&rdquo; is broader than the
   accounting-standard figure, its increment management-estimated; cancellation terms are undisclosed by
   <em>all five</em> backlog reporters. Microsoft's $24.1 billion from OpenAI includes roughly $6 billion
   recognised but uncollected, with no third-party support.</p>
 
-  <p><b>R4 &mdash; Deployment is running years ahead of diffusion.</b> The probability-sample evidence
+  <p><b>R4: Deployment is running years ahead of diffusion.</b> The probability-sample evidence
   (Census, ~20,000 firms per wave): 17&ndash;20% usage; 57% of users confined to three or fewer functions;
   AI-driven employment change in 2% of firms; median paid spend $11.38 per employee per month. Against
   ~$580B+ of guided 2026 capex across four firms. Breadth without depth is the signature of a technology
   being bought faster than it can be absorbed.</p>
 
-  <p><b>R5 &mdash; The calm credit headline conceals its own composition.</b> The same physical asset funds
-  at 4.56% (Equinix) and 9.625% (CoreWeave) &mdash; 506 basis points apart. Data-centre securitisation
+  <p><b>R5: The calm credit headline conceals its own composition.</b> The same physical asset funds
+  at 4.56% (Equinix) and 9.625% (CoreWeave): 506 basis points apart. Data-centre securitisation
   swelled from $4 billion to $61 billion in six years and prices 35&ndash;70bp <em>wide</em> of comparably
   rated structures. And the Lucent precedent instructs: its vendor-financing exposure ratio deteriorated
   from 5.0% to 27.2% in twelve months chiefly because <em>the equity collapsed underneath it</em>. Spreads
   gapped after the equity, not before.</p>
 
-  <p><b>R6 &mdash; Every measurement error points the same way.</b> The endogenous share is a floor by
+  <p><b>R6: Every measurement error points the same way.</b> The endogenous share is a floor by
   construction; each undisclosed structure, when revealed, can only raise it. A system that can only
   surprise in one direction has been read at its most flattering.</p>
-<aside class="mm rise"><p class="mm-k">Mental model &#183; A brief is a discipline, not a mood</p><p>Observe what the two briefs share: every sentence leads with a number, every number carries a source, and each side concedes the other's strongest fact exists &mdash; the bull grants the funding migration, the bear grants the spread level. A case you cannot state numbers-first is a case you do not yet have. And the strongest version of the other side is the only version worth defeating; refuting the weak version teaches you nothing about whether you are right.</p></aside>
+<aside class="mm rise"><p class="mm-k">Mental model &#183; A brief is a discipline, not a mood</p><p>Observe what the two briefs share: every sentence leads with a number, every number carries a source, and each side concedes the other's strongest fact exists, the bull grants the funding migration, the bear grants the spread level. A case you cannot state numbers-first is a case you do not yet have. And the strongest version of the other side is the only version worth defeating; refuting the weak version teaches you nothing about whether you are right.</p></aside>
 </section>
 
 <section class="sec" id="s11">
@@ -1559,7 +1544,7 @@ ol.pidx a:hover{border-bottom-color:var(--text-primary)}
     <span><span class="dot-p" aria-hidden="true"></span>Partially sustained</span>
     <span><span class="dot-r" aria-hidden="true"></span>Rejected, or struck from the record</span>
   </div>
-  <div class="ledger"><div class="led-filters" role="group" aria-label="Filter rulings"><button type="button" data-f="all" aria-pressed="true">All thirteen</button><button type="button" data-f="bull" aria-pressed="false">Bull exhibits</button><button type="button" data-f="bear" aria-pressed="false">Bear exhibits</button><button type="button" data-f="sustained" aria-pressed="false">Sustained</button><button type="button" data-f="partial" aria-pressed="false">Partially sustained</button><button type="button" data-f="rejected" aria-pressed="false">Rejected</button></div><div class="led-grid" id="ledgrid"><button class="rul" type="button" data-v="sustained" data-side="bull" aria-expanded="false"><span class="rul-top"><span class="rul-id">B1</span><span class="rul-claim">Old chips refuse to die</span></span><span class="rul-verdict"><span class="dot-s" aria-hidden="true"></span>Sustained, but confined to the life axis</span><span class="rul-axis">Credited on asset life only. Worth 0.55 on the five-year weight, about 0.09 of probability.</span><span class="rul-line">The Pack itself observes that rising year-six prices are <em>equally consistent</em> with a power-and-supply constraint as with durable demand. B1 proves obsolescence is slow. It proves nothing about end-demand. <b>The bull may not spend this evidence twice.</b></span></button><button class="rul" type="button" data-v="sustained" data-side="bull" aria-expanded="false"><span class="rul-top"><span class="rul-id">B2</span><span class="rul-claim">The one measured yield series did not compress</span></span><span class="rul-verdict"><span class="dot-s" aria-hidden="true"></span>Sustained, the most probative bull item</span><span class="rul-axis">Credited on the anchor question, and bounded.</span><span class="rul-line">The only realised per-unit series in evidence. Bounded: n = 3 quarters, one issuer, a survivor with signed contracts. Failed builders do not file.</span></button><button class="rul" type="button" data-v="partial" data-side="bull" aria-expanded="false"><span class="rul-top"><span class="rul-id">B3</span><span class="rul-claim">Contracts with cash attached</span></span><span class="rul-verdict"><span class="dot-p" aria-hidden="true"></span>Partially sustained</span><span class="rul-axis">IREN&rsquo;s cash prepayment survives whole; the backlog claims do not.</span><span class="rul-line">IREN&rsquo;s cash prepayment survives whole. The remainder meets the Pack&rsquo;s own bars: &ldquo;sold out&rdquo; and backlog are <em>commitment</em> metrics, not utilisation; cross-firm backlog comparison is invalid while cancellation terms and durations stay undisclosed.</span></button><button class="rul" type="button" data-v="partial" data-side="bull" aria-expanded="false"><span class="rul-top"><span class="rul-id">B4</span><span class="rul-claim">The physical constraint is the tell</span></span><span class="rul-verdict"><span class="dot-p" aria-hidden="true"></span>Sustained on the throttle; struck on the queues</span><span class="rul-axis">One fact cutting both directions inside one vintage.</span><span class="rul-line">Deposit-backed orders stand. But <em>28&ndash;40% of V is construction-in-progress</em>: a throttle protects the energised fleet&rsquo;s pricing while <em>delaying</em> $303&ndash;433 billion of unstarted return clocks. ERCOT&rsquo;s 438 GW queue is struck: near-costless entry, about 5&#215; system peak. Optionality, not commitment.</span></button><button class="rul" type="button" data-v="partial" data-side="bull" aria-expanded="false"><span class="rul-top"><span class="rul-id">B5</span><span class="rul-claim">The same firms ran this play before, benignly</span></span><span class="rul-verdict"><span class="dot-p" aria-hidden="true"></span>Partially sustained, its punchline struck</span><span class="rul-axis">The benign ending is possible; R1 quantifies where the analogue broke.</span><span class="rul-line">&ldquo;They called it unsustainable then too&rdquo; is <b>struck from the record</b>: contemporaneous 2010s bearish commentary was searched for and <em>not retrieved</em>, so it may not be argued from.</span></button><button class="rul" type="button" data-v="rejected" data-side="bull" aria-expanded="false"><span class="rul-top"><span class="rul-id">B6</span><span class="rul-claim">Depreciation is conservative</span></span><span class="rul-verdict"><span class="dot-r" aria-hidden="true"></span>Rejected as accounting; survives only as physics</span><span class="rul-axis">What survives is B1&rsquo;s physical fact, already credited once.</span><span class="rul-line">The record is not conservative, it is <em>mixed</em>: four extensions that raised earnings, against Amazon <b>shortening</b> lives 6 to 5 years, citing AI&rsquo;s pace, voluntarily taking on +$217M of depreciation and &minus;$162M of income. Self-serving direction is not misstatement, but neither is it conservatism.</span></button><button class="rul" type="button" data-v="sustained" data-side="bull" aria-expanded="false"><span class="rul-top"><span class="rul-id">B7</span><span class="rul-claim">Credit, the leading indicator, is calm at investment grade</span></span><span class="rul-verdict"><span class="dot-s" aria-hidden="true"></span>Sustained, the largest single input to the base-case designation</span><span class="rul-axis">This is why P(Anchor B) stands at 0.60 rather than 0.50.</span><span class="rul-line">Spreads lead revenue. GPU-and-contract collateral rated A3 at SOFR+225 is not how a market prices uniformly negative unlevered returns.</span></button><button class="rul" type="button" data-v="sustained" data-side="bear" aria-expanded="false"><span class="rul-top"><span class="rul-id">R1</span><span class="rul-claim">The funding mix broke from the benign analogue</span></span><span class="rul-verdict"><span class="dot-s" aria-hidden="true"></span>Sustained, the strongest bear item</span><span class="rul-axis">The one quantified same-firm, same-asset contrast with the precedent.</span><span class="rul-line">Bounded: Microsoft issued zero debt while capex grew 2.6&#215;; sovereign capital into the big five is zero.</span></button><button class="rul" type="button" data-v="partial" data-side="bear" aria-expanded="false"><span class="rul-top"><span class="rul-id">R2</span><span class="rul-claim">Deflation strands capital without any demand disappointment</span></span><span class="rul-verdict"><span class="dot-p" aria-hidden="true"></span>Partially sustained, heavily discounted, ordinally neutral</span><span class="rul-axis">Neutral because it cannot be sized, not because it is absent.</span><span class="rul-line">The mechanism is real and the bull has no answer to it. But the quantification rests on rumoured prices the Pack rules &ldquo;mutually inconsistent&rdquo; &mdash; <em>a defensible performance-per-dollar series is not constructible from public data</em> &mdash; and the one observable price, the rental rate, reversed upward in 2026.</span></button><button class="rul" type="button" data-v="sustained" data-side="bear" aria-expanded="false"><span class="rul-top"><span class="rul-id">R3</span><span class="rul-claim">The backlog is concentrated where the credit is thinnest</span></span><span class="rul-verdict"><span class="dot-s" aria-hidden="true"></span>Sustained, unrebutted</span><span class="rul-axis">A neocloud-specific finding: 8.9% of V.</span><span class="rul-line">The class that impairs first (a 4.00% threshold) and hardest (a 63.8-point equity range).</span></button><button class="rul" type="button" data-v="sustained" data-side="bear" aria-expanded="false"><span class="rul-top"><span class="rul-id">R4</span><span class="rul-claim">Deployment is running years ahead of diffusion</span></span><span class="rul-verdict"><span class="dot-s" aria-hidden="true"></span>Sustained and probative</span><span class="rul-axis">The principal support for Tail 2 at 0.70.</span><span class="rul-line">The best-sourced demand evidence in the base. Bounded by employment-weighted figures (32&ndash;78%) running far higher.</span></button><button class="rul" type="button" data-v="partial" data-side="bear" aria-expanded="false"><span class="rul-top"><span class="rul-id">R5</span><span class="rul-claim">The calm credit headline conceals its own composition</span></span><span class="rul-verdict"><span class="dot-p" aria-hidden="true"></span>Rejected at the headline; sustained on composition</span><span class="rul-axis">The bear gets the 506bp gap, not the 2.71% spread.</span><span class="rul-line">The bear does not get to reinterpret a 2.71% spread. It does get the 506bp gap, which is the precise mechanism behind the owner-class asymmetry.</span></button><button class="rul" type="button" data-v="partial" data-side="bear" aria-expanded="false"><span class="rul-top"><span class="rul-id">R6</span><span class="rul-claim">Every measurement error points the same way</span></span><span class="rul-verdict"><span class="dot-p" aria-hidden="true"></span>Sustained on direction; struck on magnitude</span><span class="rul-axis">Direction is not size. See Pattern &#8470;7.</span><span class="rul-line">One-sided observability establishes the sign of a revision, never its size.</span></button></div><p class="small" style="margin-top:.9rem">Select any exhibit to open the operative line. Six sustained, six partially sustained, one rejected.</p></div>
+  <div class="ledger"><div class="led-filters" role="group" aria-label="Filter rulings"><button type="button" data-f="all" aria-pressed="true">All thirteen</button><button type="button" data-f="bull" aria-pressed="false">Bull exhibits</button><button type="button" data-f="bear" aria-pressed="false">Bear exhibits</button><button type="button" data-f="sustained" aria-pressed="false">Sustained</button><button type="button" data-f="partial" aria-pressed="false">Partially sustained</button><button type="button" data-f="rejected" aria-pressed="false">Rejected</button></div><div class="led-grid" id="ledgrid"><button class="rul" type="button" data-v="sustained" data-side="bull" aria-expanded="false"><span class="rul-top"><span class="rul-id">B1</span><span class="rul-claim">Old chips refuse to die</span></span><span class="rul-verdict"><span class="dot-s" aria-hidden="true"></span>Sustained, but confined to the life axis</span><span class="rul-axis">Credited on asset life only. Worth 0.55 on the five-year weight, about 0.09 of probability.</span><span class="rul-line">The Pack itself observes that rising year-six prices are <em>equally consistent</em> with a power-and-supply constraint as with durable demand. B1 proves obsolescence is slow. It proves nothing about end-demand. <b>The bull may not spend this evidence twice.</b></span></button><button class="rul" type="button" data-v="sustained" data-side="bull" aria-expanded="false"><span class="rul-top"><span class="rul-id">B2</span><span class="rul-claim">The one measured yield series did not compress</span></span><span class="rul-verdict"><span class="dot-s" aria-hidden="true"></span>Sustained, the most probative bull item</span><span class="rul-axis">Credited on the anchor question, and bounded.</span><span class="rul-line">The only realised per-unit series in evidence. Bounded: n = 3 quarters, one issuer, a survivor with signed contracts. Failed builders do not file.</span></button><button class="rul" type="button" data-v="partial" data-side="bull" aria-expanded="false"><span class="rul-top"><span class="rul-id">B3</span><span class="rul-claim">Contracts with cash attached</span></span><span class="rul-verdict"><span class="dot-p" aria-hidden="true"></span>Partially sustained</span><span class="rul-axis">IREN&rsquo;s cash prepayment survives whole; the backlog claims do not.</span><span class="rul-line">IREN&rsquo;s cash prepayment survives whole. The remainder meets the Pack&rsquo;s own bars: &ldquo;sold out&rdquo; and backlog are <em>commitment</em> metrics, not utilisation; cross-firm backlog comparison is invalid while cancellation terms and durations stay undisclosed.</span></button><button class="rul" type="button" data-v="partial" data-side="bull" aria-expanded="false"><span class="rul-top"><span class="rul-id">B4</span><span class="rul-claim">The physical constraint is the tell</span></span><span class="rul-verdict"><span class="dot-p" aria-hidden="true"></span>Sustained on the throttle; struck on the queues</span><span class="rul-axis">One fact cutting both directions inside one vintage.</span><span class="rul-line">Deposit-backed orders stand. But <em>28&ndash;40% of V is construction-in-progress</em>: a throttle protects the energised fleet&rsquo;s pricing while <em>delaying</em> $303&ndash;433 billion of unstarted return clocks. ERCOT&rsquo;s 438 GW queue is struck: near-costless entry, about 5&#215; system peak. Optionality, not commitment.</span></button><button class="rul" type="button" data-v="partial" data-side="bull" aria-expanded="false"><span class="rul-top"><span class="rul-id">B5</span><span class="rul-claim">The same firms ran this play before, benignly</span></span><span class="rul-verdict"><span class="dot-p" aria-hidden="true"></span>Partially sustained, its punchline struck</span><span class="rul-axis">The benign ending is possible; R1 quantifies where the analogue broke.</span><span class="rul-line">&ldquo;They called it unsustainable then too&rdquo; is <b>struck from the record</b>: contemporaneous 2010s bearish commentary was searched for and <em>not retrieved</em>, so it may not be argued from.</span></button><button class="rul" type="button" data-v="rejected" data-side="bull" aria-expanded="false"><span class="rul-top"><span class="rul-id">B6</span><span class="rul-claim">Depreciation is conservative</span></span><span class="rul-verdict"><span class="dot-r" aria-hidden="true"></span>Rejected as accounting; survives only as physics</span><span class="rul-axis">What survives is B1&rsquo;s physical fact, already credited once.</span><span class="rul-line">The record is not conservative, it is <em>mixed</em>: four extensions that raised earnings, against Amazon <b>shortening</b> lives 6 to 5 years, citing AI&rsquo;s pace, voluntarily taking on +$217M of depreciation and &minus;$162M of income. Self-serving direction is not misstatement, but neither is it conservatism.</span></button><button class="rul" type="button" data-v="sustained" data-side="bull" aria-expanded="false"><span class="rul-top"><span class="rul-id">B7</span><span class="rul-claim">Credit, the leading indicator, is calm at investment grade</span></span><span class="rul-verdict"><span class="dot-s" aria-hidden="true"></span>Sustained, the largest single input to the base-case designation</span><span class="rul-axis">This is why P(Anchor B) stands at 0.60 rather than 0.50.</span><span class="rul-line">Spreads lead revenue. GPU-and-contract collateral rated A3 at SOFR+225 is not how a market prices uniformly negative unlevered returns.</span></button><button class="rul" type="button" data-v="sustained" data-side="bear" aria-expanded="false"><span class="rul-top"><span class="rul-id">R1</span><span class="rul-claim">The funding mix broke from the benign analogue</span></span><span class="rul-verdict"><span class="dot-s" aria-hidden="true"></span>Sustained, the strongest bear item</span><span class="rul-axis">The one quantified same-firm, same-asset contrast with the precedent.</span><span class="rul-line">Bounded: Microsoft issued zero debt while capex grew 2.6&#215;; sovereign capital into the big five is zero.</span></button><button class="rul" type="button" data-v="partial" data-side="bear" aria-expanded="false"><span class="rul-top"><span class="rul-id">R2</span><span class="rul-claim">Deflation strands capital without any demand disappointment</span></span><span class="rul-verdict"><span class="dot-p" aria-hidden="true"></span>Partially sustained, heavily discounted, ordinally neutral</span><span class="rul-axis">Neutral because it cannot be sized, not because it is absent.</span><span class="rul-line">The mechanism is real and the bull has no answer to it. But the quantification rests on rumoured prices the Pack rules &ldquo;mutually inconsistent&rdquo;, <em>a defensible performance-per-dollar series is not constructible from public data</em>, and the one observable price, the rental rate, reversed upward in 2026.</span></button><button class="rul" type="button" data-v="sustained" data-side="bear" aria-expanded="false"><span class="rul-top"><span class="rul-id">R3</span><span class="rul-claim">The backlog is concentrated where the credit is thinnest</span></span><span class="rul-verdict"><span class="dot-s" aria-hidden="true"></span>Sustained, unrebutted</span><span class="rul-axis">A neocloud-specific finding: 8.9% of V.</span><span class="rul-line">The class that impairs first (a 4.00% threshold) and hardest (a 63.8-point equity range).</span></button><button class="rul" type="button" data-v="sustained" data-side="bear" aria-expanded="false"><span class="rul-top"><span class="rul-id">R4</span><span class="rul-claim">Deployment is running years ahead of diffusion</span></span><span class="rul-verdict"><span class="dot-s" aria-hidden="true"></span>Sustained and probative</span><span class="rul-axis">The principal support for Tail 2 at 0.70.</span><span class="rul-line">The best-sourced demand evidence in the base. Bounded by employment-weighted figures (32&ndash;78%) running far higher.</span></button><button class="rul" type="button" data-v="partial" data-side="bear" aria-expanded="false"><span class="rul-top"><span class="rul-id">R5</span><span class="rul-claim">The calm credit headline conceals its own composition</span></span><span class="rul-verdict"><span class="dot-p" aria-hidden="true"></span>Rejected at the headline; sustained on composition</span><span class="rul-axis">The bear gets the 506bp gap, not the 2.71% spread.</span><span class="rul-line">The bear does not get to reinterpret a 2.71% spread. It does get the 506bp gap, which is the precise mechanism behind the owner-class asymmetry.</span></button><button class="rul" type="button" data-v="partial" data-side="bear" aria-expanded="false"><span class="rul-top"><span class="rul-id">R6</span><span class="rul-claim">Every measurement error points the same way</span></span><span class="rul-verdict"><span class="dot-p" aria-hidden="true"></span>Sustained on direction; struck on magnitude</span><span class="rul-axis">Direction is not size. See Pattern &#8470;7.</span><span class="rul-line">One-sided observability establishes the sign of a revision, never its size.</span></button></div><p class="small" style="margin-top:.9rem">Select any exhibit to open the operative line. Six sustained, six partially sustained, one rejected.</p></div>
   <p class="takeaway">The rulings mostly confine rather than crown each side&rsquo;s best exhibit. Strong
   evidence survives, but only on the one axis where it actually discriminates.</p>
   <figcaption>Note the third column on each card. It exists because the same datum can be strong and still be
@@ -1568,7 +1553,7 @@ ol.pidx a:hover{border-bottom-color:var(--text-primary)}
 </figure>
 
   <p>Three rulings deserve promotion to permanent equipment.</p>
-<aside class="pat rise" id="p9"><p class="pat-k">Pattern &#8470;9</p><p><b>Never spend evidence twice.</b> B1's sold-out A100s are strong &mdash; so the bull attempted to book them once on the life axis <em>and again</em> as proof of demand. The ruling credits the evidence exactly once, on the axis where it discriminates. Watch for double-spending in every thesis you read; it is the most common route by which strong evidence gets inflated into a strong conclusion.</p></aside><aside class="pat rise" id="p10"><p class="pat-k">Pattern &#8470;10</p><p><b>Distinguish commitments from measurements.</b> &ldquo;Sold out,&rdquo; backlog, contracted gigawatts: the language of commercial commitment. Billed hours over available hours: a measurement. No firm publishes the measurement &mdash; <em>fleet utilization is not publicly observable anywhere</em> &mdash; so every utilization claim in the discourse is an inference wearing a number's clothes.</p></aside><aside class="pat rise" id="p11"><p class="pat-k">Pattern &#8470;11</p><p><b>Rule on the best version; name the defeater.</b> Every exhibit above is sustained or refuted by a <em>specific</em> Pack quantity, never by counter-narrative. If you cannot name the datum that would defeat your opponent's best argument, you have not yet earned your disagreement.</p></aside><aside class="mm rise"><p class="mm-k">Mental model &#183; Adjudication is a technology</p><p>Steelman both sides with numbers; fix the factual base in advance; rule exhibit by exhibit; name the defeater; credit each datum exactly once; label the residual uncertainty in ordinal terms only &mdash; strongly favors, favors, neutral, disfavors. The output is not &ldquo;who won&rdquo; but a ranked account of which evidence actually moves the answer &mdash; here, the anchor fork and the asset life dwarf everything else &mdash; and that ranking is precisely the list of what to monitor.</p></aside>
+<aside class="pat rise" id="p9"><p class="pat-k">Pattern &#8470;9</p><p><b>Never spend evidence twice.</b> B1's sold-out A100s are strong, so the bull attempted to book them once on the life axis <em>and again</em> as proof of demand. The ruling credits the evidence exactly once, on the axis where it discriminates. Watch for double-spending in every thesis you read; it is the most common route by which strong evidence gets inflated into a strong conclusion.</p></aside><aside class="pat rise" id="p10"><p class="pat-k">Pattern &#8470;10</p><p><b>Distinguish commitments from measurements.</b> &ldquo;Sold out,&rdquo; backlog, contracted gigawatts: the language of commercial commitment. Billed hours over available hours: a measurement. No firm publishes the measurement, <em>fleet utilization is not publicly observable anywhere</em>, so every utilization claim in the discourse is an inference wearing a number's clothes.</p></aside><aside class="pat rise" id="p11"><p class="pat-k">Pattern &#8470;11</p><p><b>Rule on the best version; name the defeater.</b> Every exhibit above is sustained or refuted by a <em>specific</em> Pack quantity, never by counter-narrative. If you cannot name the datum that would defeat your opponent's best argument, you have not yet earned your disagreement.</p></aside><aside class="mm rise"><p class="mm-k">Mental model &#183; Adjudication is a technology</p><p>Steelman both sides with numbers; fix the factual base in advance; rule exhibit by exhibit; name the defeater; credit each datum exactly once; label the residual uncertainty in ordinal terms only, strongly favours, favours, neutral, disfavors. The output is not &ldquo;who won&rdquo; but a ranked account of which evidence actually moves the answer (here, the anchor fork and the asset life dwarf everything else) and that ranking is precisely the list of what to monitor.</p></aside>
 </section>
 
 <div class="part-open rise" id="pV">
@@ -1585,7 +1570,7 @@ ol.pidx a:hover{border-bottom-color:var(--text-primary)}
   widest?</em> A structurally impaired asset is a fine investment if its price embeds something worse; a
   magnificent business is a poor one if its price embeds perfection. Structure and price are independent
   axes. Alpha lives in their disagreement.</p>
-<aside class="pat rise" id="p12"><p class="pat-k">Pattern &#8470;12</p><p><b>Score structure and embedded expectations separately; trade the gap.</b> Structure is cash flows, funding mix, leverage, asset life, survival thresholds. Price is what growth and returns the current valuation <em>requires</em> &mdash; reverse-engineer it. Never let one axis answer for the other.</p></aside>
+<aside class="pat rise" id="p12"><p class="pat-k">Pattern &#8470;12</p><p><b>Score structure and embedded expectations separately; trade the gap.</b> Structure is cash flows, funding mix, leverage, asset life, survival thresholds. Price is what growth and returns the current valuation <em>requires</em>, reverse-engineer it. Never let one axis answer for the other.</p></aside>
 <figure class="fig rise" id="f15">
   <div class="fig-head">
     <p class="folio">Fig. 15</p>
@@ -1603,57 +1588,56 @@ ol.pidx a:hover{border-bottom-color:var(--text-primary)}
   <details class="tv "><summary>Equity outcomes by owner class</summary><div class="tw"><table><caption>Expected equity IRR at the probability-weighted vintage return of +1.27%, with the full grid range. Source: &sect;12.</caption><thead><tr><th>Class</th><th class="n">Expected equity IRR</th><th class="n">Full-grid range</th><th class="n">Width</th><th class="n">Equity impaired below</th></tr></thead><tbody><tr><td>Hyperscaler</td><td class="n">+0.95%</td><td class="n">&minus;20.3% to +19.2%</td><td class="n">39.5pp</td><td class="n">0.37%</td></tr><tr><td>DC REIT</td><td class="n">+0.36%</td><td class="n">&minus;25.2% to +22.3%</td><td class="n">47.6pp</td><td class="n">0.99%</td></tr><tr><td>Merchant power</td><td class="n">&minus;0.44%</td><td class="n">&minus;29.2% to +24.3%</td><td class="n">53.5pp</td><td class="n">1.58%</td></tr><tr><td>Oracle</td><td class="n">&minus;0.66%</td><td class="n">&minus;28.4% to +23.2%</td><td class="n">51.6pp</td><td class="n">1.75%</td></tr><tr><td><b>Neocloud</b></td><td class="n"><b>&minus;4.66%</b></td><td class="n"><b>&minus;39.0% to +24.8%</b></td><td class="n"><b>63.8pp</b></td><td class="n"><b>4.00%</b></td></tr></tbody></table></div></details>
 </figure>
   <p>Same asset. Same scenario grid. The neocloud's outcome range is 24 points wider than the hyperscaler's
-  and its expected equity return 5.6 points lower &mdash; the whole difference is capital structure. Second:
-  how much of each equity price <em>is</em> the at-risk vintage &mdash; AI capex at cost as a share of
-  enterprise value: Alphabet 4.9%, Microsoft 6.5%, Amazon 6.6%, Meta 9.6%, Oracle 14.0% &mdash; and CoreWeave
+  and its expected equity return 5.6 points lower, the whole difference is capital structure. Second:
+  how much of each equity price <em>is</em> the at-risk vintage (AI capex at cost as a share of
+  enterprise value: Alphabet 4.9%, Microsoft 6.5%, Amazon 6.6%, Meta 9.6%, Oracle 14.0%) and CoreWeave
   <b>~37.6%</b>. Third: what each price <em>requires</em>. Reverse-DCFs put implied perpetual growth at
-  +282bp over the long bond for Microsoft, +385bp for NVIDIA, +558bp for Arista &mdash; while for CoreWeave,
+  +282bp over the long bond for Microsoft, +385bp for NVIDIA, +558bp for Arista, while for CoreWeave,
   Equinix, and Constellation the model has <b>no valid solution at all</b>: at their current returns on
   capital (2.1%, 6.5%, 8.3%), no constant growth rate justifies the price. The price requires the business
   to <em>become something else</em>.</p>
 
   <p>The four calls, each argued from both axes:</p>
 
-  <p><b>Best risk-adjusted: hyperscaler equity.</b> Equity impairs only below 0.37% unlevered &mdash; the
+  <p><b>Best risk-adjusted: hyperscaler equity.</b> Equity impairs only below 0.37% unlevered, the
   modal purgatory outcome <em>preserves principal</em>. The vintage at cost is 4.9&ndash;6.6% of enterprise
   value, so even a total write-off is a single-digit event. The legacy engine (22.0% ROIC) funds the wager
-  internally &mdash; Microsoft issued zero external debt across FY25&ndash;26 while annual capex reached
+  internally: Microsoft issued zero external debt across FY25&ndash;26 while annual capex reached
   $115.9 billion. And the embedded-expectations gap is the narrowest in the set, +282bp. The true risk is
-  not impairment but the <em>pace of spending</em> &mdash; which is why the monitoring card watches
+  not impairment but the <em>pace of spending</em>, which is why the monitoring card watches
   capex/OCF and uncommenced leases, not the depreciation footnote.</p>
 
-  <p><b>Second: semiconductors &mdash; selling the shovel, with one honest caveat.</b> NVIDIA converts the
+  <p><b>Second: semiconductors, selling the shovel, with one honest caveat.</b> NVIDIA converts the
   cycle to cash at 76.8% ROIC while reinvesting only 11.8%, bears no depreciation or construction-timing
   risk on the fleet, and trades at the <em>bottom</em> of its own five-year valuation range (EV/IC 33.9&#215;
-  against a 33.9&ndash;86.8&#215; history) &mdash; the de-rating has already happened. The caveat is
+  against a 33.9&ndash;86.8&#215; history), the de-rating has already happened. The caveat is
   structural: <b>68.6% of semiconductor-layer revenue traces to corporate cash and capital markets rather
   than to end users.</b> The layer's revenue is the derivative of precisely the funding decision the bear
-  brief attacks &mdash; first to move if the funding mix cracks. And within the layer, price discipline
+  brief attacks, first to move if the funding mix cracks. And within the layer, price discipline
   still governs: AMD at 82.0&#215; EBITDA sits <em>above</em> its own historical range, the expensive
   expression of the same facts.</p>
 
-  <p><b>Third: data-centre REITs &mdash; the inverse error.</b> The best structure in the set &mdash; lowest
-  hurdle, 4.56% debt, 20&ndash;40-year assets, impairment only below 0.99% &mdash; and a price that already
+  <p><b>Third: data-centre REITs, the inverse error.</b> The best structure in the set, lowest
+  hurdle, 4.56% debt, 20&ndash;40-year assets, impairment only below 0.99%, and a price that already
   knows it: no valid reverse-DCF solution, and the landlord captures roughly one-fifth the revenue per MW of
   the GPU owner. Attractive risk, unattractive price. The mirror image of the usual mistake.</p>
 
   <p><b>Worst: neocloud equity.</b> Every disadvantage compounds. The highest hurdle (16.97%) and the
   dearest debt (9.625%, 506bp over the REIT) on the fastest-depreciating asset; equity impaired below 4.00%
-  unlevered &mdash; more than ten times the hyperscaler's threshold; the vintage at cost near 37.6% of
+  unlevered, more than ten times the hyperscaler's threshold; the vintage at cost near 37.6% of
   enterprise value; ~67% single-customer concentration where the customer is also a competitor; a headline
   backlog broader than the accounting standard; no valid constant-growth solution at a 2.1% ROIC. Above all:
-  <b>this is the layer whose equity is most levered to the anchor question &mdash; the least-resolved input
+  <b>this is the layer whose equity is most levered to the anchor question, the least-resolved input
   in the entire analysis.</b> Maximum sensitivity to maximum uncertainty is the definition of a poor
   risk-adjusted bet, <em>independent of any view on demand</em>.</p>
 
   <p>Two demonstrations of the two-axis discipline, because they generalize:</p>
 
   <ul>
-    <li><b>Oracle: impaired, but priced.</b> The worst funding profile of any large owner &mdash; capex/OCF
-    174.1%, net debt 4.53&#215; EBITDA, 99% of capex externally funded, AI capex 14.0% of EV &mdash;
-    <em>and</em> a valuation near the bottom of its own historical range. Structure and price have partially
+    <li><b>Oracle: impaired, but priced.</b> The worst funding profile of any large owner, capex/OCF
+    174.1%, net debt 4.53&#215; EBITDA, 99% of capex externally funded, AI capex 14.0% of EV,     <em>and</em> a valuation near the bottom of its own historical range. Structure and price have partially
     met. Not a recommendation (expected equity &minus;0.66%, downside &minus;28.4%, and the counterparty
-    concentration behind a $638B backlog is unobservable) &mdash; but the cleanest live proof that
+    concentration behind a $638B backlog is unobservable), but the cleanest live proof that
     &ldquo;structurally impaired&rdquo; and &ldquo;avoid&rdquo; are different sentences.</li>
     <li><b>Arista and AMD: sound, but pricing perfection.</b> Fine businesses at +558bp implied perpetual
     growth and valuations <em>above their own historical ranges</em>. Nothing wrong with the structure;
@@ -1661,28 +1645,28 @@ ol.pidx a:hover{border-bottom-color:var(--text-primary)}
   </ul>
 
   <p>And the two places likeliest to be <em>paying peak-cycle prices for value that ends up with users</em>:
-  first, the neocloud layer &mdash; owner of the melting asset at the highest capital cost, with no pricing
+  first, the neocloud layer, owner of the melting asset at the highest capital cost, with no pricing
   power over its own output (rental rates are set by a market it does not control) and a customer who is
-  also its competitor; second, the memory-and-foundry complex &mdash; Micron at 84.6% gross margin and SK
+  also its competitor; second, the memory-and-foundry complex: Micron at 84.6% gross margin and SK
   hynix at 76% operating margin sit at the top of a <em>cyclical</em> margin range, TSMC trades at the top of
   its own valuation history, and the equipment complex is adding 30% capacity a year into it. Buying
   cyclicals at peak margin, into a disclosed capacity wave, is the oldest mistake with the best data against
   it.</p>
 
   <p>Why does the value end up with users at all? The one welfare measurement in evidence (flagged <span class="tag void"><svg class="gl" aria-hidden="true"><use href="#g-N"/></svg>not in evidence</span>,
-  unverified on re-check &mdash; keep the flag): US consumer surplus from AI of $172.3 billion against a
-  revenue comparator of roughly $14.2 billion &mdash; <em>an order of magnitude</em> of value created and
+  unverified on re-check, keep the flag): US consumer surplus from AI of $172.3 billion against a
+  revenue comparator of roughly $14.2 billion, <em>an order of magnitude</em> of value created and
   not captured. That ratio is the mechanism behind the historical refrain. The technology can be everything
   its believers claim while its capital earns purgatory returns, <b>because the surplus escapes to the
-  demand side</b> &mdash; which cannot service debt or depreciate GPUs.</p>
-<aside class="mm rise"><p class="mm-k">Mental model &#183; Two axes, four quadrants</p><p>Score every asset on structural quality &mdash; funding, leverage, asset life, survival threshold &mdash; and on embedded expectations &mdash; what the price requires. Sound-and-cheap barely exists in a boom. The actionable quadrants are the off-diagonals: impaired-but-overdiscounted (Oracle-shaped) and sound-but-overpriced (Arista-shaped). And the quadrant that ruins people is the fastest-depreciating asset at the highest funding cost at a price requiring transformation &mdash; the neocloud corner. That corner has a name in every cycle; only the technology changes.</p></aside>
+  demand side</b>, which cannot service debt or depreciate GPUs.</p>
+<aside class="mm rise"><p class="mm-k">Mental model &#183; Two axes, four quadrants</p><p>Score every asset on structural quality (funding, leverage, asset life, survival threshold) and on embedded expectations, what the price requires. Sound-and-cheap barely exists in a boom. The actionable quadrants are the off-diagonals: impaired-but-overdiscounted (Oracle-shaped) and sound-but-overpriced (Arista-shaped). And the quadrant that ruins people is the fastest-depreciating asset at the highest funding cost at a price requiring transformation, the neocloud corner. That corner has a name in every cycle; only the technology changes.</p></aside>
 </section>
 
 <section class="sec" id="s13">
   <div class="sec-head"><span class="snum ui">13</span><h3 id="the-dashboard-the-reversal-and-the-exit-from-opi">The dashboard, the reversal, and the exit from opinion</h3></div>
   
   <p>The final discipline is the one that separates a view from a mood: <b>every verdict ships with the
-  observations that would kill it</b> &mdash; dated, quantified, source-named. The original's standard is
+  observations that would kill it</b>, dated, quantified, source-named. The original's standard is
   explicit: <em>&ldquo;if demand weakens&rdquo; is unacceptable.</em> A falsifier you cannot schedule is not
   a falsifier.</p>
 
@@ -1693,39 +1677,39 @@ ol.pidx a:hover{border-bottom-color:var(--text-primary)}
 
   <ul>
     <li><b>The single highest-value indicator prints one day after the analysis is dated.</b> CoreWeave's Q2
-    2026 report (11 August 2026) carries revenue, active megawatts, and backlog in one filing &mdash; the
+    2026 report (11 August 2026) carries revenue, active megawatts, and backlog in one filing, the
     pivot variable of the anchor fork. Below $7.50M per active MW for two consecutive quarters, the fork
     swings toward Anchor A; above $10.50M, toward B. One number, printed quarterly, arbitrates the
     trillion-dollar question. <em>(This edition preserves the analysis as of its date; the reader checks the
     print against the card.)</em></li>
     <li><b>The earliest-warning indicator is one almost nobody watches.</b> Microsoft's $329.1 billion of
     leases <em>signed but not yet commenced</em>. Demand deterioration surfaces first as quiet
-    non-commencement &mdash; invisible in every income statement, legible only as that disclosure balance
+    non-commencement, invisible in every income statement, legible only as that disclosure balance
     shrinking. A sequential decline of more than 10% (~$33 billion) without matching commencements is the
     tell. The best indicators live where deterioration arrives <em>before</em> the financial statements.</li>
   </ul>
 
-  <p>Equally important is the anti-dashboard &mdash; the ledger of what <b>cannot</b> be monitored because
+  <p>Equally important is the anti-dashboard, the ledger of what <b>cannot</b> be monitored because
   it is not publicly observable: fleet utilization (the actual measurement, billed hours over available
   hours); loan covenant packages; GPU appraisal and advance rates beyond one issuer's own deck; cancellation
   and termination provisions for <em>all five</em> backlog reporters; churn and net revenue retention for
   any AI product; realized revenue per token for any provider. Writing this list is not a confession of
   defeat. It is the map of where the ambushes will come from.</p>
 
-  <p>Then the reversal &mdash; the analysis pre-committing, in public, to what would change its mind.
+  <p>Then the reversal, the analysis pre-committing, in public, to what would change its mind.
   <a href="#f17">Figure&nbsp;17</a> draws both gates.</p>
 
   <p><b>Flip to H1</b> (returns adequate) requires all four, by their dates: CoreWeave &#8805; $11.00M/MW for
   two consecutive quarters by 31 March 2027 (raising Anchor A's own yield toward ~22% and narrowing the fork
   to ~1.9&#215;); executed secondary H100 prices &#8805; $18,000 on 25+ observed sales by 30 June 2027; two
-  of the five majors back below 60% capex/OCF by their Q4 2027 filings; and Census depth &mdash; the share
-  of users in three or fewer functions &mdash; below 45% in the 2027 supplement. Under all four, the failure
+  of the five majors back below 60% capex/OCF by their Q4 2027 filings; and Census depth, the share
+  of users in three or fewer functions, below 45% in the 2027 supplement. Under all four, the failure
   share drops below 40% and the probability below 0.45. <b>Flip to H3</b> (material destruction) requires
   all four: Microsoft's uncommenced leases below $260 billion by 30 June 2027 without commencement; a
   &#8805;$5 billion AI impairment or a <em>second</em> useful-life shortening by end-2027; high-yield spreads
   above 4.50% for 20 consecutive trading days; H100 rentals below $1.50 for two months by mid-2027. Under
   all four, the failure share exceeds 92% and the equity-destroying share 80%.</p>
-<aside class="pat rise" id="p13"><p class="pat-k">Pattern &#8470;13</p><p><b>Write the reversal before you need it.</b> Specify, while calm, the dated and quantified observations that would flip your verdict in <em>each</em> direction. The move does three things at once: it inoculates you against narrative drift, because you pre-agreed what the evidence would mean; it converts research into a monitoring routine; and it renders your future self auditable by anyone &mdash; including you.</p></aside><aside class="mm rise"><p class="mm-k">Mental model &#183; A view is a dashboard plus a tripwire</p><p>The finished form of an opinion is not a conclusion. It is a conclusion, a short list of observable variables with numeric thresholds in both directions, a schedule for checking them, and a pre-written statement of what combination flips the verdict. Anything less is a mood with citations. Keep the anti-dashboard too: the list of unobservables is your map of where you can still be ambushed.</p></aside>
+<aside class="pat rise" id="p13"><p class="pat-k">Pattern &#8470;13</p><p><b>Write the reversal before you need it.</b> Specify, while calm, the dated and quantified observations that would flip your verdict in <em>each</em> direction. The move does three things at once: it inoculates you against narrative drift, because you pre-agreed what the evidence would mean; it converts research into a monitoring routine; and it renders your future self auditable by anyone, including you.</p></aside><aside class="mm rise"><p class="mm-k">Mental model &#183; A view is a dashboard plus a tripwire</p><p>The finished form of an opinion is not a conclusion. It is a conclusion, a short list of observable variables with numeric thresholds in both directions, a schedule for checking them, and a pre-written statement of what combination flips the verdict. Anything less is a mood with citations. Keep the anti-dashboard too: the list of unobservables is your map of where you can still be ambushed.</p></aside>
 </section>
 
 <div class="part-open rise" id="pVI">
@@ -1739,30 +1723,30 @@ ol.pidx a:hover{border-bottom-color:var(--text-primary)}
   
   <p class="lede" style="margin-bottom:1.4rem"><b>Refusing to average the fork.</b></p>
 
-  <p>The situation: two honest constructions of the decisive quantity &mdash; the revenue yield on a vintage
-  dollar &mdash; came back 2.3&#215; apart. One (18.0%) rests on filed revenue and a rumoured cost; the other
+  <p>The situation: two honest constructions of the decisive quantity, the revenue yield on a vintage
+  dollar, came back 2.3&#215; apart. One (18.0%) rests on filed revenue and a rumoured cost; the other
   (41.9%) on rumours at both ends that happen to triangulate with credit markets, hardware longevity, and the
   one realized yield series. Under the first, 100% of a trillion dollars fails in every scenario. Under the
   second, the base case clears its hurdle by 300 basis points. There is no third instrument.</p>
 
-  <p>Nearly every professional in that position produces a blend &mdash; call it a ~30% yield &mdash; and
+  <p>Nearly every professional in that position produces a blend, call it a ~30% yield, and
   erects one smooth model upon it. The blend feels rigorous. It is the opposite: <b>a measurement no
   instrument took</b>, a world with no evidence behind it, manufactured because single numbers are socially
-  comfortable. And it silently deletes the most decision-relevant fact available &mdash; that reality is
+  comfortable. And it silently deletes the most decision-relevant fact available, that reality is
   currently one of two very different places, and <em>we do not yet know which</em>.</p>
 
   <p>The analysis instead carries both grids to the end, weights them explicitly (0.60/0.40, the weights
   themselves argued from evidence and stress-tested to 0.55/0.45 the other way), and lets the fork's shape
-  flow undiluted into the final answer &mdash; which is why P(failure &gt; 30%), P(&gt; 50%), and P(&gt; 70%)
+  flow undiluted into the final answer, which is why P(failure &gt; 30%), P(&gt; 50%), and P(&gt; 70%)
   are all the <em>same number</em>, 0.743. The distribution is bimodal because the evidence is bimodal. The
   expected IRR of +1.27% is reported and then explicitly <em>disbelieved as a forecast</em>: the vintage will
-  not earn 1.27%; it will earn roughly &minus;13% or roughly +14%, and the mean is merely the fork's center
+  not earn 1.27%; it will earn roughly &minus;13% or roughly +14%, and the mean is merely the fork's centre
   of mass, resting in a valley almost no scenario produces.</p>
 
   <p>And name it once, so you see it everywhere: this is <a href="#p5">Pattern &#8470;5</a> (carry
   irreconcilable instruments), <a href="#p6">Pattern &#8470;6</a> (report the distribution you actually
   have), and <a href="#p7">Pattern &#8470;7</a> (one-sided observability yields bounds, not points) revealed
-  as a single epistemic character exercised at three scales &mdash; the same refusal to purchase comfort with
+  as a single epistemic character exercised at three scales, the same refusal to purchase comfort with
   invented precision, applied to a fork, to a distribution, and to a floor.</p>
 
   <p>Why the move is rare: every institutional incentive opposes it. Clients pay for points, not intervals;
@@ -1770,11 +1754,11 @@ ol.pidx a:hover{border-bottom-color:var(--text-primary)}
   not understood it; and &ldquo;the answer is one of two numbers, and here is what will tell us which&rdquo;
   demands more nerve than &ldquo;the answer is 30%.&rdquo;</p>
 
-  <p>Why it is valuable &mdash; three compounding reasons. First, it preserves decision structure: how you
+  <p>Why it is valuable, three compounding reasons. First, it preserves decision structure: how you
   size, hedge, and stage commitments under a fork differs <em>fundamentally</em> from how you do so under a
   bell curve, and blending destroys the information those decisions require. Second, it converts debate into
-  monitoring: a preserved fork has an observable pivot &mdash; here, one company's revenue per megawatt,
-  printed quarterly, with tripwires at $7.50M and $10.50M &mdash; whereas a blend leaves you litigating a
+  monitoring: a preserved fork has an observable pivot (here, one company's revenue per megawatt,
+  printed quarterly, with tripwires at $7.50M and $10.50M) whereas a blend leaves you litigating a
   phantom mean forever. Third, it is the discipline that runs the whole document at every scale: bounds
   instead of points for circularity, &ldquo;not in evidence&rdquo; instead of the number everyone repeats,
   direction without magnitude for one-sided errors. One move, applied consistently, amounts to an epistemic
@@ -1787,7 +1771,7 @@ ol.pidx a:hover{border-bottom-color:var(--text-primary)}
   <div class="sec-head"><span class="snum ui">15</span><h3 id="twelve-high-value-claims">Twelve high-value claims</h3></div>
   
   <p>What you should still be able to state, cold, in six months.</p>
-  <ol class="claims"><li><div><b>The verdict is H2: real technology, inadequate returns &mdash; purgatory, not collapse.</b> 75.6% of the vintage fails its hurdle (P = 0.743), but only 48.0% destroys equity; the modal ~$299B slice earns positive-but-sub-hurdle returns.</div></li><li><div><b>The evidence is bimodal: no scenario yields a failure share between 8.9% and 97.8%.</b> The real question is which branch, not how much &mdash; which is why all three thresholds return the identical 0.743.</div></li><li><div><b>The verdict hinges on two supply-side unknowns &mdash; the revenue anchor and the asset life &mdash; not on demand.</b> Shifting 0.20 of anchor weight moves the probability by ~0.086; the demand scenario moves it by &plusmn;0.02.</div></li><li><div><b>Hurdles attach to owners, not assets: the same collateral funds at 4.56% and 9.625% &mdash; 506bp apart.</b> The neocloud destroys equity below a 4.00% unlevered return; the hyperscaler below 0.37% &mdash; a &gt;10&#215; survival gap on identical hardware.</div></li><li><div><b>Circularity is real, bounded, and smaller than the discourse: at least 31.8% but at most 44.9% of cloud-layer revenue is endogenous</b> &mdash; and one-sided observability licenses the direction of future revisions, never their size.</div></li><li><div><b>Closing the biggest data gap made the scary number smaller:</b> retrieving Broadcom's $10.8B/quarter AI revenue cut the semiconductor layer's endogenous share from 14.0% to 12.4% and collapsed the reconciliation residual to 11.4&ndash;38.0% &mdash; the direction channel-stuffing cannot produce.</div></li><li><div><b>The funding mix is the cleanest measured break from the benign 2010&ndash;2020 precedent:</b> capex/OCF peaked at 90.6% then and never crossed 100%; it is 174.1% (Oracle) and 107.2% (Amazon) now, with 31% of cumulative capex issuance-funded.</div></li><li><div><b>$1,090 billion of signed-but-uncommenced leases is where demand deterioration will surface first</b> &mdash; outside every balance sheet, visible only as a shrinking disclosure.</div></li><li><div><b>Validating the vintage requires external end-user revenue of $475B/yr by 2030 &mdash; a 93.0% CAGR from the identified $26.3B base (66.8% from a generous $50B).</b> P(shortfall) = 0.70, resting on measured depth: 57% of business users run AI in &#8804;3 functions at a median $11.38/employee/month.</div></li><li><div><b>A capability plateau is two-sided for installed capital:</b> it caps demand but kills obsolescence, extending life and cutting the revenue bar 29% (to $336B at an 8-year life) &mdash; hence P(validated | plateau) = 0.18, not 0.10.</div></li><li><div><b>Structure and price are independent axes:</b> Oracle is impaired-but-de-rated; Arista (+558bp implied growth) and AMD (82.0&#215; EBITDA, above its own range) are sound-but-demanding; the ruinous quadrant is the fastest-melting asset at the highest funding cost with the vintage at ~37.6% of enterprise value &mdash; the neocloud corner.</div></li><li><div><b>The technology working and the capital earning are independent questions, and history settles them separately:</b> users retained the network, the grid, and the fiber &mdash; and the measured surplus-to-revenue gap ($172.3B vs ~$14.2B, flagged unverified) is the mechanism by which value escapes to users again.</div></li></ol>
+  <ol class="claims"><li><div><b>The verdict is H2: real technology, inadequate returns, purgatory, not collapse.</b> 75.6% of the vintage fails its hurdle (P = 0.743), but only 48.0% destroys equity; the modal ~$299B slice earns positive-but-sub-hurdle returns.</div></li><li><div><b>The evidence is bimodal: no scenario yields a failure share between 8.9% and 97.8%.</b> The real question is which branch, not how much, which is why all three thresholds return the identical 0.743.</div></li><li><div><b>The verdict hinges on two supply-side unknowns, the revenue anchor and the asset life, not on demand.</b> Shifting 0.20 of anchor weight moves the probability by ~0.086; the demand scenario moves it by &plusmn;0.02.</div></li><li><div><b>Hurdles attach to owners, not assets: the same collateral funds at 4.56% and 9.625%: 506bp apart.</b> The neocloud destroys equity below a 4.00% unlevered return; the hyperscaler below 0.37%, a &gt;10&#215; survival gap on identical hardware.</div></li><li><div><b>Circularity is real, bounded, and smaller than the discourse: at least 31.8% but at most 44.9% of cloud-layer revenue is endogenous</b>, and one-sided observability licenses the direction of future revisions, never their size.</div></li><li><div><b>Closing the biggest data gap made the scary number smaller:</b> retrieving Broadcom's $10.8B/quarter AI revenue cut the semiconductor layer's endogenous share from 14.0% to 12.4% and collapsed the reconciliation residual to 11.4&ndash;38.0%, the direction channel-stuffing cannot produce.</div></li><li><div><b>The funding mix is the cleanest measured break from the benign 2010&ndash;2020 precedent:</b> capex/OCF peaked at 90.6% then and never crossed 100%; it is 174.1% (Oracle) and 107.2% (Amazon) now, with 31% of cumulative capex issuance-funded.</div></li><li><div><b>$1,090 billion of signed-but-uncommenced leases is where demand deterioration will surface first</b>, outside every balance sheet, visible only as a shrinking disclosure.</div></li><li><div><b>Validating the vintage requires external end-user revenue of $475B/yr by 2030, a 93.0% CAGR from the identified $26.3B base (66.8% from a generous $50B).</b> P(shortfall) = 0.70, resting on measured depth: 57% of business users run AI in &#8804;3 functions at a median $11.38/employee/month.</div></li><li><div><b>A capability plateau is two-sided for installed capital:</b> it caps demand but kills obsolescence, extending life and cutting the revenue bar 29% (to $336B at an 8-year life), hence P(validated | plateau) = 0.18, not 0.10.</div></li><li><div><b>Structure and price are independent axes:</b> Oracle is impaired-but-de-rated; Arista (+558bp implied growth) and AMD (82.0&#215; EBITDA, above its own range) are sound-but-demanding; the ruinous quadrant is the fastest-melting asset at the highest funding cost with the vintage at ~37.6% of enterprise value, the neocloud corner.</div></li><li><div><b>The technology working and the capital earning are independent questions, and history settles them separately:</b> users retained the network, the grid, and the fibre, and the measured surplus-to-revenue gap ($172.3B vs ~$14.2B, flagged unverified) is the mechanism by which value escapes to users again.</div></li></ol>
 
 </section>
 
@@ -1839,34 +1823,34 @@ ol.pidx a:hover{border-bottom-color:var(--text-primary)}
 <section class="sec" id="s17">
   <div class="sec-head"><span class="snum ui">17</span><h3 id="the-pattern-index">The pattern index</h3></div>
   
-  <p>The thirteen reasoning moves, one line each &mdash; the part of this document that transfers to
+  <p>The thirteen reasoning moves, one line each, the part of this document that transfers to
   everything. Each links back to where it was earned.</p>
-  <ol class="pidx"><li><div><a href="#p1"><b>Convert the vibe into a random variable</b></a> &mdash; quantity, threshold, date, before arguing.</div></li><li><div><a href="#p2"><b>Trace every dollar to its origin</b></a> &mdash; revenue is demand only if the payer stands outside the system.</div></li><li><div><a href="#p3"><b>The unit of account decides the answer</b></a> &mdash; define the cohort before measuring its returns.</div></li><li><div><a href="#p4"><b>Hurdles attach to owners, not assets</b></a> &mdash; decompose every cycle by who owns what, at what survival threshold.</div></li><li><div><a href="#p5"><b>Carry the fork</b></a> &mdash; never average irreconcilable instruments into a world nobody measured.</div></li><li><div><a href="#p6"><b>Report the distribution you actually have</b></a> &mdash; if the evidence is bimodal, so is the honest answer.</div></li><li><div><a href="#p7"><b>One-sided observability yields bounds, not points</b></a> &mdash; the direction of revision, never its size.</div></li><li><div><a href="#p8"><b>Date the tail, define the proxy, derive the bar</b></a> &mdash; and force your probabilities to cohere.</div></li><li><div><a href="#p9"><b>Never spend evidence twice</b></a> &mdash; credit each datum on exactly one axis.</div></li><li><div><a href="#p10"><b>Commitments are not measurements</b></a> &mdash; &ldquo;sold out&rdquo; is language; utilization is a ratio nobody publishes.</div></li><li><div><a href="#p11"><b>Rule on the best version; name the defeater</b></a> &mdash; disagreement is earned datum by datum.</div></li><li><div><a href="#p12"><b>Score structure and price separately; trade the gap</b></a> &mdash; the off-diagonal quadrants are where the money is.</div></li><li><div><a href="#p13"><b>Write the reversal before you need it</b></a> &mdash; dated, quantified tripwires in both directions, drafted while calm.</div></li></ol>
+  <ol class="pidx"><li><div><a href="#p1"><b>Convert the vibe into a random variable</b></a>, quantity, threshold, date, before arguing.</div></li><li><div><a href="#p2"><b>Trace every dollar to its origin</b></a>, revenue is demand only if the payer stands outside the system.</div></li><li><div><a href="#p3"><b>The unit of account decides the answer</b></a>, define the cohort before measuring its returns.</div></li><li><div><a href="#p4"><b>Hurdles attach to owners, not assets</b></a>, decompose every cycle by who owns what, at what survival threshold.</div></li><li><div><a href="#p5"><b>Carry the fork</b></a>, never average irreconcilable instruments into a world nobody measured.</div></li><li><div><a href="#p6"><b>Report the distribution you actually have</b></a>, if the evidence is bimodal, so is the honest answer.</div></li><li><div><a href="#p7"><b>One-sided observability yields bounds, not points</b></a>, the direction of revision, never its size.</div></li><li><div><a href="#p8"><b>Date the tail, define the proxy, derive the bar</b></a>, and force your probabilities to cohere.</div></li><li><div><a href="#p9"><b>Never spend evidence twice</b></a>, credit each datum on exactly one axis.</div></li><li><div><a href="#p10"><b>Commitments are not measurements</b></a>: &ldquo;sold out&rdquo; is language; utilization is a ratio nobody publishes.</div></li><li><div><a href="#p11"><b>Rule on the best version; name the defeater</b></a>, disagreement is earned datum by datum.</div></li><li><div><a href="#p12"><b>Score structure and price separately; trade the gap</b></a>, the off-diagonal quadrants are where the money is.</div></li><li><div><a href="#p13"><b>Write the reversal before you need it</b></a>, dated, quantified tripwires in both directions, drafted while calm.</div></li></ol>
   <p style="margin-top:1.5rem">Plus the meta-rule that governed the entire exercise: <b>flag, quantify, carry
-  both</b> &mdash; on finding a defect upstream, never silently fix it and never silently inherit it.</p>
+  both</b>, on finding a defect upstream, never silently fix it and never silently inherit it.</p>
 
 </section>
 
 <section class="sec" id="s18">
   <div class="sec-head"><span class="snum ui">18</span><h3 id="how-this-changes-how-you-read-the-next-five-year">How this changes how you read the next five years</h3></div>
   
-  <p>Not predictions &mdash; reading habits, each anchored to something this analysis measured.</p>
-  <div class="habits"><div class="habit"><h4 id="when-you-read-record-ai-capex">When you read &ldquo;record AI capex,&rdquo;</h4><p>your first glance is now capex/OCF and the funding mix, because that ratio &mdash; not the capex level &mdash; is what separated this cycle from its own benign precedent (a 90.6% peak then; 174.1% and 107.2% now, 31% issuance-funded).</p></div><div class="habit"><h4 id="when-you-read-sold-out-or-a-backlog-headline">When you read &ldquo;sold out&rdquo; or a backlog headline,</h4><p>four questions precede belief: commitment or measurement? run-rate or recognized? standard-defined or management-estimated? and who is the counterparty, at what concentration? (One firm's backlog was 67% a single customer &mdash; and that customer is also its competitor.)</p></div><div class="habit"><h4 id="when-you-read-gpus-are-obsolete-in-two-years-or-">When you read &ldquo;GPUs are obsolete in two years&rdquo; or &ldquo;GPUs last forever,&rdquo;</h4><p>you consult the disclosed-lives record (five reporters clustered at 5&ndash;6 years; one deliberate shortening), the executed &mdash; not asked &mdash; secondary prices, and you remember the fork: the asset-life question is worth more to the verdict than the entire demand debate.</p></div><div class="habit"><h4 id="when-you-read-about-ai-demand">When you read about AI demand,</h4><p>you hold the growth rate and the depth evidence in the same hand, because both were true at once here: triple-digit growth <em>and</em> 57% of users in three or fewer functions at $11.38 per employee per month. Breadth-versus-depth is the diffusion question; the revenue bar &mdash; $475B by 2030, a 93% compound rate &mdash; is what the breadth must become.</p></div><div class="habit"><h4 id="when-you-read-credit-market-calm">When you read credit-market calm,</h4><p>you look through the headline to the composition: what does the <em>marginal</em> owner pay against the average (506bp here), and what is growing fastest in securitisation? Spreads gapped after Lucent's equity, not before it.</p></div><div class="habit"><h4 id="when-someone-hands-you-a-confident-point-estimat">When someone hands you a confident point estimate on a genuinely forked question,</h4><p>you recognize the tell: they averaged. Ask what the two instruments read, and which observable variable arbitrates between them.</p></div><div class="habit"><h4 id="when-the-plateau-discourse-arrives">When the plateau discourse arrives</h4><p>&mdash; it will &mdash; you price both sides: a capability plateau caps demand <em>and</em> extends fleet life, and for installed capital the second effect offsets a surprising fraction of the first (the bar drops 29% at an eight-year life).</p></div><div class="habit"><h4 id="when-you-form-your-own-view-on-any-of-it">When you form your own view on any of it,</h4><p>the view is unfinished until it ships with its card: pivot variables, numeric tripwires in both directions, a checking schedule, and a pre-written reversal. This analysis committed, in advance, to the four dated observations that would flip it each way; hold yourself to the same standard and you will be practicing something rarer than it has any right to be.</p></div></div>
+  <p>Not predictions, reading habits, each anchored to something this analysis measured.</p>
+  <div class="habits"><div class="habit"><h4 id="when-you-read-record-ai-capex">When you read &ldquo;record AI capex,&rdquo;</h4><p>your first glance is now capex/OCF and the funding mix, because that ratio, not the capex level, is what separated this cycle from its own benign precedent (a 90.6% peak then; 174.1% and 107.2% now, 31% issuance-funded).</p></div><div class="habit"><h4 id="when-you-read-sold-out-or-a-backlog-headline">When you read &ldquo;sold out&rdquo; or a backlog headline,</h4><p>four questions precede belief: commitment or measurement? run-rate or recognized? standard-defined or management-estimated? and who is the counterparty, at what concentration? (One firm's backlog was 67% a single customer, and that customer is also its competitor.)</p></div><div class="habit"><h4 id="when-you-read-gpus-are-obsolete-in-two-years-or-">When you read &ldquo;GPUs are obsolete in two years&rdquo; or &ldquo;GPUs last forever,&rdquo;</h4><p>you consult the disclosed-lives record (five reporters clustered at 5&ndash;6 years; one deliberate shortening), the executed, not asked, secondary prices, and you remember the fork: the asset-life question is worth more to the verdict than the entire demand debate.</p></div><div class="habit"><h4 id="when-you-read-about-ai-demand">When you read about AI demand,</h4><p>you hold the growth rate and the depth evidence in the same hand, because both were true at once here: triple-digit growth <em>and</em> 57% of users in three or fewer functions at $11.38 per employee per month. Breadth-versus-depth is the diffusion question; the revenue bar ($475B by 2030, a 93% compound rate) is what the breadth must become.</p></div><div class="habit"><h4 id="when-you-read-credit-market-calm">When you read credit-market calm,</h4><p>you look through the headline to the composition: what does the <em>marginal</em> owner pay against the average (506bp here), and what is growing fastest in securitisation? Spreads gapped after Lucent's equity, not before it.</p></div><div class="habit"><h4 id="when-someone-hands-you-a-confident-point-estimat">When someone hands you a confident point estimate on a genuinely forked question,</h4><p>you recognize the tell: they averaged. Ask what the two instruments read, and which observable variable arbitrates between them.</p></div><div class="habit"><h4 id="when-the-plateau-discourse-arrives">When the plateau discourse arrives</h4><p>, it will, you price both sides: a capability plateau caps demand <em>and</em> extends fleet life, and for installed capital the second effect offsets a surprising fraction of the first (the bar drops 29% at an eight-year life).</p></div><div class="habit"><h4 id="when-you-form-your-own-view-on-any-of-it">When you form your own view on any of it,</h4><p>the view is unfinished until it ships with its card: pivot variables, numeric tripwires in both directions, a checking schedule, and a pre-written reversal. This analysis committed, in advance, to the four dated observations that would flip it each way; hold yourself to the same standard and you will be practicing something rarer than it has any right to be.</p></div></div>
 
   <p style="margin-top:2.5rem">Beneath all of it lies the frame that outlasts the cycle: whether the
   technology matters and whether the capital earns are different questions, usually with different answers,
-  settled at different times &mdash; the railway network peaked seventy years after the mania that funded it,
+  settled at different times, the railway network peaked seventy years after the mania that funded it,
   and someone owned every year of that gap. And when the settlement of this cycle is finally written, expect
   the oldest clause in the record to appear once more:</p>
 
   <p class="lede" style="margin:1.5rem 0 0"><b>Users retained the network. Users retained the grid. Users
-  retained the fiber.</b></p>
+  retained the fibre.</b></p>
 
 </section>
 
 <div class="colophon">
   <h3 id="provenance-note">Provenance note</h3>
-  <p>Definitive edition, redesigned from &ldquo;Run 2 of 2 &mdash; Adjudication&rdquo; (10 August 2026) and
+  <p>Definitive edition, redesigned from &ldquo;Run 2 of 2 — Adjudication&rdquo; (10 August 2026) and
   its underlying Run-1 Evidence Pack (same date). All quantities transcribed unchanged, including evidence
   labels and unverified-figure flags. The source documents' Gap Log, QC checklist, and full falsification
   dashboard govern anywhere this edition compresses.</p>
@@ -2049,15 +2033,62 @@ if (grid){
 })();
 </script>
 
+<!--__long--><link rel="stylesheet" href="long.css?v=0b99e235"><script src="long.js?v=98a5c23b" defer></script><!--/__long-->
 
 <!--__rbp-->
+<!-- The pill styles itself: this block used to live only with the top bar,
+     so the seven tool pages, which carry the pill alone, rendered it as an
+     unstyled link at the very end of the document. Whatever carries the
+     pill now carries its style. -->
+<style id="__rbp-style">
+#__rb-pill{
+  position:fixed;left:14px;bottom:14px;z-index:2147483000;
+  display:inline-flex;align-items:center;gap:.45rem;padding:.58rem .9rem;
+  background:rgba(22,21,15,.93);color:#faf9f6;text-decoration:none;border-radius:99px;
+  font:600 12.5px/1 InterVar,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  border:1px solid rgba(255,255,255,.16);box-shadow:0 6px 22px rgba(0,0,0,.28);
+  opacity:0;transform:translateY(6px);pointer-events:none;
+  transition:opacity .2s ease,transform .2s ease;
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+}
+#__rb-pill.__on{opacity:1;transform:none;pointer-events:auto}
+#__rb-pill:hover{background:#16150f;color:#fff}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) #__rb-pill{background:rgba(247,245,239,.95);color:#131310;border-color:rgba(0,0,0,.2)}
+  :root:not([data-theme="light"]) #__rb-pill:hover{background:#fff;color:#000}
+}
+:root[data-theme="dark"] #__rb-pill{background:rgba(247,245,239,.95);color:#131310;border-color:rgba(0,0,0,.2)}
+:root[data-theme="dark"] #__rb-pill:hover{background:#fff;color:#000}
+@media (prefers-reduced-motion:reduce){#__rb-pill{transition:none}}
+@media print{#__rb-pill{display:none !important}}
+/* a tool carries no bar, so what it was built from stands at the foot of the document */
+#__rb-from{margin:1.25rem 1rem;font:400 13px/1.45 InterVar,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;color:#6f6c63;max-width:70ch}
+#__rb-from b{font-weight:600;color:#55524a}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) #__rb-from{color:#948f85}
+  :root:not([data-theme="light"]) #__rb-from b{color:#c0bcb1}
+}
+:root[data-theme="dark"] #__rb-from{color:#948f85}
+:root[data-theme="dark"] #__rb-from b{color:#c0bcb1}
+</style>
+<!-- With scripts off nothing ever adds the __on class, and the only way
+     back from a tool page vanished. The pill needs its script for the
+     scroll threshold, not for existing. -->
+<noscript><style>#__rb-pill{opacity:1 !important;transform:none !important;pointer-events:auto !important}</style></noscript>
 <a id="__rb-pill" href="research.html">&#8592; Research</a>
+
 <script>
 (function(){
   var p=document.getElementById('__rb-pill'); if(!p) return;
+  /* On a page with the top bar the pill waits until the bar has scrolled
+     out of reach. On a page without one (the tools carry no bar, because a
+     bar inside a full-screen application sits in the wrong place) the pill
+     is the only way back, so it is there from the first paint: a tool
+     screen shorter than the threshold used to strand the reader entirely. */
+  var TH=document.getElementById('__rb')?160:-1;
   var t=false;
   function run(){ t=false;
-    p.classList.toggle('__on',(window.scrollY||document.documentElement.scrollTop)>420); }
+    p.classList.toggle('__on',(window.scrollY||document.documentElement.scrollTop)>TH); }
   function q(){ if(!t){ t=true; requestAnimationFrame(run); } }
   addEventListener('scroll',q,{passive:true}); run();
 })();
@@ -2075,7 +2106,7 @@ if (grid){
     function put(key){
       if(t2[key]||Object.keys(t2).length<500){
         t2[key]=(t2[key]||0)+1;
-        localStorage.setItem(k,JSON.stringify(t2));
+        try{localStorage.setItem(k,JSON.stringify(t2));}catch(e){}
       }
     }
     put(u+location.hash);

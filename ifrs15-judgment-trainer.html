@@ -4,9 +4,16 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>IFRS 15 Judgment Trainer</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Spectral:ital,wght@0,400;0,500;0,600;1,400&display=swap">
+    <style>
+/* self-hosted, subset to this piece's characters; the manifest in fonts/ records the source */
+@font-face{font-family:"IBM Plex Mono";font-style:normal;font-weight:400;font-display:swap;src:url("fonts/ibmplexmono-ifrs15-judgment-trainer-400.woff2") format("woff2")}
+@font-face{font-family:"IBM Plex Mono";font-style:normal;font-weight:500;font-display:swap;src:url("fonts/ibmplexmono-ifrs15-judgment-trainer-500.woff2") format("woff2")}
+@font-face{font-family:"IBM Plex Sans";font-style:normal;font-weight:400 600;font-display:swap;src:url("fonts/ibmplexsans-ifrs15-judgment-trainer.woff2") format("woff2")}
+@font-face{font-family:"Spectral";font-style:normal;font-weight:400;font-display:swap;src:url("fonts/spectral-ifrs15-judgment-trainer-400.woff2") format("woff2")}
+@font-face{font-family:"Spectral";font-style:normal;font-weight:500;font-display:swap;src:url("fonts/spectral-ifrs15-judgment-trainer-500.woff2") format("woff2")}
+@font-face{font-family:"Spectral";font-style:normal;font-weight:600;font-display:swap;src:url("fonts/spectral-ifrs15-judgment-trainer-600.woff2") format("woff2")}
+@font-face{font-family:"Spectral";font-style:italic;font-weight:400;font-display:swap;src:url("fonts/spectral-ifrs15-judgment-trainer-400-italic.woff2") format("woff2")}
+</style>
   <!--__meta-->
 <meta name="color-scheme" content="light dark">
 <meta name="description" content="A drill on revenue recognition under IFRS 15: 29 determinate items scored against the standard and 33 judgment items that show their reasoning, every answer…">
@@ -14,15 +21,15 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="manifest" href="site.webmanifest">
 <link rel="canonical" href="https://alexrajcoomar.github.io/ifrs15-judgment-trainer.html">
-<meta property="og:title" content="IFRS 15 Judgment Trainer — Alex Rajcoomar">
+<meta property="og:title" content="IFRS 15 Judgment Trainer · Alex Rajcoomar">
 <meta property="og:description" content="A drill on revenue recognition under IFRS 15: 29 determinate items scored against the standard and 33 judgment items that show their reasoning, every answer…">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://alexrajcoomar.github.io/ifrs15-judgment-trainer.html">
-<meta property="og:site_name" content="Alex Rajcoomar — portfolio">
+<meta property="og:site_name" content="Alex Rajcoomar · portfolio">
 <meta property="og:image" content="https://alexrajcoomar.github.io/cards/ifrs15-judgment-trainer.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="IFRS 15 Judgment Trainer — Alex Rajcoomar">
+<meta property="og:image:alt" content="IFRS 15 Judgment Trainer · Alex Rajcoomar">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://alexrajcoomar.github.io/cards/ifrs15-judgment-trainer.png">
 <script>
@@ -48,7 +55,7 @@
   --surface-sunk:#E7EAE6;
   --ink:#151A18;
   --ink-2:#3E4744;
-  --ink-3:#6B7571;
+  --ink-3:#656c68;
   --rule:#CDD3CE;
   --rule-strong:#A9B2AC;
   --accent:#2C6B5C;
@@ -393,7 +400,7 @@ tr:hover td{background:var(--surface)}
         <section class="railsec score">
           <span class="label">Determinate items</span>
           <div class="metric">
-            <div class="top"><span class="big" id="detScore">0 / 0</span><span class="cap" id="detPct">&mdash;</span></div>
+            <div class="top"><span class="big" id="detScore">0 / 0</span><span class="cap" id="detPct">—</span></div>
             <div class="bar"><span id="detBar"></span></div>
             <p class="rail-note">Scored. One answer follows from the stated facts.</p>
           </div>
@@ -884,13 +891,59 @@ buildQueue('all');
 
   
 <!--__rbp-->
+<!-- The pill styles itself: this block used to live only with the top bar,
+     so the seven tool pages, which carry the pill alone, rendered it as an
+     unstyled link at the very end of the document. Whatever carries the
+     pill now carries its style. -->
+<style id="__rbp-style">
+#__rb-pill{
+  position:fixed;left:14px;bottom:14px;z-index:2147483000;
+  display:inline-flex;align-items:center;gap:.45rem;padding:.58rem .9rem;
+  background:rgba(22,21,15,.93);color:#faf9f6;text-decoration:none;border-radius:99px;
+  font:600 12.5px/1 InterVar,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  border:1px solid rgba(255,255,255,.16);box-shadow:0 6px 22px rgba(0,0,0,.28);
+  opacity:0;transform:translateY(6px);pointer-events:none;
+  transition:opacity .2s ease,transform .2s ease;
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+}
+#__rb-pill.__on{opacity:1;transform:none;pointer-events:auto}
+#__rb-pill:hover{background:#16150f;color:#fff}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) #__rb-pill{background:rgba(247,245,239,.95);color:#131310;border-color:rgba(0,0,0,.2)}
+  :root:not([data-theme="light"]) #__rb-pill:hover{background:#fff;color:#000}
+}
+:root[data-theme="dark"] #__rb-pill{background:rgba(247,245,239,.95);color:#131310;border-color:rgba(0,0,0,.2)}
+:root[data-theme="dark"] #__rb-pill:hover{background:#fff;color:#000}
+@media (prefers-reduced-motion:reduce){#__rb-pill{transition:none}}
+@media print{#__rb-pill{display:none !important}}
+/* a tool carries no bar, so what it was built from stands at the foot of the document */
+#__rb-from{margin:1.25rem 1rem;font:400 13px/1.45 InterVar,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;color:#6f6c63;max-width:70ch}
+#__rb-from b{font-weight:600;color:#55524a}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) #__rb-from{color:#948f85}
+  :root:not([data-theme="light"]) #__rb-from b{color:#c0bcb1}
+}
+:root[data-theme="dark"] #__rb-from{color:#948f85}
+:root[data-theme="dark"] #__rb-from b{color:#c0bcb1}
+</style>
+<!-- With scripts off nothing ever adds the __on class, and the only way
+     back from a tool page vanished. The pill needs its script for the
+     scroll threshold, not for existing. -->
+<noscript><style>#__rb-pill{opacity:1 !important;transform:none !important;pointer-events:auto !important}</style></noscript>
 <a id="__rb-pill" href="research.html">&#8592; Research</a>
+<p id="__rb-from"><b>Built from</b> Built from the full text of IFRS 15 and its illustrative examples in Part I of the CPA Canada Handbook, four IFRIC agenda decisions and two CSA staff notices; the verification memo records what was read.</p>
 <script>
 (function(){
   var p=document.getElementById('__rb-pill'); if(!p) return;
+  /* On a page with the top bar the pill waits until the bar has scrolled
+     out of reach. On a page without one (the tools carry no bar, because a
+     bar inside a full-screen application sits in the wrong place) the pill
+     is the only way back, so it is there from the first paint: a tool
+     screen shorter than the threshold used to strand the reader entirely. */
+  var TH=document.getElementById('__rb')?160:-1;
   var t=false;
   function run(){ t=false;
-    p.classList.toggle('__on',(window.scrollY||document.documentElement.scrollTop)>420); }
+    p.classList.toggle('__on',(window.scrollY||document.documentElement.scrollTop)>TH); }
   function q(){ if(!t){ t=true; requestAnimationFrame(run); } }
   addEventListener('scroll',q,{passive:true}); run();
 })();
@@ -908,7 +961,7 @@ buildQueue('all');
     function put(key){
       if(t2[key]||Object.keys(t2).length<500){
         t2[key]=(t2[key]||0)+1;
-        localStorage.setItem(k,JSON.stringify(t2));
+        try{localStorage.setItem(k,JSON.stringify(t2));}catch(e){}
       }
     }
     put(u+location.hash);

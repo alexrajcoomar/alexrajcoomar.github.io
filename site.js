@@ -373,21 +373,6 @@
     }
   })();
 
-  /* ------------------------------------------------------ the age --
-     The bio states an age, and an age goes stale. The build writes the
-     value that is correct on the build date; this recomputes it from the
-     date of birth on every load, so the sentence stays true without
-     anyone editing it. With JS off the built-in value still reads. */
-  [].slice.call(document.querySelectorAll("[data-age]")).forEach(function (el) {
-    var p = (el.getAttribute("data-age") || "").split("-");
-    if (p.length !== 3) return;
-    var y = +p[0], m = +p[1], d = +p[2], now = new Date();
-    var age = now.getFullYear() - y;
-    var md = (now.getMonth() + 1) * 100 + now.getDate();
-    if (md < m * 100 + d) age -= 1;
-    if (age > 0 && age < 120) el.textContent = String(age);
-  });
-
   /* --------------------------------------- grouped library lists --
      The library is split by what asked for the work, so the filter has
      to walk several lists and hide a whole group when nothing in it
@@ -402,7 +387,9 @@
         none = document.getElementById("noresults"),
         f = "all", fs = "all", total = 0;
     var sets = groups.map(function (g) {
-      var r = [].slice.call(g.querySelectorAll("ol.index > li"));
+      /* the head row and the subtotal are the statement's furniture, not
+         pieces: never counted, and shown only while the list is whole */
+      var r = [].slice.call(g.querySelectorAll("ol.index > li:not(.sr-head):not(.sr-sub)"));
       total += r.length;
       return { g: g, rows: r };
     });
@@ -417,6 +404,8 @@
           li.hidden = !ok; if (ok) vis++;
         });
         s.g.hidden = vis === 0; shown += vis;
+        var whole = f === "all" && fs === "all" && !term;
+        [].forEach.call(s.g.querySelectorAll(".sr-head,.sr-sub"), function (el) { el.hidden = !whole; });
       });
       if (noteEl) {
         noteEl.textContent = shown === total
@@ -508,6 +497,14 @@
           var frag = document.createDocumentFragment();
           rows.forEach(function (li) { frag.appendChild(li); });
           list.appendChild(frag);
+          /* a reordered list is no longer the statement: its head and its
+             subtotal step aside, and come back with the published order */
+          var head = list.querySelector(".sr-head"), sub = list.querySelector(".sr-sub");
+          if (mode === "default") {
+            if (head) list.insertBefore(head, list.firstChild);
+            if (sub) list.appendChild(sub);
+          }
+          [head, sub].forEach(function (el) { if (el) el.hidden = mode !== "default"; });
           /* the leading numeral is a position in the list, so it is
              renumbered rather than travelling with its row */
           rows.forEach(function (li, k) {
@@ -517,82 +514,6 @@
         });
       });
     }
-  })();
-
-  /* ------------------------------------------------ counted numerals
-     The oversized statistics are the first thing the eye lands on, so
-     they count once, on first sight. The text already in the DOM is the
-     final value and the format is read back off it, which means the
-     printed page and a reader with no JS see the number and nobody
-     maintains it twice. */
-  (function () {
-    var nums = [].slice.call(document.querySelectorAll(".stats b.tnum"));
-    if (!nums.length) return;
-    var jobs = [];
-    nums.forEach(function (el) {
-      var raw = (el.textContent || "").trim();
-      var m = raw.match(/^([^\d]*)([\d,]+)(.*)$/);
-      if (!m) return;
-      var target = +m[2].replace(/,/g, "");
-      if (!isFinite(target) || target <= 0) return;
-      var grouped = m[2].indexOf(",") > -1;
-      jobs.push({ el: el, pre: m[1], suf: m[3], to: target, grouped: grouped, done: false });
-    });
-    if (!jobs.length) return;
-    if (reduced || !("IntersectionObserver" in window)) return;   // leave the final value in place
-
-    function paint(j, v) {
-      var t = Math.round(v);
-      j.el.textContent = j.pre + (j.grouped ? t.toLocaleString("en-CA") : String(t)) + j.suf;
-    }
-    function animate(j) {
-      if (j.done) return; j.done = true;
-      var start = 0, dur = 900 + Math.min(600, j.to / 400);
-      function step(now) {
-        if (!start) start = now;
-        var t = Math.min(1, (now - start) / dur);
-        /* ease-out cubic: fast enough to feel immediate, slow enough at
-           the end that the final digits are readable rather than a blur */
-        paint(j, j.to * (1 - Math.pow(1 - t, 3)));
-        if (t < 1) requestAnimationFrame(step); else paint(j, j.to);
-      }
-      requestAnimationFrame(step);
-      /* requestAnimationFrame is suspended while a tab is in the background,
-         so the animation alone cannot be trusted to leave the number behind.
-         A page opened in a background tab was showing 0 for every statistic.
-         The value is therefore also written on a plain timer, which keeps
-         running, and the animation is only the way it gets there. */
-      setTimeout(function () { paint(j, j.to); }, dur + 500);
-    }
-    var io = new IntersectionObserver(function (es) {
-      es.forEach(function (e) {
-        if (!e.isIntersecting) return;
-        var j = jobs.filter(function (x) { return x.el === e.target; })[0];
-        if (j) { animate(j); io.unobserve(e.target); }
-      });
-    }, { threshold: 0.1, rootMargin: "0px 0px -4% 0px" });
-    /* The built value stays in the DOM until the count actually starts:
-       a screen reader or a reader arriving mid-page must never find a
-       statistic reading zero. The first animation frame takes it from
-       there. */
-    jobs.forEach(function (j) { io.observe(j.el); });
-
-    /* A number showing zero is a wrong number, not a pending animation, so
-       nothing is left waiting on an observer that may never report. This
-       sweeps anything already on screen, and after fifteen seconds gives up
-       and writes every remaining value in full. */
-    var swept = 0;
-    (function sweepNums() {
-      var left = 0;
-      jobs.forEach(function (j) {
-        if (j.done) return;
-        var r = j.el.getBoundingClientRect();
-        var onScreen = r.bottom > 0 && r.top < (window.innerHeight || 0);
-        if (onScreen || swept > 14000) { animate(j); io.unobserve(j.el); }
-        else left++;
-      });
-      if (left) { swept += 1000; setTimeout(sweepNums, 1000); }
-    })();
   })();
 
   /* -------------------------------------------- the corpus readout --
@@ -778,7 +699,8 @@
      the headings. Only the positions and the encoding travel, two decimals
      each, because that is all a small radius can show.
 
-     Mark size follows heading level, as it does on the atlas. The two used
+     Mark area follows the apportioned word weight, as it does on the atlas,
+     and the sphere idles at zero frames, as the atlas does. The two used
      to disagree: the atlas said in its first wall label that size carries
      level, and the home page drew all 1,247 marks the same size directly
      underneath a paragraph making the same claim. The ratios below are the
@@ -804,9 +726,9 @@
       var f = raw[i].split(",");
       if (f.length < 4) continue;
       var mark = f[3];
-      var lvl = mark.length > 1 ? +mark.charAt(1) : 3;
-      if (!(lvl >= 1 && lvl <= 4)) lvl = 3;
-      var P = { x: +f[0], y: +f[1], z: +f[2], k: mark.charAt(0), l: lvl };
+      var band = mark.length > 1 ? +mark.charAt(1) : 0;
+      if (!(band >= 0 && band <= 9)) band = 0;
+      var P = { x: +f[0], y: +f[1], z: +f[2], k: mark.charAt(0), b: band };
       /* the atlas stands its six tool marks off the sphere; the teaser
          makes the same claim about the same points */
       if (P.k === "t") { P.x *= 1.13; P.y *= 1.13; P.z *= 1.13; }
@@ -814,11 +736,12 @@
     }
     if (pts.length < 8) return;
 
-    /* atlas.js draws (0.75 + lv * 0.3) + 2.0 * depth, where lv is
-       4 - level. At teaser scale that whole ladder is multiplied by
-       0.7 / 1.05, the ratio that leaves a third-level heading exactly
-       where it was. Levels 1 to 4 land on 1.10, 0.90, 0.70 and 0.50. */
-    var LVL_R = [0, 1.10, 0.90, 0.70, 0.50];
+    /* atlas.js draws 0.55 + 0.028 * sqrt(words) plus a depth term. The
+       payload carries sqrt(words) quantised to ten bands of 13, so the
+       teaser draws the same rule at the band's centre, scaled by 0.55 for
+       a sphere a third the size. */
+    var BAND_R = [];
+    for (var bi = 0; bi < 10; bi++) BAND_R.push(0.55 * (0.55 + 0.028 * (13 * bi + 6.5)));
 
     var cv = document.createElement("canvas");
     cv.setAttribute("aria-hidden", "true");
@@ -899,7 +822,7 @@
         var z2 = p.y * spit + z1 * cpit;
         var t = (z2 + 1) / 2;
         var q = (t * 12) | 0;
-        var rad = LVL_R[p.l] + 1.5 * t;
+        var rad = BAND_R[p.b] + 1.5 * t;
         ctx.beginPath();
         ctx.arc(cx + x1 * R, cy - y2 * R, rad, 0, Math.PI * 2);
         if (p.k === "c") {
@@ -913,62 +836,52 @@
       }
     }
 
-    var spinning = false, last = 0, skip = false;
-    function step(now) {
-      if (!spinning) return;
-      yaw += Math.min(0.05, (now - last) / 1000) * 0.05;
-      last = now;
-      /* ambient drift at half rate: the eye cannot tell and the phone can */
-      skip = !skip;
-      if (!skip) paint();
-      requestAnimationFrame(step);
+    /* Idle contract, the same one the Atlas keeps: the sphere paints once
+       when the main thread is free and then draws nothing until it is
+       turned. A drag carries a little inertia that drains to zero within a
+       second, so the loop reschedules only while something is moving. The
+       old version turned by itself for as long as it was on screen, sixty
+       frames a second on a page whose claim is that nothing moves without a
+       reason. On a touch screen at the top of the page a drag surface would
+       eat the scroll, so there the sphere holds still and a tap opens the
+       Atlas. */
+    var raf = 0, lastT = 0, vy = 0, vp = 0, dragT = false, lxT = 0, lyT = 0, movedT = 0;
+    function kick() { if (!raf) raf = requestAnimationFrame(frame); }
+    function frame(now) {
+      raf = 0;
+      var dt = lastT ? Math.min(0.05, (now - lastT) / 1000) : 0.016;
+      lastT = now;
+      if (!dragT) {
+        yaw += vy * dt;
+        pitch = Math.max(-1.2, Math.min(1.2, pitch + vp * dt));
+        vy *= 0.94; vp *= 0.94;
+        if (Math.abs(vy) < 0.0006) vy = 0;
+        if (Math.abs(vp) < 0.0006) vp = 0;
+      }
+      paint();
+      if (dragT || vy !== 0 || vp !== 0) kick(); else lastT = 0;
     }
 
     /* First paint waits for an idle main thread: the home page is the LCP
        surface and the sphere must not cost it. The box is sized by CSS, so
        nothing shifts when the canvas fills in. */
-    function bootTeaser() {
-      size();
-      paint();
-      watch();
-    }
+    function bootTeaser() { size(); paint(); }
     if ("requestIdleCallback" in window) {
       requestIdleCallback(bootTeaser, { timeout: 1500 });
     } else {
       setTimeout(bootTeaser, 250);
-    }
-    function watch() {
-    if (!reduced && "IntersectionObserver" in window) {
-      /* only turns while it is on screen: a globe spinning in a tab nobody is
-         looking at is a battery cost with no reader */
-      new IntersectionObserver(function (es) {
-        var vis = es[0] && es[0].isIntersecting;
-        if (vis && !spinning) {
-          spinning = true;
-          last = performance.now();
-          requestAnimationFrame(step);
-        } else if (!vis) {
-          spinning = false;
-        }
-      }, { threshold: 0.05 }).observe(host);
-    }
     }
     var t0;
     window.addEventListener("resize", function () {
       clearTimeout(t0);
       t0 = setTimeout(function () { size(); paint(); }, 140);
     });
-    /* Draggable where a mouse makes that cheap; on a touch screen at the
-       top of the page a drag surface would eat the scroll, so the sphere
-       turns by itself there and stays a link. */
-    var movedT = 0;
     if (window.matchMedia && window.matchMedia("(pointer:fine)").matches) {
-      var dragT = false, lxT = 0, lyT = 0;
       cv.addEventListener("pointerdown", function (e) {
-        dragT = true; movedT = 0; lxT = e.clientX; lyT = e.clientY;
-        spinning = false;
+        dragT = true; movedT = 0; vy = vp = 0; lxT = e.clientX; lyT = e.clientY;
         try { cv.setPointerCapture(e.pointerId); } catch (x) {}
         host.style.cursor = "grabbing";
+        kick();
       });
       cv.addEventListener("pointermove", function (e) {
         if (!dragT) return;
@@ -976,12 +889,18 @@
         movedT += Math.abs(dx) + Math.abs(dy);
         yaw += dx * 0.006;
         pitch = Math.max(-1.2, Math.min(1.2, pitch + dy * 0.005));
+        vy = dx * 0.09; vp = dy * 0.07;
         lxT = e.clientX; lyT = e.clientY;
-        paint();
+        kick();
       });
-      cv.addEventListener("pointerup", function () {
+      var endT = function (e) {
+        if (!dragT) return;
         dragT = false; host.style.cursor = "grab";
-      });
+        try { cv.releasePointerCapture(e.pointerId); } catch (x) {}
+        kick();
+      };
+      cv.addEventListener("pointerup", endT);
+      cv.addEventListener("pointercancel", endT);
     }
     host.addEventListener("click", function () {
       if (movedT > 8) { movedT = 0; return; }

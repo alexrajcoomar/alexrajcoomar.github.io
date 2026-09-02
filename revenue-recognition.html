@@ -3,23 +3,27 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Revenue Recognition — Week 2 Complete Study Guide</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,400&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<title>Revenue Recognition · Alex Rajcoomar</title>
+<style>
+/* self-hosted, subset to this piece's characters; the manifest in fonts/ records the source */
+@font-face{font-family:"Playfair Display";font-style:normal;font-weight:700 900;font-display:swap;src:url("fonts/playfairdisplay-revenue-recognition.woff2") format("woff2")}
+@font-face{font-family:"Source Serif 4";font-style:normal;font-weight:300 600;font-display:swap;src:url("fonts/sourceserif4-revenue-recognition.woff2") format("woff2")}
+@font-face{font-family:"Source Serif 4";font-style:italic;font-weight:400;font-display:swap;src:url("fonts/sourceserif4-revenue-recognition-italic.woff2") format("woff2")}
+@font-face{font-family:"JetBrains Mono";font-style:normal;font-weight:400 600;font-display:swap;src:url("fonts/jetbrainsmono-revenue-recognition.woff2") format("woff2")}
+</style>
 <style>
 :root {
   --navy:  #0f1923;
   --navy2: #16232e;
   --navy3: #1e3040;
   --navy4: #243545;
-  --gold:  #c8952a;
+  --gold:  #d4a032;
   --gold2: #e2b24a;
   --amber: #f5c842;
   --cream: #faf3e8;
   --cream2:#f0e6d0;
-  --rust:  #b84a2a;
-  --teal:  #2a8a7a;
+  --rust:  #d66b4d;
+  --teal:  #2e9a86;
   --teal2: #3aaa96;
   --text:  #d8cfc0;
   --muted: #7a90a0;
@@ -491,6 +495,9 @@ ul.bul li strong{color:var(--cream)}
   .two-col,.warranty-grid,.compare-table,.steps-flow .step-row{grid-template-columns:1fr}
   .hero-title{font-size:1.9rem}
 }
+
+/* the widest text block on the page holds the reading measure */
+.cp-a{max-width:66ch}
 </style>
 
 <style id="__mobile_fit">
@@ -526,15 +533,15 @@ ul.bul li strong{color:var(--cream)}
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="manifest" href="site.webmanifest">
 <link rel="canonical" href="https://alexrajcoomar.github.io/revenue-recognition.html">
-<meta property="og:title" content="Revenue Recognition — Alex Rajcoomar">
+<meta property="og:title" content="Revenue Recognition · Alex Rajcoomar">
 <meta property="og:description" content="A worked guide to revenue recognition, from the five-step model through the entries.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://alexrajcoomar.github.io/revenue-recognition.html">
-<meta property="og:site_name" content="Alex Rajcoomar — portfolio">
+<meta property="og:site_name" content="Alex Rajcoomar · portfolio">
 <meta property="og:image" content="https://alexrajcoomar.github.io/cards/revenue-recognition.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Revenue Recognition — Alex Rajcoomar">
+<meta property="og:image:alt" content="Revenue Recognition · Alex Rajcoomar">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://alexrajcoomar.github.io/cards/revenue-recognition.png">
 <script>
@@ -569,22 +576,18 @@ ul.bul li strong{color:var(--cream)}
 #__rb .__rb-home{font-weight:640;color:#16150f}
 #__rb .__rb-home i{font-style:normal;font-weight:400;color:#6f6c63}
 #__rb .__rb-right{margin-left:auto;display:flex;gap:1.1rem;flex-wrap:wrap}
+/* the piece's own row of the statement: origin, words, figures, tables, the
+   same figures the home page prints for it, from the same measurement */
+#__rb .__rb-row{color:#6f6c63;font-variant-numeric:tabular-nums;white-space:nowrap}
+#__rb .__rb-row b{font-weight:600;color:#55524a}
+@media (max-width:44rem){#__rb .__rb-row{flex-basis:100%;order:3;white-space:normal}}
+/* what the piece was built from, in the owner's words, from pieces.json */
+#__rb .__rb-from{flex-basis:100%;order:5;font-weight:400;color:#6f6c63;line-height:1.4;max-width:70ch}
+#__rb .__rb-from b{font-weight:600;color:#55524a}
 #__rb .__mark{
   display:inline-grid;place-items:center;width:1.2rem;height:1.2rem;flex:none;
   background:#16150f;color:#faf9f6;font-size:.72rem;font-weight:700;
 }
-#__rb-pill{
-  position:fixed;left:14px;bottom:14px;z-index:2147483000;
-  display:inline-flex;align-items:center;gap:.45rem;padding:.58rem .9rem;
-  background:rgba(22,21,15,.93);color:#faf9f6;text-decoration:none;border-radius:99px;
-  font:600 12.5px/1 InterVar,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
-  border:1px solid rgba(255,255,255,.16);box-shadow:0 6px 22px rgba(0,0,0,.28);
-  opacity:0;transform:translateY(6px);pointer-events:none;
-  transition:opacity .2s ease,transform .2s ease;
-  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
-}
-#__rb-pill.__on{opacity:1;transform:none;pointer-events:auto}
-#__rb-pill:hover{background:#16150f;color:#fff}
 /* Dark has to answer to two things: the reader's system setting, and the
    theme button on the page, which sets data-theme on <html>. Keyed to the
    media query alone, the bar stayed paper-white across the top of an essay
@@ -595,25 +598,30 @@ ul.bul li strong{color:var(--cream)}
   :root:not([data-theme="light"]) #__rb{background:#131310;border-bottom-color:#2c2b24;color:#c0bcb1}
   :root:not([data-theme="light"]) #__rb .__rb-home{color:#f7f5ef}
   :root:not([data-theme="light"]) #__rb .__rb-home i{color:#948f85}
+  :root:not([data-theme="light"]) #__rb .__rb-row{color:#948f85}
+  :root:not([data-theme="light"]) #__rb .__rb-row b{color:#c0bcb1}
+  :root:not([data-theme="light"]) #__rb .__rb-from{color:#948f85}
+  :root:not([data-theme="light"]) #__rb .__rb-from b{color:#c0bcb1}
   :root:not([data-theme="light"]) #__rb a{color:#85adea}
   :root:not([data-theme="light"]) #__rb .__mark{background:#f7f5ef;color:#131310}
-  :root:not([data-theme="light"]) #__rb-pill{background:rgba(247,245,239,.95);color:#131310;border-color:rgba(0,0,0,.2)}
-  :root:not([data-theme="light"]) #__rb-pill:hover{background:#fff;color:#000}
 }
 :root[data-theme="dark"] #__rb{background:#131310;border-bottom-color:#2c2b24;color:#c0bcb1}
 :root[data-theme="dark"] #__rb .__rb-home{color:#f7f5ef}
 :root[data-theme="dark"] #__rb .__rb-home i{color:#948f85}
+:root[data-theme="dark"] #__rb .__rb-row{color:#948f85}
+:root[data-theme="dark"] #__rb .__rb-row b{color:#c0bcb1}
+:root[data-theme="dark"] #__rb .__rb-from{color:#948f85}
+:root[data-theme="dark"] #__rb .__rb-from b{color:#c0bcb1}
 :root[data-theme="dark"] #__rb a{color:#85adea}
 :root[data-theme="dark"] #__rb .__mark{background:#f7f5ef;color:#131310}
-:root[data-theme="dark"] #__rb-pill{background:rgba(247,245,239,.95);color:#131310;border-color:rgba(0,0,0,.2)}
-:root[data-theme="dark"] #__rb-pill:hover{background:#fff;color:#000}
-@media (prefers-reduced-motion:reduce){#__rb-pill{transition:none}}
-@media print{#__rb,#__rb-pill{display:none !important}}
+@media print{#__rb{display:none !important}}
 </style>
-<div id="__rb">
+<nav id="__rb" aria-label="Portfolio">
   <a class="__rb-home" href="index.html"><span class="__mark" aria-hidden="true">A</span>Alex Rajcoomar <i>portfolio</i></a>
-  <span class="__rb-right"><a href="afm291.html">The vault</a><a href="library.html">All work</a></span>
-</div>
+  <span class="__rb-row">Coursework &middot; <b>5,323</b> words &middot; <b>0</b> figures &middot; <b>24</b> tables</span>
+  <span class="__rb-right"><a href="afm291.html">The vault</a><a href="atlas.html">Atlas</a><a href="library.html">All work</a></span>
+  <span class="__rb-from"><b>Built from</b> Not declared on file.</span>
+</nav>
 <script>
 /* the trail: which passages this browser has opened. The atlas reads it and
    rings them; the record lives in localStorage and never leaves the machine. */
@@ -630,7 +638,7 @@ ul.bul li strong{color:var(--cream)}
     function put(key){
       if(t2[key]||Object.keys(t2).length<500){
         t2[key]=(t2[key]||0)+1;
-        localStorage.setItem(k,JSON.stringify(t2));
+        try{localStorage.setItem(k,JSON.stringify(t2));}catch(e){}
       }
     }
     put(u+location.hash);
@@ -658,11 +666,11 @@ ul.bul li strong{color:var(--cream)}
 
   <div class="sb-section">Sec B–C · LO 4-2</div>
   <a href="#sec-b" class="sb-link">5-Step Overview</a>
-  <a href="#step1" class="sb-link">Step 1 — Contract</a>
-  <a href="#step2" class="sb-link">Step 2 — P.O.s</a>
-  <a href="#step3" class="sb-link">Step 3 — Txn Price</a>
-  <a href="#step4" class="sb-link">Step 4 — Allocate</a>
-  <a href="#step5" class="sb-link">Step 5 — Recognize</a>
+  <a href="#step1" class="sb-link">Step 1, Contract</a>
+  <a href="#step2" class="sb-link">Step 2, P.O.s</a>
+  <a href="#step3" class="sb-link">Step 3, Txn Price</a>
+  <a href="#step4" class="sb-link">Step 4, Allocate</a>
+  <a href="#step5" class="sb-link">Step 5: Recognize</a>
 
   <div class="sb-section">Sec D · Examples</div>
   <a href="#warranties" class="sb-link">Warranties</a>
@@ -690,7 +698,7 @@ ul.bul li strong{color:var(--cream)}
 <div class="hero">
   <div class="hero-eyebrow">Financial Accounting · Chapter 4 · IFRS 15</div>
   <div class="hero-title">Revenue <span>Recognition</span></div>
-  <div class="hero-sub">Complete Week 2 Study Guide — Sections A through F · LO 4-1 to LO 4-3</div>
+  <div class="hero-sub">Complete Week 2 Study Guide: Sections A through F · LO 4-1 to LO 4-3</div>
   <div class="hero-tags">
     <span class="hero-tag">LO 4-1 · Conceptual Range</span>
     <span class="hero-tag">LO 4-2 · Five-Step Model</span>
@@ -706,7 +714,7 @@ ul.bul li strong{color:var(--cream)}
   <span class="section-anchor"></span>
   <h2 id="chapter-overview-learning-objectives" class="sec-heading">Chapter Overview &amp; Learning Objectives</h2>
 
-  <p><strong style="color:var(--cream)">BMW Group</strong> opens this chapter by illustrating why revenue recognition is complex. BMW sells vehicles to rental companies but may be obligated to repurchase them later — when should revenue be recognized? A BMW i4 electric sedan selling for $65,000 includes four years of maintenance services — should the full amount be recorded at sale? These scenarios motivate the need for a rigorous framework.</p>
+  <p><strong style="color:var(--cream)">BMW Group</strong> opens this chapter by illustrating why revenue recognition is complex. BMW sells vehicles to rental companies but may be obligated to repurchase them later, when should revenue be recognized? A BMW i4 electric sedan selling for $65,000 includes four years of maintenance services, should the full amount be recorded at sale? These scenarios motivate the need for a rigorous framework.</p>
 
   <h3 id="learning-objectives">Learning Objectives</h3>
   <div class="lo-grid">
@@ -719,11 +727,11 @@ ul.bul li strong{color:var(--cream)}
 
   <h3 id="key-definition">Key Definition</h3>
   <div class="callout gold">
-    <strong>Recognition</strong> is the process of <em>presenting an item in the financial statements</em> (balance sheet or income statement), as opposed to merely disclosing it in the notes. Many items meeting element definitions are NOT recognized — e.g., internally developed patent values are usually absent from the balance sheet.
+    <strong>Recognition</strong> is the process of <em>presenting an item in the financial statements</em> (balance sheet or income statement), as opposed to merely disclosing it in the notes. Many items meeting element definitions are NOT recognized, e.g., internally developed patent values are usually absent from the balance sheet.
   </div>
 
   <h3 id="ifrs-15-scope-exclusions">IFRS 15 Scope &amp; Exclusions</h3>
-  <p>IFRS 15 — <em>Revenue from Contracts with Customers</em> — was issued jointly by the IASB and FASB in 2014. It applies to any contract with a <strong style="color:var(--cream)">customer</strong> (written, oral, or implied by customary practice), but excludes:</p>
+  <p>IFRS 15, <em>Revenue from Contracts with Customers</em>, was issued jointly by the IASB and FASB in 2014. It applies to any contract with a <strong style="color:var(--cream)">customer</strong> (written, oral, or implied by customary practice), but excludes:</p>
 
   <table class="data" style="margin:.75rem 0">
     <thead><tr><th>Excluded Item</th><th>Covered By</th></tr></thead>
@@ -746,12 +754,12 @@ ul.bul li strong{color:var(--cream)}
       <tr><th>Code</th><th>Description</th><th class="r">Level</th></tr>
     </thead>
     <tbody>
-      <tr><td class="label">1.1.2</td><td>Evaluates the appropriateness of the basis of financial reporting — fundamental accounting concepts, methods of measurement, accrual vs. cash accounting</td><td class="r">B</td></tr>
-      <tr><td class="label">1.2.1</td><td>Develops or evaluates appropriate accounting policies and procedures — ethical professional judgment</td><td class="r">B</td></tr>
-      <tr><td class="label">1.2.2m</td><td>Evaluates treatment for routine transactions — Revenue recognition / revenue from contracts with customers; accounting for revenue and related expenses</td><td class="r">A</td></tr>
+      <tr><td class="label">1.1.2</td><td>Evaluates the appropriateness of the basis of financial reporting, fundamental accounting concepts, methods of measurement, accrual vs. cash accounting</td><td class="r">B</td></tr>
+      <tr><td class="label">1.2.1</td><td>Develops or evaluates appropriate accounting policies and procedures, ethical professional judgment</td><td class="r">B</td></tr>
+      <tr><td class="label">1.2.2m</td><td>Evaluates treatment for routine transactions: Revenue recognition / revenue from contracts with customers; accounting for revenue and related expenses</td><td class="r">A</td></tr>
       <tr><td class="label">1.2.2o</td><td>Changes in accounting policies and estimates, and errors</td><td class="r">A</td></tr>
       <tr><td class="label">1.3.2</td><td>Prepares routine financial statement note disclosure</td><td class="r">B</td></tr>
-      <tr><td class="label">1.4.2c</td><td>Evaluates financial statements including note disclosures — Financial statements in accordance with applicable standards</td><td class="r">B</td></tr>
+      <tr><td class="label">1.4.2c</td><td>Evaluates financial statements including note disclosures: Financial statements in accordance with applicable standards</td><td class="r">B</td></tr>
     </tbody>
   </table>
 </div>
@@ -762,7 +770,7 @@ ul.bul li strong{color:var(--cream)}
   <h2 id="a-conceptual-alternatives-for-revenue-recognitio" class="sec-heading"><span class="sec-num">A.</span>Conceptual Alternatives for Revenue Recognition</h2>
   <div class="sec-lo">LO 4-1 · Explain the conceptual range and why standards prescribe a smaller set</div>
 
-  <p>In theory, revenue could be recognized at <em>any</em> point along a business's value creation process — from the initial creative insight all the way to the expiry of the final warranty. This broad range reflects how a business generates value.</p>
+  <p>In theory, revenue could be recognized at <em>any</em> point along a business's value creation process, from the initial creative insight all the way to the expiry of the final warranty. This broad range reflects how a business generates value.</p>
 
   <h3 id="exhibit-4-1-value-creation-process-timeline">Exhibit 4-1 · Value Creation Process Timeline</h3>
   <div class="timeline">
@@ -786,13 +794,13 @@ ul.bul li strong{color:var(--cream)}
     </div>
   </div>
 
-  <h3 id="why-the-full-range-is-not-acceptable-three-probl">Why the Full Range Is Not Acceptable — Three Problems</h3>
+  <h3 id="why-the-full-range-is-not-acceptable-three-probl">Why the Full Range Is Not Acceptable: Three Problems</h3>
   <div class="two-col">
-    <div class="callout rust"><strong>Problem 1 — Comparability:</strong> If all alternatives were valid policies, the potential disparities among financial statements of different companies would be immense. Two identical businesses using different recognition points (e.g., 1 vs. 9) would show entirely different revenue, destroying comparability — a key qualitative characteristic of useful financial information.</div>
-    <div class="callout rust"><strong>Problem 2 — Reliability &amp; Verifiability:</strong> Early recognition entails substantially more uncertainties about future cash flows, yielding lower verifiability. Management would have significant latitude to bias forecasts, which has questionable value as a performance gauge.</div>
+    <div class="callout rust"><strong>Problem 1: Comparability:</strong> If all alternatives were valid policies, the potential disparities among financial statements of different companies would be immense. Two identical businesses using different recognition points (e.g., 1 vs. 9) would show entirely different revenue, destroying comparability, a key qualitative characteristic of useful financial information.</div>
+    <div class="callout rust"><strong>Problem 2: Reliability &amp; Verifiability:</strong> Early recognition entails substantially more uncertainties about future cash flows, yielding lower verifiability. Management would have significant latitude to bias forecasts, which has questionable value as a performance gauge.</div>
   </div>
 
-  <div class="callout rust"><strong>Problem 3 — Moral Hazard:</strong> Less reliable accounting numbers are less useful for contracting purposes, particularly for evaluating management performance. The easier it is for management to manipulate reported performance, the more difficult it is to motivate desirable value-creation activities.</div>
+  <div class="callout rust"><strong>Problem 3: Moral Hazard:</strong> Less reliable accounting numbers are less useful for contracting purposes, particularly for evaluating management performance. The easier it is for management to manipulate reported performance, the more difficult it is to motivate desirable value-creation activities.</div>
 
   <h3 id="biotechnology-example-illustrating-problem-2">Biotechnology Example (Illustrating Problem 2)</h3>
   <p>If a biotech firm could recognize revenue upon discovering a new vaccine (point 1), revenue would require estimates of: regulatory approval probability, future price and demand, availability of competing treatments, insurance reimbursement amounts, and superior vaccine risk. These forecasts would be virtually impossible to audit, and management could bias them at will.</p>
@@ -805,7 +813,7 @@ ul.bul li strong{color:var(--cream)}
     <div class="cp-q">Why do accounting standards for revenue recognition not reflect the value creation process?</div>
     <button class="cp-toggle" onclick="this.nextElementSibling.classList.toggle('open');this.textContent=this.nextElementSibling.classList.contains('open')?'▲ Hide':'▼ Show Answer'">▼ Show Answer</button>
     <div class="cp-answer">
-      <div class="cp-a">Different stages of the value creation process have different degrees of uncertainty. Early stages are too uncertain for accurate estimates and are not verifiable. In contrast, the final stages have a high degree of certainty, but the information becomes stale. Accounting standards have chosen a middle ground — late enough when the amount of probable future benefits can be estimated reliably, but not so late that the information becomes out-of-date.</div>
+      <div class="cp-a">Different stages of the value creation process have different degrees of uncertainty. Early stages are too uncertain for accurate estimates and are not verifiable. In contrast, the final stages have a high degree of certainty, but the information becomes stale. Accounting standards have chosen a middle ground, late enough when the amount of probable future benefits can be estimated reliably, but not so late that the information becomes out-of-date.</div>
     </div>
   </div>
 </div>
@@ -821,36 +829,36 @@ ul.bul li strong{color:var(--cream)}
   <div class="steps-flow">
     <div class="step-row">
       <div class="step-num-col"><div class="step-circle">1</div><div class="step-vline"></div></div>
-      <div class="step-box"><div style="display:flex;justify-content:space-between;align-items:flex-start"><div class="step-name">Identify the Contract</div><span class="step-para">¶9</span></div><div class="step-desc">Determine whether a valid contract with a customer exists. Covers written, oral, and customary-practice agreements. All five criteria (a)–(e) must be met.</div><div class="step-tag">Step 1 — Foundation</div></div>
+      <div class="step-box"><div style="display:flex;justify-content:space-between;align-items:flex-start"><div class="step-name">Identify the Contract</div><span class="step-para">¶9</span></div><div class="step-desc">Determine whether a valid contract with a customer exists. Covers written, oral, and customary-practice agreements. All five criteria (a)–(e) must be met.</div><div class="step-tag">Step 1: Foundation</div></div>
     </div>
     <div class="step-row">
       <div class="step-num-col"><div class="step-circle">2</div><div class="step-vline"></div></div>
-      <div class="step-box"><div style="display:flex;justify-content:space-between;align-items:flex-start"><div class="step-name">Identify the Performance Obligations</div><span class="step-para">¶22</span></div><div class="step-desc">Break the contract into distinct promises (goods or services) that must each be accounted for separately.</div><div class="step-tag">Step 2 — What to Deliver</div></div>
+      <div class="step-box"><div style="display:flex;justify-content:space-between;align-items:flex-start"><div class="step-name">Identify the Performance Obligations</div><span class="step-para">¶22</span></div><div class="step-desc">Break the contract into distinct promises (goods or services) that must each be accounted for separately.</div><div class="step-tag">Step 2: What to Deliver</div></div>
     </div>
     <div class="step-row">
       <div class="step-num-col"><div class="step-circle">3</div><div class="step-vline"></div></div>
-      <div class="step-box"><div style="display:flex;justify-content:space-between;align-items:flex-start"><div class="step-name">Determine the Transaction Price</div><span class="step-para">¶47</span></div><div class="step-desc">Establish the consideration the entity expects to receive, net of third-party taxes, adjusting for financing components, variable amounts, and rebates.</div><div class="step-tag">Step 3 — How Much</div></div>
+      <div class="step-box"><div style="display:flex;justify-content:space-between;align-items:flex-start"><div class="step-name">Determine the Transaction Price</div><span class="step-para">¶47</span></div><div class="step-desc">Establish the consideration the entity expects to receive, net of third-party taxes, adjusting for financing components, variable amounts, and rebates.</div><div class="step-tag">Step 3: How Much</div></div>
     </div>
     <div class="step-row">
       <div class="step-num-col"><div class="step-circle">4</div><div class="step-vline"></div></div>
-      <div class="step-box"><div style="display:flex;justify-content:space-between;align-items:flex-start"><div class="step-name">Allocate the Transaction Price</div><span class="step-para">¶73–74</span></div><div class="step-desc">Spread the transaction price across performance obligations in proportion to their stand-alone selling prices.</div><div class="step-tag">Step 4 — Who Gets What</div></div>
+      <div class="step-box"><div style="display:flex;justify-content:space-between;align-items:flex-start"><div class="step-name">Allocate the Transaction Price</div><span class="step-para">¶73–74</span></div><div class="step-desc">Spread the transaction price across performance obligations in proportion to their stand-alone selling prices.</div><div class="step-tag">Step 4: Who Gets What</div></div>
     </div>
     <div class="step-row">
       <div class="step-num-col"><div class="step-circle">5</div></div>
-      <div class="step-box"><div style="display:flex;justify-content:space-between;align-items:flex-start"><div class="step-name">Recognize Revenue with Performance</div><span class="step-para">¶31</span></div><div class="step-desc">Recognize revenue when (or as) each performance obligation is satisfied — at a point in time or over time — based on transfer of control.</div><div class="step-tag">Step 5 — When to Record</div></div>
+      <div class="step-box"><div style="display:flex;justify-content:space-between;align-items:flex-start"><div class="step-name">Recognize Revenue with Performance</div><span class="step-para">¶31</span></div><div class="step-desc">Recognize revenue when (or as) each performance obligation is satisfied, at a point in time or over time, based on transfer of control.</div><div class="step-tag">Step 5: When to Record</div></div>
     </div>
   </div>
 
   <div class="exhibit">
     <div class="exhibit-label">Exhibit 4-3 · Simple Five-Step Application</div>
-    <div class="exhibit-title">Car Dealership Sale — $63,000 car, cost $57,000, no other obligations</div>
+    <div class="exhibit-title">Car Dealership Sale: $63,000 car, cost $57,000, no other obligations</div>
     <table class="data">
       <thead><tr><th style="width:35%">Step</th><th>Application</th></tr></thead>
       <tbody>
-        <tr><td class="label">1. Identify the contract</td><td>Written purchase and sale contract — readily identifiable.</td></tr>
+        <tr><td class="label">1. Identify the contract</td><td>Written purchase and sale contract, readily identifiable.</td></tr>
         <tr><td class="label">2. Identify P.O.</td><td>Single P.O.: delivery of the car by the dealership to the buyer.</td></tr>
-        <tr><td class="label">3. Transaction price</td><td>Contract specifies $63,000 in cash — no ambiguity.</td></tr>
-        <tr><td class="label">4. Allocate</td><td>Only one P.O. — no allocation needed.</td></tr>
+        <tr><td class="label">3. Transaction price</td><td>Contract specifies $63,000 in cash, no ambiguity.</td></tr>
+        <tr><td class="label">4. Allocate</td><td>Only one P.O., no allocation needed.</td></tr>
         <tr><td class="label">5. Recognize</td><td>On delivery: Dr. Cash 63,000 / Cr. Sales Revenue 63,000 &amp; Dr. COGS 57,000 / Cr. Inventories 57,000.</td></tr>
       </tbody>
     </table>
@@ -867,7 +875,7 @@ ul.bul li strong{color:var(--cream)}
 <!-- ──────────────────── STEPS 1–5 ──────────────────── -->
 <div class="section" id="step1">
   <span class="section-anchor"></span>
-  <h2 id="c-step-1-identify-the-contract" class="sec-heading"><span class="sec-num">C.</span>Step 1 — Identify the Contract</h2>
+  <h2 id="c-step-1-identify-the-contract" class="sec-heading"><span class="sec-num">C.</span>Step 1: Identify the Contract</h2>
 
   <p>An entity shall account for a contract only when <strong style="color:var(--cream)">all five</strong> of the following criteria are met (IFRS 15 ¶9):</p>
 
@@ -875,35 +883,35 @@ ul.bul li strong{color:var(--cream)}
     <li><span class="crit-badge">a</span><span><strong>Approval &amp; commitment:</strong> Both parties have approved the contract (in writing, orally, or by customary business practice) and are committed to perform their obligations.</span></li>
     <li><span class="crit-badge">b</span><span><strong>Identifiable rights:</strong> The entity can identify each party's rights regarding the goods or services to be transferred.</span></li>
     <li><span class="crit-badge">c</span><span><strong>Payment terms identifiable:</strong> The entity can identify the payment terms for the goods and services.</span></li>
-    <li><span class="crit-badge">d</span><span><strong>Commercial substance:</strong> The contract must change the risk, timing, or amount of the entity's future cash flows. Prevents "sham" transactions — e.g., two mining companies exchanging identical coal have no commercial substance.</span></li>
+    <li><span class="crit-badge">d</span><span><strong>Commercial substance:</strong> The contract must change the risk, timing, or amount of the entity's future cash flows. Prevents "sham" transactions, e.g., two mining companies exchanging identical coal have no commercial substance.</span></li>
     <li><span class="crit-badge">e</span><span><strong>Probable collection:</strong> It is probable that the entity will collect the consideration to which it will be entitled. If collection is unlikely, uncertainty is too high to recognize revenue. (Note: credit risk of the customer is assessed here, NOT in Step 3.)</span></li>
   </ul>
 </div>
 
 <div class="section" id="step2">
   <span class="section-anchor"></span>
-  <h2 id="step-2-identify-the-performance-obligations" class="sec-heading">Step 2 — Identify the Performance Obligations</h2>
+  <h2 id="step-2-identify-the-performance-obligations" class="sec-heading">Step 2: Identify the Performance Obligations</h2>
 
   <p>A <strong style="color:var(--cream)">performance obligation</strong> is a promise to transfer a <em>distinct</em> good or service (or bundle) to a customer. Two conditions must <strong style="color:var(--cream)">both</strong> be satisfied for an item to be distinct (¶22):</p>
 
   <div class="two-col">
     <div class="info-box"><div class="info-box-title">(a) Inherently Distinct</div><p>The customer can benefit from the good or service on its own, or together with other readily available resources. This tests the item in isolation.</p></div>
-    <div class="info-box"><div class="info-box-title">(b) Contextually Distinct</div><p>The good or service is <em>separately identifiable</em> from other promises in the contract — i.e., it is not merely an input into a larger combined output.</p></div>
+    <div class="info-box"><div class="info-box-title">(b) Contextually Distinct</div><p>The good or service is <em>separately identifiable</em> from other promises in the contract, i.e., it is not merely an input into a larger combined output.</p></div>
   </div>
 
-  <div class="callout gold"><strong>Building Contract Example:</strong> Bricks, piping, wiring, engineering, and labour each satisfy (a) individually — a customer could use any one of them independently. However, none satisfies (b) because in the context of this contract they are all inputs toward delivering a <em>completed building</em>. Result: the entire contract is <strong>one single P.O.</strong></div>
+  <div class="callout gold"><strong>Building Contract Example:</strong> Bricks, piping, wiring, engineering, and labour each satisfy (a) individually, a customer could use any one of them independently. However, none satisfies (b) because in the context of this contract they are all inputs toward delivering a <em>completed building</em>. Result: the entire contract is <strong>one single P.O.</strong></div>
 
-  <p>IFRS 15 ¶22 also covers <em>"a series of distinct goods or services that are substantially the same with the same pattern of transfer"</em> — e.g., delivering 5,000 tonnes of aluminum monthly for 24 months, where each shipment is a separate but identical P.O.</p>
+  <p>IFRS 15 ¶22 also covers <em>"a series of distinct goods or services that are substantially the same with the same pattern of transfer"</em>, e.g., delivering 5,000 tonnes of aluminum monthly for 24 months, where each shipment is a separate but identical P.O.</p>
 </div>
 
 <div class="section" id="step3">
   <span class="section-anchor"></span>
-  <h2 id="step-3-determine-the-transaction-price" class="sec-heading">Step 3 — Determine the Transaction Price</h2>
+  <h2 id="step-3-determine-the-transaction-price" class="sec-heading">Step 3: Determine the Transaction Price</h2>
 
   <p>The <strong style="color:var(--cream)">transaction price</strong> is the consideration an entity expects to be entitled to in exchange for transferring promised goods or services, <em>excluding</em> amounts collected for third parties (e.g., sales taxes). The credit risk of the customer is addressed in Step 1, not here. Four complications arise:</p>
 
   <div class="sub-step" id="step3a">
-    <div class="sub-step-title">Complication 3a — Non-Cash Consideration</div>
+    <div class="sub-step-title">Complication 3a: Non-Cash Consideration</div>
     <p>Estimate the <strong style="color:var(--cream)">fair value</strong> of non-cash items and add to the cash component.</p>
     <div class="eq">Example: Trade-in at $20,000 cash + old car (FV $7,500) → Transaction Price = $27,500</div>
     <p><strong style="color:var(--cream)">If FV cannot be reliably estimated:</strong> Use the stand-alone selling price of the promised good to infer the implied FV of the non-cash item:</p>
@@ -911,18 +919,18 @@ ul.bul li strong{color:var(--cream)}
   </div>
 
   <div class="sub-step" id="step3b">
-    <div class="sub-step-title">Complication 3b — Significant Financing Component</div>
+    <div class="sub-step-title">Complication 3b: Significant Financing Component</div>
     <p>When payment timing differs substantially from delivery, recognize revenue at the <strong style="color:var(--cream)">cash equivalent amount</strong> (present value). <em>Practical expedient:</em> skip the adjustment if the collection is expected within <strong style="color:var(--cream)">one year</strong> of delivery (covers almost all trade credit).</p>
     <div class="eq">Transaction Price = Future Payment ÷ (1 + r)ⁿ<br>
 Example: $121,000 payable in 2 years @ 10% → $121,000 ÷ 1.10² = $100,000</div>
   </div>
 
   <div class="sub-step" id="step3c">
-    <div class="sub-step-title">Complication 3c — Consideration Payable to Customer</div>
+    <div class="sub-step-title">Complication 3c: Consideration Payable to Customer</div>
     <p>Coupons, rebates, or incentives payable to anyone in the supply chain (including indirectly to final consumers) are <strong style="color:var(--cream)">deducted from revenue</strong>. This prevents inflating revenue upon sale and only later recording the cost of the promised incentive.</p>
 
     <div class="exhibit">
-      <div class="exhibit-label">Exhibit 4-5 · Superclean Corp — Coupon Example</div>
+      <div class="exhibit-label">Exhibit 4-5 · Superclean Corp: Coupon Example</div>
       <div class="exhibit-title">200,000 units @ $3 | COGS $1.50 | 400,000 coupons × $2 | 30% estimated redemption rate | Actual claims: $250,000</div>
       <div class="eq">Estimated coupon redemptions = 30% × 400,000 × $2 = $240,000<br>
 Net Sales Revenue = (200,000 × $3) − $240,000 = $360,000</div>
@@ -951,21 +959,21 @@ Net Sales Revenue = (200,000 × $3) − $240,000 = $360,000</div>
   </div>
 
   <div class="sub-step" id="step3d">
-    <div class="sub-step-title">Complication 3d — Variable Consideration</div>
-    <p>Consideration is variable when there is uncertainty over the <em>amount</em> — arising from volume discounts, rebates, coupons, rights of return, or performance bonuses/penalties. Use one of two methods:</p>
+    <div class="sub-step-title">Complication 3d: Variable Consideration</div>
+    <p>Consideration is variable when there is uncertainty over the <em>amount</em>, arising from volume discounts, rebates, coupons, rights of return, or performance bonuses/penalties. Use one of two methods:</p>
     <div class="two-col">
       <div class="info-box"><div class="info-box-title">Expected Value Method</div><p><strong>When:</strong> Many possible outcomes (large continuous range).<br><strong>How:</strong> Apply probabilities to all outcomes and sum: Σ (probability × outcome)</p></div>
       <div class="info-box"><div class="info-box-title">Most Likely Amount Method</div><p><strong>When:</strong> Small number of outcomes (binary or near-binary).<br><strong>How:</strong> Use the single most probable outcome (e.g., hit threshold OR miss).</p></div>
     </div>
 
     <div class="ifrs-quote">
-      <div class="ifrs-para">IFRS 15 ¶56 — Variable Consideration Constraint</div>
+      <div class="ifrs-para">IFRS 15 ¶56: Variable Consideration Constraint</div>
       <p>Include variable consideration only to the extent it is <strong>highly probable</strong> that a significant reversal in the amount of cumulative revenue recognized will NOT occur when the uncertainty is subsequently resolved.</p>
     </div>
-    <div class="callout gold"><strong>Plain English:</strong> Be prudent. "Highly probable" sets a higher bar than merely "probable." The constraint is <strong>one-sided</strong> — revenue reversals should be rare, but additional revenue can regularly be recognized when uncertainty resolves favorably.</div>
+    <div class="callout gold"><strong>Plain English:</strong> Be prudent. "Highly probable" sets a higher bar than merely "probable." The constraint is <strong>one-sided</strong>, revenue reversals should be rare, but additional revenue can regularly be recognized when uncertainty resolves favorably.</div>
 
     <div class="exhibit">
-      <div class="exhibit-label">Exhibit 4-6 · Best Quality Bicycles — Volume Discount</div>
+      <div class="exhibit-label">Exhibit 4-6 · Best Quality Bicycles: Volume Discount</div>
       <div class="exhibit-title">Normal price $100/unit; 10% discount (price = $90) applies if retailer buys ≥500 units in a year. Retailer X expected NOT to hit threshold in H1; then unexpectedly purchases 400 more in H2 (total: 600 units).</div>
       <table class="data">
         <thead><tr><th>Sale</th><th class="r"># Units</th><th class="r">Unit Price</th><th class="r">Total</th></tr></thead>
@@ -983,15 +991,15 @@ Net Sales Revenue = (200,000 × $3) − $240,000 = $360,000</div>
 
 <div class="section" id="step4">
   <span class="section-anchor"></span>
-  <h2 id="step-4-allocate-the-transaction-price" class="sec-heading">Step 4 — Allocate the Transaction Price</h2>
+  <h2 id="step-4-allocate-the-transaction-price" class="sec-heading">Step 4: Allocate the Transaction Price</h2>
 
-  <p>Allocate based on <strong style="color:var(--cream)">relative stand-alone selling prices (SSP)</strong> — the price at which an entity <em>would</em> sell a good or service separately.</p>
+  <p>Allocate based on <strong style="color:var(--cream)">relative stand-alone selling prices (SSP)</strong>, the price at which an entity <em>would</em> sell a good or service separately.</p>
 
   <div class="eq">Allocated Amount (P.O. i) = (SSP_i / Σ all SSPs) × Total Transaction Price</div>
 
   <div class="exhibit">
     <div class="exhibit-label">Exhibit 4-7 · Allocation Example</div>
-    <div class="exhibit-title">Contract with 3 P.O.s — Transaction price $900, Stand-alone prices total $1,000 (bundle discount of $100)</div>
+    <div class="exhibit-title">Contract with 3 P.O.s: Transaction price $900, Stand-alone prices total $1,000 (bundle discount of $100)</div>
     <table class="data">
       <thead><tr><th>Performance Obligation</th><th class="r">Stand-alone SSP</th><th class="r">% of Total</th><th class="r">× Txn Price ($900)</th><th class="r">Allocated Amount</th></tr></thead>
       <tbody>
@@ -1016,7 +1024,7 @@ Net Sales Revenue = (200,000 × $3) − $240,000 = $360,000</div>
 
 <div class="section" id="step5">
   <span class="section-anchor"></span>
-  <h2 id="step-5-recognize-revenue-in-accordance-with-perf" class="sec-heading">Step 5 — Recognize Revenue in Accordance with Performance</h2>
+  <h2 id="step-5-recognize-revenue-in-accordance-with-perf" class="sec-heading">Step 5: Recognize Revenue in Accordance with Performance</h2>
 
   <div class="ifrs-quote">
     <div class="ifrs-para">IFRS 15 ¶31</div>
@@ -1038,42 +1046,42 @@ Net Sales Revenue = (200,000 × $3) − $240,000 = $360,000</div>
       </ul>
     </div>
     <div class="info-box teal">
-      <div class="info-box-title">Over-Time Criteria (¶35) — Any ONE Sufficient</div>
+      <div class="info-box-title">Over-Time Criteria (¶35): Any ONE Sufficient</div>
       <ul>
-        <li><strong>(a)</strong> Customer simultaneously receives and consumes the benefits — e.g., monthly cleaning service, transportation</li>
-        <li><strong>(b)</strong> Performance creates/enhances an asset the customer controls — e.g., construction on customer's land</li>
-        <li><strong>(c)</strong> No alternative use AND enforceable right to payment for work completed to date — e.g., customized manufactured component</li>
+        <li><strong>(a)</strong> Customer simultaneously receives and consumes the benefits, e.g., monthly cleaning service, transportation</li>
+        <li><strong>(b)</strong> Performance creates/enhances an asset the customer controls, e.g., construction on customer's land</li>
+        <li><strong>(c)</strong> No alternative use AND enforceable right to payment for work completed to date, e.g., customized manufactured component</li>
       </ul>
     </div>
   </div>
 
-  <div class="callout teal"><strong>Key Note:</strong> Over-time recognition only has accounting consequences if the performance period extends over <strong>more than one reporting period</strong>. A haircut is performed over time but within one period — no different treatment needed. For long-term, multi-year contracts, the <strong>percentage of completion method</strong> is used (covered in Section F).</div>
+  <div class="callout teal"><strong>Key Note:</strong> Over-time recognition only has accounting consequences if the performance period extends over <strong>more than one reporting period</strong>. A haircut is performed over time but within one period, no different treatment needed. For long-term, multi-year contracts, the <strong>percentage of completion method</strong> is used (covered in Section F).</div>
 </div>
 
 <!-- ──────────────────── SECTION D ──────────────────── -->
 <div class="section" id="warranties">
   <span class="section-anchor"></span>
-  <h2 id="d-section-d-warranties" class="sec-heading"><span class="sec-num">D.</span>Section D — Warranties</h2>
-  <div class="sec-lo">LO 4-2 · Multiple Performance Obligations — Part 1</div>
+  <h2 id="d-section-d-warranties" class="sec-heading"><span class="sec-num">D.</span>Section D: Warranties</h2>
+  <div class="sec-lo">LO 4-2 · Multiple Performance Obligations: Part 1</div>
 
   <p>A sale of goods combined with warranties is one of the most common multi-P.O. transactions. The critical question is whether a warranty constitutes a <em>separate</em> performance obligation.</p>
 
   <div class="warranty-grid">
     <div class="w-card assurance">
       <div class="w-card-title">Assurance-Type Warranty</div>
-      <p>Guarantees the product is free from manufacturing defects as specified in the contract. This guarantee is <em>inseparable</em> from the production process — the risk of being the "unlucky" buyer of a defective item is inherent in production.</p>
+      <p>Guarantees the product is free from manufacturing defects as specified in the contract. This guarantee is <em>inseparable</em> from the production process, the risk of being the "unlucky" buyer of a defective item is inherent in production.</p>
       <div class="w-badge no">NOT a separate P.O.</div>
       <p style="margin-top:.5rem;font-size:.79rem">Treatment: Record a <strong>warranty liability</strong> under IAS 37 for the estimated cost of fulfilling claims. This is a provision, not deferred revenue.</p>
     </div>
     <div class="w-card service">
       <div class="w-card-title">Service-Type Warranty</div>
-      <p>Provides service <em>beyond</em> the assurance warranty — additional coverage above and beyond ensuring the product is defect-free. Includes extended warranties, accidental damage coverage, etc. The customer benefits from this independently.</p>
+      <p>Provides service <em>beyond</em> the assurance warranty, additional coverage above and beyond ensuring the product is defect-free. Includes extended warranties, accidental damage coverage, etc. The customer benefits from this independently.</p>
       <div class="w-badge yes">IS a distinct, separate P.O.</div>
       <p style="margin-top:.5rem;font-size:.79rem">Treatment: <strong>Allocate</strong> a portion of the transaction price to this P.O.; recognize as revenue as the service is delivered over the warranty period.</p>
     </div>
   </div>
 
-  <h3 id="bmw-i4-example-car-with-four-year-maintenance-co">BMW i4 Example — Car with Four-Year Maintenance Contract</h3>
+  <h3 id="bmw-i4-example-car-with-four-year-maintenance-co">BMW i4 Example: Car with Four-Year Maintenance Contract</h3>
   <div class="callout gold">
     <strong>Facts:</strong> BMW i4 sells for $65,000. Stand-alone price of car: $63,000. Stand-alone value of 4-year maintenance contract: $2,000. Dealer's cost for the car: $57,000. Service pattern: Year 1 = 20%, Year 2 = 25%, Year 3 = 25%, Year 4 = 30%.
   </div>
@@ -1083,8 +1091,8 @@ Net Sales Revenue = (200,000 × $3) − $240,000 = $360,000</div>
     <table><thead><tr><th>Account</th><th class="r">Debit</th><th class="r">Credit</th></tr></thead>
     <tbody>
       <tr><td>Dr. Cash</td><td class="amt">65,000</td><td class="amt-blank"></td></tr>
-      <tr><td class="credit">Cr. Sales Revenue — Car (P.O. #1)</td><td class="amt-blank"></td><td class="amt">63,000</td></tr>
-      <tr><td class="credit">Cr. Deferred Revenue — Service Contract (P.O. #2)</td><td class="amt-blank"></td><td class="amt">2,000</td></tr>
+      <tr><td class="credit">Cr. Sales Revenue: Car (P.O. #1)</td><td class="amt-blank"></td><td class="amt">63,000</td></tr>
+      <tr><td class="credit">Cr. Deferred Revenue: Service Contract (P.O. #2)</td><td class="amt-blank"></td><td class="amt">2,000</td></tr>
       <tr><td>Dr. Cost of Goods Sold</td><td class="amt">57,000</td><td class="amt-blank"></td></tr>
       <tr><td class="credit">Cr. Inventory</td><td class="amt-blank"></td><td class="amt">57,000</td></tr>
     </tbody></table>
@@ -1101,25 +1109,25 @@ Net Sales Revenue = (200,000 × $3) − $240,000 = $360,000</div>
       <tr class="subtotal"><td>Total</td><td class="r">100%</td><td class="r">$2,000</td><td></td></tr>
     </tbody>
   </table>
-  <p style="font-size:.82rem;color:var(--muted)">Service costs (materials, labour) are expensed in the periods incurred — matching principle.</p>
+  <p style="font-size:.82rem;color:var(--muted)">Service costs (materials, labour) are expensed in the periods incurred, matching principle.</p>
 </div>
 
 <div class="section" id="franchises">
   <span class="section-anchor"></span>
-  <h2 id="section-d-franchise-fees" class="sec-heading">Section D — Franchise Fees</h2>
+  <h2 id="section-d-franchise-fees" class="sec-heading">Section D: Franchise Fees</h2>
 
   <p>A <strong style="color:var(--cream)">franchise</strong> arrangement licenses trademarks and business systems from a <strong style="color:var(--cream)">franchisor</strong> to a <strong style="color:var(--cream)">franchisee</strong>. Over 90% of McDonald's restaurants operate under franchise arrangements.</p>
 
   <table class="data" style="margin:.75rem 0">
     <thead><tr><th>Fee Type</th><th>Characteristics</th><th>Accounting Treatment</th></tr></thead>
     <tbody>
-      <tr><td class="label">Ongoing royalty</td><td>Fixed amount per period, or royalty % of revenues</td><td>Recognize as revenue in the period earned — straightforward</td></tr>
-      <tr><td class="label">Initial franchise fee</td><td>One-time payment at signing; often involves multiple P.O.s — some services at inception, some over the franchise term</td><td>Allocate between inception services (recognize immediately) and ongoing services (defer and amortize over contract term)</td></tr>
+      <tr><td class="label">Ongoing royalty</td><td>Fixed amount per period, or royalty % of revenues</td><td>Recognize as revenue in the period earned, straightforward</td></tr>
+      <tr><td class="label">Initial franchise fee</td><td>One-time payment at signing; often involves multiple P.O.s, some services at inception, some over the franchise term</td><td>Allocate between inception services (recognize immediately) and ongoing services (defer and amortize over contract term)</td></tr>
     </tbody>
   </table>
 
   <div class="exhibit">
-    <div class="exhibit-label">Exhibit 4-8 · Delicio Restaurants — Northwest Calgary Franchise</div>
+    <div class="exhibit-label">Exhibit 4-8 · Delicio Restaurants: Northwest Calgary Franchise</div>
     <div class="exhibit-title">10-year term. Initial fee: $200,000 ($80,000 inception services; $120,000 over 10 years evenly). Ongoing royalty: 2% of sales. Year 1 franchise sales: $2,000,000.</div>
 
     <div class="je">
@@ -1133,7 +1141,7 @@ Net Sales Revenue = (200,000 × $3) − $240,000 = $360,000</div>
     </div>
 
     <div class="je">
-      <div class="je-head">End of Year 1 — Recognize annual amortization of initial fee</div>
+      <div class="je-head">End of Year 1: Recognize annual amortization of initial fee</div>
       <table><thead><tr><th>Account</th><th class="r">Debit</th><th class="r">Credit</th></tr></thead>
       <tbody>
         <tr><td>Dr. Deferred Revenue</td><td class="amt">12,000</td><td class="amt-blank"></td></tr>
@@ -1142,7 +1150,7 @@ Net Sales Revenue = (200,000 × $3) − $240,000 = $360,000</div>
     </div>
 
     <div class="je">
-      <div class="je-head">End of Year 1 — Recognize annual royalty</div>
+      <div class="je-head">End of Year 1: Recognize annual royalty</div>
       <table><thead><tr><th>Account</th><th class="r">Debit</th><th class="r">Credit</th></tr></thead>
       <tbody>
         <tr><td>Dr. Cash</td><td class="amt">40,000</td><td class="amt-blank"></td></tr>
@@ -1173,8 +1181,8 @@ Net Sales Revenue = (200,000 × $3) − $240,000 = $360,000</div>
 <!-- ──────────────────── SECTION E ──────────────────── -->
 <div class="section" id="consignment">
   <span class="section-anchor"></span>
-  <h2 id="e-section-e-consignment-sales" class="sec-heading"><span class="sec-num">E.</span>Section E — Consignment Sales</h2>
-  <div class="sec-lo">LO 4-2 · Specific Revenue Recognition Situations — revenue recognized at a time different from point of sale</div>
+  <h2 id="e-section-e-consignment-sales" class="sec-heading"><span class="sec-num">E.</span>Section E: Consignment Sales</h2>
+  <div class="sec-lo">LO 4-2 · Specific Revenue Recognition Situations, revenue recognized at a time different from point of sale</div>
 
   <p>This section illustrates situations where revenue is recognized at a time <strong style="color:var(--cream)">different from the point of sale</strong>, showing the importance of measurement uncertainty and the transfer of risks and rewards.</p>
 
@@ -1184,21 +1192,21 @@ Net Sales Revenue = (200,000 × $3) − $240,000 = $360,000</div>
   <ul class="crit-list">
     <li><span class="crit-badge">1</span><span>The consignor <strong>retains legal title</strong> and bears the <strong>significant risks and rewards of ownership</strong>.</span></li>
     <li><span class="crit-badge">2</span><span>The consignee is <strong>not obligated to pay</strong> for the goods until they are actually sold to a final customer.</span></li>
-    <li><span class="crit-badge">3</span><span>Therefore, <strong>control has NOT transferred</strong> to the consignee upon delivery — a key criterion of Step 5.</span></li>
+    <li><span class="crit-badge">3</span><span>Therefore, <strong>control has NOT transferred</strong> to the consignee upon delivery, a key criterion of Step 5.</span></li>
   </ul>
 
   <div class="callout rust"><strong>Consequence:</strong> The consignor does NOT record revenue on delivery. Revenue is deferred until the date when (i) the goods are sold to a final customer (control transferred + right of return expired), or (ii) the right of return expires without goods being returned.</div>
 
-  <h3 id="business-rationale-for-consignment-magazine-dist">Business Rationale for Consignment — Magazine Distribution</h3>
+  <h3 id="business-rationale-for-consignment-magazine-dist">Business Rationale for Consignment: Magazine Distribution</h3>
   <p>A common example is magazine distribution. Publishers use consignment because:</p>
   <ul class="bul">
     <li><strong>Demand uncertainty:</strong> By removing demand risk from retailers, more retailers are willing to stock the product, increasing distribution volume.</li>
-    <li><strong>Marginal cost economics:</strong> The marginal cost of printing an extra copy is <em>low</em> relative to the fixed costs of developing magazine content — so unsold copies represent a small loss versus the potential gain from wider availability.</li>
+    <li><strong>Marginal cost economics:</strong> The marginal cost of printing an extra copy is <em>low</em> relative to the fixed costs of developing magazine content, so unsold copies represent a small loss versus the potential gain from wider availability.</li>
     <li><strong>Higher total sales:</strong> Wider availability ensures consumers can browse, maintaining and increasing circulation.</li>
   </ul>
 
   <div class="exhibit">
-    <div class="exhibit-label">Prestige Publications — Consignment Example</div>
+    <div class="exhibit-label">Prestige Publications: Consignment Example</div>
     <div class="exhibit-title">March 1: Delivers 100,000 copies. Price to distributor: $1.20/copy. Retail price: $4.95/copy. Retailers &amp; distributor have right of return. April 15: Distributor returns 25,000 unsold copies.</div>
 
     <div class="eq">Revenue is recognized on April 15 (return deadline), NOT March 1 (delivery)
@@ -1206,7 +1214,7 @@ Copies sold = 100,000 − 25,000 = 75,000
 Revenue = 75,000 × $1.20 = $90,000</div>
 
     <div class="je">
-      <div class="je-head">April 15 — Revenue Recognition (simplified)</div>
+      <div class="je-head">April 15: Revenue Recognition (simplified)</div>
       <table><thead><tr><th>Account</th><th class="r">Debit</th><th class="r">Credit</th></tr></thead>
       <tbody>
         <tr><td>Dr. Cash / Accounts Receivable (75,000 × $1.20)</td><td class="amt">90,000</td><td class="amt-blank"></td></tr>
@@ -1221,7 +1229,7 @@ Revenue = 75,000 × $1.20 = $90,000</div>
 
 <div class="section" id="installment">
   <span class="section-anchor"></span>
-  <h2 id="section-e-installment-sales" class="sec-heading">Section E — Installment Sales</h2>
+  <h2 id="section-e-installment-sales" class="sec-heading">Section E: Installment Sales</h2>
 
   <div class="callout gold"><strong>Installment Sales Defined:</strong> Arrangements whereby the vendor allows the buyer to make payments over an <strong>extended period of time</strong> even though the buyer <strong>receives the product at the beginning</strong> of the installment period. Legal title often does not transfer until all payments are made.</div>
 
@@ -1240,7 +1248,7 @@ Revenue = 75,000 × $1.20 = $90,000</div>
       <p>Record the receivable and remove inventory. Do NOT record revenue and COGS separately. Instead, record the net <strong>deferred gross profit as a liability</strong>.</p>
     </div>
     <div class="info-box">
-      <div class="info-box-title">Each Period — As Cash Is Collected</div>
+      <div class="info-box-title">Each Period: As Cash Is Collected</div>
       <p>Recognize revenue equal to cash received. Recognize COGS at the cost ratio. Deferred gross profit liability is reduced by the profit recognized.</p>
     </div>
   </div>
@@ -1250,11 +1258,11 @@ Profit recognized per period = Cash received × Gross Margin %
 COGS recognized per period = Cash received × (1 − Gross Margin %) = Cash received × Cost Ratio</div>
 
   <div class="exhibit">
-    <div class="exhibit-label">Exhibit 4-9 · Durable Furnishings — Initial Installment Sale</div>
+    <div class="exhibit-label">Exhibit 4-9 · Durable Furnishings: Initial Installment Sale</div>
     <div class="exhibit-title">January: Installment sales of products, retail price $1,000,000 | Cost $800,000 | Gross margin: 20%</div>
 
     <div class="je">
-      <div class="je-head">January — Initial Sale (no revenue recorded)</div>
+      <div class="je-head">January: Initial Sale (no revenue recorded)</div>
       <table><thead><tr><th>Account</th><th class="r">Debit</th><th class="r">Credit</th></tr></thead>
       <tbody>
         <tr><td>Dr. Installment Accounts Receivable</td><td class="amt">1,000,000</td><td class="amt-blank"></td></tr>
@@ -1267,7 +1275,7 @@ COGS recognized per period = Cash received × (1 − Gross Margin %) = Cash rece
   </div>
 
   <div class="exhibit">
-    <div class="exhibit-label">Exhibit 4-10 · Durable Furnishings — February Cash Receipt</div>
+    <div class="exhibit-label">Exhibit 4-10 · Durable Furnishings: February Cash Receipt</div>
     <div class="exhibit-title">February: $50,000 received (after deducting interest). Gross margin = 20%. Cost ratio = 80%.</div>
 
     <div class="je">
@@ -1305,7 +1313,7 @@ COGS recognized per period = Cash received × (1 − Gross Margin %) = Cash rece
 
 <div class="section" id="billhold">
   <span class="section-anchor"></span>
-  <h2 id="section-e-bill-and-hold-arrangements" class="sec-heading">Section E — Bill-and-Hold Arrangements</h2>
+  <h2 id="section-e-bill-and-hold-arrangements" class="sec-heading">Section E: Bill-and-Hold Arrangements</h2>
 
   <div class="callout gold"><strong>Bill-and-Hold Defined:</strong> The seller holds on to the goods at the <em>request of the customer</em>, even though: the goods are ready for delivery, the customer has inspected and accepted them, and the customer has already paid. The seller is merely providing incidental warehousing.</div>
 
@@ -1315,13 +1323,13 @@ COGS recognized per period = Cash received × (1 − Gross Margin %) = Cash rece
     <li>The customer has <strong>inspected and accepted</strong> the goods.</li>
     <li>The customer is <strong>obligated to pay</strong> (and has already paid).</li>
     <li>The customer bears the <strong>significant risks and rewards</strong> of ownership.</li>
-    <li><strong>Control has transferred</strong> to the customer — the physical location of goods is irrelevant.</li>
-    <li>The seller is merely providing an <em>incidental service</em> of temporarily warehousing — not a separate P.O. blocking revenue recognition.</li>
+    <li><strong>Control has transferred</strong> to the customer, the physical location of goods is irrelevant.</li>
+    <li>The seller is merely providing an <em>incidental service</em> of temporarily warehousing, not a separate P.O. blocking revenue recognition.</li>
   </ul>
 
   <div class="callout teal"><strong>Conclusion:</strong> The seller <strong>can recognize revenue</strong> on the sale even though the goods remain on the seller's premises. This contrasts sharply with consignment (control not transferred) and installment sales (collectability uncertainty).</div>
 
-  <h3 id="comparative-summary-three-specific-situations">Comparative Summary — Three Specific Situations</h3>
+  <h3 id="comparative-summary-three-specific-situations">Comparative Summary: Three Specific Situations</h3>
   <table class="compare-table">
     <thead><tr><th>Feature</th><th>Consignment</th><th>Installment Sales</th><th>Bill-and-Hold</th></tr></thead>
     <tbody>
@@ -1339,7 +1347,7 @@ COGS recognized per period = Cash received × (1 − Gross Margin %) = Cash rece
     <div class="cp-label">Checkpoint CP4-4</div>
     <div class="cp-q">Why do we delay revenue recognition for consignment arrangements and installment sales past the delivery date?</div>
     <button class="cp-toggle" onclick="this.nextElementSibling.classList.toggle('open');this.textContent=this.nextElementSibling.classList.contains('open')?'▲ Hide':'▼ Show Answer'">▼ Show Answer</button>
-    <div class="cp-answer"><div class="cp-a">For consignment and installment sales, we delay revenue recognition because there remains too much risk and uncertainty regarding the amount of future benefits (i.e., cash flows) that will be received. <strong>Consignors</strong> retain the risks and rewards of ownership of the goods — control has not transferred. <strong>Installment sales</strong> involve significant uncertainty regarding the amount of future payments that will be collected from customers (Step 1 criterion (e) may not be met). In contrast, bill-and-hold arrangements do NOT delay revenue because control has fully transferred — the seller is merely providing incidental warehousing.</div></div>
+    <div class="cp-answer"><div class="cp-a">For consignment and installment sales, we delay revenue recognition because there remains too much risk and uncertainty regarding the amount of future benefits (i.e., cash flows) that will be received. <strong>Consignors</strong> retain the risks and rewards of ownership of the goods, control has not transferred. <strong>Installment sales</strong> involve significant uncertainty regarding the amount of future payments that will be collected from customers (Step 1 criterion (e) may not be met). In contrast, bill-and-hold arrangements do NOT delay revenue because control has fully transferred, the seller is merely providing incidental warehousing.</div></div>
   </div>
 </div>
 
@@ -1349,24 +1357,24 @@ COGS recognized per period = Cash received × (1 − Gross Margin %) = Cash rece
   <h2 id="f-accounting-for-long-term-contracts" class="sec-heading"><span class="sec-num">F.</span>Accounting for Long-term Contracts</h2>
   <div class="sec-lo">LO 4-3 · Apply recognition criteria for long-term contracts; prospective treatment for estimate changes</div>
 
-  <p>The key challenge in recognizing revenue for performance obligations extending over a <strong style="color:var(--cream)">long period of time</strong> is determining the <strong style="color:var(--cream)">amount to allocate to each reporting period</strong>. IFRS 15 indicates that revenue from performance obligations recognized over time should be based on <em>progress toward completion</em> — the <strong style="color:var(--cream)">percentage of completion method</strong>.</p>
+  <p>The key challenge in recognizing revenue for performance obligations extending over a <strong style="color:var(--cream)">long period of time</strong> is determining the <strong style="color:var(--cream)">amount to allocate to each reporting period</strong>. IFRS 15 indicates that revenue from performance obligations recognized over time should be based on <em>progress toward completion</em>, the <strong style="color:var(--cream)">percentage of completion method</strong>.</p>
 
   <h3 id="fixed-price-vs-cost-plus-contracts">Fixed-Price vs. Cost-Plus Contracts</h3>
   <table class="compare-table">
     <thead><tr><th>Feature</th><th>Fixed-Price Contract</th><th>Cost-Plus Contract</th></tr></thead>
     <tbody>
-      <tr><td>Contract price</td><td>Agreed before performance — does not change</td><td>Actual costs incurred + profit margin %</td></tr>
+      <tr><td>Contract price</td><td>Agreed before performance, does not change</td><td>Actual costs incurred + profit margin %</td></tr>
       <tr><td>Who bears cost risk?</td><td><span class="no">Contractor bears all risk</span></td><td><span class="yes">Buyer bears the risk</span></td></tr>
-      <tr><td>Incentive to control costs</td><td><span class="yes">Strong — contractor's profit erodes with overruns</span></td><td><span class="no">Weak — higher costs = higher revenue for contractor</span></td></tr>
-      <tr><td>Moral hazard</td><td>Low</td><td><span class="no">High — contractor may want to maximize costs</span></td></tr>
-      <tr><td>Typical profit margin</td><td>Higher (e.g., 20%) — compensates for risk</td><td>Lower (e.g., 5%) — buyer bears risk</td></tr>
-      <tr><td>Role of cost estimates</td><td>Critical for calculating % completion and profit</td><td>Irrelevant — actual costs + margin = revenue</td></tr>
+      <tr><td>Incentive to control costs</td><td><span class="yes">Strong, contractor's profit erodes with overruns</span></td><td><span class="no">Weak, higher costs = higher revenue for contractor</span></td></tr>
+      <tr><td>Moral hazard</td><td>Low</td><td><span class="no">High, contractor may want to maximize costs</span></td></tr>
+      <tr><td>Typical profit margin</td><td>Higher (e.g., 20%), compensates for risk</td><td>Lower (e.g., 5%), buyer bears risk</td></tr>
+      <tr><td>Role of cost estimates</td><td>Critical for calculating % completion and profit</td><td>Irrelevant, actual costs + margin = revenue</td></tr>
       <tr><td>Accounting complexity</td><td>High (requires % completion based on estimates)</td><td>Lower (straightforward cost tracking)</td></tr>
     </tbody>
   </table>
 
   <div class="callout rust">
-    <strong>Moral Hazard in Cost-Plus — Vancouver Olympic Village (2010):</strong> City of Vancouver contracted Millennium Group on a cost-plus basis to build 250 social housing units for the 2010 Winter Olympics. Original budget: <strong>$65 million</strong>. By February 2009, estimated cost had risen to <strong>$110 million</strong> — an increase of <strong>69%</strong>. Other parts of the Olympic Village built by the same firm but NOT on cost-plus terms saw cost increases of only ~<strong>10%</strong>. The cost-plus structure was a key contributor to the budget explosion.
+    <strong>Moral Hazard in Cost-Plus: Vancouver Olympic Village (2010):</strong> City of Vancouver contracted Millennium Group on a cost-plus basis to build 250 social housing units for the 2010 Winter Olympics. Original budget: <strong>$65 million</strong>. By February 2009, estimated cost had risen to <strong>$110 million</strong>, an increase of <strong>69%</strong>. Other parts of the Olympic Village built by the same firm but NOT on cost-plus terms saw cost increases of only ~<strong>10%</strong>. The cost-plus structure was a key contributor to the budget explosion.
   </div>
 
   <div class="callout gold"><strong>Policy Implication:</strong> Buyers should use cost-plus contracts only when (i) there is little uncertainty about the costs, or (ii) the buyer is able to supervise the project closely to contain costs.</div>
@@ -1374,7 +1382,7 @@ COGS recognized per period = Cash received × (1 − Gross Margin %) = Cash rece
 
 <div class="section" id="costplus">
   <span class="section-anchor"></span>
-  <h2 id="section-f-revenue-recognition-for-cost-plus-cont" class="sec-heading">Section F — Revenue Recognition for Cost-Plus Contracts</h2>
+  <h2 id="section-f-revenue-recognition-for-cost-plus-cont" class="sec-heading">Section F: Revenue Recognition for Cost-Plus Contracts</h2>
 
   <p>The accounting for cost-plus contracts is relatively <strong style="color:var(--cream)">straightforward</strong>: estimates play no role. Revenue is determined entirely by actual costs incurred plus the profit margin percentage.</p>
 
@@ -1384,7 +1392,7 @@ Gross profit (each period) = Actual costs incurred × margin %</div>
   <div class="callout teal"><strong>Key insight:</strong> Accurate cost estimates are crucial for <em>project management</em>, but they do not affect the <em>accounting</em> for cost-plus contracts at all. The actual costs + margin completely determine the revenue each period.</div>
 
   <div class="exhibit">
-    <div class="exhibit-label">Exhibit 4-11 · Adobe Building Company — Cost-Plus Contract</div>
+    <div class="exhibit-label">Exhibit 4-11 · Adobe Building Company: Cost-Plus Contract</div>
     <div class="exhibit-title">Adobe constructs 360 condominiums for Century Homes. Contract: Cost plus 5%. Century Homes bears risk (has supervisory experience). Project: 3 years. Compare vs. Adobe's 20% margin on fixed-price contracts.</div>
 
     <table class="data">
@@ -1414,12 +1422,12 @@ Total:  Revenue = $110.0M × 1.05 = $115.5M</div>
 <!-- ──────────────────── CHECKPOINTS ──────────────────── -->
 <div class="section" id="checkpoints">
   <span class="section-anchor"></span>
-  <h2 id="all-checkpoints-quick-reference" class="sec-heading">All Checkpoints — Quick Reference</h2>
+  <h2 id="all-checkpoints-quick-reference" class="sec-heading">All Checkpoints: Quick Reference</h2>
 
   <div class="checkpoint">
     <div class="cp-label">Checkpoint CP4-1</div>
     <div class="cp-q">Why do accounting standards for revenue recognition not reflect the value creation process?</div>
-    <div class="cp-a" style="display:block">Different stages of the value creation process have different degrees of uncertainty. Early stages are too uncertain for accurate and verifiable estimates. Final stages have high certainty but the information becomes stale. Accounting standards choose the middle ground — late enough for reliable estimates (reducing moral hazard and increasing verifiability), early enough to be decision-useful and not out-of-date.</div>
+    <div class="cp-a" style="display:block">Different stages of the value creation process have different degrees of uncertainty. Early stages are too uncertain for accurate and verifiable estimates. Final stages have high certainty but the information becomes stale. Accounting standards choose the middle ground, late enough for reliable estimates (reducing moral hazard and increasing verifiability), early enough to be decision-useful and not out-of-date.</div>
   </div>
 
   <div class="checkpoint">
@@ -1431,13 +1439,13 @@ Total:  Revenue = $110.0M × 1.05 = $115.5M</div>
   <div class="checkpoint">
     <div class="cp-label">Checkpoint CP4-3</div>
     <div class="cp-q">Why is it important to identify when a sale contains multiple performance obligations?</div>
-    <div class="cp-a" style="display:block">Revenue must be allocated to the different components, and these components can have different timings for revenue recognition. Identifying P.O.s separately ensures each is recognized when — and to the extent — the entity has performed. Without this, revenue from bundled transactions could be front-loaded (if a service P.O. is still unperformed at sale) or understated in the current period.</div>
+    <div class="cp-a" style="display:block">Revenue must be allocated to the different components, and these components can have different timings for revenue recognition. Identifying P.O.s separately ensures each is recognized when, and to the extent, the entity has performed. Without this, revenue from bundled transactions could be front-loaded (if a service P.O. is still unperformed at sale) or understated in the current period.</div>
   </div>
 
   <div class="checkpoint">
     <div class="cp-label">Checkpoint CP4-4</div>
     <div class="cp-q">Why do we delay revenue recognition for consignment arrangements and installment sales past the delivery date?</div>
-    <div class="cp-a" style="display:block">For both, there remains too much risk and uncertainty regarding future cash flows: <strong>Consignment</strong> — the consignor retains risks and rewards of ownership; control has not transferred (Step 5 not satisfied). <strong>Installment sales</strong> — significant uncertainty about whether the full consideration will ultimately be collected (Step 1 criterion (e) may not be met). In contrast, <strong>bill-and-hold</strong> does NOT delay revenue because control has fully transferred — the seller is merely providing incidental warehousing, which is not a separate P.O. blocking recognition.</div>
+    <div class="cp-a" style="display:block">For both, there remains too much risk and uncertainty regarding future cash flows: <strong>Consignment</strong>, the consignor retains risks and rewards of ownership; control has not transferred (Step 5 not satisfied). <strong>Installment sales</strong>, significant uncertainty about whether the full consideration will ultimately be collected (Step 1 criterion (e) may not be met). In contrast, <strong>bill-and-hold</strong> does NOT delay revenue because control has fully transferred, the seller is merely providing incidental warehousing, which is not a separate P.O. blocking recognition.</div>
   </div>
 </div>
 
@@ -1452,7 +1460,7 @@ Total:  Revenue = $110.0M × 1.05 = $115.5M</div>
       <div class="formula-card-title">Non-Cash Consideration</div>
       <div class="f">TP = Cash + FV(non-cash items)</div>
       <div class="f">FV(non-cash) = SSP(good) − Cash paid</div>
-      <p>Use the second formula when direct FV is not reliably estimable — infer from stand-alone price minus cash.</p>
+      <p>Use the second formula when direct FV is not reliably estimable, infer from stand-alone price minus cash.</p>
     </div>
     <div class="formula-card">
       <div class="formula-card-title">Significant Financing Component</div>
@@ -1468,7 +1476,7 @@ Total:  Revenue = $110.0M × 1.05 = $115.5M</div>
       <div class="formula-card-title">Variable Consideration</div>
       <div class="f">Expected Value: Σ(p_i × outcome_i)</div>
       <div class="f">Most Likely Amount: most probable outcome</div>
-      <p>Subject to the highly-probable-no-reversal constraint (¶56). One-sided — conservative on upside.</p>
+      <p>Subject to the highly-probable-no-reversal constraint (¶56). One-sided, conservative on upside.</p>
     </div>
   </div>
 
@@ -1507,7 +1515,7 @@ Total:  Revenue = $110.0M × 1.05 = $115.5M</div>
       <div class="formula-card-title">Revenue Each Period</div>
       <div class="f">Revenue = Actual costs × (1 + margin%)</div>
       <div class="f">Gross profit = Actual costs × margin%</div>
-      <p>Estimates play no role — only actual costs matter.</p>
+      <p>Estimates play no role, only actual costs matter.</p>
     </div>
   </div>
 </div>
@@ -1520,14 +1528,14 @@ Total:  Revenue = $110.0M × 1.05 = $115.5M</div>
   <table class="qr-table">
     <thead><tr><th>¶</th><th>Topic</th><th>Step / Section</th></tr></thead>
     <tbody>
-      <tr><td>¶9</td><td>Five criteria for identifying a valid contract with a customer — approval, rights, payment terms, commercial substance, probable collection</td><td>Step 1</td></tr>
+      <tr><td>¶9</td><td>Five criteria for identifying a valid contract with a customer, approval, rights, payment terms, commercial substance, probable collection</td><td>Step 1</td></tr>
       <tr><td>¶22</td><td>Identifying performance obligations; two-condition distinctness test; series of distinct goods/services</td><td>Step 2</td></tr>
-      <tr><td>¶31</td><td>Core revenue recognition principle — recognize when/as the entity satisfies a P.O. by transferring control</td><td>Step 5</td></tr>
-      <tr><td>¶35</td><td>Over-time recognition criteria — three tests; any ONE sufficient (consumer, control created, no alt use + enforceable right)</td><td>Step 5</td></tr>
-      <tr><td>¶38</td><td>Point-in-time recognition indicators — obligation to pay, legal title, physical possession, risks &amp; rewards, acceptance</td><td>Step 5</td></tr>
-      <tr><td>¶47</td><td>Transaction price determination — consideration entity expects, excluding third-party amounts</td><td>Step 3</td></tr>
+      <tr><td>¶31</td><td>Core revenue recognition principle, recognize when/as the entity satisfies a P.O. by transferring control</td><td>Step 5</td></tr>
+      <tr><td>¶35</td><td>Over-time recognition criteria, three tests; any ONE sufficient (consumer, control created, no alt use + enforceable right)</td><td>Step 5</td></tr>
+      <tr><td>¶38</td><td>Point-in-time recognition indicators, obligation to pay, legal title, physical possession, risks &amp; rewards, acceptance</td><td>Step 5</td></tr>
+      <tr><td>¶47</td><td>Transaction price determination, consideration entity expects, excluding third-party amounts</td><td>Step 3</td></tr>
       <tr><td>¶53</td><td>Expected value and most likely amount methods for variable consideration</td><td>Step 3d</td></tr>
-      <tr><td>¶56</td><td>Variable consideration constraint — "highly probable" that no significant reversal will occur</td><td>Step 3d</td></tr>
+      <tr><td>¶56</td><td>Variable consideration constraint: "highly probable" that no significant reversal will occur</td><td>Step 3d</td></tr>
       <tr><td>¶73–74</td><td>Allocation objective and relative stand-alone selling price basis</td><td>Step 4</td></tr>
       <tr><td>¶79</td><td>Three methods for estimating unobservable stand-alone selling prices (adjusted market, expected cost+margin, residual)</td><td>Step 4</td></tr>
     </tbody>
@@ -1567,16 +1575,62 @@ links.forEach(link => {
 });
 </script>
 
-
+<!--__long--><link rel="stylesheet" href="long.css?v=0b99e235"><script src="long.js?v=98a5c23b" defer></script><!--/__long-->
 
 <!--__rbp-->
+<!-- The pill styles itself: this block used to live only with the top bar,
+     so the seven tool pages, which carry the pill alone, rendered it as an
+     unstyled link at the very end of the document. Whatever carries the
+     pill now carries its style. -->
+<style id="__rbp-style">
+#__rb-pill{
+  position:fixed;left:14px;bottom:14px;z-index:2147483000;
+  display:inline-flex;align-items:center;gap:.45rem;padding:.58rem .9rem;
+  background:rgba(22,21,15,.93);color:#faf9f6;text-decoration:none;border-radius:99px;
+  font:600 12.5px/1 InterVar,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  border:1px solid rgba(255,255,255,.16);box-shadow:0 6px 22px rgba(0,0,0,.28);
+  opacity:0;transform:translateY(6px);pointer-events:none;
+  transition:opacity .2s ease,transform .2s ease;
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+}
+#__rb-pill.__on{opacity:1;transform:none;pointer-events:auto}
+#__rb-pill:hover{background:#16150f;color:#fff}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) #__rb-pill{background:rgba(247,245,239,.95);color:#131310;border-color:rgba(0,0,0,.2)}
+  :root:not([data-theme="light"]) #__rb-pill:hover{background:#fff;color:#000}
+}
+:root[data-theme="dark"] #__rb-pill{background:rgba(247,245,239,.95);color:#131310;border-color:rgba(0,0,0,.2)}
+:root[data-theme="dark"] #__rb-pill:hover{background:#fff;color:#000}
+@media (prefers-reduced-motion:reduce){#__rb-pill{transition:none}}
+@media print{#__rb-pill{display:none !important}}
+/* a tool carries no bar, so what it was built from stands at the foot of the document */
+#__rb-from{margin:1.25rem 1rem;font:400 13px/1.45 InterVar,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;color:#6f6c63;max-width:70ch}
+#__rb-from b{font-weight:600;color:#55524a}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) #__rb-from{color:#948f85}
+  :root:not([data-theme="light"]) #__rb-from b{color:#c0bcb1}
+}
+:root[data-theme="dark"] #__rb-from{color:#948f85}
+:root[data-theme="dark"] #__rb-from b{color:#c0bcb1}
+</style>
+<!-- With scripts off nothing ever adds the __on class, and the only way
+     back from a tool page vanished. The pill needs its script for the
+     scroll threshold, not for existing. -->
+<noscript><style>#__rb-pill{opacity:1 !important;transform:none !important;pointer-events:auto !important}</style></noscript>
 <a id="__rb-pill" href="afm291.html">&#8592; The vault</a>
+
 <script>
 (function(){
   var p=document.getElementById('__rb-pill'); if(!p) return;
+  /* On a page with the top bar the pill waits until the bar has scrolled
+     out of reach. On a page without one (the tools carry no bar, because a
+     bar inside a full-screen application sits in the wrong place) the pill
+     is the only way back, so it is there from the first paint: a tool
+     screen shorter than the threshold used to strand the reader entirely. */
+  var TH=document.getElementById('__rb')?160:-1;
   var t=false;
   function run(){ t=false;
-    p.classList.toggle('__on',(window.scrollY||document.documentElement.scrollTop)>420); }
+    p.classList.toggle('__on',(window.scrollY||document.documentElement.scrollTop)>TH); }
   function q(){ if(!t){ t=true; requestAnimationFrame(run); } }
   addEventListener('scroll',q,{passive:true}); run();
 })();
@@ -1594,7 +1648,7 @@ links.forEach(link => {
     function put(key){
       if(t2[key]||Object.keys(t2).length<500){
         t2[key]=(t2[key]||0)+1;
-        localStorage.setItem(k,JSON.stringify(t2));
+        try{localStorage.setItem(k,JSON.stringify(t2));}catch(e){}
       }
     }
     put(u+location.hash);

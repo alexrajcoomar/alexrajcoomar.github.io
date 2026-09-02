@@ -3,14 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>AFM 291 — Practice Arena</title>
+<title>AFM 291 Practice Arena · Alex Rajcoomar</title>
 <style>
 /* ============ TOKENS (same design system as the Study System) ============ */
 :root{
   color-scheme:light;
-  --page:#f9f9f7; --surface:#fcfcfb; --ink:#0b0b0b; --ink2:#52514e; --muted:#898781;
+  --page:#f9f9f7; --surface:#fcfcfb; --ink:#0b0b0b; --ink2:#52514e; --muted:#736f6f;
   --grid:#e1e0d9; --line:#c3c2b7; --ring:rgba(11,11,11,.10);
-  --acc:#2a78d6; --t2:#eb6834; --t3:#1baf7a; --t4:#eda100; --t5:#e87ba4; --t7:#4a3aa7;
+  --acc:#2672ca; --t2:#eb6834; --t3:#1baf7a; --t4:#eda100; --t5:#e87ba4; --t7:#4a3aa7;
   --good:#0ca30c; --goodtx:#006300; --warn:#fab219; --serious:#ec835a; --crit:#d03b3b;
   --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
   --sans:system-ui,-apple-system,"Segoe UI",sans-serif;
@@ -82,11 +82,11 @@ h1{font-size:21px;margin:12px 0 4px}
 .mtile{border:1px solid var(--grid);border-radius:11px;background:var(--surface);padding:10px 11px;
   cursor:pointer;text-align:left;position:relative;min-height:74px}
 .mtile:hover{border-color:var(--acc)}
-.mtile .n{font:800 10px var(--sans);color:var(--acc)}
+.mtile .n{font:800 11px var(--sans);color:var(--acc)}
 .mtile .t{font-weight:700;font-size:12px;line-height:1.25;margin:2px 0 5px}
 .mtile .stars{font-size:11px;letter-spacing:1px;color:var(--t4)}
-.mtile .best{font:600 10px var(--mono);color:var(--muted)}
-.mtile.locked{opacity:.55;cursor:not-allowed}
+.mtile .best{font:600 11px var(--mono);color:var(--ink2)}
+.mtile.locked{opacity:1;cursor:not-allowed}
 .mtile.locked .lock{position:absolute;top:8px;right:9px;font-size:12px}
 .mtile.done{border-color:color-mix(in srgb,var(--good) 55%,var(--grid))}
 .mtile.shake{animation:shk .3s}
@@ -233,15 +233,15 @@ h1{font-size:21px;margin:12px 0 4px}
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="manifest" href="site.webmanifest">
 <link rel="canonical" href="https://alexrajcoomar.github.io/practice-arena.html">
-<meta property="og:title" content="AFM 291 Practice Arena — Alex Rajcoomar">
+<meta property="og:title" content="AFM 291 Practice Arena · Alex Rajcoomar">
 <meta property="og:description" content="Practice questions for AFM 291 with immediate feedback, built for repetition under time pressure.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://alexrajcoomar.github.io/practice-arena.html">
-<meta property="og:site_name" content="Alex Rajcoomar — portfolio">
+<meta property="og:site_name" content="Alex Rajcoomar · portfolio">
 <meta property="og:image" content="https://alexrajcoomar.github.io/cards/practice-arena.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="AFM 291 Practice Arena — Alex Rajcoomar">
+<meta property="og:image:alt" content="AFM 291 Practice Arena · Alex Rajcoomar">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://alexrajcoomar.github.io/cards/practice-arena.png">
 <script>
@@ -259,7 +259,7 @@ h1{font-size:21px;margin:12px 0 4px}
 <!--/__meta-->
 </head>
 <body>
-<noscript><div style="padding:20px;font-family:system-ui">This practice app is built entirely in JavaScript — enable JavaScript (it runs fully offline; nothing is loaded from the network).</div></noscript>
+<noscript><div style="padding:20px;font-family:system-ui">This practice app is built entirely in JavaScript, enable JavaScript (it runs fully offline; nothing is loaded from the network).</div></noscript>
 <header class="hdr">
   <div class="brand" id="homeBtn"><span class="logo">▸</span> AFM 291 <span class="sub">Practice Arena</span></div>
   <div class="dash">
@@ -274,16 +274,16 @@ h1{font-size:21px;margin:12px 0 4px}
   <!-- ============ HOME ============ -->
   <section class="screen on" id="scr-home">
     <h1>Practice Arena</h1>
-    <p class="tag">Every question is built from the audited vault (MOC → Reconciliation → Key Takeaways). Unverified citations keep their ⚑ flags — even in a game.</p>
+    <p class="tag">Every question is built from the audited vault (MOC → Reconciliation → Key Takeaways). Unverified citations keep their ⚑ flags, even in a game.</p>
     <div class="modes">
-      <button class="mode" data-go="campaign"><div class="mi">🏁</div><h3>Chapter Campaign</h3><p>Score 80%+ to unlock the next module. Three stars at 100%.</p></button>
+      <button class="mode" data-go="campaign"><div class="mi">🏁</div><h3 aria-level="2">Chapter Campaign</h3><p>Score 80%+ to unlock the next module. Three stars at 100%.</p></button>
       <button class="mode" data-go="rapid"><div class="mi">⚡</div><h3>Timed Rapid Fire</h3><p>60 seconds. Definitions, IFRS vs ASPE, classification. Combo scoring.</p><span class="hs" id="rapidHs"></span></button>
       <button class="mode" data-go="sim"><div class="mi">🧮</div><h3>Calculation Simulator</h3><p>Randomised numeric drills with full worked solutions.</p></button>
       <button class="mode" data-go="review"><div class="mi">🃏</div><h3>Smart Review</h3><p>Leitner deck of everything you've missed, spaced over days.</p><span class="due" id="dueBadge" hidden></span></button>
     </div>
-    <div class="sect">Campaign — chapter selector</div>
+    <div class="sect">Campaign, chapter selector</div>
     <div class="mods" id="modGrid"></div>
-    <p class="note">Fixed figures (Red Rocket, Kennedy, Kool, Powell/Sooke, Robson/Hydro One…) are verified course figures; all other drill numbers are generated practice inputs, not course data. ⚑V = verified against ifrs.org/AASB only, still [VERIFY] vs CPA Canada Handbook Part I. ⚑C = the source contradicts itself — confirm with your instructor. Progress is stored in this browser only.</p>
+    <p class="note">Fixed figures (Red Rocket, Kennedy, Kool, Powell/Sooke, Robson/Hydro One…) are verified course figures; all other drill numbers are generated practice inputs, not course data. ⚑V = verified against ifrs.org/AASB only, still [VERIFY] vs CPA Canada Handbook Part I. ⚑C = the source contradicts itself, confirm with your instructor. Progress is stored in this browser only.</p>
   </section>
   <!-- ============ QUIZ (campaign + rapid + review share this) ============ -->
   <section class="screen" id="scr-quiz">
@@ -1643,13 +1643,59 @@ paintHome();
 
 
 <!--__rbp-->
+<!-- The pill styles itself: this block used to live only with the top bar,
+     so the seven tool pages, which carry the pill alone, rendered it as an
+     unstyled link at the very end of the document. Whatever carries the
+     pill now carries its style. -->
+<style id="__rbp-style">
+#__rb-pill{
+  position:fixed;left:14px;bottom:14px;z-index:2147483000;
+  display:inline-flex;align-items:center;gap:.45rem;padding:.58rem .9rem;
+  background:rgba(22,21,15,.93);color:#faf9f6;text-decoration:none;border-radius:99px;
+  font:600 12.5px/1 InterVar,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  border:1px solid rgba(255,255,255,.16);box-shadow:0 6px 22px rgba(0,0,0,.28);
+  opacity:0;transform:translateY(6px);pointer-events:none;
+  transition:opacity .2s ease,transform .2s ease;
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+}
+#__rb-pill.__on{opacity:1;transform:none;pointer-events:auto}
+#__rb-pill:hover{background:#16150f;color:#fff}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) #__rb-pill{background:rgba(247,245,239,.95);color:#131310;border-color:rgba(0,0,0,.2)}
+  :root:not([data-theme="light"]) #__rb-pill:hover{background:#fff;color:#000}
+}
+:root[data-theme="dark"] #__rb-pill{background:rgba(247,245,239,.95);color:#131310;border-color:rgba(0,0,0,.2)}
+:root[data-theme="dark"] #__rb-pill:hover{background:#fff;color:#000}
+@media (prefers-reduced-motion:reduce){#__rb-pill{transition:none}}
+@media print{#__rb-pill{display:none !important}}
+/* a tool carries no bar, so what it was built from stands at the foot of the document */
+#__rb-from{margin:1.25rem 1rem;font:400 13px/1.45 InterVar,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;color:#6f6c63;max-width:70ch}
+#__rb-from b{font-weight:600;color:#55524a}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) #__rb-from{color:#948f85}
+  :root:not([data-theme="light"]) #__rb-from b{color:#c0bcb1}
+}
+:root[data-theme="dark"] #__rb-from{color:#948f85}
+:root[data-theme="dark"] #__rb-from b{color:#c0bcb1}
+</style>
+<!-- With scripts off nothing ever adds the __on class, and the only way
+     back from a tool page vanished. The pill needs its script for the
+     scroll threshold, not for existing. -->
+<noscript><style>#__rb-pill{opacity:1 !important;transform:none !important;pointer-events:auto !important}</style></noscript>
 <a id="__rb-pill" href="afm291.html">&#8592; The vault</a>
+<p id="__rb-from"><b>Built from</b> Every question built from the audited AFM 291 vault: the chapter notes, the reconciliation and the key takeaways.</p>
 <script>
 (function(){
   var p=document.getElementById('__rb-pill'); if(!p) return;
+  /* On a page with the top bar the pill waits until the bar has scrolled
+     out of reach. On a page without one (the tools carry no bar, because a
+     bar inside a full-screen application sits in the wrong place) the pill
+     is the only way back, so it is there from the first paint: a tool
+     screen shorter than the threshold used to strand the reader entirely. */
+  var TH=document.getElementById('__rb')?160:-1;
   var t=false;
   function run(){ t=false;
-    p.classList.toggle('__on',(window.scrollY||document.documentElement.scrollTop)>420); }
+    p.classList.toggle('__on',(window.scrollY||document.documentElement.scrollTop)>TH); }
   function q(){ if(!t){ t=true; requestAnimationFrame(run); } }
   addEventListener('scroll',q,{passive:true}); run();
 })();
@@ -1667,7 +1713,7 @@ paintHome();
     function put(key){
       if(t2[key]||Object.keys(t2).length<500){
         t2[key]=(t2[key]||0)+1;
-        localStorage.setItem(k,JSON.stringify(t2));
+        try{localStorage.setItem(k,JSON.stringify(t2));}catch(e){}
       }
     }
     put(u+location.hash);

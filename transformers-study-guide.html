@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html lang="en-CA">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Attention, Worked on Paper · Alex Rajcoomar</title>
+<style>
+/* self-hosted, subset to this piece's characters; the manifest in fonts/ records the source */
+@font-face{font-family:"IBM Plex Mono";font-style:normal;font-weight:400;font-display:swap;src:url("fonts/ibmplexmono-transformers-study-guide-400.woff2") format("woff2")}
+@font-face{font-family:"IBM Plex Mono";font-style:normal;font-weight:500;font-display:swap;src:url("fonts/ibmplexmono-transformers-study-guide-500.woff2") format("woff2")}
+@font-face{font-family:"IBM Plex Mono";font-style:normal;font-weight:600;font-display:swap;src:url("fonts/ibmplexmono-transformers-study-guide-600.woff2") format("woff2")}
+@font-face{font-family:"IBM Plex Sans Condensed";font-style:normal;font-weight:400;font-display:swap;src:url("fonts/ibmplexsanscondensed-transformers-study-guide-400.woff2") format("woff2")}
+@font-face{font-family:"IBM Plex Sans Condensed";font-style:normal;font-weight:500;font-display:swap;src:url("fonts/ibmplexsanscondensed-transformers-study-guide-500.woff2") format("woff2")}
+@font-face{font-family:"IBM Plex Sans Condensed";font-style:normal;font-weight:600;font-display:swap;src:url("fonts/ibmplexsanscondensed-transformers-study-guide-600.woff2") format("woff2")}
+@font-face{font-family:"IBM Plex Sans Condensed";font-style:normal;font-weight:700;font-display:swap;src:url("fonts/ibmplexsanscondensed-transformers-study-guide-700.woff2") format("woff2")}
+@font-face{font-family:"IBM Plex Serif";font-style:normal;font-weight:400;font-display:swap;src:url("fonts/ibmplexserif-transformers-study-guide-400.woff2") format("woff2")}
+@font-face{font-family:"IBM Plex Serif";font-style:normal;font-weight:600;font-display:swap;src:url("fonts/ibmplexserif-transformers-study-guide-600.woff2") format("woff2")}
+@font-face{font-family:"IBM Plex Serif";font-style:italic;font-weight:400;font-display:swap;src:url("fonts/ibmplexserif-transformers-study-guide-400-italic.woff2") format("woff2")}
+</style>
+<style>
+  :root{
+    --ink:#14201e;
+    --ink-soft:#4b5c55;
+    --paper:#eef2ec;
+    --ledger:#dce7db;
+    --ledger-2:#e6eee5;
+    --rule:#a9bca8;
+    --rule-soft:#c4d3c3;
+    --blue:#1f3a5f;
+    --red:#8c2f39;
+    --amber:#9c6927;
+    --max:900px;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:"IBM Plex Serif",Georgia,serif;
+    font-size:17px;
+    line-height:1.62;
+  }
+  .wrap{max-width:var(--max);margin:0 auto;padding:0 24px 96px}
+
+  /* ---------- masthead ---------- */
+  header.mast{
+    border-bottom:2px solid var(--ink);
+    padding:56px 0 20px;
+    margin-bottom:44px;
+  }
+  .eyebrow{
+    font-family:"IBM Plex Sans Condensed",system-ui,sans-serif;
+    font-weight:600;letter-spacing:.14em;text-transform:uppercase;
+    font-size:12px;color:var(--ink-soft);margin:0 0 14px;
+  }
+  h1{
+    font-family:"IBM Plex Sans Condensed",system-ui,sans-serif;
+    font-weight:700;font-size:clamp(34px,6vw,58px);line-height:1.02;
+    margin:0 0 16px;letter-spacing:-.015em;
+  }
+  h1 em{font-style:normal;color:var(--red)}
+  .standfirst{font-size:19px;max-width:60ch;margin:0 0 20px;color:var(--ink)}
+  .sourceline{
+    font-family:"IBM Plex Mono",monospace;font-size:12.5px;
+    color:var(--ink-soft);line-height:1.55;max-width:70ch;margin:0;
+  }
+
+  /* ---------- sections ---------- */
+  section{margin:0 0 64px;scroll-margin-top:20px}
+  h2{
+    font-family:"IBM Plex Sans Condensed",system-ui,sans-serif;
+    font-weight:700;font-size:27px;line-height:1.15;letter-spacing:-.01em;
+    margin:0 0 6px;padding-top:14px;border-top:1px solid var(--rule);
+  }
+  .sub{
+    font-family:"IBM Plex Mono",monospace;font-size:12px;
+    letter-spacing:.09em;text-transform:uppercase;color:var(--ink-soft);
+    margin:0 0 20px;
+  }
+  h3{
+    font-family:"IBM Plex Sans Condensed",system-ui,sans-serif;
+    font-weight:600;font-size:18px;margin:32px 0 8px;
+  }
+  p{margin:0 0 15px;max-width:68ch}
+  .lede{font-size:18.5px}
+  code,.mono{font-family:"IBM Plex Mono",monospace;font-size:.9em}
+  code{background:var(--ledger);padding:1px 5px;border-radius:2px}
+
+  /* ---------- ledger panel: the signature surface ---------- */
+  .ledger{
+    background:var(--ledger-2);
+    border:1px solid var(--rule);
+    border-left:4px solid var(--blue);
+    padding:22px 22px 24px;
+    margin:24px 0;
+  }
+  .ledger-head{
+    display:flex;justify-content:space-between;align-items:baseline;
+    gap:16px;flex-wrap:wrap;
+    font-family:"IBM Plex Sans Condensed",system-ui,sans-serif;
+    font-weight:600;font-size:13px;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--blue);border-bottom:1px solid var(--rule);
+    padding-bottom:8px;margin-bottom:16px;
+  }
+  .ledger-head span{font-weight:400;letter-spacing:.04em;text-transform:none;color:var(--ink-soft);font-size:12px}
+
+  /* ---------- controls ---------- */
+  .controls{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:18px}
+  .tokbtn{
+    font-family:"IBM Plex Mono",monospace;font-size:13.5px;
+    background:var(--paper);border:1px solid var(--rule);color:var(--ink);
+    padding:7px 12px;cursor:pointer;border-radius:2px;transition:background .12s,border-color .12s;
+  }
+  .tokbtn:hover{background:#fff}
+  .tokbtn[aria-pressed="true"]{background:var(--blue);border-color:var(--blue);color:#fff}
+  .tokbtn .idx{opacity:.55;font-size:11px;margin-right:5px}
+  .tokbtn[aria-pressed="true"] .idx{opacity:.75}
+  .switches{display:flex;flex-wrap:wrap;gap:20px;margin:4px 0 18px}
+  .sw{
+    display:flex;align-items:center;gap:8px;cursor:pointer;
+    font-family:"IBM Plex Sans Condensed",system-ui,sans-serif;font-size:14.5px;
+  }
+  .sw input{width:16px;height:16px;accent-color:var(--blue);cursor:pointer}
+  .hint{font-family:"IBM Plex Mono",monospace;font-size:11.5px;color:var(--ink-soft);margin-left:2px}
+  :focus-visible{outline:2px solid var(--red);outline-offset:2px}
+
+  /* ---------- matrices ---------- */
+  .scroller{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  table.grid{border-collapse:collapse;font-family:"IBM Plex Mono",monospace;font-size:12.5px}
+  table.grid th{
+    font-weight:500;color:var(--ink-soft);padding:5px 9px;text-align:center;
+    font-size:11.5px;letter-spacing:.03em;white-space:nowrap;
+  }
+  table.grid th.rowlab{text-align:right;padding-right:11px;color:var(--ink)}
+  table.grid td{
+    border:1px solid var(--rule-soft);padding:8px 11px;text-align:right;
+    min-width:60px;background:#fff;
+  }
+  table.grid tr.active th.rowlab{color:var(--red);font-weight:600}
+  table.grid tr.active td{border-top-color:var(--red);border-bottom-color:var(--red)}
+  td.total{
+    background:var(--ledger);border-left:2px solid var(--blue);
+    font-weight:600;color:var(--blue);
+  }
+  td.masked{color:#b9c6b8;background:repeating-linear-gradient(45deg,#fff,#fff 4px,#f0f3ef 4px,#f0f3ef 8px)}
+
+  /* ---------- pipeline strip ---------- */
+  .pipe{margin-top:26px}
+  .stage{
+    display:grid;grid-template-columns:210px 1fr;gap:18px;
+    padding:13px 0;border-top:1px dashed var(--rule);align-items:start;
+  }
+  .stage:first-child{border-top:1px solid var(--rule)}
+  .stage-name{
+    font-family:"IBM Plex Sans Condensed",system-ui,sans-serif;font-size:14px;line-height:1.35;
+  }
+  .stage-name b{display:block;font-weight:600}
+  .stage-name i{
+    display:block;font-style:normal;font-family:"IBM Plex Mono",monospace;
+    font-size:11.5px;color:var(--ink-soft);margin-top:3px;
+  }
+  .num{font-family:"IBM Plex Mono",monospace;font-size:13px;display:flex;flex-wrap:wrap;gap:6px}
+  .cell{
+    padding:5px 9px;border:1px solid var(--rule-soft);background:#fff;
+    min-width:64px;text-align:right;border-radius:2px;
+  }
+  .cell.dim{color:#b9c6b8;background:repeating-linear-gradient(45deg,#fff,#fff 4px,#f0f3ef 4px,#f0f3ef 8px)}
+  .cell.sum{background:var(--ledger);border-color:var(--blue);color:var(--blue);font-weight:600}
+  .readout{
+    margin-top:20px;padding:14px 16px;background:var(--ledger);
+    border-left:3px solid var(--red);font-size:15.5px;
+  }
+  .readout b{font-family:"IBM Plex Sans Condensed",sans-serif}
+
+  /* ---------- saturation demo ---------- */
+  .bars{display:grid;gap:9px;margin-top:12px}
+  .bar-row{display:grid;grid-template-columns:78px 1fr 62px;align-items:center;gap:10px;font-family:"IBM Plex Mono",monospace;font-size:12px}
+  .bar-track{background:#fff;border:1px solid var(--rule-soft);height:19px;position:relative}
+  .bar-fill{position:absolute;inset:0 auto 0 0;background:var(--red);opacity:.82;transition:width .18s ease}
+  .twocol{display:grid;grid-template-columns:1fr 1fr;gap:28px}
+  input[type=range]{width:100%;accent-color:var(--blue)}
+
+  /* ---------- static tables ---------- */
+  table.data{border-collapse:collapse;width:100%;font-size:15px;margin:18px 0}
+  table.data th{
+    font-family:"IBM Plex Sans Condensed",sans-serif;font-size:12.5px;
+    letter-spacing:.08em;text-transform:uppercase;text-align:left;
+    padding:9px 12px;border-bottom:2px solid var(--ink);vertical-align:bottom;
+  }
+  table.data td{padding:11px 12px;border-bottom:1px solid var(--rule-soft);vertical-align:top;line-height:1.5}
+  table.data tr:last-child td{border-bottom:1px solid var(--rule)}
+  .tag{
+    font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.06em;
+    padding:2px 7px;border-radius:2px;white-space:nowrap;display:inline-block;
+  }
+  .tag.err{background:var(--red);color:#fff}
+  .tag.soft{background:var(--amber);color:#fff}
+  .tag.min{background:var(--rule);color:var(--ink)}
+
+  /* ---------- mask grids ---------- */
+  .masks{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:18px}
+  .maskbox h4{
+    font-family:"IBM Plex Sans Condensed",sans-serif;font-size:14px;margin:0 0 3px;
+  }
+  .maskbox p{font-family:"IBM Plex Mono",monospace;font-size:11.5px;color:var(--ink-soft);margin:0 0 10px}
+  table.mask{border-collapse:collapse}
+  table.mask td{
+    width:26px;height:26px;border:1px solid var(--rule-soft);
+    background:#fff;padding:0;
+  }
+  table.mask td.on{background:var(--blue)}
+
+  /* ---------- recall cards ---------- */
+  .cards{display:grid;gap:12px;margin-top:18px}
+  details.card{border:1px solid var(--rule);background:var(--ledger-2);padding:0}
+  details.card summary{
+    cursor:pointer;padding:14px 16px;list-style:none;
+    font-family:"IBM Plex Sans Condensed",sans-serif;font-weight:600;font-size:16px;
+  }
+  details.card summary::-webkit-details-marker{display:none}
+  details.card summary::before{content:"?";color:var(--red);font-family:"IBM Plex Mono",monospace;margin-right:11px}
+  details.card[open] summary::before{content:"—"}
+  details.card .ans{padding:0 16px 16px;font-size:15.5px;border-top:1px solid var(--rule-soft);margin-top:0;padding-top:13px}
+  details.card .ans p{margin:0 0 10px}
+  details.card .ans p:last-child{margin:0}
+
+  footer{border-top:2px solid var(--ink);padding-top:20px;font-size:14.5px;color:var(--ink-soft)}
+  a{color:var(--blue)}
+
+  @media (max-width:760px){
+    body{font-size:16px}
+    .twocol,.masks{grid-template-columns:1fr}
+    .stage{grid-template-columns:1fr;gap:7px}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *{transition:none !important;animation:none !important}
+  }
+
+/* ---------- Dark palette, derived and audited ---------- */
+/* Light surfaces become deep ones of the same hue, ink becomes near-white, accents are lifted to read on ink;
+   every rule that set a colour as a literal is re-emitted below with the literal mapped the same way. */
+@media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){ color-scheme:dark; --ink:#d1e0de; --ink-soft:#becac5; --paper:#20281b; --ledger:#151e14; --ledger-2:#192518; --rule:#465945; --rule-soft:#4b6449; --blue:#c0cad9; --red:#d0b0b4; --amber:#cfc1ae; }
+:root:not([data-theme="light"]) :where(body){}
+:root:not([data-theme="light"]) .tokbtn:hover{background:#2b2b2b}
+:root:not([data-theme="light"]) .tokbtn[aria-pressed="true"]{color:#2b2b2b}
+:root:not([data-theme="light"]) table.grid td{background:#2b2b2b}
+:root:not([data-theme="light"]) td.masked{color:#4b5c4a;background:repeating-linear-gradient(45deg,#2b2b2b,#2b2b2b 4px,#20281e 4px,#20281e 8px)}
+:root:not([data-theme="light"]) .cell{background:#2b2b2b}
+:root:not([data-theme="light"]) .cell.dim{color:#4b5c4a;background:repeating-linear-gradient(45deg,#2b2b2b,#2b2b2b 4px,#20281e 4px,#20281e 8px)}
+:root:not([data-theme="light"]) .bar-track{background:#2b2b2b}
+:root:not([data-theme="light"]) .tag.err{color:#2b2b2b}
+:root:not([data-theme="light"]) .tag.soft{color:#2b2b2b}
+:root:not([data-theme="light"]) table.mask td{background:#2b2b2b}
+:root:not([data-theme="light"]) #__rb{border-bottom:1px solid #69604a;background:#312c1d;color:#cac8c2}
+:root:not([data-theme="light"]) #__rb a{color:#b3c1d2}
+:root:not([data-theme="light"]) #__rb .__rb-home{color:#e3e1d6}
+:root:not([data-theme="light"]) #__rb .__rb-home i{color:#a29f96}
+:root:not([data-theme="light"]) #__rb .__rb-row{color:#a29f96}
+:root:not([data-theme="light"]) #__rb .__rb-row b{color:#cac8c2}
+:root:not([data-theme="light"]) #__rb .__rb-from{color:#a29f96}
+:root:not([data-theme="light"]) #__rb .__rb-from b{color:#cac8c2}
+:root:not([data-theme="light"]) #__rb .__mark{background:#2a291d;color:#312c1d}
+:root:not([data-theme="light"]) :root[data-theme="dark"] #__rb{background:#272721;border-bottom-color:#292822;color:#595548}
+:root:not([data-theme="light"]) :root[data-theme="dark"] #__rb .__rb-home{color:#2d291b}
+:root:not([data-theme="light"]) :root[data-theme="dark"] #__rb .__rb-home i{color:#c1beb8}
+:root:not([data-theme="light"]) :root[data-theme="dark"] #__rb .__rb-row{color:#c1beb8}
+:root:not([data-theme="light"]) :root[data-theme="dark"] #__rb .__rb-row b{color:#595548}
+:root:not([data-theme="light"]) :root[data-theme="dark"] #__rb .__rb-from{color:#c1beb8}
+:root:not([data-theme="light"]) :root[data-theme="dark"] #__rb .__rb-from b{color:#595548}
+:root:not([data-theme="light"]) :root[data-theme="dark"] #__rb a{color:#384c69}
+:root:not([data-theme="light"]) :root[data-theme="dark"] #__rb .__mark{background:#2d291b;color:#e0e0da}
+:root:not([data-theme="light"]) #__rb-pill{color:#312c1d}
+:root:not([data-theme="light"]) #__rb-pill:hover{background:#2a291d;color:#2b2b2b}
+:root:not([data-theme="light"]) :root[data-theme="dark"] #__rb-pill{color:#e0e0da}
+:root:not([data-theme="light"]) :root[data-theme="dark"] #__rb-pill:hover{background:#2b2b2b;color:#e6e6e6}
+:root:not([data-theme="light"]) #__rb-from{color:#a29f96}
+:root:not([data-theme="light"]) #__rb-from b{color:#cac8c2}
+:root:not([data-theme="light"]) :root[data-theme="dark"] #__rb-from{color:#c1beb8}
+:root:not([data-theme="light"]) :root[data-theme="dark"] #__rb-from b{color:#595548}
+:root:not([data-theme="light"]) .mono,code{color:var(--ink-soft)}
+:root:not([data-theme="light"]) [style*="--dk:"]{color:var(--dk)!important} }
+:root[data-theme="dark"]{ color-scheme:dark; --ink:#d1e0de; --ink-soft:#becac5; --paper:#20281b; --ledger:#151e14; --ledger-2:#192518; --rule:#465945; --rule-soft:#4b6449; --blue:#c0cad9; --red:#d0b0b4; --amber:#cfc1ae; }
+:root[data-theme="dark"] .tokbtn:hover{background:#2b2b2b}
+:root[data-theme="dark"] .tokbtn[aria-pressed="true"]{color:#2b2b2b}
+:root[data-theme="dark"] table.grid td{background:#2b2b2b}
+:root[data-theme="dark"] td.masked{color:#4b5c4a;background:repeating-linear-gradient(45deg,#2b2b2b,#2b2b2b 4px,#20281e 4px,#20281e 8px)}
+:root[data-theme="dark"] .cell{background:#2b2b2b}
+:root[data-theme="dark"] .cell.dim{color:#4b5c4a;background:repeating-linear-gradient(45deg,#2b2b2b,#2b2b2b 4px,#20281e 4px,#20281e 8px)}
+:root[data-theme="dark"] .bar-track{background:#2b2b2b}
+:root[data-theme="dark"] .tag.err{color:#2b2b2b}
+:root[data-theme="dark"] .tag.soft{color:#2b2b2b}
+:root[data-theme="dark"] table.mask td{background:#2b2b2b}
+:root[data-theme="dark"] #__rb{border-bottom:1px solid #69604a;background:#312c1d;color:#cac8c2}
+:root[data-theme="dark"] #__rb a{color:#b3c1d2}
+:root[data-theme="dark"] #__rb .__rb-home{color:#e3e1d6}
+:root[data-theme="dark"] #__rb .__rb-home i{color:#a29f96}
+:root[data-theme="dark"] #__rb .__rb-row{color:#a29f96}
+:root[data-theme="dark"] #__rb .__rb-row b{color:#cac8c2}
+:root[data-theme="dark"] #__rb .__rb-from{color:#a29f96}
+:root[data-theme="dark"] #__rb .__rb-from b{color:#cac8c2}
+:root[data-theme="dark"] #__rb .__mark{background:#2a291d;color:#312c1d}
+:root[data-theme="dark"] :root[data-theme="dark"] #__rb{background:#272721;border-bottom-color:#292822;color:#595548}
+:root[data-theme="dark"] :root[data-theme="dark"] #__rb .__rb-home{color:#2d291b}
+:root[data-theme="dark"] :root[data-theme="dark"] #__rb .__rb-home i{color:#c1beb8}
+:root[data-theme="dark"] :root[data-theme="dark"] #__rb .__rb-row{color:#c1beb8}
+:root[data-theme="dark"] :root[data-theme="dark"] #__rb .__rb-row b{color:#595548}
+:root[data-theme="dark"] :root[data-theme="dark"] #__rb .__rb-from{color:#c1beb8}
+:root[data-theme="dark"] :root[data-theme="dark"] #__rb .__rb-from b{color:#595548}
+:root[data-theme="dark"] :root[data-theme="dark"] #__rb a{color:#384c69}
+:root[data-theme="dark"] :root[data-theme="dark"] #__rb .__mark{background:#2d291b;color:#e0e0da}
+:root[data-theme="dark"] #__rb-pill{color:#312c1d}
+:root[data-theme="dark"] #__rb-pill:hover{background:#2a291d;color:#2b2b2b}
+:root[data-theme="dark"] :root[data-theme="dark"] #__rb-pill{color:#e0e0da}
+:root[data-theme="dark"] :root[data-theme="dark"] #__rb-pill:hover{background:#2b2b2b;color:#e6e6e6}
+:root[data-theme="dark"] #__rb-from{color:#a29f96}
+:root[data-theme="dark"] #__rb-from b{color:#cac8c2}
+:root[data-theme="dark"] :root[data-theme="dark"] #__rb-from{color:#c1beb8}
+:root[data-theme="dark"] :root[data-theme="dark"] #__rb-from b{color:#595548}
+:root[data-theme="dark"] .mono,code{color:var(--ink-soft)}
+:root[data-theme="dark"] [style*="--dk:"]{color:var(--dk)!important}
+@media print{ :root{ --ink:#14201e; --ink-soft:#4b5c55; --paper:#eef2ec; --ledger:#dce7db; --ledger-2:#e6eee5; --rule:#a9bca8; --rule-soft:#c4d3c3; --blue:#1f3a5f; --red:#8c2f39; --amber:#9c6927; } }
+</style>
+<!--__meta-->
+<meta name="color-scheme" content="light dark">
+<meta name="description" content="A study guide that collapses the eight sections of a digest into one mechanism: the attention worksheet with live token controls, why the scaling term is…">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%2316150f'/><text x='50' y='72' font-size='64' font-family='Helvetica,Arial' font-weight='bold' fill='%23faf9f6' text-anchor='middle'>A</text></svg>">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="site.webmanifest">
+<link rel="canonical" href="https://alexrajcoomar.github.io/transformers-study-guide.html">
+<meta property="og:title" content="Attention, Worked on Paper · Alex Rajcoomar">
+<meta property="og:description" content="A study guide that collapses the eight sections of a digest into one mechanism: the attention worksheet with live token controls, why the scaling term is…">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://alexrajcoomar.github.io/transformers-study-guide.html">
+<meta property="og:site_name" content="Alex Rajcoomar · portfolio">
+<meta property="og:image" content="https://alexrajcoomar.github.io/og-card.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Attention, Worked on Paper · Alex Rajcoomar">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://alexrajcoomar.github.io/og-card.png">
+<script>
+(function(){
+  var d=document.documentElement;
+  try{var t=localStorage.getItem('theme'); if(t) d.setAttribute('data-theme',t);}catch(e){}
+  new MutationObserver(function(){
+    try{
+      var v=d.getAttribute('data-theme');
+      if(v) localStorage.setItem('theme',v); else localStorage.removeItem('theme');
+    }catch(e){}
+  }).observe(d,{attributes:true,attributeFilter:['data-theme']});
+})();
+</script>
+<!--/__meta-->
+</head>
+<body>
+<!--__rb-->
+<!-- injected by the site build: a way back into the site from a standalone
+     piece. A static bar at the top, so it is visible on arrival, and a pill
+     that appears once you have scrolled past it, so there is always a way out.
+     Self-contained, because these pages do not load the site stylesheet. -->
+<style id="__rb-style">
+#__rb{
+  box-sizing:border-box;display:flex;flex-wrap:wrap;align-items:center;gap:.6rem 1.25rem;
+  padding:.6rem clamp(1rem,4vw,2rem);border-bottom:1px solid #ddd9cf;background:#faf9f6;
+  font:500 13px/1.35 InterVar,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  color:#55524a;
+}
+#__rb a{color:#14509b;text-decoration:none;display:inline-flex;align-items:center;gap:.4rem}
+#__rb a:hover{text-decoration:underline}
+#__rb .__rb-home{font-weight:640;color:#16150f}
+#__rb .__rb-home i{font-style:normal;font-weight:400;color:#6f6c63}
+#__rb .__rb-right{margin-left:auto;display:flex;gap:1.1rem;flex-wrap:wrap}
+/* the piece's own row of the statement: origin, words, figures, tables, the
+   same figures the home page prints for it, from the same measurement */
+#__rb .__rb-row{color:#6f6c63;font-variant-numeric:tabular-nums;white-space:nowrap}
+#__rb .__rb-row b{font-weight:600;color:#55524a}
+@media (max-width:44rem){#__rb .__rb-row{flex-basis:100%;order:3;white-space:normal}}
+/* what the piece was built from, in the owner's words, from pieces.json */
+#__rb .__rb-from{flex-basis:100%;order:5;font-weight:400;color:#6f6c63;line-height:1.4;max-width:70ch}
+#__rb .__rb-from b{font-weight:600;color:#55524a}
+#__rb .__mark{
+  display:inline-grid;place-items:center;width:1.2rem;height:1.2rem;flex:none;
+  background:#16150f;color:#faf9f6;font-size:.72rem;font-weight:700;
+}
+/* Dark has to answer to two things: the reader's system setting, and the
+   theme button on the page, which sets data-theme on <html>. Keyed to the
+   media query alone, the bar stayed paper-white across the top of an essay
+   the reader had just switched to dark, and read as a rendering fault. The
+   media query is scoped so an explicit light choice wins, and the attribute
+   selector is repeated so an explicit dark choice wins on a light system. */
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) #__rb{background:#131310;border-bottom-color:#2c2b24;color:#c0bcb1}
+  :root:not([data-theme="light"]) #__rb .__rb-home{color:#f7f5ef}
+  :root:not([data-theme="light"]) #__rb .__rb-home i{color:#948f85}
+  :root:not([data-theme="light"]) #__rb .__rb-row{color:#948f85}
+  :root:not([data-theme="light"]) #__rb .__rb-row b{color:#c0bcb1}
+  :root:not([data-theme="light"]) #__rb .__rb-from{color:#948f85}
+  :root:not([data-theme="light"]) #__rb .__rb-from b{color:#c0bcb1}
+  :root:not([data-theme="light"]) #__rb a{color:#85adea}
+  :root:not([data-theme="light"]) #__rb .__mark{background:#f7f5ef;color:#131310}
+}
+:root[data-theme="dark"] #__rb{background:#131310;border-bottom-color:#2c2b24;color:#c0bcb1}
+:root[data-theme="dark"] #__rb .__rb-home{color:#f7f5ef}
+:root[data-theme="dark"] #__rb .__rb-home i{color:#948f85}
+:root[data-theme="dark"] #__rb .__rb-row{color:#948f85}
+:root[data-theme="dark"] #__rb .__rb-row b{color:#c0bcb1}
+:root[data-theme="dark"] #__rb .__rb-from{color:#948f85}
+:root[data-theme="dark"] #__rb .__rb-from b{color:#c0bcb1}
+:root[data-theme="dark"] #__rb a{color:#85adea}
+:root[data-theme="dark"] #__rb .__mark{background:#f7f5ef;color:#131310}
+@media print{#__rb{display:none !important}}
+</style>
+<nav id="__rb" aria-label="Portfolio">
+  <a class="__rb-home" href="index.html"><span class="__mark" aria-hidden="true">A</span>Alex Rajcoomar <i>portfolio</i></a>
+  <span class="__rb-row">Personal &middot; <b>2,100</b> words &middot; <b>1</b> figures &middot; <b>7</b> tables</span>
+  <span class="__rb-right"><a href="library.html">Library</a><a href="atlas.html">Atlas</a><a href="library.html">All work</a></span>
+  <span class="__rb-from"><b>Built from</b> Built from my uploaded digest of the attention paper, with AI assistance; the section on what the source document gets wrong carries the corrections.</span>
+</nav>
+<script>
+/* the trail: which passages this browser has opened. The atlas reads it and
+   rings them; the record lives in localStorage and never leaves the machine. */
+(function(){
+  if(window.__trailed) return; window.__trailed=1;
+  if('serviceWorker' in navigator && location.protocol.indexOf('http')===0){
+    addEventListener('load',function(){setTimeout(function(){
+      navigator.serviceWorker.register('sw.js').catch(function(){});},6000);});
+  }
+  try{
+    var k='atlas.trail';
+    var u=location.pathname.split('/').pop()||'index.html';
+    var t2=JSON.parse(localStorage.getItem(k)||'{}');
+    function put(key){
+      if(t2[key]||Object.keys(t2).length<500){
+        t2[key]=(t2[key]||0)+1;
+        try{localStorage.setItem(k,JSON.stringify(t2));}catch(e){}
+      }
+    }
+    put(u+location.hash);
+    addEventListener('hashchange',function(){ put(u+location.hash); });
+  }catch(e){}
+})();
+</script>
+<!--/__rb-->
+
+<div class="wrap" role="main">
+
+<header class="mast">
+  <p class="eyebrow">Study guide</p>
+  <h1>Attention, worked<br>on <em>paper</em></h1>
+  <p class="standfirst">The eight sections of that document collapse into one mechanism. Everything else is packaging around it. Work the mechanism until the numbers stop surprising you, then the packaging reads itself.</p>
+  <p class="sourceline">Source: gemini-code-1787878155785.md, an AI-generated digest of Karpathy material. A secondhand summary is not a source. Attributions and corrections below carry their own confidence labels. Numbers in the interactive panels are computed live in your browser from hand-set toy weights, not from a trained model.</p>
+</header>
+
+<!-- ============ 1. THE ONE IDEA ============ -->
+<section id="idea">
+  <h2 id="start-here-one-idea-three-sentences">Start here: one idea, three sentences</h2>
+  <p class="sub">Read before touching the sandbox</p>
+  <p class="lede">A transformer turns a sequence of tokens into a sequence of vectors, then repeats one move N times: let every token read from every other token (attention), then let every token think privately (a small neural network). Attention is a weighted average, and the weights are computed from the tokens themselves. That is the whole thing.</p>
+  <p>The financial reading, which is exact rather than decorative: each row of the attention matrix is a set of portfolio weights summing to 1.000, and the value matrix V is the holdings table. Each token's updated representation is its weighted position across the sequence. Softmax is the normalisation that forces the row to sum to one, and the mask is a restriction on which holdings that row is permitted to touch.</p>
+</section>
+
+<!-- ============ 2. THE WORKSHEET ============ -->
+<section id="worksheet">
+  <h2 id="the-attention-worksheet">The attention worksheet</h2>
+  <p class="sub">Signature panel · every number below is computed, not illustrated</p>
+  <p>Six tokens. Four dimensions per token. Pick a query row and follow it down the five stages. Turn the causal mask on to make it behave like GPT, off to make it behave like BERT. The right-hand total column is there for the same reason a ledger has one: if the row does not sum to 1.000, the row is wrong.</p>
+
+  <div class="ledger">
+    <div class="ledger-head">
+      <div>Sequence under analysis</div>
+      <span id="seqline">the · audit · found · a · material · error</span>
+    </div>
+
+    <div class="controls" id="tokrow" role="group" aria-label="Choose the query token"></div>
+
+    <div class="switches">
+      <label class="sw"><input type="checkbox" id="causal" checked> Causal mask <span class="hint">GPT: a token may only read tokens at or before its own position</span></label>
+      <label class="sw"><input type="checkbox" id="scale" checked> Divide by &radic;d<sub>k</sub> <span class="hint">d<sub>k</sub> = 4, so &radic;d<sub>k</sub> = 2</span></label>
+    </div>
+
+    <div class="scroller">
+      <table class="grid" id="matrix" aria-label="Attention weight matrix"></table>
+    </div>
+
+    <div class="pipe" id="pipe"></div>
+
+    <div class="readout" id="readout"></div>
+  </div>
+
+  <h3 id="what-each-stage-is-doing">What each stage is doing</h3>
+  <p><b>Project.</b> Three learned matrices turn the same input X into three different views. Query is what this token is looking for. Key is what a token advertises about itself. Value is what it actually hands over when matched. In this sandbox W<sub>V</sub> is deliberately set to the identity matrix, so the output vector reads directly as a weighted average of the input features. In a real model W<sub>V</sub> is learned like the others.</p>
+  <p><b>Score.</b> q<sub>i</sub> · k<sub>j</sub> is a dot product, so it is large when the query and the key point the same way in the 4-dimensional space. That single number is the entire notion of relevance in a transformer.</p>
+  <p><b>Scale.</b> Divide by &radic;d<sub>k</sub>. The next section shows why this is load-bearing rather than cosmetic.</p>
+  <p><b>Mask.</b> Set forbidden entries to negative infinity before the softmax, not after. Softmax maps negative infinity to exactly zero, so the surviving weights still sum to 1.000. Zeroing after the softmax would break the row total, which is the same error as striking a line out of a trial balance and not rebalancing.</p>
+  <p><b>Mix.</b> Multiply the weights by V and sum. The token's new vector is its weighted read of the sequence.</p>
+</section>
+
+<!-- ============ 3. WHY sqrt(dk) ============ -->
+<section id="scaling">
+  <h2 id="why-the-d-k-is-there">Why the &radic;d<sub>k</sub> is there</h2>
+  <p class="sub">The one line of the formula that looks arbitrary and is not</p>
+  <p>If the entries of q and k behave like independent standardised variables, their dot product over d<sub>k</sub> dimensions has variance d<sub>k</sub>, so its standard deviation grows as &radic;d<sub>k</sub>. Raw scores therefore spread wider as models get wider. Softmax is exponential, so a wider spread does not soften anything: it hands almost all the weight to one key and drives the gradient on every other key toward zero. Dividing by &radic;d<sub>k</sub> restores unit spread and keeps the row informative at any width.</p>
+
+  <div class="ledger">
+    <div class="ledger-head">
+      <div>Softmax saturation as width grows</div>
+      <span>Same six standardised affinities, held fixed</span>
+    </div>
+    <label class="sw" style="margin-bottom:16px">
+      <span class="mono" style="min-width:130px;display:inline-block">d<sub>k</sub> = <b id="dkval">64</b></span>
+      <input type="range" id="dk" min="0" max="5" step="1" value="2">
+    </label>
+    <div class="twocol">
+      <div>
+        <h3 id="without-scaling" style="margin-top:0">Without scaling</h3>
+        <div class="bars" id="barsUn"></div>
+      </div>
+      <div>
+        <h3 id="with-d-k" style="margin-top:0">With &divide; &radic;d<sub>k</sub></h3>
+        <div class="bars" id="barsSc"></div>
+      </div>
+    </div>
+    <p style="margin:18px 0 0;font-size:15px">Drag to d<sub>k</sub> = 1024. Unscaled, one key takes essentially all the weight and the rest receive nothing, which means no gradient reaches them. Scaled, the distribution is identical at every width, because the scaling exactly cancels the growth.</p>
+  </div>
+</section>
+
+<!-- ============ 4. THE BLOCK ============ -->
+<section id="block">
+  <h2 id="the-block-that-repeats">The block that repeats</h2>
+  <p class="sub">Communicate, then compute</p>
+  <p>Attention is the only step in which tokens touch each other. The feed-forward network is applied to each token independently with the same weights, so it is where a token processes what it just read. Residual connections mean each sublayer outputs input plus adjustment, which gives the gradient a direct path from the loss back to the embedding.</p>
+
+  <div class="ledger">
+    <div class="ledger-head"><div>One transformer block</div><span>Pre-norm layout, GPT-2 onward</span></div>
+    <div class="scroller">
+    <svg viewBox="0 0 760 430" width="100%" style="max-width:760px;display:block" role="img" aria-label="Diagram of a transformer block: normalise, multi-head attention, residual add, normalise, feed-forward network, residual add">
+      <defs>
+        <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+          <path d="M0 0 L10 5 L0 10 z" fill="#1f3a5f"/>
+        </marker>
+        <marker id="arR" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+          <path d="M0 0 L10 5 L0 10 z" fill="#8c2f39"/>
+        </marker>
+      </defs>
+      <g font-family="IBM Plex Sans Condensed, sans-serif" font-size="14">
+        <!-- input -->
+        <rect x="230" y="14" width="300" height="34" fill="#fff" stroke="#a9bca8"/>
+        <text x="380" y="36" text-anchor="middle" fill="#14201e">Token embedding + positional encoding</text>
+        <line x1="380" y1="48" x2="380" y2="76" stroke="#1f3a5f" stroke-width="1.5" marker-end="url(#ar)"/>
+
+        <!-- dashed block boundary -->
+        <rect x="120" y="78" width="520" height="272" fill="none" stroke="#1f3a5f" stroke-dasharray="5 4"/>
+        <text x="132" y="96" font-size="11.5" letter-spacing="1.4" fill="#1f3a5f">REPEATS N TIMES</text>
+
+        <!-- norm 1 -->
+        <rect x="290" y="106" width="180" height="28" fill="#dce7db" stroke="#a9bca8"/>
+        <text x="380" y="125" text-anchor="middle" font-size="12.5" fill="#14201e">LayerNorm</text>
+        <line x1="380" y1="134" x2="380" y2="150" stroke="#1f3a5f" stroke-width="1.5" marker-end="url(#ar)"/>
+
+        <!-- attention -->
+        <rect x="230" y="152" width="300" height="56" fill="#fff" stroke="#1f3a5f" stroke-width="1.5"/>
+        <text x="380" y="174" text-anchor="middle" font-weight="600" fill="#1f3a5f">Multi-head self-attention</text>
+        <text x="380" y="193" text-anchor="middle" font-size="12" font-family="IBM Plex Mono, monospace" fill="#4b5c55">tokens exchange information</text>
+        <line x1="380" y1="208" x2="380" y2="226" stroke="#1f3a5f" stroke-width="1.5" marker-end="url(#ar)"/>
+
+        <!-- add 1 -->
+        <circle cx="380" cy="238" r="12" fill="#fff" stroke="#8c2f39" stroke-width="1.5"/>
+        <text x="380" y="243" text-anchor="middle" font-size="14" fill="#8c2f39">+</text>
+        <line x1="380" y1="250" x2="380" y2="266" stroke="#1f3a5f" stroke-width="1.5" marker-end="url(#ar)"/>
+
+        <!-- norm 2 -->
+        <rect x="290" y="268" width="180" height="24" fill="#dce7db" stroke="#a9bca8"/>
+        <text x="380" y="285" text-anchor="middle" font-size="12.5" fill="#14201e">LayerNorm</text>
+        <line x1="380" y1="292" x2="380" y2="302" stroke="#1f3a5f" stroke-width="1.5" marker-end="url(#ar)"/>
+
+        <!-- mlp -->
+        <rect x="230" y="304" width="300" height="30" fill="#fff" stroke="#1f3a5f" stroke-width="1.5"/>
+        <text x="380" y="324" text-anchor="middle" font-weight="600" fill="#1f3a5f">Feed-forward network, per token</text>
+
+        <!-- residual skips -->
+        <path d="M212 120 L180 120 L180 238 L366 238" fill="none" stroke="#8c2f39" stroke-width="1.5" marker-end="url(#arR)"/>
+        <path d="M212 282 L196 282 L196 372 L366 372" fill="none" stroke="#8c2f39" stroke-width="1.5" marker-end="url(#arR)"/>
+        <line x1="212" y1="120" x2="290" y2="120" stroke="#8c2f39" stroke-width="1.5" opacity=".45"/>
+        <line x1="212" y1="282" x2="290" y2="282" stroke="#8c2f39" stroke-width="1.5" opacity=".45"/>
+        <text x="150" y="196" font-size="11" fill="#8c2f39" font-family="IBM Plex Mono, monospace" transform="rotate(-90 150 196)">residual</text>
+
+        <!-- add 2 -->
+        <line x1="380" y1="334" x2="380" y2="360" stroke="#1f3a5f" stroke-width="1.5" marker-end="url(#ar)"/>
+        <circle cx="380" cy="372" r="12" fill="#fff" stroke="#8c2f39" stroke-width="1.5"/>
+        <text x="380" y="377" text-anchor="middle" font-size="14" fill="#8c2f39">+</text>
+
+        <!-- output -->
+        <line x1="380" y1="384" x2="380" y2="398" stroke="#1f3a5f" stroke-width="1.5" marker-end="url(#ar)"/>
+        <rect x="230" y="400" width="300" height="26" fill="#fff" stroke="#a9bca8"/>
+        <text x="380" y="418" text-anchor="middle" font-size="13" fill="#14201e">Final norm &rarr; linear to vocab &rarr; softmax</text>
+
+        <!-- side labels -->
+        <text x="548" y="182" font-size="12.5" font-weight="600" fill="#8c2f39">COMMUNICATE</text>
+        <text x="548" y="200" font-size="11" font-family="IBM Plex Mono, monospace" fill="#4b5c55">across tokens</text>
+        <text x="548" y="318" font-size="12.5" font-weight="600" fill="#8c2f39">COMPUTE</text>
+        <text x="548" y="336" font-size="11" font-family="IBM Plex Mono, monospace" fill="#4b5c55">within a token</text>
+      </g>
+    </svg>
+    </div>
+  </div>
+  <p>Your uploaded document draws this in the 2017 post-norm order, normalising after each residual add. GPT-2 and everything after it normalise before each sublayer, which is what is drawn here. The distinction is why a final standalone LayerNorm appears at the end.</p>
+</section>
+
+<!-- ============ 5. MASKS ============ -->
+<section id="masks">
+  <h2 id="gpt-bert-and-t5-differ-almost-entirely-in-the-ma">GPT, BERT and T5 differ almost entirely in the mask</h2>
+  <p class="sub">Same block, different permissions</p>
+  <p>This is the highest-leverage simplification in the whole document. The architectures are not three inventions. They are one architecture with three answers to the question of which tokens a given token is allowed to read.</p>
+
+  <div class="masks" id="maskgrids"></div>
+
+  <table class="data">
+    <thead><tr><th style="width:22%">Family</th><th style="width:26%">What it can see</th><th>What that buys, and what it costs</th></tr></thead>
+    <tbody>
+      <tr><td><b>Decoder-only</b><br><span class="mono" style="font-size:12px;color:#4b5c55;--dk:#becac5">GPT</span></td><td>Positions 1 to i only</td><td>You can train next-token prediction at all T positions in a single forward pass, and you can generate. The cost is that no token ever sees its right-hand context.</td></tr>
+      <tr><td><b>Encoder-only</b><br><span class="mono" style="font-size:12px;color:#4b5c55;--dk:#becac5">BERT</span></td><td>The full sequence</td><td>Every token is informed by both sides, which is why it is strong for classification and embeddings. It cannot generate, because there is no next-token objective to run.</td></tr>
+      <tr><td><b>Encoder-decoder</b><br><span class="mono" style="font-size:12px;color:#4b5c55;--dk:#becac5">T5</span></td><td>Encoder: full input. Decoder: past output plus all of the encoder.</td><td>Reads the source completely, then writes causally while attending back to it. Natural fit for translation and summarisation. Costs two stacks.</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ============ 6. RNN vs TRANSFORMER ============ -->
+<section id="hardware">
+  <h2 id="why-this-replaced-recurrent-networks">Why this replaced recurrent networks</h2>
+  <p class="sub">An argument about hardware, not about elegance</p>
+  <p>An RNN computes h<sub>t</sub> from h<sub>t-1</sub>, so position 400 cannot start until position 399 has finished. Training is O(T) sequential steps, and the gradient has to survive all T of them. A transformer computes all T positions as one matrix multiplication, which is the operation GPUs are built to do, and the residual path keeps the gradient short regardless of sequence length.</p>
+  <p>The consequence worth carrying: the architecture that absorbs the most compute per unit of wall-clock time wins, even if its inductive biases are weaker. Attention costs O(T&sup2;) in sequence length, which is worse than an RNN on paper. It won anyway because the T&sup2; work is parallel and the RNN's T work is not.</p>
+</section>
+
+<!-- ============ 7. THREE ERAS ============ -->
+<section id="eras">
+  <h2 id="the-framing-the-document-opens-with">The framing the document opens with</h2>
+  <p class="sub">Software 1.0, 2.0, 3.0 · attribution unverified, see footer</p>
+  <p>Only one thing changes across the three, and it is who writes the program.</p>
+  <table class="data">
+    <thead><tr><th style="width:15%">Era</th><th style="width:24%">The artifact that gets shipped</th><th style="width:26%">Who authors the behaviour</th><th>Where it breaks</th></tr></thead>
+    <tbody>
+      <tr><td><b>1.0</b></td><td>Explicit source code</td><td>A person, instruction by instruction</td><td>Perception. Nobody can write the rules that separate a cat from a dog.</td></tr>
+      <tr><td><b>2.0</b></td><td>Model weights, compiled from a dataset by an optimiser</td><td>A person curates data; the optimiser writes the rules</td><td>Needs compute and labelled data. The job becomes running the loop that finds and labels failure cases.</td></tr>
+      <tr><td><b>3.0</b></td><td>A prompt and its context</td><td>A person steers a model somebody else already trained</td><td>Behaviour is conditioned rather than specified, so it is hard to guarantee and hard to test.</td></tr>
+    </tbody>
+  </table>
+  <p>The Tesla data-engine loop in your document is the concrete picture of era 2.0: train, deploy, catch disengagements and edge cases in the field, label them, retrain. It is an argument that the dataset, not the architecture, is the thing being engineered.</p>
+</section>
+
+<!-- ============ 8. ERRATA ============ -->
+<section id="errata">
+  <h2 id="what-the-source-document-gets-wrong">What the source document gets wrong</h2>
+  <table class="data">
+    <thead><tr><th style="width:11%">Weight</th><th style="width:32%">What it says</th><th>The correction</th></tr></thead>
+    <tbody>
+      <tr><td><span class="tag err">Wrong</span></td><td>The causal mask is <i>strictly lower triangular</i></td><td>The matrix it draws has ones on the diagonal, because a token attends to itself. That is lower triangular. Strictly lower triangular would zero the diagonal and stop every token from reading its own value.</td></tr>
+      <tr><td><span class="tag err">Wrong</span></td><td>SSIM listed with SIFT and HOG as a handcrafted feature descriptor</td><td>SSIM is an image quality and similarity metric. It was never a feature descriptor fed to an SVM.</td></tr>
+      <tr><td><span class="tag soft">Overclaim</span></td><td>Residuals and LayerNorm <i>eliminate</i> vanishing gradients</td><td>Mitigate. Very deep stacks still need careful initialisation, normalisation placement and learning-rate warmup.</td></tr>
+      <tr><td><span class="tag soft">Overclaim</span></td><td>In-context learning is <i>an internal optimisation loop</i></td><td>A hypothesis with some supporting papers, not an established mechanism. Karpathy frames it as speculation. Do not write it down as fact. [VERIFY]</td></tr>
+      <tr><td><span class="tag soft">Overclaim</span></td><td>Scaled to <i>trillions of parameters</i></td><td>No verified public parameter count exists for current frontier models. Treat every such figure as rumour unless the lab published it. [VERIFY]</td></tr>
+      <tr><td><span class="tag soft">Overclaim</span></td><td>Persona prompting <i>shifts toward high-accuracy completions</i></td><td>Empirical results on persona prompting are mixed to negative in several studies. That Karpathy said it does not settle it. [VERIFY]</td></tr>
+      <tr><td><span class="tag min">Confusing</span></td><td>Defines Q = X·W<sub>Q</sub>, then re-projects Q inside each head</td><td>The original paper applies the per-head projections directly to X. Mathematically close, but it will not line up if you cross-check against the paper.</td></tr>
+      <tr><td><span class="tag min">Dated</span></td><td>Residual Add then Norm</td><td>That is the 2017 post-norm layout. GPT-2 onward use pre-norm, which is why the diagram needs a final standalone LayerNorm.</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ============ 9. RECALL ============ -->
+<section id="recall">
+  <h2 id="retrieval-practice">Retrieval practice</h2>
+  <p class="sub">Answer out loud before opening. Opening without answering does nothing.</p>
+  <div class="cards">
+    <details class="card"><summary>Why is the mask applied before the softmax rather than after?</summary><div class="ans"><p>Softmax maps negative infinity to exactly zero while renormalising everything else, so the surviving weights still sum to 1.000. Masking after the softmax would zero some entries and leave the row summing to less than one, so the output would be a shrunken weighted average rather than a weighted average.</p></div></details>
+
+    <details class="card"><summary>State what &radic;d<sub>k</sub> corrects and what goes wrong without it.</summary><div class="ans"><p>The dot product of two d<sub>k</sub>-dimensional vectors with standardised entries has variance d<sub>k</sub>, so its standard deviation grows as &radic;d<sub>k</sub>. Without the division, wider models produce wider logit spreads, softmax saturates toward one-hot, and the gradient with respect to every non-winning key goes to approximately zero. Dividing by &radic;d<sub>k</sub> holds the spread constant across widths.</p></div></details>
+
+    <details class="card"><summary>Which single design choice separates GPT from BERT?</summary><div class="ans"><p>The attention mask. GPT is lower triangular so a token reads only itself and earlier tokens, which permits next-token training at every position and permits generation. BERT is fully bidirectional, which is better for representation and classification but has no generative objective.</p></div></details>
+
+    <details class="card"><summary>In one sentence each, what do Q, K and V represent?</summary><div class="ans"><p>Query: what this token is looking for. Key: what this token advertises about itself so others can find it. Value: what this token actually contributes to whoever matches it. All three are linear projections of the same input vector.</p></div></details>
+
+    <details class="card"><summary>Which part of the block moves information between tokens, and which does not?</summary><div class="ans"><p>Attention moves information between tokens and is the only step that does. The feed-forward network runs on each token independently with shared weights, so it processes what a token just read without moving anything sideways.</p></div></details>
+
+    <details class="card"><summary>Attention costs O(T&sup2;) and an RNN costs O(T). Why did the more expensive one win?</summary><div class="ans"><p>Because cost per unit of wall-clock time is what matters on a GPU, not asymptotic operation count. The T&sup2; work is a matrix multiplication that runs in parallel across the whole sequence. The RNN's T work is strictly sequential, so it cannot use the hardware, and its gradient must survive T sequential steps.</p></div></details>
+
+    <details class="card"><summary>Rewrite this in your own words: "the residual stream gives the gradient a short path."</summary><div class="ans"><p>Each sublayer outputs input plus adjustment rather than a replacement. So there is an unbroken identity route from the loss all the way back to the embedding, and the gradient reaching an early layer does not have to pass through every intermediate transformation multiplicatively. That is what makes very deep stacks trainable.</p></div></details>
+  </div>
+</section>
+
+<footer>
+  <p><b>Where to verify.</b> Section 4 of your document tracks Vaswani et al., "Attention Is All You Need" (2017), which is the primary source for the formula and for the &radic;d<sub>k</sub> argument. The three-eras framing and the graph and message-passing mental model come from Karpathy's own writing and lectures. I do not have verified citations for the specific talks from this session, so search before citing any of it, and do not cite the digest itself.</p>
+  <p style="margin-bottom:0">Every number in the interactive panels is computed in your browser from fixed toy weights chosen by hand so the patterns are legible. They demonstrate the arithmetic. They are not evidence about how a trained model behaves.</p>
+</footer>
+
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ---------- toy model ---------- */
+  var TOKENS = ["the","audit","found","a","material","error"];
+  var T = TOKENS.length, D = 4, DK = 4;
+
+  // hand-set semantic axes: [determiner, noun-ness, verb-ness, severity]
+  var BASE = [
+    [1.00, 0.00, 0.00, 0.00],
+    [0.00, 1.00, 0.20, 0.30],
+    [0.00, 0.00, 1.00, 0.10],
+    [0.90, 0.00, 0.00, 0.00],
+    [0.00, 0.20, 0.00, 1.00],
+    [0.00, 1.00, 0.00, 0.80]
+  ];
+
+  var WQ = [[ 0.9,-0.2, 0.1, 0.0],
+            [ 0.1, 0.8, 0.0, 0.5],
+            [-0.3, 0.4, 0.7, 0.2],
+            [ 0.0, 0.6,-0.1, 0.9]];
+  var WK = [[ 0.8, 0.0,-0.2, 0.1],
+            [ 0.0, 0.9, 0.3, 0.4],
+            [ 0.2, 0.1, 0.8,-0.2],
+            [ 0.1, 0.5, 0.0, 0.9]];
+  // W_V = identity, so output reads as a weighted average of input features
+
+  function posEnc(p){
+    return [0.15*Math.sin(p), 0.15*Math.cos(p),
+            0.15*Math.sin(p/100), 0.15*Math.cos(p/100)];
+  }
+  var X = BASE.map(function(v,p){
+    var pe = posEnc(p);
+    return v.map(function(x,i){ return x + pe[i]; });
+  });
+
+  function matmul(A,W){
+    return A.map(function(r){
+      return W[0].map(function(_,j){
+        var s=0; for(var k=0;k<r.length;k++) s += r[k]*W[k][j];
+        return s;
+      });
+    });
+  }
+  var Q = matmul(X,WQ), K = matmul(X,WK), V = X;
+
+  function dot(a,b){ var s=0; for(var i=0;i<a.length;i++) s+=a[i]*b[i]; return s; }
+  function softmax(v){
+    var live = v.filter(function(x){ return x!==null; });
+    var m = Math.max.apply(null, live);
+    var ex = v.map(function(x){ return x===null?0:Math.exp(x-m); });
+    var s = ex.reduce(function(a,b){return a+b;},0);
+    return v.map(function(x,i){ return x===null?null:ex[i]/s; });
+  }
+
+  function rowWeights(i, causal, scaled){
+    var raw = K.map(function(k){ return dot(Q[i],k); });
+    var sc  = raw.map(function(s){ return scaled ? s/Math.sqrt(DK) : s; });
+    var msk = sc.map(function(s,j){ return (causal && j>i) ? null : s; });
+    return { raw:raw, sc:sc, msk:msk, w:softmax(msk) };
+  }
+
+  /* ---------- state ---------- */
+  var sel = 5;
+  var elTok = document.getElementById("tokrow");
+  var elMat = document.getElementById("matrix");
+  var elPipe = document.getElementById("pipe");
+  var elRead = document.getElementById("readout");
+  var cbCausal = document.getElementById("causal");
+  var cbScale  = document.getElementById("scale");
+
+  TOKENS.forEach(function(t,i){
+    var b = document.createElement("button");
+    b.className = "tokbtn"; b.type = "button";
+    b.innerHTML = '<span class="idx">'+(i+1)+'</span>'+t;
+    b.setAttribute("aria-pressed", i===sel ? "true":"false");
+    b.addEventListener("click", function(){ sel = i; render(); });
+    elTok.appendChild(b);
+  });
+
+  function fmt(x,n){ return x===null ? "—" : x.toFixed(n===undefined?3:n); }
+
+  function render(){
+    var causal = cbCausal.checked, scaled = cbScale.checked;
+
+    Array.prototype.forEach.call(elTok.children, function(b,i){
+      b.setAttribute("aria-pressed", i===sel ? "true":"false");
+    });
+
+    /* matrix */
+    var html = "<thead><tr><th></th>";
+    TOKENS.forEach(function(t){ html += "<th>"+t+"</th>"; });
+    html += '<th style="color:#1f3a5f;--dk:#c0cad9">&Sigma;</th></tr></thead><tbody>';
+    for(var i=0;i<T;i++){
+      var r = rowWeights(i,causal,scaled), tot=0;
+      html += '<tr class="'+(i===sel?"active":"")+'"><th class="rowlab">'+TOKENS[i]+"</th>";
+      for(var j=0;j<T;j++){
+        var w = r.w[j];
+        if(w===null){ html += '<td class="masked">—</td>'; }
+        else{
+          tot += w;
+          var light = w>0.55;
+          html += '<td style="background:rgba(140,47,57,'+w.toFixed(3)+');'
+               + (light?'color:#fff;':'') + '">'+fmt(w)+"</td>";
+        }
+      }
+      html += '<td class="total">'+tot.toFixed(3)+"</td></tr>";
+    }
+    elMat.innerHTML = html + "</tbody>";
+
+    /* pipeline for selected row */
+    var r = rowWeights(sel,causal,scaled);
+    function cells(arr,dec,masked){
+      return arr.map(function(x,j){
+        var dim = masked && x===null;
+        return '<div class="cell'+(dim?" dim":"")+'" title="'+TOKENS[j]+'">'+fmt(x,dec)+"</div>";
+      }).join("");
+    }
+    var out = [0,1,2,3].map(function(d){
+      var s=0; for(var j=0;j<T;j++){ if(r.w[j]!==null) s += r.w[j]*V[j][d]; } return s;
+    });
+    var sum = r.w.reduce(function(a,b){ return a + (b===null?0:b); },0);
+
+    elPipe.innerHTML =
+      stage("1 · Score","q<sub>"+(sel+1)+"</sub> &middot; k<sub>j</sub> for every j", cells(r.raw,2,false)) +
+      stage("2 · Scale", scaled ? "&divide; &radic;4 = &divide; 2" : "scaling switched off", cells(r.sc,2,false)) +
+      stage("3 · Mask", causal ? "j &gt; "+(sel+1)+" set to &minus;&infin;" : "no mask, all positions visible", cells(r.msk,2,true)) +
+      stage("4 · Softmax","weights, and the row total", cells(r.w,3,true) +
+        '<div class="cell sum">&Sigma; '+sum.toFixed(3)+"</div>") +
+      stage("5 · Mix","&Sigma; w<sub>j</sub> v<sub>j</sub>, the new vector for &ldquo;"+TOKENS[sel]+"&rdquo;",
+        out.map(function(x,d){
+          var lab=["det","noun","verb","severity"][d];
+          return '<div class="cell" title="'+lab+'">'+x.toFixed(3)+"</div>";
+        }).join(""));
+
+    /* readout */
+    var best=-1,bi=0;
+    r.w.forEach(function(w,j){ if(w!==null && w>best){best=w;bi=j;} });
+    var visible = causal ? (sel+1) : T;
+    elRead.innerHTML = "<b>Reading row "+(sel+1)+".</b> &ldquo;"+TOKENS[sel]+"&rdquo; can see "
+      + visible + " of " + T + " positions, and puts " + (best*100).toFixed(1)
+      + "% of its weight on &ldquo;"+TOKENS[bi]+"&rdquo;. Its updated vector is that weighted average, "
+      + "not a replacement: the residual connection adds this back onto the original.";
+  }
+
+  function stage(name,note,body){
+    return '<div class="stage"><div class="stage-name"><b>'+name+"</b><i>"+note
+         + '</i></div><div class="num">'+body+"</div></div>";
+  }
+
+  cbCausal.addEventListener("change", render);
+  cbScale.addEventListener("change", render);
+  render();
+
+  /* ---------- saturation demo ---------- */
+  var Z = [0.40, 1.60, -0.30, -1.10, 0.90, 0.10];
+  var DKS = [4,16,64,256,1024,4096];
+  var slider = document.getElementById("dk");
+  var dkOut = document.getElementById("dkval");
+  var barsUn = document.getElementById("barsUn");
+  var barsSc = document.getElementById("barsSc");
+
+  function plainSoftmax(v){
+    var m = Math.max.apply(null,v);
+    var ex = v.map(function(x){ return Math.exp(x-m); });
+    var s = ex.reduce(function(a,b){return a+b;},0);
+    return ex.map(function(x){ return x/s; });
+  }
+  function drawBars(el,w){
+    el.innerHTML = w.map(function(x,j){
+      return '<div class="bar-row"><span>'+TOKENS[j]+'</span>'
+           + '<span class="bar-track"><span class="bar-fill" style="width:'+(x*100).toFixed(2)+'%"></span></span>'
+           + "<span>"+x.toFixed(3)+"</span></div>";
+    }).join("");
+  }
+  function drawSat(){
+    var dk = DKS[+slider.value];
+    dkOut.textContent = dk;
+    drawBars(barsUn, plainSoftmax(Z.map(function(z){ return z*Math.sqrt(dk); })));
+    drawBars(barsSc, plainSoftmax(Z.slice()));
+  }
+  slider.addEventListener("input", drawSat);
+  drawSat();
+
+  /* ---------- mask grids ---------- */
+  var specs = [
+    { t:"Causal", s:"GPT · lower triangular", f:function(i,j){ return j<=i; } },
+    { t:"Bidirectional", s:"BERT · all to all", f:function(){ return true; } },
+    { t:"Cross-attention", s:"T5 decoder reads encoder", f:function(){ return true; } }
+  ];
+  document.getElementById("maskgrids").innerHTML = specs.map(function(sp){
+    var rows="";
+    for(var i=0;i<4;i++){
+      rows += "<tr>";
+      for(var j=0;j<4;j++) rows += '<td class="'+(sp.f(i,j)?"on":"")+'"></td>';
+      rows += "</tr>";
+    }
+    return '<div class="maskbox"><h4 aria-level="3">'+sp.t+"</h4><p>"+sp.s
+         + '</p><table class="mask"><tbody>'+rows+"</tbody></table></div>";
+  }).join("");
+})();
+</script>
+
+<!--__rbp-->
+<!-- The pill styles itself: this block used to live only with the top bar,
+     so the seven tool pages, which carry the pill alone, rendered it as an
+     unstyled link at the very end of the document. Whatever carries the
+     pill now carries its style. -->
+<style id="__rbp-style">
+#__rb-pill{
+  position:fixed;left:14px;bottom:14px;z-index:2147483000;
+  display:inline-flex;align-items:center;gap:.45rem;padding:.58rem .9rem;
+  background:rgba(22,21,15,.93);color:#faf9f6;text-decoration:none;border-radius:99px;
+  font:600 12.5px/1 InterVar,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  border:1px solid rgba(255,255,255,.16);box-shadow:0 6px 22px rgba(0,0,0,.28);
+  opacity:0;transform:translateY(6px);pointer-events:none;
+  transition:opacity .2s ease,transform .2s ease;
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+}
+#__rb-pill.__on{opacity:1;transform:none;pointer-events:auto}
+#__rb-pill:hover{background:#16150f;color:#fff}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) #__rb-pill{background:rgba(247,245,239,.95);color:#131310;border-color:rgba(0,0,0,.2)}
+  :root:not([data-theme="light"]) #__rb-pill:hover{background:#fff;color:#000}
+}
+:root[data-theme="dark"] #__rb-pill{background:rgba(247,245,239,.95);color:#131310;border-color:rgba(0,0,0,.2)}
+:root[data-theme="dark"] #__rb-pill:hover{background:#fff;color:#000}
+@media (prefers-reduced-motion:reduce){#__rb-pill{transition:none}}
+@media print{#__rb-pill{display:none !important}}
+/* a tool carries no bar, so what it was built from stands at the foot of the document */
+#__rb-from{margin:1.25rem 1rem;font:400 13px/1.45 InterVar,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;color:#6f6c63;max-width:70ch}
+#__rb-from b{font-weight:600;color:#55524a}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) #__rb-from{color:#948f85}
+  :root:not([data-theme="light"]) #__rb-from b{color:#c0bcb1}
+}
+:root[data-theme="dark"] #__rb-from{color:#948f85}
+:root[data-theme="dark"] #__rb-from b{color:#c0bcb1}
+</style>
+<!-- With scripts off nothing ever adds the __on class, and the only way
+     back from a tool page vanished. The pill needs its script for the
+     scroll threshold, not for existing. -->
+<noscript><style>#__rb-pill{opacity:1 !important;transform:none !important;pointer-events:auto !important}</style></noscript>
+<a id="__rb-pill" href="library.html">&#8592; Library</a>
+
+<script>
+(function(){
+  var p=document.getElementById('__rb-pill'); if(!p) return;
+  /* On a page with the top bar the pill waits until the bar has scrolled
+     out of reach. On a page without one (the tools carry no bar, because a
+     bar inside a full-screen application sits in the wrong place) the pill
+     is the only way back, so it is there from the first paint: a tool
+     screen shorter than the threshold used to strand the reader entirely. */
+  var TH=document.getElementById('__rb')?160:-1;
+  var t=false;
+  function run(){ t=false;
+    p.classList.toggle('__on',(window.scrollY||document.documentElement.scrollTop)>TH); }
+  function q(){ if(!t){ t=true; requestAnimationFrame(run); } }
+  addEventListener('scroll',q,{passive:true}); run();
+})();
+/* the trail, for the pages that carry only the pill (the tools) */
+(function(){
+  if(window.__trailed) return; window.__trailed=1;
+  if('serviceWorker' in navigator && location.protocol.indexOf('http')===0){
+    addEventListener('load',function(){setTimeout(function(){
+      navigator.serviceWorker.register('sw.js').catch(function(){});},6000);});
+  }
+  try{
+    var k='atlas.trail';
+    var u=location.pathname.split('/').pop()||'index.html';
+    var t2=JSON.parse(localStorage.getItem(k)||'{}');
+    function put(key){
+      if(t2[key]||Object.keys(t2).length<500){
+        t2[key]=(t2[key]||0)+1;
+        try{localStorage.setItem(k,JSON.stringify(t2));}catch(e){}
+      }
+    }
+    put(u+location.hash);
+    addEventListener('hashchange',function(){ put(u+location.hash); });
+  }catch(e){}
+})();
+</script>
+<!--/__rbp-->
+</body>
+</html>

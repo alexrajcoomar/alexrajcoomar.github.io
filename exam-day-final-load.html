@@ -3,12 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Exam Day — Final Load</title>
+<title>Exam Day Final Load · Alex Rajcoomar</title>
 <style>
 :root{
   --bg:#fcfcfb; --panel:#f4f4f2; --panel2:#eeeeeb;
-  --ink-1:#0b0b0b; --ink-2:#52514e; --ink-3:#8b8a85; --line:#dcdbd6;
-  --s1:#2a78d6; --s2:#eb6834; --s3:#1baf7a;
+  --ink-1:#0b0b0b; --ink-2:#52514e; --ink-3:#6d6969; --line:#dcdbd6;
+  --s1:#226aba; --s2:#bb4214; --s3:#1baf7a;
   --flag:#c0392b; --flag-bg:#fbecea; --gold:#8a6300; --gold-bg:#fdf5e4;
 }
 @media (prefers-color-scheme: dark){
@@ -69,8 +69,8 @@ ol.traps li b{color:var(--flag)}
 .corner{background:var(--s1);color:#fff;border-radius:12px;padding:16px 20px;margin-top:20px;
   font-size:14px;line-height:1.7}
 .corner b{display:block;font-size:12px;letter-spacing:.08em;text-transform:uppercase;
-  margin-bottom:6px;opacity:.85}
-.corner .m{background:rgba(255,255,255,.15);padding:1px 6px;border-radius:4px}
+  margin-bottom:6px}
+.corner .m{background:rgba(0,0,0,.22);padding:1px 6px;border-radius:4px}
 
 @media print{
   body{padding:0}
@@ -86,15 +86,15 @@ ol.traps li b{color:var(--flag)}
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="manifest" href="site.webmanifest">
 <link rel="canonical" href="https://alexrajcoomar.github.io/exam-day-final-load.html">
-<meta property="og:title" content="Exam Day Final Load — Alex Rajcoomar">
+<meta property="og:title" content="Exam Day Final Load · Alex Rajcoomar">
 <meta property="og:description" content="What to load in the last hour before an exam, and what to deliberately leave out.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://alexrajcoomar.github.io/exam-day-final-load.html">
-<meta property="og:site_name" content="Alex Rajcoomar — portfolio">
+<meta property="og:site_name" content="Alex Rajcoomar · portfolio">
 <meta property="og:image" content="https://alexrajcoomar.github.io/cards/exam-day-final-load.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Exam Day Final Load — Alex Rajcoomar">
+<meta property="og:image:alt" content="Exam Day Final Load · Alex Rajcoomar">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://alexrajcoomar.github.io/cards/exam-day-final-load.png">
 <script>
@@ -129,22 +129,18 @@ ol.traps li b{color:var(--flag)}
 #__rb .__rb-home{font-weight:640;color:#16150f}
 #__rb .__rb-home i{font-style:normal;font-weight:400;color:#6f6c63}
 #__rb .__rb-right{margin-left:auto;display:flex;gap:1.1rem;flex-wrap:wrap}
+/* the piece's own row of the statement: origin, words, figures, tables, the
+   same figures the home page prints for it, from the same measurement */
+#__rb .__rb-row{color:#6f6c63;font-variant-numeric:tabular-nums;white-space:nowrap}
+#__rb .__rb-row b{font-weight:600;color:#55524a}
+@media (max-width:44rem){#__rb .__rb-row{flex-basis:100%;order:3;white-space:normal}}
+/* what the piece was built from, in the owner's words, from pieces.json */
+#__rb .__rb-from{flex-basis:100%;order:5;font-weight:400;color:#6f6c63;line-height:1.4;max-width:70ch}
+#__rb .__rb-from b{font-weight:600;color:#55524a}
 #__rb .__mark{
   display:inline-grid;place-items:center;width:1.2rem;height:1.2rem;flex:none;
   background:#16150f;color:#faf9f6;font-size:.72rem;font-weight:700;
 }
-#__rb-pill{
-  position:fixed;left:14px;bottom:14px;z-index:2147483000;
-  display:inline-flex;align-items:center;gap:.45rem;padding:.58rem .9rem;
-  background:rgba(22,21,15,.93);color:#faf9f6;text-decoration:none;border-radius:99px;
-  font:600 12.5px/1 InterVar,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
-  border:1px solid rgba(255,255,255,.16);box-shadow:0 6px 22px rgba(0,0,0,.28);
-  opacity:0;transform:translateY(6px);pointer-events:none;
-  transition:opacity .2s ease,transform .2s ease;
-  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
-}
-#__rb-pill.__on{opacity:1;transform:none;pointer-events:auto}
-#__rb-pill:hover{background:#16150f;color:#fff}
 /* Dark has to answer to two things: the reader's system setting, and the
    theme button on the page, which sets data-theme on <html>. Keyed to the
    media query alone, the bar stayed paper-white across the top of an essay
@@ -155,25 +151,30 @@ ol.traps li b{color:var(--flag)}
   :root:not([data-theme="light"]) #__rb{background:#131310;border-bottom-color:#2c2b24;color:#c0bcb1}
   :root:not([data-theme="light"]) #__rb .__rb-home{color:#f7f5ef}
   :root:not([data-theme="light"]) #__rb .__rb-home i{color:#948f85}
+  :root:not([data-theme="light"]) #__rb .__rb-row{color:#948f85}
+  :root:not([data-theme="light"]) #__rb .__rb-row b{color:#c0bcb1}
+  :root:not([data-theme="light"]) #__rb .__rb-from{color:#948f85}
+  :root:not([data-theme="light"]) #__rb .__rb-from b{color:#c0bcb1}
   :root:not([data-theme="light"]) #__rb a{color:#85adea}
   :root:not([data-theme="light"]) #__rb .__mark{background:#f7f5ef;color:#131310}
-  :root:not([data-theme="light"]) #__rb-pill{background:rgba(247,245,239,.95);color:#131310;border-color:rgba(0,0,0,.2)}
-  :root:not([data-theme="light"]) #__rb-pill:hover{background:#fff;color:#000}
 }
 :root[data-theme="dark"] #__rb{background:#131310;border-bottom-color:#2c2b24;color:#c0bcb1}
 :root[data-theme="dark"] #__rb .__rb-home{color:#f7f5ef}
 :root[data-theme="dark"] #__rb .__rb-home i{color:#948f85}
+:root[data-theme="dark"] #__rb .__rb-row{color:#948f85}
+:root[data-theme="dark"] #__rb .__rb-row b{color:#c0bcb1}
+:root[data-theme="dark"] #__rb .__rb-from{color:#948f85}
+:root[data-theme="dark"] #__rb .__rb-from b{color:#c0bcb1}
 :root[data-theme="dark"] #__rb a{color:#85adea}
 :root[data-theme="dark"] #__rb .__mark{background:#f7f5ef;color:#131310}
-:root[data-theme="dark"] #__rb-pill{background:rgba(247,245,239,.95);color:#131310;border-color:rgba(0,0,0,.2)}
-:root[data-theme="dark"] #__rb-pill:hover{background:#fff;color:#000}
-@media (prefers-reduced-motion:reduce){#__rb-pill{transition:none}}
-@media print{#__rb,#__rb-pill{display:none !important}}
+@media print{#__rb{display:none !important}}
 </style>
-<div id="__rb">
+<nav id="__rb" aria-label="Portfolio">
   <a class="__rb-home" href="index.html"><span class="__mark" aria-hidden="true">A</span>Alex Rajcoomar <i>portfolio</i></a>
-  <span class="__rb-right"><a href="research.html">Research</a><a href="library.html">All work</a></span>
-</div>
+  <span class="__rb-row">Independent &middot; <b>476</b> words &middot; <b>7</b> figures &middot; <b>0</b> tables</span>
+  <span class="__rb-right"><a href="research.html">Research</a><a href="atlas.html">Atlas</a><a href="library.html">All work</a></span>
+  <span class="__rb-from"><b>Built from</b> Not declared on file.</span>
+</nav>
 <script>
 /* the trail: which passages this browser has opened. The atlas reads it and
    rings them; the record lives in localStorage and never leaves the machine. */
@@ -190,7 +191,7 @@ ol.traps li b{color:var(--flag)}
     function put(key){
       if(t2[key]||Object.keys(t2).length<500){
         t2[key]=(t2[key]||0)+1;
-        localStorage.setItem(k,JSON.stringify(t2));
+        try{localStorage.setItem(k,JSON.stringify(t2));}catch(e){}
       }
     }
     put(u+location.hash);
@@ -200,9 +201,9 @@ ol.traps li b{color:var(--flag)}
 </script>
 <!--/__rb-->
 
-<div class="wrap">
+<div class="wrap" role="main">
 <header>
-  <h1 id="exam-day-final-load">Exam Day — Final Load</h1>
+  <h1 id="exam-day-final-load">Exam Day: Final Load</h1>
   <p class="sub">Every graph, every formula, both chains, five traps. In deployment order. Scan, don't read.</p>
 </header>
 
@@ -222,7 +223,7 @@ ol.traps li b{color:var(--flag)}
       <text class="curvelab" fill="var(--s2)" x="150" y="50">slope=MPN</text>
       <path d="M30,105 C65,38 120,15 195,10" fill="none" stroke="var(--s1)" stroke-width="1.3" stroke-dasharray="3 3" opacity=".5"/>
     </svg>
-    <p class="note">Concave. <b>A↑ or K↑ rotates it up</b> — steeper at every N (dashed).</p>
+    <p class="note">Concave. <b>A↑ or K↑ rotates it up</b>, steeper at every N (dashed).</p>
   </div>
 
   <div class="card">
@@ -345,8 +346,8 @@ S = Y + NFP − C − G = I + CA
 <span class="g">Labour</span>
 LF = E + U &nbsp;&nbsp; u-rate = U / LF &nbsp;&nbsp; natural = frictional + structural
 MPN = w &nbsp;(hiring rule)
-payroll tax τ: MPN = (1+τ)w &nbsp;— pivots N^D at the N-intercept
-income tax t: N^S = (1−t)w &nbsp;— pivots from the origin
+payroll tax τ: MPN = (1+τ)w &nbsp; pivots N^D at the N-intercept
+income tax t: N^S = (1−t)w &nbsp; pivots from the origin
 
 <span class="g">Investment</span>
 uc = (r+d)&middot;p_K
@@ -379,21 +380,21 @@ Taylor: i = π + 0.02 + 0.5y + 0.5(π − 0.02) &nbsp;&nbsp;→ slope <b style="
   P↑ &nbsp;→&nbsp; M/P↓ (→r↑) vs L↓ (→r↓) &nbsp;→&nbsp; asset alone ambiguous &nbsp;→&nbsp; <b style="color:var(--s1)">M/P dominates</b></div>
 </div>
 
-<h2 id="s-4-ambiguity-setups-tested-twice-on-a2"><span class="n">4</span>Ambiguity setups — tested twice on A2</h2>
-<div class="amb"><b class="m" style="color:var(--gold)">d↑:</b> uc channel → K*↓ → I&#8202;D left. <b>BUT</b> the d&middot;K_t term → I&#8202;D right. Ambiguous — draw 3 cases.</div>
-<div class="amb"><b class="m" style="color:var(--gold)">FX, 4 channels:</b> Y_foreign↑→D&#8202;D↑(e↑) &middot; r_domestic↑→D&#8202;D↑(e↑) &middot; r_foreign↓→D&#8202;S↓(e↑) &middot; Y_domestic↑→D&#8202;S↑(e↓). Ambiguous — 3-case graph.</div>
+<h2 id="s-4-ambiguity-setups-tested-twice-on-a2"><span class="n">4</span>Ambiguity setups: tested twice on A2</h2>
+<div class="amb"><b class="m" style="color:var(--gold)">d↑:</b> uc channel → K*↓ → I&#8202;D left. <b>BUT</b> the d&middot;K_t term → I&#8202;D right. Ambiguous, draw 3 cases.</div>
+<div class="amb"><b class="m" style="color:var(--gold)">FX, 4 channels:</b> Y_foreign↑→D&#8202;D↑(e↑) &middot; r_domestic↑→D&#8202;D↑(e↑) &middot; r_foreign↓→D&#8202;S↓(e↑) &middot; Y_domestic↑→D&#8202;S↑(e↓). Ambiguous: 3-case graph.</div>
 
 <h2 id="s-5-five-traps"><span class="n">5</span>Five traps</h2>
 <ol class="traps">
-  <li><b>Circle exactly one option.</b> Hedging is penalized — "ambiguous" is the answer only when channels genuinely oppose.</li>
+  <li><b>Circle exactly one option.</b> Hedging is penalized: "ambiguous" is the answer only when channels genuinely oppose.</li>
   <li><b>π divides by the earlier P.</b> Always.</li>
   <li><b>"Temporary" MPK shock → no I^D shift.</b> MPK^f itself is untouched.</li>
   <li><b>mm is (cu+1)/(cu+res), never 1/res.</b> 1/res only when cu=0.</li>
-  <li><b>Numbers come out clean.</b> Ugly arithmetic = an error upstream. Graph marks are separate — label axes, curves, both equilibria, always.</li>
+  <li><b>Numbers come out clean.</b> Ugly arithmetic = an error upstream. Graph marks are separate, label axes, curves, both equilibria, always.</li>
 </ol>
 
 <div class="corner">
-  <b>First thing when the paper opens — write your convention corner</b>
+  <b>First thing when the paper opens, write your convention corner</b>
   <span class="m">e_nom</span> = foreign currency per 1 CAD &nbsp;&middot;&nbsp;
   <span class="m">W/P</span> falls when P rises (wage stuck) &nbsp;&middot;&nbsp;
   <span class="m">r</span> is the asset-market axis, not i.
@@ -405,13 +406,59 @@ Taylor: i = π + 0.02 + 0.5y + 0.5(π − 0.02) &nbsp;&nbsp;→ slope <b style="
 
 
 <!--__rbp-->
+<!-- The pill styles itself: this block used to live only with the top bar,
+     so the seven tool pages, which carry the pill alone, rendered it as an
+     unstyled link at the very end of the document. Whatever carries the
+     pill now carries its style. -->
+<style id="__rbp-style">
+#__rb-pill{
+  position:fixed;left:14px;bottom:14px;z-index:2147483000;
+  display:inline-flex;align-items:center;gap:.45rem;padding:.58rem .9rem;
+  background:rgba(22,21,15,.93);color:#faf9f6;text-decoration:none;border-radius:99px;
+  font:600 12.5px/1 InterVar,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  border:1px solid rgba(255,255,255,.16);box-shadow:0 6px 22px rgba(0,0,0,.28);
+  opacity:0;transform:translateY(6px);pointer-events:none;
+  transition:opacity .2s ease,transform .2s ease;
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+}
+#__rb-pill.__on{opacity:1;transform:none;pointer-events:auto}
+#__rb-pill:hover{background:#16150f;color:#fff}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) #__rb-pill{background:rgba(247,245,239,.95);color:#131310;border-color:rgba(0,0,0,.2)}
+  :root:not([data-theme="light"]) #__rb-pill:hover{background:#fff;color:#000}
+}
+:root[data-theme="dark"] #__rb-pill{background:rgba(247,245,239,.95);color:#131310;border-color:rgba(0,0,0,.2)}
+:root[data-theme="dark"] #__rb-pill:hover{background:#fff;color:#000}
+@media (prefers-reduced-motion:reduce){#__rb-pill{transition:none}}
+@media print{#__rb-pill{display:none !important}}
+/* a tool carries no bar, so what it was built from stands at the foot of the document */
+#__rb-from{margin:1.25rem 1rem;font:400 13px/1.45 InterVar,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;color:#6f6c63;max-width:70ch}
+#__rb-from b{font-weight:600;color:#55524a}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) #__rb-from{color:#948f85}
+  :root:not([data-theme="light"]) #__rb-from b{color:#c0bcb1}
+}
+:root[data-theme="dark"] #__rb-from{color:#948f85}
+:root[data-theme="dark"] #__rb-from b{color:#c0bcb1}
+</style>
+<!-- With scripts off nothing ever adds the __on class, and the only way
+     back from a tool page vanished. The pill needs its script for the
+     scroll threshold, not for existing. -->
+<noscript><style>#__rb-pill{opacity:1 !important;transform:none !important;pointer-events:auto !important}</style></noscript>
 <a id="__rb-pill" href="research.html">&#8592; Research</a>
+
 <script>
 (function(){
   var p=document.getElementById('__rb-pill'); if(!p) return;
+  /* On a page with the top bar the pill waits until the bar has scrolled
+     out of reach. On a page without one (the tools carry no bar, because a
+     bar inside a full-screen application sits in the wrong place) the pill
+     is the only way back, so it is there from the first paint: a tool
+     screen shorter than the threshold used to strand the reader entirely. */
+  var TH=document.getElementById('__rb')?160:-1;
   var t=false;
   function run(){ t=false;
-    p.classList.toggle('__on',(window.scrollY||document.documentElement.scrollTop)>420); }
+    p.classList.toggle('__on',(window.scrollY||document.documentElement.scrollTop)>TH); }
   function q(){ if(!t){ t=true; requestAnimationFrame(run); } }
   addEventListener('scroll',q,{passive:true}); run();
 })();
@@ -429,7 +476,7 @@ Taylor: i = π + 0.02 + 0.5y + 0.5(π − 0.02) &nbsp;&nbsp;→ slope <b style="
     function put(key){
       if(t2[key]||Object.keys(t2).length<500){
         t2[key]=(t2[key]||0)+1;
-        localStorage.setItem(k,JSON.stringify(t2));
+        try{localStorage.setItem(k,JSON.stringify(t2));}catch(e){}
       }
     }
     put(u+location.hash);

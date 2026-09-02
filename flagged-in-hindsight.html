@@ -181,20 +181,20 @@ footer p{max-width:78ch}
 
 <!--__meta-->
 <meta name="color-scheme" content="light dark">
-<meta name="description" content="Five Canadian accounting frauds with completed regulatory or judicial findings — Sino-Forest, Nortel, Poseidon Concepts, Livent, Philip Services — put back…">
+<meta name="description" content="Five Canadian accounting frauds with completed regulatory or judicial findings (Sino-Forest, Nortel, Poseidon Concepts, Livent, Philip Services), put back…">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%2316150f'/><text x='50' y='72' font-size='64' font-family='Helvetica,Arial' font-weight='bold' fill='%23faf9f6' text-anchor='middle'>A</text></svg>">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="manifest" href="site.webmanifest">
 <link rel="canonical" href="https://alexrajcoomar.github.io/flagged-in-hindsight.html">
-<meta property="og:title" content="Flagged in Hindsight — Alex Rajcoomar">
-<meta property="og:description" content="Five Canadian accounting frauds with completed regulatory or judicial findings — Sino-Forest, Nortel, Poseidon Concepts, Livent, Philip Services — put back…">
+<meta property="og:title" content="Flagged in Hindsight · Alex Rajcoomar">
+<meta property="og:description" content="Five Canadian accounting frauds with completed regulatory or judicial findings (Sino-Forest, Nortel, Poseidon Concepts, Livent, Philip Services), put back…">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://alexrajcoomar.github.io/flagged-in-hindsight.html">
-<meta property="og:site_name" content="Alex Rajcoomar — portfolio">
+<meta property="og:site_name" content="Alex Rajcoomar · portfolio">
 <meta property="og:image" content="https://alexrajcoomar.github.io/cards/flagged-in-hindsight.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Flagged in Hindsight — Alex Rajcoomar">
+<meta property="og:image:alt" content="Flagged in Hindsight · Alex Rajcoomar">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://alexrajcoomar.github.io/cards/flagged-in-hindsight.png">
 <script>
@@ -229,22 +229,18 @@ footer p{max-width:78ch}
 #__rb .__rb-home{font-weight:640;color:#16150f}
 #__rb .__rb-home i{font-style:normal;font-weight:400;color:#6f6c63}
 #__rb .__rb-right{margin-left:auto;display:flex;gap:1.1rem;flex-wrap:wrap}
+/* the piece's own row of the statement: origin, words, figures, tables, the
+   same figures the home page prints for it, from the same measurement */
+#__rb .__rb-row{color:#6f6c63;font-variant-numeric:tabular-nums;white-space:nowrap}
+#__rb .__rb-row b{font-weight:600;color:#55524a}
+@media (max-width:44rem){#__rb .__rb-row{flex-basis:100%;order:3;white-space:normal}}
+/* what the piece was built from, in the owner's words, from pieces.json */
+#__rb .__rb-from{flex-basis:100%;order:5;font-weight:400;color:#6f6c63;line-height:1.4;max-width:70ch}
+#__rb .__rb-from b{font-weight:600;color:#55524a}
 #__rb .__mark{
   display:inline-grid;place-items:center;width:1.2rem;height:1.2rem;flex:none;
   background:#16150f;color:#faf9f6;font-size:.72rem;font-weight:700;
 }
-#__rb-pill{
-  position:fixed;left:14px;bottom:14px;z-index:2147483000;
-  display:inline-flex;align-items:center;gap:.45rem;padding:.58rem .9rem;
-  background:rgba(22,21,15,.93);color:#faf9f6;text-decoration:none;border-radius:99px;
-  font:600 12.5px/1 InterVar,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
-  border:1px solid rgba(255,255,255,.16);box-shadow:0 6px 22px rgba(0,0,0,.28);
-  opacity:0;transform:translateY(6px);pointer-events:none;
-  transition:opacity .2s ease,transform .2s ease;
-  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
-}
-#__rb-pill.__on{opacity:1;transform:none;pointer-events:auto}
-#__rb-pill:hover{background:#16150f;color:#fff}
 /* Dark has to answer to two things: the reader's system setting, and the
    theme button on the page, which sets data-theme on <html>. Keyed to the
    media query alone, the bar stayed paper-white across the top of an essay
@@ -255,25 +251,30 @@ footer p{max-width:78ch}
   :root:not([data-theme="light"]) #__rb{background:#131310;border-bottom-color:#2c2b24;color:#c0bcb1}
   :root:not([data-theme="light"]) #__rb .__rb-home{color:#f7f5ef}
   :root:not([data-theme="light"]) #__rb .__rb-home i{color:#948f85}
+  :root:not([data-theme="light"]) #__rb .__rb-row{color:#948f85}
+  :root:not([data-theme="light"]) #__rb .__rb-row b{color:#c0bcb1}
+  :root:not([data-theme="light"]) #__rb .__rb-from{color:#948f85}
+  :root:not([data-theme="light"]) #__rb .__rb-from b{color:#c0bcb1}
   :root:not([data-theme="light"]) #__rb a{color:#85adea}
   :root:not([data-theme="light"]) #__rb .__mark{background:#f7f5ef;color:#131310}
-  :root:not([data-theme="light"]) #__rb-pill{background:rgba(247,245,239,.95);color:#131310;border-color:rgba(0,0,0,.2)}
-  :root:not([data-theme="light"]) #__rb-pill:hover{background:#fff;color:#000}
 }
 :root[data-theme="dark"] #__rb{background:#131310;border-bottom-color:#2c2b24;color:#c0bcb1}
 :root[data-theme="dark"] #__rb .__rb-home{color:#f7f5ef}
 :root[data-theme="dark"] #__rb .__rb-home i{color:#948f85}
+:root[data-theme="dark"] #__rb .__rb-row{color:#948f85}
+:root[data-theme="dark"] #__rb .__rb-row b{color:#c0bcb1}
+:root[data-theme="dark"] #__rb .__rb-from{color:#948f85}
+:root[data-theme="dark"] #__rb .__rb-from b{color:#c0bcb1}
 :root[data-theme="dark"] #__rb a{color:#85adea}
 :root[data-theme="dark"] #__rb .__mark{background:#f7f5ef;color:#131310}
-:root[data-theme="dark"] #__rb-pill{background:rgba(247,245,239,.95);color:#131310;border-color:rgba(0,0,0,.2)}
-:root[data-theme="dark"] #__rb-pill:hover{background:#fff;color:#000}
-@media (prefers-reduced-motion:reduce){#__rb-pill{transition:none}}
-@media print{#__rb,#__rb-pill{display:none !important}}
+@media print{#__rb{display:none !important}}
 </style>
-<div id="__rb">
+<nav id="__rb" aria-label="Portfolio">
   <a class="__rb-home" href="index.html"><span class="__mark" aria-hidden="true">A</span>Alex Rajcoomar <i>portfolio</i></a>
-  <span class="__rb-right"><a href="research.html">Research</a><a href="library.html">All work</a></span>
-</div>
+  <span class="__rb-row">Independent &middot; <b>5,008</b> words &middot; <b>4</b> figures &middot; <b>6</b> tables</span>
+  <span class="__rb-right"><a href="research.html">Research</a><a href="atlas.html">Atlas</a><a href="library.html">All work</a></span>
+  <span class="__rb-from"><b>Built from</b> Built from the primary filings, the regulators&#x27; decisions and court records, and the text of the standards, with the Beneish coefficients taken from three reproductions that agree; every figure carries its label.</span>
+</nav>
 <script>
 /* the trail: which passages this browser has opened. The atlas reads it and
    rings them; the record lives in localStorage and never leaves the machine. */
@@ -290,7 +291,7 @@ footer p{max-width:78ch}
     function put(key){
       if(t2[key]||Object.keys(t2).length<500){
         t2[key]=(t2[key]||0)+1;
-        localStorage.setItem(k,JSON.stringify(t2));
+        try{localStorage.setItem(k,JSON.stringify(t2));}catch(e){}
       }
     }
     put(u+location.hash);
@@ -307,10 +308,10 @@ footer p{max-width:78ch}
 <header class="mast">
   <p class="kicker"><span>Forensic accounting · working paper</span><span>Canada · 1996 – 2018</span><span>Compiled 23 August 2026</span></p>
   <h1>Flagged in<br><em>Hindsight</em></h1>
-  <p class="standfirst">Five Canadian accounting frauds with a completed regulatory or judicial finding. For each one: the mechanism the regulator actually found, and whether the standard forensic screen — a Beneish M-Score built from the filings that existed before the collapse — would have said anything at all.</p>
+  <p class="standfirst">Five Canadian accounting frauds with a completed regulatory or judicial finding. For each one: the mechanism the regulator actually found, and whether the standard forensic screen, a Beneish M-Score built from the filings that existed before the collapse, would have said anything at all.</p>
   <div class="mast-result">
     <div class="big-stat">0 / 3<small>Test years flagged at the<br>standard cut-off of −1.78</small></div>
-    <p>Two of the five cases could be scored from filed figures, across three test years. None crossed the threshold normally used to call a company a likely manipulator. One — Sino-Forest’s last annual filing, the largest fraud in the set — crosses only if the cut-off is loosened to −2.22. The remaining three cases could not be scored at all: one because the manipulated year never produced an annual filing, two because their filings could not be retrieved.</p>
+    <p>Two of the five cases could be scored from filed figures, across three test years. None crossed the threshold normally used to call a company a likely manipulator. One (Sino-Forest’s last annual filing, the largest fraud in the set) crosses only if the cut-off is loosened to −2.22. The remaining three cases could not be scored at all: one because the manipulated year never produced an annual filing, two because their filings could not be retrieved.</p>
   </div>
 </header>
 <main>
@@ -321,10 +322,11 @@ footer p{max-width:78ch}
   <div class="rail"><b>§ 1</b>How to read this</div>
   <div>
    <h2 id="every-number-here-carries-its-provenance">Every number here carries its provenance</h2>
-   <p class="lede">This piece was built under a rule: a figure, a standard reference, or a case outcome never appears without a label saying where it came from. Three labels are in use.</p>
-   <p><span class="tag">VERIFIED</span> — taken from a primary filing, a regulator's decision, a court record, or the text of the standard itself. The source line under the passage names the document.</p>
-   <p><span class="tag inf">INFERRED</span> — reasoning of mine built on verified facts. It is argument, not fact, and is labelled so you can disagree with it.</p>
-   <p><span class="tag rep">REPRODUCED</span> — used for one thing only: the Beneish specification. Beneish's 1999 paper in the <em>Financial Analysts Journal</em> is closed-access and could not be obtained here, so the model's coefficients were taken from three independent reproductions that agree exactly. § 5 says what that costs.</p>
+   <p class="lede">This piece was built under a rule: a figure, a standard reference, or a case outcome never appears without a label saying where it came from. Four labels are in use.</p>
+   <p><span class="tag">VERIFIED</span>, taken from a primary filing, a regulator's decision, a court record, or the text of the standard itself. The source line under the passage names the document.</p>
+   <p><span class="tag inf">INFERRED</span>, reasoning of mine built on verified facts. It is argument, not fact, and is labelled so you can disagree with it.</p>
+   <p><span class="tag rep">REPRODUCED</span>, used for one thing only: the Beneish specification. Beneish's 1999 paper in the <em>Financial Analysts Journal</em> is closed-access and could not be obtained here, so the model's coefficients were taken from three independent reproductions that agree exactly. § 5 says what that costs.</p>
+<p><span class="tag rep">FROM MEMORY</span>, used once, in § 6, for a general concept stated with no paragraph cited.</p>
    <p>Where the toolkit missed, the piece says so plainly and types the reason. Where the miss is caused by my own inability to retrieve a document rather than by any defect in the screen, it says that too, and does not dress the one up as the other.</p>
   </div>
  </div>
@@ -351,18 +353,18 @@ footer p{max-width:78ch}
       </tbody>
     </table>
    </div>
-   <p class="src"><b>Regime dates.</b> <span class="tag">VERIFIED</span> IFRS applies to Canadian publicly accountable enterprises for "financial years beginning on or after January 1, 2011"; the CASs apply "for audits of financial statements for periods ending on or after December 14, 2010" — CSA request for comments on NI 52-107, 25 September 2009, (2009) 32 OSCB 7581–7582.</p>
+   <p class="src"><b>Regime dates.</b> <span class="tag">VERIFIED</span> IFRS applies to Canadian publicly accountable enterprises for "financial years beginning on or after January 1, 2011"; the CASs apply "for audits of financial statements for periods ending on or after December 14, 2010": CSA request for comments on NI 52-107, 25 September 2009, (2009) 32 OSCB 7581–7582.</p>
 
    <h3 id="two-cases-were-dropped-and-the-reasons-matter">Two cases were dropped, and the reasons matter</h3>
    <div class="grid-2">
      <div class="card out">
-       <h4 id="ybm-magnex-dropped">YBM Magnex — dropped</h4>
+       <h4 id="ybm-magnex-dropped">YBM Magnex: dropped</h4>
        <p>The OSC did decide YBM, but not on an accounting mechanism. The panel drew the line itself: the case is about whether the risk was disclosed, not about how the sales were recognised. Keeping it would have meant writing a mechanism section no regulator ever found.</p>
        <blockquote>this case is not about organized crime, money laundering or whether the respondents believed YBM was not a real company. It is about the disclosure of risk<cite><span class="tag">VERIFIED</span> YBM Magnex International Inc. (Re), OSC, 27 June 2003, ¶3</cite></blockquote>
      </div>
      <div class="card out">
-       <h4 id="bre-x-dropped">Bre-X — dropped</h4>
-       <p>Felderhof was acquitted in 2007 <span class="tag">VERIFIED</span> — OSC news release, "Ontario Court of Justice finds John Bernard Felderhof not guilty" — so no completed adverse finding exists to build on, and the inclusion rule excludes Bre-X on its own terms. <span class="tag inf">INFERRED</span> Contemporaneous reporting says the OSC did not appeal; that has not been checked against a primary document here. <span class="tag inf">INFERRED</span> There is a second reason worth stating: Bre-X's deception lived in drill-core assays, not in an accounting policy. Its statements capitalised exploration cost on a property whose physical description was false. No ratio reads a core sample — Bre-X marks the boundary of what this toolkit is for.</p>
+       <h4 id="bre-x-dropped">Bre-X: dropped</h4>
+       <p>Felderhof was acquitted in 2007 <span class="tag">VERIFIED</span> (OSC news release, "Ontario Court of Justice finds John Bernard Felderhof not guilty") so no completed adverse finding exists to build on, and the inclusion rule excludes Bre-X on its own terms. <span class="tag inf">INFERRED</span> Contemporaneous reporting says the OSC did not appeal; that has not been checked against a primary document here. <span class="tag inf">INFERRED</span> There is a second reason worth stating: Bre-X's deception lived in drill-core assays, not in an accounting policy. Its statements capitalised exploration cost on a property whose physical description was false. No ratio reads a core sample: Bre-X marks the boundary of what this toolkit is for.</p>
      </div>
    </div>
    <p class="src"><b>Retrieval note.</b> SEDAR+ refuses automated access (requests redirect to a bot-validation gate), and CanLII, the Ontario courts site and the Supreme Court's site all refuse it too. Everything below therefore comes from hosts that answered: the Capital Markets Tribunal, the legacy OSC host, the Alberta Securities Commission, the SEC's EDGAR archive, and issuers' own results releases. Where a Canadian court judgment is cited, it is cited as recited in a regulator's document that could be opened, not as read in the judgment itself.</p>
@@ -376,7 +378,7 @@ footer p{max-width:78ch}
   <div class="rail"><b>§ 3</b>Timeline<br>Filing → collapse → finding</div>
   <div>
    <h2 id="the-distance-between-the-last-clean-filing-and-t">The distance between the last clean filing and the finding</h2>
-   <p class="lede">The screen in § 5 is run against the square: the last set of financial statements filed before anything was publicly wrong. The triangle is the moment the market learned. The circle is the day a regulator or court finally said what had happened — in three of five cases, more than a decade later.</p>
+   <p class="lede">The screen in § 5 is run against the square: the last set of financial statements filed before anything was publicly wrong. The triangle is the moment the market learned. The circle is the day a regulator or court finally said what had happened, in three of five cases, more than a decade later.</p>
    <div class="tl-wrap"><svg id="timeline" role="img" aria-label="Timeline of five Canadian accounting frauds from 1996 to 2018, showing for each case the last clean filing, the public collapse, and the date of the completed finding."></svg></div>
    <div class="legend">
      <span><span class="swatch" style="background:var(--cool)"></span>Last clean filing</span>
@@ -396,23 +398,23 @@ footer p{max-width:78ch}
    <h2 id="five-mechanisms-no-two-alike">Five mechanisms, no two alike</h2>
    <p class="lede">Each case was selected to occupy a different part of the statements: where a cost is allowed to sit, when a liability is released, whether an asset exists, whether a receivable will ever be collected, and what a trading desk can hide inside inventory.</p>
 
-   <h3 id="livent-a-cost-is-moved-to-where-it-can-be-amorti">Livent — a cost is moved to where it can be amortised</h3>
-   <p>Livent's manipulation was, first, a question of where an expense was permitted to sit. The SEC's order describes an accounting fraud "spanning eight years from 1990 through the first quarter of 1998" worked through three devices: preproduction costs — advertising, sets, costumes — were transferred into fixed-asset accounts such as theatre construction, where they could be amortised over much longer lives; expenses were removed from the general ledger at quarter-end and re-entered in a later period, a practice the company called the Expense Roll; and costs were shifted between shows, tracked internally as the Amortization Roll. The revenue side came later and was cruder. The OSC's allegations set out four transactions, each sold as a clean disposition of rights and each carrying an undisclosed side agreement that reversed its substance: CDN$4.2 million recorded on the Dewlim assignment in 1996, CDN$5.6 million on Dundee's purchase of the Pantages air rights in 1997 — subject to a put that let Dundee hand the interest back — CDN$5.8 million on the American Artists touring agreement, against which Livent had privately agreed to pay out more than it received, and CDN$4.6 million on the CIBC Capital U.K. rights, which Livent could repurchase within six months. All four were reversed on restatement. Reported 1996 net income of CDN$11.1 million became a loss of CDN$18.0 million; the 1997 loss of CDN$44.1 million became CDN$98.7 million.</p>
-   <p class="src"><b>Sources.</b> <span class="tag">VERIFIED</span> SEC, In the Matter of Livent Inc., Exchange Act Release 34-40937, 13 January 1999 (cost shifting, expense deletion, show-to-show transfers). <span class="tag">VERIFIED</span> OSC Statement of Allegations, In the Matter of Livent Inc. et al., 3 July 2001, ¶8–9, 36–75 (side agreements and amounts), ¶23 (restated figures). Criminal convictions were upheld in R. v. Drabinsky, 2011 ONCA 582 — recited here from the regulatory record, as the judgment host refused access.</p>
+   <h3 id="livent-a-cost-is-moved-to-where-it-can-be-amorti">Livent: a cost is moved to where it can be amortised</h3>
+   <p>Livent's manipulation was, first, a question of where an expense was permitted to sit. The SEC's order describes an accounting fraud "spanning eight years from 1990 through the first quarter of 1998" worked through three devices: preproduction costs (advertising, sets, costumes) were transferred into fixed-asset accounts such as theatre construction, where they could be amortised over much longer lives; expenses were removed from the general ledger at quarter-end and re-entered in a later period, a practice the company called the Expense Roll; and costs were shifted between shows, tracked internally as the Amortization Roll. The revenue side came later and was cruder. The OSC's allegations set out four transactions, each sold as a clean disposition of rights and each carrying an undisclosed side agreement that reversed its substance: CDN$4.2 million recorded on the Dewlim assignment in 1996, CDN$5.6 million on Dundee's purchase of the Pantages air rights in 1997, subject to a put that let Dundee hand the interest back, CDN$5.8 million on the American Artists touring agreement, against which Livent had privately agreed to pay out more than it received, and CDN$4.6 million on the CIBC Capital U.K. rights, which Livent could repurchase within six months. All four were reversed on restatement. Reported 1996 net income of CDN$11.1 million became a loss of CDN$18.0 million; the 1997 loss of CDN$44.1 million became CDN$98.7 million.</p>
+   <p class="src"><b>Sources.</b> <span class="tag">VERIFIED</span> SEC, In the Matter of Livent Inc., Exchange Act Release 34-40937, 13 January 1999 (cost shifting, expense deletion, show-to-show transfers). <span class="tag">VERIFIED</span> OSC Statement of Allegations, In the Matter of Livent Inc. et al., 3 July 2001, ¶8–9, 36–75 (side agreements and amounts), ¶23 (restated figures). Criminal convictions were upheld in R. v. Drabinsky, 2011 ONCA 582, recited here from the regulatory record, as the judgment host refused access.</p>
 
-   <h3 id="philip-services-losses-parked-in-inventory-then-">Philip Services — losses parked in inventory, then two versions of one balance sheet</h3>
+   <h3 id="philip-services-losses-parked-in-inventory-then-">Philip Services: losses parked in inventory, then two versions of one balance sheet</h3>
    <p>Philip Services grew by acquisition through the mid-1990s and reported its metals-recovery business as a stable industrial operation. In January 1998 it disclosed that unauthorised copper trading and inventory costing errors had produced very large unrecorded losses, and in April it disclosed a further understatement of liabilities in the copper operations "by an amount estimated to be approximately US$30 million," with roughly US$5 million of additional balance-sheet adjustments still to come. What makes Philip unusually legible is that both versions of the same balance sheet were filed. In September 1997 the company filed its June 1997 report showing December 31, 1996 accounts receivable of US$199.9 million and total assets of US$977.2 million. In March 1998 it filed an amended third-quarter report showing the same December 31, 1996 date with receivables of US$173.0 million and total assets of US$953.8 million. Nothing about the date changed; only what the company was prepared to say about it.</p>
    <p class="src"><b>Sources.</b> <span class="tag">VERIFIED</span> Philip Services Corp., Form 8-K filed 8 September 1997 (June 1997 report; December 31, 1996 comparatives). <span class="tag">VERIFIED</span> Form 10-Q/A for Q3 1997, filed 31 March 1998 (restated December 31, 1996 comparatives). <span class="tag">VERIFIED</span> Form 8-K filed 24 April 1998 (copper restatement). OSC settlement agreements in Philip Services Corp. et al. were approved 28 February 2006.</p>
 
-   <h3 id="nortel-building-a-liability-in-order-to-release-">Nortel — building a liability in order to release it</h3>
+   <h3 id="nortel-building-a-liability-in-order-to-release-">Nortel: building a liability in order to release it</h3>
    <p>Nortel is two episodes, not one. In fiscal 2000 the allegation is revenue recognition: senior finance management changed accounting policies so that revenue was taken early or deferred improperly, including roughly US$1 billion of fourth-quarter 2000 "bill and hold" transactions. The second episode is the one that matters for a detection test. Across the third and fourth quarters of 2002 and the first and second quarters of 2003, accrued liabilities were recorded and then released to income contrary to GAAP, in order to meet pro forma earnings targets that drove bonus payments. The size of the pool is in the restatements: the December 2003 restatement reduced the accumulated deficit by US$497 million for 2002, US$178 million for 2001 and US$31 million for 2000, and identified roughly US$935 million and US$514 million of liabilities released into income in 2002 and 2001 respectively. The later revenue restatement moved US$1.492 billion of revenue into 2001 and cut fiscal 2000 revenue by US$2.866 billion.</p>
    <p class="src"><b>Sources.</b> <span class="tag">VERIFIED</span> OSC Staff Statement of Allegations, In the Matter of Nortel Networks Corporation and Nortel Networks Limited, ¶4 (material time), ¶13–14 (conduct), ¶20 and ¶33 (restatement amounts), ¶34 (bill and hold). These are Staff allegations; the finding-grade documents are the settlement agreement approved 16 May 2007 and the restated filings themselves.</p>
 
-   <h3 id="sino-forest-an-asset-that-could-not-be-shown-to-">Sino-Forest — an asset that could not be shown to exist</h3>
-   <p>The Tribunal found an elaborate scheme with three elements: undisclosed control of purportedly independent third parties, a deceitful documentation process, and internal control weaknesses that were an essential part of the design rather than an accident of growth. Sino-Forest bought and sold standing timber through British Virgin Islands subsidiaries and a network of suppliers and "authorised intermediaries." For most holdings acquired through that structure, plantation rights certificates — the document that establishes legal ownership — had never been issued. Sales were not settled in cash to the company; they were settled through a set-off process in which customers paid suppliers, evidenced by four letters per transaction that were shown to the auditors as independent confirmations and were, the Tribunal found, orchestrated by Sino-Forest. Across the period the reported holdings moved from US$1.088 billion of standing timber in 2007 to US$2.475 billion in 2010, and standing timber revenue from US$501 million to US$1.326 billion. Four transactions singled out by the panel overstated revenue by US$48 million, US$30 million, US$231 million and US$49 million.</p>
+   <h3 id="sino-forest-an-asset-that-could-not-be-shown-to-">Sino-Forest: an asset that could not be shown to exist</h3>
+   <p>The Tribunal found an elaborate scheme with three elements: undisclosed control of purportedly independent third parties, a deceitful documentation process, and internal control weaknesses that were an essential part of the design rather than an accident of growth. Sino-Forest bought and sold standing timber through British Virgin Islands subsidiaries and a network of suppliers and "authorised intermediaries." For most holdings acquired through that structure, plantation rights certificates, the document that establishes legal ownership, had never been issued. Sales were not settled in cash to the company; they were settled through a set-off process in which customers paid suppliers, evidenced by four letters per transaction that were shown to the auditors as independent confirmations and were, the Tribunal found, orchestrated by Sino-Forest. Across the period the reported holdings moved from US$1.088 billion of standing timber in 2007 to US$2.475 billion in 2010, and standing timber revenue from US$501 million to US$1.326 billion. Four transactions singled out by the panel overstated revenue by US$48 million, US$30 million, US$231 million and US$49 million.</p>
    <p class="src"><b>Sources.</b> <span class="tag">VERIFIED</span> Sino-Forest Corporation (Re), 2017 ONSEC 27 (merits, 13 July 2017), ¶54, 66–73 (certificates, set-off letters, control), ¶124–130 (segregation of duties, NI 52-109), ¶201–204. <span class="tag">VERIFIED</span> Sino-Forest Corporation (Re), 2018 ONSEC 37 (sanctions, 9 July 2018) for the asset, revenue and per-transaction figures and the sanctions imposed.</p>
 
-   <h3 id="poseidon-concepts-revenue-recorded-against-custo">Poseidon Concepts — revenue recorded against customers who would not pay</h3>
+   <h3 id="poseidon-concepts-revenue-recorded-against-custo">Poseidon Concepts: revenue recorded against customers who would not pay</h3>
    <p>Poseidon rented above-ground fluid storage tanks to oil and gas operators under long-term take-or-pay contracts, and recognised the contracted revenue whether or not the tanks were in use and whether or not the customer intended to pay. The company's own CFO admitted that internal controls failed to assess collectability, particularly in the United States, where "revenue recognized by Poseidon from the Contracts represented 60% or more of its total revenue in fiscal 2012." The three 2012 interim filings reported revenue of $52.1 million, $54.9 million and $41.1 million against receivables of $83.0 million, $118.6 million and $125.5 million. On 14 February 2013 the company announced that approximately $95 to $106 million of the $148.1 million of nine-month revenue should not have been recorded, and $94 to $102 million of the $125.5 million receivable with it. The provision carried against those receivables before the restatement was $9.5 million. Amounts are as stated in the ASC decision.</p>
    <p class="src"><b>Sources.</b> <span class="tag">VERIFIED</span> Re MacKenzie, 2016 ABASC 161 (settlement agreement and undertaking, 15 June 2016), ¶11, 20, 25, 27.1–27.2, 29.1, 37. <span class="tag">VERIFIED</span> SEC Litigation Release 23191, 6 February 2015 (approximately US$100 million of revenue from contracts "either non-existent or uncollectable"; 64–72% of revenue reported over the first three quarters of 2012).</p>
   </div>
@@ -461,7 +463,7 @@ footer p{max-width:78ch}
 
    <h3 id="the-specification-used-and-its-one-weakness">The specification used, and its one weakness</h3>
    <p><span class="tag rep">REPRODUCED</span> M = −4.84 + 0.920·DSRI + 0.528·GMI + 0.404·AQI + 0.892·SGI + 0.115·DEPI − 0.172·SGAI + 4.679·TATA − 0.327·LVGI, with total accruals taken in their cash-flow form, (income from continuing operations − cash from operations) ÷ total assets.</p>
-   <p>Beneish (1999), <em>Financial Analysts Journal</em> 55(5):24–36 is closed-access — Unpaywall reports no open version and OpenAlex finds no open-access location; a third-party mirror of the manuscript refused the request. The coefficients above were taken from three independent reproductions that agree to the digit. Two of the three define total accruals from the cash-flow statement, as used here; the third defines them from the change in non-cash working capital less depreciation, which for a company that capitalises aggressively can produce a materially different answer. The asset-quality variable is likewise published in two forms, one including securities and one not. <span class="tag inf">INFERRED</span> That divergence is not trivia: it means "the Beneish M-Score" names a family of scores, and a practitioner who reports one without saying which is reporting an unfalsifiable number.</p>
+   <p>Beneish (1999), <em>Financial Analysts Journal</em> 55(5):24–36 is closed-access: Unpaywall reports no open version and OpenAlex finds no open-access location; a third-party mirror of the manuscript refused the request. The coefficients above were taken from three independent reproductions that agree to the digit. Two of the three define total accruals from the cash-flow statement, as used here; the third defines them from the change in non-cash working capital less depreciation, which for a company that capitalises aggressively can produce a materially different answer. The asset-quality variable is likewise published in two forms, one including securities and one not. <span class="tag inf">INFERRED</span> That divergence is not trivia: it means "the Beneish M-Score" names a family of scores, and a practitioner who reports one without saying which is reporting an unfalsifiable number.</p>
    <p class="src"><b>Reproductions cross-checked.</b> Wikipedia's Beneish M-score entry (citing Beneish 1999, Beneish–Lee–Nichols 2013 and Beneish–Vorst 2020); AAII Journal, "Detecting Earnings Manipulation with the M-Score"; GMT Research, "Beneish's M-Score". Publication details confirmed against Beneish's own CV at Indiana University's Kelley School. <span class="tag">VERIFIED</span> for the citation; <span class="tag rep">REPRODUCED</span> for the coefficients.</p>
   </div>
  </div>
@@ -473,13 +475,13 @@ footer p{max-width:78ch}
   <div class="rail"><b>§ 6</b>The input<br>without the model</div>
   <div>
    <h2 id="poseidon-the-signal-was-in-the-filings-the-model">Poseidon: the signal was in the filings; the model was in the wrong period</h2>
-   <p class="lede">The M-Score is an annual model. It compares a fiscal year with the year before it. Poseidon's manipulation began and ended inside 2012, the restatement was announced in February 2013, and the company was in creditor protection by April — no audited annual statements covering the manipulated year were ever filed. There is no year <em>t</em>, so there is no score.</p>
+   <p class="lede">The M-Score is an annual model. It compares a fiscal year with the year before it. Poseidon's manipulation began and ended inside 2012, the restatement was announced in February 2013, and the company was in creditor protection by April, no audited annual statements covering the manipulated year were ever filed. There is no year <em>t</em>, so there is no score.</p>
    <p>What there is, in three consecutive interim filings a public investor could read, is the single input the model weights most heavily on the revenue side. Receivables per dollar of quarterly revenue nearly doubled while revenue itself fell.</p>
    <div id="pos-chart"></div>
    <div class="legend"><span><span class="swatch" style="background:var(--warm)"></span>Receivables expressed as days of that quarter's revenue</span></div>
    <p class="src"><b>Figures</b> <span class="tag">VERIFIED</span> Re MacKenzie, 2016 ABASC 161, ¶20 (revenue and accounts receivable as filed for Q1, Q2 and Q3 2012). Days are computed as receivables ÷ quarterly revenue × 91.25. <span class="tag inf">INFERRED</span> The trajectory, not the level, is the tell: a rental business whose customers stop paying keeps booking revenue and stops converting it.</p>
-   <p><span class="tag inf">INFERRED</span> This is the sharpest result in the set. The screen did not fail on Poseidon because its variables were blind — its most diagnostic variable was moving hard and in the right direction. It failed because the model only knows how to look at years, and this fraud never lived long enough to become one.</p>
-   <p>Poseidon's revenue was recognised under IAS 18, the standard IFRS 15 replaced. The collectability question that sank it — whether consideration will actually be received — is the question IFRS 15 moved to the front of the analysis, into the test of whether a contract exists at all. <span class="tag rep">FROM MEMORY</span> — general concept, no paragraph cited. <span class="tag inf">INFERRED</span> Readers working through the <a href="ifrs15-judgment-trainer.html">IFRS 15 five-step trainer</a> elsewhere on this site should read Poseidon as its worked counterexample.</p>
+   <p><span class="tag inf">INFERRED</span> This is the sharpest result in the set. The screen did not fail on Poseidon because its variables were blind, its most diagnostic variable was moving hard and in the right direction. It failed because the model only knows how to look at years, and this fraud never lived long enough to become one.</p>
+   <p>Poseidon's revenue was recognised under IAS 18, the standard IFRS 15 replaced. The collectability question that sank it, whether consideration will actually be received, is the question IFRS 15 moved to the front of the analysis, into the test of whether a contract exists at all. <span class="tag rep">FROM MEMORY</span>, general concept, no paragraph cited. <span class="tag inf">INFERRED</span> Readers working through the <a href="ifrs15-judgment-trainer.html">IFRS 15 five-step trainer</a> elsewhere on this site should read Poseidon as its worked counterexample.</p>
   </div>
  </div>
 </section>
@@ -505,10 +507,10 @@ footer p{max-width:78ch}
        </tbody>
      </table>
    </div>
-   <p>The distinction in the last column is the one thing this piece refuses to blur. An analyst holding Sino-Forest's 2010 annual report in March 2011 had every input used in § 5 — the score is low because of what the numbers say, not because of what I could reach. For Livent and Philip Services the opposite is true: those two say nothing about the screen, only about the archive.</p>
+   <p>The distinction in the last column is the one thing this piece refuses to blur. An analyst holding Sino-Forest's 2010 annual report in March 2011 had every input used in § 5, the score is low because of what the numbers say, not because of what I could reach. For Livent and Philip Services the opposite is true: those two say nothing about the screen, only about the archive.</p>
 
    <h3 id="what-the-accrual-variable-did-and-why-it-matters">What the accrual variable did, and why it matters most</h3>
-   <p>TATA carries the largest coefficient in the model by a factor of five. In both computable frauds it pointed the wrong way. Sino-Forest reported US$840 million of cash from operations against US$395 million of net income, because the timber it was buying was capitalised — the spending left through investing activities while the depletion charge came back as a non-cash add-back. Nortel reported a US$3.6 billion loss against a US$589 million operating outflow, so its accruals also read negative. <span class="tag inf">INFERRED</span> A model that treats "earnings above cash" as the signature of manipulation is structurally blind to manipulation performed by moving cash into the asset side of the balance sheet, and to manipulation that suppresses this year's earnings in order to lift next year's.</p>
+   <p>TATA carries the largest coefficient in the model by a factor of five. In both computable frauds it pointed the wrong way. Sino-Forest reported US$840 million of cash from operations against US$395 million of net income, because the timber it was buying was capitalised, the spending left through investing activities while the depletion charge came back as a non-cash add-back. Nortel reported a US$3.6 billion loss against a US$589 million operating outflow, so its accruals also read negative. <span class="tag inf">INFERRED</span> A model that treats "earnings above cash" as the signature of manipulation is structurally blind to manipulation performed by moving cash into the asset side of the balance sheet, and to manipulation that suppresses this year's earnings in order to lift next year's.</p>
   </div>
  </div>
 </section>
@@ -525,14 +527,14 @@ footer p{max-width:78ch}
    <p class="src"><b>Sources.</b> CSA request for comments on NI 52-107, (2009) 32 OSCB 7582 (CAS effective date); CPA Ontario, FAQ on the revised CAS 240 ("For periods beginning on or after December 15, 2026"); FRAS Canada, fraud project status page.</p>
 
    <h3 id="which-indicators-would-have-engaged">Which indicators would have engaged</h3>
-   <p>Applied as a present-day screen — that is, asking what a CAS 240 audit run today would have had to do — the indicator set engages in every case, and in three of them the requirement points straight at the mechanism the regulator later found.</p>
+   <p>Applied as a present-day screen (that is, asking what a CAS 240 audit run today would have had to do) the indicator set engages in every case, and in three of them the requirement points straight at the mechanism the regulator later found.</p>
    <div class="tbl-wrap">
      <table>
-       <caption>CAS 240 requirement against the mechanism found — applied retroactively, not as the standard the auditor was bound by</caption>
+       <caption>CAS 240 requirement against the mechanism found: applied retroactively, not as the standard the auditor was bound by</caption>
        <thead><tr><th>Requirement</th><th>Engages on</th><th>What it would have had to reach</th></tr></thead>
        <tbody>
          <tr><td>Presumed fraud risk in revenue recognition</td><td>Livent, Sino-Forest, Poseidon</td><td>Side agreements; set-off confirmations; collectability of take-or-pay revenue</td></tr>
-         <tr><td>Management override — journal entries</td><td>Livent, Nortel</td><td>Quarter-end deletions and re-entries; accrual releases timed to earnings targets</td></tr>
+         <tr><td>Management override, journal entries</td><td>Livent, Nortel</td><td>Quarter-end deletions and re-entries; accrual releases timed to earnings targets</td></tr>
          <tr><td>Retrospective review of estimates for bias</td><td>Nortel, Poseidon</td><td>Provisions built then released; a $9.5m allowance against $125.5m of receivables</td></tr>
          <tr><td>Engagement-team discussion of susceptibility</td><td>All five</td><td>Concentration of duties, related-party opacity, acquisition-driven growth</td></tr>
          <tr><td>Related parties and unusual counterparties</td><td>Sino-Forest, Livent</td><td>Undisclosed control of suppliers and intermediaries; undisclosed guarantees</td></tr>
@@ -554,30 +556,30 @@ footer p{max-width:78ch}
    <ol class="check">
      <li>
        <p><strong>Reconcile operating cash flow to net income and name the line that moved the cash.</strong> If cash spending has been reclassified into investing, operating cash flow will look strong precisely when it should not, and the accrual test will read conservative.</p>
-       <p class="trace">Sino-Forest FY2010: US$840.1m operating cash flow against US$395.4m net income, with US$746.5m of timber depletion added back — news release 15 Mar 2011. Livent: preproduction costs transferred to fixed-asset accounts — SEC Release 34-40937.</p>
+       <p class="trace">Sino-Forest FY2010: US$840.1m operating cash flow against US$395.4m net income, with US$746.5m of timber depletion added back, news release 15 Mar 2011. Livent: preproduction costs transferred to fixed-asset accounts: SEC Release 34-40937.</p>
      </li>
      <li>
        <p><strong>Run receivables against revenue on the interim filings, not only the annual ones.</strong> It is the highest-yield single ratio in this set and it moved before anything else did.</p>
-       <p class="trace">Poseidon: receivables per quarter of revenue rose from 145 to 279 days across Q1–Q3 2012 — 2016 ABASC 161 ¶20. Sino-Forest FY2010: DSRI 1.45, the second-largest positive contributor to the score — computed from the 15 Mar 2011 release.</p>
+       <p class="trace">Poseidon: receivables per quarter of revenue rose from 145 to 279 days across Q1–Q3 2012: 2016 ABASC 161 ¶20. Sino-Forest FY2010: DSRI 1.45, the second-largest positive contributor to the score, computed from the 15 Mar 2011 release.</p>
      </li>
      <li>
        <p><strong>Screen the quarters, because the manipulation often lives there and may never reach an annual statement.</strong></p>
-       <p class="trace">Poseidon: no annual statements covering the manipulated year were ever filed — 2016 ABASC 161 ¶27; CCAA filing 9 April 2013. Nortel: the material time is quarters — Q3–Q4 2002 and Q1–Q2 2003 — OSC Statement of Allegations ¶4.</p>
+       <p class="trace">Poseidon: no annual statements covering the manipulated year were ever filed: 2016 ABASC 161 ¶27; CCAA filing 9 April 2013. Nortel: the material time is quarters, Q3–Q4 2002 and Q1–Q2 2003, OSC Statement of Allegations ¶4.</p>
      </li>
      <li>
        <p><strong>Treat income-decreasing periods as in scope.</strong> A screen calibrated on inflation will rate a company at its most dangerous moment as low risk, because the reserve is being built rather than released.</p>
-       <p class="trace">Nortel FY2002: M = −3.81 in the year accruals were being recorded for later release — OSC Statement of Allegations ¶14, ¶20. Philip Services: charges and reserves taken through an acquisition programme, later restated — Form 8-K 24 April 1998. <span class="tag inf">INFERRED</span> Philip supports this item on the documentary record; it is not one of the computed cases.</p>
+       <p class="trace">Nortel FY2002: M = −3.81 in the year accruals were being recorded for later release: OSC Statement of Allegations ¶14, ¶20. Philip Services: charges and reserves taken through an acquisition programme, later restated: Form 8-K 24 April 1998. <span class="tag inf">INFERRED</span> Philip supports this item on the documentary record; it is not one of the computed cases.</p>
      </li>
      <li>
        <p><strong>Verify the counterparty, not the ratio.</strong> An undisclosed side agreement and a secretly controlled supplier leave no arithmetic footprint whatsoever. Both cases here were found through documents and relationships, never through numbers.</p>
-       <p class="trace">Livent: four transactions, each with an undisclosed side agreement or guarantee — OSC Statement of Allegations ¶36–75. Sino-Forest: undisclosed control of purportedly independent suppliers and authorised intermediaries — 2017 ONSEC 27 ¶66, ¶202–204.</p>
+       <p class="trace">Livent: four transactions, each with an undisclosed side agreement or guarantee: OSC Statement of Allegations ¶36–75. Sino-Forest: undisclosed control of purportedly independent suppliers and authorised intermediaries: 2017 ONSEC 27 ¶66, ¶202–204.</p>
      </li>
      <li>
        <p><strong>A confirmation that management arranged is not a confirmation.</strong></p>
-       <p class="trace">Sino-Forest: the four set-off letters per transaction were "orchestrated by Sino-Forest and not independent or audit-worthy" — 2017 ONSEC 27 ¶72–73. Livent: on the CIBC Capital transaction the auditors "did not concur with the revenue inclusion" and an offsetting amortisation was recorded — OSC Statement of Allegations ¶75.</p>
+       <p class="trace">Sino-Forest: the four set-off letters per transaction were "orchestrated by Sino-Forest and not independent or audit-worthy": 2017 ONSEC 27 ¶72–73. Livent: on the CIBC Capital transaction the auditors "did not concur with the revenue inclusion" and an offsetting amortisation was recorded: OSC Statement of Allegations ¶75.</p>
      </li>
    </ol>
-   <h3 id="illustrative-only-one-case-each">Illustrative only — one case each</h3>
+   <h3 id="illustrative-only-one-case-each">Illustrative only: one case each</h3>
    <p><strong>The cut-off decides the answer.</strong> Sino-Forest's fiscal 2010 score of −1.93 is a clean miss at −1.78 and a clean hit at −2.22. No other case in the set is near enough to either line for the choice to matter. <span class="tag inf">INFERRED</span> One case is not a pattern, but it is a warning about how easily a screen's reported accuracy can be tuned after the fact.</p>
    <p><strong>Two filed versions of one balance sheet.</strong> Philip Services filed December 31, 1996 receivables of US$199.9m in September 1997 and US$173.0m for the same date in March 1998. <span class="tag inf">INFERRED</span> Where a company restates a comparative without restating the year, the comparative is the disclosure.</p>
   </div>
@@ -596,7 +598,7 @@ footer p{max-width:78ch}
        <caption>Retrieval log</caption>
        <thead><tr><th>Need</th><th>Route that worked</th><th>Route that failed</th></tr></thead>
        <tbody>
-         <tr><td>OSC decisions and settlements</td><td>capitalmarketstribunal.ca — decision PDFs open directly; legacy osc.gov.on.ca serves older HTML pages</td><td>Current osc.ca proceeding pages return 403</td></tr>
+         <tr><td>OSC decisions and settlements</td><td>capitalmarketstribunal.ca, decision PDFs open directly; legacy osc.gov.on.ca serves older HTML pages</td><td>Current osc.ca proceeding pages return 403</td></tr>
          <tr><td>ASC decisions</td><td>asc.ca decision PDFs, searchable by respondent name</td><td>—</td></tr>
          <tr><td>Court judgments</td><td>Recited within regulators' decisions</td><td>CanLII, ontariocourts.ca, decisions.scc-csc.ca all refuse automated access</td></tr>
          <tr><td>Canadian filings</td><td>Issuers' own results releases on the newswire, which reproduce the statements</td><td>SEDAR+ redirects to a bot-validation gate; no filings retrievable</td></tr>
@@ -607,7 +609,7 @@ footer p{max-width:78ch}
        </tbody>
      </table>
    </div>
-   <p class="src"><b>Method note.</b> The last-clean-filing test year was chosen per case as the most recent annual period whose statements were filed before anything was publicly wrong, and comparatives were taken from the same document as the test year wherever possible, so that reclassifications between filings do not contaminate the year-over-year indices. Sino-Forest's 2009 comparatives differ slightly between its 2009 and 2010 releases — cost of sales US$797.3m against US$797.8m — and the 2010 release's own comparatives were used for the 2010 score.</p>
+   <p class="src"><b>Method note.</b> The last-clean-filing test year was chosen per case as the most recent annual period whose statements were filed before anything was publicly wrong, and comparatives were taken from the same document as the test year wherever possible, so that reclassifications between filings do not contaminate the year-over-year indices. Sino-Forest's 2009 comparatives differ slightly between its 2009 and 2010 releases, cost of sales US$797.3m against US$797.8m, and the 2010 release's own comparatives were used for the 2010 score.</p>
       <p class="src"><b>Computation.</b> Every score on this page is reproducible from three files: <a href="mscore.py">the computation script</a>, <a href="inputs-as-filed.csv">the inputs exactly as filed, with the source document of every line</a>, and <a href="mscore-results.csv">the results table</a>. Run the script and it prints each variable, its contribution, and the score for every computable case.</p>
    <p><span class="tag inf">INFERRED</span> One consequence deserves stating on its own. A Canadian issuer that also filed in the United States is far easier to test today than one that filed only in Canada, because EDGAR is open and SEDAR+ is not. That is an accident of archive policy, not of accounting, and it quietly shapes which frauds get studied.</p>
   </div>
@@ -616,7 +618,7 @@ footer p{max-width:78ch}
 
 </main>
 <footer>
-  <p><strong>Least confident.</strong> The Beneish coefficients. Three independent reproductions agreeing to the digit is good evidence and poor provenance, and the two definitional forks — total accruals from the cash-flow statement or from working capital, asset quality with securities or without — are exactly the kind of choice that moves a borderline score like Sino-Forest's −1.93 across a threshold. Everything in § 5 should be read as conditional on the specification stated there until the 1999 paper itself is in hand.</p>
+  <p><strong>Least confident.</strong> The Beneish coefficients. Three independent reproductions agreeing to the digit is good evidence and poor provenance, and the two definitional forks (total accruals from the cash-flow statement or from working capital, asset quality with securities or without) are exactly the kind of choice that moves a borderline score like Sino-Forest's −1.93 across a threshold. Everything in § 5 should be read as conditional on the specification stated there until the 1999 paper itself is in hand.</p>
   <p>Case outcomes, figures and standard references are labelled throughout. Nothing on this page characterises anyone's intent beyond what a regulator or court actually found.</p>
 </footer>
 </div>
@@ -989,14 +991,62 @@ drawTimeline(); drawPoseidon(); render();
 })();
 </script>
 
+<!--__long--><link rel="stylesheet" href="long.css?v=0b99e235"><script src="long.js?v=98a5c23b" defer></script><!--/__long-->
+
 <!--__rbp-->
+<!-- The pill styles itself: this block used to live only with the top bar,
+     so the seven tool pages, which carry the pill alone, rendered it as an
+     unstyled link at the very end of the document. Whatever carries the
+     pill now carries its style. -->
+<style id="__rbp-style">
+#__rb-pill{
+  position:fixed;left:14px;bottom:14px;z-index:2147483000;
+  display:inline-flex;align-items:center;gap:.45rem;padding:.58rem .9rem;
+  background:rgba(22,21,15,.93);color:#faf9f6;text-decoration:none;border-radius:99px;
+  font:600 12.5px/1 InterVar,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  border:1px solid rgba(255,255,255,.16);box-shadow:0 6px 22px rgba(0,0,0,.28);
+  opacity:0;transform:translateY(6px);pointer-events:none;
+  transition:opacity .2s ease,transform .2s ease;
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+}
+#__rb-pill.__on{opacity:1;transform:none;pointer-events:auto}
+#__rb-pill:hover{background:#16150f;color:#fff}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) #__rb-pill{background:rgba(247,245,239,.95);color:#131310;border-color:rgba(0,0,0,.2)}
+  :root:not([data-theme="light"]) #__rb-pill:hover{background:#fff;color:#000}
+}
+:root[data-theme="dark"] #__rb-pill{background:rgba(247,245,239,.95);color:#131310;border-color:rgba(0,0,0,.2)}
+:root[data-theme="dark"] #__rb-pill:hover{background:#fff;color:#000}
+@media (prefers-reduced-motion:reduce){#__rb-pill{transition:none}}
+@media print{#__rb-pill{display:none !important}}
+/* a tool carries no bar, so what it was built from stands at the foot of the document */
+#__rb-from{margin:1.25rem 1rem;font:400 13px/1.45 InterVar,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;color:#6f6c63;max-width:70ch}
+#__rb-from b{font-weight:600;color:#55524a}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) #__rb-from{color:#948f85}
+  :root:not([data-theme="light"]) #__rb-from b{color:#c0bcb1}
+}
+:root[data-theme="dark"] #__rb-from{color:#948f85}
+:root[data-theme="dark"] #__rb-from b{color:#c0bcb1}
+</style>
+<!-- With scripts off nothing ever adds the __on class, and the only way
+     back from a tool page vanished. The pill needs its script for the
+     scroll threshold, not for existing. -->
+<noscript><style>#__rb-pill{opacity:1 !important;transform:none !important;pointer-events:auto !important}</style></noscript>
 <a id="__rb-pill" href="research.html">&#8592; Research</a>
+
 <script>
 (function(){
   var p=document.getElementById('__rb-pill'); if(!p) return;
+  /* On a page with the top bar the pill waits until the bar has scrolled
+     out of reach. On a page without one (the tools carry no bar, because a
+     bar inside a full-screen application sits in the wrong place) the pill
+     is the only way back, so it is there from the first paint: a tool
+     screen shorter than the threshold used to strand the reader entirely. */
+  var TH=document.getElementById('__rb')?160:-1;
   var t=false;
   function run(){ t=false;
-    p.classList.toggle('__on',(window.scrollY||document.documentElement.scrollTop)>420); }
+    p.classList.toggle('__on',(window.scrollY||document.documentElement.scrollTop)>TH); }
   function q(){ if(!t){ t=true; requestAnimationFrame(run); } }
   addEventListener('scroll',q,{passive:true}); run();
 })();
@@ -1014,7 +1064,7 @@ drawTimeline(); drawPoseidon(); render();
     function put(key){
       if(t2[key]||Object.keys(t2).length<500){
         t2[key]=(t2[key]||0)+1;
-        localStorage.setItem(k,JSON.stringify(t2));
+        try{localStorage.setItem(k,JSON.stringify(t2));}catch(e){}
       }
     }
     put(u+location.hash);

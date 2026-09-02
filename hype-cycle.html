@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="UTF-8">
-<title>The Gartner Hype Cycle — The complete picture</title>
+<title>The Gartner Hype Cycle · Alex Rajcoomar</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
   @page { size: Letter; margin: 0.38in 0.5in; }
   *{ margin:0; padding:0; box-sizing:border-box; }
-  :root{ --ink:#0f172a; --body:#1e293b; --mut:#64748b; --line:#e2e8f0;
-    --violet:#5b3fa8; --violet-t:#f1ecfb; --teal:#0d9488; --amber:#b45309; --red:#dc2626; --red-t:#fef2f2; --green:#047857; }
+  :root{--page-ground:#ffffff; --ink:#0f172a; --body:#1e293b; --mut:#64748b; --line:#e2e8f0;
+    --violet:#5b3fa8; --violet-t:#f1ecfb; --teal:#0d9488; --amber:#b45309; --red:#d62222; --red-t:#fef2f2; --green:#047857; }
   body{ font-family:"Helvetica Neue",Arial,sans-serif; color:var(--body); font-size:8.4pt; line-height:1.32; }
   b{ font-weight:700; } .ink{color:var(--ink);}
   .head{ background:var(--violet); color:#fff; border-radius:8px; padding:10px 14px; }
@@ -35,6 +35,80 @@
   .mem{ background:var(--ink); color:#fff; border-radius:8px; padding:9px 13px; margin-top:7px; font-size:8.8pt; }
   .mem b{ color:#fcd34d; }
   .p2{ break-before:page; }
+
+body{background:var(--page-ground)}
+
+/* ---------- Dark palette, derived and audited ---------- */
+/* Light surfaces become deep ones of the same hue, ink becomes near-white, accents are lifted to read on ink;
+   every rule that set a colour as a literal is re-emitted below with the literal mapped the same way. */
+@media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){ color-scheme:dark; --ink:#cfd4df; --body:#c6cdd9; --mut:#9da8b8; --line:#435b7c; --violet:#a08ad6; --violet-t:#211b2e; --teal:#b7d4d1; --amber:#d0beb0; --red:#e97575; --red-t:#311d1d; --green:#c0d9d2; --page-ground:#2b2b2b; }
+:root:not([data-theme="light"]) :where(body){}
+:root:not([data-theme="light"]) .head{color:#2b2b2b}
+:root:not([data-theme="light"]) .head .s{color:#1c1827}
+:root:not([data-theme="light"]) .dia{background:#202035}
+:root:not([data-theme="light"]) th{color:#2b2b2b}
+:root:not([data-theme="light"]) .mem{color:#2b2b2b}
+:root:not([data-theme="light"]) .mem b{color:#615734}
+:root:not([data-theme="light"]) #__rb{border-bottom:1px solid #69604a;background:#312c1d;color:#cac8c2}
+:root:not([data-theme="light"]) #__rb a{color:#b3c1d2}
+:root:not([data-theme="light"]) #__rb .__rb-home{color:#e3e1d6}
+:root:not([data-theme="light"]) #__rb .__rb-home i{color:#a29f96}
+:root:not([data-theme="light"]) #__rb .__rb-row{color:#a29f96}
+:root:not([data-theme="light"]) #__rb .__rb-row b{color:#cac8c2}
+:root:not([data-theme="light"]) #__rb .__rb-from{color:#a29f96}
+:root:not([data-theme="light"]) #__rb .__rb-from b{color:#cac8c2}
+:root:not([data-theme="light"]) #__rb .__mark{background:#2a291d;color:#312c1d}
+:root:not([data-theme="light"]) :root[data-theme="dark"] #__rb{background:#272721;border-bottom-color:#292822;color:#595548}
+:root:not([data-theme="light"]) :root[data-theme="dark"] #__rb .__rb-home{color:#2d291b}
+:root:not([data-theme="light"]) :root[data-theme="dark"] #__rb .__rb-home i{color:#c1beb8}
+:root:not([data-theme="light"]) :root[data-theme="dark"] #__rb .__rb-row{color:#c1beb8}
+:root:not([data-theme="light"]) :root[data-theme="dark"] #__rb .__rb-row b{color:#595548}
+:root:not([data-theme="light"]) :root[data-theme="dark"] #__rb .__rb-from{color:#c1beb8}
+:root:not([data-theme="light"]) :root[data-theme="dark"] #__rb .__rb-from b{color:#595548}
+:root:not([data-theme="light"]) :root[data-theme="dark"] #__rb a{color:#384c69}
+:root:not([data-theme="light"]) :root[data-theme="dark"] #__rb .__mark{background:#2d291b;color:#e0e0da}
+:root:not([data-theme="light"]) #__rb-pill{color:#312c1d}
+:root:not([data-theme="light"]) #__rb-pill:hover{background:#2a291d;color:#2b2b2b}
+:root:not([data-theme="light"]) :root[data-theme="dark"] #__rb-pill{color:#e0e0da}
+:root:not([data-theme="light"]) :root[data-theme="dark"] #__rb-pill:hover{background:#2b2b2b;color:#e6e6e6}
+:root:not([data-theme="light"]) #__rb-from{color:#a29f96}
+:root:not([data-theme="light"]) #__rb-from b{color:#cac8c2}
+:root:not([data-theme="light"]) :root[data-theme="dark"] #__rb-from{color:#c1beb8}
+:root:not([data-theme="light"]) :root[data-theme="dark"] #__rb-from b{color:#595548} }
+:root[data-theme="dark"]{ color-scheme:dark; --ink:#cfd4df; --body:#c6cdd9; --mut:#9da8b8; --line:#435b7c; --violet:#a08ad6; --violet-t:#211b2e; --teal:#b7d4d1; --amber:#d0beb0; --red:#e97575; --red-t:#311d1d; --green:#c0d9d2; --page-ground:#2b2b2b; }
+:root[data-theme="dark"] .head{color:#2b2b2b}
+:root[data-theme="dark"] .head .s{color:#1c1827}
+:root[data-theme="dark"] .dia{background:#202035}
+:root[data-theme="dark"] th{color:#2b2b2b}
+:root[data-theme="dark"] .mem{color:#2b2b2b}
+:root[data-theme="dark"] .mem b{color:#615734}
+:root[data-theme="dark"] #__rb{border-bottom:1px solid #69604a;background:#312c1d;color:#cac8c2}
+:root[data-theme="dark"] #__rb a{color:#b3c1d2}
+:root[data-theme="dark"] #__rb .__rb-home{color:#e3e1d6}
+:root[data-theme="dark"] #__rb .__rb-home i{color:#a29f96}
+:root[data-theme="dark"] #__rb .__rb-row{color:#a29f96}
+:root[data-theme="dark"] #__rb .__rb-row b{color:#cac8c2}
+:root[data-theme="dark"] #__rb .__rb-from{color:#a29f96}
+:root[data-theme="dark"] #__rb .__rb-from b{color:#cac8c2}
+:root[data-theme="dark"] #__rb .__mark{background:#2a291d;color:#312c1d}
+:root[data-theme="dark"] :root[data-theme="dark"] #__rb{background:#272721;border-bottom-color:#292822;color:#595548}
+:root[data-theme="dark"] :root[data-theme="dark"] #__rb .__rb-home{color:#2d291b}
+:root[data-theme="dark"] :root[data-theme="dark"] #__rb .__rb-home i{color:#c1beb8}
+:root[data-theme="dark"] :root[data-theme="dark"] #__rb .__rb-row{color:#c1beb8}
+:root[data-theme="dark"] :root[data-theme="dark"] #__rb .__rb-row b{color:#595548}
+:root[data-theme="dark"] :root[data-theme="dark"] #__rb .__rb-from{color:#c1beb8}
+:root[data-theme="dark"] :root[data-theme="dark"] #__rb .__rb-from b{color:#595548}
+:root[data-theme="dark"] :root[data-theme="dark"] #__rb a{color:#384c69}
+:root[data-theme="dark"] :root[data-theme="dark"] #__rb .__mark{background:#2d291b;color:#e0e0da}
+:root[data-theme="dark"] #__rb-pill{color:#312c1d}
+:root[data-theme="dark"] #__rb-pill:hover{background:#2a291d;color:#2b2b2b}
+:root[data-theme="dark"] :root[data-theme="dark"] #__rb-pill{color:#e0e0da}
+:root[data-theme="dark"] :root[data-theme="dark"] #__rb-pill:hover{background:#2b2b2b;color:#e6e6e6}
+:root[data-theme="dark"] #__rb-from{color:#a29f96}
+:root[data-theme="dark"] #__rb-from b{color:#cac8c2}
+:root[data-theme="dark"] :root[data-theme="dark"] #__rb-from{color:#c1beb8}
+:root[data-theme="dark"] :root[data-theme="dark"] #__rb-from b{color:#595548}
+@media print{ :root{ --ink:#0f172a; --body:#1e293b; --mut:#64748b; --line:#e2e8f0; --violet:#5b3fa8; --violet-t:#f1ecfb; --teal:#0d9488; --amber:#b45309; --red:#d62222; --red-t:#fef2f2; --green:#047857; --page-ground:#ffffff; } }
 </style><!--__meta-->
 <meta name="color-scheme" content="light dark">
 <meta name="description" content="A visual walk through the hype cycle, phase by phase, with what each phase predicts and what it does not.">
@@ -42,15 +116,15 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="manifest" href="site.webmanifest">
 <link rel="canonical" href="https://alexrajcoomar.github.io/hype-cycle.html">
-<meta property="og:title" content="The Gartner Hype Cycle — Alex Rajcoomar">
+<meta property="og:title" content="The Gartner Hype Cycle · Alex Rajcoomar">
 <meta property="og:description" content="A visual walk through the hype cycle, phase by phase, with what each phase predicts and what it does not.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://alexrajcoomar.github.io/hype-cycle.html">
-<meta property="og:site_name" content="Alex Rajcoomar — portfolio">
+<meta property="og:site_name" content="Alex Rajcoomar · portfolio">
 <meta property="og:image" content="https://alexrajcoomar.github.io/cards/hype-cycle.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="The Gartner Hype Cycle — Alex Rajcoomar">
+<meta property="og:image:alt" content="The Gartner Hype Cycle · Alex Rajcoomar">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://alexrajcoomar.github.io/cards/hype-cycle.png">
 <script>
@@ -84,22 +158,18 @@
 #__rb .__rb-home{font-weight:640;color:#16150f}
 #__rb .__rb-home i{font-style:normal;font-weight:400;color:#6f6c63}
 #__rb .__rb-right{margin-left:auto;display:flex;gap:1.1rem;flex-wrap:wrap}
+/* the piece's own row of the statement: origin, words, figures, tables, the
+   same figures the home page prints for it, from the same measurement */
+#__rb .__rb-row{color:#6f6c63;font-variant-numeric:tabular-nums;white-space:nowrap}
+#__rb .__rb-row b{font-weight:600;color:#55524a}
+@media (max-width:44rem){#__rb .__rb-row{flex-basis:100%;order:3;white-space:normal}}
+/* what the piece was built from, in the owner's words, from pieces.json */
+#__rb .__rb-from{flex-basis:100%;order:5;font-weight:400;color:#6f6c63;line-height:1.4;max-width:70ch}
+#__rb .__rb-from b{font-weight:600;color:#55524a}
 #__rb .__mark{
   display:inline-grid;place-items:center;width:1.2rem;height:1.2rem;flex:none;
   background:#16150f;color:#faf9f6;font-size:.72rem;font-weight:700;
 }
-#__rb-pill{
-  position:fixed;left:14px;bottom:14px;z-index:2147483000;
-  display:inline-flex;align-items:center;gap:.45rem;padding:.58rem .9rem;
-  background:rgba(22,21,15,.93);color:#faf9f6;text-decoration:none;border-radius:99px;
-  font:600 12.5px/1 InterVar,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
-  border:1px solid rgba(255,255,255,.16);box-shadow:0 6px 22px rgba(0,0,0,.28);
-  opacity:0;transform:translateY(6px);pointer-events:none;
-  transition:opacity .2s ease,transform .2s ease;
-  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
-}
-#__rb-pill.__on{opacity:1;transform:none;pointer-events:auto}
-#__rb-pill:hover{background:#16150f;color:#fff}
 /* Dark has to answer to two things: the reader's system setting, and the
    theme button on the page, which sets data-theme on <html>. Keyed to the
    media query alone, the bar stayed paper-white across the top of an essay
@@ -110,25 +180,30 @@
   :root:not([data-theme="light"]) #__rb{background:#131310;border-bottom-color:#2c2b24;color:#c0bcb1}
   :root:not([data-theme="light"]) #__rb .__rb-home{color:#f7f5ef}
   :root:not([data-theme="light"]) #__rb .__rb-home i{color:#948f85}
+  :root:not([data-theme="light"]) #__rb .__rb-row{color:#948f85}
+  :root:not([data-theme="light"]) #__rb .__rb-row b{color:#c0bcb1}
+  :root:not([data-theme="light"]) #__rb .__rb-from{color:#948f85}
+  :root:not([data-theme="light"]) #__rb .__rb-from b{color:#c0bcb1}
   :root:not([data-theme="light"]) #__rb a{color:#85adea}
   :root:not([data-theme="light"]) #__rb .__mark{background:#f7f5ef;color:#131310}
-  :root:not([data-theme="light"]) #__rb-pill{background:rgba(247,245,239,.95);color:#131310;border-color:rgba(0,0,0,.2)}
-  :root:not([data-theme="light"]) #__rb-pill:hover{background:#fff;color:#000}
 }
 :root[data-theme="dark"] #__rb{background:#131310;border-bottom-color:#2c2b24;color:#c0bcb1}
 :root[data-theme="dark"] #__rb .__rb-home{color:#f7f5ef}
 :root[data-theme="dark"] #__rb .__rb-home i{color:#948f85}
+:root[data-theme="dark"] #__rb .__rb-row{color:#948f85}
+:root[data-theme="dark"] #__rb .__rb-row b{color:#c0bcb1}
+:root[data-theme="dark"] #__rb .__rb-from{color:#948f85}
+:root[data-theme="dark"] #__rb .__rb-from b{color:#c0bcb1}
 :root[data-theme="dark"] #__rb a{color:#85adea}
 :root[data-theme="dark"] #__rb .__mark{background:#f7f5ef;color:#131310}
-:root[data-theme="dark"] #__rb-pill{background:rgba(247,245,239,.95);color:#131310;border-color:rgba(0,0,0,.2)}
-:root[data-theme="dark"] #__rb-pill:hover{background:#fff;color:#000}
-@media (prefers-reduced-motion:reduce){#__rb-pill{transition:none}}
-@media print{#__rb,#__rb-pill{display:none !important}}
+@media print{#__rb{display:none !important}}
 </style>
-<div id="__rb">
+<nav id="__rb" aria-label="Portfolio">
   <a class="__rb-home" href="index.html"><span class="__mark" aria-hidden="true">A</span>Alex Rajcoomar <i>portfolio</i></a>
-  <span class="__rb-right"><a href="coursework.html">Coursework</a><a href="library.html">All work</a></span>
-</div>
+  <span class="__rb-row">Coursework &middot; <b>830</b> words &middot; <b>2</b> figures &middot; <b>2</b> tables</span>
+  <span class="__rb-right"><a href="coursework.html">Coursework</a><a href="atlas.html">Atlas</a><a href="library.html">All work</a></span>
+  <span class="__rb-from"><b>Built from</b> Not declared on file.</span>
+</nav>
 <script>
 /* the trail: which passages this browser has opened. The atlas reads it and
    rings them; the record lives in localStorage and never leaves the machine. */
@@ -145,7 +220,7 @@
     function put(key){
       if(t2[key]||Object.keys(t2).length<500){
         t2[key]=(t2[key]||0)+1;
-        localStorage.setItem(k,JSON.stringify(t2));
+        try{localStorage.setItem(k,JSON.stringify(t2));}catch(e){}
       }
     }
     put(u+location.hash);
@@ -155,14 +230,15 @@
 </script>
 <!--/__rb-->
 
-<div class="head"><h1 id="the-gartner-hype-cycle-the-complete-picture">The Gartner Hype Cycle — the complete picture</h1>
+<main>
+<div class="head"><h1 id="the-gartner-hype-cycle-the-complete-picture">The Gartner Hype Cycle: the complete picture</h1>
 <div class="s">AFM 241 · Weeks 6–7 · understand it (why) → apply it (when to move) → drop it on your sheet</div></div>
 
-<div class="idea"><b>The one insight most people miss:</b> the curve plots <b>expectations</b>, but the crash is caused by a <b>second, hidden line — actual maturity.</b> Early on, <b>hype races ahead of what the tech can really do</b>; that gap is what snaps back into the Trough. The recovery only comes when <b>real capability finally catches up</b>. See it below.</div>
+<div class="idea"><b>The one insight most people miss:</b> the curve plots <b>expectations</b>, but the crash is caused by a <b>second, hidden line, actual maturity.</b> Early on, <b>hype races ahead of what the tech can really do</b>; that gap is what snaps back into the Trough. The recovery only comes when <b>real capability finally catches up</b>. See it below.</div>
 
 <!-- DIAGRAM A: WHY -->
-<div class="dia"><div class="t">A · WHY it happens — expectations outrun maturity, then reality catches up</div>
-<svg role="img" aria-label="The Gartner Hype Cycle — the complete picture" viewBox="0 0 720 350" xmlns="http://www.w3.org/2000/svg" font-family="Arial">
+<div class="dia"><div class="t">A · WHY it happens, expectations outrun maturity, then reality catches up</div>
+<svg role="img" aria-label="The Gartner Hype Cycle, the complete picture" viewBox="0 0 720 350" xmlns="http://www.w3.org/2000/svg" font-family="Arial">
   <line x1="64" y1="24" x2="64" y2="300" stroke="#94a3b8" stroke-width="1.5"/>
   <line x1="64" y1="300" x2="706" y2="300" stroke="#94a3b8" stroke-width="1.5"/>
   <text x="22" y="180" font-size="9" font-weight="bold" fill="#475569" transform="rotate(-90 22,180)">EXPECTATIONS / hype</text>
@@ -199,22 +275,22 @@
 <div class="cap"><b>Read it:</b> the purple line is what people <b>expect</b>; the dashed teal line is what the tech can <b>actually do</b>. At the Peak the gap is huge (hype far ahead of reality) → disappointment drags it into the <b>Trough</b>. Real value only appears once maturity catches up on the <b>Slope</b> and the two lines meet at the <b>Plateau</b>. That's why there are <b>two rises</b>: the first is powered by <b>hype</b>, the second by <b>maturity</b>.</div>
 </div>
 
-<h2 id="the-6-stages-what-s-happening-and-what-you-shoul">The 6 stages — what's happening, and what YOU should do</h2>
+<h2 id="the-6-stages-what-s-happening-and-what-you-shoul">The 6 stages: what's happening, and what YOU should do</h2>
 <table>
   <tr><th style="width:14%">Stage</th><th style="width:30%">What's happening</th><th style="width:24%">Example</th><th style="width:32%">What to do (apply it)</th></tr>
   <tr><td><span class="k">1 · Trigger</span></td><td>A breakthrough/demo sparks buzz; <b>few real users</b>; out of the lab.</td><td>A new tech debut (e.g. Large Action Models)</td><td><span class="doit">Sense &amp; watch.</span> Don't buy yet unless you're aggressive with a strategic reason.</td></tr>
   <tr><td><span class="k">2 · Peak</span></td><td>Hype crests; seen as a <b>"silver bullet"</b>; 30+ vendors; investor frenzy.</td><td>NFTs/crypto in 2021; "metaverse"</td><td><span class="doit">Resist FOMO.</span> Pilot only with clear OKRs; the hype is ahead of reality.</td></tr>
   <tr><td><span class="k">3 · Trough</span></td><td>Reality hits; it <b>underdelivers</b>; press turns negative; shakeout.</td><td><b>GenAI now</b> (per course); = Moore's "chasm"</td><td><span class="doit">Don't quit if it truly fits.</span> Bargains live here; separate genuine fit from fad.</td></tr>
-  <tr><td><span class="k">4 · Slope</span></td><td>Survivors find <b>real uses</b>; best practices form; adoption <b>&lt;5% → 20–30%</b>.</td><td>Big Data/Hadoop; speech recognition</td><td><span class="doit">Adopt — sweet spot.</span> Value is proven and risk has dropped (Type B zone).</td></tr>
-  <tr><td><span class="k">5 · Plateau</span></td><td><b>Mainstream, proven, boring.</b> Out-of-the-box solutions.</td><td>Cloud computing; "Googling"</td><td><span class="doit">Safe, cheap adoption</span> — but no competitive edge left (Type C zone).</td></tr>
+  <tr><td><span class="k">4 · Slope</span></td><td>Survivors find <b>real uses</b>; best practices form; adoption <b>&lt;5% → 20–30%</b>.</td><td>Big Data/Hadoop; speech recognition</td><td><span class="doit">Adopt, sweet spot.</span> Value is proven and risk has dropped (Type B zone).</td></tr>
+  <tr><td><span class="k">5 · Plateau</span></td><td><b>Mainstream, proven, boring.</b> Out-of-the-box solutions.</td><td>Cloud computing; "Googling"</td><td><span class="doit">Safe, cheap adoption</span>, but no competitive edge left (Type C zone).</td></tr>
   <tr><td><span class="k">6 · Beyond</span></td><td><b>Swamp</b> (still used, costs &gt; benefit) → <b>Cliff</b> (obsolete).</td><td>IBM mainframes (Swamp); Windows XP (Cliff)</td><td><span class="doit">Plan your exit.</span> Don't cling past usefulness ("hang on too long").</td></tr>
 </table>
 
 <!-- ============ PAGE 2 ============ -->
 <div class="p2"></div>
-<h2 id="b-how-to-use-it-the-4-timing-traps-who-acts-wher">B · HOW to use it — the 4 timing traps + who acts where</h2>
-<div class="dia"><div class="t">B · Apply it — where each trap and each organization type lives on the curve</div>
-<svg role="img" aria-label="B · HOW to use it — the 4 timing traps + who acts where" viewBox="0 0 720 340" xmlns="http://www.w3.org/2000/svg" font-family="Arial">
+<h2 id="b-how-to-use-it-the-4-timing-traps-who-acts-wher">B · HOW to use it: the 4 timing traps + who acts where</h2>
+<div class="dia"><div class="t">B · Apply it, where each trap and each organization type lives on the curve</div>
+<svg role="img" aria-label="B · HOW to use it, the 4 timing traps + who acts where" viewBox="0 0 720 340" xmlns="http://www.w3.org/2000/svg" font-family="Arial">
   <defs><marker id="a" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><polygon points="0,0 7,3 0,6" fill="#dc2626"/></marker></defs>
   <line x1="60" y1="20" x2="60" y2="276" stroke="#94a3b8" stroke-width="1.5"/>
   <line x1="60" y1="276" x2="708" y2="276" stroke="#94a3b8" stroke-width="1.5"/>
@@ -247,21 +323,21 @@
   <rect x="430" y="286" width="150" height="16" rx="3" fill="#ddd6fe"/><text x="505" y="297" font-size="7.6" font-weight="bold" fill="#5b3fa8" text-anchor="middle">Type B (slope)</text>
   <rect x="600" y="286" width="108" height="16" rx="3" fill="#c4b5fd"/><text x="654" y="297" font-size="7.6" font-weight="bold" fill="#3b0764" text-anchor="middle">Type C (plateau)</text>
 </svg>
-<div class="cap"><b>Read it:</b> the 4 red arrows are the four ways to mis-time a technology. The dashed vertical line is the <b>Trough</b> — to its left ask <i>"what's here we could use?"</i>, to its right ask <i>"what are we not using?"</i> The purple boxes show where each <b>organization type</b> tends to buy in.</div>
+<div class="cap"><b>Read it:</b> the 4 red arrows are the four ways to mis-time a technology. The dashed vertical line is the <b>Trough</b>, to its left ask <i>"what's here we could use?"</i>, to its right ask <i>"what are we not using?"</i> The purple boxes show where each <b>organization type</b> tends to buy in.</div>
 </div>
 
-<div class="trap"><b>⚠ The order trap (the #1 tested point):</b> the only valid sequence is <b>Trigger → Peak → Trough → Slope → Plateau</b>. The <b>Trough can NEVER come before the Peak</b> — you can't be disappointed before you were excited.</div>
+<div class="trap"><b>⚠ The order trap (the #1 tested point):</b> the only valid sequence is <b>Trigger → Peak → Trough → Slope → Plateau</b>. The <b>Trough can NEVER come before the Peak</b>, you can't be disappointed before you were excited.</div>
 
 <div class="grid2">
   <div class="box"><div class="h">The 4 timing traps + fixes</div>
-    <p><b>① Too early</b> — "bleeding edge," beta-testing for vendors. <i>Fix:</i> move early only for real competitive advantage.</p>
-    <p><b>② Give up too soon</b> — quit before value appears. <i>Fix:</i> set <b>OKRs</b> (Objectives &amp; Key Results) + exit criteria; ignore hype.</p>
-    <p><b>③ Too late</b> — rivals already moved (RIM, Barnes &amp; Noble).</p>
-    <p><b>④ Hang on too long</b> — miss the gains rivals get from the new tech.</p></div>
+    <p><b>① Too early</b>: "bleeding edge," beta-testing for vendors. <i>Fix:</i> move early only for real competitive advantage.</p>
+    <p><b>② Give up too soon</b>, quit before value appears. <i>Fix:</i> set <b>OKRs</b> (Objectives &amp; Key Results) + exit criteria; ignore hype.</p>
+    <p><b>③ Too late</b>, rivals already moved (RIM, Barnes &amp; Noble).</p>
+    <p><b>④ Hang on too long</b>, miss the gains rivals get from the new tech.</p></div>
   <div class="box"><div class="h">Who acts when (org types)</div>
-    <p><b>Type A — aggressive:</b> adopt early, accept risk for reward.</p>
-    <p><b>Type B — the majority:</b> adopt mid-curve (Slope); learn from A.</p>
-    <p><b>Type C — conservative:</b> adopt late at the Plateau, low risk.</p>
+    <p><b>Type A, aggressive:</b> adopt early, accept risk for reward.</p>
+    <p><b>Type B, the majority:</b> adopt mid-curve (Slope); learn from A.</p>
+    <p><b>Type C, conservative:</b> adopt late at the Plateau, low risk.</p>
     <p>Advice: be <b>"selectively aggressive."</b> <b class="ink">Type B's special danger = adopting too EARLY</b> (lured out by hype).</p></div>
 </div>
 
@@ -269,9 +345,9 @@
 <table>
   <tr><th style="width:24%">Pair</th><th>The difference</th></tr>
   <tr><td><span class="k">Swamp vs Cliff</span> (stage 6)</td><td><b>Swamp of Diminishing Returns</b> = still used daily, vendor milks recurring revenue (IBM mainframes). <b>Cliff of Obsolescence</b> = discontinued, resale-only (Windows XP). <i>Trap: "still used but costly" = Swamp, not Cliff.</i></td></tr>
-  <tr><td><span class="k">Hype Cycle vs Priority Matrix</span></td><td>Hype Cycle plots <b>hype × time</b> (when). The <b>Priority Matrix</b> plots <b>benefit × years-to-plateau</b> (what's worth funding) — it defends against pet-project decisions.</td></tr>
+  <tr><td><span class="k">Hype Cycle vs Priority Matrix</span></td><td>Hype Cycle plots <b>hype × time</b> (when). The <b>Priority Matrix</b> plots <b>benefit × years-to-plateau</b> (what's worth funding), it defends against pet-project decisions.</td></tr>
   <tr><td><span class="k">Gartner vs Forrester</span></td><td>Gartner's vendor chart = <b>Magic Quadrant</b> (Ability to <b>Execute</b> × Completeness of <b>Vision</b>). Forrester's = the <b>Wave</b> (Offering × Strategy). <i>Trap: "Offering/Strategy" is Forrester, not Gartner.</i></td></tr>
-  <tr><td><span class="k">Trough = the "chasm"</span></td><td>The Trough lines up with Geoffrey Moore's <b>"Crossing the Chasm"</b> — the gap where most new tech dies before mainstream adoption.</td></tr>
+  <tr><td><span class="k">Trough = the "chasm"</span></td><td>The Trough lines up with Geoffrey Moore's <b>"Crossing the Chasm"</b>, the gap where most new tech dies before mainstream adoption.</td></tr>
   <tr><td><span class="k">Phoenix vs rebrand</span></td><td>A <b>Phoenix</b> re-climbs the curve via a genuinely <b>new capability</b> (AI reborn on data + ML). A rename ("prunes"→"dried plums") is <b>not</b> a Phoenix.</td></tr>
 </table>
 
@@ -279,18 +355,61 @@
 1 · <b>Shape:</b> Trigger → Peak → Trough → Slope → Plateau → (Swamp → Cliff). Hype rises first, maturity rises second.<br>
 2 · <b>Why the crash:</b> at the Peak, <b>expectations ≫ real maturity</b> → the gap snaps back into the Trough.<br>
 3 · <b>Apply:</b> best time to adopt = <b>Slope</b> (proven, risk dropped). Avoid 4 traps: too early · give up too soon · too late · hang on too long.</div>
-
-
-
-
+</main>
 <!--__rbp-->
+<!-- The pill styles itself: this block used to live only with the top bar,
+     so the seven tool pages, which carry the pill alone, rendered it as an
+     unstyled link at the very end of the document. Whatever carries the
+     pill now carries its style. -->
+<style id="__rbp-style">
+#__rb-pill{
+  position:fixed;left:14px;bottom:14px;z-index:2147483000;
+  display:inline-flex;align-items:center;gap:.45rem;padding:.58rem .9rem;
+  background:rgba(22,21,15,.93);color:#faf9f6;text-decoration:none;border-radius:99px;
+  font:600 12.5px/1 InterVar,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  border:1px solid rgba(255,255,255,.16);box-shadow:0 6px 22px rgba(0,0,0,.28);
+  opacity:0;transform:translateY(6px);pointer-events:none;
+  transition:opacity .2s ease,transform .2s ease;
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+}
+#__rb-pill.__on{opacity:1;transform:none;pointer-events:auto}
+#__rb-pill:hover{background:#16150f;color:#fff}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) #__rb-pill{background:rgba(247,245,239,.95);color:#131310;border-color:rgba(0,0,0,.2)}
+  :root:not([data-theme="light"]) #__rb-pill:hover{background:#fff;color:#000}
+}
+:root[data-theme="dark"] #__rb-pill{background:rgba(247,245,239,.95);color:#131310;border-color:rgba(0,0,0,.2)}
+:root[data-theme="dark"] #__rb-pill:hover{background:#fff;color:#000}
+@media (prefers-reduced-motion:reduce){#__rb-pill{transition:none}}
+@media print{#__rb-pill{display:none !important}}
+/* a tool carries no bar, so what it was built from stands at the foot of the document */
+#__rb-from{margin:1.25rem 1rem;font:400 13px/1.45 InterVar,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;color:#6f6c63;max-width:70ch}
+#__rb-from b{font-weight:600;color:#55524a}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) #__rb-from{color:#948f85}
+  :root:not([data-theme="light"]) #__rb-from b{color:#c0bcb1}
+}
+:root[data-theme="dark"] #__rb-from{color:#948f85}
+:root[data-theme="dark"] #__rb-from b{color:#c0bcb1}
+</style>
+<!-- With scripts off nothing ever adds the __on class, and the only way
+     back from a tool page vanished. The pill needs its script for the
+     scroll threshold, not for existing. -->
+<noscript><style>#__rb-pill{opacity:1 !important;transform:none !important;pointer-events:auto !important}</style></noscript>
 <a id="__rb-pill" href="coursework.html">&#8592; Coursework</a>
+
 <script>
 (function(){
   var p=document.getElementById('__rb-pill'); if(!p) return;
+  /* On a page with the top bar the pill waits until the bar has scrolled
+     out of reach. On a page without one (the tools carry no bar, because a
+     bar inside a full-screen application sits in the wrong place) the pill
+     is the only way back, so it is there from the first paint: a tool
+     screen shorter than the threshold used to strand the reader entirely. */
+  var TH=document.getElementById('__rb')?160:-1;
   var t=false;
   function run(){ t=false;
-    p.classList.toggle('__on',(window.scrollY||document.documentElement.scrollTop)>420); }
+    p.classList.toggle('__on',(window.scrollY||document.documentElement.scrollTop)>TH); }
   function q(){ if(!t){ t=true; requestAnimationFrame(run); } }
   addEventListener('scroll',q,{passive:true}); run();
 })();
@@ -308,7 +427,7 @@
     function put(key){
       if(t2[key]||Object.keys(t2).length<500){
         t2[key]=(t2[key]||0)+1;
-        localStorage.setItem(k,JSON.stringify(t2));
+        try{localStorage.setItem(k,JSON.stringify(t2));}catch(e){}
       }
     }
     put(u+location.hash);

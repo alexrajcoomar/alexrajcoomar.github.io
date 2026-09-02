@@ -1,0 +1,80 @@
+/* The reading kit's stylesheet for pieces over five thousand words: injected
+   by the build beside long.js inside a marked block. Three concerns.
+
+   1. Measure. Running text inside the main landmark is held to 66ch at
+      every width; tables, figures, code and cards are not, because a table
+      has the width its columns need. The rule is scoped to the main
+      landmark so a masthead, a rail or a footer keeps its own width.
+   2. Numerals. Tabular figures in tables only, where digits line up in
+      columns; running text keeps proportional figures.
+   3. Print. Sticky and fixed elements are released by the script; here the
+      page keeps figures and tables whole, hides the section index and the
+      return bar, and lets colour print as set. */
+main p, [role="main"] p,
+main li, [role="main"] li,
+main dd, [role="main"] dd,
+main blockquote, [role="main"] blockquote,
+main figcaption, [role="main"] figcaption {
+  max-width: 66ch;
+}
+/* a paragraph inside a table cell, a card grid or a flex row keeps its cell */
+main td p, [role="main"] td p, main th p, [role="main"] th p,
+main [class*="grid"] > * p, [role="main"] [class*="grid"] > * p,
+main [class*="card"] p, [role="main"] [class*="card"] p,
+main [class*="tile"] p, [role="main"] [class*="tile"] p {
+  max-width: none;
+}
+main table, [role="main"] table { font-variant-numeric: tabular-nums; }
+
+/* ---- the section index ---- */
+#__long-idx {
+  position: fixed; right: 14px; bottom: 14px; z-index: 2147482000;
+  font: 500 12.5px/1.35 InterVar, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+}
+#__long-btn {
+  display: inline-flex; align-items: center; min-height: 32px; padding: .55rem .9rem;
+  background: rgba(22,21,15,.93); color: #faf9f6; border: 1px solid rgba(255,255,255,.16); border-radius: 99px;
+  font: inherit; font-weight: 600; cursor: pointer; box-shadow: 0 6px 22px rgba(0,0,0,.28);
+  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+}
+#__long-btn:hover { background: #16150f; }
+#__long-btn:focus-visible { outline: 2px solid #faf9f6; outline-offset: 2px; }
+#__long-list {
+  position: absolute; right: 0; bottom: calc(100% + 8px); width: min(22rem, calc(100vw - 28px));
+  max-height: min(60vh, 32rem); overflow-y: auto; padding: .6rem .35rem;
+  background: #faf9f6; color: #16150f; border: 1px solid #ddd9cf; border-radius: 6px; box-shadow: 0 10px 30px rgba(0,0,0,.22);
+}
+#__long-list ol { list-style: none; margin: 0; padding: 0; }
+#__long-list li.l3 a { padding-left: 1.4rem; font-size: 12px; color: #55524a; }
+#__long-list a {
+  display: block; padding: .32rem .6rem; color: #16150f; text-decoration: none; border-left: 2px solid transparent; border-radius: 3px;
+}
+#__long-list a:hover { background: #f0ede6; }
+#__long-list a[aria-current="true"] { border-left-color: #14509b; background: #f0ede6; font-weight: 600; }
+#__long-list a:focus-visible { outline: 2px solid #14509b; outline-offset: -2px; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) #__long-btn { background: rgba(247,245,239,.95); color: #131310; border-color: rgba(0,0,0,.2); }
+  :root:not([data-theme="light"]) #__long-btn:hover { background: #fff; color: #000; }
+  :root:not([data-theme="light"]) #__long-list { background: #1a1a19; color: #f7f5ef; border-color: #2c2b24; }
+  :root:not([data-theme="light"]) #__long-list a { color: #f7f5ef; }
+  :root:not([data-theme="light"]) #__long-list li.l3 a { color: #c0bcb1; }
+  :root:not([data-theme="light"]) #__long-list a:hover, :root:not([data-theme="light"]) #__long-list a[aria-current="true"] { background: #26261f; border-left-color: #85adea; }
+}
+:root[data-theme="dark"] #__long-btn { background: rgba(247,245,239,.95); color: #131310; border-color: rgba(0,0,0,.2); }
+:root[data-theme="dark"] #__long-btn:hover { background: #fff; color: #000; }
+:root[data-theme="dark"] #__long-list { background: #1a1a19; color: #f7f5ef; border-color: #2c2b24; }
+:root[data-theme="dark"] #__long-list a { color: #f7f5ef; }
+:root[data-theme="dark"] #__long-list li.l3 a { color: #c0bcb1; }
+:root[data-theme="dark"] #__long-list a:hover, :root[data-theme="dark"] #__long-list a[aria-current="true"] { background: #26261f; border-left-color: #85adea; }
+/* the return pill sits bottom-left; the index bottom-right: they never meet */
+@media (max-width: 30rem) { #__long-idx { bottom: 60px; } }
+@media (prefers-reduced-motion: reduce) { #__long-idx * { transition: none; } }
+
+/* ---- print ---- */
+@media print {
+  #__long-idx, #__rb, #__rb-pill, .docbar, .toc, .scrim { display: none !important; }
+  svg, figure, table, pre, img, .figure, .fig, details { break-inside: avoid; page-break-inside: avoid; }
+  h1, h2, h3, h4 { break-after: avoid; page-break-after: avoid; }
+  main p, [role="main"] p { max-width: none; }
+  * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+}

@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Global Spending and Wealth: Scale, Structure, Concentration</title>
+<title>Global Spending and Wealth · Alex Rajcoomar</title>
 
 <!-- Preloaded so the variable face arrives before first paint rather than
      swapping under the apparatus rail. Verified on cdnjs at 4.1.1. -->
@@ -483,15 +483,15 @@ td.n{font-variant-numeric:tabular-nums;white-space:nowrap}
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="manifest" href="site.webmanifest">
 <link rel="canonical" href="https://alexrajcoomar.github.io/global-spending-and-wealth.html">
-<meta property="og:title" content="Global Spending and Wealth — Alex Rajcoomar">
+<meta property="og:title" content="Global Spending and Wealth · Alex Rajcoomar">
 <meta property="og:description" content="A fixed-unit data essay: one square is one trillion US dollars, declared once and never rescaled, with every figure carrying the provenance tag it was…">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://alexrajcoomar.github.io/global-spending-and-wealth.html">
-<meta property="og:site_name" content="Alex Rajcoomar — portfolio">
+<meta property="og:site_name" content="Alex Rajcoomar · portfolio">
 <meta property="og:image" content="https://alexrajcoomar.github.io/cards/global-spending-and-wealth.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Global Spending and Wealth — Alex Rajcoomar">
+<meta property="og:image:alt" content="Global Spending and Wealth · Alex Rajcoomar">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://alexrajcoomar.github.io/cards/global-spending-and-wealth.png">
 <script>
@@ -527,22 +527,18 @@ td.n{font-variant-numeric:tabular-nums;white-space:nowrap}
 #__rb .__rb-home{font-weight:640;color:#16150f}
 #__rb .__rb-home i{font-style:normal;font-weight:400;color:#6f6c63}
 #__rb .__rb-right{margin-left:auto;display:flex;gap:1.1rem;flex-wrap:wrap}
+/* the piece's own row of the statement: origin, words, figures, tables, the
+   same figures the home page prints for it, from the same measurement */
+#__rb .__rb-row{color:#6f6c63;font-variant-numeric:tabular-nums;white-space:nowrap}
+#__rb .__rb-row b{font-weight:600;color:#55524a}
+@media (max-width:44rem){#__rb .__rb-row{flex-basis:100%;order:3;white-space:normal}}
+/* what the piece was built from, in the owner's words, from pieces.json */
+#__rb .__rb-from{flex-basis:100%;order:5;font-weight:400;color:#6f6c63;line-height:1.4;max-width:70ch}
+#__rb .__rb-from b{font-weight:600;color:#55524a}
 #__rb .__mark{
   display:inline-grid;place-items:center;width:1.2rem;height:1.2rem;flex:none;
   background:#16150f;color:#faf9f6;font-size:.72rem;font-weight:700;
 }
-#__rb-pill{
-  position:fixed;left:14px;bottom:14px;z-index:2147483000;
-  display:inline-flex;align-items:center;gap:.45rem;padding:.58rem .9rem;
-  background:rgba(22,21,15,.93);color:#faf9f6;text-decoration:none;border-radius:99px;
-  font:600 12.5px/1 InterVar,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
-  border:1px solid rgba(255,255,255,.16);box-shadow:0 6px 22px rgba(0,0,0,.28);
-  opacity:0;transform:translateY(6px);pointer-events:none;
-  transition:opacity .2s ease,transform .2s ease;
-  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
-}
-#__rb-pill.__on{opacity:1;transform:none;pointer-events:auto}
-#__rb-pill:hover{background:#16150f;color:#fff}
 /* Dark has to answer to two things: the reader's system setting, and the
    theme button on the page, which sets data-theme on <html>. Keyed to the
    media query alone, the bar stayed paper-white across the top of an essay
@@ -553,25 +549,30 @@ td.n{font-variant-numeric:tabular-nums;white-space:nowrap}
   :root:not([data-theme="light"]) #__rb{background:#131310;border-bottom-color:#2c2b24;color:#c0bcb1}
   :root:not([data-theme="light"]) #__rb .__rb-home{color:#f7f5ef}
   :root:not([data-theme="light"]) #__rb .__rb-home i{color:#948f85}
+  :root:not([data-theme="light"]) #__rb .__rb-row{color:#948f85}
+  :root:not([data-theme="light"]) #__rb .__rb-row b{color:#c0bcb1}
+  :root:not([data-theme="light"]) #__rb .__rb-from{color:#948f85}
+  :root:not([data-theme="light"]) #__rb .__rb-from b{color:#c0bcb1}
   :root:not([data-theme="light"]) #__rb a{color:#85adea}
   :root:not([data-theme="light"]) #__rb .__mark{background:#f7f5ef;color:#131310}
-  :root:not([data-theme="light"]) #__rb-pill{background:rgba(247,245,239,.95);color:#131310;border-color:rgba(0,0,0,.2)}
-  :root:not([data-theme="light"]) #__rb-pill:hover{background:#fff;color:#000}
 }
 :root[data-theme="dark"] #__rb{background:#131310;border-bottom-color:#2c2b24;color:#c0bcb1}
 :root[data-theme="dark"] #__rb .__rb-home{color:#f7f5ef}
 :root[data-theme="dark"] #__rb .__rb-home i{color:#948f85}
+:root[data-theme="dark"] #__rb .__rb-row{color:#948f85}
+:root[data-theme="dark"] #__rb .__rb-row b{color:#c0bcb1}
+:root[data-theme="dark"] #__rb .__rb-from{color:#948f85}
+:root[data-theme="dark"] #__rb .__rb-from b{color:#c0bcb1}
 :root[data-theme="dark"] #__rb a{color:#85adea}
 :root[data-theme="dark"] #__rb .__mark{background:#f7f5ef;color:#131310}
-:root[data-theme="dark"] #__rb-pill{background:rgba(247,245,239,.95);color:#131310;border-color:rgba(0,0,0,.2)}
-:root[data-theme="dark"] #__rb-pill:hover{background:#fff;color:#000}
-@media (prefers-reduced-motion:reduce){#__rb-pill{transition:none}}
-@media print{#__rb,#__rb-pill{display:none !important}}
+@media print{#__rb{display:none !important}}
 </style>
-<div id="__rb">
+<nav id="__rb" aria-label="Portfolio">
   <a class="__rb-home" href="index.html"><span class="__mark" aria-hidden="true">A</span>Alex Rajcoomar <i>portfolio</i></a>
-  <span class="__rb-right"><a href="research.html">Research</a><a href="library.html">All work</a></span>
-</div>
+  <span class="__rb-row">Independent &middot; <b>6,521</b> words &middot; <b>13</b> figures &middot; <b>7</b> tables</span>
+  <span class="__rb-right"><a href="research.html">Research</a><a href="atlas.html">Atlas</a><a href="library.html">All work</a></span>
+  <span class="__rb-from"><b>Built from</b> Built from one report, Global Spending and Wealth: Scale, Structure, Concentration, compiled on 17 August 2026, at the precision it published and with each figure&#x27;s provenance tag intact.</span>
+</nav>
 <script>
 /* the trail: which passages this browser has opened. The atlas reads it and
    rings them; the record lives in localStorage and never leaves the machine. */
@@ -588,7 +589,7 @@ td.n{font-variant-numeric:tabular-nums;white-space:nowrap}
     function put(key){
       if(t2[key]||Object.keys(t2).length<500){
         t2[key]=(t2[key]||0)+1;
-        localStorage.setItem(k,JSON.stringify(t2));
+        try{localStorage.setItem(k,JSON.stringify(t2));}catch(e){}
       }
     }
     put(u+location.hash);
@@ -624,7 +625,7 @@ td.n{font-variant-numeric:tabular-nums;white-space:nowrap}
   </defs>
 </svg>
 
-<div class="wrap">
+<div class="wrap" role="main">
 
 <header class="mast">
   <div class="masthead-bar">
@@ -697,7 +698,7 @@ td.n{font-variant-numeric:tabular-nums;white-space:nowrap}
 
     <div class="p-rail">
       <p id="f1-desc">Both squares are drawn at the unit the whole piece uses, so the outer square is 517.7 cells of area and the inner one is 118.35, on one continuous lattice, sharing a corner. Count them if you like. Nothing is truncated and nothing is on a log scale.</p>
-      <p><strong>A ratio, not a decomposition.</strong> The containment is drawn once, so the relationship never has to appear as two independently scaled y-axes. The World Inequality Lab measures the same phenomenon against a different denominator: wealth-income ratios rose &ldquo;from about 390% of world net domestic product in 1980 to over 625% in 2025&rdquo; &mdash; a different number for a related idea, which is why the two are not plotted together.</p>
+      <p><strong>A ratio, not a decomposition.</strong> The containment is drawn once, so the relationship never has to appear as two independently scaled y-axes. The World Inequality Lab measures the same phenomenon against a different denominator: wealth-income ratios rose &ldquo;from about 390% of world net domestic product in 1980 to over 625% in 2025&rdquo; a different number for a related idea, which is why the two are not plotted together.</p>
       <p><strong>UBS publishes no global wealth total.</strong> The <span class="num">$517.7 tn</span> is the sum of its four pyramid bands, whose four printed shares reconcile to it exactly. Strong evidence, not a quoted figure, and the report ranks it the second-least-confident claim in the dataset. It is drawn at full strength: fading a derived value lowers the perceived credibility of the whole chart.</p>
     </div>
   </div>
@@ -712,7 +713,7 @@ td.n{font-variant-numeric:tabular-nums;white-space:nowrap}
         <tr><td>Outer square, open cells</td><td>Total global personal wealth, 56 markets (a stock)</td><td class="n">&asymp; $517.7 tn</td><td class="n">2025</td><td><span class="chip"><svg class="gl" aria-hidden="true"><use href="#g-der"/></svg>DERIVED</span> <span class="chip"><svg class="gl" aria-hidden="true"><use href="#g-low"/></svg>LOW CONFIDENCE</span></td><td>UBS Global Wealth Report 2026, four pyramid bands summed: 3.22 + 63.16 + 200.72 + 250.59. UBS publishes no global total.</td></tr>
         <tr><td>Inner square, solid cells</td><td>World GDP, nominal, current US$ (a flow)</td><td class="n">$118.35 tn</td><td class="n">2025</td><td><span class="chip"><svg class="gl" aria-hidden="true"><use href="#g-ver"/></svg>VERIFIED</span> <span class="chip"><svg class="gl" aria-hidden="true"><use href="#g-est"/></svg>(est.)</span></td><td>World Bank <code>NY.GDP.MKTP.CD</code>, lastupdated 2026-07-13. The source labels 2025 an estimate.</td></tr>
         <tr><td>Display number</td><td>Personal wealth as a multiple of world nominal GDP</td><td class="n">4.37&times;</td><td class="n">2025</td><td><span class="chip"><svg class="gl" aria-hidden="true"><use href="#g-der"/></svg>DERIVED</span></td><td>517.7 / 118.35. Quoted in the report as 4.37&times;.</td></tr>
-        <tr><td>Drawing geometry</td><td>Linear side ratio of the two squares</td><td class="n">2.09</td><td>&mdash;</td><td><span class="chip">ARTIFACT GEOMETRY</span></td><td>&radic;4.37. A property of the drawing, not a claim about the world.</td></tr>
+        <tr><td>Drawing geometry</td><td>Linear side ratio of the two squares</td><td class="n">2.09</td><td>—</td><td><span class="chip">ARTIFACT GEOMETRY</span></td><td>&radic;4.37. A property of the drawing, not a claim about the world.</td></tr>
       </tbody>
     </table>
     </div>
@@ -734,7 +735,7 @@ td.n{font-variant-numeric:tabular-nums;white-space:nowrap}
     <dd>Solid filled glyph at full contrast, the unmarked default. <em>Retrieved from the named source, with a verbatim fragment on file.</em></dd>
 
     <dt><svg class="gl" aria-hidden="true"><use href="#g-est"/></svg> (est.)</dt>
-    <dd>Filled, plus an open ring &mdash; a shape, not a colour. <em>The source itself labels the value an estimate.</em> World GDP for 2025 is one of these.</dd>
+    <dd>Filled, plus an open ring, a shape, not a colour. <em>The source itself labels the value an estimate.</em> World GDP for 2025 is one of these.</dd>
 
     <dt><svg class="gl" aria-hidden="true"><use href="#g-proj"/></svg> (proj.)</dt>
     <dd>Open glyph inside a tinted future region, with a boundary rule and a text label. <em>The source itself labels the value a projection.</em> First appears at F11.</dd>
@@ -746,7 +747,7 @@ td.n{font-variant-numeric:tabular-nums;white-space:nowrap}
     <dd>Filled, plus a leader to a written reason. <em>Single-sourced, internally inconsistent, or dependent on a fragile extraction.</em> Never faded, never dropped.</dd>
   </dl>
 
-  <p class="small col" style="max-width:42rem">No tier is distinguished by colour alone: each carries a glyph shape and a spelled word, so all five survive greyscale and every form of colour-vision deficiency. The states are discrete rather than a gradient, and the order above is <em>retrieval distance</em>, not reliability &mdash; derived arithmetic on verified inputs can be sounder than a source&rsquo;s own projection.</p>
+  <p class="small col" style="max-width:42rem">No tier is distinguished by colour alone: each carries a glyph shape and a spelled word, so all five survive greyscale and every form of colour-vision deficiency. The states are discrete rather than a gradient, and the order above is <em>retrieval distance</em>, not reliability, derived arithmetic on verified inputs can be sounder than a source&rsquo;s own projection.</p>
 
   <div class="note">
     <h3 id="base-years-and-the-2025-hole-in-the-middle-of-th">Base years, and the 2025 hole in the middle of this dataset</h3>
@@ -835,9 +836,9 @@ td.n{font-variant-numeric:tabular-nums;white-space:nowrap}
       <caption>F2. The unit declaration and the one quantity drawn against it.</caption>
       <thead><tr><th scope="col">Mark</th><th scope="col">Quantity</th><th scope="col">Value</th><th scope="col">Year</th><th scope="col">Provenance</th><th scope="col">Source and operation</th></tr></thead>
       <tbody>
-        <tr><td>Single solid cell</td><td>The unit</td><td class="n">$1 tn</td><td>&mdash;</td><td><span class="chip">UNIT DECLARATION</span></td><td>20 px cell, 2 px surface gap, 22 px pitch, 12 cells to a row. Fixed for the whole piece.</td></tr>
+        <tr><td>Single solid cell</td><td>The unit</td><td class="n">$1 tn</td><td>—</td><td><span class="chip">UNIT DECLARATION</span></td><td>20 px cell, 2 px surface gap, 22 px pitch, 12 cells to a row. Fixed for the whole piece.</td></tr>
         <tr><td>The block</td><td>World GDP, nominal, current US$</td><td class="n">$118.35 tn</td><td class="n">2025</td><td><span class="chip"><svg class="gl" aria-hidden="true"><use href="#g-ver"/></svg>VERIFIED</span> <span class="chip"><svg class="gl" aria-hidden="true"><use href="#g-est"/></svg>(est.)</span></td><td>World Bank <code>NY.GDP.MKTP.CD</code>, lastupdated 2026-07-13.</td></tr>
-        <tr><td>Cell count</td><td>Cells drawn</td><td class="n">118 whole + 0.35</td><td>&mdash;</td><td><span class="chip">ARTIFACT GEOMETRY</span></td><td>Nine rows of 12 = 108, plus 10, plus 0.35 of one cell.</td></tr>
+        <tr><td>Cell count</td><td>Cells drawn</td><td class="n">118 whole + 0.35</td><td>—</td><td><span class="chip">ARTIFACT GEOMETRY</span></td><td>Nine rows of 12 = 108, plus 10, plus 0.35 of one cell.</td></tr>
         <tr><td>Not drawn</td><td>World GDP, PPP, current international $</td><td class="n">Int$211.17 tn</td><td class="n">2025</td><td><span class="chip"><svg class="gl" aria-hidden="true"><use href="#g-ver"/></svg>VERIFIED</span> <span class="chip"><svg class="gl" aria-hidden="true"><use href="#g-est"/></svg>(est.)</span></td><td>World Bank <code>NY.GDP.MKTP.PP.CD</code>. A different basis; panels at F12.</td></tr>
       </tbody>
     </table>
@@ -969,7 +970,7 @@ td.n{font-variant-numeric:tabular-nums;white-space:nowrap}
         </svg>
       </div>
       <div class="p-rail">
-        <p><strong>Three rows builds everything the world builds.</strong> All the new capital formed on earth in 2024 &mdash; every building, machine, road, data centre and net addition to inventory &mdash; is <span class="num">$29.36 tn</span>, a quarter of a year&rsquo;s output and one fifteenth of the wealth stock above.</p>
+        <p><strong>Three rows builds everything the world builds.</strong> All the new capital formed on earth in 2024 (every building, machine, road, data centre and net addition to inventory) is <span class="num">$29.36 tn</span>, a quarter of a year&rsquo;s output and one fifteenth of the wealth stock above.</p>
         <p class="small">Aqua marks sit at 2.74:1 against this surface, below the 3:1 gate, so this rung carries its value in the apparatus rail as required. Also absent, and not constructed: the public-versus-private split of world investment. The IMF dataset that builds it consistently returned HTTP 403 on both endpoints.</p>
       </div>
     </div>
@@ -994,7 +995,7 @@ td.n{font-variant-numeric:tabular-nums;white-space:nowrap}
              aria-label="Rung 4, general government expenditure, a flow drawn as solid orange cells: approximately 41 to 42 trillion US dollars in 2024, roughly 37 to 38 per cent of world GDP, tagged derived and low confidence. The hatched cell at the end is the top of the derived range. This is general government, not central government: that gap runs 13 to 25 points of GDP. Operation: income-group GDP weights times IMF expenditure ratios of 42, 32, 22 and 18 per cent. Applied to 2025 GDP the same ratio gives approximately 43 to 45 trillion."
              data-tip-title="General government &asymp; $41 to $42 tn"
              data-tip-body="2024, &asymp; 37 to 38% of world GDP. The IMF publishes no World row for general government expenditure, so any single figure is somebody&rsquo;s derivation. General government, not central: that gap runs 13 to 25 points of GDP."
-             data-tip-op="DERIVED: income-group GDP weights &times; IMF ratios &mdash; 42% high income (64.64% of world GDP), 32% upper middle (28.70%), 22% lower middle (6.13%), 18% low (0.54%). Applied to 2025 GDP: &asymp; $43 to $45 tn.">
+             data-tip-op="DERIVED: income-group GDP weights &times; IMF ratios — 42% high income (64.64% of world GDP), 32% upper middle (28.70%), 22% lower middle (6.13%), 18% low (0.54%). Applied to 2025 GDP: &asymp; $43 to $45 tn.">
             <rect x="0" y="0"  width="264" height="66" fill="url(#u-gov)"/>
             <rect x="0" y="66" width="110" height="22" fill="url(#u-gov)"/>
             <rect x="110" y="66" width="20" height="20" rx="2" fill="url(#h-gov)" style="stroke:var(--government);stroke-width:1.5"/>
@@ -1086,9 +1087,9 @@ td.n{font-variant-numeric:tabular-nums;white-space:nowrap}
         <tr><td>4a</td><td><em>floor check</em>: general government final consumption</td><td class="n">$18.65 tn</td><td class="n">16.70%</td><td class="n">2024</td><td><span class="chip"><svg class="gl" aria-hidden="true"><use href="#g-ver"/></svg>VERIFIED</span></td><td>World Bank <code>NE.CON.GOVT.CD</code>. Excludes transfers, interest, subsidies and public investment.</td></tr>
         <tr><td class="n">5</td><td>World military expenditure</td><td class="n">$2.887 tn</td><td class="n">2.5%</td><td class="n">2025</td><td><span class="chip"><svg class="gl" aria-hidden="true"><use href="#g-ver"/></svg>VERIFIED</span></td><td>SIPRI, April 2026. Sits inside rung 4; do not add the two.</td></tr>
         <tr><td class="n">6</td><td>Total DAC official development assistance</td><td class="n">$174.3 bn</td><td class="n">0.15%</td><td class="n">2025</td><td><span class="chip"><svg class="gl" aria-hidden="true"><use href="#g-ver"/></svg>VERIFIED</span> <span class="chip"><svg class="gl" aria-hidden="true"><use href="#g-der"/></svg>DERIVED</span> share</td><td>OECD DAC preliminary, &ldquo;down 23.1% real&rdquo;. Share derived on the 2025 nominal GDP denominator.</td></tr>
-        <tr><td>&mdash;</td><td>Global median wealth per adult</td><td class="n">not published</td><td>&mdash;</td><td>&mdash;</td><td><span class="chip">ABSENT</span></td><td>UBS publishes medians by market only. Any global figure in circulation is somebody&rsquo;s construction. Displayed as an absence, not estimated.</td></tr>
-        <tr><td>&mdash;</td><td>World government revenue</td><td class="n">not published</td><td>&mdash;</td><td>&mdash;</td><td><span class="chip">ABSENT</span></td><td>No IMF World row. An implied 32 to 33% of GDP is derivable from the published &minus;5.1% world deficit, and is deliberately not drawn.</td></tr>
-        <tr><td>&mdash;</td><td>Public versus private split of world investment</td><td class="n">does not exist in retrievable form</td><td>&mdash;</td><td>&mdash;</td><td><span class="chip">ABSENT</span></td><td>The IMF Investment and Capital Stock Dataset returned HTTP 403 on both endpoints. EU and OECD fragments only; no world split constructed.</td></tr>
+        <tr><td>—</td><td>Global median wealth per adult</td><td class="n">not published</td><td>—</td><td>—</td><td><span class="chip">ABSENT</span></td><td>UBS publishes medians by market only. Any global figure in circulation is somebody&rsquo;s construction. Displayed as an absence, not estimated.</td></tr>
+        <tr><td>—</td><td>World government revenue</td><td class="n">not published</td><td>—</td><td>—</td><td><span class="chip">ABSENT</span></td><td>No IMF World row. An implied 32 to 33% of GDP is derivable from the published &minus;5.1% world deficit, and is deliberately not drawn.</td></tr>
+        <tr><td>—</td><td>Public versus private split of world investment</td><td class="n">does not exist in retrievable form</td><td>—</td><td>—</td><td><span class="chip">ABSENT</span></td><td>The IMF Investment and Capital Stock Dataset returned HTTP 403 on both endpoints. EU and OECD fragments only; no world split constructed.</td></tr>
       </tbody>
     </table>
     </div>
@@ -1261,10 +1262,10 @@ td.n{font-variant-numeric:tabular-nums;white-space:nowrap}
         <tr><td>MENA, Afghanistan &amp; Pakistan</td><td class="n">$5.103 tn</td><td class="n">$2.680 tn</td><td class="n">$0.884 tn</td><td class="n">$1.378 tn</td><td class="n">-0.160 tn</td><td><span class="chip"><svg class="gl" aria-hidden="true"><use href="#g-ver"/></svg>VERIFIED</span></td></tr>
         <tr><td>South Asia</td><td class="n">$4.364 tn</td><td class="n">$2.552 tn</td><td class="n">$0.440 tn</td><td class="n">$1.472 tn</td><td class="n">+0.100 tn</td><td><span class="chip"><svg class="gl" aria-hidden="true"><use href="#g-ver"/></svg>VERIFIED</span></td></tr>
         <tr><td>Sub-Saharan Africa</td><td class="n">$1.990 tn</td><td class="n">$1.694 tn</td><td class="n">$0.342 tn</td><td class="n">$0.477 tn</td><td class="n">+0.523 tn</td><td><span class="chip"><svg class="gl" aria-hidden="true"><use href="#g-ver"/></svg>VERIFIED</span></td></tr>
-        <tr><td><em>Seven regions summed</em></td><td class="n">$111.695 tn</td><td class="n">$63.294 tn</td><td class="n">$18.632 tn</td><td class="n">$29.312 tn</td><td>&mdash;</td><td><span class="chip"><svg class="gl" aria-hidden="true"><use href="#g-der"/></svg>DERIVED</span></td></tr>
+        <tr><td><em>Seven regions summed</em></td><td class="n">$111.695 tn</td><td class="n">$63.294 tn</td><td class="n">$18.632 tn</td><td class="n">$29.312 tn</td><td>—</td><td><span class="chip"><svg class="gl" aria-hidden="true"><use href="#g-der"/></svg>DERIVED</span></td></tr>
         <tr><td><strong>World</strong></td><td class="n">$111.669 tn</td><td class="n">$63.194 tn</td><td class="n">$18.654 tn</td><td class="n">$29.355 tn</td><td class="n">&minus;0.466 tn</td><td><span class="chip"><svg class="gl" aria-hidden="true"><use href="#g-ver"/></svg>VERIFIED</span></td></tr>
         <tr><td>Rejected form</td><td colspan="4">Width of the Sub-Saharan Africa column in a true-area Marimekko at this rail</td><td class="n">4.7 px</td><td><span class="chip">ARTIFACT GEOMETRY</span></td></tr>
-        <tr><td>Partition closure</td><td class="n">+0.02&#37;</td><td class="n">+0.16&#37;</td><td class="n">&minus;0.12&#37;</td><td class="n">&minus;0.15&#37;</td><td>&mdash;</td><td><span class="chip"><svg class="gl" aria-hidden="true"><use href="#g-der"/></svg>DERIVED</span></td></tr>
+        <tr><td>Partition closure</td><td class="n">+0.02&#37;</td><td class="n">+0.16&#37;</td><td class="n">&minus;0.12&#37;</td><td class="n">&minus;0.15&#37;</td><td>—</td><td><span class="chip"><svg class="gl" aria-hidden="true"><use href="#g-der"/></svg>DERIVED</span></td></tr>
       </tbody>
     </table>
     </div>
@@ -1561,8 +1562,8 @@ td.n{font-variant-numeric:tabular-nums;white-space:nowrap}
         <tr><td>Upright rule</td><td>World GDP, nominal, current US$</td><td class="n">$111.669 tn</td><td class="n">111.67</td><td><span class="chip"><svg class="gl" aria-hidden="true"><use href="#g-ver"/></svg>VERIFIED</span></td><td>World Bank <code>NY.GDP.MKTP.CD</code>, 2024.</td></tr>
         <tr><td>Past the rule</td><td>Statistical discrepancy</td><td class="n">+$0.612 tn</td><td class="n">0.61</td><td><span class="chip"><svg class="gl" aria-hidden="true"><use href="#g-der"/></svg>DERIVED</span></td><td>112.281 &minus; 111.669. Equivalently +0.548 points of GDP: 56.59 + 16.70 + 26.29 + 0.97 = 100.55.</td></tr>
         <tr><td>Not drawn</td><td>Net exports the identity leaves room for</td><td class="n">+$0.466 tn</td><td class="n">0.47</td><td><span class="chip"><svg class="gl" aria-hidden="true"><use href="#g-der"/></svg>DERIVED</span></td><td>111.669 &minus; 111.203. The gap against the reported $1.078 tn is the discrepancy.</td></tr>
-        <tr><td>Apparatus note</td><td>The discrepancy against total official development assistance</td><td class="n">3.5&times;</td><td>&mdash;</td><td><span class="chip"><svg class="gl" aria-hidden="true"><use href="#g-der"/></svg>DERIVED</span></td><td>612 / 174.3 = 3.51. <strong>Mixed base years:</strong> the discrepancy is 2024 and total DAC aid is 2025. Stated as a rough anchor and never plotted on a shared axis.</td></tr>
-        <tr><td>Dimension line</td><td>Width of the overshoot as drawn</td><td class="n">13.5 px</td><td>&mdash;</td><td><span class="chip">ARTIFACT GEOMETRY</span></td><td>0.612 cells &times; 22 px pitch. A property of the drawing, not a claim about the world.</td></tr>
+        <tr><td>Apparatus note</td><td>The discrepancy against total official development assistance</td><td class="n">3.5&times;</td><td>—</td><td><span class="chip"><svg class="gl" aria-hidden="true"><use href="#g-der"/></svg>DERIVED</span></td><td>612 / 174.3 = 3.51. <strong>Mixed base years:</strong> the discrepancy is 2024 and total DAC aid is 2025. Stated as a rough anchor and never plotted on a shared axis.</td></tr>
+        <tr><td>Dimension line</td><td>Width of the overshoot as drawn</td><td class="n">13.5 px</td><td>—</td><td><span class="chip">ARTIFACT GEOMETRY</span></td><td>0.612 cells &times; 22 px pitch. A property of the drawing, not a claim about the world.</td></tr>
       </tbody>
     </table>
     </div>
@@ -1578,10 +1579,10 @@ td.n{font-variant-numeric:tabular-nums;white-space:nowrap}
         <tr><td>North America</td><td class="n">+0.000 tn</td><td class="n">+0.00&#37;</td><td class="n">28.28&#37;</td><td><span class="chip"><svg class="gl" aria-hidden="true"><use href="#g-der"/></svg>DERIVED</span></td></tr>
         <tr><td>Europe &amp; Central Asia</td><td class="n">-0.040 tn</td><td class="n">-0.14&#37;</td><td class="n">26.30&#37;</td><td><span class="chip"><svg class="gl" aria-hidden="true"><use href="#g-der"/></svg>DERIVED</span></td></tr>
         <tr><td>Latin America &amp; Caribbean</td><td class="n">+0.251 tn</td><td class="n">+3.53&#37;</td><td class="n">6.35&#37;</td><td><span class="chip"><svg class="gl" aria-hidden="true"><use href="#g-der"/></svg>DERIVED</span></td></tr>
-        <tr><td>MENA, Afghanistan &amp; Pakistan</td><td class="n">not computable</td><td class="n">&mdash;</td><td class="n">4.57&#37;</td><td><span class="chip">ABSENT</span></td></tr>
+        <tr><td>MENA, Afghanistan &amp; Pakistan</td><td class="n">not computable</td><td class="n">—</td><td class="n">4.57&#37;</td><td><span class="chip">ABSENT</span></td></tr>
         <tr><td>South Asia</td><td class="n">-0.008 tn</td><td class="n">-0.17&#37;</td><td class="n">3.91&#37;</td><td><span class="chip"><svg class="gl" aria-hidden="true"><use href="#g-der"/></svg>DERIVED</span></td></tr>
         <tr><td>Sub-Saharan Africa</td><td class="n">+0.511 tn</td><td class="n">+25.66&#37;</td><td class="n">1.78&#37;</td><td><span class="chip"><svg class="gl" aria-hidden="true"><use href="#g-der"/></svg>DERIVED</span></td></tr>
-        <tr><td><em>Six computable regions summed</em></td><td class="n">+$0.675 tn</td><td>&mdash;</td><td class="n">95.43&#37;</td><td><span class="chip"><svg class="gl" aria-hidden="true"><use href="#g-der"/></svg>DERIVED</span></td></tr>
+        <tr><td><em>Six computable regions summed</em></td><td class="n">+$0.675 tn</td><td>—</td><td class="n">95.43&#37;</td><td><span class="chip"><svg class="gl" aria-hidden="true"><use href="#g-der"/></svg>DERIVED</span></td></tr>
         <tr><td><strong>World</strong></td><td class="n">+$0.612 tn</td><td class="n">+0.55&#37;</td><td class="n">100&#37;</td><td><span class="chip"><svg class="gl" aria-hidden="true"><use href="#g-der"/></svg>DERIVED</span></td></tr>
       </tbody>
     </table>
@@ -1980,15 +1981,62 @@ VIZ.helpers = {
 })();
 </script>
 
+<!--__long--><link rel="stylesheet" href="long.css?v=0b99e235"><script src="long.js?v=98a5c23b" defer></script><!--/__long-->
 
 <!--__rbp-->
+<!-- The pill styles itself: this block used to live only with the top bar,
+     so the seven tool pages, which carry the pill alone, rendered it as an
+     unstyled link at the very end of the document. Whatever carries the
+     pill now carries its style. -->
+<style id="__rbp-style">
+#__rb-pill{
+  position:fixed;left:14px;bottom:14px;z-index:2147483000;
+  display:inline-flex;align-items:center;gap:.45rem;padding:.58rem .9rem;
+  background:rgba(22,21,15,.93);color:#faf9f6;text-decoration:none;border-radius:99px;
+  font:600 12.5px/1 InterVar,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  border:1px solid rgba(255,255,255,.16);box-shadow:0 6px 22px rgba(0,0,0,.28);
+  opacity:0;transform:translateY(6px);pointer-events:none;
+  transition:opacity .2s ease,transform .2s ease;
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+}
+#__rb-pill.__on{opacity:1;transform:none;pointer-events:auto}
+#__rb-pill:hover{background:#16150f;color:#fff}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) #__rb-pill{background:rgba(247,245,239,.95);color:#131310;border-color:rgba(0,0,0,.2)}
+  :root:not([data-theme="light"]) #__rb-pill:hover{background:#fff;color:#000}
+}
+:root[data-theme="dark"] #__rb-pill{background:rgba(247,245,239,.95);color:#131310;border-color:rgba(0,0,0,.2)}
+:root[data-theme="dark"] #__rb-pill:hover{background:#fff;color:#000}
+@media (prefers-reduced-motion:reduce){#__rb-pill{transition:none}}
+@media print{#__rb-pill{display:none !important}}
+/* a tool carries no bar, so what it was built from stands at the foot of the document */
+#__rb-from{margin:1.25rem 1rem;font:400 13px/1.45 InterVar,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;color:#6f6c63;max-width:70ch}
+#__rb-from b{font-weight:600;color:#55524a}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) #__rb-from{color:#948f85}
+  :root:not([data-theme="light"]) #__rb-from b{color:#c0bcb1}
+}
+:root[data-theme="dark"] #__rb-from{color:#948f85}
+:root[data-theme="dark"] #__rb-from b{color:#c0bcb1}
+</style>
+<!-- With scripts off nothing ever adds the __on class, and the only way
+     back from a tool page vanished. The pill needs its script for the
+     scroll threshold, not for existing. -->
+<noscript><style>#__rb-pill{opacity:1 !important;transform:none !important;pointer-events:auto !important}</style></noscript>
 <a id="__rb-pill" href="research.html">&#8592; Research</a>
+
 <script>
 (function(){
   var p=document.getElementById('__rb-pill'); if(!p) return;
+  /* On a page with the top bar the pill waits until the bar has scrolled
+     out of reach. On a page without one (the tools carry no bar, because a
+     bar inside a full-screen application sits in the wrong place) the pill
+     is the only way back, so it is there from the first paint: a tool
+     screen shorter than the threshold used to strand the reader entirely. */
+  var TH=document.getElementById('__rb')?160:-1;
   var t=false;
   function run(){ t=false;
-    p.classList.toggle('__on',(window.scrollY||document.documentElement.scrollTop)>420); }
+    p.classList.toggle('__on',(window.scrollY||document.documentElement.scrollTop)>TH); }
   function q(){ if(!t){ t=true; requestAnimationFrame(run); } }
   addEventListener('scroll',q,{passive:true}); run();
 })();
@@ -2006,7 +2054,7 @@ VIZ.helpers = {
     function put(key){
       if(t2[key]||Object.keys(t2).length<500){
         t2[key]=(t2[key]||0)+1;
-        localStorage.setItem(k,JSON.stringify(t2));
+        try{localStorage.setItem(k,JSON.stringify(t2));}catch(e){}
       }
     }
     put(u+location.hash);

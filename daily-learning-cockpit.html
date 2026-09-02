@@ -17,9 +17,9 @@
 /* ============ TOKENS: same design system as the Study System and Skill Forge ============ */
 :root{
   color-scheme:light;
-  --page:#f9f9f7; --surface:#fcfcfb; --ink:#0b0b0b; --ink2:#52514e; --muted:#898781;
+  --page:#f9f9f7; --surface:#fcfcfb; --ink:#0b0b0b; --ink2:#52514e; --muted:#736f6f;
   --grid:#e1e0d9; --line:#c3c2b7; --ring:rgba(11,11,11,.10);
-  --acc:#2a78d6; --t2:#eb6834; --t3:#1baf7a; --t4:#eda100; --t5:#e87ba4; --t7:#4a3aa7;
+  --acc:#236cbe; --t2:#eb6834; --t3:#1baf7a; --t4:#eda100; --t5:#e87ba4; --t7:#4a3aa7;
   --good:#0ca30c; --goodtx:#006300; --warn:#fab219; --serious:#ec835a; --crit:#d03b3b;
   --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
   --sans:system-ui,-apple-system,"Segoe UI",sans-serif;
@@ -355,15 +355,15 @@ details.tblwrap summary:hover{color:var(--acc)}
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 
 <link rel="canonical" href="https://alexrajcoomar.github.io/daily-learning-cockpit.html">
-<meta property="og:title" content="Daily Learning Cockpit — Alex Rajcoomar">
+<meta property="og:title" content="Daily Learning Cockpit · Alex Rajcoomar">
 <meta property="og:description" content="A daily instrument for deliberate learning: log a prediction, work the spaced rotation, then score your own calibration.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://alexrajcoomar.github.io/daily-learning-cockpit.html">
-<meta property="og:site_name" content="Alex Rajcoomar — portfolio">
+<meta property="og:site_name" content="Alex Rajcoomar · portfolio">
 <meta property="og:image" content="https://alexrajcoomar.github.io/cards/daily-learning-cockpit.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Daily Learning Cockpit — Alex Rajcoomar">
+<meta property="og:image:alt" content="Daily Learning Cockpit · Alex Rajcoomar">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://alexrajcoomar.github.io/cards/daily-learning-cockpit.png">
 <script>
@@ -1113,7 +1113,7 @@ function renderToday(){
   const virgin=!ST.preds.length&&!ST.topics.length&&!ST.sessions.length&&!ST.journal.length&&!ST.noise.length;
   if(virgin){
     const s0=E("div","done");
-    s0.innerHTML='<div class="dg">◷</div><h3>Two entries and this starts working.</h3>'+
+    s0.innerHTML='<div class="dg">◷</div><h3 aria-level="2">Two entries and this starts working.</h3>'+
       '<p>Log one prediction with a resolution date, and put one topic into the rota. That is the whole setup. '+
       'The rest of the instruments can wait until you have a reason for them, and this screen will stay quiet until something is actually due.</p>';
     const a=E("div","acts");a.style.justifyContent="center";
@@ -1128,7 +1128,7 @@ function renderToday(){
   if(!q.length){
     const d=E("div","done");
     const streak=ST.streak.days||0;
-    d.innerHTML='<div class="dg">◆</div><h3>Queue clear'+(streak>1?", "+streak+" days running":"")+'.</h3>'+
+    d.innerHTML='<div class="dg">◆</div><h3 aria-level="2">Queue clear'+(streak>1?", "+streak+" days running":"")+'.</h3>'+
       '<p>Stopping here is the correct move. Adding work because the screen is empty is how a daily instrument becomes a chore and then becomes abandoned.</p>';
     const a=E("div","acts");a.style.justifyContent="center";
     const b1=E("button","btn sm","Optional: one frequency drill");
@@ -2322,13 +2322,59 @@ renderToday();
 
 
 <!--__rbp-->
+<!-- The pill styles itself: this block used to live only with the top bar,
+     so the seven tool pages, which carry the pill alone, rendered it as an
+     unstyled link at the very end of the document. Whatever carries the
+     pill now carries its style. -->
+<style id="__rbp-style">
+#__rb-pill{
+  position:fixed;left:14px;bottom:14px;z-index:2147483000;
+  display:inline-flex;align-items:center;gap:.45rem;padding:.58rem .9rem;
+  background:rgba(22,21,15,.93);color:#faf9f6;text-decoration:none;border-radius:99px;
+  font:600 12.5px/1 InterVar,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  border:1px solid rgba(255,255,255,.16);box-shadow:0 6px 22px rgba(0,0,0,.28);
+  opacity:0;transform:translateY(6px);pointer-events:none;
+  transition:opacity .2s ease,transform .2s ease;
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+}
+#__rb-pill.__on{opacity:1;transform:none;pointer-events:auto}
+#__rb-pill:hover{background:#16150f;color:#fff}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) #__rb-pill{background:rgba(247,245,239,.95);color:#131310;border-color:rgba(0,0,0,.2)}
+  :root:not([data-theme="light"]) #__rb-pill:hover{background:#fff;color:#000}
+}
+:root[data-theme="dark"] #__rb-pill{background:rgba(247,245,239,.95);color:#131310;border-color:rgba(0,0,0,.2)}
+:root[data-theme="dark"] #__rb-pill:hover{background:#fff;color:#000}
+@media (prefers-reduced-motion:reduce){#__rb-pill{transition:none}}
+@media print{#__rb-pill{display:none !important}}
+/* a tool carries no bar, so what it was built from stands at the foot of the document */
+#__rb-from{margin:1.25rem 1rem;font:400 13px/1.45 InterVar,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;color:#6f6c63;max-width:70ch}
+#__rb-from b{font-weight:600;color:#55524a}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) #__rb-from{color:#948f85}
+  :root:not([data-theme="light"]) #__rb-from b{color:#c0bcb1}
+}
+:root[data-theme="dark"] #__rb-from{color:#948f85}
+:root[data-theme="dark"] #__rb-from b{color:#c0bcb1}
+</style>
+<!-- With scripts off nothing ever adds the __on class, and the only way
+     back from a tool page vanished. The pill needs its script for the
+     scroll threshold, not for existing. -->
+<noscript><style>#__rb-pill{opacity:1 !important;transform:none !important;pointer-events:auto !important}</style></noscript>
 <a id="__rb-pill" href="research.html">&#8592; Research</a>
+<p id="__rb-from"><b>Built from</b> Not declared on file.</p>
 <script>
 (function(){
   var p=document.getElementById('__rb-pill'); if(!p) return;
+  /* On a page with the top bar the pill waits until the bar has scrolled
+     out of reach. On a page without one (the tools carry no bar, because a
+     bar inside a full-screen application sits in the wrong place) the pill
+     is the only way back, so it is there from the first paint: a tool
+     screen shorter than the threshold used to strand the reader entirely. */
+  var TH=document.getElementById('__rb')?160:-1;
   var t=false;
   function run(){ t=false;
-    p.classList.toggle('__on',(window.scrollY||document.documentElement.scrollTop)>420); }
+    p.classList.toggle('__on',(window.scrollY||document.documentElement.scrollTop)>TH); }
   function q(){ if(!t){ t=true; requestAnimationFrame(run); } }
   addEventListener('scroll',q,{passive:true}); run();
 })();
@@ -2346,7 +2392,7 @@ renderToday();
     function put(key){
       if(t2[key]||Object.keys(t2).length<500){
         t2[key]=(t2[key]||0)+1;
-        localStorage.setItem(k,JSON.stringify(t2));
+        try{localStorage.setItem(k,JSON.stringify(t2));}catch(e){}
       }
     }
     put(u+location.hash);
