@@ -325,8 +325,13 @@ window.WORK = {WORKJSON};
 def n(x):
     return f"{x:,}"
 
-def stmt_cells(w, f, t):
-    return (f'<td class="n">{n(w)}</td><td class="n fig">{f}<span class="tb"> &middot; {t}</span></td>'
+def stmt_cells(w, f, t, mins=None):
+    # Minutes sit under the word count rather than in a column of their own:
+    # a fifth column does not fit a 390px phone, and the two belong together
+    # anyway, one counted and one derived from it. A page under DOC_MIN words
+    # carries none, which is the colophon's rule, not a missing value.
+    m = f'<span class="mins">{mins} min</span>' if mins else ""
+    return (f'<td class="n">{n(w)}{m}</td><td class="n fig">{f}<span class="tb"> &middot; {t}</span></td>'
             f'<td class="n tab">{t}</td>')
 
 def flagged_lift(p):
@@ -353,7 +358,7 @@ def flagged_lift(p):
 def stmt_row(p, lift=None):
     sub = f'<span class="s">{esc(p["s"])}</span>' if p.get("s") else ""
     out = (f'<tr class="item{" haslift" if lift else ""}"><th scope="row"><a href="{p["url"]}">{esc(p["t"])}</a>{sub}</th>'
-           + stmt_cells(p["words"], p["figures"], p["tables"]) + "</tr>")
+           + stmt_cells(p["words"], p["figures"], p["tables"], piece_mins(p)) + "</tr>")
     if lift:
         out += (f'\n<tr class="liftrow"><td colspan="4"><span class="lift"><b>{esc(lift[0])}</b> {esc(lift[1])}</span></td></tr>')
     return out
@@ -381,14 +386,15 @@ def shelf_row(k, p, extra=""):
                     SURF_LABEL[p["surface"]]]).lower()
     rule = (f'<p class="rule">{esc(p["demo"])}</p>' if p.get("demo")
             else '<p class="rule none">No declared rule on file.</p>')
+    mins = f'<span class="s-min">{piece_mins(p)} min</span>' if piece_mins(p) else ""
     return f"""      <li data-kind="{p['k'].lower()}" data-course="{esc(p['c'])}" data-surface="{p['surface']}" data-search="{esc(hay)}" data-words="{p['words']}" data-figs="{p['figures']}" data-title="{esc(p['t'].lower())}">
-        <div class="sr">
+        <div class="srow">
           <div class="sr-t">
             <span class="num tnum">{k:02d}</span>
             <h3><a href="{p['url']}">{esc(p['t'])}</a></h3>
             <p class="s">{esc(p['s'])}</p>
             {rule}
-            <p class="meta">{kind_chip(p)}{surf(p)}<span class="metadate">{esc(p['d'])}</span>{tags}</p>
+            <p class="meta">{kind_chip(p)}{surf(p)}{mins}<span class="metadate">{esc(p['d'])}</span>{tags}</p>
             {extra}
           </div>
           <div class="sr-n"><span class="tnum">{n(p['words'])}</span><span class="tnum">{p['figures']}</span><span class="tnum">{p['tables']}</span></div>
@@ -396,13 +402,13 @@ def shelf_row(k, p, extra=""):
       </li>"""
 
 def shelf_list_head():
-    return ('      <li class="sr-head" aria-hidden="true"><div class="sr"><div class="sr-t">Piece</div>'
+    return ('      <li class="sr-head" aria-hidden="true"><div class="srow"><div class="sr-t">Piece</div>'
             '<div class="sr-n"><span>Words</span><span>Figures</span><span>Tables</span></div></div></li>')
 
 def shelf_subtotal(label, items, href=None):
     w = sum(p["words"] for p in items); f = sum(p["figures"] for p in items); t = sum(p["tables"] for p in items)
     lab = f'<a href="{href}">{esc(label)}</a>' if href else esc(label)
-    return (f'      <li class="sr-sub"><div class="sr"><div class="sr-t">{lab}</div>'
+    return (f'      <li class="sr-sub"><div class="srow"><div class="sr-t">{lab}</div>'
             f'<div class="sr-n"><span class="tnum">{n(w)}</span><span class="tnum">{f}</span><span class="tnum">{t}</span></div></div></li>')
 
 # figures lifted out of pieces, shown beside the piece they belong to
@@ -436,7 +442,14 @@ def identity_block():
             + f'<p class="links">{"".join(links)}</p>\n'
             f'    <p class="thesis">{S["headline"]}</p>\n'
             f'    <p class="method">Every figure below is counted from the published files by the build, never typed. '
-            f'The notes define each column and state every exception.</p>')
+            f'The notes define each column and state every exception.</p>\n'
+            # The same four totals the statement's last row carries, printed
+            # where a reader on a phone reaches them: the table's own total
+            # is a screen and a half down once every row keeps its
+            # description, and this is the one line a thirty-second reader
+            # gets. Same variables as the total row, so the two cannot drift.
+            f'    <p class="tot"><b>{len(P)} pieces</b> &middot; {n(TOTAL_WORDS)} words '
+            f'&middot; {TOTAL_FIGS} figures &middot; {TOTAL_TBLS} tables</p>')
 
 def google_font_families():
     """Which family each of the pieces that load Google Fonts asks for, read
@@ -460,6 +473,13 @@ SURF_LABEL = {"independent":"Independent","course":"Coursework","personal":"Pers
 
 def surf(p):
     return f'<span class="surf surf-{p["surface"]}">{SURF_LABEL[p["surface"]]}</span>'
+
+def piece_mins(p):
+    """The derived reading time, or None. A Tool carries none whatever its
+    length: sig() has always printed "Interactive ... runs in the browser"
+    for one, because a drill has no length, only a session. The word
+    threshold is the colophon's."""
+    return None if p["k"] == "Tool" else p["mins"]
 
 def sig(p, with_surface=True):
     """The signature line: length, apparatus, density. Defined in the colophon."""
@@ -886,7 +906,7 @@ def page_index():
 <section class="notes shell" id="notes" aria-labelledby="notes-h">
   <h2 id="notes-h">Notes to the statement</h2>
   <ol>
-    <li id="n1"><b>Basis of measurement.</b> Words are the text of the rendered page after its own scripts have run, with script, style and noscript blocks removed and collapsed answers included. A figure is a top-level drawing covering at least 6,000 square units. A table is a table. All three are counted in a headless browser after the page's own scripts have run. <a href="colophon.html#n1">The definitions in full.</a></li>
+    <li id="n1"><b>Basis of measurement.</b> Words are the text of the rendered page after its own scripts have run, with script, style and noscript blocks removed and collapsed answers included. A figure is a top-level drawing covering at least 6,000 square units. A table is a table. All three are counted in a headless browser after the page's own scripts have run. Minutes are the one figure on this page that is derived rather than counted: words divided by {WPM} words per minute, rounded. A page under {DOC_MIN:,} rendered words carries none, and neither does an interactive tool. <a href="colophon.html#n1">The definitions in full.</a></li>
     <li id="n2"><b>Origin.</b> Independent means I chose the question and finished it without a course asking for it: {ind['n']} pieces, the {n_feat_ind} above and {more} more on the <a href="research.html">research shelf</a>. Coursework means built while taking one of {len(COURSES)} courses, for the assessment that was coming: {ST['course']['n']} pieces, built from my course materials with AI assistance and then verified. Anything built alongside a course is filed as coursework even where the question was my own.</li>
     <li id="n3"><b>Personal.</b> {ST['personal']['n']} pieces read and written for their own sake, with no claim on either shelf. They are counted above and listed in the <a href="library.html#personal">library</a>, not here.</li>
     <li id="n4"><b>Exceptions.</b> {fonts_sentence} {n_undrawn} pieces render under {DOC_MIN:,} words and are counted above but not drawn below; together they hold {ex['undrawn_words']:,} words. {len(ex['transcripts'])} run transcripts are measured but not listed. The {N_TOOLS} interactive tools sit on the shelf of the course or research that produced them and are counted once. <a href="colophon.html#exceptions">The exceptions, by name.</a></li>
@@ -1041,11 +1061,18 @@ def page_tools():
                 f"{len(items)} interactive study tools built by Alex Rajcoomar, {N_PWA} of them installable to a phone home screen.",
                 "tools.html") + body + foot()
 
+# The sentinel admin.html tells the owner to write when a piece has no
+# recorded provenance. It is already a whole sentence, so the label would
+# read "Built from Not declared on file."; it stands alone instead. This is
+# the one branch, not a general strip: everywhere else the field is the
+# complement of the label and check 17 holds it to that.
+NOT_DECLARED = "Not declared on file."
+
 def built_from_counts(items):
     """From the built_from lines: how many name AI assistance, how many
     declare no source on file. Counted from the field, never typed."""
     n_ai = sum(1 for p in items if "AI assistance" in (p.get("built_from") or ""))
-    n_nd = sum(1 for p in items if (p.get("built_from") or "").strip() == "Not declared on file.")
+    n_nd = sum(1 for p in items if (p.get("built_from") or "").strip() == NOT_DECLARED)
     return n_ai, n_nd
 
 def page_coursework():
@@ -1377,12 +1404,12 @@ def page_colophon():
       words and are genuinely much larger than that.</dd>
 
       <dt>Reading time</dt>
-      <dd>Words divided by {WPM} words per minute, rounded, minimum one minute. {WPM} is a
+      <dd>Derived, not counted: words divided by {WPM} words per minute, rounded, minimum one minute. {WPM} is a
       middle estimate for careful reading of technical prose; a skim is faster and a first pass through
       a figure-heavy section is slower. A page that renders under {DOC_MIN:,} words is treated as an
       instrument rather than a document and carries no reading time, because a drill has no length,
       only a session. That threshold is applied to what the page renders, not to what I would like it
-      to be.</dd>
+      to be, and it is why the {N_TOOLS} interactive tools carry no reading time at any length.</dd>
 
       <dt>Figures</dt>
       <dd>A top-level <code>&lt;svg&gt;</code> in the rendered page, not nested inside another one,
@@ -1812,13 +1839,21 @@ def piece_row(p):
     return (f'{SURF_LABEL[p["surface"]]} &middot; <b>{p["words"]:,}</b> words &middot; '
             f'<b>{p["figures"]}</b> figures &middot; <b>{p["tables"]}</b> tables')
 
+def from_line(p):
+    """The built_from line's own markup: label plus complement, or the
+    sentinel on its own."""
+    bf = p["built_from"].strip()
+    if bf == NOT_DECLARED:
+        return esc(bf)
+    return f'<b>Built from</b> {esc(bf)}'
+
 def piece_from(p):
     """The built_from line, one per piece, in the owner's words. Rendered by
     the build so it can never drift from content/pieces.json; check 17 refuses
     a piece without one, or one with an em dash."""
     if not p or not (p.get("built_from") or "").strip():
         return ""
-    return f'<span class="__rb-from"><b>Built from</b> {esc(p["built_from"].strip())}</span>'
+    return f'<span class="__rb-from">{from_line(p)}</span>'
 
 _FROM_BLOCK = re.compile(r"\s*<!--__from-->.*?<!--/__from-->", re.S)
 
@@ -1829,8 +1864,7 @@ def own_from(path, p):
     if not p or not (p.get("built_from") or "").strip():
         return False
     text = open(path, encoding="utf-8", errors="ignore").read()
-    block = ('<!--__from--><p class="docfrom"><b>Built from</b> %s</p><!--/__from-->'
-             % esc(p["built_from"].strip()))
+    block = '<!--__from--><p class="docfrom">%s</p><!--/__from-->' % from_line(p)
     new = _FROM_BLOCK.sub("", text)
     m = re.search(r'(<div class="docmeta">.*?</div>)(\s*</header>)', new, re.S)
     if not m:
@@ -2001,7 +2035,23 @@ def own_tail(path):
 # owns the meta block, but only where the tag read as the piece's title plus
 # a separator plus a suffix; a tag that says something else is content and
 # is listed for the owner instead.
+#
+# The suffix is the piece's own subtitle, not the site's name. A search
+# result already prints the site on its own line and the name is in the
+# host, so spending the tag on it bought nothing and cost the descriptor
+# the tag used to carry: "Not Significant - An essay on the accounting of
+# harm" had become "Not Significant - Alex Rajcoomar". The subtitle is the
+# same string the statement and every shelf row print under the title, so
+# editing it in admin.html corrects the tab, the search result and the link
+# preview at once.
 _TITLE = re.compile(r"<title>(.*?)</title>", re.S | re.I)
+
+def piece_title(p):
+    """The tag, the tab and the link preview all say the same thing: the
+    piece, then what it is."""
+    s = (p.get("s") or "").strip()
+    return "%s \u00b7 %s" % (p["t"], s) if s else p["t"]
+
 TITLE_SKIPPED = []
 TITLE_ALONE = []
 TITLE_PROBLEMS = []
@@ -2012,7 +2062,7 @@ def own_title(path, p):
     if not m:
         return False
     cur = re.sub(r"\s+", " ", html.unescape(m.group(1))).strip()
-    want = "%s \u00b7 %s" % (p["t"], SHORT)
+    want = piece_title(p)
     if cur == want:
         return True
     t = p["t"].strip()
@@ -2083,7 +2133,7 @@ def head_block(p):
     # mid-word by the engine rather than mid-sentence by us.
     if len(desc) > 160:
         desc = desc[:157].rsplit(" ", 1)[0].rstrip(",;:") + "\u2026"
-    title = f'{p["t"]} \u00b7 {SHORT}'
+    title = piece_title(p)
     return f"""{_HEAD_START}
 <meta name="color-scheme" content="{p.get('_scheme', 'light dark')}">
 <meta name="description" content="{esc(desc)}">
@@ -3322,13 +3372,21 @@ def check_site():
                     problems.append("%s: does not match the sha256 in fonts/manifest.json; run the rename" % inter["file"])
 
     # 17. every listed piece states what it was built from, in the owner's
-    # voice: the field is present and never carries an em dash
+    # voice: the field is present, never carries an em dash, and never
+    # restates the label the template already prints. The field is the
+    # complement of "Built from", which is how admin.html asks for it ("one
+    # plain line in your own words"), so a value opening with those two
+    # words renders as "Built from Built from ..." on the page. Forty-two
+    # of them did.
     for p in P:
         bf = (p.get("built_from") or "").strip()
         if not bf:
             problems.append("content/pieces.json: %s has no built_from line" % p["slug"])
         elif "\u2014" in bf:
             problems.append("content/pieces.json: %s built_from carries an em dash" % p["slug"])
+        elif " ".join(bf.split()[:2]).lower().strip(",;:") == "built from":
+            problems.append("content/pieces.json: %s built_from restates the label; "
+                            "the field is the complement of \"Built from\"" % p["slug"])
 
     # 16. the ledger's class for every piece is what the files show. The
     # colophon prints the ledger's summary, so a stale ledger would print a
