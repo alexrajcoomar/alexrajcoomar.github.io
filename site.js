@@ -1161,10 +1161,11 @@
     function descend() {
       sraf = 0;
       if (!rowsD.length) return;
-      var hr = host.getBoundingClientRect();
-      /* the reading line: mid-viewport, or just under the sphere when it is
-         pinned above the rows on a phone */
-      var line = Math.min(innerHeight * 0.5, hr.bottom + 40);
+      /* the reading line: mid-viewport, or just under the pinned block (the
+         sphere, its caption and the facing line) when that sits above the
+         rows on a phone, far enough down that the row faced is in view */
+      var wb = (wrap || host).getBoundingClientRect().bottom;
+      var line = Math.min(innerHeight * 0.5, wb + 48);
       var y = window.scrollY || document.documentElement.scrollTop;
       var anchors = [];
       for (var i = 0; i < rowsD.length; i++) {
