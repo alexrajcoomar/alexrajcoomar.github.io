@@ -79,7 +79,16 @@ GROUPS = [
 
 font64 = base64.b64encode(open('InterVariable-sub.woff2','rb').read()).decode()
 total_words = sum(M.get(p['slug'],{}).get('words',0) for p in P)
-today = "23 August 2026"
+# the date of the tree this edition was built from, read from git rather
+# than typed, so the archive line cannot go stale; today's date if there
+# is no repository to ask
+try:
+    import subprocess
+    today = subprocess.run(['git', 'log', '-1', '--format=%cd', '--date=format:%-d %B %Y'],
+                           capture_output=True, text=True, check=True).stdout.strip() or None
+except Exception:
+    today = None
+today = today or datetime.date.today().strftime('%-d %B %Y')
 
 
 TRACKS = [

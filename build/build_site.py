@@ -819,6 +819,8 @@ class _FigsShim:
 figs = _FigsShim()
 ST = surface_totals()
 
+TRANSCRIPT_WORDS = sum(METRICS[k].get("words", 0) for k in METRICS if k not in {p["slug"] for p in P})
+
 def exceptions():
     """Every way the site's own rules are not the whole story, counted from
     the files rather than remembered: pieces that load a typeface from Google
@@ -1623,7 +1625,10 @@ def page_colophon():
       {x1}
       <li>{len(ex['undrawn'])} pieces render under {DOC_MIN:,} words. They are counted in every total and
       not drawn in the corpus figure; together they hold {ex['undrawn_words']:,} words.</li>
-      <li>{len(ex['transcripts'])} run transcripts are measured but not listed: {tr_list}.</li>
+      <li>{len(ex['transcripts'])} run transcripts are measured, held to the same record as every piece, and kept
+      in the offline copy, but not listed and not counted in the corpus line: {tr_list}. Together they
+      hold {TRANSCRIPT_WORDS:,} words, so the site as a whole carries {TOTAL_WORDS + TRANSCRIPT_WORDS:,} measured
+      words over {len(P) + len(ex['transcripts'])} documents; the corpus line counts the {len(P)} pieces.</li>
       <li>The {len(ex['tools'])} interactive tools stand on the shelf of the course or research that
       produced them and on the tools shelf. Every total counts each of them once.</li>
     </ol>
@@ -2667,9 +2672,12 @@ ATLAS_BODY = r"""<section class="band atlas-band" id="atlas">
           the share of the document's static text under that heading; it is not a per-section
           measurement. Heading level is no longer drawn on the sphere and is kept in the index
           beside it. A document's area grows with its section count, and a heading several
-          documents carry is placed once, between them. Positions are deterministic for a given
-          corpus: the same pieces and headings give the same sphere on every build, and adding or
-          removing a piece re-spaces the lattice and moves every mark.</p>
+          documents carry is placed once, between them. Where a document sits carries no meaning
+          of its own: documents are spread evenly over the sphere in the order the site lists them,
+          and their sections are scattered around them, so two documents standing near each other
+          are near because of the list, not because of anything they share. Positions are
+          deterministic for a given corpus: the same pieces and headings give the same sphere on
+          every build, and adding or removing a piece re-spaces the lattice and moves every mark.</p>
         </div>
         <p class="replay"><button type="button" id="preplay" class="linkbtn">Replay the six labels</button></p>
       </div>
@@ -3717,7 +3725,8 @@ def _known_numbers():
     add([len(off), round(sum(os.path.getsize(os.path.join(OUT, f)) for f in off) / 1048576)])
     ex = exceptions()
     add([len(ex["fonts"]), len(ex["undrawn"]), ex["undrawn_words"], len(ex["transcripts"]),
-         len(ex["tools"]), ex["kinds"]["md"], ex["kinds"]["doc"]])
+         len(ex["tools"]), ex["kinds"]["md"], ex["kinds"]["doc"],
+         TRANSCRIPT_WORDS, TOTAL_WORDS + TRANSCRIPT_WORDS, len(P) + len(ex["transcripts"])])
     # the lifted figures, and the tools the drawing reaches
     add([len(STRIP), len(LIFTS)])
     add([len(x) for x in tools_drawn()])
@@ -3878,8 +3887,10 @@ def main():
     problems = check_site()
     inv = getattr(check_site, "invariance", None)
     if inv:
-        print(f"invariance: {inv['held']} of {inv['checked']} pieces hold every numeral, reference, "
-              f"label, anchor and result sentence of their record; {inv['declared']} carry declared strikes")
+        n_tr = len(exceptions()["transcripts"])
+        print(f"invariance: {inv['held']} of {inv['checked']} records hold every numeral, reference, "
+              f"label, anchor and result sentence ({len(P)} listed pieces and {n_tr} transcripts); "
+              f"{inv['declared']} carry declared strikes")
     if problems:
         print(f"\n{len(problems)} problem(s) found. The site was written, but this is broken:")
         for line in problems[:40]:
