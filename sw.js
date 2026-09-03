@@ -9,9 +9,9 @@
    reader visits, and in full again if they press the colophon's button.
    Caches named term-* belong to the /term/ instrument's own worker, which
    manages its own versions; they are not this worker's to delete. */
-const VERSION = "98ad0310d47a";
+const VERSION = "0545d2eb1dc4";
 const CORE    = "site-" + VERSION;
-const PAGES   = "site-pages-aaf7ca02105a";
+const PAGES   = "site-pages-c117721809a2";
 const FILES   = [
   "daily-learning-cockpit-192.png",
   "daily-learning-cockpit-512.png",

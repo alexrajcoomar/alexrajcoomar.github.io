@@ -785,7 +785,7 @@
     function colours() {
       var s = getComputedStyle(document.documentElement);
       C.i = s.getPropertyValue("--accent").trim() || "#14509b";
-      C.c = s.getPropertyValue("--ink-3").trim() || "#6f6c63";
+      C.c = s.getPropertyValue("--ink-3").trim() || "#66635a";
       C.t = s.getPropertyValue("--tool").trim() || "#0f6b58";
       C.r = s.getPropertyValue("--rule").trim() || "#ddd9cf";
       C.e = s.getPropertyValue("--edge").trim() || "#8a847c";

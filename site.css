@@ -38,7 +38,7 @@
   --panel-2:      #ebe8df;
   --ink:          #16150f;   /* 18.4:1 on paper */
   --ink-2:        #55524a;   /*  7.5:1 on paper */
-  --ink-3:        #6f6c63;   /*  5.4:1 on paper, smallest text still legal */
+  --ink-3:        #66635a;   /*  5.7:1 on paper, 5.3 on panel, 4.9 on panel-2: the smallest text clears the floor on every surface a panel can stand on */
   --rule:         #ddd9cf;
   --rule-strong:  #bfb9aa;
   /* --edge is the border of anything interactive: inputs, filter chips,
