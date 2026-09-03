@@ -50,6 +50,15 @@
   --logo-chip:    transparent; /* behind the university mark; cream in dark */
   --accent:       #14509b;   /*  7.4:1 on paper */
   --accent-2:     #1a5fb4;
+  /* The second accent means one thing: a link one document's prose makes
+     to another. It is the colour of the chords on both spheres, of the key
+     entry that names them, and of the link counts in the sphere's card,
+     and it appears nowhere else. Violet because no figure on the site has
+     spent it: blue is inside the number and red outside it in Whose Losses
+     Count, orange and blue are the two anchors of the Trillion-Dollar
+     Vintage, green is the tools and the investment share, amber is a
+     heading carried by several documents. 7.1:1 on paper. */
+  --link:         #5a36c9;
   --tool:         #0f6b58;   /*  5.9:1 on paper */
   --ref:          #8a5410;   /*  5.4:1 on paper */
   --selection:    #cfe0f6;
@@ -89,12 +98,19 @@
   --btn-weight:   560;
   --btn-pad:      .5rem .8rem;
 
-  /* motion: things arrive in 300ms and change colour in 180ms. The
-     Atlas's 1050ms camera move has no counterpart here, because
-     nothing on these pages moves a camera. */
+  /* motion: things arrive in 300ms and change colour in 180ms. The one
+     camera on these pages, the home sphere's, is driven by the scroll
+     position and has no clock of its own; the 550ms weight below is for
+     the few things that settle rather than switch (the sphere pinning on
+     a phone, a dialog arriving). */
   --t-fast:       .18s;
   --t-in:         .3s;
+  --t-weight:     .55s;
   --ease-move:    cubic-bezier(.22,1,.36,1);
+  /* a curve with mass: it leaves quickly and takes its time settling, the
+     way a turned object comes to rest, rather than the symmetric ease of
+     a default transition */
+  --ease-weight:  cubic-bezier(.16,.84,.24,1);
 }
 /* Dark is a deeper, cooler ground than the warm paper it replaces: a
    near-black the sphere and the panels can stand off, rather than a dim
@@ -118,6 +134,7 @@
     --logo-chip:   #faf9f6;
     --accent:      #8fb6ee;
     --accent-2:    #b2ccf5;
+    --link:#bfa2ff;   /* 9.0:1 on paper, 7.9 on panel-2 */
     --tool:        #4fc4a6;
     --ref:         #dbab5d;
     --selection:   #223b5c;
@@ -136,6 +153,7 @@
   --logo-chip:   #faf9f6;
   --accent:      #8fb6ee;
   --accent-2:    #b2ccf5;
+    --link:#bfa2ff;   /* 9.0:1 on paper, 7.9 on panel-2 */
   --tool:        #4fc4a6;
   --ref:         #dbab5d;
   --selection:   #223b5c;
@@ -499,14 +517,18 @@ ol.index li:last-child{border-bottom:1px solid var(--rule)}
    sweep for the same latent bug: site.js sets `hidden` on eight other
    things and none of them carries a display rule, so these two were
    the only components that ever had it. */
-.cmdk{
-  position:fixed;inset:0;z-index:80;display:grid;place-items:start center;
+/* a native dialog: the element is the full-screen layer, the backdrop is
+   the browser's, and the page behind it is inert while it is open */
+dialog.cmdk{
+  position:fixed;inset:0;z-index:80;width:100%;height:100%;max-width:none;max-height:none;
+  margin:0;border:0;background:transparent;color:inherit;
   padding:clamp(2rem,10vh,7rem) 1rem 1rem;
-  background:color-mix(in oklab, var(--ink) 38%, transparent)
 }
+dialog.cmdk[open]{display:grid;place-items:start center}
+dialog.cmdk::backdrop{background:rgba(10,10,8,.45)}
 .cmdk-panel{
   width:min(44rem,100%);background:var(--paper);border:1px solid var(--ink);
-  box-shadow:0 24px 70px rgba(0,0,0,.24);display:flex;flex-direction:column;max-height:70vh
+  display:flex;flex-direction:column;max-height:70vh
 }
 .cmdk-panel input{
   font:inherit;font-size:1.05rem;padding:1rem 1.1rem;border:0;border-bottom:1px solid var(--rule);
@@ -1243,14 +1265,40 @@ details.cal-q .cb > *:first-child{margin-top:.8rem}
 .cmdk-list li a{align-items:center}
 
 /* ---------------------------- shortcuts sheet ---------------- */
-.keys{
-  position:fixed;inset:0;z-index:80;display:grid;place-items:center;
-  background:rgba(10,10,8,.55);
-  padding:1.5rem;backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px)
+dialog.keys{
+  position:fixed;inset:0;z-index:80;width:100%;height:100%;max-width:none;max-height:none;
+  margin:0;border:0;background:transparent;color:inherit;padding:1.5rem
+}
+dialog.keys[open]{display:grid;place-items:center}
+dialog.keys::backdrop{background:rgba(10,10,8,.55);backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px)}
+/* while a dialog is open the page does not scroll behind it */
+body:has(dialog[open]){overflow:hidden}
+/* a dialog arrives with weight: the backdrop fades in over 300ms and the
+   panel settles up into place on the weighted curve; leaving, it fades.
+   @starting-style gives the entry its from-state; allow-discrete keeps
+   the element displayed while it fades out. Browsers without either
+   simply show and hide, which is what they did before. */
+dialog.cmdk,dialog.keys{
+  transition:opacity var(--t-in) var(--ease-weight),display var(--t-in) allow-discrete,overlay var(--t-in) allow-discrete}
+dialog.cmdk:not([open]),dialog.keys:not([open]){opacity:0}
+dialog.cmdk[open],dialog.keys[open]{opacity:1}
+/* the backdrop is not the dialog's descendant, so it fades out on its own */
+dialog.cmdk:not([open])::backdrop,dialog.keys:not([open])::backdrop{background-color:rgba(10,10,8,0)}
+dialog.cmdk::backdrop,dialog.keys::backdrop{
+  transition:background-color var(--t-in) ease,display var(--t-in) allow-discrete,overlay var(--t-in) allow-discrete}
+.cmdk-panel,.keys-panel{transition:transform var(--t-weight) var(--ease-weight)}
+@starting-style{
+  dialog.cmdk[open],dialog.keys[open]{opacity:0}
+  dialog.cmdk[open]::backdrop{background-color:rgba(10,10,8,0)}
+  dialog.keys[open]::backdrop{background-color:rgba(10,10,8,0)}
+  dialog.cmdk[open] .cmdk-panel,dialog.keys[open] .keys-panel{transform:translateY(14px)}
+}
+@media (prefers-reduced-motion:reduce){
+  dialog.cmdk,dialog.keys,dialog.cmdk::backdrop,dialog.keys::backdrop,.cmdk-panel,.keys-panel{transition:none}
 }
 .keys-panel{
   background:var(--paper);border:1px solid var(--ink);max-width:26rem;width:100%;
-  padding:1.25rem 1.4rem 1.4rem
+  padding:1.25rem 1.4rem 1.4rem;margin:0
 }
 .keys h2{font-size:1rem;margin:0 0 .8rem;letter-spacing:-.01em}
 .keys dl{display:grid;grid-template-columns:auto 1fr;gap:.5rem .9rem;margin:0;font-size:.875rem}
@@ -1495,9 +1543,9 @@ body.atlas-free .atlas-h1{font-size:clamp(1.2rem,1.7vw,1.42rem);max-width:24em;
 /* the chord swatch is a shallow arc with its direction tick, as drawn */
 .ak-lnk{width:.85rem;height:.45rem;border-radius:0;background:none;position:relative}
 .ak-lnk::before{content:"";position:absolute;left:0;top:.08rem;width:100%;height:.6rem;
-  border-top:1px solid var(--ink-2);border-radius:50% 50% 0 0/100% 100% 0 0}
-.ak-lnk::after{content:"";position:absolute;right:.16rem;top:.02rem;width:1px;height:.24rem;
-  background:var(--ink-2)}
+  border-top:1.5px solid var(--link);border-radius:50% 50% 0 0/100% 100% 0 0}
+.ak-lnk::after{content:"";position:absolute;right:.16rem;top:.02rem;width:1.5px;height:.28rem;
+  background:var(--link)}
 /* the one entry that needs a sentence gets its own line and hangs its swatch */
 .akey-list li.akey-wide{flex:1 1 100%;align-items:flex-start}
 .akey-list li.akey-wide .ak{margin-top:-.05rem}
@@ -1869,35 +1917,55 @@ a.nref{position:relative;display:inline;padding:.75rem .45rem;margin:0 -.35rem 0
 }
 
 /* ==================================================================
-   THE STAGE. The home page's first screen: the identity, the claim and
-   the proof of it, the sphere, drawn large with the void around it.
-   Grid areas, not source order, decide where the sphere sits: on a phone
-   it follows the identity (name, standing, term, address) so it is on the
-   first screen, and the claim and the corpus line follow it; at desktop
-   width the copy stacks on the left and the sphere takes the right.
+   THE DESCENT. The home page's first screens: the identity, the claim,
+   the corpus line and the statement of work in one column, and the sphere
+   beside them, sticky, turning as the reader descends. Source order is the
+   phone order (copy, sphere, statement); at desktop width the sphere takes
+   the right column for the height of both, so it stays in view while the
+   statement's rows pass the reading line and each turns it to face the
+   document's real position. Nothing here moves unless the reader scrolls.
    ================================================================== */
-.stage{padding-block:clamp(1.25rem,3vw,2.5rem) clamp(2.25rem,4vw,3.5rem)}
-.stage-grid{
-  display:grid;gap:1.1rem 0;align-items:start;
-  grid-template-columns:minmax(0,1fr);
-  grid-template-areas:"chip" "ident" "globe" "display" "method" "line";
+.descent{display:grid;grid-template-columns:minmax(0,1fr);column-gap:0}
+.descent > .stage{padding-block:clamp(1.25rem,3vw,2.5rem) clamp(1.25rem,3vw,2rem);display:grid;gap:1.1rem 0;align-items:start}
+.descent > .stage .eyeb{justify-self:start;margin:0}
+.descent > .stage .display{margin:.5rem 0 0;font-size:clamp(2.3rem,4.6vw,3.9rem)}
+.descent > .stage .method{margin:0;font-size:.95rem;line-height:1.55;color:var(--ink-2);max-width:34rem}
+.descent > .stage .corpusline{margin:.35rem 0 0}
+.descent > .statement{padding-top:clamp(1.5rem,3vw,2.5rem)}
+/* the sphere: sticky under the header, on paper so the rows pass beneath it cleanly */
+.descent-globe{position:sticky;top:var(--stick);z-index:3;align-self:start;
+  background:var(--paper);padding-block:.25rem .5rem;
+  -webkit-print-color-adjust:exact;print-color-adjust:exact}
+.descent-globe .stage-globe{position:relative}
+/* min-height:0, or the canvas's last pixel height holds the box open after
+   the sphere steps back and the square becomes a tall rectangle */
+.descent-globe .tease-globe.hero-globe{aspect-ratio:1/1;max-height:none;min-height:0;overflow:hidden;width:100%;max-width:min(100%,42rem);
+  margin-inline:auto;cursor:grab;touch-action:pan-y;transition:max-width var(--t-weight) var(--ease-weight)}
+/* on a phone the header wraps to two rows; and once the sphere has pinned it
+   steps back to make room for the rows it is facing */
+@media (max-width:44rem){
+  .descent-globe{top:6.35rem;border-bottom:1px solid var(--rule)}
+  .descent-globe.stuck .tease-globe.hero-globe{max-width:14.5rem}
+  .descent-globe.stuck .globe-hint,.descent-globe.stuck .globe-hint-touch{display:none}
 }
-.stage .eyeb{grid-area:chip;justify-self:start;margin:0}
-.stage .ident{grid-area:ident}
-.stage .stage-globe{grid-area:globe;margin-block:.5rem .25rem}
-.stage .display{grid-area:display;margin:.5rem 0 0;font-size:clamp(2.3rem,4.6vw,3.9rem)}
-.stage .method{grid-area:method;margin:0;font-size:.95rem;line-height:1.55;color:var(--ink-2);max-width:34rem}
-.stage .corpusline{grid-area:line;margin:.35rem 0 0}
 @media (min-width:64rem){
-  .stage-grid{
-    grid-template-columns:minmax(0,34rem) minmax(0,1fr);
-    grid-template-areas:"chip globe" "ident globe" "display globe" "method globe" "line globe";
-    grid-template-rows:auto auto auto auto auto;
-    align-content:center;gap:1.1rem clamp(3rem,6vw,6rem);
-    min-height:min(calc(100svh - 7rem),50rem);
-  }
-  .stage .stage-globe{align-self:center;margin:0}
-  .stage .display{margin-top:1rem}
+  .descent{grid-template-columns:minmax(0,1fr) minmax(18rem,32rem);column-gap:clamp(3rem,6vw,6rem);align-items:start}
+  .descent > .stage{grid-column:1;grid-row:1;min-height:min(calc(100svh - 7rem),46rem);align-content:center}
+  .descent > .statement{grid-column:1;grid-row:2}
+  .descent-globe{grid-column:2;grid-row:1/3;top:calc(var(--stick) + 1.25rem);background:transparent;padding:0;
+    min-height:min(calc(100svh - 7rem),46rem);display:grid;align-content:center}
+}
+.stage-globe .facing{margin:.2rem 0 0;text-align:center;font-size:var(--meta-size);letter-spacing:var(--meta-track);
+  text-transform:uppercase;font-weight:var(--meta-weight);color:var(--ink-3);min-height:1.2em}
+.stage-globe .facing b{color:var(--ink);font-weight:640}
+.stage-globe .facing:empty{display:none}
+/* the statement row the sphere is facing */
+table.st tr.item.cur th,table.st tr.item.cur td{background:color-mix(in srgb,var(--accent) 7%,transparent)}
+table.st tr.item.cur th{box-shadow:inset 3px 0 0 var(--accent);padding-left:.6rem}
+table.st tr.item th,table.st tr.item td{transition:background var(--t-in) var(--ease-weight),padding var(--t-in) var(--ease-weight)}
+@media (prefers-reduced-motion:reduce){
+  .descent-globe .tease-globe.hero-globe{transition:none}
+  table.st tr.item th,table.st tr.item td{transition:none}
 }
 /* the eyebrow chip: the standing in the accent, the owner's own line after it */
 .eyeb{
@@ -1916,7 +1984,6 @@ a.nref{position:relative;display:inline;padding:.75rem .45rem;margin:0 -.35rem 0
 .ident .links{display:flex;flex-wrap:wrap;gap:.3rem .9rem;margin-top:.6rem;font-size:.95rem}
 .ident .links a{color:var(--accent);text-decoration:underline;text-decoration-color:color-mix(in srgb,var(--accent) 45%,transparent);text-underline-offset:.15em}
 /* the sphere at hero scale: a square box, the void inside it */
-.stage-globe .tease-globe.hero-globe{aspect-ratio:1/1;max-height:none;width:100%;max-width:min(100%,42rem);margin-inline:auto;cursor:grab;touch-action:pan-y}
 .stage-globe{position:relative}
 .stage-globe .globe-cap{text-align:center;margin-top:.2rem}
 /* the hint is for a pointer that can hover; a touch screen never sees it */
@@ -1930,12 +1997,19 @@ a.nref{position:relative;display:inline;padding:.75rem .45rem;margin:0 -.35rem 0
 /* the card that names the document under the pointer, set as the Atlas sets its own */
 .globe-card{position:absolute;top:0;left:0;max-width:19rem;z-index:2;
   background:var(--panel);border:1px solid var(--rule-strong);padding:.5rem .65rem;text-align:left;
-  -webkit-print-color-adjust:exact;print-color-adjust:exact}
+  -webkit-print-color-adjust:exact;print-color-adjust:exact;
+  transition:opacity var(--t-fast) var(--ease-weight)}
+/* the card fades up in 180ms when a mark is first pointed at; it moves
+   between marks without delay, because the pointer is already there */
+@starting-style{.globe-card:not([hidden]){opacity:0}}
+@media (prefers-reduced-motion:reduce){.globe-card{transition:none}}
 /* the document's name is the link that opens it; the arrow says so */
 .globe-card .gc-t{display:block;margin:0;font-size:.88rem;font-weight:600;color:var(--ink);line-height:1.3;text-decoration:none}
 .globe-card .gc-t::after{content:" \2192";color:var(--accent)}
 .globe-card .gc-t:hover,.globe-card .gc-t:focus-visible{color:var(--accent);text-decoration:underline}
 .globe-card .gc-d{display:block;margin:.22rem 0 0;font-size:.72rem;color:var(--ink-3);text-transform:uppercase;letter-spacing:.07em;font-variant-numeric:tabular-nums}
+.globe-card .gc-d .gc-l{color:var(--link);font-weight:640}
+.globe-hint .gc-l,.globe-hint-touch .gc-l{color:var(--link)}
 .stage-globe .note{font-size:.9rem;color:var(--ink-2);max-width:30rem;margin:.5rem auto 0;text-align:center}
 /* the corpus in four figures: label over value, hairlines between */
 .corpusline{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)}
@@ -2060,3 +2134,14 @@ section.band.ground .pane{background:var(--panel-2);border-color:var(--rule-stro
   background var(--t-fast) ease,border-color var(--t-fast) ease,visibility 0s linear var(--t-in)}
 .totop.on{visibility:visible;transition-delay:0s}
 @media (prefers-reduced-motion:reduce){.totop{transition:opacity .01s,visibility 0s}}
+
+/* ------------------------------------------------ course disclosures --
+   Each course on the coursework shelf is a native details element, open
+   by default: the head is its summary, the rows fold under it. */
+details.cgroup > summary.grouphead{list-style:none;cursor:pointer;display:flex}
+details.cgroup > summary.grouphead::-webkit-details-marker{display:none}
+details.cgroup > summary.grouphead::before{content:"\2212";color:var(--ink-3);font-weight:640;margin-right:.6rem;align-self:baseline;font-variant-numeric:tabular-nums}
+details.cgroup:not([open]) > summary.grouphead::before{content:"+"}
+details.cgroup > summary.grouphead:hover h3{color:var(--accent)}
+details.cgroup > summary.grouphead:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+details.cgroup + details.cgroup{margin-top:1.75rem}

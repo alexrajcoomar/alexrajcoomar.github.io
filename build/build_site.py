@@ -276,7 +276,7 @@ def foot():
 
 <!-- Search across every piece. Progressive: every link on the site works
      without it, and the button is the same route as the keyboard. -->
-<div class="cmdk" id="cmdk" hidden role="dialog" aria-modal="true" aria-label="Search all work">
+<dialog class="cmdk" id="cmdk" aria-label="Search all work">
   <div class="cmdk-panel">
     <input id="cmdk-input" type="text" placeholder="Search {len(P)} pieces by title, course or topic" autocomplete="off" spellcheck="false" role="combobox" aria-expanded="false" aria-autocomplete="list" aria-controls="cmdk-list">
     <ul class="cmdk-list" id="cmdk-list" role="listbox" aria-label="Results"></ul>
@@ -284,12 +284,12 @@ def foot():
       <span><kbd>&#8593;</kbd><kbd>&#8595;</kbd> move</span><span><kbd>Enter</kbd> open</span><span><kbd>Esc</kbd> close</span>
     </div>
   </div>
-</div>
+</dialog>
 
 <!-- The keyboard routes, written down. A shortcut nobody can find is the
      same as one that does not exist. Opened with ? or from the footer. -->
-<div class="keys" id="keysheet" hidden role="dialog" aria-modal="true" aria-labelledby="keystitle">
-  <div class="keys-panel">
+<dialog class="keys" id="keysheet" aria-labelledby="keystitle">
+  <form method="dialog" class="keys-panel">
     <h2 id="keystitle">Keyboard</h2>
     <dl>
       <dt><kbd>/</kbd></dt><dd>Search every piece</dd>
@@ -305,9 +305,9 @@ def foot():
     <p class="keys-pref"><label><input type="checkbox" id="keysingles" checked>
       Single-key shortcuts. Turn these off if a key press where you did not
       mean one keeps opening things; search stays on <kbd>&#8984;</kbd><kbd>K</kbd>.</label></p>
-    <button class="close" type="button">Close</button>
-  </div>
-</div>
+    <button class="close">Close</button>
+  </form>
+</dialog>
 <script>
 window.WORK = {WORKJSON};
 </script>
@@ -956,38 +956,40 @@ def page_index():
         for i, p in enumerate(tools, 1))
     lifts_count = (f'{len(LIFTS)} lifted on the <a class="inlink" href="research.html">research shelf</a>')
 
-    body = f"""<section class="stage" aria-label="Who this is">
-  <div class="shell stage-grid">
+    body = f"""<div class="shell descent">
+  <section class="stage" aria-label="Who this is">
     {eyebrow_chip()}
     {hero_identity()}
     <p class="display">{S["headline"]}</p>
     <p class="method">Every figure below is counted from the published files by the build, never typed. The notes define each column and state every exception.</p>
     {corpus_line()}
+  </section>
+  <div class="descent-globe">
     <div class="stage-globe">
       <div class="tease-globe hero-globe" id="atlasmini" data-pts="{ATLAS_PTS}" data-fill="0.44" aria-hidden="true"></div>
       <script type="application/json" id="atlasmini-docs">{atlas_home_links()}</script>
       <div class="globe-card" id="atlasmini-card" hidden><a class="gc-t" href="atlas.html"></a><span class="gc-d"></span></div>
       <p class="globe-cap"><a class="inlink" href="atlas.html">{ATLAS_N} sections, every one a link <span aria-hidden="true">&#8594;</span></a>
-        <span class="globe-hint">Point at a mark: chords join its document to the documents its prose links, or that link it. {N_EDGES} such links are recorded.</span>
-        <span class="globe-hint-touch">Tap a mark: chords join its document to the documents its prose links, or that link it, and its name opens it. {N_EDGES} such links are recorded.</span></p>
+        <span class="globe-hint">Point at a mark: chords join its document to the documents its prose links, or that link it. <span class="gc-l">{N_EDGES}</span> such links are recorded.</span>
+        <span class="globe-hint-touch">Tap a mark: chords join its document to the documents its prose links, or that link it, and its name opens it. <span class="gc-l">{N_EDGES}</span> such links are recorded.</span></p>
+      <p class="facing" aria-live="off"></p>
       <noscript><p class="note">The sphere needs a browser that runs scripts.
       The <a class="inlink" href="atlas.html">full index</a> does not.</p></noscript>
     </div>
   </div>
-</section>
-
-<section class="band shell" id="statement" aria-labelledby="stmt-h">
-  {sect_head(1, "Statement of work", "Six featured pieces, then every origin, then the whole.", f'<a class="inlink" href="#notes">Notes 1 to 6 &#8595;</a>', "stmt-h")}
-  <div class="pane">
-    <table class="st">
-      {stmt_head_cells()}
-      <tbody>
+  <section class="band statement" id="statement" aria-labelledby="stmt-h">
+    {sect_head(1, "Statement of work", "Six featured pieces, then every origin, then the whole. As a row reaches the reading line the sphere turns to face that document.", f'<a class="inlink" href="#notes">Notes 1 to 6 &#8595;</a>', "stmt-h")}
+    <div class="pane">
+      <table class="st">
+        {stmt_head_cells()}
+        <tbody>
 {chr(10).join(rows)}
 {chr(10).join(subs)}
-      </tbody>
-    </table>
-  </div>
-</section>
+        </tbody>
+      </table>
+    </div>
+  </section>
+</div>
 
 <section class="band ground" id="figures" aria-labelledby="fig-h">
   <div class="shell">
@@ -1200,12 +1202,14 @@ def page_coursework():
             k += 1
             rows.append(shelf_row(k, p))
         rows.append(shelf_subtotal(f"{c}, {len(cs)} piece{'s' if len(cs) != 1 else ''}", cs))
-        groups.append(f"""  <div class="grouphead"><h3>{esc(c)}</h3>
+        groups.append(f"""  <details class="cgroup" open>
+    <summary class="grouphead"><h3>{esc(c)}</h3>
     <p class="gnote">{len(cs)} piece{'s' if len(cs)!=1 else ''}, {sum(p['words'] for p in cs):,} words.</p>
-    <span class="gcount">{len(cs)}</span></div>
+    <span class="gcount">{len(cs)}</span></summary>
   <ol class="index stmt-list">
 {chr(10).join(rows)}
-  </ol>""")
+  </ol>
+  </details>""")
     body = f"""<div class="hero tight shell">
   {section_eyebrow("coursework.html")}
   <h1 class="h1">Coursework</h1>
@@ -1563,11 +1567,18 @@ def page_colophon():
       rather than believed.</dd>
 
       <dt>Surfaces</dt>
-      <dd>Warm paper in light, a near-black ground in dark, hairline rules, one accent, no rounded
-      corners, no drop shadows. A panel sits one step above the ground behind a one-pixel edge. The
-      one gradient on the site is the light around the sphere, which encodes nothing and is drawn
-      outside the disc so it darkens no mark. Dark mode is a selected set of tokens rather than an
-      inversion, and the manual toggle wins over the system setting in both directions.</dd>
+      <dd>Warm paper in light, a near-black ground in dark, hairline rules, no rounded corners. The
+      shell pages paint no drop shadow; the search panel sits on the browser's own backdrop. On a
+      piece a shadow sits only under what floats over its text: the contents drawer on a phone, the
+      reading-position pill, the section menu and the tips; a piece's own sheet keeps whatever it
+      declared. One accent, blue, for the independent work on the sphere and for links. A second
+      accent, violet, means one thing: a link one document's prose makes to another. It is the colour
+      of the chords on both spheres, of the key entry that names them, of the link counts in the
+      sphere's card and of the one count of recorded links under the home sphere, and it appears
+      nowhere else; it is violet because no figure on this site has spent that hue. A panel sits one step above the ground behind a one-pixel edge. The one gradient
+      on the site is the light around the sphere, which encodes nothing and is drawn outside the disc
+      so it darkens no mark. Dark mode is a selected set of tokens rather than an inversion, and the
+      manual toggle wins over the system setting in both directions.</dd>
     </dl>
   </div>
   </div>

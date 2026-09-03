@@ -102,7 +102,7 @@
   var results = document.getElementById("cmdk-list");
   var openBtn = document.getElementById("searchbtn");
   if (pal && input && results && work.length) {
-    var cur = 0, items = [], lastFocus = null;
+    var cur = 0, items = [];
 
     function score(it, t) {
       if (!t) return 1;
@@ -261,27 +261,25 @@
       if (a) noteRecent(a.getAttribute("href"));
     });
 
+    /* A native dialog: showModal() traps focus, Escape closes it, and focus
+       goes back to whatever opened it, all without a line here. The page
+       behind it is inert while it is open, and CSS stops the scroll. */
     function open() {
-      lastFocus = document.activeElement;
-      pal.hidden = false;
+      if (pal.open) return;
+      pal.showModal();
       input.setAttribute("aria-expanded", "true");
       input.value = "";
       render();
       input.focus();
-      document.body.style.overflow = "hidden";
     }
-    function close() {
-      pal.hidden = true;
-      input.setAttribute("aria-expanded", "false");
-      document.body.style.overflow = "";
-      if (lastFocus && lastFocus.focus) lastFocus.focus();
-    }
+    function close() { if (pal.open) pal.close(); }
+    pal.addEventListener("close", function () { input.setAttribute("aria-expanded", "false"); });
     if (openBtn) openBtn.addEventListener("click", open);
     input.addEventListener("input", render);
+    /* a click on the backdrop reaches the dialog element itself */
     pal.addEventListener("mousedown", function (e) { if (e.target === pal) close(); });
     pal.addEventListener("keydown", function (e) {
-      if (e.key === "Escape") { e.preventDefault(); close(); }
-      else if (e.key === "ArrowDown") { e.preventDefault(); move(1); }
+      if (e.key === "ArrowDown") { e.preventDefault(); move(1); }
       else if (e.key === "ArrowUp") { e.preventDefault(); move(-1); }
       else if (e.key === "Enter") {
         if (items.length) { e.preventDefault(); items[cur].querySelector("a").click(); }
@@ -302,8 +300,8 @@
       var tag = (e.target.tagName || "").toLowerCase();
       var typing = tag === "input" || tag === "textarea" || e.target.isContentEditable;
       if ((e.key === "k" || e.key === "K") && (e.metaKey || e.ctrlKey)) {
-        e.preventDefault(); pal.hidden ? open() : close();
-      } else if (typing || !pal.hidden || !singlesOn()) {
+        e.preventDefault(); pal.open ? close() : open();
+      } else if (typing || pal.open || !singlesOn()) {
         /* single-key routes only: the modified Cmd/Ctrl+K above stays on */
       } else if (e.key === "/") {
         e.preventDefault(); open();
@@ -313,7 +311,7 @@
         /* g then a letter: the two-stroke jump every reader of a long site
            already knows from mail clients and code hosts. */
         goArmed = Date.now();
-      } else if (!typing && pal.hidden && goArmed && Date.now() - goArmed < 1200) {
+      } else if (!typing && !pal.open && goArmed && Date.now() - goArmed < 1200) {
         var to = { h: "index.html", r: "research.html", c: "coursework.html",
                    t: "tools.html", l: "library.html", a: "about.html" }[e.key.toLowerCase()];
         goArmed = 0;
@@ -326,39 +324,24 @@
      The header already advertises "/" . Everything else was undiscoverable,
      which is the same as absent. */
   var goArmed = 0;
-  var keysLastFocus = null;
+  /* The sheet is a native dialog: the modal trap, Escape and the return of
+     focus are the browser's, and the Close button is a method="dialog"
+     form submit, so closing needs no script at all. */
   function keys(on) {
     var sheet = document.getElementById("keysheet");
     if (!sheet) return;
-    if (on) keysLastFocus = document.activeElement;
-    sheet.hidden = !on;
-    document.body.style.overflow = on ? "hidden" : "";
     if (on) {
+      if (!sheet.open) sheet.showModal();
       var c = sheet.querySelector(".close");
       if (c) c.focus();
-    } else if (keysLastFocus && keysLastFocus.focus) {
-      /* aria-modal promised a modal; a modal gives focus back */
-      keysLastFocus.focus();
+    } else if (sheet.open) {
+      sheet.close();
     }
   }
   (function () {
     var sheet = document.getElementById("keysheet");
     if (!sheet) return;
-    sheet.addEventListener("click", function (e) {
-      if (e.target === sheet || e.target.closest(".close")) keys(false);
-    });
-    sheet.addEventListener("keydown", function (e) {
-      if (e.key === "Escape") { e.preventDefault(); keys(false); }
-      else if (e.key === "Tab") {
-        /* aria-modal also promised focus stays inside. The sheet holds a
-           checkbox and a button, so the trap walks its own controls. */
-        var f = [].slice.call(sheet.querySelectorAll("input, button"));
-        if (!f.length) return;
-        var first = f[0], last = f[f.length - 1];
-        if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
-        else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
-      }
-    });
+    sheet.addEventListener("click", function (e) { if (e.target === sheet) keys(false); });
     var opener = document.getElementById("keysbtn");
     if (opener) opener.addEventListener("click", function () { keys(true); });
     /* Single-key shortcuts can be turned off, for speech input and for
@@ -457,7 +440,7 @@
       if (e.metaKey || e.ctrlKey || e.altKey) return;
       if (!singlesOn()) return;
       var pal = document.getElementById("cmdk");
-      if (pal && !pal.hidden) return;
+      if (pal && pal.open) return;
       var vis = [];
       sets.forEach(function (s) {
         s.rows.forEach(function (li) { if (!li.hidden) vis.push(li); });
@@ -796,6 +779,8 @@
       C.e = s.getPropertyValue("--edge").trim() || "#8a847c";
       C.p = s.getPropertyValue("--paper").trim() || "#faf9f6";
       C.k = s.getPropertyValue("--ink").trim() || "#16150f";
+      /* the second accent: a link the prose records, and nothing else */
+      C.l = s.getPropertyValue("--link").trim() || C.k;
     }
     function dark() {
       var h = C.p.replace("#", "");
@@ -816,6 +801,12 @@
     }
 
     var W = 0, H = 0, dpr = 1, R = 0, S = 1, yaw = 0.5, pitch = -0.3;
+    /* the reader's own turn (drag) rides on top of the descent's camera */
+    var offYaw = 0, offPitch = 0, curDoc = -1;
+    /* the camera may tip to just short of the pole: the placement puts real
+       documents there (the lattice's first point is the pole itself), and a
+       camera that cannot face them cannot keep the descent's promise */
+    var PITCH_MAX = Math.PI / 2 - 0.02;
     /* The light: a halo outside the limb, the way the Atlas page's
        silhouette is drawn, and a broader, fainter one on the ground behind.
        Both sit outside the disc on purpose: a gradient laid over the marks
@@ -889,7 +880,7 @@
       var px = -dy / dl * 4 * Math.max(1, S * 0.8), py = dx / dl * 4 * Math.max(1, S * 0.8);
       ctx.beginPath();
       ctx.moveTo(s[0] - px, s[1] - py); ctx.lineTo(s[0] + px, s[1] + py);
-      ctx.strokeStyle = rgba(C.k, 0.8);
+      ctx.strokeStyle = rgba(C.l, 0.95);
       ctx.lineWidth = 1.2;
       ctx.stroke();
     }
@@ -897,8 +888,8 @@
       var A = nrm(a.p), B = nrm(b.p);
       var dot = Math.max(-1, Math.min(1, A[0] * B[0] + A[1] * B[1] + A[2] * B[2]));
       var om = Math.acos(dot), so = Math.sin(om) || 1e-6;
-      ctx.strokeStyle = rgba(C.k, 0.6);
-      ctx.lineWidth = 1;
+      ctx.strokeStyle = rgba(C.l, 0.85);
+      ctx.lineWidth = 1.25;
       var started = false, seen = false;
       ctx.beginPath();
       for (var i = 0; i <= 48; i++) {
@@ -950,7 +941,7 @@
       ctx.stroke();
       /* the document under the pointer: its marks come forward, the rest
          hold; the chords its prose records are drawn under the marks */
-      var hd = hover >= 0 && own.length ? own[hover] : -1;
+      var hd = hover >= 0 && own.length ? own[hover] : curDoc;
       var drawn = 0;
       if (hd >= 0 && docs[hd]) {
         var D = docs[hd];
@@ -1030,9 +1021,14 @@
       var D = docs[hd], out = 0, into = 0;
       for (var li = 0; li < D.lk.length; li++) { if (D.lk[li].out) out++; if (D.lk[li].into) into++; }
       if (cardT) { cardT.textContent = D.t; if (D.u) cardT.setAttribute("href", D.u); }
-      if (cardD) cardD.textContent = D.k + "  ·  " + D.marks + (D.marks === 1 ? " section" : " sections") +
-        (out ? "  ·  links " + out : "") + (into ? "  ·  linked by " + into : "") +
-        (!out && !into ? "  ·  no links recorded" : "");
+      if (cardD) {
+        cardD.textContent = D.k + "  \u00b7  " + D.marks + (D.marks === 1 ? " section" : " sections") + "  \u00b7  ";
+        var lk = document.createElement("span");
+        lk.className = "gc-l";
+        lk.textContent = (out ? "links " + out : "") + (out && into ? "  \u00b7  " : "") +
+          (into ? "linked by " + into : "") + (!out && !into ? "no links recorded" : "");
+        cardD.appendChild(lk);
+      }
       if (card) card.hidden = false;
       host.setAttribute("data-doc", D.t);
       if (locked) host.setAttribute("data-locked", "1"); else host.removeAttribute("data-locked");
@@ -1057,8 +1053,8 @@
       var dt = lastT ? Math.min(0.05, (now - lastT) / 1000) : 0.016;
       lastT = now;
       if (!dragT) {
-        yaw += vy * dt;
-        pitch = Math.max(-1.2, Math.min(1.2, pitch + vp * dt));
+        yaw += vy * dt; offYaw += vy * dt;
+        pitch = Math.max(-PITCH_MAX, Math.min(PITCH_MAX, pitch + vp * dt)); offPitch += vp * dt;
         vy *= 0.94; vp *= 0.94;
         if (Math.abs(vy) < 0.0006) vy = 0;
         if (Math.abs(vp) < 0.0006) vp = 0;
@@ -1100,8 +1096,8 @@
         if (hover >= 0) setHover(-1);
         var dx = e.clientX - lxT, dy = e.clientY - lyT;
         movedT += Math.abs(dx) + Math.abs(dy);
-        yaw += dx * 0.006;
-        pitch = Math.max(-1.2, Math.min(1.2, pitch + dy * 0.005));
+        yaw += dx * 0.006; offYaw += dx * 0.006;
+        pitch = Math.max(-PITCH_MAX, Math.min(PITCH_MAX, pitch + dy * 0.005)); offPitch += dy * 0.005;
         vy = dx * 0.09; vp = dy * 0.07;
         lxT = e.clientX; lyT = e.clientY;
         kick();
@@ -1125,6 +1121,127 @@
         if (e.relatedTarget === cv) return;
         setHover(-1);
       });
+    }
+    /* ---- the descent ----------------------------------------------
+       The statement's featured rows are documents on the sphere. As each
+       row reaches the reading line the camera turns to face that document's
+       centroid (the same rotation the Atlas uses to face a mark), its marks
+       come forward and the chords its prose records are drawn. The camera is
+       a function of the scroll position and nothing else: one frame per
+       scroll event, none while the reader is still. With reduced motion the
+       camera holds and only the lighting follows the rows. */
+    var wrap = host.closest(".descent-globe");
+    var rowsD = [];
+    (function () {
+      if (!docs.length) return;
+      var byUrl = {};
+      docs.forEach(function (d, i) { byUrl[d.u] = i; });
+      var trs = document.querySelectorAll("#statement table.st tr.item");
+      for (var r = 0; r < trs.length; r++) {
+        var a = trs[r].querySelector("th a");
+        var u = a && a.getAttribute("href");
+        if (u && (u in byUrl)) rowsD.push({ el: trs[r], doc: byUrl[u] });
+      }
+    })();
+    var homeYaw = yaw, homePitch = pitch;
+    var facingEl = wrap && wrap.querySelector(".facing");
+    var reducedM = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    function facingOf(v) {
+      var n = nrm(v);
+      return { yaw: Math.atan2(-n[0], n[2]), pitch: Math.atan2(n[1], Math.sqrt(n[0] * n[0] + n[2] * n[2])) };
+    }
+    function shortest(a, b) {
+      var d = (b - a) % (Math.PI * 2);
+      if (d > Math.PI) d -= Math.PI * 2;
+      if (d < -Math.PI) d += Math.PI * 2;
+      return a + d;
+    }
+    function smooth(t) { t = Math.max(0, Math.min(1, t)); return t * t * (3 - 2 * t); }
+    var sraf = 0, lastStuck = false;
+    function descend() {
+      sraf = 0;
+      if (!rowsD.length) return;
+      /* the reading line. With the sphere beside the rows (a wide viewport)
+         a row is faced when its middle reaches mid-viewport. With the pinned
+         block (sphere, caption, facing line) above the rows, a row is faced
+         when its top clears the block, so the row faced is the row in view
+         and never one under the block. Which layout holds is read off the
+         boxes, not off a breakpoint. */
+      var wr = (wrap || host).getBoundingClientRect();
+      var tr0 = rowsD[0].el.closest("table") || rowsD[0].el;
+      var sr = tr0.getBoundingClientRect();
+      var beside = wr.left >= sr.right - 1 || wr.right <= sr.left + 1;
+      var line = beside ? innerHeight * 0.5 : wr.bottom + 12;
+      var y = window.scrollY || document.documentElement.scrollTop;
+      var anchors = [];
+      for (var i = 0; i < rowsD.length; i++) {
+        var rr = rowsD[i].el.getBoundingClientRect();
+        var f = facingOf(docs[rowsD[i].doc].p);
+        var at = beside ? rr.top + rr.height / 2 : rr.top;
+        anchors.push({ s: y + at - line, yaw: f.yaw, pitch: f.pitch, doc: rowsD[i].doc });
+      }
+      var byaw, bpitch, cur = -1;
+      if (y <= 0 || y < anchors[0].s - Math.max(1, anchors[0].s)) {
+        byaw = homeYaw; bpitch = homePitch;
+      } else if (y < anchors[0].s) {
+        var t0 = smooth(y / anchors[0].s);
+        byaw = homeYaw + (shortest(homeYaw, anchors[0].yaw) - homeYaw) * t0;
+        bpitch = homePitch + (anchors[0].pitch - homePitch) * t0;
+      } else {
+        var k = anchors.length - 1;
+        for (var a = 0; a < anchors.length - 1; a++) { if (y < anchors[a + 1].s) { k = a; break; } }
+        if (k >= anchors.length - 1) { byaw = anchors[k].yaw; bpitch = anchors[k].pitch; }
+        else {
+          var t1 = smooth((y - anchors[k].s) / Math.max(1, anchors[k + 1].s - anchors[k].s));
+          byaw = anchors[k].yaw + (shortest(anchors[k].yaw, anchors[k + 1].yaw) - anchors[k].yaw) * t1;
+          bpitch = anchors[k].pitch + (anchors[k + 1].pitch - anchors[k].pitch) * t1;
+        }
+      }
+      /* the row nearest the line is the document faced, once the first row
+         is within half a row of it */
+      var bestD = Infinity, gap = anchors.length > 1 ? (anchors[1].s - anchors[0].s) : 400;
+      for (var c = 0; c < anchors.length; c++) {
+        var d = Math.abs(y - anchors[c].s);
+        if (d < bestD) { bestD = d; cur = c; }
+      }
+      if (bestD > gap * 0.75) cur = -1;
+      var changed = false;
+      if (!reducedM) {
+        var ny = byaw + offYaw, np = Math.max(-PITCH_MAX, Math.min(PITCH_MAX, bpitch + offPitch));
+        if (Math.abs(ny - yaw) > 1e-4 || Math.abs(np - pitch) > 1e-4) { yaw = ny; pitch = np; changed = true; }
+      }
+      var nd = cur >= 0 ? anchors[cur].doc : -1;
+      if (nd !== curDoc) {
+        curDoc = nd; changed = true;
+        for (var q = 0; q < rowsD.length; q++) rowsD[q].el.classList.toggle("cur", rowsD[q].doc === curDoc);
+        if (facingEl) {
+          facingEl.textContent = "";
+          if (curDoc >= 0) {
+            facingEl.appendChild(document.createTextNode("Facing "));
+            var bb = document.createElement("b"); bb.textContent = docs[curDoc].t; facingEl.appendChild(bb);
+          }
+        }
+        if (curDoc >= 0) host.setAttribute("data-facing", docs[curDoc].t); else host.removeAttribute("data-facing");
+      }
+      /* pinned on a phone: the sphere steps back to make room for the rows */
+      if (wrap) {
+        var top = parseFloat(getComputedStyle(wrap).top) || 0;
+        var stuck = y > 0 && wrap.getBoundingClientRect().top <= top + 1;
+        if (stuck !== lastStuck) { lastStuck = stuck; wrap.classList.toggle("stuck", stuck); }
+      }
+      host.setAttribute("data-yaw", yaw.toFixed(3));
+      host.setAttribute("data-pitch", pitch.toFixed(3));
+      if (changed && !dragT) paint();
+    }
+    if (rowsD.length) {
+      window.addEventListener("scroll", function () { if (!sraf) sraf = requestAnimationFrame(descend); }, { passive: true });
+      window.addEventListener("resize", function () { if (!sraf) sraf = requestAnimationFrame(descend); });
+      /* the box changes size when it pins on a phone; the canvas follows */
+      if ("ResizeObserver" in window) {
+        new ResizeObserver(function () { size(); paint(); }).observe(host);
+      }
+      if ("requestIdleCallback" in window) requestIdleCallback(descend, { timeout: 1500 });
+      else setTimeout(descend, 300);
     }
     host.addEventListener("click", function (e) {
       if (movedT > 8) { movedT = 0; return; }
