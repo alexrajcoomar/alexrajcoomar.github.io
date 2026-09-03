@@ -13,7 +13,7 @@
    this worker's to delete. */
 const VERSION  = "0545d2eb1dc4";
 const CORE     = "site-" + VERSION;
-const PAGES    = "site-pages-2d3bca82679c";
+const PAGES    = "site-pages-5a306455188f";
 const MANIFEST = "offline-manifest.json";
 const FILES    = [
   "daily-learning-cockpit-192.png",

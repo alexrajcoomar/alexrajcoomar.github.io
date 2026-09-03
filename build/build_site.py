@@ -6,7 +6,7 @@ This script never touches a piece's own HTML except to give it a way back
 into the site, and it never touches the stylesheet. Run by the GitHub
 Action on every push, so the site relists itself.
 """
-import datetime, hashlib, html, json, os, re, struct, sys
+import datetime, hashlib, html, json, math, os, re, struct, sys
 
 ROOT    = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 CONTENT = json.load(open(os.path.join(ROOT, "content", "pieces.json"), encoding="utf-8"))
@@ -156,6 +156,16 @@ try:
     LEDGER_NOTES = json.load(open(os.path.join(HERE, "ledger-notes.json"), encoding="utf-8"))
 except Exception:
     LEDGER_NOTES = {}
+
+# The exceptions the site declares by name, so the claims they qualify can
+# fail: the records the em dash rule leaves as written, and the pages the
+# fit row allows past 320px. A page not named here that breaks the rule
+# fails the build; a page named here that no longer needs it does too.
+try:
+    DECLARED = json.load(open(os.path.join(ROOT, "content", "declared.json"), encoding="utf-8"))
+except (OSError, ValueError):
+    DECLARED = {}
+import emdash
 
 # Five entries. The four shelves are one statement filtered four ways and are
 # reached from the statement's own subtotal rows and from Work, which is the
@@ -2797,12 +2807,14 @@ ATLAS_BODY = r"""<section class="band atlas-band" id="atlas">
           the share of the document's static text under that heading; it is not a per-section
           measurement. Heading level is no longer drawn on the sphere and is kept in the index
           beside it. A document's area grows with its section count, and a heading several
-          documents carry is placed once, between them. Where a document sits carries no meaning
-          of its own: documents are spread evenly over the sphere in the order the site lists them,
-          and their sections are scattered around them, so two documents standing near each other
-          are near because of the list, not because of anything they share. Positions are
-          deterministic for a given corpus: the same pieces and headings give the same sphere on
-          every build, and adding or removing a piece re-spaces the lattice and moves every mark.</p>
+          documents carry is placed once, between them. Where a document sits is a rule: its
+          latitude is its origin (independent work in the north band, coursework in the middle,
+          personal interest in the south), and within its band it climbs east and north by
+          measured word count, shortest first, so two documents standing near each other share an
+          origin and a size. Its sections are scattered around it by a generator seeded with the
+          document's own name, so adding a piece moves only the band it joins. The build
+          recomputes every position from the metrics on every run and refuses a sphere that
+          disagrees (check 28).</p>
         </div>
         <p class="replay"><button type="button" id="preplay" class="linkbtn">Replay the six labels</button></p>
       </div>
@@ -3701,9 +3713,64 @@ def check_site():
             problems.append(_p("11a2", "atlas.html: mark weights add to %s, the corpus line says %s"
                             % (format(sum(ws), ","), format(TOTAL_WORDS, ","))))
 
+    # 28. where a document sits is a rule, and the pages hold to it: every
+    # centroid the Atlas index and the home sphere carry is recomputed from
+    # the metrics (band by origin, rank by words within the band), and within
+    # each band the documents read back from the page climb east and north
+    # with their word counts.
+    regs = ATLAS.get("regions") or []
+    placed_slugs = {r["s"] for r in regs}
+    ranks = atlas_mod.rank_by_words([p for p in P if p["slug"] in placed_slugs])
+    want_c = {slug: atlas_mod.centroid(*v) for slug, v in ranks.items()}
+    T["position"] = {"documents": len(want_c), "pages": 0, "bands": len(atlas_mod.BANDS), "read_back": 0}
+    words_of = {p["slug"]: p["words"] for p in P}
+    def _hold_positions(f, got):
+        """got: slug -> (x, y, z) as the page carries them."""
+        look("28", f)
+        T["position"]["pages"] += 1
+        T["position"]["read_back"] += len(got)
+        if set(got) != set(want_c):
+            problems.append(_p("28", "%s: carries %d document positions, the rule places %d" % (f, len(got), len(want_c))))
+        for slug, xyz in got.items():
+            w = want_c.get(slug)
+            if w and max(abs(a - b) for a, b in zip(xyz, w)) > 2e-3:
+                problems.append(_p("28", "%s: %s sits at %s; its origin and word rank put it at %s"
+                                   % (f, slug, ",".join("%.3f" % v for v in xyz), ",".join("%.3f" % v for v in w))))
+                break
+        for surf in atlas_mod.BANDS:
+            lo, hi = atlas_mod.BANDS[surf]
+            band = sorted((s2 for s2 in got if ranks.get(s2, ("",))[0] == surf), key=lambda s2: (words_of.get(s2, 0), s2))
+            prev = None
+            for s2 in band:
+                x, y, z = got[s2]
+                if not (lo - 2e-3 <= y <= hi + 2e-3):
+                    problems.append(_p("28", "%s: %s is %s work and sits outside its band" % (f, s2, surf)))
+                    break
+                th = math.atan2(z, x) % (2 * math.pi)
+                if prev is not None and (y < prev[0] - 1e-6 or th < prev[1] - 1e-6):
+                    problems.append(_p("28", "%s: %s has more words than %s but sits west or south of it" % (f, s2, prev[2])))
+                    break
+                prev = (y, th, s2)
+    if regs and os.path.exists(apath):
+        got = {}
+        for m in re.finditer(r'<section class="areg" data-s="([^"]+)"[^>]*?data-c="([^"]+)"', atext, re.S):
+            got[m.group(1)] = tuple(float(v) for v in m.group(2).split(","))
+        _hold_positions("atlas.html", got)
+    if regs and os.path.exists(ipath):
+        m = re.search(r'<script type="application/json" id="atlasmini-docs">(.*?)</script>', itext, re.S)
+        if m:
+            try:
+                docs = json.loads(m.group(1).replace("<\\/", "</"))["docs"]
+                url_slug = {p["url"]: p["slug"] for p in P}
+                got = {url_slug[d["u"]]: tuple(d["p"]) for d in docs if d["u"] in url_slug}
+                _hold_positions("index.html", got)
+            except (ValueError, KeyError) as e:
+                problems.append(_p("28", "index.html: the sphere's document payload is unreadable (%s)" % e))
+
     # 11b. the converted pieces' owned blocks changed nothing outside themselves
     for p in P:
-        if "<!--__docend" in open(os.path.join(OUT, p["url"]), encoding="utf-8", errors="ignore").read():
+        if os.path.exists(os.path.join(OUT, p["url"])) and \
+           "<!--__docend" in open(os.path.join(OUT, p["url"]), encoding="utf-8", errors="ignore").read():
             look("11b", p["url"])
     for line in TAIL_PROBLEMS:
         problems.append(_p("11b", "converted piece: " + line))
@@ -3985,22 +4052,37 @@ def check_site():
         T["workflow"]["idempotence"] = ("rewrote: nothing" in wtext and "build/build_site.py" in wtext
                                         and "A further build rewrites nothing" in wtext)
 
-    # 23. no em dash on any generated page. The pieces are content and their
-    # record holds them as written; their count is reported, not enforced.
-    td = T["emdash"] = {"generated_pages": 0, "in_generated": 0, "pieces_with": 0, "in_pieces": 0}
+    # 23. no em dash in the prose of any page, except the records declared in
+    # content/declared.json (transcripts and run reports kept as written). A
+    # dash standing alone as a cell or a chip is a symbol, not prose, and
+    # dashes inside script, style, code and data are counted and reported,
+    # not held. A declared record that no longer carries one is stale.
+    td = T["emdash"] = {"pages": 0, "prose": 0, "alone": 0, "code": 0, "records": 0, "in_records": 0,
+                        "generated_pages": 0}
+    records = set(DECLARED.get("records") or [])
     for f in html_files:
+        if f in ("reader.html", "admin.html"):
+            continue
         text = open(os.path.join(OUT, f), encoding="utf-8", errors="ignore").read()
+        pr, al, co = emdash.prose_dashes(text)
+        if f in records:
+            td["records"] += 1
+            td["in_records"] += pr
+            if not pr:
+                problems.append(_p("23", f"{f}: is declared a record exempt from the em dash rule but carries none; content/declared.json is stale"))
+            continue
         look("23", f)
-        c = text.count("\u2014")
+        td["pages"] += 1
         if f in SHELL_PAGES:
             td["generated_pages"] += 1
-            td["in_generated"] += c
-            if c:
-                problems.append(_p("23", f"{f}: carries {c} em dash(es)"))
-        elif f != "reader.html" and f != "admin.html":
-            if c:
-                td["pieces_with"] += 1
-                td["in_pieces"] += c
+        td["alone"] += al
+        td["code"] += co
+        if pr:
+            td["prose"] += pr
+            problems.append(_p("23", f"{f}: carries {pr} em dash(es) in its prose"))
+    for f in records:
+        if f not in html_files:
+            problems.append(_p("23", f"content/declared.json: {f} is declared a record but is not a page here"))
     return sorted(set(problems))
 
 
@@ -4285,7 +4367,14 @@ def main():
               f"label, anchor and result sentence ({len(P)} listed pieces and {n_tr} transcripts); "
               f"{inv['declared']} carry declared strikes")
     if problems:
+        # the checks that fired, by id, on one line: what build/negatives.py
+        # reads to decide whether a falsification was caught by the check
+        # the claim names, rather than by the build failing for any reason
+        fired = sorted({m.group(1) for m in (re.match(r"check (\S+):", x) for x in problems) if m},
+                       key=lambda k: (int(re.match(r"\d+", k).group(0)), k))
         print(f"\n{len(problems)} problem(s) found. The site was written, but this is broken:")
+        if fired:
+            print("checks that failed: " + ", ".join(fired))
         for line in problems[:40]:
             print("  " + line)
         if len(problems) > 40:

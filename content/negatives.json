@@ -1,0 +1,45 @@
+{
+ "note": "Written by build/negatives.py: for each check, a falsification applied to a copy of the tree and the build's answer. A claim is held only while a current, caught falsification stands behind every check it cites.",
+ "build": {
+  "meta": {
+   "tool": "build/negatives.py",
+   "date": "2026-09-03",
+   "commit": "a6d4663",
+   "code": "666346b20005",
+   "code_files": [
+    "build/build_site.py",
+    "build/claims.py",
+    "build/atlas.py",
+    "build/invariance.py",
+    "build/ledger.py",
+    "build/negatives.py",
+    ".github/workflows/build.yml"
+   ]
+  },
+  "cases": [
+   {
+    "id": "2-other-host-named",
+    "check": "2",
+    "what": "a piece names another GitHub Pages host in its text",
+    "exit": 0,
+    "fired": [],
+    "caught": false,
+    "line": "",
+    "seconds": 23.4,
+    "kept": "/tmp/neg-9461ezsd/site"
+   },
+   {
+    "id": "9-listed-file-missing",
+    "check": "9",
+    "what": "content/pieces.json lists a file that does not exist",
+    "exit": 1,
+    "fired": [],
+    "caught": false,
+    "line": "the build stopped before its checks: FileNotFoundError: [Errno 2] No such file or directory: '/tmp/neg-3czgp1s4/site/not-there.html'",
+    "seconds": 6.6,
+    "kept": "/tmp/neg-3czgp1s4/site"
+   }
+  ]
+ },
+ "runtime": null
+}
