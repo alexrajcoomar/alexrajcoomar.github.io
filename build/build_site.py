@@ -1565,11 +1565,15 @@ def page_colophon():
       rather than believed.</dd>
 
       <dt>Surfaces</dt>
-      <dd>Warm paper in light, a near-black ground in dark, hairline rules, one accent, no rounded
-      corners, no drop shadows. A panel sits one step above the ground behind a one-pixel edge. The
-      one gradient on the site is the light around the sphere, which encodes nothing and is drawn
-      outside the disc so it darkens no mark. Dark mode is a selected set of tokens rather than an
-      inversion, and the manual toggle wins over the system setting in both directions.</dd>
+      <dd>Warm paper in light, a near-black ground in dark, hairline rules, no rounded corners, no
+      drop shadows. One accent, blue, for the independent work on the sphere and for links. A second
+      accent, violet, means one thing: a link one document's prose makes to another. It is the colour
+      of the chords on both spheres, of the key entry that names them and of the link counts in the
+      sphere's card, and it appears nowhere else; it is violet because no figure on this site has
+      spent that hue. A panel sits one step above the ground behind a one-pixel edge. The one gradient
+      on the site is the light around the sphere, which encodes nothing and is drawn outside the disc
+      so it darkens no mark. Dark mode is a selected set of tokens rather than an inversion, and the
+      manual toggle wins over the system setting in both directions.</dd>
     </dl>
   </div>
   </div>
