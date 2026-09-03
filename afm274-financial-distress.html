@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-CA">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -198,6 +198,14 @@ th b{color:inherit!important}
 :root[data-theme="dark"] th b{color:inherit}
 :root[data-theme="dark"] tbody th[scope="row"],tbody th[scope="row"] b{color:var(--text)}
 @media print{ :root{ --ink:#15314b; --accent:#7a2733; --text:#1a1a1a; --muted:#4a4a4a; --panel:#f3f2ed; --panel2:#eceae3; --line:#bdbab1; --hair:#d9d6cd; --paper:#ffffff; } }
+
+  /* Two columns at 137px on a 320px screen, and the tables inside them are
+     157 to 255px wide, so a table painted over the neighbouring column
+     instead of scrolling: text on text at 320, 360 and 390. The sheet is set
+     in two columns because it is built to print on letter paper, so the
+     collapse is scoped to screen and print keeps the layout it was designed
+     for. Last in the sheet so it wins over any columns shorthand above. */
+  @media screen and (max-width:40rem){ .cols,.cheat .body{column-count:1;} }
 </style>
 <!--__meta-->
 <meta name="color-scheme" content="light dark">
@@ -368,7 +376,7 @@ th b{color:inherit!important}
 
     <!-- ===== BANKRUPTCY LAW ===== -->
     <div class="card">
-      <h3 id="bankruptcy-in-canada-two-routes">Bankruptcy in Canada: two routes</h3>
+      <h3 id="bankruptcy-in-canada-two-routes" aria-level="2">Bankruptcy in Canada: two routes</h3>
       <table>
         <tr><th></th><th>Liquidation</th><th>Reorganization</th></tr>
         <tr><th scope="row"><b>Firm</b></th><td>terminated</td><td>kept alive (going concern)</td></tr>
@@ -380,7 +388,7 @@ th b{color:inherit!important}
 
     <!-- ===== COSTS OF DISTRESS ===== -->
     <div class="card">
-      <h3 id="costs-of-financial-distress">Costs of financial distress</h3>
+      <h3 id="costs-of-financial-distress" aria-level="2">Costs of financial distress</h3>
       <table>
         <tr><th></th><th>Direct</th><th>Indirect</th></tr>
         <tr><th scope="row"><b>What</b></th><td>lawyers, accountants, courts, bankers</td><td>lost customers, suppliers, employees; fire sales; distracted management</td></tr>
@@ -393,7 +401,7 @@ th b{color:inherit!important}
 
     <!-- ===== WORKED: WHO BEARS ===== -->
     <div class="card tint">
-      <h3 id="worked-who-bears-the-cost-slide-numbers">Worked: who bears the cost (slide numbers)</h3>
+      <h3 id="worked-who-bears-the-cost-slide-numbers" aria-level="2">Worked: who bears the cost (slide numbers)</h3>
       <p class="small">Assets in 1 yr: <b>$250K</b> or <b>$180K</b> (50/50), β=0, r<sub>f</sub>=4%, debt face <b>$200K</b>, bankruptcy cost <b>$30K</b>.</p>
       <table class="num">
         <tr><th style="text-align:left;">Payoffs</th><th class="num">Good</th><th class="num">Bad (default)</th></tr>
@@ -408,7 +416,7 @@ th b{color:inherit!important}
 
     <!-- ===== TRADEOFF & D* ===== -->
     <div class="card">
-      <h3 id="optimal-leverage-d-the-hump-curve">Optimal leverage D<sup>*</sup>: the hump curve</h3>
+      <h3 id="optimal-leverage-d-the-hump-curve" aria-level="2">Optimal leverage D<sup>*</sup>: the hump curve</h3>
       <ul class="small">
         <li><b>Low debt:</b> distress ≈ impossible → adding debt ≈ pure ITS gain → V<sup>L</sup> rises.</li>
         <li><b>High debt:</b> distress probability soars → costs overwhelm ITS → V<sup>L</sup> falls.</li>
@@ -423,7 +431,7 @@ th b{color:inherit!important}
 
     <!-- ===== AGENCY COST 1 ===== -->
     <div class="card fal">
-      <h3 id="agency-cost-1-asset-substitution-gambling">Agency cost 1: Asset substitution (gambling)</h3>
+      <h3 id="agency-cost-1-asset-substitution-gambling" aria-level="2">Agency cost 1: Asset substitution (gambling)</h3>
       <p class="small"><b>Setup:</b> $10 cash, owes $50 next yr → equity worth $0 if nothing changes.</p>
       <p class="small"><b>Bet:</b> invest the $10 → 10% chance of $100, else $0, r = 50%.</p>
       <p class="small">NPV = 10/1.5 &minus; 10 = <span class="x">&minus;$3.33</span>, value-destroying. But <b>equity</b>: $0 → 0.1(100&minus;50)/1.5 = <b>+$3.33</b>; <b>debt</b>: $10 → $3.33 (loses $6.67).</p>
@@ -432,7 +440,7 @@ th b{color:inherit!important}
 
     <!-- ===== AGENCY COST 2 ===== -->
     <div class="card fal">
-      <h3 id="agency-cost-2-debt-overhang-under-investment">Agency cost 2: Debt overhang (under-investment)</h3>
+      <h3 id="agency-cost-2-debt-overhang-under-investment" aria-level="2">Agency cost 2: Debt overhang (under-investment)</h3>
       <p class="small"><b>Setup:</b> $0 cash, owes $50 next yr.</p>
       <p class="small"><b>Project:</b> invest $30 → <b>$60 for sure</b>, r = 10%. NPV = 60/1.1 &minus; 30 = <b>+$24.55</b>.</p>
       <p class="small">But the $60 repays debt first ($50). Equity funds $30, gets $10 → 10/1.1 &minus; 30 = <span class="x">&minus;$20.91</span> → <b>refuses</b>. Debt would gain $45.45.</p>
@@ -442,7 +450,7 @@ th b{color:inherit!important}
 
     <!-- ===== AGENCY BENEFITS ===== -->
     <div class="card">
-      <h3 id="agency-benefit-debt-disciplines-managers">Agency benefit: debt disciplines managers</h3>
+      <h3 id="agency-benefit-debt-disciplines-managers" aria-level="2">Agency benefit: debt disciplines managers</h3>
       <ul class="small">
         <li>With no debt + lots of cash, managers can waste: <b>perks, empire building, pet projects</b> (= <b>management entrenchment</b>, ownership separated from control, boards rarely fire).</li>
         <li>Mandatory interest payments leave <b>no slack for waste</b>; leverage also lets owner-managers keep bigger equity stakes → better decisions.</li>
@@ -452,14 +460,14 @@ th b{color:inherit!important}
 
     <!-- ===== ASYMMETRIC INFO ===== -->
     <div class="card">
-      <h3 id="asymmetric-information-managers-know-more">Asymmetric information: managers know more</h3>
+      <h3 id="asymmetric-information-managers-know-more" aria-level="2">Asymmetric information: managers know more</h3>
       <p class="small"><b>Signaling (debt = credible bragging):</b> talk is free; debt is a commitment that crushes a weak firm. <b>Credibility principle</b>, a claim is believable only if faking it would be too costly. ⟹ leverage ↑ announcement = <b>good news, stock ↑</b>.</p>
       <p class="small"><b>Adverse selection (lemons):</b> issuing equity makes investors ask <i>"why sell now?"</i> → infer stock is <b>overvalued</b> → price <b>falls on announcement</b> (rises before, managers time it). Mitigate: issue just <b>after earnings</b>, when the info gap is smallest. Undervalued firms simply won't issue.</p>
     </div>
 
     <!-- ===== PECKING ORDER ===== -->
     <div class="card">
-      <h3 id="pecking-order-hypothesis">Pecking order hypothesis</h3>
+      <h3 id="pecking-order-hypothesis" aria-level="2">Pecking order hypothesis</h3>
       <div class="eq" style="font-size:10pt;">1. Retained earnings &nbsp;≻&nbsp; 2. Debt &nbsp;≻&nbsp; 3. New equity</div>
       <ul class="small">
         <li>RE: zero adverse selection · Debt: mild (safer, less info-sensitive) · Equity: worst signal, last resort.</li>

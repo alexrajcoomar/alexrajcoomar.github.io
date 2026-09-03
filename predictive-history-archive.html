@@ -273,6 +273,12 @@ circle.dot.s1.open{stroke:var(--rec)} circle.dot.s2.open{stroke:var(--clm)} circ
 }
 @media(min-width:901px){#tocbtn{display:none}}
 @media print{.topbar,.toc{display:none}.shell{display:block}details.tv{display:none}}
+
+  /* A table wider than its section pushed the whole document sideways at 320
+     and 360, so every line of body text slid with it. Same remedy the AFM 291
+     journal-entry sheet already uses: the table scrolls inside its own frame
+     instead of widening the page. Scoped to screen; print keeps table layout. */
+  @media screen and (max-width:40rem){ table{display:block;max-width:100%;overflow-x:auto} }
 </style>
 <!--__meta-->
 <meta name="color-scheme" content="light dark">

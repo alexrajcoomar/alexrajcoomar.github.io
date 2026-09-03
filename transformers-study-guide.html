@@ -16,6 +16,17 @@
 @font-face{font-family:"IBM Plex Serif";font-style:normal;font-weight:400;font-display:swap;src:url("fonts/ibmplexserif-transformers-study-guide-400.woff2") format("woff2")}
 @font-face{font-family:"IBM Plex Serif";font-style:normal;font-weight:600;font-display:swap;src:url("fonts/ibmplexserif-transformers-study-guide-600.woff2") format("woff2")}
 @font-face{font-family:"IBM Plex Serif";font-style:italic;font-weight:400;font-display:swap;src:url("fonts/ibmplexserif-transformers-study-guide-400-italic.woff2") format("woff2")}
+
+  /* A table wider than its section pushed the whole document sideways at 320
+     and 360, so every line of body text slid with it. Same remedy the AFM 291
+     journal-entry sheet already uses: the table scrolls inside its own frame
+     instead of widening the page. Scoped to screen; print keeps table layout. */
+  @media screen and (max-width:40rem){ table{display:block;max-width:100%;overflow-x:auto} }
+
+  /* Chrome prints with backgrounds off by default, so light text on a painted
+     ground prints white on white and disappears. Same declaration the AFM 291
+     workbook and both AFM 274 sheets already carry on body, where it inherits. */
+  body{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
 </style>
 <style>
   :root{

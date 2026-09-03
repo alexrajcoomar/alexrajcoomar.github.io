@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="UTF-8">
+<html lang="en-CA"><head><meta charset="UTF-8">
 <title>AFM 241 Two-Page Cheat Sheet · Compressed to what fits</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
@@ -180,6 +180,11 @@ body{background:var(--page-ground)}
 :root[data-theme="dark"] .card .big{color:var(--dk,var(--cc))}
 :root[data-theme="dark"] [style*="--dk:"]{color:var(--dk)!important}
 @media print{ :root{ --ink:#0f172a; --body:#1e293b; --mut:#5c6b7f; --line:#e2e8f0; --amber:#9c680a; --teal:#0d8078; --teal-t:#ecfdfa; --violet:#7c3aed; --violet-t:#f3eefe; --emer:#05825d; --emer-t:#e9f9f1; --red:#dc2626; --red-t:#fef2f2; --slate:#334155; --page-ground:#ffffff; } }
+
+  /* Chrome prints with backgrounds off by default, so light text on a painted
+     ground prints white on white and disappears. Same declaration the AFM 291
+     workbook and both AFM 274 sheets already carry on body, where it inherits. */
+  body{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
 </style><!--__meta-->
 <meta name="color-scheme" content="light dark">
 <meta name="description" content="The whole course compressed to two printable pages, on the theory that what does not fit was not load-bearing.">

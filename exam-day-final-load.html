@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-CA">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -78,6 +78,11 @@ ol.traps li b{color:var(--flag)}
   h2{break-before:auto}
   .grid7{grid-template-columns:repeat(3,1fr)}
 }
+
+  /* Chrome prints with backgrounds off by default, so light text on a painted
+     ground prints white on white and disappears. Same declaration the AFM 291
+     workbook and both AFM 274 sheets already carry on body, where it inherits. */
+  body{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
 </style>
 <!--__meta-->
 <meta name="color-scheme" content="light dark">

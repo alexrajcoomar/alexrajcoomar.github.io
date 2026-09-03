@@ -7,7 +7,7 @@
    contents are refreshed network-first on every online visit anyway.
    Caches named term-* belong to the /term/ instrument's own worker, which
    manages its own versions; they are not this worker's to delete. */
-const VERSION = "3fdea51dec39";
+const VERSION = "831ba9cd797d";
 const CORE    = "site-" + VERSION;
 const PAGES   = "site-pages-v1";
 const FILES   = [

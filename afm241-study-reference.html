@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="UTF-8">
+<html lang="en-CA"><head><meta charset="UTF-8">
 <title>AFM 241 Exam Study Reference · Full course reference</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
@@ -164,6 +164,17 @@ body{background:var(--page-ground)}
 :root[data-theme="dark"] :root[data-theme="dark"] #__rb-from b{color:#595548}
 :root[data-theme="dark"] [style*="--dk:"]{color:var(--dk)!important}
 @media print{ :root{ --ink:#1a1a1a; --muted:#475569; --line:#cbd5e1; --found:#334155; --found-t:#eef2f6; --disr:#0e747c; --disr-t:#e4f3f4; --ai:#1f7a44; --ai-t:#e6f4ec; --hype:#5b3fa8; --hype-t:#efe9fa; --warn:#c0392b; --warn-t:#fbeae8; --num:#aa4f09; --page-ground:#ffffff; } }
+
+  /* A table wider than its section pushed the whole document sideways at 320
+     and 360, so every line of body text slid with it. Same remedy the AFM 291
+     journal-entry sheet already uses: the table scrolls inside its own frame
+     instead of widening the page. Scoped to screen; print keeps table layout. */
+  @media screen and (max-width:40rem){ table{display:block;max-width:100%;overflow-x:auto} }
+
+  /* Chrome prints with backgrounds off by default, so light text on a painted
+     ground prints white on white and disappears. Same declaration the AFM 291
+     workbook and both AFM 274 sheets already carry on body, where it inherits. */
+  body{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
 </style><!--__meta-->
 <meta name="color-scheme" content="light dark">
 <meta name="description" content="The complete study reference for AFM 241, built for the exam rather than for reading.">

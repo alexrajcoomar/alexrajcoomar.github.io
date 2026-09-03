@@ -13,6 +13,11 @@
 @font-face{font-family:"Spectral";font-style:normal;font-weight:500;font-display:swap;src:url("fonts/spectral-ifrs15-judgment-trainer-500.woff2") format("woff2")}
 @font-face{font-family:"Spectral";font-style:normal;font-weight:600;font-display:swap;src:url("fonts/spectral-ifrs15-judgment-trainer-600.woff2") format("woff2")}
 @font-face{font-family:"Spectral";font-style:italic;font-weight:400;font-display:swap;src:url("fonts/spectral-ifrs15-judgment-trainer-400-italic.woff2") format("woff2")}
+
+  /* Chrome prints with backgrounds off by default, so light text on a painted
+     ground prints white on white and disappears. Same declaration the AFM 291
+     workbook and both AFM 274 sheets already carry on body, where it inherits. */
+  body{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
 </style>
   <!--__meta-->
 <meta name="color-scheme" content="light dark">

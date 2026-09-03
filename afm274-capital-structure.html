@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-CA">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -217,6 +217,14 @@
 :root[data-theme="dark"] :root[data-theme="dark"] #__rb-from{color:#c1beb8}
 :root[data-theme="dark"] :root[data-theme="dark"] #__rb-from b{color:#595548}
 @media print{ :root{ --ink:#15314b; --accent:#7a2733; --text:#1a1a1a; --muted:#4a4a4a; --panel:#f3f2ed; --panel2:#eceae3; --line:#bdbab1; --hair:#d9d6cd; --paper:#ffffff; } }
+
+  /* Two columns at 137px on a 320px screen, and the tables inside them are
+     157 to 255px wide, so a table painted over the neighbouring column
+     instead of scrolling. Both sheets are set in two columns because they
+     are built to print on letter paper, so the collapse is scoped to screen
+     and print keeps the layout it was designed for. Last in the sheet so it
+     wins over the .cheat .body columns shorthand declared above. */
+  @media screen and (max-width:40rem){ .cols,.cheat .body{column-count:1;} }
 </style>
 
 <style id="__mobile_fit">

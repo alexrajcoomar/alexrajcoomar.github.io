@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="UTF-8">
+<html lang="en-CA"><head><meta charset="UTF-8">
 <title>The Gartner Hype Cycle · The complete picture</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
@@ -109,6 +109,11 @@ body{background:var(--page-ground)}
 :root[data-theme="dark"] :root[data-theme="dark"] #__rb-from{color:#c1beb8}
 :root[data-theme="dark"] :root[data-theme="dark"] #__rb-from b{color:#595548}
 @media print{ :root{ --ink:#0f172a; --body:#1e293b; --mut:#64748b; --line:#e2e8f0; --violet:#5b3fa8; --violet-t:#f1ecfb; --teal:#0d9488; --amber:#b45309; --red:#d62222; --red-t:#fef2f2; --green:#047857; --page-ground:#ffffff; } }
+
+  /* Chrome prints with backgrounds off by default, so light text on a painted
+     ground prints white on white and disappears. Same declaration the AFM 291
+     workbook and both AFM 274 sheets already carry on body, where it inherits. */
+  body{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
 </style><!--__meta-->
 <meta name="color-scheme" content="light dark">
 <meta name="description" content="A visual walk through the hype cycle, phase by phase, with what each phase predicts and what it does not.">
