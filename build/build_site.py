@@ -447,9 +447,9 @@ def stmt_subrow(label, d, href, note=None, cls="sub", sub2=""):
 
 def stmt_head_cells():
     return ('<thead><tr><th scope="col">Piece</th>'
-            '<th scope="col" class="n"><a href="colophon.html#n1">Words<span class="nref">1</span></a></th>'
-            '<th scope="col" class="n fig"><a href="colophon.html#n1">Figures<span class="tb tbh"><span class="dot">&middot; </span>tables</span><span class="nref">1</span></a></th>'
-            '<th scope="col" class="n tab"><a href="colophon.html#n1">Tables<span class="nref">1</span></a></th></tr></thead>')
+            '<th scope="col" class="n"><a href="colophon.html#def-words">Words<span class="nref">1</span></a></th>'
+            '<th scope="col" class="n fig"><a href="colophon.html#def-figures">Figures<span class="tb tbh"><span class="dot">&middot; </span>tables</span><span class="nref">1</span></a></th>'
+            '<th scope="col" class="n tab"><a href="colophon.html#def-tables">Tables<span class="nref">1</span></a></th></tr></thead>')
 
 def shelf_row(k, p, extra=""):
     """A full statement row for a shelf or the library: the title, the

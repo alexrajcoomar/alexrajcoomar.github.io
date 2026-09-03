@@ -4,7 +4,7 @@
   "tool": "build/audit.js",
   "browser": "Chromium 141.0.7390.37",
   "date": "2026-09-03",
-  "commit": "9fd58e6"
+  "commit": "f6211b9"
  },
  "pages": {
   "404.html": {
@@ -37,7 +37,7 @@
    "motion": {
     "animations": 0
    },
-   "inputs": "3dfb6055eae9",
+   "inputs": "0fa5dd1dbd7b",
    "measured": "2026-09-03"
   },
   "about.html": {
@@ -70,7 +70,7 @@
    "motion": {
     "animations": 0
    },
-   "inputs": "465e5c879146",
+   "inputs": "cbe5ca45345e",
    "measured": "2026-09-03"
   },
   "afm241-cheat-sheet.html": {
@@ -623,7 +623,7 @@
    "motion": {
     "animations": 0
    },
-   "inputs": "06b7fbbd6ecf",
+   "inputs": "6626b4a34a90",
    "measured": "2026-09-03"
   },
   "brittle-network.html": {
@@ -676,8 +676,8 @@
    },
    "errors": 0,
    "chrome": {
-    "a": 3540,
-    "b": 3495
+    "a": 3582,
+    "b": 3537
    },
    "print": {
     "stickyLeft": 0,
@@ -696,7 +696,7 @@
    "motion": {
     "animations": 0
    },
-   "inputs": "0fa79ca91a25",
+   "inputs": "7a0bcefb9b76",
    "measured": "2026-09-03"
   },
   "coursework.html": {
@@ -729,7 +729,7 @@
    "motion": {
     "animations": 0
    },
-   "inputs": "2eb5f955287c",
+   "inputs": "206c96038cff",
    "measured": "2026-09-03"
   },
   "crucible-cockpit.html": {
@@ -1182,7 +1182,7 @@
    "motion": {
     "animations": 0
    },
-   "inputs": "b1c719493f3a",
+   "inputs": "e5d5284cfeb9",
    "measured": "2026-09-03"
   },
   "kennedy-dossier.html": {
@@ -1275,7 +1275,7 @@
    "motion": {
     "animations": 0
    },
-   "inputs": "43572db5356c",
+   "inputs": "9518a307dbbd",
    "measured": "2026-09-03"
   },
   "monroe-case-file.html": {
@@ -1448,7 +1448,7 @@
    "motion": {
     "animations": 0
    },
-   "inputs": "46ae4e73123e",
+   "inputs": "44d84471cb64",
    "measured": "2026-09-03"
   },
   "revenue-recognition.html": {
@@ -1581,7 +1581,7 @@
    "motion": {
     "animations": 0
    },
-   "inputs": "1dfa0ad2b0ce",
+   "inputs": "c900583e9efc",
    "measured": "2026-09-03"
   },
   "transformers-study-guide.html": {

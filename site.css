@@ -2131,7 +2131,8 @@ details.cgroup + details.cgroup{margin-top:1.75rem}
 @media (max-width:44rem){
   .tw > .register{min-width:0}
   .register thead{display:none}
-  .register,.register tbody,.register tr,.register td,.register th{display:block}
+  .register,.register tbody,.register tr,.register td,.register th,.register caption{display:block}
+  .register caption{width:auto;margin-bottom:.8rem}
   .register tr{padding:.55rem 0;border-bottom:1px solid var(--rule)}
   .register tr.grp th{padding:.9rem 0 .2rem;border:0}
   .register td{border:0;padding:.1rem 0}
