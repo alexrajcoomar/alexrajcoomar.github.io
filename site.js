@@ -1161,17 +1161,24 @@
     function descend() {
       sraf = 0;
       if (!rowsD.length) return;
-      /* the reading line: mid-viewport, or just under the pinned block (the
-         sphere, its caption and the facing line) when that sits above the
-         rows on a phone, far enough down that the row faced is in view */
-      var wb = (wrap || host).getBoundingClientRect().bottom;
-      var line = Math.min(innerHeight * 0.5, wb + 48);
+      /* the reading line. With the sphere beside the rows (a wide viewport)
+         a row is faced when its middle reaches mid-viewport. With the pinned
+         block (sphere, caption, facing line) above the rows, a row is faced
+         when its top clears the block, so the row faced is the row in view
+         and never one under the block. Which layout holds is read off the
+         boxes, not off a breakpoint. */
+      var wr = (wrap || host).getBoundingClientRect();
+      var tr0 = rowsD[0].el.closest("table") || rowsD[0].el;
+      var sr = tr0.getBoundingClientRect();
+      var beside = wr.left >= sr.right - 1 || wr.right <= sr.left + 1;
+      var line = beside ? innerHeight * 0.5 : wr.bottom + 12;
       var y = window.scrollY || document.documentElement.scrollTop;
       var anchors = [];
       for (var i = 0; i < rowsD.length; i++) {
         var rr = rowsD[i].el.getBoundingClientRect();
         var f = facingOf(docs[rowsD[i].doc].p);
-        anchors.push({ s: y + rr.top + rr.height / 2 - line, yaw: f.yaw, pitch: f.pitch, doc: rowsD[i].doc });
+        var at = beside ? rr.top + rr.height / 2 : rr.top;
+        anchors.push({ s: y + at - line, yaw: f.yaw, pitch: f.pitch, doc: rowsD[i].doc });
       }
       var byaw, bpitch, cur = -1;
       if (y <= 0 || y < anchors[0].s - Math.max(1, anchors[0].s)) {
