@@ -910,6 +910,7 @@ def page_index():
     fams = google_font_families()
     ATLAS_N, ATLAS_PTS, ATLAS_SHARED = atlas_teaser_bits()
     F = atlas_facts()
+    N_EDGES = len(ATLAS.get("edges", []))
     n_undrawn = len(ex["undrawn"])
 
     rows = []
@@ -959,7 +960,10 @@ def page_index():
     {corpus_line()}
     <div class="stage-globe">
       <div class="tease-globe hero-globe" id="atlasmini" data-pts="{ATLAS_PTS}" data-fill="0.44" aria-hidden="true"></div>
-      <p class="globe-cap"><a class="inlink" href="atlas.html">{ATLAS_N} sections, every one a link <span aria-hidden="true">&#8594;</span></a></p>
+      <script type="application/json" id="atlasmini-docs">{atlas_home_links()}</script>
+      <div class="globe-card" id="atlasmini-card" hidden aria-hidden="true"><b class="gc-t"></b><span class="gc-d"></span></div>
+      <p class="globe-cap"><a class="inlink" href="atlas.html">{ATLAS_N} sections, every one a link <span aria-hidden="true">&#8594;</span></a>
+        <span class="globe-hint">Point at a mark: chords join its document to the documents its prose links, or that link it. {N_EDGES} such links are recorded.</span></p>
       <noscript><p class="note">The sphere needs a browser that runs scripts.
       The <a class="inlink" href="atlas.html">full index</a> does not.</p></noscript>
     </div>
@@ -2827,6 +2831,34 @@ def atlas_teaser_bits():
             format(len([q for q in ATLAS["points"] if q["n"] > 1]), ","))
 
 
+def atlas_home_links():
+    """The connective layer for the home sphere. The positions stay in
+    data-pts, where check 11a reads them back against the placement; this
+    carries only what a chord needs: the documents (centroid, title, address,
+    kind, in placement order), which document each mark belongs to, run-length
+    over the payload order, and the links edges() harvested from prose, as
+    index pairs with their direction. No headings and no second copy of the
+    marks, so the home page still draws from one placement and one harvest."""
+    regs = ATLAS["regions"]
+    idx = {r["s"]: i for i, r in enumerate(regs)}
+    docs = [{"t": r["t"], "u": r["u"], "k": r["k"],
+             "p": [round(x, 3) for x in r["p"]]} for r in regs]
+    own, run, last = [], 0, None
+    for q in ATLAS["points"]:
+        i = idx[q["s"]]
+        if i == last:
+            run += 1
+        else:
+            if last is not None:
+                own.append(f"{last}*{run}" if run > 1 else str(last))
+            last, run = i, 1
+    if last is not None:
+        own.append(f"{last}*{run}" if run > 1 else str(last))
+    lk = [[idx[a], idx[b]] for a, b in ATLAS.get("edges", []) if a in idx and b in idx]
+    return json.dumps({"docs": docs, "own": ",".join(own), "lk": lk},
+                      separators=(",", ":")).replace("</", "<\\/")
+
+
 def page_404():
     """Generated like every other shell page, so its piece count and contact
     address cannot fall behind. It used to be the one page the build touched
@@ -3561,6 +3593,7 @@ def _known_numbers():
     cru = [p for p in P if p["slug"] in ("crucible-run-0", "crucible-run-b", "crucible-run-c")]
     add(sum(p["words"] for p in cru))
     add(len(ATLAS.get("points") or [])); add(ATLAS.get("facts") or {})
+    add(len(ATLAS.get("edges") or []))
     for r in ATLAS.get("regions") or []:
         add(r.get("n"))
     off = offline_files()
