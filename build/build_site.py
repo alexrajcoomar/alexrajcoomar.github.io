@@ -2759,7 +2759,7 @@ def page_404():
 
 
 # ------------------------------------------------------- service worker ----
-def page_sw():
+def page_sw(pages_version="v1"):
     """A real offline cache, generated so the file list and the version cannot
     fall behind. Three tools register this and three manifests promise the
     reader they work offline; the placeholder that shipped before cached
@@ -2798,13 +2798,15 @@ def page_sw():
    Two caches with different lifetimes: CORE precaches the installable tools
    and the site shell, and its versioned name retires it whenever a cached
    file changes. PAGES holds everything a reader has visited, plus the full
-   offline copy if they asked for one; it survives version bumps because its
-   contents are refreshed network-first on every online visit anyway.
+   offline copy if they asked for one. Its name is a digest of the contents
+   of every file the offline copy lists, so a publish that changes any page
+   retires the previous generation on activate; the copy is refilled as the
+   reader visits, and in full again if they press the colophon's button.
    Caches named term-* belong to the /term/ instrument's own worker, which
    manages its own versions; they are not this worker's to delete. */
 const VERSION = "{version}";
 const CORE    = "site-" + VERSION;
-const PAGES   = "site-pages-v1";
+const PAGES   = "site-pages-{pages_version}";
 const FILES   = {files};
 
 self.addEventListener("install", e => {{
@@ -3580,7 +3582,18 @@ def main():
         open(offpath, "w", encoding="utf-8").write(off)
         changed.append("offline-manifest.json")
 
-    sw = page_sw()
+    # The page cache is named by a digest of the CONTENTS of every file the
+    # offline copy holds, computed here, after the piece pass, for the same
+    # reason the CORE digest is. It used to be the constant "site-pages-v1",
+    # which the activate filter exempted, so every page a reader had ever
+    # loaded persisted across every build and was served cache-first: two
+    # generations of the site in one session. A size digest would not do:
+    # 483,735 and 483,784 are the same number of characters.
+    _ph = hashlib.sha1()
+    for f in off_files:
+        with open(os.path.join(OUT, f), "rb") as fh:
+            _ph.update(f.encode("utf-8") + fh.read())
+    sw = page_sw(_ph.hexdigest()[:12])
     swpath = os.path.join(OUT, "sw.js")
     if (not os.path.exists(swpath)) or open(swpath, encoding="utf-8").read() != sw:
         open(swpath, "w", encoding="utf-8").write(sw)
