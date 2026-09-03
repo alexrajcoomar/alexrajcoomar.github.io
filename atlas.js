@@ -153,6 +153,8 @@
        Every category a key names is drawn at least that strong. */
     C.edge = v("--edge", "#8a847c");
     C.ink = v("--ink", "#16150f");
+    /* the second accent: a link the prose records */
+    C.lnk = v("--link", C.ink);
     C.paper = v("--paper", "#faf9f6");
     _tc = {};
     invalidate();
@@ -778,7 +780,7 @@
     ctx.save();
     /* 0.55 of ink composites to 3.9:1 on paper; the 0.34 it was drawn at
        measured 2.1:1, under the floor for a category the key names */
-    ctx.strokeStyle = tone2(C.ink, 0.55);
+    ctx.strokeStyle = tone2(C.lnk, 0.85);
     ctx.lineWidth = 1;
     var started = false;
     ctx.beginPath();
@@ -809,7 +811,7 @@
     var px = -dy / dl * 4, py = dx / dl * 4;
     ctx.beginPath();
     ctx.moveTo(s[0] - px, s[1] - py); ctx.lineTo(s[0] + px, s[1] + py);
-    ctx.strokeStyle = tone2(C.ink, 0.75);
+    ctx.strokeStyle = tone2(C.lnk, 0.95);
     ctx.lineWidth = 1.2;
     ctx.stroke();
   }

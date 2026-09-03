@@ -779,6 +779,8 @@
       C.e = s.getPropertyValue("--edge").trim() || "#8a847c";
       C.p = s.getPropertyValue("--paper").trim() || "#faf9f6";
       C.k = s.getPropertyValue("--ink").trim() || "#16150f";
+      /* the second accent: a link the prose records, and nothing else */
+      C.l = s.getPropertyValue("--link").trim() || C.k;
     }
     function dark() {
       var h = C.p.replace("#", "");
@@ -872,7 +874,7 @@
       var px = -dy / dl * 4 * Math.max(1, S * 0.8), py = dx / dl * 4 * Math.max(1, S * 0.8);
       ctx.beginPath();
       ctx.moveTo(s[0] - px, s[1] - py); ctx.lineTo(s[0] + px, s[1] + py);
-      ctx.strokeStyle = rgba(C.k, 0.8);
+      ctx.strokeStyle = rgba(C.l, 0.95);
       ctx.lineWidth = 1.2;
       ctx.stroke();
     }
@@ -880,8 +882,8 @@
       var A = nrm(a.p), B = nrm(b.p);
       var dot = Math.max(-1, Math.min(1, A[0] * B[0] + A[1] * B[1] + A[2] * B[2]));
       var om = Math.acos(dot), so = Math.sin(om) || 1e-6;
-      ctx.strokeStyle = rgba(C.k, 0.6);
-      ctx.lineWidth = 1;
+      ctx.strokeStyle = rgba(C.l, 0.85);
+      ctx.lineWidth = 1.25;
       var started = false, seen = false;
       ctx.beginPath();
       for (var i = 0; i <= 48; i++) {
@@ -1013,9 +1015,14 @@
       var D = docs[hd], out = 0, into = 0;
       for (var li = 0; li < D.lk.length; li++) { if (D.lk[li].out) out++; if (D.lk[li].into) into++; }
       if (cardT) { cardT.textContent = D.t; if (D.u) cardT.setAttribute("href", D.u); }
-      if (cardD) cardD.textContent = D.k + "  ·  " + D.marks + (D.marks === 1 ? " section" : " sections") +
-        (out ? "  ·  links " + out : "") + (into ? "  ·  linked by " + into : "") +
-        (!out && !into ? "  ·  no links recorded" : "");
+      if (cardD) {
+        cardD.textContent = D.k + "  \u00b7  " + D.marks + (D.marks === 1 ? " section" : " sections") + "  \u00b7  ";
+        var lk = document.createElement("span");
+        lk.className = "gc-l";
+        lk.textContent = (out ? "links " + out : "") + (out && into ? "  \u00b7  " : "") +
+          (into ? "linked by " + into : "") + (!out && !into ? "no links recorded" : "");
+        cardD.appendChild(lk);
+      }
       if (card) card.hidden = false;
       host.setAttribute("data-doc", D.t);
       if (locked) host.setAttribute("data-locked", "1"); else host.removeAttribute("data-locked");

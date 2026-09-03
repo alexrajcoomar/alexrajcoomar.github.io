@@ -11,7 +11,7 @@
    manages its own versions; they are not this worker's to delete. */
 const VERSION = "0545d2eb1dc4";
 const CORE    = "site-" + VERSION;
-const PAGES   = "site-pages-e9b003cb96ef";
+const PAGES   = "site-pages-51ab0e4a3b13";
 const FILES   = [
   "daily-learning-cockpit-192.png",
   "daily-learning-cockpit-512.png",
