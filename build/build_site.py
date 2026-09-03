@@ -167,6 +167,23 @@ except (OSError, ValueError):
     DECLARED = {}
 import emdash
 
+# American spellings the build's own words must not use. Whole words, any
+# case; -ize forms are Canadian and are not listed, and "dialog" is the HTML
+# element's name as well as a word, so it is not listed either.
+US_SPELLINGS = {
+    "color", "colors", "colored", "coloring", "colorful", "center", "centers", "centered", "centering",
+    "meter", "meters", "liter", "liters", "fiber", "fibers", "theater", "theaters", "gray", "grays",
+    "favor", "favors", "favored", "favorite", "favorites", "flavor", "flavors", "flavored", "honor",
+    "honors", "honored", "humor", "labor", "labors", "neighbor", "neighbors", "neighboring", "harbor",
+    "rumor", "rumors", "vigor", "behavior", "behaviors", "defense", "defenses", "offense", "pretense",
+    "catalog", "catalogs", "traveled", "traveling", "traveler", "modeled", "modeling", "canceled",
+    "canceling", "labeled", "labeling", "signaled", "totaling", "totaled", "jewelry", "fulfill",
+    "fulfills", "fulfilled", "enrollment", "installment", "skillful", "mold", "molds", "plow", "sulfur",
+    "maneuver", "counselor", "marvelous", "armor", "clamor", "endeavor", "odor", "parlor", "savior",
+    "splendor", "valor", "somber", "specter", "caliber", "saber", "chili", "draft-", "pajamas", "ax",
+    "esthetic", "leukemia", "anemia", "paralyzed-", "dependent-", "checkered", "encyclopedia-",
+}
+
 # Five entries. The four shelves are one statement filtered four ways and are
 # reached from the statement's own subtotal rows and from Work, which is the
 # whole of it; Notes is the colophon, where every column is defined.
@@ -4083,6 +4100,122 @@ def check_site():
     for f in records:
         if f not in html_files:
             problems.append(_p("23", f"content/declared.json: {f} is declared a record but is not a page here"))
+
+    # 25. the build's own words are spelled the Canadian way. The generated
+    # pages are scanned with the text the build quotes removed (the owner's
+    # fields, the lifted captions, the Atlas index of the pieces' headings,
+    # the last pass's notes, and the two run-transcript names), and held
+    # against a list of American spellings, whole words, any case.
+    quoted_text = []
+    for p in P:
+        for k in ("t", "s", "blurb", "demo", "built_from"):
+            v = p.get(k)
+            if v:
+                quoted_text.append(str(v))
+        for tg in p.get("tags") or []:
+            quoted_text.append(str(tg))
+    for text_c, _href in CAPTIONS:
+        quoted_text.append(text_c)
+    ts25 = T["spelling"] = {"pages": 0, "words": 0, "hits": 0, "list": len(US_SPELLINGS)}
+    for f in SHELL_PAGES:
+        path = os.path.join(OUT, f)
+        if not os.path.exists(path):
+            continue
+        look("25", f)
+        raw = open(path, encoding="utf-8", errors="ignore").read()
+        raw = re.sub(r'<section class="areg".*?</section>', " ", raw, flags=re.S)
+        raw = re.sub(r'<section[^>]*id="limits".*?</section>', " ", raw, flags=re.S)
+        raw = re.sub(r"<(script|style|svg)\b[^>]*>.*?</\1>", " ", raw, flags=re.S | re.I)
+        text = html.unescape(re.sub(r"<[^>]+>", " ", raw))
+        for q in quoted_text:
+            if q:
+                text = text.replace(html.unescape(q), " ")
+        ts25["pages"] += 1
+        words25 = re.findall(r"[A-Za-z][A-Za-z'-]*", text)
+        ts25["words"] += len(words25)
+        found = sorted({w for w in words25 if w.lower() in US_SPELLINGS})
+        if found:
+            ts25["hits"] += len(found)
+            problems.append(_p("25", f"{f}: spells {', '.join(found[:5])} the American way"))
+
+    # 26. every counted number on the generated pages names a definition the
+    # colophon prints, and carries the value the record holds for it: a
+    # number with data-of must equal that piece's metric, and a total must be
+    # one of the aggregates the build computes over the pieces for that
+    # definition (the corpus, an origin, a course, a kind, or the transcripts).
+    def _aggregates():
+        agg = {k: set() for k in ("pieces", "words", "figures", "tables", "checkpoints", "mins")}
+        groups = [P] + [[p for p in P if p["surface"] == sf] for sf in ("independent", "course", "personal")]
+        groups += [[p for p in P if p["c"] == c] for c in COURSES]
+        groups += [[p for p in P if p["k"] == kd] for kd in ("Essay", "Reference", "Tool")]
+        groups += [[p for p in P if p["surface"] == sf and p["k"] == kd] for sf in ("independent", "course", "personal") for kd in ("Essay", "Reference", "Tool")]
+        groups += [[p for p in P if p["slug"] in ("crucible-run-0", "crucible-run-b", "crucible-run-c")]]
+        groups += [[p for p in P if not p["is_doc"]]]
+        for g in groups:
+            agg["pieces"].add(len(g)); agg["words"].add(sum(p["words"] for p in g))
+            agg["figures"].add(sum(p["figures"] for p in g)); agg["tables"].add(sum(p["tables"] for p in g))
+        agg["checkpoints"].add(CHECKPOINTS)
+        agg["words"].add(TRANSCRIPT_WORDS); agg["words"].add(TOTAL_WORDS + TRANSCRIPT_WORDS)
+        agg["pieces"].add(len(P) + len(exceptions()["transcripts"]))
+        return agg
+    agg26 = _aggregates()
+    by_slug26 = {p["slug"]: p for p in P}
+    t26 = T["defined"] = {"numbers": 0, "pages": 0, "undefined": 0, "disagree": 0}
+    for f in SHELL_PAGES:
+        path = os.path.join(OUT, f)
+        if not os.path.exists(path):
+            continue
+        look("26", f)
+        t26["pages"] += 1
+        raw = open(path, encoding="utf-8", errors="ignore").read()
+        for m in re.finditer(r'<data class="m" value="([^"]*)" data-m="([^"]*)"(?: data-of="([^"]*)")?>', raw):
+            t26["numbers"] += 1
+            val, kind, of = m.group(1), m.group(2), m.group(3)
+            if kind not in DEF_BY_ID:
+                t26["undefined"] += 1
+                problems.append(_p("26", f"{f}: a counted number names the definition {kind!r}, which the colophon does not print"))
+                continue
+            try:
+                v = float(val)
+            except ValueError:
+                t26["disagree"] += 1
+                problems.append(_p("26", f"{f}: a counted number carries the value {val!r}, which is not a number"))
+                continue
+            if of:
+                pc = by_slug26.get(of)
+                want = None if not pc else {"words": pc["words"], "figures": pc["figures"], "tables": pc["tables"],
+                                            "mins": pc.get("mins"), "pieces": 1}.get(kind)
+                if want is None or float(want) != v:
+                    t26["disagree"] += 1
+                    problems.append(_p("26", f"{f}: {kind} for {of} prints {val}; the record holds {want}"))
+            elif v not in {float(x) for x in agg26.get(kind, set())}:
+                t26["disagree"] += 1
+                problems.append(_p("26", f"{f}: {kind} prints {val}, which is no aggregate the build computes for that definition"))
+
+    # 27. every visual channel the two sphere scripts declare is named in the
+    # Atlas key, and every key entry is a channel one of them draws; the home
+    # sphere's key is the Atlas key, one link from its caption.
+    declared = {}
+    for jsname in ("site.js", "atlas.js"):
+        jp = os.path.join(OUT, jsname)
+        if os.path.exists(jp):
+            mm = re.search(r"CHANNELS\s*=\s*\[([^\]]*)\]", open(jp, encoding="utf-8").read())
+            declared[jsname] = set(re.findall(r'"([a-z]+)"', mm.group(1))) if mm else set()
+    key_items = set()
+    if os.path.exists(apath):
+        key_items = set(re.findall(r'<li[^>]*><i class="ak ak-([a-z]+)"', atext))
+    t27 = T["channels"] = {"scripts": len(declared), "declared": len(set().union(*declared.values()) if declared else set()),
+                           "key": len(key_items), "unnamed": 0, "stray": 0}
+    look("27", "atlas.html"); look("27", "index.html")
+    for jsname, chs in declared.items():
+        if not chs:
+            problems.append(_p("27", f"{jsname}: declares no channels; the sphere cannot be held to its key"))
+        for ch in sorted(chs - key_items):
+            t27["unnamed"] += 1
+            problems.append(_p("27", f"{'index.html' if jsname == 'site.js' else 'atlas.html'}: {jsname} draws the channel {ch!r}, which the Atlas key does not name"))
+    for ch in sorted(key_items - declared.get("atlas.js", set())):
+        t27["stray"] += 1
+        problems.append(_p("27", f"atlas.html: the key names {ch!r}, which atlas.js does not draw"))
     return sorted(set(problems))
 
 

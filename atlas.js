@@ -34,6 +34,11 @@
   }
   var mqn = window.matchMedia && window.matchMedia("(max-width: 63.99rem)");
   function narrow() { return !mqn || mqn.matches; }
+  /* Every visual channel the sphere draws, by the id its key entry carries;
+     check 27 holds this list and the key on the page to each other, so a
+     channel drawn without a key entry, or a key entry nothing draws, fails
+     the build. The label stages carry their own keys beside them. */
+  var CHANNELS = ["ind", "per", "cou", "too", "shr", "vis", "lnk"];
   /* Narrow: the sphere leads and the index follows. Tiny: there is no clear
      ring around the sphere to put type in at all. A tablet is the first and
      not the second. */
