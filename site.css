@@ -2009,3 +2009,48 @@ section.band.ground .pane{background:var(--panel-2);border-color:var(--rule-stro
   .stage-grid{min-height:0}
   .pane,section.band.ground{background:#fff}
 }
+
+/* ==================================================================
+   THE SHELL PAGES ON THE HOME GRAMMAR: the eyebrow as a chip, the lifted
+   figures and specimens framed, the plates as tiles, controls in panels.
+   ================================================================== */
+.hero .eyebrow.accent,.atlas-side .eyebrow.accent{
+  display:inline-flex;align-items:center;gap:.55rem;color:var(--ink-2);
+  border:1px solid var(--rule-strong);padding:.34rem .7rem;margin:0 0 1.1rem;
+  -webkit-print-color-adjust:exact;print-color-adjust:exact
+}
+.hero .eyebrow.accent .tnum{color:var(--accent);font-weight:720}
+/* a lifted figure or a specimen inside a shelf row: framed, on the ground */
+.stmt-list .spec,.stmt-list .specimen{
+  background:var(--panel);border:1px solid var(--rule);padding:0 clamp(.9rem,2vw,1.4rem) 1.1rem;
+  -webkit-print-color-adjust:exact;print-color-adjust:exact
+}
+.stmt-list .spec .frame{border-top:0;padding-top:1rem}
+.stmt-list .specimen .fig{padding-top:1rem}
+.stmt-list .specimen .figcap{margin:.6rem 0 0;font-size:.85rem;color:var(--ink-2);line-height:1.45;max-width:44rem}
+@media (max-width:44rem){
+  .stmt-list .spec .frame,.stmt-list .specimen .fig{
+    -webkit-mask-image:linear-gradient(to right,#000 calc(100% - 2.2rem),transparent);
+    mask-image:linear-gradient(to right,#000 calc(100% - 2.2rem),transparent)}
+  .stmt-list .spec .frame:focus-within,.stmt-list .specimen .fig:focus-within{-webkit-mask-image:none;mask-image:none}
+}
+/* the four plates on the about page as tiles on a hairline grid */
+.caps{gap:1px;background:var(--rule);border:1px solid var(--rule);margin-top:1.5rem;
+  -webkit-print-color-adjust:exact;print-color-adjust:exact}
+.caps div{border-top:0;background:var(--paper);padding:1.25rem 1.35rem 1.4rem}
+/* the fact list as a panel */
+.facts.pane{border-top:1px solid var(--rule);padding-block:.4rem .5rem}
+.facts.pane div:last-child{border-bottom:0}
+/* the library's search and filters in a panel */
+.tools-bar{background:var(--panel);border:1px solid var(--rule);padding:1rem;margin-bottom:1rem;
+  -webkit-print-color-adjust:exact;print-color-adjust:exact}
+.tools-bar input[type=search]{background:var(--paper)}
+/* the coverage table inside its panel keeps its own rules */
+.pane .tw{margin:0}
+.pane .ctab{margin-top:0}
+/* Back to top keeps a tab stop while invisible (WCAG 2.4.7): hidden from
+   the tab order until it is shown */
+.totop{visibility:hidden;transition:opacity var(--t-in) ease,transform var(--t-in) ease,
+  background var(--t-fast) ease,border-color var(--t-fast) ease,visibility 0s linear var(--t-in)}
+.totop.on{visibility:visible;transition-delay:0s}
+@media (prefers-reduced-motion:reduce){.totop{transition:opacity .01s,visibility 0s}}

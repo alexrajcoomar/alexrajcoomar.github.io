@@ -1002,6 +1002,9 @@
       var w = card.offsetWidth || 240, h = card.offsetHeight || 50;
       var x = SX[hover] + 16, y = SY[hover] - h / 2;
       if (x + w > W - 4) x = SX[hover] - w - 16;
+      /* never off the box: a mark near the limb puts the card beside the
+         sphere on whichever side has room, clamped inside the canvas */
+      x = Math.max(4, Math.min(W - w - 4, x));
       y = Math.max(4, Math.min(H - h - 4, y));
       card.style.transform = "translate(" + Math.round(x) + "px," + Math.round(y) + "px)";
     }

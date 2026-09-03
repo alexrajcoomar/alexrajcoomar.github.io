@@ -1144,12 +1144,14 @@ def page_tools():
 {chr(10).join(rows)}
   </ol>
 </section>
-<section class="band shell">
+<section class="band ground">
+  <div class="shell">
   <div class="sechead"><h2>Installing one</h2><span class="count">How to</span></div>
   <div class="prose measure">
     <p>On a phone, open the tool and choose <em>Add to Home Screen</em> from the share menu. It gets an
     icon and opens without browser chrome. Progress is stored in that browser only: nothing is
     uploaded, and clearing site data clears the progress with it.</p>
+  </div>
   </div>
 </section>
 """
@@ -1213,19 +1215,21 @@ def page_coursework():
   not for reading front to back, which is why several of them are deliberately compressed to what fits on a page.</p>
 {section_guide("coursework.html")}
 </div>
-<section class="band shell">
+<section class="band ground">
+  <div class="shell">
   <div class="sechead"><h2>Coverage</h2><p class="note">What exists per course, counted from the files themselves.</p><span class="count">{len(items)} of {len(P)}</span></div>
   <p class="note measure prose">Word counts exclude the question banks inside the interactive
   tools, because those live in code rather than prose, so the tool-heavy courses read lower than they are.
   The remaining {len(P)-len(items)} pieces are not tied to one course: {N_INDEP} under
   <a href="research.html">research</a> and the {N_PERSONAL} read for
   their own sake in the <a href="library.html#personal">library</a>.</p>
-  <div class="tw"><table class="ctab">
+  <div class="pane"><div class="tw"><table class="ctab">
     <thead><tr><th scope="col">Course</th><th scope="col" class="tnum">Interactive</th>
     <th scope="col" class="tnum">References</th><th scope="col" class="tnum">Total</th>
     <th scope="col" class="tnum">Words</th></tr></thead>
     <tbody>{''.join(rows_c)}</tbody>
-  </table></div>
+  </table></div></div>
+  </div>
 </section>
 <section class="band shell">
   <div class="sechead"><h2>By course</h2><p class="note">The statement, filtered to each course, in the order the pieces were published.</p><span class="count">{len(COURSES)} courses</span></div>
@@ -1347,15 +1351,17 @@ def page_about():
   running here.</p>
 </div>
 
-<section class="band shell">
+<section class="band ground">
+  <div class="shell">
   <div class="sechead"><h2>The short version</h2><span class="count">Facts</span></div>
-  <div class="facts measure wide">
+  <div class="facts measure wide pane">
     <div><b>Programme</b><span>Accounting and Financial Management, Analytics stream, University of Waterloo.</span></div>
     <div><b>Co-op</b><span>Preparing Canadian corporate and personal tax returns.</span></div>
     <div><b>Focus</b><span>Financial reporting under IFRS and ASPE, Canadian tax, and the analytics side of accounting.</span></div>
     <div><b>Standing interests</b><span>The science of learning, judgment under uncertainty, and capital cycles. Outside coursework, AI in medicine and commercial spaceflight.</span></div>
     <div><b>Contact</b><span><a class="inlink" href="mailto:{EMAIL}">{EMAIL}</a></span></div>
     <div><b>This site</b><span><a class="inlink" href="{SITE_URL}">{HOST}</a></span></div>{recruit_rows}
+  </div>
   </div>
 </section>
 
@@ -1384,7 +1390,8 @@ def page_about():
   </div>
 </section>
 
-<section class="band shell">
+<section class="band ground">
+  <div class="shell">
   <div class="sechead"><h2>Why the site exists</h2><span class="count">Rationale</span></div>
   <div class="prose measure">
     <p>Most of what I build starts as a problem I have: a course that will not stay in my head, a claim
@@ -1415,6 +1422,7 @@ def page_about():
 
     <p class="plate-nav"><a class="pbtn pbtn-go" href="colophon.html">How this site is built, and how it counts <span aria-hidden="true">&#8594;</span></a>
     <a class="pbtn" href="library.html">The full library <span aria-hidden="true">&#8594;</span></a></p>
+  </div>
   </div>
 </section>
 """
@@ -1529,7 +1537,8 @@ def page_colophon():
   </div>
 </section>
 
-<section class="band shell colo">
+<section class="band colo ground">
+  <div class="shell">
   <div class="sechead"><h2>The design rules</h2><span class="count">Conventions</span></div>
   <div class="prose measure">
     <dl>
@@ -1559,6 +1568,7 @@ def page_colophon():
       outside the disc so it darkens no mark. Dark mode is a selected set of tokens rather than an
       inversion, and the manual toggle wins over the system setting in both directions.</dd>
     </dl>
+  </div>
   </div>
 </section>
 
@@ -1595,7 +1605,8 @@ def page_colophon():
   </div>
 </section>
 
-<section class="band shell colo" id="exceptions">
+<section class="band colo ground" id="exceptions">
+  <div class="shell">
   <div class="sechead"><h2>The exceptions</h2><span class="count">Counted, not remembered</span></div>
   <div class="prose measure">
     <ol class="excs">
@@ -1606,6 +1617,7 @@ def page_colophon():
       <li>The {len(ex['tools'])} interactive tools stand on the shelf of the course or research that
       produced them and on the tools shelf. Every total counts each of them once.</li>
     </ol>
+  </div>
   </div>
 </section>
 
