@@ -141,6 +141,11 @@ table.et td code{overflow-wrap:anywhere}
 .hide{display:none !important}
 .log{font-size:.8125rem;color:var(--ink-3);white-space:pre-wrap;margin-top:.75rem;line-height:1.5}
 kbd{font:inherit;font-size:.8em;border:1px solid var(--rule-strong);padding:0 .25rem;background:var(--panel-2)}
+
+  /* Chrome prints with backgrounds off by default, so light text on a painted
+     ground prints white on white and disappears. Same declaration the AFM 291
+     workbook and both AFM 274 sheets already carry on body, where it inherits. */
+  body{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
 </style>
 </head>
 <body>

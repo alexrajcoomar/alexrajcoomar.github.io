@@ -3,13 +3,15 @@
    Two caches with different lifetimes: CORE precaches the installable tools
    and the site shell, and its versioned name retires it whenever a cached
    file changes. PAGES holds everything a reader has visited, plus the full
-   offline copy if they asked for one; it survives version bumps because its
-   contents are refreshed network-first on every online visit anyway.
+   offline copy if they asked for one. Its name is a digest of the contents
+   of every file the offline copy lists, so a publish that changes any page
+   retires the previous generation on activate; the copy is refilled as the
+   reader visits, and in full again if they press the colophon's button.
    Caches named term-* belong to the /term/ instrument's own worker, which
    manages its own versions; they are not this worker's to delete. */
-const VERSION = "3fdea51dec39";
+const VERSION = "0545d2eb1dc4";
 const CORE    = "site-" + VERSION;
-const PAGES   = "site-pages-v1";
+const PAGES   = "site-pages-53282e015a36";
 const FILES   = [
   "daily-learning-cockpit-192.png",
   "daily-learning-cockpit-512.png",

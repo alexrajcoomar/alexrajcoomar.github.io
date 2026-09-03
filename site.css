@@ -38,7 +38,7 @@
   --panel-2:      #ebe8df;
   --ink:          #16150f;   /* 18.4:1 on paper */
   --ink-2:        #55524a;   /*  7.5:1 on paper */
-  --ink-3:        #6f6c63;   /*  5.4:1 on paper, smallest text still legal */
+  --ink-3:        #66635a;   /*  5.7:1 on paper, 5.3 on panel, 4.9 on panel-2: the smallest text clears the floor on every surface a panel can stand on */
   --rule:         #ddd9cf;
   --rule-strong:  #bfb9aa;
   /* --edge is the border of anything interactive: inputs, filter chips,
@@ -96,41 +96,49 @@
   --t-in:         .3s;
   --ease-move:    cubic-bezier(.22,1,.36,1);
 }
+/* Dark is a deeper, cooler ground than the warm paper it replaces: a
+   near-black the sphere and the panels can stand off, rather than a dim
+   brown. Every pairing measured (WCAG 2.x, on --paper / --panel / --panel-2):
+   ink 17.4 / 16.3 / 15.1, ink-2 10.1 / 9.4 / 8.8, ink-3 6.2 / 5.8 / 5.4,
+   accent 9.3 / 8.7 / 8.1, tool 9.0, ref 9.2, edge 4.0 / 3.8 / 3.5, so the
+   smallest text and every control border clear their floors with more room
+   than before. Both blocks are required: keyed to the media query alone, a
+   component stays light when the reader presses the theme button. */
 @media (prefers-color-scheme: dark){
   :root:where(:not([data-theme="light"])){
-    --paper:       #131310;
-    --panel:       #1b1a16;
-    --panel-2:     #23221d;
-    --ink:         #f7f5ef;
-    --ink-2:       #c0bcb1;
-    --ink-3:       #948f85;
-    --rule:        #2c2b24;
-    --rule-strong: #454239;
-    --edge:        #6e6960;
-  --logo-chip:   #faf9f6;
-    --accent:      #85adea;
-    --accent-2:    #a8c6f3;
-    --tool:        #4fc0a3;
-    --ref:         #d6a558;
-    --selection:   #24405f;
+    --paper:       #0d0e11;
+    --panel:       #15161a;
+    --panel-2:     #1c1d22;
+    --ink:         #f3f3f0;
+    --ink-2:       #b9bbc1;
+    --ink-3:       #8f929a;
+    --rule:        #26282d;
+    --rule-strong: #3c3e45;
+    --edge:        #6f727b;
+    --logo-chip:   #faf9f6;
+    --accent:      #8fb6ee;
+    --accent-2:    #b2ccf5;
+    --tool:        #4fc4a6;
+    --ref:         #dbab5d;
+    --selection:   #223b5c;
   }
 }
 :root[data-theme="dark"]{
-  --paper:       #131310;
-  --panel:       #1b1a16;
-  --panel-2:     #23221d;
-  --ink:         #f7f5ef;
-  --ink-2:       #c0bcb1;
-  --ink-3:       #948f85;
-  --rule:        #2c2b24;
-  --rule-strong: #454239;
-  --edge:        #6e6960;
+  --paper:       #0d0e11;
+  --panel:       #15161a;
+  --panel-2:     #1c1d22;
+  --ink:         #f3f3f0;
+  --ink-2:       #b9bbc1;
+  --ink-3:       #8f929a;
+  --rule:        #26282d;
+  --rule-strong: #3c3e45;
+  --edge:        #6f727b;
   --logo-chip:   #faf9f6;
-  --accent:      #85adea;
-  --accent-2:    #a8c6f3;
-  --tool:        #4fc0a3;
-  --ref:         #d6a558;
-  --selection:   #24405f;
+  --accent:      #8fb6ee;
+  --accent-2:    #b2ccf5;
+  --tool:        #4fc4a6;
+  --ref:         #dbab5d;
+  --selection:   #223b5c;
 }
 
 /* ------------------------------ base ------------------------------ */
@@ -1838,6 +1846,12 @@ a.nref{position:relative;display:inline;padding:.75rem .45rem;margin:0 -.35rem 0
 .stmt-list > li.sr-sub{border-top:1px solid var(--edge);border-bottom:3px double var(--ink)}
 .stmt-list .sr-sub a{color:inherit;text-decoration:none}
 .stmt-list .spec,.stmt-list .specimen{margin-top:1rem}
+/* The specimen figure carries a min-width floor so its type never shrinks
+   below the size it was drawn at, the same floor the lifted figures carry.
+   The lifted figures scroll inside .frame; the specimen's .fig had no scroll
+   port, so at 390px its 741px floor pushed the whole research page 371px
+   wide and every line of text slid with it. */
+.specimen .fig{overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:.25rem}
 @media (max-width:44rem){
   .stmt-list .srow{grid-template-columns:minmax(0,1fr)}
   .stmt-list .sr-n{justify-content:start;text-align:left;padding-top:0;gap:.3rem 1rem;grid-template-columns:repeat(3,auto)}
@@ -1853,3 +1867,196 @@ a.nref{position:relative;display:inline;padding:.75rem .45rem;margin:0 -.35rem 0
   header.top nav.main{flex-basis:100%;order:3;display:flex;flex-wrap:wrap;gap:.2rem 1rem;overflow:visible;-webkit-mask-image:none;mask-image:none}
   header.top .bar{flex-wrap:wrap;gap:.3rem 1.25rem}
 }
+
+/* ==================================================================
+   THE STAGE. The home page's first screen: the identity, the claim and
+   the proof of it, the sphere, drawn large with the void around it.
+   Grid areas, not source order, decide where the sphere sits: on a phone
+   it follows the identity (name, standing, term, address) so it is on the
+   first screen, and the claim and the corpus line follow it; at desktop
+   width the copy stacks on the left and the sphere takes the right.
+   ================================================================== */
+.stage{padding-block:clamp(1.25rem,3vw,2.5rem) clamp(2.25rem,4vw,3.5rem)}
+.stage-grid{
+  display:grid;gap:1.1rem 0;align-items:start;
+  grid-template-columns:minmax(0,1fr);
+  grid-template-areas:"chip" "ident" "globe" "display" "method" "line";
+}
+.stage .eyeb{grid-area:chip;justify-self:start;margin:0}
+.stage .ident{grid-area:ident}
+.stage .stage-globe{grid-area:globe;margin-block:.5rem .25rem}
+.stage .display{grid-area:display;margin:.5rem 0 0;font-size:clamp(2.3rem,4.6vw,3.9rem)}
+.stage .method{grid-area:method;margin:0;font-size:.95rem;line-height:1.55;color:var(--ink-2);max-width:34rem}
+.stage .corpusline{grid-area:line;margin:.35rem 0 0}
+@media (min-width:64rem){
+  .stage-grid{
+    grid-template-columns:minmax(0,34rem) minmax(0,1fr);
+    grid-template-areas:"chip globe" "ident globe" "display globe" "method globe" "line globe";
+    grid-template-rows:auto auto auto auto auto;
+    align-content:center;gap:1.1rem clamp(3rem,6vw,6rem);
+    min-height:min(calc(100svh - 7rem),50rem);
+  }
+  .stage .stage-globe{align-self:center;margin:0}
+  .stage .display{margin-top:1rem}
+}
+/* the eyebrow chip: the standing in the accent, the owner's own line after it */
+.eyeb{
+  display:inline-flex;align-items:center;gap:.55rem;
+  font-size:var(--meta-size);letter-spacing:var(--meta-track);text-transform:uppercase;
+  font-weight:var(--meta-weight);color:var(--ink-2);
+  border:1px solid var(--rule-strong);padding:.34rem .7rem;
+  -webkit-print-color-adjust:exact;print-color-adjust:exact
+}
+.eyeb b{color:var(--accent);font-weight:720;letter-spacing:.1em}
+/* the identity: name, programme, term, address; one contract with .id */
+.ident .name{font-size:clamp(1.55rem,2.2vw,1.9rem);font-weight:700;letter-spacing:-.022em;line-height:1.1;margin:0}
+.ident p{margin:.4rem 0 0;font-size:.95rem;line-height:1.45;color:var(--ink-2)}
+.ident .standing .ph{display:none}.ident .standing .dt{display:inline}
+@media (max-width:44rem){.ident .standing .ph{display:inline}.ident .standing .dt{display:none}}
+.ident .links{display:flex;flex-wrap:wrap;gap:.3rem .9rem;margin-top:.6rem;font-size:.95rem}
+.ident .links a{color:var(--accent);text-decoration:underline;text-decoration-color:color-mix(in srgb,var(--accent) 45%,transparent);text-underline-offset:.15em}
+/* the sphere at hero scale: a square box, the void inside it */
+.stage-globe .tease-globe.hero-globe{aspect-ratio:1/1;max-height:none;width:100%;max-width:min(100%,42rem);margin-inline:auto;cursor:grab;touch-action:pan-y}
+.stage-globe{position:relative}
+.stage-globe .globe-cap{text-align:center;margin-top:.2rem}
+/* the hint is for a pointer that can hover; a touch screen never sees it */
+.globe-hint,.globe-hint-touch{display:none}
+@media (pointer:coarse){
+  .globe-hint-touch{display:block;font-size:.8rem;color:var(--ink-3);margin-top:.15rem;max-width:34em;margin-inline:auto}
+}
+@media (hover:hover) and (pointer:fine){
+  .globe-hint{display:block;font-size:.8rem;color:var(--ink-3);margin-top:.15rem;max-width:34em;margin-inline:auto}
+}
+/* the card that names the document under the pointer, set as the Atlas sets its own */
+.globe-card{position:absolute;top:0;left:0;max-width:19rem;z-index:2;
+  background:var(--panel);border:1px solid var(--rule-strong);padding:.5rem .65rem;text-align:left;
+  -webkit-print-color-adjust:exact;print-color-adjust:exact}
+/* the document's name is the link that opens it; the arrow says so */
+.globe-card .gc-t{display:block;margin:0;font-size:.88rem;font-weight:600;color:var(--ink);line-height:1.3;text-decoration:none}
+.globe-card .gc-t::after{content:" \2192";color:var(--accent)}
+.globe-card .gc-t:hover,.globe-card .gc-t:focus-visible{color:var(--accent);text-decoration:underline}
+.globe-card .gc-d{display:block;margin:.22rem 0 0;font-size:.72rem;color:var(--ink-3);text-transform:uppercase;letter-spacing:.07em;font-variant-numeric:tabular-nums}
+.stage-globe .note{font-size:.9rem;color:var(--ink-2);max-width:30rem;margin:.5rem auto 0;text-align:center}
+/* the corpus in four figures: label over value, hairlines between */
+.corpusline{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)}
+.corpusline div{padding:.7rem .75rem .65rem 0;margin:0}
+.corpusline div + div{border-left:1px solid var(--rule);padding-left:.75rem}
+.corpusline dt{font-size:var(--meta-size);letter-spacing:var(--meta-track);text-transform:uppercase;font-weight:var(--meta-weight);color:var(--ink-3)}
+.corpusline dd{margin:.15rem 0 0;font-size:clamp(1.15rem,1.7vw,1.5rem);font-weight:640;letter-spacing:-.02em;color:var(--ink);line-height:1.1}
+@media (max-width:26rem){
+  .corpusline{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .corpusline div:nth-child(3){border-left:0;padding-left:0}
+  .corpusline div:nth-child(n+3){border-top:1px solid var(--rule)}
+}
+
+/* ---- the composed sections: an index, a title, a note, a count ---- */
+.sechead.hm{grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"num count" "h2 count" "note count";align-items:end}
+.sechead.hm .num{grid-area:num;font-size:var(--meta-size);letter-spacing:.14em;font-weight:680;color:var(--accent);margin-bottom:.45rem}
+.sechead.hm h2{grid-area:h2}
+.sechead.hm .note{grid-area:note}
+.sechead.hm .count{grid-area:count;align-self:end}
+@media (max-width:44rem){
+  .sechead.hm{grid-template-columns:minmax(0,1fr);grid-template-areas:"num" "h2" "note" "count"}
+  .sechead.hm .count{justify-self:start;margin-top:.3rem}
+}
+/* a panel: one step above the ground, behind a one-pixel edge */
+.pane{background:var(--panel);border:1px solid var(--rule);padding:clamp(.9rem,2.5vw,1.75rem) clamp(.9rem,2.5vw,1.75rem) clamp(.6rem,2vw,1.25rem);
+  -webkit-print-color-adjust:exact;print-color-adjust:exact}
+.pane table.st{margin:0}
+/* a band on the panel ground; its panels step up once more */
+section.band.ground{background:var(--panel);border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);
+  -webkit-print-color-adjust:exact;print-color-adjust:exact}
+section.band.ground + section.band{border-top:0}
+section.band.ground .pane{background:var(--panel-2);border-color:var(--rule-strong)}
+/* two lifted figures, framed */
+.figband{display:grid;gap:var(--gap)}
+@media (min-width:64rem){.figband{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.figband .spec{background:var(--paper);border:1px solid var(--rule);padding:0 clamp(.9rem,2vw,1.4rem) 1.1rem;min-width:0}
+.figband .spec + .spec{border-top:1px solid var(--rule);padding-top:0}
+.figband .spec .frame{border-top:0;padding-top:1.1rem;overscroll-behavior-x:contain}
+@media (max-width:44rem){
+  /* the frame scrolls sideways so the figure's type stays at the size it was
+     drawn at; the fade is the sign that there is more, the same signal the
+     header's link strip uses */
+  .figband .spec .frame{-webkit-mask-image:linear-gradient(to right,#000 calc(100% - 2.2rem),transparent);mask-image:linear-gradient(to right,#000 calc(100% - 2.2rem),transparent)}
+  .figband .spec .frame:focus-within{-webkit-mask-image:none;mask-image:none}
+  .figband .spec{padding-inline:.75rem}
+}
+.figband .spec figcaption{grid-template-columns:minmax(0,1fr)}
+/* the tools as a ledger: one row each, the index, the title and its line,
+   the origin and whether it installs; two columns at desktop width */
+.toolledger{list-style:none;margin:0;padding:0;border-top:1px solid var(--ink)}
+.toolledger > li{display:grid;grid-template-columns:2.2rem minmax(0,1fr);gap:.2rem .6rem;
+  padding:.8rem 0;border-bottom:1px solid var(--rule);align-items:baseline}
+.toolledger .num{font-size:.72rem;color:var(--ink-3);letter-spacing:.06em;padding-top:.2rem}
+.toolledger .tl-t{min-width:0}
+.toolledger h3{display:inline;font-size:1.02rem;font-weight:600;letter-spacing:-.012em;margin:0;line-height:1.3}
+.toolledger h3 a{color:var(--ink);text-decoration:none}
+.toolledger h3 a:hover{color:var(--accent)}
+.toolledger .s{margin:.15rem 0 0;font-size:.9rem;color:var(--ink-2);line-height:1.4}
+.toolledger .tl-m{grid-column:2;margin:.1rem 0 0;display:flex;flex-wrap:wrap;gap:.35rem .8rem;align-items:center}
+.toolledger .tl-run{font-size:var(--meta-size);letter-spacing:var(--meta-track);text-transform:uppercase;
+  font-weight:var(--meta-weight);color:var(--tool)}
+@media (min-width:44rem){
+  .toolledger > li{grid-template-columns:2.2rem minmax(0,1fr) auto}
+  .toolledger .tl-m{grid-column:3;justify-self:end;text-align:right;margin:0}
+}
+@media (min-width:64rem){
+  .toolledger{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:3rem}
+}
+/* the notes follow the last band, and the note on the material closes them */
+.notes{border-top:0;margin-top:0;padding-top:clamp(2.5rem,5vw,4rem)}
+.notes .sechead.hm{margin-bottom:1.25rem}
+.notes .sechead.hm h2{font-size:clamp(1.45rem,3vw,2.05rem);letter-spacing:-.028em;text-transform:none;color:var(--ink);font-weight:640;margin:0}
+.notes .material{margin-top:2.5rem;padding-top:1.5rem;border-top:1px solid var(--rule)}
+.notes .material h3{font-size:1.05rem;margin:0 0 .5rem}
+.notes .material p{margin:0}
+@media print{
+  .stage-grid{min-height:0}
+  .pane,section.band.ground{background:#fff}
+}
+
+/* ==================================================================
+   THE SHELL PAGES ON THE HOME GRAMMAR: the eyebrow as a chip, the lifted
+   figures and specimens framed, the plates as tiles, controls in panels.
+   ================================================================== */
+.hero .eyebrow.accent,.atlas-side .eyebrow.accent{
+  display:inline-flex;align-items:center;gap:.55rem;color:var(--ink-2);
+  border:1px solid var(--rule-strong);padding:.34rem .7rem;margin:0 0 1.1rem;
+  -webkit-print-color-adjust:exact;print-color-adjust:exact
+}
+.hero .eyebrow.accent .tnum{color:var(--accent);font-weight:720}
+/* a lifted figure or a specimen inside a shelf row: framed, on the ground */
+.stmt-list .spec,.stmt-list .specimen{
+  background:var(--panel);border:1px solid var(--rule);padding:0 clamp(.9rem,2vw,1.4rem) 1.1rem;
+  -webkit-print-color-adjust:exact;print-color-adjust:exact
+}
+.stmt-list .spec .frame{border-top:0;padding-top:1rem}
+.stmt-list .specimen .fig{padding-top:1rem}
+.stmt-list .specimen .figcap{margin:.6rem 0 0;font-size:.85rem;color:var(--ink-2);line-height:1.45;max-width:44rem}
+@media (max-width:44rem){
+  .stmt-list .spec .frame,.stmt-list .specimen .fig{
+    -webkit-mask-image:linear-gradient(to right,#000 calc(100% - 2.2rem),transparent);
+    mask-image:linear-gradient(to right,#000 calc(100% - 2.2rem),transparent)}
+  .stmt-list .spec .frame:focus-within,.stmt-list .specimen .fig:focus-within{-webkit-mask-image:none;mask-image:none}
+}
+/* the four plates on the about page as tiles on a hairline grid */
+.caps{gap:1px;background:var(--rule);border:1px solid var(--rule);margin-top:1.5rem;
+  -webkit-print-color-adjust:exact;print-color-adjust:exact}
+.caps div{border-top:0;background:var(--paper);padding:1.25rem 1.35rem 1.4rem}
+/* the fact list as a panel */
+.facts.pane{border-top:1px solid var(--rule);padding-block:.4rem .5rem}
+.facts.pane div:last-child{border-bottom:0}
+/* the library's search and filters in a panel */
+.tools-bar{background:var(--panel);border:1px solid var(--rule);padding:1rem;margin-bottom:1rem;
+  -webkit-print-color-adjust:exact;print-color-adjust:exact}
+.tools-bar input[type=search]{background:var(--paper)}
+/* the coverage table inside its panel keeps its own rules */
+.pane .tw{margin:0}
+.pane .ctab{margin-top:0}
+/* Back to top keeps a tab stop while invisible (WCAG 2.4.7): hidden from
+   the tab order until it is shown */
+.totop{visibility:hidden;transition:opacity var(--t-in) ease,transform var(--t-in) ease,
+  background var(--t-fast) ease,border-color var(--t-fast) ease,visibility 0s linear var(--t-in)}
+.totop.on{visibility:visible;transition-delay:0s}
+@media (prefers-reduced-motion:reduce){.totop{transition:opacity .01s,visibility 0s}}

@@ -550,7 +550,7 @@
       if (t) bits.push(t + (t === 1 ? " table" : " tables"));
       meta.textContent = bits.join("  ·  ");
       share.textContent = r.getAttribute("data-k") + "  ·  " + r.getAttribute("data-c") +
-        "  ·  " + (w / total * 100).toFixed(1) + "% of everything written here";
+        "  ·  " + (w / total * 100).toFixed(1) + "% of the words drawn here";
       rest.hidden = true; out.hidden = false;
       /* Set directly rather than inside requestAnimationFrame: rAF does not
          run in a background tab, and a proportion bar that never arrives is
@@ -736,6 +736,43 @@
     }
     if (pts.length < 8) return;
 
+    /* The connective layer, from the same harvest the Atlas draws: the
+       documents with their centroids, which document each mark belongs to,
+       and the links between documents that edges() found in prose. Without
+       it the sphere still draws; with it, pointing at a mark draws the
+       chords its document records, as the Atlas does, on demand. */
+    var docs = [], own = [], lk = [];
+    try {
+      var dj = JSON.parse(document.getElementById("atlasmini-docs").textContent);
+      docs = dj.docs || [];
+      (dj.own || "").split(",").forEach(function (tok) {
+        var m = tok.split("*"), i = +m[0], n = m.length > 1 ? +m[1] : 1;
+        for (var r = 0; r < n; r++) own.push(i);
+      });
+      docs.forEach(function (d) { d.lk = []; d.marks = 0; });
+      for (var oi = 0; oi < own.length && oi < pts.length; oi++) {
+        if (docs[own[oi]]) docs[own[oi]].marks++;
+      }
+      (dj.lk || []).forEach(function (e) {
+        var a = docs[e[0]], b = docs[e[1]];
+        if (!a || !b || a === b) return;
+        var have = null, li;
+        for (li = 0; li < a.lk.length; li++) if (a.lk[li].g === b) { have = a.lk[li]; break; }
+        if (have) have.out = true; else a.lk.push({ g: b, out: true, into: false });
+        var back = null;
+        for (li = 0; li < b.lk.length; li++) if (b.lk[li].g === a) { back = b.lk[li]; break; }
+        if (back) back.into = true; else b.lk.push({ g: a, out: false, into: true });
+      });
+    } catch (e) { docs = []; own = []; }
+    if (own.length !== pts.length) { docs = []; own = []; }
+    var card = document.getElementById("atlasmini-card");
+    var cardT = card && card.querySelector(".gc-t"), cardD = card && card.querySelector(".gc-d");
+    /* A fine pointer hovers; a coarse one taps. A tap locks the document it
+       lands on, so the chords and the card hold until the next tap, and the
+       card's name is the link that opens it. */
+    var fine = !!(window.matchMedia && window.matchMedia("(pointer:fine)").matches);
+    var locked = false;
+
     /* atlas.js draws 0.55 + 0.028 * sqrt(words) plus a depth term. The
        payload carries sqrt(words) quantised to ten bands of 13, so the
        teaser draws the same rule at the band's centre, scaled by 0.55 for
@@ -753,9 +790,17 @@
     function colours() {
       var s = getComputedStyle(document.documentElement);
       C.i = s.getPropertyValue("--accent").trim() || "#14509b";
-      C.c = s.getPropertyValue("--ink-3").trim() || "#6f6c63";
+      C.c = s.getPropertyValue("--ink-3").trim() || "#66635a";
       C.t = s.getPropertyValue("--tool").trim() || "#0f6b58";
       C.r = s.getPropertyValue("--rule").trim() || "#ddd9cf";
+      C.e = s.getPropertyValue("--edge").trim() || "#8a847c";
+      C.p = s.getPropertyValue("--paper").trim() || "#faf9f6";
+      C.k = s.getPropertyValue("--ink").trim() || "#16150f";
+    }
+    function dark() {
+      var h = C.p.replace("#", "");
+      if (h.length === 3) h = h[0] + h[0];
+      return parseInt(h.slice(0, 2), 16) < 128;
     }
     colours();
     new MutationObserver(function () { colours(); _cc = {}; paint(); })
@@ -770,7 +815,13 @@
         (n & 255) + "," + a.toFixed(3) + ")";
     }
 
-    var W = 0, H = 0, dpr = 1, R = 0, yaw = 0.5, pitch = -0.3;
+    var W = 0, H = 0, dpr = 1, R = 0, S = 1, yaw = 0.5, pitch = -0.3;
+    /* The light: a halo outside the limb, the way the Atlas page's
+       silhouette is drawn, and a broader, fainter one on the ground behind.
+       Both sit outside the disc on purpose: a gradient laid over the marks
+       would darken the ground every mark is measured against. Lighting,
+       not data; data-light="off" removes it. */
+    var lit = host.getAttribute("data-light") !== "off";
     function size() {
       var r = host.getBoundingClientRect();
       dpr = Math.min(2, window.devicePixelRatio || 1);
@@ -785,7 +836,11 @@
       cv.height = Math.round(H * dpr);
       cv.style.width = W + "px";
       cv.style.height = H + "px";
-      R = Math.min(W, H) * 0.44;
+      R = Math.min(W, H) * (+host.getAttribute("data-fill") || 0.44);
+      /* The marks were drawn for a 350px box (R = 154). At hero scale the
+         same rule is drawn proportionally, so a bigger sphere is the same
+         picture larger and not the same dots further apart. */
+      S = Math.max(1, R / 154);
     }
 
     /* The depth alpha is quantised to twelve steps and the colour strings
@@ -803,37 +858,187 @@
         : rgba(C.i, a);
       return (_cc[key] = s);
     }
+    /* Every mark's screen position and depth from the last paint, kept so a
+       pointer can be matched to a mark without projecting the sphere again. */
+    var SX = new Float32Array(pts.length), SY = new Float32Array(pts.length),
+        SZ = new Float32Array(pts.length);
+    var cx = 0, cy = 0, _cy1 = 1, _sy1 = 0, _cp1 = 1, _sp1 = 0;
+    function project(v) {
+      var x1 = v[0] * _cy1 + v[2] * _sy1;
+      var z1 = -v[0] * _sy1 + v[2] * _cy1;
+      var y2 = v[1] * _cp1 - z1 * _sp1;
+      var z2 = v[1] * _sp1 + z1 * _cp1;
+      return [cx + x1 * R, cy - y2 * R, z2];
+    }
+    function nrm(v) {
+      var l = Math.sqrt(v[0] * v[0] + v[1] * v[1] + v[2] * v[2]) || 1;
+      return [v[0] / l, v[1] / l, v[2] / l];
+    }
+    /* A chord between two documents the corpus links: the great circle
+       between their centroids, with a tick at 0.72 of the way toward the
+       document being linked, so a mutual pair reads as one chord ticked at
+       both ends. The Atlas draws the same chord the same way. */
+    function chordTick(A, B, om, so, t) {
+      var k1 = Math.sin((1 - t) * om) / so, k2 = Math.sin(t * om) / so;
+      var k3 = Math.sin((1 - t - 0.02) * om) / so, k4 = Math.sin((t + 0.02) * om) / so;
+      var s = project([A[0] * k1 + B[0] * k2, A[1] * k1 + B[1] * k2, A[2] * k1 + B[2] * k2]);
+      if (s[2] < -0.02) return;
+      var s2 = project([A[0] * k3 + B[0] * k4, A[1] * k3 + B[1] * k4, A[2] * k3 + B[2] * k4]);
+      var dx = s2[0] - s[0], dy = s2[1] - s[1];
+      var dl = Math.sqrt(dx * dx + dy * dy) || 1;
+      var px = -dy / dl * 4 * Math.max(1, S * 0.8), py = dx / dl * 4 * Math.max(1, S * 0.8);
+      ctx.beginPath();
+      ctx.moveTo(s[0] - px, s[1] - py); ctx.lineTo(s[0] + px, s[1] + py);
+      ctx.strokeStyle = rgba(C.k, 0.8);
+      ctx.lineWidth = 1.2;
+      ctx.stroke();
+    }
+    function drawChord(a, b, tickAB, tickBA) {
+      var A = nrm(a.p), B = nrm(b.p);
+      var dot = Math.max(-1, Math.min(1, A[0] * B[0] + A[1] * B[1] + A[2] * B[2]));
+      var om = Math.acos(dot), so = Math.sin(om) || 1e-6;
+      ctx.strokeStyle = rgba(C.k, 0.6);
+      ctx.lineWidth = 1;
+      var started = false, seen = false;
+      ctx.beginPath();
+      for (var i = 0; i <= 48; i++) {
+        var t = i / 48;
+        var k1 = Math.sin((1 - t) * om) / so, k2 = Math.sin(t * om) / so;
+        var s = project([A[0] * k1 + B[0] * k2, A[1] * k1 + B[1] * k2, A[2] * k1 + B[2] * k2]);
+        if (s[2] < -0.02) { started = false; continue; }
+        seen = true;
+        if (!started) { ctx.moveTo(s[0], s[1]); started = true; }
+        else ctx.lineTo(s[0], s[1]);
+      }
+      ctx.stroke();
+      if (tickAB) chordTick(A, B, om, so, 0.72);
+      if (tickBA) chordTick(A, B, om, so, 0.28);
+      return seen;
+    }
+    var hover = -1;
     function paint() {
-      var cx = W / 2, cy = H / 2;
-      var cyaw = Math.cos(yaw), syaw = Math.sin(yaw);
-      var cpit = Math.cos(pitch), spit = Math.sin(pitch);
+      cx = W / 2; cy = H / 2;
+      _cy1 = Math.cos(yaw); _sy1 = Math.sin(yaw);
+      _cp1 = Math.cos(pitch); _sp1 = Math.sin(pitch);
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       ctx.clearRect(0, 0, W, H);
+      if (lit) {
+        var isDark = dark();
+        /* fades to nothing at the box edge, so the canvas boundary never
+           shows as a line through the light */
+        var edge = Math.min(W, H) / 2;
+        var g0 = ctx.createRadialGradient(cx, cy, R * 1.02, cx, cy, Math.max(R * 1.05, edge));
+        g0.addColorStop(0, rgba(C.i, isDark ? 0.09 : 0.05));
+        g0.addColorStop(0.55, rgba(C.i, isDark ? 0.03 : 0.015));
+        g0.addColorStop(1, rgba(C.i, 0));
+        ctx.fillStyle = g0;
+        ctx.fillRect(0, 0, W, H);
+        var g1 = ctx.createRadialGradient(cx, cy, R, cx, cy, R * 1.13);
+        g1.addColorStop(0, rgba(C.e, isDark ? 0.22 : 0.14));
+        g1.addColorStop(0.45, rgba(C.e, isDark ? 0.07 : 0.04));
+        g1.addColorStop(1, rgba(C.e, 0));
+        ctx.fillStyle = g1;
+        ctx.beginPath();
+        ctx.arc(cx, cy, R * 1.13, 0, Math.PI * 2);
+        ctx.arc(cx, cy, R, 0, Math.PI * 2, true);
+        ctx.fill();
+      }
       ctx.beginPath();
       ctx.arc(cx, cy, R, 0, Math.PI * 2);
-      ctx.strokeStyle = rgba(C.r, 0.6);
+      ctx.strokeStyle = rgba(lit ? C.e : C.r, 0.6);
       ctx.lineWidth = 1;
       ctx.stroke();
+      /* the document under the pointer: its marks come forward, the rest
+         hold; the chords its prose records are drawn under the marks */
+      var hd = hover >= 0 && own.length ? own[hover] : -1;
+      var drawn = 0;
+      if (hd >= 0 && docs[hd]) {
+        var D = docs[hd];
+        for (var lc = 0; lc < D.lk.length; lc++) {
+          if (drawChord(D, D.lk[lc].g, D.lk[lc].out, D.lk[lc].into)) drawn++;
+        }
+      }
+      /* the sphere says what it is showing: the chords with a visible
+         segment in this paint, readable by anything that wants to check */
+      if (hd >= 0) host.setAttribute("data-chords", drawn); else host.removeAttribute("data-chords");
       for (var i = 0; i < pts.length; i++) {
         var p = pts[i];
-        var x1 = p.x * cyaw + p.z * syaw;
-        var z1 = -p.x * syaw + p.z * cyaw;
-        var y2 = p.y * cpit - z1 * spit;
-        var z2 = p.y * spit + z1 * cpit;
+        var x1 = p.x * _cy1 + p.z * _sy1;
+        var z1 = -p.x * _sy1 + p.z * _cy1;
+        var y2 = p.y * _cp1 - z1 * _sp1;
+        var z2 = p.y * _sp1 + z1 * _cp1;
+        var sx = cx + x1 * R, sy = cy - y2 * R;
+        SX[i] = sx; SY[i] = sy; SZ[i] = z2;
         var t = (z2 + 1) / 2;
         var q = (t * 12) | 0;
-        var rad = BAND_R[p.b] + 1.5 * t;
+        var rad = (BAND_R[p.b] + 1.5 * t) * S;
+        var kin = hd >= 0 && own[i] === hd;
+        if (kin) { q = Math.min(12, q + 4); }
+        if (i === hover) rad += 2.4;
         ctx.beginPath();
-        ctx.arc(cx + x1 * R, cy - y2 * R, rad, 0, Math.PI * 2);
+        ctx.arc(sx, sy, rad, 0, Math.PI * 2);
         if (p.k === "c") {
           ctx.strokeStyle = tone("c", q);
-          ctx.lineWidth = 1;
+          ctx.lineWidth = Math.max(1, 0.9 * S);
           ctx.stroke();
         } else {
           ctx.fillStyle = tone(p.k, q);
           ctx.fill();
         }
+        if (i === hover) {
+          ctx.beginPath();
+          ctx.arc(sx, sy, rad + 4.5, 0, Math.PI * 2);
+          ctx.strokeStyle = rgba(C.k, 0.6); ctx.lineWidth = 1; ctx.stroke();
+        }
       }
+    }
+    /* the nearest front-facing mark within reach of the pointer */
+    function hit(mx, my) {
+      var best = -1, bd = 16 * 16;
+      for (var i = 0; i < pts.length; i++) {
+        if (SZ[i] <= 0) continue;
+        var dx = SX[i] - mx, dy = SY[i] - my, d = dx * dx + dy * dy;
+        if (d < bd) { bd = d; best = i; }
+      }
+      return best;
+    }
+    function placeCard() {
+      if (!card || hover < 0) return;
+      var w = card.offsetWidth || 240, h = card.offsetHeight || 50;
+      var x = SX[hover] + 16, y = SY[hover] - h / 2;
+      if (x + w > W - 4) x = SX[hover] - w - 16;
+      /* never off the box: a mark near the limb puts the card beside the
+         sphere on whichever side has room, clamped inside the canvas */
+      x = Math.max(4, Math.min(W - w - 4, x));
+      y = Math.max(4, Math.min(H - h - 4, y));
+      card.style.transform = "translate(" + Math.round(x) + "px," + Math.round(y) + "px)";
+    }
+    function setHover(i, lock) {
+      locked = !!lock && i >= 0;
+      if (i === hover) { if (card && i >= 0) card.hidden = false; return; }
+      hover = i;
+      var hd = i >= 0 && own.length ? own[i] : -1;
+      if (hd < 0 || !docs[hd]) {
+        hover = -1;
+        if (card) card.hidden = true;
+        host.removeAttribute("data-doc");
+        host.removeAttribute("data-locked");
+        host.style.cursor = fine ? "grab" : "";
+        paint();
+        return;
+      }
+      var D = docs[hd], out = 0, into = 0;
+      for (var li = 0; li < D.lk.length; li++) { if (D.lk[li].out) out++; if (D.lk[li].into) into++; }
+      if (cardT) { cardT.textContent = D.t; if (D.u) cardT.setAttribute("href", D.u); }
+      if (cardD) cardD.textContent = D.k + "  ·  " + D.marks + (D.marks === 1 ? " section" : " sections") +
+        (out ? "  ·  links " + out : "") + (into ? "  ·  linked by " + into : "") +
+        (!out && !into ? "  ·  no links recorded" : "");
+      if (card) card.hidden = false;
+      host.setAttribute("data-doc", D.t);
+      if (locked) host.setAttribute("data-locked", "1"); else host.removeAttribute("data-locked");
+      host.style.cursor = "pointer";
+      paint();
+      placeCard();
     }
 
     /* Idle contract, the same one the Atlas keeps: the sphere paints once
@@ -884,7 +1089,15 @@
         kick();
       });
       cv.addEventListener("pointermove", function (e) {
-        if (!dragT) return;
+        if (!dragT) {
+          /* pointing, not turning: match the pointer to a mark and draw
+             what its document records. One paint per change, no loop. */
+          if (!docs.length) return;
+          var rr = cv.getBoundingClientRect();
+          setHover(hit(e.clientX - rr.left, e.clientY - rr.top));
+          return;
+        }
+        if (hover >= 0) setHover(-1);
         var dx = e.clientX - lxT, dy = e.clientY - lyT;
         movedT += Math.abs(dx) + Math.abs(dy);
         yaw += dx * 0.006;
@@ -901,10 +1114,34 @@
       };
       cv.addEventListener("pointerup", endT);
       cv.addEventListener("pointercancel", endT);
+      /* leaving the canvas for the card keeps the card, so its link can be reached */
+      cv.addEventListener("pointerleave", function (e) {
+        if (dragT || locked) return;
+        if (e.relatedTarget && card && card.contains(e.relatedTarget)) return;
+        setHover(-1);
+      });
+      if (card) card.addEventListener("pointerleave", function (e) {
+        if (locked) return;
+        if (e.relatedTarget === cv) return;
+        setHover(-1);
+      });
     }
-    host.addEventListener("click", function () {
+    host.addEventListener("click", function (e) {
       if (movedT > 8) { movedT = 0; return; }
-      window.location.href = "atlas.html";
+      if (!fine) {
+        /* touch: a tap on a mark locks its document and draws what it
+           records; a tap on the void clears the lock, or with nothing
+           locked opens the Atlas. Each tap paints once. */
+        var rr = cv.getBoundingClientRect();
+        var i = docs.length ? hit(e.clientX - rr.left, e.clientY - rr.top) : -1;
+        if (i >= 0) { setHover(i, true); return; }
+        if (hover >= 0) { setHover(-1); return; }
+        window.location.href = "atlas.html";
+        return;
+      }
+      /* a fine pointer: a mark opens its document; the void opens the Atlas */
+      var hd = hover >= 0 && own.length ? own[hover] : -1;
+      window.location.href = (hd >= 0 && docs[hd] && docs[hd].u) ? docs[hd].u : "atlas.html";
     });
   })();
 

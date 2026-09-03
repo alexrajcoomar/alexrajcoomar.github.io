@@ -203,3 +203,35 @@ header.cm-mast{border-bottom:1px solid var(--rule-strong);padding:52px 0 26px;ma
 
 /* measure for the record lines: a claim, a concession or a source line is read, not scanned */
 .concession p,.claim-text,.claim-fals,.cm-src,.src{max-width:70ch}
+
+/* ---- wide record blocks keep the page from sliding ----
+   A verdict block and a transcript ledger are column-aligned ASCII, so they
+   cannot wrap without destroying the alignment they exist to show, and a wide
+   comparison table has the width its columns need. Both scroll inside their own
+   frame instead of widening the document, the same trade the AFM 291 sheet
+   makes for a wide table.
+
+   Measured at 390px before this rule: crucible-run-b pushed the document to
+   10,095px against a 390px viewport, so every line of a 60,153-word piece slid
+   sideways; crucible-run-c-transcript 951px, crucible-run-0-transcript 644px,
+   crucible-run-c 670px, crucible-run-0 614px, crucible-run-b-transcript 590px,
+   brittle-network 405px on a 717px table.
+
+   Scoped to screen: print keeps the behaviour it had. */
+@media screen{
+  pre{max-width:100%;overflow-x:auto}
+  table{max-width:100%}
+}
+@media screen and (max-width:40rem){
+  table{display:block;overflow-x:auto}
+}
+
+/* A source line on a run page is a bare URL, and a repro strip carries a bare
+   40-character hash. Neither has a break opportunity, so at 390px they set the
+   width of the whole document: crucible-run-b to 519px on a 455px link,
+   crucible-run-c-transcript to 951px on a 507px inline hash. Same declaration
+   already used on .claim-body above. Inline code only; a <pre> block keeps its
+   alignment and scrolls instead. */
+@media screen{
+  a[href],:not(pre) > code{overflow-wrap:anywhere}
+}
