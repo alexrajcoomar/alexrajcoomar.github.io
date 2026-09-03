@@ -550,7 +550,7 @@
       if (t) bits.push(t + (t === 1 ? " table" : " tables"));
       meta.textContent = bits.join("  ·  ");
       share.textContent = r.getAttribute("data-k") + "  ·  " + r.getAttribute("data-c") +
-        "  ·  " + (w / total * 100).toFixed(1) + "% of everything written here";
+        "  ·  " + (w / total * 100).toFixed(1) + "% of the words drawn here";
       rest.hidden = true; out.hidden = false;
       /* Set directly rather than inside requestAnimationFrame: rAF does not
          run in a background tab, and a proportion bar that never arrives is
@@ -828,15 +828,18 @@
       ctx.clearRect(0, 0, W, H);
       if (lit) {
         var isDark = dark();
-        var g0 = ctx.createRadialGradient(cx, cy, R * 1.02, cx, cy, R * 1.9);
-        g0.addColorStop(0, rgba(C.i, isDark ? 0.10 : 0.06));
-        g0.addColorStop(0.5, rgba(C.i, isDark ? 0.03 : 0.015));
+        /* fades to nothing at the box edge, so the canvas boundary never
+           shows as a line through the light */
+        var edge = Math.min(W, H) / 2;
+        var g0 = ctx.createRadialGradient(cx, cy, R * 1.02, cx, cy, Math.max(R * 1.05, edge));
+        g0.addColorStop(0, rgba(C.i, isDark ? 0.09 : 0.05));
+        g0.addColorStop(0.55, rgba(C.i, isDark ? 0.03 : 0.015));
         g0.addColorStop(1, rgba(C.i, 0));
         ctx.fillStyle = g0;
         ctx.fillRect(0, 0, W, H);
         var g1 = ctx.createRadialGradient(cx, cy, R, cx, cy, R * 1.13);
-        g1.addColorStop(0, rgba(C.e, isDark ? 0.30 : 0.16));
-        g1.addColorStop(0.45, rgba(C.e, isDark ? 0.10 : 0.05));
+        g1.addColorStop(0, rgba(C.e, isDark ? 0.22 : 0.14));
+        g1.addColorStop(0.45, rgba(C.e, isDark ? 0.07 : 0.04));
         g1.addColorStop(1, rgba(C.e, 0));
         ctx.fillStyle = g1;
         ctx.beginPath();
