@@ -894,19 +894,21 @@
       var om = Math.acos(dot), so = Math.sin(om) || 1e-6;
       ctx.strokeStyle = rgba(C.k, 0.6);
       ctx.lineWidth = 1;
-      var started = false;
+      var started = false, seen = false;
       ctx.beginPath();
       for (var i = 0; i <= 48; i++) {
         var t = i / 48;
         var k1 = Math.sin((1 - t) * om) / so, k2 = Math.sin(t * om) / so;
         var s = project([A[0] * k1 + B[0] * k2, A[1] * k1 + B[1] * k2, A[2] * k1 + B[2] * k2]);
         if (s[2] < -0.02) { started = false; continue; }
+        seen = true;
         if (!started) { ctx.moveTo(s[0], s[1]); started = true; }
         else ctx.lineTo(s[0], s[1]);
       }
       ctx.stroke();
       if (tickAB) chordTick(A, B, om, so, 0.72);
       if (tickBA) chordTick(A, B, om, so, 0.28);
+      return seen;
     }
     var hover = -1;
     function paint() {
@@ -944,12 +946,16 @@
       /* the document under the pointer: its marks come forward, the rest
          hold; the chords its prose records are drawn under the marks */
       var hd = hover >= 0 && own.length ? own[hover] : -1;
+      var drawn = 0;
       if (hd >= 0 && docs[hd]) {
         var D = docs[hd];
         for (var lc = 0; lc < D.lk.length; lc++) {
-          drawChord(D, D.lk[lc].g, D.lk[lc].out, D.lk[lc].into);
+          if (drawChord(D, D.lk[lc].g, D.lk[lc].out, D.lk[lc].into)) drawn++;
         }
       }
+      /* the sphere says what it is showing: the chords with a visible
+         segment in this paint, readable by anything that wants to check */
+      if (hd >= 0) host.setAttribute("data-chords", drawn); else host.removeAttribute("data-chords");
       for (var i = 0; i < pts.length; i++) {
         var p = pts[i];
         var x1 = p.x * _cy1 + p.z * _sy1;

@@ -946,9 +946,14 @@ def page_index():
         lifted(LIFTS[slug][0], LIFTS[slug][1], _by_slug_all[slug]["t"], LIFTS[slug][2], _by_slug_all[slug]["url"])
         for slug in ("the-trillion-dollar-vintage", "whose-losses-count") if slug in LIFTS and slug in _by_slug_all)
     tools = [p for p in P if p["k"] == "Tool"]
-    # the first tool leads and spans two tracks, so seven fill the grid
-    tiles = "\n".join(('      <li class="lead-tile">' if i == 0 else '      <li>')
-                      + feature_compact(p, 40 * i) + '</li>' for i, p in enumerate(tools))
+    # One row per tool, the way the statement lists a piece: a thirty-second
+    # reader on a phone gets the whole shelf in a screen, and the seven
+    # tiles this replaced cost 1,500px that reader never reached.
+    tiles = "\n".join(
+        f'      <li><span class="num tnum">{i:02d}</span>'
+        f'<div class="tl-t"><h3><a href="{p["url"]}">{esc(p["t"])}</a></h3><p class="s">{esc(p["s"])}</p></div>'
+        f'<p class="tl-m">{surf(p)}<span class="tl-run">{"Installs to a phone" if p["pwa"] else "Runs in the browser"}</span></p></li>'
+        for i, p in enumerate(tools, 1))
     lifts_count = (f'{len(LIFTS)} lifted on the <a class="inlink" href="research.html">research shelf</a>')
 
     body = f"""<section class="stage" aria-label="Who this is">
@@ -1032,9 +1037,9 @@ def page_index():
 <section class="band ground" id="tools" aria-labelledby="tools-h">
   <div class="shell">
   {sect_head(4, "Interactive tools", f"Things you use rather than read. Each opens and runs in the browser; {N_PWA} install to a phone home screen.", f"{N_TOOLS} tools", "tools-h")}
-  <ul class="toolgrid">
+  <ol class="toolledger">
 {tiles}
-  </ul>
+  </ol>
   </div>
 </section>
 
