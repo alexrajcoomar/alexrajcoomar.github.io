@@ -108,6 +108,13 @@ def kwords(n):
 # ------------------------------------------------------------ shell ----
 import atlas as atlas_mod
 import invariance
+import claims
+# the last content pass's own account of what it got wrong and left undone,
+# written by hand during the pass; printed on the colophon, not filed away
+try:
+    LEDGER_NOTES = json.load(open(os.path.join(HERE, "ledger-notes.json"), encoding="utf-8"))
+except Exception:
+    LEDGER_NOTES = {}
 
 # Five entries. The four shelves are one statement filtered four ways and are
 # reached from the statement's own subtotal rows and from Work, which is the
@@ -1476,7 +1483,35 @@ def pass_sentence():
             f'were left untouched, and {sm["new"]} were added in the pass. The ledger of every change '
             f'is <code>content/ledger.json</code>.</p>')
 
-def page_colophon():
+def limits_block():
+    """What the last pass got wrong and what it did not do, in the words it
+    wrote at the time. Absent when there are no notes."""
+    flaws = [x for x in (LEDGER_NOTES.get("flaws") or []) if isinstance(x, str)]
+    undone = [x for x in (LEDGER_NOTES.get("not_done") or []) if isinstance(x, str)]
+    if not flaws and not undone:
+        return ""
+    ps = LEDGER_NOTES.get("pass") or {}
+    when = ps.get("started", "")
+    li = lambda xs: "".join(f"<li>{esc(x)}</li>" for x in xs)
+    return f"""<section class="band colo ground limits" id="limits">
+  <div class="shell">
+  <div class="sechead"><h2>What the last pass got wrong, and what it left undone</h2><span class="count">{len(flaws) + len(undone)} notes</span></div>
+  <div class="prose measure">
+    <p>The content pass that began on {esc(when)} kept its own account of its mistakes and its
+    omissions in <code>build/ledger-notes.json</code>. A site that scores its own claims should also
+    print what it knows is wrong with itself, so the notes are here, as written, rather than in a
+    file a reader would have to know to open. The numbers in them are the pass's own, as it wrote
+    them; this build reproduces the notes and does not recompute them.</p>
+    <h3>Got wrong</h3>
+    <ol>{li(flaws)}</ol>
+    <h3>Left undone</h3>
+    <ol>{li(undone)}</ol>
+  </div>
+  </div>
+</section>
+"""
+
+def page_colophon(register=""):
     gt = figs.group_totals()
     ex = exceptions()
     fams = google_font_families()
@@ -1602,8 +1637,10 @@ def page_colophon():
     JavaScript adds only enhancements: the theme toggle, the search palette, the library filters, the
     reveal-on-scroll, and the count of passages this browser has opened on the Atlas.</p>
     <p>Accessibility: skip link, visible focus, headings in order, every figure labelled, colour never
-    load-bearing on its own, and reduced-motion respected. Every page prints: sticky elements release,
-    revealed content is forced visible, and figures avoid breaking across pages.</p>
+    load-bearing on its own, and reduced motion respected. The generated pages print: sticky elements
+    release, nothing stays hidden, and figures avoid breaking across pages. Each of those sentences is a
+    row in the <a href="#claims">register below</a>, with the check that tests it and the last result,
+    or the word asserted where nothing tests it yet.</p>
     <p>{ex['kinds']['doc']} of these pages began as Word documents and {ex['kinds']['md']} as markdown
     notes. Each was converted once, by a script that lives outside this repository, and the HTML it
     produced is the record: it is what the build counts, what the Atlas harvests and what a reader
@@ -1616,6 +1653,22 @@ def page_colophon():
     were not assigned by anyone.</p>
   </div>
 </section>
+
+<section class="band shell colo" id="claims">
+  <div class="sechead"><h2>What this site claims about itself, and what checks it</h2><span class="count">The register</span></div>
+  <div class="prose">
+    <p class="measure">Every sentence the generated pages say about this site is listed here beside the check
+    that tests it. A checked claim prints its last result with the denominator: so many of so many, on
+    so many pages. A claim nothing tests yet says <b>asserted</b> where a result would be. A claim
+    measured in a browser says <b>not yet measured</b> when the record is older than the pages it
+    describes, rather than repeating a result that was true of an earlier build. The build refuses to
+    publish when a checked claim fails, so a row can read held, asserted or not yet measured, and
+    never failed, on a page that reached you.</p>
+    {register}
+  </div>
+</section>
+
+{limits_block()}
 
 <section class="band colo ground" id="exceptions">
   <div class="shell">
@@ -3246,7 +3299,11 @@ SHELL_PAGES = ("index.html", "research.html", "coursework.html", "tools.html",
 
 def check_site():
     problems, files = [], set(os.listdir(OUT))
-    for sub in ("cards", "fonts"):
+    # every check tallies what it looked at, so the register on the colophon
+    # can print a denominator beside each claim rather than a bare pass
+    T = check_site.tally = {}
+    html_files = sorted(f for f in files if f.endswith(".html"))
+    for sub in ("cards", "fonts", "content"):
         if os.path.isdir(os.path.join(OUT, sub)):
             files |= {sub + "/" + f for f in os.listdir(os.path.join(OUT, sub))}
 
@@ -3264,8 +3321,10 @@ def check_site():
         text = open(os.path.join(OUT, f), encoding="utf-8", errors="ignore").read()
 
         # 1. every canonical resolves to a file that exists
+        T.setdefault("hosts", {"pages": 0})["pages"] += 1
         for m in re.finditer(r'<link rel="canonical" href="([^"]+)"', text):
             href = m.group(1)
+            T.setdefault("canonicals", {"n": 0})["n"] += 1
             if not href.startswith(SITE_URL):
                 problems.append(f"{f}: canonical points off-site, {href}")
                 continue
@@ -3284,11 +3343,15 @@ def check_site():
         # first: a page that builds its own markup client-side has href= inside
         # a template literal, and `${esc(s.url)}` is live code, not a dead link.
         prose = re.sub(r"<(script|style)\b[^>]*>.*?</\1>", "", text, flags=re.S | re.I)
+        tl = T.setdefault("links", {"n": 0, "pages": 0})
+        tl["pages"] += 1
         for m in re.finditer(r'(?:href|src)="([^"]+)"', prose):
             u = local(m.group(1))
             # reader.html builds a couple of URLs in script; those are not links
-            if u and "' +" not in u and u not in files:
-                problems.append(f"{f}: links to {u}, which does not exist")
+            if u and "' +" not in u:
+                tl["n"] += 1
+                if u not in files:
+                    problems.append(f"{f}: links to {u}, which does not exist")
 
     # 4. every manifest icon resolves
     for f in sorted(os.listdir(OUT)):
@@ -3300,6 +3363,7 @@ def check_site():
             problems.append(f"{f}: is not readable as JSON ({e})")
             continue
         for icon in data.get("icons", []):
+            T.setdefault("icons", {"n": 0})["n"] += 1
             if icon.get("src") not in files:
                 problems.append(f"{f}: names icon {icon.get('src')}, which does not exist")
 
@@ -3317,6 +3381,7 @@ def check_site():
             continue
         text = open(path, encoding="utf-8", errors="ignore").read()
         for fid in set(re.findall(r'id="(fs-[a-z0-9]+)"', text)):
+            T.setdefault("figscope", {"n": 0})["n"] += 1
             if ("#" + fid) not in sheet:
                 problems.append(f"{f}: shows figure {fid}, which has no colour "
                                 f"scope in figures.css")
@@ -3336,6 +3401,7 @@ def check_site():
         # each with its own body and its own single heading
         bodies = re.findall(r'<article class="docbody"[^>]*>(.*?)</article>', text, re.S)
         counts = [len(re.findall(r"<h1[\s>]", b)) for b in bodies] if bodies else [len(re.findall(r"<h1[\s>]", text[i:]))]
+        T.setdefault("onehead", {"docs": 0})["docs"] += len(counts)
         for n in counts:
             if n > 1:
                 problems.append(f"{f}: {n} top-level headings in a document body; "
@@ -3356,6 +3422,7 @@ def check_site():
             continue
         text = open(os.path.join(OUT, f), encoding="utf-8", errors="ignore").read()
         j = text.lower().find("</head>")
+        T.setdefault("heads", {"pages": 0})["pages"] += 1
         if j == -1:
             problems.append(f"{f}: has no </head>")
             continue
@@ -3386,6 +3453,7 @@ def check_site():
         for href in marks:
             f, _, frag = href.partition("#")
             want.setdefault(f, set()).add(frag)
+        T["atlas_marks"] = {"n": len(marks), "files": len(want)}
         for f, frags in sorted(want.items()):
             fp = os.path.join(OUT, f)
             if not os.path.exists(fp):
@@ -3403,6 +3471,7 @@ def check_site():
             problems.append("atlas.html: carries no marks")
 
     # 9. every listed piece has a file behind it
+    T["listed"] = {"n": len(P)}
     for x in P:
         if x["url"] not in files:
             problems.append(f"content/pieces.json: {x['slug']} points at {x['url']}, which does not exist")
@@ -3419,6 +3488,8 @@ def check_site():
         _full = {int(x) for x in open(
             os.path.join(HERE, "font-full-cmap.txt")).read().split(",")}
         _missing = {}
+        _seen_chars = set()
+        _ts = T.setdefault("subset", {"chars": 0, "pages": 0})
         for f in sorted(os.listdir(OUT)):
             if not f.endswith(".html"):
                 continue
@@ -3427,10 +3498,14 @@ def check_site():
             body = re.sub(r"<(script|style)\b[^>]*>.*?</\1>", "", raw,
                           flags=re.S | re.I)
             body = re.sub(r"<[^>]+>", "", body)
+            _ts["pages"] += 1
             for ch in set(body):
                 cp = ord(ch)
+                if cp > 32:
+                    _seen_chars.add(cp)
                 if cp > 32 and cp in _full and cp not in _sub:
                     _missing.setdefault(ch, f)
+        _ts["chars"] = len(_seen_chars)
         for ch, f in sorted(_missing.items()):
             problems.append(
                 "font subset: U+%04X (%r) in %s renders in the fallback, "
@@ -3456,7 +3531,9 @@ def check_site():
         return out
     try:
         _vocab = _hexes(open(os.path.join(OUT, "site.css"), encoding="utf-8").read())
-        _stray = (_hexes(RETURN_BAR) | _hexes(RETURN_PILL)) - _vocab - {"ffffff", "000000"}
+        _chrome = _hexes(RETURN_BAR) | _hexes(RETURN_PILL)
+        T["chrome"] = {"n": len(_chrome)}
+        _stray = _chrome - _vocab - {"ffffff", "000000"}
         for h in sorted(_stray):
             problems.append("injected chrome: #%s is not a colour site.css knows; "
                             "the chrome palette in build_site.py has drifted from "
@@ -3479,6 +3556,7 @@ def check_site():
             problems.append("atlas.html: %d marks and %d links read back, %d points placed"
                             % (len(marks), len(links), len(pts)))
         want = {p3(q["p"]) for q in pts}
+        T.setdefault("placement", {})["marks"] = len(marks)
         stray = [m for m in marks if m not in want]
         if stray:
             problems.append("atlas.html: %d mark(s) at positions the placement did not produce, first %s"
@@ -3488,6 +3566,7 @@ def check_site():
         itext = open(ipath, encoding="utf-8", errors="ignore").read()
         m = re.search(r'data-pts="([^"]*)"', itext)
         tease = [x for x in (m.group(1).split(";") if m else []) if x]
+        T.setdefault("placement", {})["teaser"] = len(tease)
         if len(tease) != len(pts):
             problems.append("index.html: teaser carries %d marks, %d points placed" % (len(tease), len(pts)))
         want2 = {"%.2f,%.2f,%.2f" % (q["p"][0], q["p"][1], q["p"][2]) for q in pts}
@@ -3502,6 +3581,7 @@ def check_site():
     # carries the sum of its owners' shares.
     if pts and os.path.exists(apath):
         ws = [int(x) for x in re.findall(r'<li data-p="[^"]*" data-w="(\d+)"', atext)]
+        T["weights"] = {"marks": len(ws), "sum": sum(ws)}
         if len(ws) != len(pts):
             problems.append("atlas.html: %d marks carry a weight, %d points placed" % (len(ws), len(pts)))
         elif sum(ws) != TOTAL_WORDS:
@@ -3518,6 +3598,7 @@ def check_site():
     # total, and the arithmetic is the reader's to check on the page, so the
     # build checks it first.
     st = surface_totals()
+    T["origins"] = {"keys": 4}
     for key, tot in (("n", len(P)), ("words", TOTAL_WORDS),
                      ("figures", TOTAL_FIGS), ("tables", TOTAL_TBLS)):
         got = sum(st[k][key] for k in st)
@@ -3534,6 +3615,7 @@ def check_site():
     essays = [x for x in P if x["k"] == "Essay"]
     top_essay = max(essays, key=lambda x: x["words"]) if essays else None
     top_piece = max(P, key=lambda x: x["words"])
+    T["superlatives"] = {"fields": 3 * len(P)}
     for x in P:
         text = " ".join(str(x.get(k) or "") for k in ("s", "blurb", "demo"))
         if re.search(r"\blargest essay\b", text, re.I) and top_essay and x is not top_essay:
@@ -3554,6 +3636,7 @@ def check_site():
     # left alone: note references and the small counts of a sentence.
     for line in _typed_numerals():
         problems.append(line)
+    T["numerals"] = {"n": getattr(_typed_numerals, "checked", 0), "pages": len(SHELL_PAGES)}
 
     # 15. nothing a piece claims has moved. Every numeral, reference,
     # provenance label, chip, anchor id, URL, heading and result sentence in
@@ -3563,6 +3646,7 @@ def check_site():
     inv_problems, inv_summary = invariance.check(OUT, P, extra=exceptions()["transcripts"])
     problems.extend(inv_problems)
     check_site.invariance = inv_summary
+    T["invariance"] = dict(inv_summary, listed=len(P), transcripts=len(exceptions()["transcripts"]))
 
     # 18. every self-hosted typeface carries every character its piece shows.
     # fonts/manifest.json records each subset's codepoints and the size of
@@ -3577,6 +3661,7 @@ def check_site():
             man = None
             problems.append("fonts/manifest.json: unreadable")
         if man:
+            T["fonts"] = {"files": len(man.get("files") or {})}
             by_piece = {}
             for fname, rec in (man.get("files") or {}).items():
                 if not os.path.exists(os.path.join(OUT, fname)):
@@ -3633,6 +3718,7 @@ def check_site():
     # plain line in your own words"), so a value opening with those two
     # words renders as "Built from Built from ..." on the page. Forty-two
     # of them did.
+    T["built_from"] = {"n": len(P)}
     for p in P:
         bf = (p.get("built_from") or "").strip()
         if not bf:
@@ -3648,11 +3734,129 @@ def check_site():
     # count the tree does not support; build/ledger.py rewrites it.
     if LEDGER:
         live = invariance.classes(OUT, P)
+        T["ledger"] = {"n": len(live)}
         for slug, cls in live.items():
             said = ((LEDGER.get("pieces") or {}).get(slug) or {}).get("class")
             if said != cls:
                 problems.append("content/ledger.json: %s is %s, the files say %s; run build/ledger.py"
                                 % (slug, said or "missing", cls))
+    # 19. headings on the generated pages run in order. A level skipped is a
+    # section a screen reader's outline cannot place; the colophon claims the
+    # order, so the build holds it.
+    th = T["headings"] = {"pages": 0, "headings": 0}
+    for f in SHELL_PAGES:
+        path = os.path.join(OUT, f)
+        if not os.path.exists(path):
+            continue
+        text = open(path, encoding="utf-8", errors="ignore").read()
+        body = re.sub(r"<(script|style|svg)\b[^>]*>.*?</\1>", " ", text, flags=re.S | re.I)
+        levels = [int(x) for x in re.findall(r"<h([1-6])[\s>]", body)]
+        th["pages"] += 1
+        th["headings"] += len(levels)
+        last = 0
+        for lv in levels:
+            if lv > last + 1 and last:
+                problems.append(f"{f}: a heading skips from h{last} to h{lv}")
+                break
+            last = lv
+
+    # 20. every generated page opens with a skip link to its main content
+    ts = T["skip"] = {"pages": 0}
+    for f in SHELL_PAGES:
+        path = os.path.join(OUT, f)
+        if not os.path.exists(path):
+            continue
+        text = open(path, encoding="utf-8", errors="ignore").read()
+        ts["pages"] += 1
+        if not re.search(r'<a class="skip" href="#main"', text) or 'id="main"' not in text:
+            problems.append(f"{f}: has no skip link to #main")
+
+    # 21. every figure on the generated pages carries an accessible name: a
+    # top-level svg on a real artboard has role="img" with a label, or a
+    # <title> a reader's assistive technology can read, or is marked
+    # decorative outright.
+    tf = T["fignames"] = {"pages": 0, "figures": 0}
+    for f in SHELL_PAGES:
+        path = os.path.join(OUT, f)
+        if not os.path.exists(path):
+            continue
+        text = open(path, encoding="utf-8", errors="ignore").read()
+        tf["pages"] += 1
+        depth = 0
+        for m in re.finditer(r"<(/?)svg\b([^>]*)>", text):
+            if m.group(1):
+                depth -= 1
+                continue
+            depth += 1
+            if depth != 1:
+                continue
+            attrs = m.group(2)
+            vb = re.search(r'viewBox="([^"]+)"', attrs)
+            area = 0
+            if vb:
+                q = [float(x) for x in re.split(r"[\s,]+", vb.group(1).strip()) if x]
+                area = (q[2] * q[3]) if len(q) == 4 else 0
+            if area < 6000:
+                continue
+            tf["figures"] += 1
+            inner = text[m.end():m.end() + 600]
+            named = (re.search(r'aria-label="[^"]+"|aria-labelledby="[^"]+"', attrs)
+                     or re.search(r'aria-hidden="true"', attrs)
+                     or re.search(r"<title[\s>]", inner))
+            if not named:
+                problems.append(f"{f}: a figure carries no accessible name")
+
+    # 22. nothing on any page is loaded from another origin: no script,
+    # stylesheet, image, frame, font or media with a src or href on another
+    # host, except the Google Fonts typefaces the exceptions name in the
+    # pieces that still load them; and no page or script touches the
+    # cookie API. Check 2 holds hostnames; this holds what is fetched.
+    te = T["external"] = {"pages": 0, "refs": 0, "allowed": 0, "cookie": 0}
+    allowed_pages = {p["url"] for p in exceptions()["fonts"]}
+    for f in html_files:
+        text = open(os.path.join(OUT, f), encoding="utf-8", errors="ignore").read()
+        te["pages"] += 1
+        te["cookie"] += len(re.findall(r"document\.cookie", text))
+        for m in re.finditer(r'<(?:script|link|img|iframe|source|video|audio|embed|object)\b[^>]*\b(?:src|href)="(https?://[^"]+)"', text):
+            te["refs"] += 1
+            host = re.sub(r"^https?://", "", m.group(1)).split("/")[0]
+            if f in allowed_pages and host in ("fonts.googleapis.com", "fonts.gstatic.com"):
+                te["allowed"] += 1
+            elif host == HOST:
+                te["allowed"] += 1
+            else:
+                problems.append(f"{f}: loads {m.group(1)} from another origin")
+        for m in re.finditer(r"url\((?:'|\")?(https?://[^)'\"]+)", text):
+            te["refs"] += 1
+            host = re.sub(r"^https?://", "", m.group(1)).split("/")[0]
+            if f in allowed_pages and host in ("fonts.googleapis.com", "fonts.gstatic.com"):
+                te["allowed"] += 1
+            elif host == HOST:
+                te["allowed"] += 1
+            else:
+                problems.append(f"{f}: loads {m.group(1)} from another origin")
+    for jsname in ("site.js", "atlas.js"):
+        jp = os.path.join(OUT, jsname)
+        if os.path.exists(jp):
+            te["cookie"] += len(re.findall(r"document\.cookie", open(jp, encoding="utf-8").read()))
+    if te["cookie"]:
+        problems.append("the cookie API is used %d time(s); the colophon says no cookies" % te["cookie"])
+
+    # 23. no em dash on any generated page. The pieces are content and their
+    # record holds them as written; their count is reported, not enforced.
+    td = T["emdash"] = {"generated_pages": 0, "in_generated": 0, "pieces_with": 0, "in_pieces": 0}
+    for f in html_files:
+        text = open(os.path.join(OUT, f), encoding="utf-8", errors="ignore").read()
+        c = text.count("\u2014")
+        if f in SHELL_PAGES:
+            td["generated_pages"] += 1
+            td["in_generated"] += c
+            if c:
+                problems.append(f"{f}: carries {c} em dash(es)")
+        elif f != "reader.html" and f != "admin.html":
+            if c:
+                td["pieces_with"] += 1
+                td["in_pieces"] += c
     return sorted(set(problems))
 
 
@@ -3767,6 +3971,13 @@ def _typed_numerals():
         raw = open(path, encoding="utf-8", errors="ignore").read()
         # the atlas index is the pieces' own headings, which are content
         raw = re.sub(r'<section class="areg".*?</section>', " ", raw, flags=re.S)
+        # the last pass's notes on the colophon are a record reproduced as
+        # written; their numerals are the pass's own, not this build's
+        raw = re.sub(r'<section[^>]*id="limits".*?</section>', " ", raw, flags=re.S)
+        # the register's tallies are the checks' own output, this count among
+        # them: a scan cannot hold a page to the count it is about to produce
+        raw = re.sub(r'<table class="ctab register".*?</table>', " ", raw, flags=re.S)
+        raw = re.sub(r'<p class="audit-line">.*?</p>', " ", raw, flags=re.S)
         raw = re.sub(r"<(script|style|svg)\b[^>]*>.*?</\1>", " ", raw, flags=re.S | re.I)
         # the statement rows are numbered by position, which is a count of
         # the list, not a quantity; the number is cut out before the scan
@@ -3804,7 +4015,7 @@ def main():
              "atlas.html": page_atlas(),
              "coursework.html": page_coursework(), "tools.html": page_tools(),
              "library.html": page_library(), "about.html": page_about(),
-             "colophon.html": page_colophon(), "404.html": page_404(),
+             "404.html": page_404(),
              "sitemap.xml": page_sitemap(), "robots.txt": page_robots(),
              "figures.css": figures_css}
     changed = []
@@ -3822,9 +4033,41 @@ def main():
 
     n, heads, navs, figs_named, tails, titles = add_returns_everywhere()
 
-    # After the pieces, not before: the service worker's version is a digest of
-    # the files it caches, and the pass above edits three of them. Generated
-    # first, the digest described the previous build and the file never settled.
+    # The register on the colophon prints what the checks found, and the
+    # checks read the colophon, so the two are run to a fixpoint: check,
+    # print the register, rewrite the colophon if it moved, check again. The
+    # register's shape does not depend on its numbers, so the second pass
+    # settles it; a cap guards the loop all the same, and only the check
+    # that ran on the colophon as finally written decides the build.
+    all_pages = list(SHELL_PAGES) + [p["url"] for p in P] + [k + ".html" for k in exceptions()["transcripts"]]
+    colpath = os.path.join(OUT, "colophon.html")
+    # the colophon is written only here, with the register in it: written
+    # first without it and again with it, every build rewrote the page
+    if not os.path.exists(colpath):
+        open(colpath, "w", encoding="utf-8").write(page_colophon())
+        changed.append("colophon.html")
+    settled = False
+    for _round in range(4):
+        problems = check_site()
+        ctx = {"tally": check_site.tally, "shell_pages": list(SHELL_PAGES), "all_pages": all_pages,
+               "audit": claims.audit_state(OUT, set(SHELL_PAGES), all_pages), "problems": []}
+        rows, summary = claims.build(ctx)
+        problems = sorted(set(problems + ctx["problems"]))
+        meta = (ctx["audit"]["audit"] or {}).get("meta") or {}
+        new_col = page_colophon(register=claims.render(rows, summary, meta))
+        on_disk = open(colpath, encoding="utf-8").read() if os.path.exists(colpath) else ""
+        if new_col == on_disk:
+            settled = True
+            break
+        open(colpath, "w", encoding="utf-8").write(new_col)
+        if "colophon.html" not in changed:
+            changed.append("colophon.html")
+    if not settled:
+        problems.append("colophon.html: the register did not settle in four rounds")
+    check_site.register = summary
+
+    # After the register settled, not before: the manifest and the worker
+    # digest every file the offline copy holds, the colophon among them.
     # The full-offline manifest: every file a reader needs to hold the whole
     # site on a phone, from the one selection rule offline_files() states.
     off_files = offline_files()
@@ -3883,8 +4126,6 @@ def main():
         ok = tails - len({x.split(":")[0] for x in TAIL_PROBLEMS})
         print(f"conversion sentence, footer and search block owned on {tails} converted pieces; "
               f"text outside the blocks byte-identical on {ok} of {tails}")
-
-    problems = check_site()
     inv = getattr(check_site, "invariance", None)
     if inv:
         n_tr = len(exceptions()["transcripts"])

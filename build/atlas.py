@@ -52,6 +52,13 @@ def _text(inner):
     return re.sub(r"\s+", " ", html.unescape(_TAG.sub(" ", inner))).strip()
 
 
+def _dashless(t):
+    """A heading's em dash becomes a colon in the label the Atlas shows, the
+    rule the content pass applied to every heading it touched; the anchor is
+    made from the heading as written, so a link is unchanged."""
+    return re.sub(r"\s*\u2014\s*", ": ", t)
+
+
 def _slug(s, used):
     base = re.sub(r"[^a-z0-9]+", "-", s.lower()).strip("-")[:48] or "section"
     if base[0].isdigit():
@@ -164,7 +171,7 @@ def harvest(out_dir, pieces):
                 edits.append((body[span[0]:span[1]], lvl, anchor))
             nxt = found[i + 1][3][0] if i + 1 < len(found) else len(body)
             kept.append(_words(body[span[1]:nxt]))
-            sections.append({"t": txt, "url": p["url"], "id": anchor,
+            sections.append({"t": _dashless(txt), "url": p["url"], "id": anchor,
                              "slug": p["slug"], "lvl": lvl})
         for sec, w in zip(sections[len(sections) - len(kept):], _apportion(measured, kept)):
             sec["w"] = w

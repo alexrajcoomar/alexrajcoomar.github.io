@@ -2107,3 +2107,22 @@ details.cgroup:not([open]) > summary.grouphead::before{content:"+"}
 details.cgroup > summary.grouphead:hover h3{color:var(--accent)}
 details.cgroup > summary.grouphead:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 details.cgroup + details.cgroup{margin-top:1.75rem}
+
+/* ------------------------------ the register ------------------------- */
+/* Every claim the site makes about itself beside the check that tests it.
+   The status word is the one thing set in a face and a weight of its own:
+   "held" in the ink, "asserted" and "not yet measured" in the third ink,
+   because absence is what a reader should be able to find at a glance. */
+.register .rg-claim{max-width:34rem}
+.register .rg-by{white-space:nowrap;color:var(--ink-3);font-variant-numeric:tabular-nums}
+.register .rg-res{color:var(--ink-2)}
+.register .rg-st{display:inline-block;font-size:.72rem;font-weight:680;letter-spacing:.08em;text-transform:uppercase;
+  padding:.05rem .4rem;border:1px solid var(--rule-strong);margin-right:.35rem;color:var(--ink);vertical-align:.08em}
+.register .rg-asserted .rg-st,.register .rg-open .rg-st{color:var(--ink-3);border-style:dashed}
+.register .rg-failed .rg-st{color:var(--paper);background:var(--ink);border-color:var(--ink)}
+.register .rg-note{display:block;margin-top:.2rem;font-size:.76rem;color:var(--ink-3)}
+.tw > .register{min-width:40rem}
+.audit-line{font-size:.9rem;color:var(--ink-2)}
+/* the pass's own account of its limits */
+.limits ol{padding-left:1.2rem}
+.limits li{margin:.5rem 0;color:var(--ink-2)}
