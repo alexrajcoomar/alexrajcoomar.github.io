@@ -102,7 +102,7 @@
   var results = document.getElementById("cmdk-list");
   var openBtn = document.getElementById("searchbtn");
   if (pal && input && results && work.length) {
-    var cur = 0, items = [], lastFocus = null;
+    var cur = 0, items = [];
 
     function score(it, t) {
       if (!t) return 1;
@@ -261,27 +261,25 @@
       if (a) noteRecent(a.getAttribute("href"));
     });
 
+    /* A native dialog: showModal() traps focus, Escape closes it, and focus
+       goes back to whatever opened it, all without a line here. The page
+       behind it is inert while it is open, and CSS stops the scroll. */
     function open() {
-      lastFocus = document.activeElement;
-      pal.hidden = false;
+      if (pal.open) return;
+      pal.showModal();
       input.setAttribute("aria-expanded", "true");
       input.value = "";
       render();
       input.focus();
-      document.body.style.overflow = "hidden";
     }
-    function close() {
-      pal.hidden = true;
-      input.setAttribute("aria-expanded", "false");
-      document.body.style.overflow = "";
-      if (lastFocus && lastFocus.focus) lastFocus.focus();
-    }
+    function close() { if (pal.open) pal.close(); }
+    pal.addEventListener("close", function () { input.setAttribute("aria-expanded", "false"); });
     if (openBtn) openBtn.addEventListener("click", open);
     input.addEventListener("input", render);
+    /* a click on the backdrop reaches the dialog element itself */
     pal.addEventListener("mousedown", function (e) { if (e.target === pal) close(); });
     pal.addEventListener("keydown", function (e) {
-      if (e.key === "Escape") { e.preventDefault(); close(); }
-      else if (e.key === "ArrowDown") { e.preventDefault(); move(1); }
+      if (e.key === "ArrowDown") { e.preventDefault(); move(1); }
       else if (e.key === "ArrowUp") { e.preventDefault(); move(-1); }
       else if (e.key === "Enter") {
         if (items.length) { e.preventDefault(); items[cur].querySelector("a").click(); }
@@ -302,8 +300,8 @@
       var tag = (e.target.tagName || "").toLowerCase();
       var typing = tag === "input" || tag === "textarea" || e.target.isContentEditable;
       if ((e.key === "k" || e.key === "K") && (e.metaKey || e.ctrlKey)) {
-        e.preventDefault(); pal.hidden ? open() : close();
-      } else if (typing || !pal.hidden || !singlesOn()) {
+        e.preventDefault(); pal.open ? close() : open();
+      } else if (typing || pal.open || !singlesOn()) {
         /* single-key routes only: the modified Cmd/Ctrl+K above stays on */
       } else if (e.key === "/") {
         e.preventDefault(); open();
@@ -313,7 +311,7 @@
         /* g then a letter: the two-stroke jump every reader of a long site
            already knows from mail clients and code hosts. */
         goArmed = Date.now();
-      } else if (!typing && pal.hidden && goArmed && Date.now() - goArmed < 1200) {
+      } else if (!typing && !pal.open && goArmed && Date.now() - goArmed < 1200) {
         var to = { h: "index.html", r: "research.html", c: "coursework.html",
                    t: "tools.html", l: "library.html", a: "about.html" }[e.key.toLowerCase()];
         goArmed = 0;
@@ -326,39 +324,24 @@
      The header already advertises "/" . Everything else was undiscoverable,
      which is the same as absent. */
   var goArmed = 0;
-  var keysLastFocus = null;
+  /* The sheet is a native dialog: the modal trap, Escape and the return of
+     focus are the browser's, and the Close button is a method="dialog"
+     form submit, so closing needs no script at all. */
   function keys(on) {
     var sheet = document.getElementById("keysheet");
     if (!sheet) return;
-    if (on) keysLastFocus = document.activeElement;
-    sheet.hidden = !on;
-    document.body.style.overflow = on ? "hidden" : "";
     if (on) {
+      if (!sheet.open) sheet.showModal();
       var c = sheet.querySelector(".close");
       if (c) c.focus();
-    } else if (keysLastFocus && keysLastFocus.focus) {
-      /* aria-modal promised a modal; a modal gives focus back */
-      keysLastFocus.focus();
+    } else if (sheet.open) {
+      sheet.close();
     }
   }
   (function () {
     var sheet = document.getElementById("keysheet");
     if (!sheet) return;
-    sheet.addEventListener("click", function (e) {
-      if (e.target === sheet || e.target.closest(".close")) keys(false);
-    });
-    sheet.addEventListener("keydown", function (e) {
-      if (e.key === "Escape") { e.preventDefault(); keys(false); }
-      else if (e.key === "Tab") {
-        /* aria-modal also promised focus stays inside. The sheet holds a
-           checkbox and a button, so the trap walks its own controls. */
-        var f = [].slice.call(sheet.querySelectorAll("input, button"));
-        if (!f.length) return;
-        var first = f[0], last = f[f.length - 1];
-        if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
-        else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
-      }
-    });
+    sheet.addEventListener("click", function (e) { if (e.target === sheet) keys(false); });
     var opener = document.getElementById("keysbtn");
     if (opener) opener.addEventListener("click", function () { keys(true); });
     /* Single-key shortcuts can be turned off, for speech input and for
@@ -457,7 +440,7 @@
       if (e.metaKey || e.ctrlKey || e.altKey) return;
       if (!singlesOn()) return;
       var pal = document.getElementById("cmdk");
-      if (pal && !pal.hidden) return;
+      if (pal && pal.open) return;
       var vis = [];
       sets.forEach(function (s) {
         s.rows.forEach(function (li) { if (!li.hidden) vis.push(li); });
