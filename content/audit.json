@@ -4,7 +4,7 @@
   "tool": "build/audit.js",
   "browser": "Chromium 141.0.7390.37",
   "date": "2026-09-03",
-  "commit": "f6211b9"
+  "commit": "b3810e9"
  },
  "pages": {
   "404.html": {
@@ -676,8 +676,8 @@
    },
    "errors": 0,
    "chrome": {
-    "a": 3582,
-    "b": 3537
+    "a": 3623,
+    "b": 3578
    },
    "print": {
     "stickyLeft": 0,
@@ -696,7 +696,7 @@
    "motion": {
     "animations": 0
    },
-   "inputs": "7a0bcefb9b76",
+   "inputs": "9af63336da54",
    "measured": "2026-09-03"
   },
   "coursework.html": {
@@ -1182,7 +1182,7 @@
    "motion": {
     "animations": 0
    },
-   "inputs": "e5d5284cfeb9",
+   "inputs": "2405b00e05a2",
    "measured": "2026-09-03"
   },
   "kennedy-dossier.html": {

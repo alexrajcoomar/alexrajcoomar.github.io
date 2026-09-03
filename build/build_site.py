@@ -1125,7 +1125,7 @@ def page_index():
 <section class="notes shell" id="notes" aria-labelledby="notes-h">
   {sect_head(5, "Notes to the statement", "", "", "notes-h")}
   <ol>
-    <li id="n1"><b>Basis of measurement.</b> Words are the text of the rendered page after its own scripts have run, with script, style and noscript blocks removed and collapsed answers included. A figure is a top-level drawing covering at least 6,000 square units. A table is a table. All three are counted in a headless browser after the page's own scripts have run. Minutes are the one figure on this page that is derived rather than counted: words divided by {WPM} words per minute, rounded. A page under {DOC_MIN:,} rendered words carries none, and neither does an interactive tool. <a href="colophon.html#n1">The definitions in full.</a></li>
+    <li id="n1"><b>Basis of measurement.</b> Words are the text of the rendered page after its own scripts have run, with script, style and noscript blocks removed and collapsed answers included. A figure is a top-level drawing covering at least 6,000 square units. A table is a table. All three are counted in a headless browser after the page's own scripts have run. Minutes are the one figure on this page that is derived rather than counted: words divided by {WPM} words per minute, rounded. A page under {DOC_MIN:,} rendered words carries none, and neither does an interactive tool. <a href="colophon.html#definitions">The definitions in full.</a></li>
     <li id="n2"><b>Origin.</b> Independent means I chose the question and finished it without a course asking for it: {ind['n']} pieces, the {n_feat_ind} above and {more} more on the <a href="research.html">research shelf</a>. Coursework means built while taking one of {len(COURSES)} courses, for the assessment that was coming: {ST['course']['n']} pieces, built from my course materials with AI assistance and then verified. Anything built alongside a course is filed as coursework even where the question was my own.</li>
     <li id="n3"><b>Personal.</b> {ST['personal']['n']} pieces read and written for their own sake, with no claim on either shelf. They are counted above and listed in the <a href="library.html#personal">library</a>, not here.</li>
     <li id="n4"><b>Exceptions.</b> {fonts_sentence} {n_undrawn} pieces render under {DOC_MIN:,} words and are counted above but not drawn in the figure; together they hold {ex['undrawn_words']:,} words. {len(ex['transcripts'])} run transcripts are measured but not listed. The {N_TOOLS} interactive tools sit on the shelf of the course or research that produced them and are counted once. <a href="colophon.html#exceptions">The exceptions, by name.</a></li>
@@ -1615,7 +1615,7 @@ def page_colophon(register=""):
 <section class="band shell colo">
   <div class="sechead"><h2>The measurements</h2><span class="count">Definitions</span></div>
   <div class="prose measure">
-    <dl>
+    <dl id="definitions">
 {defs_html()}
       <dt>Where the counts stop</dt>
       <dd>The interactive tools read as {min(p['words'] for p in P if p['k']=='Tool')} to {max(p['words'] for p in P if p['k']=='Tool')}

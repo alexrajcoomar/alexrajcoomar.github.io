@@ -1,6 +1,6 @@
 {
- "version": "b583f4d3ee19",
- "bytes": 18837692,
+ "version": "b3d187230b3e",
+ "bytes": 18837718,
  "files": [
   "InterVariable-sub.woff2",
   "about.html",
@@ -231,7 +231,7 @@
   "brittle-network.html": "816d867ef26d",
   "business-law-primer.html": "167beba899bc",
   "case-method.css": "9bc2c3a6e5e4",
-  "colophon.html": "6b12d5c05e87",
+  "colophon.html": "a17fe1f28b05",
   "coursework.html": "512a386d1caa",
   "crucible-cockpit.html": "9dad6784151b",
   "crucible-run-0-transcript.html": "df08c4dcf3d4",
@@ -326,7 +326,7 @@
   "hype-cycle.html": "9bb1ba76871d",
   "ifrs15-judgment-trainer.html": "df2736245c3f",
   "ifrs15-verification-memo.html": "e36aa5d62d7d",
-  "index.html": "35755846798b",
+  "index.html": "95a9ec20d35b",
   "inputs-as-filed.csv": "2a748baaeae0",
   "kennedy-dossier.html": "92cbbfd4a78a",
   "law-arena-180.png": "2dd03b87f1e5",
