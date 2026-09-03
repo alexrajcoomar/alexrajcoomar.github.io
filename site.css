@@ -1867,3 +1867,125 @@ a.nref{position:relative;display:inline;padding:.75rem .45rem;margin:0 -.35rem 0
   header.top nav.main{flex-basis:100%;order:3;display:flex;flex-wrap:wrap;gap:.2rem 1rem;overflow:visible;-webkit-mask-image:none;mask-image:none}
   header.top .bar{flex-wrap:wrap;gap:.3rem 1.25rem}
 }
+
+/* ==================================================================
+   THE STAGE. The home page's first screen: the identity, the claim and
+   the proof of it, the sphere, drawn large with the void around it.
+   Grid areas, not source order, decide where the sphere sits: on a phone
+   it follows the identity (name, standing, term, address) so it is on the
+   first screen, and the claim and the corpus line follow it; at desktop
+   width the copy stacks on the left and the sphere takes the right.
+   ================================================================== */
+.stage{padding-block:clamp(1.25rem,3vw,2.5rem) clamp(2.25rem,4vw,3.5rem)}
+.stage-grid{
+  display:grid;gap:1.1rem 0;align-items:start;
+  grid-template-columns:minmax(0,1fr);
+  grid-template-areas:"chip" "ident" "globe" "display" "method" "line";
+}
+.stage .eyeb{grid-area:chip;justify-self:start;margin:0}
+.stage .ident{grid-area:ident}
+.stage .stage-globe{grid-area:globe;margin-block:.5rem .25rem}
+.stage .display{grid-area:display;margin:.5rem 0 0;font-size:clamp(2.3rem,4.6vw,3.9rem)}
+.stage .method{grid-area:method;margin:0;font-size:.95rem;line-height:1.55;color:var(--ink-2);max-width:34rem}
+.stage .corpusline{grid-area:line;margin:.35rem 0 0}
+@media (min-width:64rem){
+  .stage-grid{
+    grid-template-columns:minmax(0,34rem) minmax(0,1fr);
+    grid-template-areas:"chip globe" "ident globe" "display globe" "method globe" "line globe";
+    grid-template-rows:auto auto auto auto auto;
+    align-content:center;gap:1.1rem clamp(3rem,6vw,6rem);
+    min-height:min(calc(100svh - 7rem),50rem);
+  }
+  .stage .stage-globe{align-self:center;margin:0}
+  .stage .display{margin-top:1rem}
+}
+/* the eyebrow chip: the standing in the accent, the owner's own line after it */
+.eyeb{
+  display:inline-flex;align-items:center;gap:.55rem;
+  font-size:var(--meta-size);letter-spacing:var(--meta-track);text-transform:uppercase;
+  font-weight:var(--meta-weight);color:var(--ink-2);
+  border:1px solid var(--rule-strong);padding:.34rem .7rem;
+  -webkit-print-color-adjust:exact;print-color-adjust:exact
+}
+.eyeb b{color:var(--accent);font-weight:720;letter-spacing:.1em}
+/* the identity: name, programme, term, address; one contract with .id */
+.ident .name{font-size:clamp(1.55rem,2.2vw,1.9rem);font-weight:700;letter-spacing:-.022em;line-height:1.1;margin:0}
+.ident p{margin:.4rem 0 0;font-size:.95rem;line-height:1.45;color:var(--ink-2)}
+.ident .standing .ph{display:none}.ident .standing .dt{display:inline}
+@media (max-width:44rem){.ident .standing .ph{display:inline}.ident .standing .dt{display:none}}
+.ident .links{display:flex;flex-wrap:wrap;gap:.3rem .9rem;margin-top:.6rem;font-size:.95rem}
+.ident .links a{color:var(--accent);text-decoration:underline;text-decoration-color:color-mix(in srgb,var(--accent) 45%,transparent);text-underline-offset:.15em}
+/* the sphere at hero scale: a square box, the void inside it */
+.stage-globe .tease-globe.hero-globe{aspect-ratio:1/1;max-height:none;width:100%;max-width:min(100%,42rem);margin-inline:auto;cursor:grab;touch-action:pan-y}
+.stage-globe .globe-cap{text-align:center;margin-top:.2rem}
+.stage-globe .note{font-size:.9rem;color:var(--ink-2);max-width:30rem;margin:.5rem auto 0;text-align:center}
+/* the corpus in four figures: label over value, hairlines between */
+.corpusline{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)}
+.corpusline div{padding:.7rem .75rem .65rem 0;margin:0}
+.corpusline div + div{border-left:1px solid var(--rule);padding-left:.75rem}
+.corpusline dt{font-size:var(--meta-size);letter-spacing:var(--meta-track);text-transform:uppercase;font-weight:var(--meta-weight);color:var(--ink-3)}
+.corpusline dd{margin:.15rem 0 0;font-size:clamp(1.15rem,1.7vw,1.5rem);font-weight:640;letter-spacing:-.02em;color:var(--ink);line-height:1.1}
+@media (max-width:26rem){
+  .corpusline{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .corpusline div:nth-child(3){border-left:0;padding-left:0}
+  .corpusline div:nth-child(n+3){border-top:1px solid var(--rule)}
+}
+
+/* ---- the composed sections: an index, a title, a note, a count ---- */
+.sechead.hm{grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"num count" "h2 count" "note count";align-items:end}
+.sechead.hm .num{grid-area:num;font-size:var(--meta-size);letter-spacing:.14em;font-weight:680;color:var(--accent);margin-bottom:.45rem}
+.sechead.hm h2{grid-area:h2}
+.sechead.hm .note{grid-area:note}
+.sechead.hm .count{grid-area:count;align-self:end}
+@media (max-width:44rem){
+  .sechead.hm{grid-template-columns:minmax(0,1fr);grid-template-areas:"num" "h2" "note" "count"}
+  .sechead.hm .count{justify-self:start;margin-top:.3rem}
+}
+/* a panel: one step above the ground, behind a one-pixel edge */
+.pane{background:var(--panel);border:1px solid var(--rule);padding:clamp(.9rem,2.5vw,1.75rem) clamp(.9rem,2.5vw,1.75rem) clamp(.6rem,2vw,1.25rem);
+  -webkit-print-color-adjust:exact;print-color-adjust:exact}
+.pane table.st{margin:0}
+/* a band on the panel ground; its panels step up once more */
+section.band.ground{background:var(--panel);border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);
+  -webkit-print-color-adjust:exact;print-color-adjust:exact}
+section.band.ground + section.band{border-top:0}
+section.band.ground .pane{background:var(--panel-2);border-color:var(--rule-strong)}
+/* two lifted figures, framed */
+.figband{display:grid;gap:var(--gap)}
+@media (min-width:64rem){.figband{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.figband .spec{background:var(--paper);border:1px solid var(--rule);padding:0 clamp(.9rem,2vw,1.4rem) 1.1rem;min-width:0}
+.figband .spec + .spec{border-top:1px solid var(--rule);padding-top:0}
+.figband .spec .frame{border-top:0;padding-top:1.1rem;overscroll-behavior-x:contain}
+@media (max-width:44rem){
+  /* the frame scrolls sideways so the figure's type stays at the size it was
+     drawn at; the fade is the sign that there is more, the same signal the
+     header's link strip uses */
+  .figband .spec .frame{-webkit-mask-image:linear-gradient(to right,#000 calc(100% - 2.2rem),transparent);mask-image:linear-gradient(to right,#000 calc(100% - 2.2rem),transparent)}
+  .figband .spec .frame:focus-within{-webkit-mask-image:none;mask-image:none}
+  .figband .spec{padding-inline:.75rem}
+}
+.figband .spec figcaption{grid-template-columns:minmax(0,1fr)}
+/* the tools as tiles on a hairline grid */
+.toolgrid{list-style:none;margin:0;padding:0;display:grid;gap:1px;background:var(--rule);border:1px solid var(--rule);
+  -webkit-print-color-adjust:exact;print-color-adjust:exact}
+.toolgrid > li{background:var(--paper);padding:0 1.25rem;min-width:0}
+.toolgrid .feature{border-top:0;padding:1.1rem 0 1rem;height:100%}
+.toolgrid .feature p{margin-bottom:.7rem}
+.toolgrid .feature .sig{margin-top:.2rem;margin-bottom:.6rem}
+/* inside the tools grid the kind chip already says Tool, so the signature's
+   "Interactive" and its separator are redundant and the line holds to one */
+.toolgrid .feature .sig > span:first-child,.toolgrid .feature .sig > i:first-of-type{display:none}
+@media (min-width:44rem){.toolgrid{grid-template-columns:repeat(2,minmax(0,1fr))}.toolgrid .lead-tile{grid-column:span 2}}
+@media (min-width:64rem){.toolgrid{grid-template-columns:repeat(4,minmax(0,1fr))}.toolgrid .lead-tile{grid-column:span 2}
+  .toolgrid .lead-tile .feature h3{font-size:1.35rem;max-width:20ch}}
+/* the notes follow the last band, and the note on the material closes them */
+.notes{border-top:0;margin-top:0;padding-top:clamp(2.5rem,5vw,4rem)}
+.notes .sechead.hm{margin-bottom:1.25rem}
+.notes .sechead.hm h2{font-size:clamp(1.45rem,3vw,2.05rem);letter-spacing:-.028em;text-transform:none;color:var(--ink);font-weight:640;margin:0}
+.notes .material{margin-top:2.5rem;padding-top:1.5rem;border-top:1px solid var(--rule)}
+.notes .material h3{font-size:1.05rem;margin:0 0 .5rem}
+.notes .material p{margin:0}
+@media print{
+  .stage-grid{min-height:0}
+  .toolgrid,.pane,section.band.ground{background:#fff}
+}

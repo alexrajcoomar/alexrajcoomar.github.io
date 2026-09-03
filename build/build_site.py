@@ -759,8 +759,17 @@ def corpus_svg():
     out.append('</svg>')
     return "\n".join(out)
 
+def tools_drawn():
+    """Which interactive tools reach the drawing floor. Three render a full
+    document on load and are drawn like one; the caption used to say none
+    were, which the drawing itself contradicted."""
+    drawn = [p for p in P if p["k"] == "Tool" and p["is_doc"]]
+    undrawn = [p for p in P if p["k"] == "Tool" and not p["is_doc"]]
+    return drawn, undrawn
+
 def corpus_table():
     docs = [p for p in P if p["is_doc"]]
+    t_drawn, t_undrawn = tools_drawn()
     rows = []
     for key, title, _ in GROUPS:
         items = sorted([p for p in docs if p["surface"] == key], key=lambda p: -p["words"])
@@ -772,8 +781,8 @@ def corpus_table():
             rows.append(f'<tr><td><a href="{p["url"]}">{esc(p["t"])}</a></td>'
                         f'<td>{esc(p["k"])}{" &middot; " + esc(p["c"]) if p["c"] else ""}</td>'
                         f'<td class="tnum">{p["words"]:,}</td></tr>')
-    return ('<table class="ctab"><caption>Every document, with the word count each square is drawn from. '
-            'Interactive tools are not drawn: their content is held in code rather than prose.</caption>'
+    return (f'<table class="ctab"><caption>Every document at or above {DOC_MIN:,} rendered words, with the word count each square is drawn from. '
+            f'{len(t_drawn)} of the {N_TOOLS} interactive tools reach that floor and are drawn; the other {len(t_undrawn)} hold their content in code rather than prose and are not.</caption>'
             '<thead><tr><th scope="col">Piece</th><th scope="col">Kind</th>'
             '<th scope="col" class="tnum">Words</th></tr></thead><tbody>'
             + "".join(rows) + '</tbody></table>')
@@ -845,12 +854,62 @@ def exceptions():
 CAPTIONS = []
 
 # ------------------------------------------------------------ pages ----
+def eyebrow_chip():
+    """The standing and the owner's own eyebrow line, as one chip."""
+    st = f'<b>{esc(STANDING)}</b> ' if STANDING else ""
+    return f'<p class="eyeb">{st}{esc(S["eyebrow"])}</p>'
+
+def hero_identity():
+    """Who this is, in four lines: the same fields identity_block() prints,
+    laid out for the stage. Every optional line renders nothing when its
+    value is empty, so no placeholder can look production-ready."""
+    aff = S.get("affiliation") or []
+    uni = esc(aff[0]) if aff else ""
+    school = esc(aff[1]) if len(aff) > 1 else ""
+    where = ", ".join(x for x in (school, uni) if x)
+    facts = []
+    if COOP_TERM:
+        facts.append(f'<p class="term">Co-op term: {esc(COOP_TERM)}</p>')
+    if GRAD_YEAR:
+        facts.append(f'<p class="term">Graduating {esc(GRAD_YEAR)}</p>')
+    links = profile_links("") + [f'<a href="mailto:{esc(EMAIL)}">{esc(EMAIL)}</a>']
+    return (f'<div class="ident">\n'
+            f'      <h1 class="name">{esc(SHORT)}</h1>\n'
+            f'      <p class="standing"><span class="ph">Accounting and Financial Management (Analytics)'
+            + (f', {uni}' if uni else '') + '</span><span class="dt">Accounting and Financial Management, Analytics stream'
+            + (f'<br>{where}' if where else "") + '</span></p>\n      '
+            + "\n      ".join(facts) + ("\n      " if facts else "")
+            + f'<p class="links">{"".join(links)}</p>\n    </div>')
+
+def corpus_line():
+    """The corpus in four figures, each the same variable the statement's
+    total row prints, so the two cannot drift. A definition list, because
+    each cell is a label and its value."""
+    cells = (("Pieces", n(len(P))), ("Words", n(TOTAL_WORDS)),
+             ("Figures", n(TOTAL_FIGS)), ("Tables", n(TOTAL_TBLS)))
+    return ('<dl class="corpusline">' + "".join(
+        f'<div><dt>{a}</dt><dd class="tnum">{b}</dd></div>' for a, b in cells) + '</dl>')
+
+def sect_head(num, title, note="", count="", hid=None):
+    """A section head in the home grammar: the index of the section in the
+    sequence, the title, an optional note, and an optional count at the
+    right. The index is a position, not a quantity, and is cut out before
+    the numeral scan like the statement's row numbers."""
+    idattr = f' id="{hid}"' if hid else ""
+    return (f'<div class="sechead hm">\n'
+            f'    <span class="num tnum">{num:02d}</span>\n'
+            f'    <h2{idattr}>{title}</h2>\n'
+            + (f'    <p class="note">{note}</p>\n' if note else "")
+            + (f'    <span class="count">{count}</span>\n' if count else "")
+            + '  </div>')
+
 def page_index():
     feats  = [p for p in P if p["featured"]][:6]
     gt = figs.group_totals()
     ex = exceptions()
     fams = google_font_families()
     ATLAS_N, ATLAS_PTS, ATLAS_SHARED = atlas_teaser_bits()
+    F = atlas_facts()
     n_undrawn = len(ex["undrawn"])
 
     rows = []
@@ -881,12 +940,35 @@ def page_index():
                       if ex["fonts"] else
                       "No piece loads a typeface from another origin; nothing on the site makes an external request.")
 
-    body = f"""<div class="hero shell stmt-hero">
-  <div class="id">
-    {identity_block()}
+    # two figures lifted from their pieces, each with the rule the shelf gives it
+    figs_html = "\n".join(
+        lifted(LIFTS[slug][0], LIFTS[slug][1], _by_slug_all[slug]["t"], LIFTS[slug][2], _by_slug_all[slug]["url"])
+        for slug in ("the-trillion-dollar-vintage", "whose-losses-count") if slug in LIFTS and slug in _by_slug_all)
+    tools = [p for p in P if p["k"] == "Tool"]
+    # the first tool leads and spans two tracks, so seven fill the grid
+    tiles = "\n".join(('      <li class="lead-tile">' if i == 0 else '      <li>')
+                      + feature_compact(p, 40 * i) + '</li>' for i, p in enumerate(tools))
+    lifts_count = (f'{len(LIFTS)} lifted on the <a class="inlink" href="research.html">research shelf</a>')
+
+    body = f"""<section class="stage" aria-label="Who this is">
+  <div class="shell stage-grid">
+    {eyebrow_chip()}
+    {hero_identity()}
+    <p class="display">{S["headline"]}</p>
+    <p class="method">Every figure below is counted from the published files by the build, never typed. The notes define each column and state every exception.</p>
+    {corpus_line()}
+    <div class="stage-globe">
+      <div class="tease-globe hero-globe" id="atlasmini" data-pts="{ATLAS_PTS}" data-fill="0.44" aria-hidden="true"></div>
+      <p class="globe-cap"><a class="inlink" href="atlas.html">{ATLAS_N} sections, every one a link <span aria-hidden="true">&#8594;</span></a></p>
+      <noscript><p class="note">The sphere needs a browser that runs scripts.
+      The <a class="inlink" href="atlas.html">full index</a> does not.</p></noscript>
+    </div>
   </div>
-  <div class="stmt">
-    <h2>Statement of work <span><a href="#notes">Notes 1 to 6 &#8595;</a></span></h2>
+</section>
+
+<section class="band shell" id="statement" aria-labelledby="stmt-h">
+  {sect_head(1, "Statement of work", "Six featured pieces, then every origin, then the whole.", f'<a class="inlink" href="#notes">Notes 1 to 6 &#8595;</a>', "stmt-h")}
+  <div class="pane">
     <table class="st">
       {stmt_head_cells()}
       <tbody>
@@ -895,32 +977,19 @@ def page_index():
       </tbody>
     </table>
   </div>
-  <div class="globe">
-    <div class="tease-globe" id="atlasmini" data-pts="{ATLAS_PTS}" aria-hidden="true"></div>
-    <p class="globe-cap"><a class="inlink" href="atlas.html">{ATLAS_N} sections, every one a link <span aria-hidden="true">&#8594;</span></a></p>
-    <noscript><p class="note">The sphere needs a browser that runs scripts.
-      The <a class="inlink" href="atlas.html">full index</a> does not.</p></noscript>
-  </div>
-</div>
-
-<section class="notes shell" id="notes" aria-labelledby="notes-h">
-  <h2 id="notes-h">Notes to the statement</h2>
-  <ol>
-    <li id="n1"><b>Basis of measurement.</b> Words are the text of the rendered page after its own scripts have run, with script, style and noscript blocks removed and collapsed answers included. A figure is a top-level drawing covering at least 6,000 square units. A table is a table. All three are counted in a headless browser after the page's own scripts have run. Minutes are the one figure on this page that is derived rather than counted: words divided by {WPM} words per minute, rounded. A page under {DOC_MIN:,} rendered words carries none, and neither does an interactive tool. <a href="colophon.html#n1">The definitions in full.</a></li>
-    <li id="n2"><b>Origin.</b> Independent means I chose the question and finished it without a course asking for it: {ind['n']} pieces, the {n_feat_ind} above and {more} more on the <a href="research.html">research shelf</a>. Coursework means built while taking one of {len(COURSES)} courses, for the assessment that was coming: {ST['course']['n']} pieces, built from my course materials with AI assistance and then verified. Anything built alongside a course is filed as coursework even where the question was my own.</li>
-    <li id="n3"><b>Personal.</b> {ST['personal']['n']} pieces read and written for their own sake, with no claim on either shelf. They are counted above and listed in the <a href="library.html#personal">library</a>, not here.</li>
-    <li id="n4"><b>Exceptions.</b> {fonts_sentence} {n_undrawn} pieces render under {DOC_MIN:,} words and are counted above but not drawn below; together they hold {ex['undrawn_words']:,} words. {len(ex['transcripts'])} run transcripts are measured but not listed. The {N_TOOLS} interactive tools sit on the shelf of the course or research that produced them and are counted once. <a href="colophon.html#exceptions">The exceptions, by name.</a></li>
-    <li id="n5"><b>The index.</b> {ATLAS_N} section headings from the {len(P)} documents, placed on one sphere, every mark a link into its passage. <a href="atlas.html">The Atlas.</a></li>
-    <li id="n6"><b>The drawing.</b> The statement drawn to scale below, one square {figs.UNIT} words, solid for independent work, an open outline for coursework, lighter for personal. The square never rescales, so a long piece is long on the page.</li>
-  </ol>
 </section>
 
-<section class="band shell" id="corpus">
-  <div class="sechead">
-    <h2>The statement, drawn to scale <a class="nref" href="#n6">6</a></h2>
-    <p class="note">Every document on this site, measured from the files themselves rather than estimated.</p>
-    <span class="count">{TOTAL_WORDS:,} words</span>
+<section class="band ground" id="figures" aria-labelledby="fig-h">
+  <div class="shell">
+  {sect_head(2, "Two figures, lifted from their pieces", "", lifts_count, "fig-h")}
+  <div class="figband">
+{figs_html}
   </div>
+  </div>
+</section>
+
+<section class="band shell" id="corpus" aria-labelledby="corpus-h">
+  {sect_head(3, 'The statement, drawn to scale <a class="nref" href="#n6">6</a>', "Every document on this site, measured from the files themselves rather than estimated.", f"{TOTAL_WORDS:,} words", "corpus-h")}
   <div class="corpus">
     <a class="skip" href="#corpus-table">Skip the drawing to the table of its numbers</a>
     <div class="plot rise">
@@ -956,16 +1025,34 @@ def page_index():
   </details>
 </section>
 
-<section class="band shell" id="note">
-  <div class="sechead"><h2>A note on the material</h2><span class="count">Please read</span></div>
-  <div class="prose measure">
+<section class="band ground" id="tools" aria-labelledby="tools-h">
+  <div class="shell">
+  {sect_head(4, "Interactive tools", f"Things you use rather than read. Each opens and runs in the browser; {N_PWA} install to a phone home screen.", f"{N_TOOLS} tools", "tools-h")}
+  <ul class="toolgrid">
+{tiles}
+  </ul>
+  </div>
+</section>
+
+<section class="notes shell" id="notes" aria-labelledby="notes-h">
+  {sect_head(5, "Notes to the statement", "", "", "notes-h")}
+  <ol>
+    <li id="n1"><b>Basis of measurement.</b> Words are the text of the rendered page after its own scripts have run, with script, style and noscript blocks removed and collapsed answers included. A figure is a top-level drawing covering at least 6,000 square units. A table is a table. All three are counted in a headless browser after the page's own scripts have run. Minutes are the one figure on this page that is derived rather than counted: words divided by {WPM} words per minute, rounded. A page under {DOC_MIN:,} rendered words carries none, and neither does an interactive tool. <a href="colophon.html#n1">The definitions in full.</a></li>
+    <li id="n2"><b>Origin.</b> Independent means I chose the question and finished it without a course asking for it: {ind['n']} pieces, the {n_feat_ind} above and {more} more on the <a href="research.html">research shelf</a>. Coursework means built while taking one of {len(COURSES)} courses, for the assessment that was coming: {ST['course']['n']} pieces, built from my course materials with AI assistance and then verified. Anything built alongside a course is filed as coursework even where the question was my own.</li>
+    <li id="n3"><b>Personal.</b> {ST['personal']['n']} pieces read and written for their own sake, with no claim on either shelf. They are counted above and listed in the <a href="library.html#personal">library</a>, not here.</li>
+    <li id="n4"><b>Exceptions.</b> {fonts_sentence} {n_undrawn} pieces render under {DOC_MIN:,} words and are counted above but not drawn in the figure; together they hold {ex['undrawn_words']:,} words. {len(ex['transcripts'])} run transcripts are measured but not listed. The {N_TOOLS} interactive tools sit on the shelf of the course or research that produced them and are counted once. <a href="colophon.html#exceptions">The exceptions, by name.</a></li>
+    <li id="n5"><b>The index.</b> {F["headN"]:,} section headings and {F["toolN"]} whole tools from the {len(P)} documents, {F["total"]:,} marks placed on one sphere, every mark a link. <a href="atlas.html">The Atlas.</a></li>
+    <li id="n6"><b>The drawing.</b> The statement drawn to scale above, one square {figs.UNIT} words, solid for independent work, an open outline for coursework, lighter for personal. The square never rescales, so a long piece is long on the page.</li>
+  </ol>
+  <div class="prose measure material">
+    <h3>A note on the material</h3>
     <p>These are my own artefacts, written by me for my own use. They are not course materials,
     not official solutions, and not a substitute for the standards themselves. Where a figure or a
     rule matters, check the primary source: the CPA Canada Handbook, the Income Tax Act, or the CRA.</p>
   </div>
 </section>
 """
-    return head(f"{SHORT} \u00b7 portfolio",
+    return head(f"{SHORT} · portfolio",
                 f"Research, study tools and references by Alex Rajcoomar, Accounting "
                 f"and Financial Management at Waterloo. {len(P)} pieces, "
                 f"{TOTAL_WORDS:,} words, all of them running.",
@@ -1457,9 +1544,11 @@ def page_colophon():
       rather than believed.</dd>
 
       <dt>Surfaces</dt>
-      <dd>Warm paper, near-black ink, hairline rules, one accent, no rounded corners, no drop shadows,
-      no gradients. Dark mode is a selected set of tokens rather than an inversion, and the manual
-      toggle wins over the system setting in both directions.</dd>
+      <dd>Warm paper in light, a near-black ground in dark, hairline rules, one accent, no rounded
+      corners, no drop shadows. A panel sits one step above the ground behind a one-pixel edge. The
+      one gradient on the site is the light around the sphere, which encodes nothing and is drawn
+      outside the disc so it darkens no mark. Dark mode is a selected set of tokens rather than an
+      inversion, and the manual toggle wins over the system setting in both directions.</dd>
     </dl>
   </div>
 </section>
@@ -2605,10 +2694,17 @@ def p3(v):
 
 _by_slug_all = {p["slug"]: p for p in P}
 
+def atlas_facts():
+    """The Atlas's facts, computed once from the placement and cached: the
+    home page prints from the same dict the six wall labels are written
+    from, so the two cannot disagree about what a mark is."""
+    if not ATLAS.get("facts"):
+        ATLAS["facts"] = atlas_mod.facts(ATLAS["points"], ATLAS["regions"])
+    return ATLAS["facts"]
+
 def page_atlas():
     pts, regs = ATLAS["points"], ATLAS["regions"]
-    F = atlas_mod.facts(pts, regs)
-    ATLAS["facts"] = F
+    F = atlas_facts()
     LABELS = atlas_mod.labels(F)
 
     by = {}
@@ -3472,6 +3568,9 @@ def _known_numbers():
     ex = exceptions()
     add([len(ex["fonts"]), len(ex["undrawn"]), ex["undrawn_words"], len(ex["transcripts"]),
          len(ex["tools"]), ex["kinds"]["md"], ex["kinds"]["doc"]])
+    # the lifted figures, and the tools the drawing reaches
+    add([len(STRIP), len(LIFTS)])
+    add([len(x) for x in tools_drawn()])
     add(LEDGER.get("summary") or {})
     add(built_from_counts([p for p in P if p["surface"] == "course"]))
     return vals
