@@ -46,46 +46,6 @@
     }
   }
 
-  /* ------------------------------------------------ reveal on view -
-     The pre-state is only applied by CSS under .js, and under reduced
-     motion the elements are snapped to their end state rather than
-     given a shorter animation. */
-  var risers = [].slice.call(document.querySelectorAll(".rise"));
-  if (reduced || !("IntersectionObserver" in window)) {
-    risers.forEach(function (n) { n.classList.add("in"); });
-  } else {
-    var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (e) {
-        if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); }
-      });
-    }, { rootMargin: "0px 0px -6% 0px", threshold: 0.05 });
-    risers.forEach(function (n) { io.observe(n); });
-
-    /* Safety sweep. A jump to an anchor, or a very fast scroll, can carry
-       an element past the viewport without the observer ever reporting an
-       intersection, and content that stays at opacity 0 is content the
-       reader never sees. This reveals anything already scrolled past. */
-    var sweeping = false;
-    function sweep() {
-      sweeping = false;
-      var h = window.innerHeight;
-      for (var i = risers.length - 1; i >= 0; i--) {
-        var n = risers[i];
-        if (n.classList.contains("in")) { risers.splice(i, 1); continue; }
-        if (n.getBoundingClientRect().top < h * 0.95) {
-          n.classList.add("in"); io.unobserve(n); risers.splice(i, 1);
-        }
-      }
-      if (!risers.length) removeEventListener("scroll", queueSweep);
-    }
-    function queueSweep() {
-      if (!sweeping) { sweeping = true; requestAnimationFrame(sweep); }
-    }
-    addEventListener("scroll", queueSweep, { passive: true });
-    addEventListener("hashchange", queueSweep);
-    setTimeout(sweep, 1200);
-  }
-
   /* The flat library-filter block that used to sit here targeted a
      #list element no page has carried since the library moved to
      grouped sections; the grouped filter below is the live one, and
@@ -102,7 +62,7 @@
   var results = document.getElementById("cmdk-list");
   var openBtn = document.getElementById("searchbtn");
   if (pal && input && results && work.length) {
-    var cur = 0, items = [], lastFocus = null;
+    var cur = 0, items = [];
 
     function score(it, t) {
       if (!t) return 1;
@@ -261,27 +221,25 @@
       if (a) noteRecent(a.getAttribute("href"));
     });
 
+    /* A native dialog: showModal() traps focus, Escape closes it, and focus
+       goes back to whatever opened it, all without a line here. The page
+       behind it is inert while it is open, and CSS stops the scroll. */
     function open() {
-      lastFocus = document.activeElement;
-      pal.hidden = false;
+      if (pal.open) return;
+      pal.showModal();
       input.setAttribute("aria-expanded", "true");
       input.value = "";
       render();
       input.focus();
-      document.body.style.overflow = "hidden";
     }
-    function close() {
-      pal.hidden = true;
-      input.setAttribute("aria-expanded", "false");
-      document.body.style.overflow = "";
-      if (lastFocus && lastFocus.focus) lastFocus.focus();
-    }
+    function close() { if (pal.open) pal.close(); }
+    pal.addEventListener("close", function () { input.setAttribute("aria-expanded", "false"); });
     if (openBtn) openBtn.addEventListener("click", open);
     input.addEventListener("input", render);
+    /* a click on the backdrop reaches the dialog element itself */
     pal.addEventListener("mousedown", function (e) { if (e.target === pal) close(); });
     pal.addEventListener("keydown", function (e) {
-      if (e.key === "Escape") { e.preventDefault(); close(); }
-      else if (e.key === "ArrowDown") { e.preventDefault(); move(1); }
+      if (e.key === "ArrowDown") { e.preventDefault(); move(1); }
       else if (e.key === "ArrowUp") { e.preventDefault(); move(-1); }
       else if (e.key === "Enter") {
         if (items.length) { e.preventDefault(); items[cur].querySelector("a").click(); }
@@ -302,8 +260,8 @@
       var tag = (e.target.tagName || "").toLowerCase();
       var typing = tag === "input" || tag === "textarea" || e.target.isContentEditable;
       if ((e.key === "k" || e.key === "K") && (e.metaKey || e.ctrlKey)) {
-        e.preventDefault(); pal.hidden ? open() : close();
-      } else if (typing || !pal.hidden || !singlesOn()) {
+        e.preventDefault(); pal.open ? close() : open();
+      } else if (typing || pal.open || !singlesOn()) {
         /* single-key routes only: the modified Cmd/Ctrl+K above stays on */
       } else if (e.key === "/") {
         e.preventDefault(); open();
@@ -313,7 +271,7 @@
         /* g then a letter: the two-stroke jump every reader of a long site
            already knows from mail clients and code hosts. */
         goArmed = Date.now();
-      } else if (!typing && pal.hidden && goArmed && Date.now() - goArmed < 1200) {
+      } else if (!typing && !pal.open && goArmed && Date.now() - goArmed < 1200) {
         var to = { h: "index.html", r: "research.html", c: "coursework.html",
                    t: "tools.html", l: "library.html", a: "about.html" }[e.key.toLowerCase()];
         goArmed = 0;
@@ -326,39 +284,24 @@
      The header already advertises "/" . Everything else was undiscoverable,
      which is the same as absent. */
   var goArmed = 0;
-  var keysLastFocus = null;
+  /* The sheet is a native dialog: the modal trap, Escape and the return of
+     focus are the browser's, and the Close button is a method="dialog"
+     form submit, so closing needs no script at all. */
   function keys(on) {
     var sheet = document.getElementById("keysheet");
     if (!sheet) return;
-    if (on) keysLastFocus = document.activeElement;
-    sheet.hidden = !on;
-    document.body.style.overflow = on ? "hidden" : "";
     if (on) {
+      if (!sheet.open) sheet.showModal();
       var c = sheet.querySelector(".close");
       if (c) c.focus();
-    } else if (keysLastFocus && keysLastFocus.focus) {
-      /* aria-modal promised a modal; a modal gives focus back */
-      keysLastFocus.focus();
+    } else if (sheet.open) {
+      sheet.close();
     }
   }
   (function () {
     var sheet = document.getElementById("keysheet");
     if (!sheet) return;
-    sheet.addEventListener("click", function (e) {
-      if (e.target === sheet || e.target.closest(".close")) keys(false);
-    });
-    sheet.addEventListener("keydown", function (e) {
-      if (e.key === "Escape") { e.preventDefault(); keys(false); }
-      else if (e.key === "Tab") {
-        /* aria-modal also promised focus stays inside. The sheet holds a
-           checkbox and a button, so the trap walks its own controls. */
-        var f = [].slice.call(sheet.querySelectorAll("input, button"));
-        if (!f.length) return;
-        var first = f[0], last = f[f.length - 1];
-        if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
-        else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
-      }
-    });
+    sheet.addEventListener("click", function (e) { if (e.target === sheet) keys(false); });
     var opener = document.getElementById("keysbtn");
     if (opener) opener.addEventListener("click", function () { keys(true); });
     /* Single-key shortcuts can be turned off, for speech input and for
@@ -457,7 +400,7 @@
       if (e.metaKey || e.ctrlKey || e.altKey) return;
       if (!singlesOn()) return;
       var pal = document.getElementById("cmdk");
-      if (pal && !pal.hidden) return;
+      if (pal && pal.open) return;
       var vis = [];
       sets.forEach(function (s) {
         s.rows.forEach(function (li) { if (!li.hidden) vis.push(li); });
@@ -693,6 +636,71 @@
   })();
 })();
 
+  /* --------------------------------------- a number you can open --
+     Every counted number on a generated page is a <data> element carrying
+     its raw value, the id of the definition it was counted under and, when
+     it belongs to one piece, that piece. Pointing at it or pressing it
+     opens the definition, the file it was measured from, the script and
+     the record. The data is the build's, printed into #defs; the text is
+     the colophon's; the dialog is the browser's. With scripts off the
+     number is plain text and the colophon holds the definitions. */
+  (function () {
+    var box = document.getElementById("defs"), dlg = document.getElementById("prov");
+    if (!box || !dlg || !dlg.showModal) return;
+    var D; try { D = JSON.parse(box.textContent); } catch (e) { return; }
+    var nums = [].slice.call(document.querySelectorAll("data.m"));
+    if (!nums.length) return;
+    var kEl = document.getElementById("prov-k"), hEl = document.getElementById("prov-h"),
+        defEl = document.getElementById("prov-def"), srcEl = document.getElementById("prov-src"),
+        lnEl = document.getElementById("prov-links");
+    function fmt(v) { var x = Number(v); return isFinite(x) ? x.toLocaleString("en-CA") : String(v); }
+    function a(href, text) { var l = document.createElement("a"); l.href = href; l.textContent = text; return l; }
+    function open(el) {
+      var kind = el.getAttribute("data-m"), of = el.getAttribute("data-of"), val = el.getAttribute("value");
+      var def = D.defs[kind]; if (!def) return;
+      var piece = of && D.pieces[of];
+      kEl.textContent = def.t;
+      hEl.textContent = fmt(val) + (kind === "mins" ? " minutes" : " " + def.t.toLowerCase());
+      defEl.textContent = def.d;
+      srcEl.textContent = "";
+      lnEl.textContent = "";
+      var meas = D.meas;
+      if (piece) {
+        srcEl.appendChild(document.createTextNode("Measured from "));
+        srcEl.appendChild(a(piece.u, piece.t));
+        srcEl.appendChild(document.createTextNode(" in a headless browser by " + meas.tool + ", and held in " + meas.record + " (digest " + meas.digest + ")" +
+          (kind === "mins" ? ", then divided by the rate the definition states." : ".")));
+      } else if (kind === "pieces") {
+        srcEl.textContent = "Counted from content/pieces.json: " + fmt(val) + " listed entries, each with a file behind it, checked on every build.";
+      } else {
+        srcEl.textContent = "The sum over the " + meas.pieces + " listed pieces of what " + meas.tool + " measured for each, held in " + meas.record + " (digest " + meas.digest + "); the " + meas.transcripts + " transcripts are measured there too but not summed here.";
+      }
+      lnEl.appendChild(a("colophon.html#def-" + kind, "The definition on the colophon"));
+      lnEl.appendChild(document.createTextNode(" · "));
+      lnEl.appendChild(a(meas.record, "The record"));
+      lnEl.appendChild(document.createTextNode(" · "));
+      lnEl.appendChild(a(meas.tool, "The script"));
+      dlg.showModal();
+    }
+    /* the totals join the Tab order; a number inside a row opens with a
+       pointer only, so a keyboard reader is not made to stop at every figure
+       of every row (the home page would gain over a hundred stops), and what
+       its dialog would add is the row's own link and the definition the
+       colophon lists */
+    nums.forEach(function (el) {
+      var total = !el.hasAttribute("data-of");
+      el.setAttribute("title", "What was counted, and where");
+      el.addEventListener("click", function (e) { e.preventDefault(); e.stopPropagation(); open(el); });
+      if (!total) return;
+      el.setAttribute("tabindex", "0");
+      el.setAttribute("role", "button");
+      el.setAttribute("aria-haspopup", "dialog");
+      el.addEventListener("keydown", function (e) {
+        if (e.key === "Enter" || e.key === " ") { e.preventDefault(); open(el); }
+      });
+    });
+  })();
+
   /* --------------------------------------------- the atlas, in miniature
      The same sphere the atlas page draws, at a size where it is a picture
      rather than an instrument: no labels, no hit testing, no second copy of
@@ -796,6 +804,8 @@
       C.e = s.getPropertyValue("--edge").trim() || "#8a847c";
       C.p = s.getPropertyValue("--paper").trim() || "#faf9f6";
       C.k = s.getPropertyValue("--ink").trim() || "#16150f";
+      /* the second accent: a link the prose records, and nothing else */
+      C.l = s.getPropertyValue("--link").trim() || C.k;
     }
     function dark() {
       var h = C.p.replace("#", "");
@@ -889,7 +899,7 @@
       var px = -dy / dl * 4 * Math.max(1, S * 0.8), py = dx / dl * 4 * Math.max(1, S * 0.8);
       ctx.beginPath();
       ctx.moveTo(s[0] - px, s[1] - py); ctx.lineTo(s[0] + px, s[1] + py);
-      ctx.strokeStyle = rgba(C.k, 0.8);
+      ctx.strokeStyle = rgba(C.l, 0.95);
       ctx.lineWidth = 1.2;
       ctx.stroke();
     }
@@ -897,8 +907,8 @@
       var A = nrm(a.p), B = nrm(b.p);
       var dot = Math.max(-1, Math.min(1, A[0] * B[0] + A[1] * B[1] + A[2] * B[2]));
       var om = Math.acos(dot), so = Math.sin(om) || 1e-6;
-      ctx.strokeStyle = rgba(C.k, 0.6);
-      ctx.lineWidth = 1;
+      ctx.strokeStyle = rgba(C.l, 0.85);
+      ctx.lineWidth = 1.25;
       var started = false, seen = false;
       ctx.beginPath();
       for (var i = 0; i <= 48; i++) {
@@ -1030,9 +1040,14 @@
       var D = docs[hd], out = 0, into = 0;
       for (var li = 0; li < D.lk.length; li++) { if (D.lk[li].out) out++; if (D.lk[li].into) into++; }
       if (cardT) { cardT.textContent = D.t; if (D.u) cardT.setAttribute("href", D.u); }
-      if (cardD) cardD.textContent = D.k + "  ·  " + D.marks + (D.marks === 1 ? " section" : " sections") +
-        (out ? "  ·  links " + out : "") + (into ? "  ·  linked by " + into : "") +
-        (!out && !into ? "  ·  no links recorded" : "");
+      if (cardD) {
+        cardD.textContent = D.k + "  \u00b7  " + D.marks + (D.marks === 1 ? " section" : " sections") + "  \u00b7  ";
+        var lk = document.createElement("span");
+        lk.className = "gc-l";
+        lk.textContent = (out ? "links " + out : "") + (out && into ? "  \u00b7  " : "") +
+          (into ? "linked by " + into : "") + (!out && !into ? "no links recorded" : "");
+        cardD.appendChild(lk);
+      }
       if (card) card.hidden = false;
       host.setAttribute("data-doc", D.t);
       if (locked) host.setAttribute("data-locked", "1"); else host.removeAttribute("data-locked");
@@ -1183,6 +1198,17 @@
   if (!save || !drop || !status) return;
 
   function say(t) { status.textContent = t; }
+  /* what this device holds, read from the cache by the worker rather than
+     remembered by the page: the count of listed files present, the version
+     they were synced against, and whether that is the live version */
+  function held(m) {
+    if (!m.of) return "";
+    var n = m.held + " of " + m.of + " files";
+    if (m.held === 0) return "";
+    if (m.held < m.of) return n + " are on this device.";
+    if (m.live && m.version && m.live !== m.version) return "The whole site is on this device: " + n + ", one publish behind; it refreshes when opened online.";
+    return "The whole site is on this device: " + n + (m.live ? ", current." : ".");
+  }
   navigator.serviceWorker.addEventListener("message", function (e) {
     var m = e.data || {};
     if (m.type === "cache-all-progress") {
@@ -1191,12 +1217,17 @@
       if (m.failed === -1) { say("Could not read the file list; try again online."); return; }
       say(m.failed
         ? "Saved " + m.ok + " of " + m.total + " files; " + m.failed + " failed. Press again to retry the rest."
-        : "The whole site is on this phone: " + m.ok + " files. It refreshes itself when opened online.");
+        : held({ held: m.held, of: m.of, version: m.version, live: m.version }) || ("Saved " + m.ok + " files."));
       save.disabled = false;
+    } else if (m.type === "status") {
+      say(held(m));
     } else if (m.type === "drop-all-done") {
       say("Offline copy removed. Pages you visit will still cache as you read.");
       drop.disabled = false;
     }
+  });
+  navigator.serviceWorker.ready.then(function (reg) {
+    if (reg.active) reg.active.postMessage({ type: "status" });
   });
   save.addEventListener("click", function () {
     save.disabled = true;

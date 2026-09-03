@@ -55,6 +55,47 @@ FONT_CODEPOINTS = len([c for c in open(
     os.path.join(HERE, "font-subset-cmap.txt"), encoding="utf-8"
 ).read().strip().split(",") if c != ""])
 
+# The definitions behind the counted numbers, stated once. The colophon
+# prints them as a list, and every counted number on a generated page carries
+# the id of the definition it was counted under, so a reader can open the
+# definition from the number rather than hunt for it.
+DEFS = [
+    ("pieces", "Pieces",
+     "An entry in content/pieces.json with a file behind it. The three run transcripts are measured "
+     "and held to the same record but are not entries, so they are not pieces and not in the corpus line."),
+    ("words", "Words",
+     "The text of the rendered document after its own scripts have run, with script, style and "
+     "noscript removed and collapsed answers included, whether or not a reader has opened them. "
+     "The site's own chrome around a piece is not counted: the header, the return bar, the footer, "
+     "the contents rail, the search dialog and the line that says what the piece was built from. "
+     "A word is a whitespace-separated token containing at least one letter or digit. Question banks "
+     "inside the interactive tools are held in code, so they are not counted anywhere."),
+    ("mins", "Reading time",
+     f"Derived, not counted: words divided by {WPM} words per minute, rounded, minimum one minute. "
+     f"A page that renders under {DOC_MIN:,} words is treated as an instrument rather than a document "
+     "and carries no reading time."),
+    ("figures", "Figures",
+     "A top-level svg element in the rendered page, not nested inside another one, covering at least "
+     "6,000 square units, which excludes inline glyphs and icons. Counted after render, so it includes "
+     "charts a script draws on load; charts built purely from HTML and CSS are not counted, so the "
+     "number is a floor rather than a ceiling."),
+    ("tables", "Tables",
+     "A table element in the rendered document after its scripts have run, wherever it stands."),
+    ("checkpoints", "Checkpoint questions",
+     "A details element in the rendered document: a question or a worked answer folded away for the "
+     "reader to try first."),
+]
+DEF_BY_ID = {d[0]: d for d in DEFS}
+
+def md(value, kind, of=None, text=None):
+    """A counted number as a data element: the raw value, the id of the
+    definition it was counted under, and the piece it belongs to when it
+    belongs to one. With scripts on, the number opens its definition and its
+    measurement; with scripts off it stands as text, and the definition is on
+    the colophon."""
+    of_attr = f' data-of="{esc(of)}"' if of else ""
+    return f'<data class="m" value="{value}" data-m="{kind}"{of_attr}>{text if text is not None else n(value)}</data>'
+
 def reading_minutes(w): return max(1, round(w / WPM))
 
 def density_label(words, apparatus):
@@ -108,6 +149,13 @@ def kwords(n):
 # ------------------------------------------------------------ shell ----
 import atlas as atlas_mod
 import invariance
+import claims
+# the last content pass's own account of what it got wrong and left undone,
+# written by hand during the pass; printed on the colophon, not filed away
+try:
+    LEDGER_NOTES = json.load(open(os.path.join(HERE, "ledger-notes.json"), encoding="utf-8"))
+except Exception:
+    LEDGER_NOTES = {}
 
 # Five entries. The four shelves are one statement filtered four ways and are
 # reached from the statement's own subtotal rows and from Work, which is the
@@ -245,6 +293,20 @@ document.documentElement.className+=' js';}})();
 WORKJSON = json.dumps([{"t":p["t"],"s":p["s"],"u":p["url"],"k":p["k"],"c":p["c"],"d":p["d"]} for p in P],
                       separators=(",",":")).replace("</", "<\\/")
 
+def _defs_json():
+    """What a counted number can show: the definitions, the record's identity
+    and each listed piece's measured figures. The record is named by the
+    digest of content/metrics.json, so the dialog can say exactly which
+    record a number came from without a date that would go stale."""
+    mpath = os.path.join(ROOT, "content", "metrics.json")
+    digest = hashlib.sha1(open(mpath, "rb").read()).hexdigest()[:12] if os.path.exists(mpath) else ""
+    return json.dumps({
+        "defs": {d[0]: {"t": d[1], "d": d[2]} for d in DEFS},
+        "meas": {"tool": "build/measure.js", "record": "content/metrics.json", "digest": digest,
+                 "pieces": len(P), "transcripts": len([k for k in METRICS if k not in {p["slug"] for p in P}])},
+        "pieces": {p["slug"]: {"u": p["url"], "t": p["t"], "w": p["words"], "f": p["figures"], "b": p["tables"]} for p in P},
+    }, separators=(",", ":"), ensure_ascii=False).replace("</", "<\\/")
+
 def foot():
     return f"""</main>
 <footer class="site">
@@ -270,13 +332,13 @@ def foot():
   </div>
   <div class="fine">
     <span>&copy; {TODAY.year} {esc(NAME)}</span>
-    <span><b>{len(P)}</b> pieces &middot; <b>{TOTAL_WORDS:,}</b> words &middot; <b>{TOTAL_FIGS}</b> figures &middot; no framework, nothing external at runtime, one build you can read &middot; <button id="keysbtn" type="button" class="linkbtn">keyboard</button></span>
+    <span><b>{md(len(P), "pieces")}</b> pieces &middot; <b>{md(TOTAL_WORDS, "words")}</b> words &middot; <b>{md(TOTAL_FIGS, "figures")}</b> figures &middot; no framework, nothing external at runtime, one build you can read &middot; <button id="keysbtn" type="button" class="linkbtn">keyboard</button></span>
   </div>
 </footer>
 
 <!-- Search across every piece. Progressive: every link on the site works
      without it, and the button is the same route as the keyboard. -->
-<div class="cmdk" id="cmdk" hidden role="dialog" aria-modal="true" aria-label="Search all work">
+<dialog class="cmdk" id="cmdk" aria-label="Search all work">
   <div class="cmdk-panel">
     <input id="cmdk-input" type="text" placeholder="Search {len(P)} pieces by title, course or topic" autocomplete="off" spellcheck="false" role="combobox" aria-expanded="false" aria-autocomplete="list" aria-controls="cmdk-list">
     <ul class="cmdk-list" id="cmdk-list" role="listbox" aria-label="Results"></ul>
@@ -284,12 +346,12 @@ def foot():
       <span><kbd>&#8593;</kbd><kbd>&#8595;</kbd> move</span><span><kbd>Enter</kbd> open</span><span><kbd>Esc</kbd> close</span>
     </div>
   </div>
-</div>
+</dialog>
 
 <!-- The keyboard routes, written down. A shortcut nobody can find is the
      same as one that does not exist. Opened with ? or from the footer. -->
-<div class="keys" id="keysheet" hidden role="dialog" aria-modal="true" aria-labelledby="keystitle">
-  <div class="keys-panel">
+<dialog class="keys" id="keysheet" aria-labelledby="keystitle">
+  <form method="dialog" class="keys-panel">
     <h2 id="keystitle">Keyboard</h2>
     <dl>
       <dt><kbd>/</kbd></dt><dd>Search every piece</dd>
@@ -305,9 +367,23 @@ def foot():
     <p class="keys-pref"><label><input type="checkbox" id="keysingles" checked>
       Single-key shortcuts. Turn these off if a key press where you did not
       mean one keeps opening things; search stays on <kbd>&#8984;</kbd><kbd>K</kbd>.</label></p>
-    <button class="close" type="button">Close</button>
-  </div>
-</div>
+    <button class="close">Close</button>
+  </form>
+</dialog>
+<!-- A counted number opens here: its definition, the file it was measured
+     from, the script and the record. The data is the build's, the text is the
+     colophon's, and the dialog is the browser's. -->
+<dialog class="prov" id="prov" aria-labelledby="prov-h">
+  <form method="dialog" class="prov-panel">
+    <p class="prov-k" id="prov-k"></p>
+    <h2 id="prov-h"></h2>
+    <p class="prov-def" id="prov-def"></p>
+    <p class="prov-src" id="prov-src"></p>
+    <p class="prov-links" id="prov-links"></p>
+    <button class="close">Close</button>
+  </form>
+</dialog>
+<script type="application/json" id="defs">{_defs_json()}</script>
 <script>
 window.WORK = {WORKJSON};
 </script>
@@ -325,14 +401,14 @@ window.WORK = {WORKJSON};
 def n(x):
     return f"{x:,}"
 
-def stmt_cells(w, f, t, mins=None):
+def stmt_cells(w, f, t, mins=None, of=None):
     # Minutes sit under the word count rather than in a column of their own:
     # a fifth column does not fit a 390px phone, and the two belong together
     # anyway, one counted and one derived from it. A page under DOC_MIN words
     # carries none, which is the colophon's rule, not a missing value.
-    m = f'<span class="mins">{mins} min</span>' if mins else ""
-    return (f'<td class="n">{n(w)}{m}</td><td class="n fig">{f}<span class="tb"> &middot; {t}</span></td>'
-            f'<td class="n tab">{t}</td>')
+    mm = f'<span class="mins">{md(mins, "mins", of, str(mins))} min</span>' if mins else ""
+    return (f'<td class="n">{md(w, "words", of)}{mm}</td><td class="n fig">{md(f, "figures", of, str(f))}<span class="tb"> &middot; {md(t, "tables", of, str(t))}</span></td>'
+            f'<td class="n tab">{md(t, "tables", of, str(t))}</td>')
 
 def flagged_lift(p):
     """The one graft from the Specimen thesis: the result line of Flagged in
@@ -358,7 +434,7 @@ def flagged_lift(p):
 def stmt_row(p, lift=None):
     sub = f'<span class="s">{esc(p["s"])}</span>' if p.get("s") else ""
     out = (f'<tr class="item{" haslift" if lift else ""}"><th scope="row"><a href="{p["url"]}">{esc(p["t"])}</a>{sub}</th>'
-           + stmt_cells(p["words"], p["figures"], p["tables"], piece_mins(p)) + "</tr>")
+           + stmt_cells(p["words"], p["figures"], p["tables"], piece_mins(p), of=p["slug"]) + "</tr>")
     if lift:
         out += (f'\n<tr class="liftrow"><td colspan="4"><span class="lift"><b>{esc(lift[0])}</b> {esc(lift[1])}</span></td></tr>')
     return out
@@ -371,9 +447,9 @@ def stmt_subrow(label, d, href, note=None, cls="sub", sub2=""):
 
 def stmt_head_cells():
     return ('<thead><tr><th scope="col">Piece</th>'
-            '<th scope="col" class="n"><a href="colophon.html#n1">Words<span class="nref">1</span></a></th>'
-            '<th scope="col" class="n fig"><a href="colophon.html#n1">Figures<span class="tb tbh"><span class="dot">&middot; </span>tables</span><span class="nref">1</span></a></th>'
-            '<th scope="col" class="n tab"><a href="colophon.html#n1">Tables<span class="nref">1</span></a></th></tr></thead>')
+            '<th scope="col" class="n"><a href="colophon.html#def-words">Words<span class="nref">1</span></a></th>'
+            '<th scope="col" class="n fig"><a href="colophon.html#def-figures">Figures<span class="tb tbh"><span class="dot">&middot; </span>tables</span><span class="nref">1</span></a></th>'
+            '<th scope="col" class="n tab"><a href="colophon.html#def-tables">Tables<span class="nref">1</span></a></th></tr></thead>')
 
 def shelf_row(k, p, extra=""):
     """A full statement row for a shelf or the library: the title, the
@@ -397,7 +473,7 @@ def shelf_row(k, p, extra=""):
             <p class="meta">{kind_chip(p)}{surf(p)}{mins}<span class="metadate">{esc(p['d'])}</span>{tags}</p>
             {extra}
           </div>
-          <div class="sr-n"><span class="tnum">{n(p['words'])}</span><span class="tnum">{p['figures']}</span><span class="tnum">{p['tables']}</span></div>
+          <div class="sr-n"><span class="tnum">{md(p['words'], 'words', p['slug'])}</span><span class="tnum">{md(p['figures'], 'figures', p['slug'], str(p['figures']))}</span><span class="tnum">{md(p['tables'], 'tables', p['slug'], str(p['tables']))}</span></div>
         </div>
       </li>"""
 
@@ -536,7 +612,7 @@ def feature(p, delay=0, h=3):
     # band head on most pages and under an h3 course head on coursework.html,
     # where an h3 card would read as the course's sibling rather than its
     # member.
-    return f"""      <article class="feature rise" style="transition-delay:{delay}ms">
+    return f"""      <article class="feature" style="transition-delay:{delay}ms">
         <span class="kindrow">{kind_chip(p)}{surf(p)}</span>
         <h{h}><a class="cardlink" href="{p['url']}">{esc(p['t'])}</a></h{h}>
         <p>{esc(p['blurb'])}</p>
@@ -549,7 +625,7 @@ def feature_compact(p, delay=0):
     # The home page is the skim surface, so its cards carry the standfirst
     # rather than the full blurb; the blurbs stay on the section pages and in
     # the library, one click away, where the reader has chosen depth.
-    return f"""      <article class="feature feature-c rise" style="transition-delay:{delay}ms">
+    return f"""      <article class="feature feature-c" style="transition-delay:{delay}ms">
         <span class="kindrow">{kind_chip(p)}{surf(p)}</span>
         <h3><a class="cardlink" href="{p['url']}">{esc(p['t'])}</a></h3>
         <p>{esc(p['s'])}</p>
@@ -603,7 +679,7 @@ def lifted(fid, rule, title, note, href):
     """A figure lifted out of its own document together with the CSS rules its
     classes depend on, shown at the size it was drawn for."""
     d = STRIP[fid]
-    return f"""    <figure class="spec rise" id="{fid}">
+    return f"""    <figure class="spec" id="{fid}">
       <div class="frame">{strip_svg(fid)}</div>
       <figcaption>
         <div class="who">
@@ -780,7 +856,7 @@ def corpus_table():
         for p in items:
             rows.append(f'<tr><td><a href="{p["url"]}">{esc(p["t"])}</a></td>'
                         f'<td>{esc(p["k"])}{" &middot; " + esc(p["c"]) if p["c"] else ""}</td>'
-                        f'<td class="tnum">{p["words"]:,}</td></tr>')
+                        f'<td class="tnum">{md(p["words"], "words", p["slug"])}</td></tr>')
     return (f'<table class="ctab"><caption>Every document at or above {DOC_MIN:,} rendered words, with the word count each square is drawn from. '
             f'{len(t_drawn)} of the {N_TOOLS} interactive tools reach that floor and are drawn; the other {len(t_undrawn)} hold their content in code rather than prose and are not.</caption>'
             '<thead><tr><th scope="col">Piece</th><th scope="col">Kind</th>'
@@ -818,6 +894,8 @@ class _FigsShim:
     surface_totals = staticmethod(surface_totals)
 figs = _FigsShim()
 ST = surface_totals()
+
+TRANSCRIPT_WORDS = sum(METRICS[k].get("words", 0) for k in METRICS if k not in {p["slug"] for p in P})
 
 def exceptions():
     """Every way the site's own rules are not the whole story, counted from
@@ -885,8 +963,8 @@ def corpus_line():
     """The corpus in four figures, each the same variable the statement's
     total row prints, so the two cannot drift. A definition list, because
     each cell is a label and its value."""
-    cells = (("Pieces", n(len(P))), ("Words", n(TOTAL_WORDS)),
-             ("Figures", n(TOTAL_FIGS)), ("Tables", n(TOTAL_TBLS)))
+    cells = (("Pieces", md(len(P), "pieces")), ("Words", md(TOTAL_WORDS, "words")),
+             ("Figures", md(TOTAL_FIGS, "figures")), ("Tables", md(TOTAL_TBLS, "tables")))
     return ('<dl class="corpusline">' + "".join(
         f'<div><dt>{a}</dt><dd class="tnum">{b}</dd></div>' for a, b in cells) + '</dl>')
 
@@ -968,8 +1046,8 @@ def page_index():
       <script type="application/json" id="atlasmini-docs">{atlas_home_links()}</script>
       <div class="globe-card" id="atlasmini-card" hidden><a class="gc-t" href="atlas.html"></a><span class="gc-d"></span></div>
       <p class="globe-cap"><a class="inlink" href="atlas.html">{ATLAS_N} sections, every one a link <span aria-hidden="true">&#8594;</span></a>
-        <span class="globe-hint">Point at a mark: chords join its document to the documents its prose links, or that link it. {N_EDGES} such links are recorded.</span>
-        <span class="globe-hint-touch">Tap a mark: chords join its document to the documents its prose links, or that link it, and its name opens it. {N_EDGES} such links are recorded.</span></p>
+        <span class="globe-hint">Point at a mark: chords join its document to the documents its prose links, or that link it. <span class="gc-l">{N_EDGES}</span> such links are recorded.</span>
+        <span class="globe-hint-touch">Tap a mark: chords join its document to the documents its prose links, or that link it, and its name opens it. <span class="gc-l">{N_EDGES}</span> such links are recorded.</span></p>
       <noscript><p class="note">The sphere needs a browser that runs scripts.
       The <a class="inlink" href="atlas.html">full index</a> does not.</p></noscript>
     </div>
@@ -1002,7 +1080,7 @@ def page_index():
   {sect_head(3, 'The statement, drawn to scale <a class="nref" href="#n6">6</a>', "Every document on this site, measured from the files themselves rather than estimated.", f"{TOTAL_WORDS:,} words", "corpus-h")}
   <div class="corpus">
     <a class="skip" href="#corpus-table">Skip the drawing to the table of its numbers</a>
-    <div class="plot rise">
+    <div class="plot">
       {figs.corpus_svg()}
     </div>
     <aside class="rail-app" aria-label="How to read the figure">
@@ -1047,7 +1125,7 @@ def page_index():
 <section class="notes shell" id="notes" aria-labelledby="notes-h">
   {sect_head(5, "Notes to the statement", "", "", "notes-h")}
   <ol>
-    <li id="n1"><b>Basis of measurement.</b> Words are the text of the rendered page after its own scripts have run, with script, style and noscript blocks removed and collapsed answers included. A figure is a top-level drawing covering at least 6,000 square units. A table is a table. All three are counted in a headless browser after the page's own scripts have run. Minutes are the one figure on this page that is derived rather than counted: words divided by {WPM} words per minute, rounded. A page under {DOC_MIN:,} rendered words carries none, and neither does an interactive tool. <a href="colophon.html#n1">The definitions in full.</a></li>
+    <li id="n1"><b>Basis of measurement.</b> Words are the text of the rendered page after its own scripts have run, with script, style and noscript blocks removed and collapsed answers included. A figure is a top-level drawing covering at least 6,000 square units. A table is a table. All three are counted in a headless browser after the page's own scripts have run. Minutes are the one figure on this page that is derived rather than counted: words divided by {WPM} words per minute, rounded. A page under {DOC_MIN:,} rendered words carries none, and neither does an interactive tool. <a href="colophon.html#definitions">The definitions in full.</a></li>
     <li id="n2"><b>Origin.</b> Independent means I chose the question and finished it without a course asking for it: {ind['n']} pieces, the {n_feat_ind} above and {more} more on the <a href="research.html">research shelf</a>. Coursework means built while taking one of {len(COURSES)} courses, for the assessment that was coming: {ST['course']['n']} pieces, built from my course materials with AI assistance and then verified. Anything built alongside a course is filed as coursework even where the question was my own.</li>
     <li id="n3"><b>Personal.</b> {ST['personal']['n']} pieces read and written for their own sake, with no claim on either shelf. They are counted above and listed in the <a href="library.html#personal">library</a>, not here.</li>
     <li id="n4"><b>Exceptions.</b> {fonts_sentence} {n_undrawn} pieces render under {DOC_MIN:,} words and are counted above but not drawn in the figure; together they hold {ex['undrawn_words']:,} words. {len(ex['transcripts'])} run transcripts are measured but not listed. The {N_TOOLS} interactive tools sit on the shelf of the course or research that produced them and are counted once. <a href="colophon.html#exceptions">The exceptions, by name.</a></li>
@@ -1200,12 +1278,14 @@ def page_coursework():
             k += 1
             rows.append(shelf_row(k, p))
         rows.append(shelf_subtotal(f"{c}, {len(cs)} piece{'s' if len(cs) != 1 else ''}", cs))
-        groups.append(f"""  <div class="grouphead"><h3>{esc(c)}</h3>
+        groups.append(f"""  <details class="cgroup" open>
+    <summary class="grouphead"><h3>{esc(c)}</h3>
     <p class="gnote">{len(cs)} piece{'s' if len(cs)!=1 else ''}, {sum(p['words'] for p in cs):,} words.</p>
-    <span class="gcount">{len(cs)}</span></div>
+    <span class="gcount">{len(cs)}</span></summary>
   <ol class="index stmt-list">
 {chr(10).join(rows)}
-  </ol>""")
+  </ol>
+  </details>""")
     body = f"""<div class="hero tight shell">
   {section_eyebrow("coursework.html")}
   <h1 class="h1">Coursework</h1>
@@ -1472,7 +1552,46 @@ def pass_sentence():
             f'were left untouched, and {sm["new"]} were added in the pass. The ledger of every change '
             f'is <code>content/ledger.json</code>.</p>')
 
-def page_colophon():
+def limits_block():
+    """What the last pass got wrong and what it did not do, in the words it
+    wrote at the time. Absent when there are no notes."""
+    flaws = [x for x in (LEDGER_NOTES.get("flaws") or []) if isinstance(x, str)]
+    undone = [x for x in (LEDGER_NOTES.get("not_done") or []) if isinstance(x, str)]
+    if not flaws and not undone:
+        return ""
+    ps = LEDGER_NOTES.get("pass") or {}
+    when = ps.get("started", "")
+    li = lambda xs: "".join(f"<li>{esc(x)}</li>" for x in xs)
+    return f"""<section class="band colo ground limits" id="limits">
+  <div class="shell">
+  <div class="sechead"><h2>What the last pass got wrong, and what it left undone</h2><span class="count">{len(flaws) + len(undone)} notes</span></div>
+  <div class="prose measure">
+    <p>The content pass that began on {esc(when)} kept its own account of its mistakes and its
+    omissions in <code>build/ledger-notes.json</code>. A site that scores its own claims should also
+    print what it knows is wrong with itself, so the notes are here, as written, rather than in a
+    file a reader would have to know to open. The numbers in them are the pass's own, as it wrote
+    them; this build reproduces the notes and does not recompute them.</p>
+    <h3>Got wrong</h3>
+    <ol>{li(flaws)}</ol>
+    <h3>Left undone</h3>
+    <ol>{li(undone)}</ol>
+  </div>
+  </div>
+</section>
+"""
+
+DENSITY_DD = '      <dt>Density</dt>\n      <dd>Figures plus tables per thousand words. Under 1.0 is <b>Prose</b>, 1.0 to 3.0 is\n      <b>Mixed</b>, 3.0 and above is <b>Dense</b>. Documents under 400 words carry no label, because the\n      ratio is unstable at that length. It is a rough signal of what the page will feel like, not a\n      quality measure: a dense page is not a better page.</dd>'
+
+def defs_html():
+    """The definitions list, from DEFS, each term carrying the id a counted
+    number refers to."""
+    out = []
+    for did, term, text in DEFS:
+        out.append(f'      <dt id="def-{did}">{esc(term)}</dt>\n      <dd>{esc(text)}</dd>')
+    out.append(DENSITY_DD)
+    return "\n".join(out)
+
+def page_colophon(register=""):
     gt = figs.group_totals()
     ex = exceptions()
     fams = google_font_families()
@@ -1496,37 +1615,15 @@ def page_colophon():
 <section class="band shell colo">
   <div class="sechead"><h2>The measurements</h2><span class="count">Definitions</span></div>
   <div class="prose measure">
-    <dl>
-      <dt id="n1">Words</dt>
-      <dd>The text of the rendered document after its own scripts have run, with
-      <code>&lt;script&gt;</code>, <code>&lt;style&gt;</code> and <code>&lt;noscript&gt;</code> removed and
-      collapsed answers included, whether or not a reader has opened them.
-      The site's own chrome around a piece is not counted: the header, the return bar, the footer,
-      the contents rail, the search dialog and the line that says what the piece was built from.
-      A word is a whitespace-separated token containing at least one letter or digit. Question banks
-      inside the interactive tools are held in code, so they are not counted anywhere: the tools read
-      as {min(p['words'] for p in P if p['k']=='Tool')} to {max(p['words'] for p in P if p['k']=='Tool')}
-      words and are genuinely much larger than that.</dd>
-
-      <dt>Reading time</dt>
-      <dd>Derived, not counted: words divided by {WPM} words per minute, rounded, minimum one minute. {WPM} is a
-      middle estimate for careful reading of technical prose; a skim is faster and a first pass through
-      a figure-heavy section is slower. A page that renders under {DOC_MIN:,} words is treated as an
-      instrument rather than a document and carries no reading time, because a drill has no length,
-      only a session. That threshold is applied to what the page renders, not to what I would like it
-      to be, and it is why the {N_TOOLS} interactive tools carry no reading time at any length.</dd>
-
-      <dt>Figures</dt>
-      <dd>A top-level <code>&lt;svg&gt;</code> in the rendered page, not nested inside another one,
-      covering at least 6,000 square units, which excludes inline glyphs and icons. Because the count
-      runs after render it includes charts a script draws on load. Charts built purely from HTML and
-      CSS are still not counted, so the number remains a floor rather than a ceiling.</dd>
-
-      <dt>Density</dt>
-      <dd>Figures plus tables per thousand words. Under 1.0 is <b>Prose</b>, 1.0 to 3.0 is
-      <b>Mixed</b>, 3.0 and above is <b>Dense</b>. Documents under 400 words carry no label, because the
-      ratio is unstable at that length. It is a rough signal of what the page will feel like, not a
-      quality measure: a dense page is not a better page.</dd>
+    <dl id="definitions">
+{defs_html()}
+      <dt>Where the counts stop</dt>
+      <dd>The interactive tools read as {min(p['words'] for p in P if p['k']=='Tool')} to {max(p['words'] for p in P if p['k']=='Tool')}
+      words and are genuinely much larger than that: their question banks are held in code. The
+      {WPM} words per minute behind the reading time is a middle estimate for careful reading of
+      technical prose; a skim is faster and a first pass through a figure-heavy section is slower. The
+      instrument threshold is applied to what a page renders, not to what I would like it to be, and it
+      is why the {N_TOOLS} interactive tools carry no reading time at any length.</dd>
 
       <dt>Independent, coursework, personal</dt>
       <dd><b>Independent</b> means I chose the question, scoped it and finished it without a course
@@ -1562,12 +1659,28 @@ def page_colophon():
       stack. The build fails on any page character the subset lacks, so the number above is checked
       rather than believed.</dd>
 
+      <dt>A number you can open</dt>
+      <dd>A counted number on these pages is set with a dotted underline. Pointing at it or pressing it
+      shows the definition it was counted under, the file it was measured from, the script that measured
+      it and the record that holds it. The totals sit in the Tab order; a number inside a row opens
+      with a pointer only, so a keyboard reader is not made to stop at every figure of every row, and
+      what its dialog would say is the row's own link and the definition above. With scripts off the
+      number stands as text and the definitions are the list above; nothing about the number itself
+      depends on the script.</dd>
+
       <dt>Surfaces</dt>
-      <dd>Warm paper in light, a near-black ground in dark, hairline rules, one accent, no rounded
-      corners, no drop shadows. A panel sits one step above the ground behind a one-pixel edge. The
-      one gradient on the site is the light around the sphere, which encodes nothing and is drawn
-      outside the disc so it darkens no mark. Dark mode is a selected set of tokens rather than an
-      inversion, and the manual toggle wins over the system setting in both directions.</dd>
+      <dd>Warm paper in light, a near-black ground in dark, hairline rules, no rounded corners. The
+      shell pages paint no drop shadow; the search panel sits on the browser's own backdrop. On a
+      piece a shadow sits only under what floats over its text: the contents drawer on a phone, the
+      reading-position pill, the section menu and the tips; a piece's own sheet keeps whatever it
+      declared. One accent, blue, for the independent work on the sphere and for links. A second
+      accent, violet, means one thing: a link one document's prose makes to another. It is the colour
+      of the chords on both spheres, of the key entry that names them, of the link counts in the
+      sphere's card and of the one count of recorded links under the home sphere, and it appears
+      nowhere else; it is violet because no figure on this site has spent that hue. A panel sits one step above the ground behind a one-pixel edge. The one gradient
+      on the site is the light around the sphere, which encodes nothing and is drawn outside the disc
+      so it darkens no mark. Dark mode is a selected set of tokens rather than an inversion, and the
+      manual toggle wins over the system setting in both directions.</dd>
     </dl>
   </div>
   </div>
@@ -1591,8 +1704,10 @@ def page_colophon():
     JavaScript adds only enhancements: the theme toggle, the search palette, the library filters, the
     reveal-on-scroll, and the count of passages this browser has opened on the Atlas.</p>
     <p>Accessibility: skip link, visible focus, headings in order, every figure labelled, colour never
-    load-bearing on its own, and reduced-motion respected. Every page prints: sticky elements release,
-    revealed content is forced visible, and figures avoid breaking across pages.</p>
+    load-bearing on its own, and reduced motion respected. The generated pages print: sticky elements
+    release, nothing stays hidden, and figures avoid breaking across pages. Each of those sentences is a
+    row in the <a href="#claims">register below</a>, with the check that tests it and the last result,
+    or the word asserted where nothing tests it yet.</p>
     <p>{ex['kinds']['doc']} of these pages began as Word documents and {ex['kinds']['md']} as markdown
     notes. Each was converted once, by a script that lives outside this repository, and the HTML it
     produced is the record: it is what the build counts, what the Atlas harvests and what a reader
@@ -1600,11 +1715,27 @@ def page_colophon():
     converted piece that says so, and the footer under it, and it proves on every run that the text
     outside those two blocks is byte for byte what it was.</p>
     {pass_sentence()}
-    <p>The corpus as of this build: {len(P)} pieces, {TOTAL_WORDS:,} words, {TOTAL_FIGS} figures,
-    {TOTAL_TBLS} tables and {CHECKPOINTS} checkpoint questions. {ST['independent']['words']:,} of those words
+    <p>The corpus as of this build: {md(len(P), "pieces")} pieces, {md(TOTAL_WORDS, "words")} words, {md(TOTAL_FIGS, "figures")} figures,
+    {md(TOTAL_TBLS, "tables")} tables and {md(CHECKPOINTS, "checkpoints")} checkpoint questions. {md(ST['independent']['words'], "words")} of those words
     were not assigned by anyone.</p>
   </div>
 </section>
+
+<section class="band shell colo" id="claims">
+  <div class="sechead"><h2>What this site claims about itself, and what checks it</h2><span class="count">The register</span></div>
+  <div class="prose">
+    <p class="measure">Every sentence the generated pages say about this site is listed here beside the check
+    that tests it. A checked claim prints its last result with the denominator: so many of so many, on
+    so many pages. A claim nothing tests yet says <b>asserted</b> where a result would be. A claim
+    measured in a browser says <b>not yet measured</b> when the record is older than the pages it
+    describes, rather than repeating a result that was true of an earlier build. The build refuses to
+    publish when a checked claim fails, so a row can read held, asserted or not yet measured, and
+    never failed, on a page that reached you.</p>
+  </div>
+  {register}
+</section>
+
+{limits_block()}
 
 <section class="band colo ground" id="exceptions">
   <div class="shell">
@@ -1614,7 +1745,10 @@ def page_colophon():
       {x1}
       <li>{len(ex['undrawn'])} pieces render under {DOC_MIN:,} words. They are counted in every total and
       not drawn in the corpus figure; together they hold {ex['undrawn_words']:,} words.</li>
-      <li>{len(ex['transcripts'])} run transcripts are measured but not listed: {tr_list}.</li>
+      <li>{len(ex['transcripts'])} run transcripts are measured, held to the same record as every piece, and kept
+      in the offline copy, but not listed and not counted in the corpus line: {tr_list}. Together they
+      hold {TRANSCRIPT_WORDS:,} words, so the site as a whole carries {TOTAL_WORDS + TRANSCRIPT_WORDS:,} measured
+      words over {len(P) + len(ex['transcripts'])} documents; the corpus line counts the {len(P)} pieces.</li>
       <li>The {len(ex['tools'])} interactive tools stand on the shelf of the course or research that
       produced them and on the tools shelf. Every total counts each of them once.</li>
     </ol>
@@ -1629,8 +1763,10 @@ def page_colophon():
     <b>Add to Home Screen</b>: the site becomes an app icon, and every page you
     have visited already works with no connection. To hold all of it, every
     piece, the atlas, the tools and the data files, press the button below
-    once while online. Everything refreshes itself quietly whenever the
-    installed copy is opened with a connection.</p>
+    once while online. A saved copy survives a publish: the new worker carries
+    every saved file across, then fetches only the files whose digest changed.
+    The line under the buttons is read from the cache each time this page
+    opens, not remembered.</p>
     <p class="offline-controls">
       <button type="button" id="offline-save" class="linkbtn">Keep the whole site on this phone</button>
       <button type="button" id="offline-drop" class="linkbtn">Remove the offline copy</button>
@@ -2086,7 +2222,12 @@ def _piece_tail():
     is everything foot() emits between the footer and the script tag."""
     m = re.search(r'</footer>\s*(.*?)\s*<script src="site\.js', foot(), re.S)
     tail = m.group(1)
-    tail = re.sub(r'<!-- The keyboard routes.*?<div class="keys" id="keysheet".*?</div>\s*</div>\s*', "", tail, flags=re.S)
+    tail = re.sub(r'<!-- The keyboard routes.*?<dialog class="keys" id="keysheet".*?</dialog>\s*', "", tail, flags=re.S)
+    # the provenance dialog and its data serve the generated pages' counted
+    # numbers; a piece carries neither the script that opens it nor numbers
+    # that open, and its one word would be counted as the piece's
+    tail = re.sub(r'<!-- A counted number opens here.*?<dialog class="prov" id="prov".*?</dialog>\s*', "", tail, flags=re.S)
+    tail = re.sub(r'<script type="application/json" id="defs">.*?</script>\s*', "", tail, flags=re.S)
     return tail
 
 def _outside_tail(text):
@@ -2656,9 +2797,12 @@ ATLAS_BODY = r"""<section class="band atlas-band" id="atlas">
           the share of the document's static text under that heading; it is not a per-section
           measurement. Heading level is no longer drawn on the sphere and is kept in the index
           beside it. A document's area grows with its section count, and a heading several
-          documents carry is placed once, between them. Positions are deterministic for a given
-          corpus: the same pieces and headings give the same sphere on every build, and adding or
-          removing a piece re-spaces the lattice and moves every mark.</p>
+          documents carry is placed once, between them. Where a document sits carries no meaning
+          of its own: documents are spread evenly over the sphere in the order the site lists them,
+          and their sections are scattered around them, so two documents standing near each other
+          are near because of the list, not because of anything they share. Positions are
+          deterministic for a given corpus: the same pieces and headings give the same sphere on
+          every build, and adding or removing a piece re-spaces the lattice and moves every mark.</p>
         </div>
         <p class="replay"><button type="button" id="preplay" class="linkbtn">Replay the six labels</button></p>
       </div>
@@ -2905,6 +3049,188 @@ def page_404():
 
 
 # ------------------------------------------------------- service worker ----
+SW_TEMPLATE = r"""/* Offline machinery for the whole site. Generated by
+   build/build_site.py; do not edit by hand, the next build overwrites it.
+   Two caches with different lifetimes: CORE precaches the installable tools,
+   and its versioned name retires it whenever a cached file changes. PAGES
+   holds everything a reader has visited, plus the full offline copy if they
+   asked for one. Its name is a digest of the contents of every file the
+   offline copy lists, so a publish changes it; on activate the new worker
+   carries every entry of the previous generation across before deleting
+   it, so nothing a reader saved is lost. A saved full copy then refreshes
+   itself: the manifest carries a digest per file, and only the files whose
+   digest moved are fetched again. Caches named term-* belong to the /term/
+   instrument's own worker, which manages its own versions; they are not
+   this worker's to delete. */
+const VERSION  = "__VERSION__";
+const CORE     = "site-" + VERSION;
+const PAGES    = "site-pages-__PAGES__";
+const MANIFEST = "offline-manifest.json";
+const FILES    = __FILES__;
+
+self.addEventListener("install", e => {
+  e.waitUntil(
+    caches.open(CORE)
+      // addAll is all-or-nothing, so one missing file would leave the tools
+      // with no cache at all. Each file is added on its own and a failure is
+      // survivable: the rest still work offline.
+      .then(c => Promise.all(FILES.map(f => c.add(f).catch(() => null))))
+      .then(() => self.skipWaiting())
+  );
+});
+
+/* Carry the previous generation across. Every entry the reader held is
+   copied into the new cache before the old one is deleted; a page copied
+   this way is one publish old until it is visited (the fetch handler
+   refreshes it then) or until the full copy syncs itself below. */
+async function migrate() {
+  const keys = await caches.keys();
+  const old = keys.filter(k => k.indexOf("site-pages-") === 0 && k !== PAGES);
+  if (!old.length) return false;
+  const nc = await caches.open(PAGES);
+  for (const k of old) {
+    const oc = await caches.open(k);
+    for (const req of await oc.keys()) {
+      if (await nc.match(req)) continue;
+      const res = await oc.match(req);
+      if (res) await nc.put(req, res);
+    }
+    await caches.delete(k);
+  }
+  return true;
+}
+
+self.addEventListener("activate", e => {
+  e.waitUntil((async () => {
+    await migrate();
+    const keys = await caches.keys();
+    await Promise.all(keys
+      .filter(k => k !== CORE && k !== PAGES && k.indexOf("term-") !== 0)
+      .map(k => caches.delete(k)));
+    await self.clients.claim();
+    // a saved full copy refreshes itself against the new manifest
+    const c = await caches.open(PAGES);
+    if (await c.match(MANIFEST)) await sync(broadcast, false);
+  })());
+});
+
+self.addEventListener("fetch", e => {
+  const req = e.request;
+  if (req.method !== "GET") return;
+  const url = new URL(req.url);
+  if (url.origin !== location.origin) return;
+
+  // Cache first, refresh behind: a click on a saved page opens from disk
+  // with no network wait at all, while the fetch that follows replaces the
+  // stored copy so the next click is current. A page seen after a publish
+  // is therefore at most one visit old, and never slow.
+  e.respondWith(
+    caches.match(req).then(hit => {
+      const refresh = fetch(req)
+        .then(res => {
+          if (res && res.ok && res.type === "basic") {
+            const copy = res.clone();
+            caches.open(PAGES).then(c => c.put(req, copy)).catch(() => {});
+          }
+          return res;
+        });
+      if (hit) { refresh.catch(() => {}); return hit; }
+      return refresh.catch(() =>
+        caches.match(url.pathname.replace(/^\//, "") || "index.html")
+          .then(h2 => h2 || caches.match("index.html")));
+    })
+  );
+});
+
+async function broadcast(m) {
+  const cs = await self.clients.matchAll({ includeUncontrolled: true });
+  cs.forEach(c => c.postMessage(m));
+}
+
+/* The full offline copy, saved or refreshed by the same routine: read the
+   live manifest, compare each file's digest with the manifest last synced,
+   fetch what is new or changed, drop what the site no longer lists, then
+   store the manifest itself as the record of what is held. "force" fetches
+   everything, which is what the colophon's button asks for. */
+async function sync(tell, force) {
+  let man;
+  try {
+    man = await (await fetch(MANIFEST, { cache: "no-cache" })).json();
+  } catch (err) { tell({ type: "cache-all-done", ok: 0, failed: -1 }); return; }
+  const c = await caches.open(PAGES);
+  const heldRes = await c.match(MANIFEST);
+  let held = null;
+  try { held = heldRes ? await heldRes.json() : null; } catch (err) { held = null; }
+  const was = (held && held.digests) || {};
+  const now = man.digests || {};
+  const files = man.files || [];
+  const todo = [];
+  for (const f of files) {
+    if (force || !was[f] || was[f] !== now[f] || !(await c.match(f))) todo.push(f);
+  }
+  // files the site no longer lists leave the copy
+  for (const req of await c.keys()) {
+    const name = new URL(req.url).pathname.replace(/^\//, "");
+    if (name && name !== MANIFEST && was[name] && !now[name]) await c.delete(req);
+  }
+  let ok = 0, failed = 0, i = 0;
+  const pool = 6;
+  async function worker() {
+    while (i < todo.length) {
+      const f = todo[i++];
+      try {
+        const res = await fetch(f, { cache: "no-cache" });
+        if (res && res.ok) { await c.put(f, res); ok++; }
+        else failed++;
+      } catch (err) { failed++; }
+      if ((ok + failed) % 5 === 0 || ok + failed === todo.length)
+        tell({ type: "cache-all-progress", done: ok + failed, total: todo.length });
+    }
+  }
+  await Promise.all(Array.from({ length: pool }, worker));
+  if (!failed) {
+    await c.put(MANIFEST, new Response(JSON.stringify(man),
+      { headers: { "content-type": "application/json" } }));
+  }
+  tell({ type: "cache-all-done", ok, failed, total: todo.length, held: await count(c, files), of: files.length, version: man.version });
+}
+
+async function count(c, files) {
+  let n = 0;
+  for (const f of files) if (await c.match(f)) n++;
+  return n;
+}
+
+/* What this phone holds, read from the cache rather than remembered: how
+   many of the listed files are present, which manifest version they were
+   synced against, and whether that is the live version when the network
+   can say. */
+async function status(tell) {
+  const c = await caches.open(PAGES);
+  const heldRes = await c.match(MANIFEST);
+  let held = null;
+  try { held = heldRes ? await heldRes.json() : null; } catch (err) { held = null; }
+  let live = null;
+  try { live = await (await fetch(MANIFEST, { cache: "no-cache" })).json(); } catch (err) { live = null; }
+  const files = (held || live || {}).files || [];
+  tell({ type: "status", held: await count(c, files), of: files.length,
+         saved: !!held, version: held ? held.version : null,
+         live: live ? live.version : null });
+}
+
+self.addEventListener("message", e => {
+  const msg = e.data || {};
+  const tell = m => { if (e.source) e.source.postMessage(m); };
+  if (msg.type === "cache-all") {
+    e.waitUntil(sync(tell, true));
+  } else if (msg.type === "status") {
+    e.waitUntil(status(tell));
+  } else if (msg.type === "drop-all") {
+    e.waitUntil(caches.delete(PAGES).then(() => tell({ type: "drop-all-done" })));
+  }
+});
+"""
+
 def page_sw(pages_version="v1"):
     """A real offline cache, generated so the file list and the version cannot
     fall behind. Three tools register this and three manifests promise the
@@ -2915,7 +3241,13 @@ def page_sw(pages_version="v1"):
     are single self-contained files that request nothing else, which is what
     makes a precache honest here rather than a partial one. The cache name
     carries a digest of those files, so publishing a new version of a tool
-    retires the old cache instead of serving a stale page forever."""
+    retires the old cache instead of serving a stale page forever.
+
+    The page cache is named by a digest of the offline copy's contents, and
+    the worker carries the previous generation across on activate: a publish
+    used to delete a reader's saved copy outright (measured: 182 files to 7
+    after a one-character change to one page), which contradicted the
+    colophon's promise that the copy refreshes itself."""
     want = []
     for p in P:
         if not p["pwa"]:
@@ -2938,109 +3270,9 @@ def page_sw(pages_version="v1"):
                 h.update(f.encode("utf-8") + fh.read())
     version = h.hexdigest()[:12]
     files = json.dumps(want, indent=2)
-
-    return f"""/* Offline machinery for the whole site. Generated by
-   build/build_site.py; do not edit by hand, the next build overwrites it.
-   Two caches with different lifetimes: CORE precaches the installable tools
-   and the site shell, and its versioned name retires it whenever a cached
-   file changes. PAGES holds everything a reader has visited, plus the full
-   offline copy if they asked for one. Its name is a digest of the contents
-   of every file the offline copy lists, so a publish that changes any page
-   retires the previous generation on activate; the copy is refilled as the
-   reader visits, and in full again if they press the colophon's button.
-   Caches named term-* belong to the /term/ instrument's own worker, which
-   manages its own versions; they are not this worker's to delete. */
-const VERSION = "{version}";
-const CORE    = "site-" + VERSION;
-const PAGES   = "site-pages-{pages_version}";
-const FILES   = {files};
-
-self.addEventListener("install", e => {{
-  e.waitUntil(
-    caches.open(CORE)
-      // addAll is all-or-nothing, so one missing file would leave the tools
-      // with no cache at all. Each file is added on its own and a failure is
-      // survivable: the rest still work offline.
-      .then(c => Promise.all(FILES.map(f => c.add(f).catch(() => null))))
-      .then(() => self.skipWaiting())
-  );
-}});
-
-self.addEventListener("activate", e => {{
-  e.waitUntil(
-    caches.keys()
-      .then(keys => Promise.all(
-        keys.filter(k => k !== CORE && k !== PAGES && k.indexOf("term-") !== 0)
-          .map(k => caches.delete(k))))
-      .then(() => self.clients.claim())
-  );
-}});
-
-self.addEventListener("fetch", e => {{
-  const req = e.request;
-  if (req.method !== "GET") return;
-  const url = new URL(req.url);
-  if (url.origin !== location.origin) return;
-
-  // Cache first, refresh behind: a click on a saved page opens from disk
-  // with no network wait at all, while the fetch that follows replaces the
-  // stored copy so the next click is current. A page seen after a publish
-  // is therefore at most one visit old, and never slow.
-  e.respondWith(
-    caches.match(req).then(hit => {{
-      const refresh = fetch(req)
-        .then(res => {{
-          if (res && res.ok && res.type === "basic") {{
-            const copy = res.clone();
-            caches.open(PAGES).then(c => c.put(req, copy)).catch(() => {{}});
-          }}
-          return res;
-        }});
-      if (hit) {{ refresh.catch(() => {{}}); return hit; }}
-      return refresh.catch(() =>
-        caches.match(url.pathname.replace(/^\//, "") || "index.html")
-          .then(h2 => h2 || caches.match("index.html")));
-    }})
-  );
-}});
-
-/* The full offline copy: a page posts cache-all and the worker walks the
-   build-generated manifest, reporting progress so the button can count.
-   drop-all removes the copy (and everything visited) in one motion. */
-self.addEventListener("message", e => {{
-  const msg = e.data || {{}};
-  const tell = m => {{ if (e.source) e.source.postMessage(m); }};
-  if (msg.type === "cache-all") {{
-    e.waitUntil((async () => {{
-      let man;
-      try {{
-        man = await (await fetch("offline-manifest.json", {{cache: "no-cache"}})).json();
-      }} catch (err) {{ tell({{type: "cache-all-done", ok: 0, failed: -1}}); return; }}
-      const c = await caches.open(PAGES);
-      let ok = 0, failed = 0;
-      const files = man.files || [];
-      const pool = 6;
-      let i = 0;
-      async function worker() {{
-        while (i < files.length) {{
-          const f = files[i++];
-          try {{
-            const res = await fetch(f, {{cache: "no-cache"}});
-            if (res && res.ok) {{ await c.put(f, res); ok++; }}
-            else failed++;
-          }} catch (err) {{ failed++; }}
-          if ((ok + failed) % 5 === 0 || ok + failed === files.length)
-            tell({{type: "cache-all-progress", done: ok + failed, total: files.length}});
-        }}
-      }}
-      await Promise.all(Array.from({{length: pool}}, worker));
-      tell({{type: "cache-all-done", ok, failed, total: files.length}});
-    }})());
-  }} else if (msg.type === "drop-all") {{
-    e.waitUntil(caches.delete(PAGES).then(() => tell({{type: "drop-all-done"}})));
-  }}
-}});
-"""
+    return (SW_TEMPLATE.replace("__VERSION__", version)
+            .replace("__PAGES__", pages_version)
+            .replace("__FILES__", files))
 
 
 # ----------------------------------------------------- sitemap, robots ----
@@ -3139,7 +3371,11 @@ SHELL_PAGES = ("index.html", "research.html", "coursework.html", "tools.html",
 
 def check_site():
     problems, files = [], set(os.listdir(OUT))
-    for sub in ("cards", "fonts"):
+    # every check tallies what it looked at, so the register on the colophon
+    # can print a denominator beside each claim rather than a bare pass
+    T = check_site.tally = {}
+    html_files = sorted(f for f in files if f.endswith(".html"))
+    for sub in ("cards", "fonts", "content", "build"):
         if os.path.isdir(os.path.join(OUT, sub)):
             files |= {sub + "/" + f for f in os.listdir(os.path.join(OUT, sub))}
 
@@ -3157,8 +3393,10 @@ def check_site():
         text = open(os.path.join(OUT, f), encoding="utf-8", errors="ignore").read()
 
         # 1. every canonical resolves to a file that exists
+        T.setdefault("hosts", {"pages": 0})["pages"] += 1
         for m in re.finditer(r'<link rel="canonical" href="([^"]+)"', text):
             href = m.group(1)
+            T.setdefault("canonicals", {"n": 0})["n"] += 1
             if not href.startswith(SITE_URL):
                 problems.append(f"{f}: canonical points off-site, {href}")
                 continue
@@ -3177,11 +3415,15 @@ def check_site():
         # first: a page that builds its own markup client-side has href= inside
         # a template literal, and `${esc(s.url)}` is live code, not a dead link.
         prose = re.sub(r"<(script|style)\b[^>]*>.*?</\1>", "", text, flags=re.S | re.I)
+        tl = T.setdefault("links", {"n": 0, "pages": 0})
+        tl["pages"] += 1
         for m in re.finditer(r'(?:href|src)="([^"]+)"', prose):
             u = local(m.group(1))
             # reader.html builds a couple of URLs in script; those are not links
-            if u and "' +" not in u and u not in files:
-                problems.append(f"{f}: links to {u}, which does not exist")
+            if u and "' +" not in u:
+                tl["n"] += 1
+                if u not in files:
+                    problems.append(f"{f}: links to {u}, which does not exist")
 
     # 4. every manifest icon resolves
     for f in sorted(os.listdir(OUT)):
@@ -3193,6 +3435,7 @@ def check_site():
             problems.append(f"{f}: is not readable as JSON ({e})")
             continue
         for icon in data.get("icons", []):
+            T.setdefault("icons", {"n": 0})["n"] += 1
             if icon.get("src") not in files:
                 problems.append(f"{f}: names icon {icon.get('src')}, which does not exist")
 
@@ -3210,6 +3453,7 @@ def check_site():
             continue
         text = open(path, encoding="utf-8", errors="ignore").read()
         for fid in set(re.findall(r'id="(fs-[a-z0-9]+)"', text)):
+            T.setdefault("figscope", {"n": 0})["n"] += 1
             if ("#" + fid) not in sheet:
                 problems.append(f"{f}: shows figure {fid}, which has no colour "
                                 f"scope in figures.css")
@@ -3229,6 +3473,7 @@ def check_site():
         # each with its own body and its own single heading
         bodies = re.findall(r'<article class="docbody"[^>]*>(.*?)</article>', text, re.S)
         counts = [len(re.findall(r"<h1[\s>]", b)) for b in bodies] if bodies else [len(re.findall(r"<h1[\s>]", text[i:]))]
+        T.setdefault("onehead", {"docs": 0})["docs"] += len(counts)
         for n in counts:
             if n > 1:
                 problems.append(f"{f}: {n} top-level headings in a document body; "
@@ -3249,6 +3494,7 @@ def check_site():
             continue
         text = open(os.path.join(OUT, f), encoding="utf-8", errors="ignore").read()
         j = text.lower().find("</head>")
+        T.setdefault("heads", {"pages": 0})["pages"] += 1
         if j == -1:
             problems.append(f"{f}: has no </head>")
             continue
@@ -3279,6 +3525,7 @@ def check_site():
         for href in marks:
             f, _, frag = href.partition("#")
             want.setdefault(f, set()).add(frag)
+        T["atlas_marks"] = {"n": len(marks), "files": len(want)}
         for f, frags in sorted(want.items()):
             fp = os.path.join(OUT, f)
             if not os.path.exists(fp):
@@ -3296,6 +3543,7 @@ def check_site():
             problems.append("atlas.html: carries no marks")
 
     # 9. every listed piece has a file behind it
+    T["listed"] = {"n": len(P)}
     for x in P:
         if x["url"] not in files:
             problems.append(f"content/pieces.json: {x['slug']} points at {x['url']}, which does not exist")
@@ -3312,6 +3560,8 @@ def check_site():
         _full = {int(x) for x in open(
             os.path.join(HERE, "font-full-cmap.txt")).read().split(",")}
         _missing = {}
+        _seen_chars = set()
+        _ts = T.setdefault("subset", {"chars": 0, "pages": 0})
         for f in sorted(os.listdir(OUT)):
             if not f.endswith(".html"):
                 continue
@@ -3320,10 +3570,14 @@ def check_site():
             body = re.sub(r"<(script|style)\b[^>]*>.*?</\1>", "", raw,
                           flags=re.S | re.I)
             body = re.sub(r"<[^>]+>", "", body)
+            _ts["pages"] += 1
             for ch in set(body):
                 cp = ord(ch)
+                if cp > 32:
+                    _seen_chars.add(cp)
                 if cp > 32 and cp in _full and cp not in _sub:
                     _missing.setdefault(ch, f)
+        _ts["chars"] = len(_seen_chars)
         for ch, f in sorted(_missing.items()):
             problems.append(
                 "font subset: U+%04X (%r) in %s renders in the fallback, "
@@ -3349,7 +3603,9 @@ def check_site():
         return out
     try:
         _vocab = _hexes(open(os.path.join(OUT, "site.css"), encoding="utf-8").read())
-        _stray = (_hexes(RETURN_BAR) | _hexes(RETURN_PILL)) - _vocab - {"ffffff", "000000"}
+        _chrome = _hexes(RETURN_BAR) | _hexes(RETURN_PILL)
+        T["chrome"] = {"n": len(_chrome)}
+        _stray = _chrome - _vocab - {"ffffff", "000000"}
         for h in sorted(_stray):
             problems.append("injected chrome: #%s is not a colour site.css knows; "
                             "the chrome palette in build_site.py has drifted from "
@@ -3372,6 +3628,7 @@ def check_site():
             problems.append("atlas.html: %d marks and %d links read back, %d points placed"
                             % (len(marks), len(links), len(pts)))
         want = {p3(q["p"]) for q in pts}
+        T.setdefault("placement", {})["marks"] = len(marks)
         stray = [m for m in marks if m not in want]
         if stray:
             problems.append("atlas.html: %d mark(s) at positions the placement did not produce, first %s"
@@ -3381,6 +3638,7 @@ def check_site():
         itext = open(ipath, encoding="utf-8", errors="ignore").read()
         m = re.search(r'data-pts="([^"]*)"', itext)
         tease = [x for x in (m.group(1).split(";") if m else []) if x]
+        T.setdefault("placement", {})["teaser"] = len(tease)
         if len(tease) != len(pts):
             problems.append("index.html: teaser carries %d marks, %d points placed" % (len(tease), len(pts)))
         want2 = {"%.2f,%.2f,%.2f" % (q["p"][0], q["p"][1], q["p"][2]) for q in pts}
@@ -3395,6 +3653,7 @@ def check_site():
     # carries the sum of its owners' shares.
     if pts and os.path.exists(apath):
         ws = [int(x) for x in re.findall(r'<li data-p="[^"]*" data-w="(\d+)"', atext)]
+        T["weights"] = {"marks": len(ws), "sum": sum(ws)}
         if len(ws) != len(pts):
             problems.append("atlas.html: %d marks carry a weight, %d points placed" % (len(ws), len(pts)))
         elif sum(ws) != TOTAL_WORDS:
@@ -3411,6 +3670,7 @@ def check_site():
     # total, and the arithmetic is the reader's to check on the page, so the
     # build checks it first.
     st = surface_totals()
+    T["origins"] = {"keys": 4}
     for key, tot in (("n", len(P)), ("words", TOTAL_WORDS),
                      ("figures", TOTAL_FIGS), ("tables", TOTAL_TBLS)):
         got = sum(st[k][key] for k in st)
@@ -3427,6 +3687,7 @@ def check_site():
     essays = [x for x in P if x["k"] == "Essay"]
     top_essay = max(essays, key=lambda x: x["words"]) if essays else None
     top_piece = max(P, key=lambda x: x["words"])
+    T["superlatives"] = {"fields": 3 * len(P)}
     for x in P:
         text = " ".join(str(x.get(k) or "") for k in ("s", "blurb", "demo"))
         if re.search(r"\blargest essay\b", text, re.I) and top_essay and x is not top_essay:
@@ -3447,6 +3708,7 @@ def check_site():
     # left alone: note references and the small counts of a sentence.
     for line in _typed_numerals():
         problems.append(line)
+    T["numerals"] = {"n": getattr(_typed_numerals, "checked", 0), "pages": len(SHELL_PAGES)}
 
     # 15. nothing a piece claims has moved. Every numeral, reference,
     # provenance label, chip, anchor id, URL, heading and result sentence in
@@ -3456,6 +3718,7 @@ def check_site():
     inv_problems, inv_summary = invariance.check(OUT, P, extra=exceptions()["transcripts"])
     problems.extend(inv_problems)
     check_site.invariance = inv_summary
+    T["invariance"] = dict(inv_summary, listed=len(P), transcripts=len(exceptions()["transcripts"]))
 
     # 18. every self-hosted typeface carries every character its piece shows.
     # fonts/manifest.json records each subset's codepoints and the size of
@@ -3470,6 +3733,7 @@ def check_site():
             man = None
             problems.append("fonts/manifest.json: unreadable")
         if man:
+            T["fonts"] = {"files": len(man.get("files") or {})}
             by_piece = {}
             for fname, rec in (man.get("files") or {}).items():
                 if not os.path.exists(os.path.join(OUT, fname)):
@@ -3526,6 +3790,7 @@ def check_site():
     # plain line in your own words"), so a value opening with those two
     # words renders as "Built from Built from ..." on the page. Forty-two
     # of them did.
+    T["built_from"] = {"n": len(P)}
     for p in P:
         bf = (p.get("built_from") or "").strip()
         if not bf:
@@ -3541,11 +3806,140 @@ def check_site():
     # count the tree does not support; build/ledger.py rewrites it.
     if LEDGER:
         live = invariance.classes(OUT, P)
+        T["ledger"] = {"n": len(live)}
         for slug, cls in live.items():
             said = ((LEDGER.get("pieces") or {}).get(slug) or {}).get("class")
             if said != cls:
                 problems.append("content/ledger.json: %s is %s, the files say %s; run build/ledger.py"
                                 % (slug, said or "missing", cls))
+    # 19. headings on the generated pages run in order. A level skipped is a
+    # section a screen reader's outline cannot place; the colophon claims the
+    # order, so the build holds it.
+    th = T["headings"] = {"pages": 0, "headings": 0}
+    for f in SHELL_PAGES:
+        path = os.path.join(OUT, f)
+        if not os.path.exists(path):
+            continue
+        text = open(path, encoding="utf-8", errors="ignore").read()
+        body = re.sub(r"<(script|style|svg)\b[^>]*>.*?</\1>", " ", text, flags=re.S | re.I)
+        levels = [int(x) for x in re.findall(r"<h([1-6])[\s>]", body)]
+        th["pages"] += 1
+        th["headings"] += len(levels)
+        last = 0
+        for lv in levels:
+            if lv > last + 1 and last:
+                problems.append(f"{f}: a heading skips from h{last} to h{lv}")
+                break
+            last = lv
+
+    # 20. every generated page opens with a skip link to its main content
+    ts = T["skip"] = {"pages": 0}
+    for f in SHELL_PAGES:
+        path = os.path.join(OUT, f)
+        if not os.path.exists(path):
+            continue
+        text = open(path, encoding="utf-8", errors="ignore").read()
+        ts["pages"] += 1
+        if not re.search(r'<a class="skip" href="#main"', text) or 'id="main"' not in text:
+            problems.append(f"{f}: has no skip link to #main")
+
+    # 21. every figure on the generated pages carries an accessible name: a
+    # top-level svg on a real artboard has role="img" with a label, or a
+    # <title> a reader's assistive technology can read, or is marked
+    # decorative outright.
+    tf = T["fignames"] = {"pages": 0, "figures": 0}
+    for f in SHELL_PAGES:
+        path = os.path.join(OUT, f)
+        if not os.path.exists(path):
+            continue
+        text = open(path, encoding="utf-8", errors="ignore").read()
+        tf["pages"] += 1
+        depth = 0
+        for m in re.finditer(r"<(/?)svg\b([^>]*)>", text):
+            if m.group(1):
+                depth -= 1
+                continue
+            depth += 1
+            if depth != 1:
+                continue
+            attrs = m.group(2)
+            vb = re.search(r'viewBox="([^"]+)"', attrs)
+            area = 0
+            if vb:
+                q = [float(x) for x in re.split(r"[\s,]+", vb.group(1).strip()) if x]
+                area = (q[2] * q[3]) if len(q) == 4 else 0
+            if area < 6000:
+                continue
+            tf["figures"] += 1
+            inner = text[m.end():m.end() + 600]
+            named = (re.search(r'aria-label="[^"]+"|aria-labelledby="[^"]+"', attrs)
+                     or re.search(r'aria-hidden="true"', attrs)
+                     or re.search(r"<title[\s>]", inner))
+            if not named:
+                problems.append(f"{f}: a figure carries no accessible name")
+
+    # 22. nothing on any page is loaded from another origin: no script,
+    # stylesheet, image, frame, font or media with a src or href on another
+    # host, except the Google Fonts typefaces the exceptions name in the
+    # pieces that still load them; and no page or script touches the
+    # cookie API. Check 2 holds hostnames; this holds what is fetched.
+    te = T["external"] = {"pages": 0, "refs": 0, "allowed": 0, "cookie": 0}
+    allowed_pages = {p["url"] for p in exceptions()["fonts"]}
+    for f in html_files:
+        text = open(os.path.join(OUT, f), encoding="utf-8", errors="ignore").read()
+        te["pages"] += 1
+        te["cookie"] += len(re.findall(r"document\.cookie", text))
+        for m in re.finditer(r'<(?:script|link|img|iframe|source|video|audio|embed|object)\b[^>]*\b(?:src|href)="(https?://[^"]+)"', text):
+            te["refs"] += 1
+            host = re.sub(r"^https?://", "", m.group(1)).split("/")[0]
+            if f in allowed_pages and host in ("fonts.googleapis.com", "fonts.gstatic.com"):
+                te["allowed"] += 1
+            elif host == HOST:
+                te["allowed"] += 1
+            else:
+                problems.append(f"{f}: loads {m.group(1)} from another origin")
+        for m in re.finditer(r"url\((?:'|\")?(https?://[^)'\"]+)", text):
+            te["refs"] += 1
+            host = re.sub(r"^https?://", "", m.group(1)).split("/")[0]
+            if f in allowed_pages and host in ("fonts.googleapis.com", "fonts.gstatic.com"):
+                te["allowed"] += 1
+            elif host == HOST:
+                te["allowed"] += 1
+            else:
+                problems.append(f"{f}: loads {m.group(1)} from another origin")
+    for jsname in ("site.js", "atlas.js"):
+        jp = os.path.join(OUT, jsname)
+        if os.path.exists(jp):
+            te["cookie"] += len(re.findall(r"document\.cookie", open(jp, encoding="utf-8").read()))
+    if te["cookie"]:
+        problems.append("the cookie API is used %d time(s); the colophon says no cookies" % te["cookie"])
+
+    # 24. the workflow holds the build to its idempotence claim: a step that
+    # runs the build once more and fails the publish unless it reports
+    # nothing to rewrite. The register prints the claim as held only while
+    # that step is there.
+    wf = os.path.join(ROOT, ".github", "workflows", "build.yml")
+    T["workflow"] = {"idempotence": False}
+    if os.path.exists(wf):
+        wtext = open(wf, encoding="utf-8").read()
+        T["workflow"]["idempotence"] = ("rewrote: nothing" in wtext and "build/build_site.py" in wtext
+                                        and "A further build rewrites nothing" in wtext)
+
+    # 23. no em dash on any generated page. The pieces are content and their
+    # record holds them as written; their count is reported, not enforced.
+    td = T["emdash"] = {"generated_pages": 0, "in_generated": 0, "pieces_with": 0, "in_pieces": 0}
+    for f in html_files:
+        text = open(os.path.join(OUT, f), encoding="utf-8", errors="ignore").read()
+        c = text.count("\u2014")
+        if f in SHELL_PAGES:
+            td["generated_pages"] += 1
+            td["in_generated"] += c
+            if c:
+                problems.append(f"{f}: carries {c} em dash(es)")
+        elif f != "reader.html" and f != "admin.html":
+            if c:
+                td["pieces_with"] += 1
+                td["in_pieces"] += c
     return sorted(set(problems))
 
 
@@ -3618,7 +4012,8 @@ def _known_numbers():
     add([len(off), round(sum(os.path.getsize(os.path.join(OUT, f)) for f in off) / 1048576)])
     ex = exceptions()
     add([len(ex["fonts"]), len(ex["undrawn"]), ex["undrawn_words"], len(ex["transcripts"]),
-         len(ex["tools"]), ex["kinds"]["md"], ex["kinds"]["doc"]])
+         len(ex["tools"]), ex["kinds"]["md"], ex["kinds"]["doc"],
+         TRANSCRIPT_WORDS, TOTAL_WORDS + TRANSCRIPT_WORDS, len(P) + len(ex["transcripts"])])
     # the lifted figures, and the tools the drawing reaches
     add([len(STRIP), len(LIFTS)])
     add([len(x) for x in tools_drawn()])
@@ -3659,6 +4054,13 @@ def _typed_numerals():
         raw = open(path, encoding="utf-8", errors="ignore").read()
         # the atlas index is the pieces' own headings, which are content
         raw = re.sub(r'<section class="areg".*?</section>', " ", raw, flags=re.S)
+        # the last pass's notes on the colophon are a record reproduced as
+        # written; their numerals are the pass's own, not this build's
+        raw = re.sub(r'<section[^>]*id="limits".*?</section>', " ", raw, flags=re.S)
+        # the register's tallies are the checks' own output, this count among
+        # them: a scan cannot hold a page to the count it is about to produce
+        raw = re.sub(r'<table class="ctab register".*?</table>', " ", raw, flags=re.S)
+        raw = re.sub(r'<p class="audit-line">.*?</p>', " ", raw, flags=re.S)
         raw = re.sub(r"<(script|style|svg)\b[^>]*>.*?</\1>", " ", raw, flags=re.S | re.I)
         # the statement rows are numbered by position, which is a count of
         # the list, not a quantity; the number is cut out before the scan
@@ -3672,6 +4074,51 @@ def _typed_numerals():
             out.append("%s: prints %s, which the build did not compute and no piece states" % (f, m))
     _typed_numerals.checked = checked
     return out
+
+
+def write_offline(changed):
+    """The full-offline manifest and the worker, from the files as they stand.
+    Called after the register settled, because both digest every file the
+    offline copy holds, the colophon among them; and on its own by
+    --offline-only, which build/audit.js uses to turn a copy of the tree with
+    one changed page into the next generation a publish would produce."""
+    # The full-offline manifest: every file a reader needs to hold the whole
+    # site on a phone, from the one selection rule offline_files() states.
+    off_files = offline_files()
+    _oh = hashlib.sha1()
+    digests = {}
+    for f in off_files:
+        _oh.update((f + str(os.path.getsize(os.path.join(OUT, f)))).encode())
+        with open(os.path.join(OUT, f), "rb") as fh:
+            digests[f] = hashlib.sha1(fh.read()).hexdigest()[:12]
+    off_bytes = sum(os.path.getsize(os.path.join(OUT, f)) for f in off_files)
+    # a digest per file, so a saved copy can refresh only what changed
+    off = json.dumps({"version": _oh.hexdigest()[:12],
+                      "bytes": off_bytes,
+                      "files": off_files,
+                      "digests": digests}, indent=1)
+    offpath = os.path.join(OUT, "offline-manifest.json")
+    if (not os.path.exists(offpath)) or open(offpath, encoding="utf-8").read() != off:
+        open(offpath, "w", encoding="utf-8").write(off)
+        changed.append("offline-manifest.json")
+
+    # The page cache is named by a digest of the CONTENTS of every file the
+    # offline copy holds, computed here, after the piece pass, for the same
+    # reason the CORE digest is. It used to be the constant "site-pages-v1",
+    # which the activate filter exempted, so every page a reader had ever
+    # loaded persisted across every build and was served cache-first: two
+    # generations of the site in one session. A size digest would not do:
+    # 483,735 and 483,784 are the same number of characters.
+    _ph = hashlib.sha1()
+    for f in off_files:
+        with open(os.path.join(OUT, f), "rb") as fh:
+            _ph.update(f.encode("utf-8") + fh.read())
+    sw = page_sw(_ph.hexdigest()[:12])
+    swpath = os.path.join(OUT, "sw.js")
+    if (not os.path.exists(swpath)) or open(swpath, encoding="utf-8").read() != sw:
+        open(swpath, "w", encoding="utf-8").write(sw)
+        changed.append("sw.js")
+
 
 
 def main():
@@ -3696,7 +4143,7 @@ def main():
              "atlas.html": page_atlas(),
              "coursework.html": page_coursework(), "tools.html": page_tools(),
              "library.html": page_library(), "about.html": page_about(),
-             "colophon.html": page_colophon(), "404.html": page_404(),
+             "404.html": page_404(),
              "sitemap.xml": page_sitemap(), "robots.txt": page_robots(),
              "figures.css": figures_css}
     changed = []
@@ -3714,40 +4161,40 @@ def main():
 
     n, heads, navs, figs_named, tails, titles = add_returns_everywhere()
 
-    # After the pieces, not before: the service worker's version is a digest of
-    # the files it caches, and the pass above edits three of them. Generated
-    # first, the digest described the previous build and the file never settled.
-    # The full-offline manifest: every file a reader needs to hold the whole
-    # site on a phone, from the one selection rule offline_files() states.
-    off_files = offline_files()
-    _oh = hashlib.sha1()
-    for f in off_files:
-        _oh.update((f + str(os.path.getsize(os.path.join(OUT, f)))).encode())
-    off_bytes = sum(os.path.getsize(os.path.join(OUT, f)) for f in off_files)
-    off = json.dumps({"version": _oh.hexdigest()[:12],
-                      "bytes": off_bytes,
-                      "files": off_files}, indent=1)
-    offpath = os.path.join(OUT, "offline-manifest.json")
-    if (not os.path.exists(offpath)) or open(offpath, encoding="utf-8").read() != off:
-        open(offpath, "w", encoding="utf-8").write(off)
-        changed.append("offline-manifest.json")
+    # The register on the colophon prints what the checks found, and the
+    # checks read the colophon, so the two are run to a fixpoint: check,
+    # print the register, rewrite the colophon if it moved, check again. The
+    # register's shape does not depend on its numbers, so the second pass
+    # settles it; a cap guards the loop all the same, and only the check
+    # that ran on the colophon as finally written decides the build.
+    all_pages = list(SHELL_PAGES) + [p["url"] for p in P] + [k + ".html" for k in exceptions()["transcripts"]]
+    colpath = os.path.join(OUT, "colophon.html")
+    # the colophon is written only here, with the register in it: written
+    # first without it and again with it, every build rewrote the page
+    if not os.path.exists(colpath):
+        open(colpath, "w", encoding="utf-8").write(page_colophon())
+        changed.append("colophon.html")
+    settled = False
+    for _round in range(4):
+        problems = check_site()
+        ctx = {"tally": check_site.tally, "shell_pages": list(SHELL_PAGES), "all_pages": all_pages,
+               "audit": claims.audit_state(OUT, set(SHELL_PAGES), all_pages), "problems": []}
+        rows, summary = claims.build(ctx)
+        problems = sorted(set(problems + ctx["problems"]))
+        meta = (ctx["audit"]["audit"] or {}).get("meta") or {}
+        new_col = page_colophon(register=claims.render(rows, summary, meta))
+        on_disk = open(colpath, encoding="utf-8").read() if os.path.exists(colpath) else ""
+        if new_col == on_disk:
+            settled = True
+            break
+        open(colpath, "w", encoding="utf-8").write(new_col)
+        if "colophon.html" not in changed:
+            changed.append("colophon.html")
+    if not settled:
+        problems.append("colophon.html: the register did not settle in four rounds")
+    check_site.register = summary
 
-    # The page cache is named by a digest of the CONTENTS of every file the
-    # offline copy holds, computed here, after the piece pass, for the same
-    # reason the CORE digest is. It used to be the constant "site-pages-v1",
-    # which the activate filter exempted, so every page a reader had ever
-    # loaded persisted across every build and was served cache-first: two
-    # generations of the site in one session. A size digest would not do:
-    # 483,735 and 483,784 are the same number of characters.
-    _ph = hashlib.sha1()
-    for f in off_files:
-        with open(os.path.join(OUT, f), "rb") as fh:
-            _ph.update(f.encode("utf-8") + fh.read())
-    sw = page_sw(_ph.hexdigest()[:12])
-    swpath = os.path.join(OUT, "sw.js")
-    if (not os.path.exists(swpath)) or open(swpath, encoding="utf-8").read() != sw:
-        open(swpath, "w", encoding="utf-8").write(sw)
-        changed.append("sw.js")
+    write_offline(changed)
 
     print(f"{len(P)} pieces · {TOTAL_WORDS:,} words · {TOTAL_FIGS} figures · {TOTAL_TBLS} tables")
     print("rewrote: " + (", ".join(changed) if changed else "nothing, pages already current"))
@@ -3770,12 +4217,12 @@ def main():
         ok = tails - len({x.split(":")[0] for x in TAIL_PROBLEMS})
         print(f"conversion sentence, footer and search block owned on {tails} converted pieces; "
               f"text outside the blocks byte-identical on {ok} of {tails}")
-
-    problems = check_site()
     inv = getattr(check_site, "invariance", None)
     if inv:
-        print(f"invariance: {inv['held']} of {inv['checked']} pieces hold every numeral, reference, "
-              f"label, anchor and result sentence of their record; {inv['declared']} carry declared strikes")
+        n_tr = len(exceptions()["transcripts"])
+        print(f"invariance: {inv['held']} of {inv['checked']} records hold every numeral, reference, "
+              f"label, anchor and result sentence ({len(P)} listed pieces and {n_tr} transcripts); "
+              f"{inv['declared']} carry declared strikes")
     if problems:
         print(f"\n{len(problems)} problem(s) found. The site was written, but this is broken:")
         for line in problems[:40]:
@@ -3786,4 +4233,9 @@ def main():
     print("checks passed: every link, canonical, icon and listed file resolves")
 
 if __name__ == "__main__":
+    if "--offline-only" in sys.argv:
+        _ch = []
+        write_offline(_ch)
+        print("offline: " + (", ".join(_ch) if _ch else "nothing, already current"))
+        sys.exit(0)
     main()

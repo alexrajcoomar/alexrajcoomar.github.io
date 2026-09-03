@@ -50,6 +50,15 @@
   --logo-chip:    transparent; /* behind the university mark; cream in dark */
   --accent:       #14509b;   /*  7.4:1 on paper */
   --accent-2:     #1a5fb4;
+  /* The second accent means one thing: a link one document's prose makes
+     to another. It is the colour of the chords on both spheres, of the key
+     entry that names them, and of the link counts in the sphere's card,
+     and it appears nowhere else. Violet because no figure on the site has
+     spent it: blue is inside the number and red outside it in Whose Losses
+     Count, orange and blue are the two anchors of the Trillion-Dollar
+     Vintage, green is the tools and the investment share, amber is a
+     heading carried by several documents. 7.1:1 on paper. */
+  --link:         #5a36c9;
   --tool:         #0f6b58;   /*  5.9:1 on paper */
   --ref:          #8a5410;   /*  5.4:1 on paper */
   --selection:    #cfe0f6;
@@ -89,9 +98,11 @@
   --btn-weight:   560;
   --btn-pad:      .5rem .8rem;
 
-  /* motion: things arrive in 300ms and change colour in 180ms. The
-     Atlas's 1050ms camera move has no counterpart here, because
-     nothing on these pages moves a camera. */
+  /* motion: things arrive in 300ms and change colour in 180ms. The one
+     camera on these pages, the home sphere's, is driven by the scroll
+     position and has no clock of its own; the 550ms weight below is for
+     the few things that settle rather than switch (the sphere pinning on
+     a phone, a dialog arriving). */
   --t-fast:       .18s;
   --t-in:         .3s;
   --ease-move:    cubic-bezier(.22,1,.36,1);
@@ -118,6 +129,7 @@
     --logo-chip:   #faf9f6;
     --accent:      #8fb6ee;
     --accent-2:    #b2ccf5;
+    --link:#bfa2ff;   /* 9.0:1 on paper, 7.9 on panel-2 */
     --tool:        #4fc4a6;
     --ref:         #dbab5d;
     --selection:   #223b5c;
@@ -136,6 +148,7 @@
   --logo-chip:   #faf9f6;
   --accent:      #8fb6ee;
   --accent-2:    #b2ccf5;
+    --link:#bfa2ff;   /* 9.0:1 on paper, 7.9 on panel-2 */
   --tool:        #4fc4a6;
   --ref:         #dbab5d;
   --selection:   #223b5c;
@@ -499,14 +512,18 @@ ol.index li:last-child{border-bottom:1px solid var(--rule)}
    sweep for the same latent bug: site.js sets `hidden` on eight other
    things and none of them carries a display rule, so these two were
    the only components that ever had it. */
-.cmdk{
-  position:fixed;inset:0;z-index:80;display:grid;place-items:start center;
+/* a native dialog: the element is the full-screen layer, the backdrop is
+   the browser's, and the page behind it is inert while it is open */
+dialog.cmdk{
+  position:fixed;inset:0;z-index:80;width:100%;height:100%;max-width:none;max-height:none;
+  margin:0;border:0;background:transparent;color:inherit;
   padding:clamp(2rem,10vh,7rem) 1rem 1rem;
-  background:color-mix(in oklab, var(--ink) 38%, transparent)
 }
+dialog.cmdk[open]{display:grid;place-items:start center}
+dialog.cmdk::backdrop{background:rgba(10,10,8,.45)}
 .cmdk-panel{
   width:min(44rem,100%);background:var(--paper);border:1px solid var(--ink);
-  box-shadow:0 24px 70px rgba(0,0,0,.24);display:flex;flex-direction:column;max-height:70vh
+  display:flex;flex-direction:column;max-height:70vh
 }
 .cmdk-panel input{
   font:inherit;font-size:1.05rem;padding:1rem 1.1rem;border:0;border-bottom:1px solid var(--rule);
@@ -646,27 +663,14 @@ footer.site .fine b{font-weight:600;color:var(--ink-2)}
 @media (max-width:52rem){ footer.site .cols{grid-template-columns:minmax(0,1fr)} }
 
 /* ------------------------------- motion ------------------------------- */
-/* 300ms, which is the Atlas label fade, on the site's own move curve.
-   It used to be 550ms on a second easing curve that appears nowhere
-   else, and because a .rise block starts at opacity 0 the browser
-   cannot treat it as a paint candidate until the transition ends: the
-   hero heading on the home page was arriving half a second after it
-   had been laid out. Shortening it aligns the motion with the Atlas
-   and moves the largest contentful paint at the same time. */
-/* The delayed animation is a dead-man's switch: if site.js never runs
-   (blocked, failed request) nothing would ever add .in, and content held
-   at opacity 0 is content the reader never sees. After 1.8s the keyframe
-   forces the end state; when the observer fires first, both write the
-   same values and nothing visibly changes. */
-.js .rise{opacity:0;transform:translateY(12px);animation:rise-auto 0s 1.8s forwards}
-.js .rise.in{opacity:1;transform:none;
-  transition:opacity var(--t-in) var(--ease-move),transform var(--t-in) var(--ease-move)}
-@keyframes rise-auto{to{opacity:1;transform:none}}
+/* Nothing on these pages is hidden until scrolled to: every block is
+   visible at rest, so the first frame, a thumbnail and a reader with a
+   blocked script all see the same page. The reveal-on-scroll that used to
+   hold blocks at opacity 0 until an observer fired was an interaction that
+   existed because it was possible, and it cost the home page its largest
+   contentful paint. */
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
-  /* Both states, so the transition declaration on .in cannot survive and
-     animate later on a hover or a class change. */
-  .js .rise,.js .rise.in{opacity:1;transform:none;transition:none;animation:none}
   .feature::after,.feature .arrow,.row .side .arrow{transition:none}
 }
 
@@ -675,8 +679,7 @@ footer.site .fine b{font-weight:600;color:var(--ink-2)}
   :root{--paper:#fff;--panel:#fff;--ink:#000;--ink-2:#333;--ink-3:#555;--rule:#ccc;--rule-strong:#999;--accent:#000}
   header.top,.iconbtn,.cmdk,.tools-bar,footer.site .cols{display:none !important}
   body{font-size:10.5pt}
-  .js .rise{opacity:1 !important;transform:none !important}
-  .row,.feature,.course,li{break-inside:avoid}
+  .row,.feature,.course,li,figure,.spec,.plot{break-inside:avoid}
   a[href^="http"]::after{content:" (" attr(href) ")";font-size:8pt;color:#555}
   .hero{padding-block:0 1rem}
 }
@@ -1243,14 +1246,40 @@ details.cal-q .cb > *:first-child{margin-top:.8rem}
 .cmdk-list li a{align-items:center}
 
 /* ---------------------------- shortcuts sheet ---------------- */
-.keys{
-  position:fixed;inset:0;z-index:80;display:grid;place-items:center;
-  background:rgba(10,10,8,.55);
-  padding:1.5rem;backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px)
+dialog.keys{
+  position:fixed;inset:0;z-index:80;width:100%;height:100%;max-width:none;max-height:none;
+  margin:0;border:0;background:transparent;color:inherit;padding:1.5rem
+}
+dialog.keys[open]{display:grid;place-items:center}
+dialog.keys::backdrop{background:rgba(10,10,8,.55);backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px)}
+/* while a dialog is open the page does not scroll behind it */
+body:has(dialog[open]){overflow:hidden}
+/* a dialog arrives with weight: the backdrop fades in over 300ms and the
+   panel settles up into place on the weighted curve; leaving, it fades.
+   @starting-style gives the entry its from-state; allow-discrete keeps
+   the element displayed while it fades out. Browsers without either
+   simply show and hide, which is what they did before. */
+dialog.cmdk,dialog.keys{
+  transition:opacity var(--t-in) var(--ease-weight),display var(--t-in) allow-discrete,overlay var(--t-in) allow-discrete}
+dialog.cmdk:not([open]),dialog.keys:not([open]){opacity:0}
+dialog.cmdk[open],dialog.keys[open]{opacity:1}
+/* the backdrop is not the dialog's descendant, so it fades out on its own */
+dialog.cmdk:not([open])::backdrop,dialog.keys:not([open])::backdrop{background-color:rgba(10,10,8,0)}
+dialog.cmdk::backdrop,dialog.keys::backdrop{
+  transition:background-color var(--t-in) ease,display var(--t-in) allow-discrete,overlay var(--t-in) allow-discrete}
+.cmdk-panel,.keys-panel{transition:transform var(--t-weight) var(--ease-weight)}
+@starting-style{
+  dialog.cmdk[open],dialog.keys[open]{opacity:0}
+  dialog.cmdk[open]::backdrop{background-color:rgba(10,10,8,0)}
+  dialog.keys[open]::backdrop{background-color:rgba(10,10,8,0)}
+  dialog.cmdk[open] .cmdk-panel,dialog.keys[open] .keys-panel{transform:translateY(14px)}
+}
+@media (prefers-reduced-motion:reduce){
+  dialog.cmdk,dialog.keys,dialog.cmdk::backdrop,dialog.keys::backdrop,.cmdk-panel,.keys-panel{transition:none}
 }
 .keys-panel{
   background:var(--paper);border:1px solid var(--ink);max-width:26rem;width:100%;
-  padding:1.25rem 1.4rem 1.4rem
+  padding:1.25rem 1.4rem 1.4rem;margin:0
 }
 .keys h2{font-size:1rem;margin:0 0 .8rem;letter-spacing:-.01em}
 .keys dl{display:grid;grid-template-columns:auto 1fr;gap:.5rem .9rem;margin:0;font-size:.875rem}
@@ -1495,9 +1524,9 @@ body.atlas-free .atlas-h1{font-size:clamp(1.2rem,1.7vw,1.42rem);max-width:24em;
 /* the chord swatch is a shallow arc with its direction tick, as drawn */
 .ak-lnk{width:.85rem;height:.45rem;border-radius:0;background:none;position:relative}
 .ak-lnk::before{content:"";position:absolute;left:0;top:.08rem;width:100%;height:.6rem;
-  border-top:1px solid var(--ink-2);border-radius:50% 50% 0 0/100% 100% 0 0}
-.ak-lnk::after{content:"";position:absolute;right:.16rem;top:.02rem;width:1px;height:.24rem;
-  background:var(--ink-2)}
+  border-top:1.5px solid var(--link);border-radius:50% 50% 0 0/100% 100% 0 0}
+.ak-lnk::after{content:"";position:absolute;right:.16rem;top:.02rem;width:1.5px;height:.28rem;
+  background:var(--link)}
 /* the one entry that needs a sentence gets its own line and hangs its swatch */
 .akey-list li.akey-wide{flex:1 1 100%;align-items:flex-start}
 .akey-list li.akey-wide .ak{margin-top:-.05rem}
@@ -1930,12 +1959,19 @@ a.nref{position:relative;display:inline;padding:.75rem .45rem;margin:0 -.35rem 0
 /* the card that names the document under the pointer, set as the Atlas sets its own */
 .globe-card{position:absolute;top:0;left:0;max-width:19rem;z-index:2;
   background:var(--panel);border:1px solid var(--rule-strong);padding:.5rem .65rem;text-align:left;
-  -webkit-print-color-adjust:exact;print-color-adjust:exact}
+  -webkit-print-color-adjust:exact;print-color-adjust:exact;
+  transition:opacity var(--t-fast) var(--ease-weight)}
+/* the card fades up in 180ms when a mark is first pointed at; it moves
+   between marks without delay, because the pointer is already there */
+@starting-style{.globe-card:not([hidden]){opacity:0}}
+@media (prefers-reduced-motion:reduce){.globe-card{transition:none}}
 /* the document's name is the link that opens it; the arrow says so */
 .globe-card .gc-t{display:block;margin:0;font-size:.88rem;font-weight:600;color:var(--ink);line-height:1.3;text-decoration:none}
 .globe-card .gc-t::after{content:" \2192";color:var(--accent)}
 .globe-card .gc-t:hover,.globe-card .gc-t:focus-visible{color:var(--accent);text-decoration:underline}
 .globe-card .gc-d{display:block;margin:.22rem 0 0;font-size:.72rem;color:var(--ink-3);text-transform:uppercase;letter-spacing:.07em;font-variant-numeric:tabular-nums}
+.globe-card .gc-d .gc-l{color:var(--link);font-weight:640}
+.globe-hint .gc-l,.globe-hint-touch .gc-l{color:var(--link)}
 .stage-globe .note{font-size:.9rem;color:var(--ink-2);max-width:30rem;margin:.5rem auto 0;text-align:center}
 /* the corpus in four figures: label over value, hairlines between */
 .corpusline{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)}
@@ -2060,3 +2096,86 @@ section.band.ground .pane{background:var(--panel-2);border-color:var(--rule-stro
   background var(--t-fast) ease,border-color var(--t-fast) ease,visibility 0s linear var(--t-in)}
 .totop.on{visibility:visible;transition-delay:0s}
 @media (prefers-reduced-motion:reduce){.totop{transition:opacity .01s,visibility 0s}}
+
+/* ------------------------------------------------ course disclosures --
+   Each course on the coursework shelf is a native details element, open
+   by default: the head is its summary, the rows fold under it. */
+details.cgroup > summary.grouphead{list-style:none;cursor:pointer;display:flex}
+details.cgroup > summary.grouphead::-webkit-details-marker{display:none}
+details.cgroup > summary.grouphead::before{content:"\2212";color:var(--ink-3);font-weight:640;margin-right:.6rem;align-self:baseline;font-variant-numeric:tabular-nums}
+details.cgroup:not([open]) > summary.grouphead::before{content:"+"}
+details.cgroup > summary.grouphead:hover h3{color:var(--accent)}
+details.cgroup > summary.grouphead:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+details.cgroup + details.cgroup{margin-top:1.75rem}
+
+/* ------------------------------ the register ------------------------- */
+/* Every claim the site makes about itself beside the check that tests it.
+   The status word is the one thing set in a face and a weight of its own:
+   "held" in the ink, "asserted" and "not yet measured" in the third ink,
+   because absence is what a reader should be able to find at a glance. */
+.register .rg-claim{max-width:34rem}
+.register .rg-by{white-space:nowrap;color:var(--ink-3);font-variant-numeric:tabular-nums}
+.register .rg-res{color:var(--ink-2)}
+.register .rg-st{display:inline-block;font-size:.72rem;font-weight:680;letter-spacing:.08em;text-transform:uppercase;
+  padding:.05rem .4rem;border:1px solid var(--rule-strong);margin-right:.35rem;color:var(--ink);vertical-align:.08em}
+.register .rg-asserted .rg-st,.register .rg-open .rg-st{color:var(--ink-3);border-style:dashed}
+.register .rg-failed .rg-st{color:var(--paper);background:var(--ink);border-color:var(--ink)}
+.register .rg-note{display:block;margin-top:.2rem;font-size:.76rem;color:var(--ink-3)}
+.tw > .register{min-width:40rem}
+.audit-line{font-size:.9rem;color:var(--ink-2)}
+/* the pass's own account of its limits */
+.limits ol{padding-left:1.2rem}
+.limits li{margin:.5rem 0;color:var(--ink-2)}
+/* on a narrow screen the register stacks: claim, then the check and its
+   result, rather than scrolling three columns sideways */
+@media (max-width:44rem){
+  .tw > .register{min-width:0}
+  .register thead{display:none}
+  .register,.register tbody,.register tr,.register td,.register th,.register caption{display:block}
+  .register caption{width:auto;margin-bottom:.8rem}
+  .register tr{padding:.55rem 0;border-bottom:1px solid var(--rule)}
+  .register tr.grp th{padding:.9rem 0 .2rem;border:0}
+  .register td{border:0;padding:.1rem 0}
+  .register .rg-claim{max-width:none}
+  .register .rg-by{display:inline;white-space:normal}
+  .register .rg-by::after{content:" · "}
+  .register .rg-res{display:inline}
+}
+
+/* --------------------------- a number you can open --------------------- */
+/* A counted number carries a dotted underline once the script has made it
+   openable; with scripts off nothing is underlined, because nothing opens.
+   The colophon's design rules name this channel. */
+.js data.m{text-decoration:underline dotted;text-decoration-color:var(--edge);text-underline-offset:.16em;
+  text-decoration-thickness:1px;cursor:help;border-radius:1px}
+.js data.m:hover,.js data.m:focus-visible{text-decoration-color:var(--accent);text-decoration-style:solid}
+.js data.m:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+dialog.prov{
+  position:fixed;inset:0;z-index:80;width:100%;height:100%;max-width:none;max-height:none;
+  margin:0;border:0;background:transparent;color:inherit;padding:1.5rem}
+dialog.prov[open]{display:grid;place-items:center}
+dialog.prov::backdrop{background:rgba(10,10,8,.55);backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px)}
+dialog.prov{transition:opacity var(--t-in) var(--ease-weight),display var(--t-in) allow-discrete,overlay var(--t-in) allow-discrete}
+dialog.prov:not([open]){opacity:0}
+dialog.prov[open]{opacity:1}
+dialog.prov::backdrop{transition:background-color var(--t-in) ease,display var(--t-in) allow-discrete,overlay var(--t-in) allow-discrete}
+dialog.prov:not([open])::backdrop{background-color:rgba(10,10,8,0)}
+@starting-style{
+  dialog.prov[open]{opacity:0}
+  dialog.prov[open]::backdrop{background-color:rgba(10,10,8,0)}
+  dialog.prov[open] .prov-panel{transform:translateY(14px)}
+}
+.prov-panel{background:var(--paper);border:1px solid var(--ink);max-width:32rem;width:100%;padding:1.1rem 1.25rem 1rem;
+  transition:transform var(--t-weight) var(--ease-weight)}
+.prov-k{margin:0;font-size:var(--meta-size);letter-spacing:var(--meta-track);text-transform:uppercase;font-weight:var(--meta-weight);color:var(--ink-3)}
+.prov-panel h2{margin:.2rem 0 .6rem;font-size:1.45rem;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.prov-def,.prov-src{font-size:.92rem;color:var(--ink-2);margin:0 0 .6rem;line-height:1.5}
+.prov-src{color:var(--ink)}
+.prov-links{font-size:.86rem;margin:0 0 .9rem}
+.prov-links a{color:var(--accent)}
+.prov-panel .close{font:inherit;font-size:var(--btn-size);font-weight:var(--btn-weight);padding:.45rem .8rem;
+  border:1px solid var(--ink);background:var(--paper);color:var(--ink);cursor:pointer}
+.prov-panel .close:hover{background:var(--ink);color:var(--paper)}
+@media (prefers-reduced-motion:reduce){
+  dialog.prov,dialog.prov::backdrop,.prov-panel{transition:none}
+}
