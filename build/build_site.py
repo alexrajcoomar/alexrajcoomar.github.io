@@ -956,13 +956,15 @@ def page_index():
         for i, p in enumerate(tools, 1))
     lifts_count = (f'{len(LIFTS)} lifted on the <a class="inlink" href="research.html">research shelf</a>')
 
-    body = f"""<section class="stage" aria-label="Who this is">
-  <div class="shell stage-grid">
+    body = f"""<div class="shell descent">
+  <section class="stage" aria-label="Who this is">
     {eyebrow_chip()}
     {hero_identity()}
     <p class="display">{S["headline"]}</p>
     <p class="method">Every figure below is counted from the published files by the build, never typed. The notes define each column and state every exception.</p>
     {corpus_line()}
+  </section>
+  <div class="descent-globe">
     <div class="stage-globe">
       <div class="tease-globe hero-globe" id="atlasmini" data-pts="{ATLAS_PTS}" data-fill="0.44" aria-hidden="true"></div>
       <script type="application/json" id="atlasmini-docs">{atlas_home_links()}</script>
@@ -970,24 +972,24 @@ def page_index():
       <p class="globe-cap"><a class="inlink" href="atlas.html">{ATLAS_N} sections, every one a link <span aria-hidden="true">&#8594;</span></a>
         <span class="globe-hint">Point at a mark: chords join its document to the documents its prose links, or that link it. {N_EDGES} such links are recorded.</span>
         <span class="globe-hint-touch">Tap a mark: chords join its document to the documents its prose links, or that link it, and its name opens it. {N_EDGES} such links are recorded.</span></p>
+      <p class="facing" aria-live="off"></p>
       <noscript><p class="note">The sphere needs a browser that runs scripts.
       The <a class="inlink" href="atlas.html">full index</a> does not.</p></noscript>
     </div>
   </div>
-</section>
-
-<section class="band shell" id="statement" aria-labelledby="stmt-h">
-  {sect_head(1, "Statement of work", "Six featured pieces, then every origin, then the whole.", f'<a class="inlink" href="#notes">Notes 1 to 6 &#8595;</a>', "stmt-h")}
-  <div class="pane">
-    <table class="st">
-      {stmt_head_cells()}
-      <tbody>
+  <section class="band statement" id="statement" aria-labelledby="stmt-h">
+    {sect_head(1, "Statement of work", "Six featured pieces, then every origin, then the whole. As a row reaches the reading line the sphere turns to face that document.", f'<a class="inlink" href="#notes">Notes 1 to 6 &#8595;</a>', "stmt-h")}
+    <div class="pane">
+      <table class="st">
+        {stmt_head_cells()}
+        <tbody>
 {chr(10).join(rows)}
 {chr(10).join(subs)}
-      </tbody>
-    </table>
-  </div>
-</section>
+        </tbody>
+      </table>
+    </div>
+  </section>
+</div>
 
 <section class="band ground" id="figures" aria-labelledby="fig-h">
   <div class="shell">

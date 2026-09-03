@@ -801,6 +801,12 @@
     }
 
     var W = 0, H = 0, dpr = 1, R = 0, S = 1, yaw = 0.5, pitch = -0.3;
+    /* the reader's own turn (drag) rides on top of the descent's camera */
+    var offYaw = 0, offPitch = 0, curDoc = -1;
+    /* the camera may tip to just short of the pole: the placement puts real
+       documents there (the lattice's first point is the pole itself), and a
+       camera that cannot face them cannot keep the descent's promise */
+    var PITCH_MAX = Math.PI / 2 - 0.02;
     /* The light: a halo outside the limb, the way the Atlas page's
        silhouette is drawn, and a broader, fainter one on the ground behind.
        Both sit outside the disc on purpose: a gradient laid over the marks
@@ -935,7 +941,7 @@
       ctx.stroke();
       /* the document under the pointer: its marks come forward, the rest
          hold; the chords its prose records are drawn under the marks */
-      var hd = hover >= 0 && own.length ? own[hover] : -1;
+      var hd = hover >= 0 && own.length ? own[hover] : curDoc;
       var drawn = 0;
       if (hd >= 0 && docs[hd]) {
         var D = docs[hd];
@@ -1047,8 +1053,8 @@
       var dt = lastT ? Math.min(0.05, (now - lastT) / 1000) : 0.016;
       lastT = now;
       if (!dragT) {
-        yaw += vy * dt;
-        pitch = Math.max(-1.2, Math.min(1.2, pitch + vp * dt));
+        yaw += vy * dt; offYaw += vy * dt;
+        pitch = Math.max(-PITCH_MAX, Math.min(PITCH_MAX, pitch + vp * dt)); offPitch += vp * dt;
         vy *= 0.94; vp *= 0.94;
         if (Math.abs(vy) < 0.0006) vy = 0;
         if (Math.abs(vp) < 0.0006) vp = 0;
@@ -1090,8 +1096,8 @@
         if (hover >= 0) setHover(-1);
         var dx = e.clientX - lxT, dy = e.clientY - lyT;
         movedT += Math.abs(dx) + Math.abs(dy);
-        yaw += dx * 0.006;
-        pitch = Math.max(-1.2, Math.min(1.2, pitch + dy * 0.005));
+        yaw += dx * 0.006; offYaw += dx * 0.006;
+        pitch = Math.max(-PITCH_MAX, Math.min(PITCH_MAX, pitch + dy * 0.005)); offPitch += dy * 0.005;
         vy = dx * 0.09; vp = dy * 0.07;
         lxT = e.clientX; lyT = e.clientY;
         kick();
@@ -1115,6 +1121,119 @@
         if (e.relatedTarget === cv) return;
         setHover(-1);
       });
+    }
+    /* ---- the descent ----------------------------------------------
+       The statement's featured rows are documents on the sphere. As each
+       row reaches the reading line the camera turns to face that document's
+       centroid (the same rotation the Atlas uses to face a mark), its marks
+       come forward and the chords its prose records are drawn. The camera is
+       a function of the scroll position and nothing else: one frame per
+       scroll event, none while the reader is still. With reduced motion the
+       camera holds and only the lighting follows the rows. */
+    var wrap = host.closest(".descent-globe");
+    var rowsD = [];
+    (function () {
+      if (!docs.length) return;
+      var byUrl = {};
+      docs.forEach(function (d, i) { byUrl[d.u] = i; });
+      var trs = document.querySelectorAll("#statement table.st tr.item");
+      for (var r = 0; r < trs.length; r++) {
+        var a = trs[r].querySelector("th a");
+        var u = a && a.getAttribute("href");
+        if (u && (u in byUrl)) rowsD.push({ el: trs[r], doc: byUrl[u] });
+      }
+    })();
+    var homeYaw = yaw, homePitch = pitch;
+    var facingEl = wrap && wrap.querySelector(".facing");
+    var reducedM = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    function facingOf(v) {
+      var n = nrm(v);
+      return { yaw: Math.atan2(-n[0], n[2]), pitch: Math.atan2(n[1], Math.sqrt(n[0] * n[0] + n[2] * n[2])) };
+    }
+    function shortest(a, b) {
+      var d = (b - a) % (Math.PI * 2);
+      if (d > Math.PI) d -= Math.PI * 2;
+      if (d < -Math.PI) d += Math.PI * 2;
+      return a + d;
+    }
+    function smooth(t) { t = Math.max(0, Math.min(1, t)); return t * t * (3 - 2 * t); }
+    var sraf = 0, lastStuck = false;
+    function descend() {
+      sraf = 0;
+      if (!rowsD.length) return;
+      var hr = host.getBoundingClientRect();
+      /* the reading line: mid-viewport, or just under the sphere when it is
+         pinned above the rows on a phone */
+      var line = Math.min(innerHeight * 0.5, hr.bottom + 40);
+      var y = window.scrollY || document.documentElement.scrollTop;
+      var anchors = [];
+      for (var i = 0; i < rowsD.length; i++) {
+        var rr = rowsD[i].el.getBoundingClientRect();
+        var f = facingOf(docs[rowsD[i].doc].p);
+        anchors.push({ s: y + rr.top + rr.height / 2 - line, yaw: f.yaw, pitch: f.pitch, doc: rowsD[i].doc });
+      }
+      var byaw, bpitch, cur = -1;
+      if (y <= 0 || y < anchors[0].s - Math.max(1, anchors[0].s)) {
+        byaw = homeYaw; bpitch = homePitch;
+      } else if (y < anchors[0].s) {
+        var t0 = smooth(y / anchors[0].s);
+        byaw = homeYaw + (shortest(homeYaw, anchors[0].yaw) - homeYaw) * t0;
+        bpitch = homePitch + (anchors[0].pitch - homePitch) * t0;
+      } else {
+        var k = anchors.length - 1;
+        for (var a = 0; a < anchors.length - 1; a++) { if (y < anchors[a + 1].s) { k = a; break; } }
+        if (k >= anchors.length - 1) { byaw = anchors[k].yaw; bpitch = anchors[k].pitch; }
+        else {
+          var t1 = smooth((y - anchors[k].s) / Math.max(1, anchors[k + 1].s - anchors[k].s));
+          byaw = anchors[k].yaw + (shortest(anchors[k].yaw, anchors[k + 1].yaw) - anchors[k].yaw) * t1;
+          bpitch = anchors[k].pitch + (anchors[k + 1].pitch - anchors[k].pitch) * t1;
+        }
+      }
+      /* the row nearest the line is the document faced, once the first row
+         is within half a row of it */
+      var bestD = Infinity, gap = anchors.length > 1 ? (anchors[1].s - anchors[0].s) : 400;
+      for (var c = 0; c < anchors.length; c++) {
+        var d = Math.abs(y - anchors[c].s);
+        if (d < bestD) { bestD = d; cur = c; }
+      }
+      if (bestD > gap * 0.75) cur = -1;
+      var changed = false;
+      if (!reducedM) {
+        var ny = byaw + offYaw, np = Math.max(-PITCH_MAX, Math.min(PITCH_MAX, bpitch + offPitch));
+        if (Math.abs(ny - yaw) > 1e-4 || Math.abs(np - pitch) > 1e-4) { yaw = ny; pitch = np; changed = true; }
+      }
+      var nd = cur >= 0 ? anchors[cur].doc : -1;
+      if (nd !== curDoc) {
+        curDoc = nd; changed = true;
+        for (var q = 0; q < rowsD.length; q++) rowsD[q].el.classList.toggle("cur", rowsD[q].doc === curDoc);
+        if (facingEl) {
+          facingEl.textContent = "";
+          if (curDoc >= 0) {
+            facingEl.appendChild(document.createTextNode("Facing "));
+            var bb = document.createElement("b"); bb.textContent = docs[curDoc].t; facingEl.appendChild(bb);
+          }
+        }
+        if (curDoc >= 0) host.setAttribute("data-facing", docs[curDoc].t); else host.removeAttribute("data-facing");
+      }
+      /* pinned on a phone: the sphere steps back to make room for the rows */
+      if (wrap) {
+        var top = parseFloat(getComputedStyle(wrap).top) || 0;
+        var stuck = y > 0 && wrap.getBoundingClientRect().top <= top + 1;
+        if (stuck !== lastStuck) { lastStuck = stuck; wrap.classList.toggle("stuck", stuck); }
+      }
+      host.setAttribute("data-yaw", yaw.toFixed(3));
+      host.setAttribute("data-pitch", pitch.toFixed(3));
+      if (changed && !dragT) paint();
+    }
+    if (rowsD.length) {
+      window.addEventListener("scroll", function () { if (!sraf) sraf = requestAnimationFrame(descend); }, { passive: true });
+      window.addEventListener("resize", function () { if (!sraf) sraf = requestAnimationFrame(descend); });
+      /* the box changes size when it pins on a phone; the canvas follows */
+      if ("ResizeObserver" in window) {
+        new ResizeObserver(function () { size(); paint(); }).observe(host);
+      }
+      if ("requestIdleCallback" in window) requestIdleCallback(descend, { timeout: 1500 });
+      else setTimeout(descend, 300);
     }
     host.addEventListener("click", function (e) {
       if (movedT > 8) { movedT = 0; return; }
