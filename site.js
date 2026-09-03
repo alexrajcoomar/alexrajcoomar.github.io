@@ -1173,6 +1173,17 @@
   if (!save || !drop || !status) return;
 
   function say(t) { status.textContent = t; }
+  /* what this device holds, read from the cache by the worker rather than
+     remembered by the page: the count of listed files present, the version
+     they were synced against, and whether that is the live version */
+  function held(m) {
+    if (!m.of) return "";
+    var n = m.held + " of " + m.of + " files";
+    if (m.held === 0) return "";
+    if (m.held < m.of) return n + " are on this device.";
+    if (m.live && m.version && m.live !== m.version) return "The whole site is on this device: " + n + ", one publish behind; it refreshes when opened online.";
+    return "The whole site is on this device: " + n + (m.live ? ", current." : ".");
+  }
   navigator.serviceWorker.addEventListener("message", function (e) {
     var m = e.data || {};
     if (m.type === "cache-all-progress") {
@@ -1181,12 +1192,17 @@
       if (m.failed === -1) { say("Could not read the file list; try again online."); return; }
       say(m.failed
         ? "Saved " + m.ok + " of " + m.total + " files; " + m.failed + " failed. Press again to retry the rest."
-        : "The whole site is on this phone: " + m.ok + " files. It refreshes itself when opened online.");
+        : held({ held: m.held, of: m.of, version: m.version, live: m.version }) || ("Saved " + m.ok + " files."));
       save.disabled = false;
+    } else if (m.type === "status") {
+      say(held(m));
     } else if (m.type === "drop-all-done") {
       say("Offline copy removed. Pages you visit will still cache as you read.");
       drop.disabled = false;
     }
+  });
+  navigator.serviceWorker.ready.then(function (reg) {
+    if (reg.active) reg.active.postMessage({ type: "status" });
   });
   save.addEventListener("click", function () {
     save.disabled = true;
