@@ -682,12 +682,19 @@
       lnEl.appendChild(a(meas.tool, "The script"));
       dlg.showModal();
     }
+    /* the totals join the Tab order; a number inside a row opens with a
+       pointer only, so a keyboard reader is not made to stop at every figure
+       of every row (the home page would gain over a hundred stops), and what
+       its dialog would add is the row's own link and the definition the
+       colophon lists */
     nums.forEach(function (el) {
+      var total = !el.hasAttribute("data-of");
+      el.setAttribute("title", "What was counted, and where");
+      el.addEventListener("click", function (e) { e.preventDefault(); e.stopPropagation(); open(el); });
+      if (!total) return;
       el.setAttribute("tabindex", "0");
       el.setAttribute("role", "button");
       el.setAttribute("aria-haspopup", "dialog");
-      el.setAttribute("title", "What was counted, and where");
-      el.addEventListener("click", function (e) { e.preventDefault(); e.stopPropagation(); open(el); });
       el.addEventListener("keydown", function (e) {
         if (e.key === "Enter" || e.key === " ") { e.preventDefault(); open(el); }
       });

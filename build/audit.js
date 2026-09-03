@@ -20,7 +20,7 @@
      offline   files held before and after a simulated publish, and whether
                the page that changed was refreshed in the saved copy
 
-   usage: node build/audit.js [--all] [--no-offline]
+   usage: node build/audit.js [--all] [--no-offline] [--only a.html,b.html]
    CI installs playwright beside the site; a machine with its own copy can
    point at it with PW_MODULE, and at a browser with PW_CHROMIUM. */
 const fs = require('fs');
@@ -32,6 +32,7 @@ const { execFileSync } = require('child_process');
 const ROOT = path.dirname(__dirname);
 const OUT_PATH = path.join(ROOT, 'content', 'audit.json');
 const ALL = process.argv.includes('--all');
+const ONLY = (() => { const i = process.argv.indexOf('--only'); return i > -1 ? process.argv[i + 1].split(',') : null; })();
 const NO_OFFLINE = process.argv.includes('--no-offline');
 const { chromium } = require(process.env.PW_MODULE || 'playwright');
 const LAUNCH = Object.assign({ args: ['--no-sandbox'] },
@@ -102,8 +103,9 @@ async function measurePage(browser, base, name, shell) {
     rec.errors = errors;
     // does the word count leave the chrome out: the count by the measurement's
     // own rule, against the count with every element the build injects removed
-    // as well (its blocks carry ids beginning with two underscores, or the
-    // classes named here); the two must agree, or chrome is being counted
+    // as well, named by the ids and classes the build's own blocks carry and
+    // nothing a piece could carry itself; the two must agree, or chrome is
+    // being counted
     rec.chrome = await page.evaluate(() => {
       const count = extra => {
         const clone = document.body.cloneNode(true);
@@ -112,7 +114,7 @@ async function measurePage(browser, base, name, shell) {
         const txt = (clone.textContent || '').replace(/\s+/g, ' ').trim();
         return txt.split(' ').filter(w => /[A-Za-z0-9]/.test(w)).length;
       };
-      return { a: count(''), b: count('[id^="__"],[class^="__"],.keys,.prov,dialog') };
+      return { a: count(''), b: count('[id^="__rb"],[id^="__long"],[id^="__meta"],#defs,.docfrom,footer.site,dialog.cmdk,dialog.keys,dialog.prov') };
     }).catch(() => null);
     if (shell) {
       // print media: nothing pinned, nothing hidden, figures unbroken
@@ -156,10 +158,7 @@ async function measurePage(browser, base, name, shell) {
       const page = await ctx.newPage();
       try { await page.goto(base + '/' + name, { waitUntil: 'networkidle', timeout: 60000 }); } catch (e) { /* measured anyway */ }
       const seen = []; let noRing = 0;
-      for (let i = 0; i < 400; i++) {
-        await page.keyboard.press('Tab');
-        await page.waitForTimeout(90);
-        const info = await page.evaluate(() => {
+      const readStop = () => page.evaluate(() => {
           const el = document.activeElement; if (!el || el === document.body) return null;
           const cs = getComputedStyle(el); const r = el.getBoundingClientRect();
           let ring = (parseFloat(cs.outlineWidth) > 0 && cs.outlineStyle !== 'none') || (cs.boxShadow && cs.boxShadow !== 'none') || (parseFloat(cs.borderBottomWidth) >= 2);
@@ -168,9 +167,16 @@ async function measurePage(browser, base, name, shell) {
           const visible = cs.visibility !== 'hidden' && cs.opacity !== '0' && r.width > 0 && r.height > 0;
           return { name, ok: ring && visible };
         }).catch(() => null);
+      for (let i = 0; i < 400; i++) {
+        await page.keyboard.press('Tab');
+        await page.waitForTimeout(120);
+        let info = await readStop();
         if (!info) break;
         if (seen.length && seen[0] === info.name && i > 5) break;
         seen.push(info.name);
+        // a ring that arrives on a transition is read again after it has
+        // had time to; only a stop still without one after that counts
+        if (!info.ok) { await page.waitForTimeout(250); const again = await readStop(); if (again && again.name === info.name) info = again; }
         if (!info.ok) noRing++;
       }
       rec.keyboard = { stops: seen.length, noRing };
@@ -251,7 +257,7 @@ async function measureOffline(port) {
   const audit = readJSON(OUT_PATH, {});
   const pages = audit.pages || {};
   const names = Object.keys(dig.pages);
-  const stale = names.filter(nm => ALL || !pages[nm] || pages[nm].inputs !== dig.pages[nm]);
+  const stale = names.filter(nm => ALL || (ONLY && ONLY.includes(nm)) || !pages[nm] || pages[nm].inputs !== dig.pages[nm]);
   const server = serve(ROOT);
   const port = await listen(server, 0);
   const base = 'http://127.0.0.1:' + port;
@@ -274,7 +280,7 @@ async function measureOffline(port) {
 
   let offline = audit.offline || null;
   const offlineStale = !offline || offline.inputs !== dig.sw;
-  if (!NO_OFFLINE && (ALL || offlineStale)) {
+  if (!NO_OFFLINE && !ONLY && (ALL || offlineStale)) {
     const r = await measureOffline(port);
     offline = Object.assign(r, { inputs: dig.sw, measured: new Date().toISOString().slice(0, 10) });
     process.stdout.write(`offline: ${r.before} files held before a publish, ${r.after} after, the changed page ${r.refreshed ? 'refreshed' : 'not refreshed'}\n`);

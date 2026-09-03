@@ -43,7 +43,7 @@ def load_audit():
 
 def page_input_digest(out_dir, name, shell):
     """The inputs a runtime measurement of a page depends on. A piece is
-    self-contained, so its own text with the build's injected blocks removed.
+    self-contained, so its own file as rendered, the build's blocks included.
     A generated page is a function of its sources, so the text of the page
     with the register itself removed (the register prints the audit, and a
     measurement must not go stale because its own result was printed),
@@ -63,11 +63,11 @@ def page_input_digest(out_dir, name, shell):
             if os.path.exists(dp):
                 h.update(open(dp, "rb").read())
     else:
-        raw = re.sub(r"<!--__rb-->.*?<!--/__rb-->|<!--__rbp-->.*?<!--/__rbp-->|<!--__meta-->.*?<!--/__meta-->"
-                     r"|<!--__docend[^>]*-->.*?<!--/__docend-->|<!--__foot-->.*?<!--/__foot-->"
-                     r"|<!--__tail-->.*?<!--/__tail-->|<!--__from-->.*?<!--/__from-->"
-                     r"|<!--__long-->.*?<!--/__long-->|<style id=\"__mobile_fit\">.*?</style>"
-                     r"|<!-- injected by the site build.*?-->|\?v=[0-9a-f]{8}", "", raw, flags=re.S)
+        # a piece is measured as rendered, blocks the build wrote included:
+        # the return bar and the reading kit run script, and the tail holds
+        # what the search dialog shows, so all of it is an input to what a
+        # browser sees. Only the asset stamps are left out.
+        raw = re.sub(r"\?v=[0-9a-f]{8}", "", raw)
         h.update(raw.encode("utf-8"))
     return h.hexdigest()[:12]
 
@@ -262,7 +262,7 @@ def build(ctx):
         bad = [nm for nm, r in zip(names, recs) if r and r.get("a") != r.get("b")]
         return (f"{len(recs) - len(bad)} of {len(recs)} pages count the same words with and without the build's own blocks removed"
                 + ("; " + ", ".join(bad) if bad else ""), not bad)
-    rt("The word count leaves out the site's own chrome around a piece.", "chrome", allp, agg_chrome, ["colophon.html"])
+    rt("The word count leaves out the site's own chrome around a piece.", "chrome", [p for p in allp if p not in shell], agg_chrome, ["colophon.html"])
 
     off = state.get("offline")
     if off:

@@ -1662,8 +1662,11 @@ def page_colophon(register=""):
       <dt>A number you can open</dt>
       <dd>A counted number on these pages is set with a dotted underline. Pointing at it or pressing it
       shows the definition it was counted under, the file it was measured from, the script that measured
-      it and the record that holds it. With scripts off the number stands as text and the definitions
-      are the list above; nothing about the number itself depends on the script.</dd>
+      it and the record that holds it. The totals sit in the Tab order; a number inside a row opens
+      with a pointer only, so a keyboard reader is not made to stop at every figure of every row, and
+      what its dialog would say is the row's own link and the definition above. With scripts off the
+      number stands as text and the definitions are the list above; nothing about the number itself
+      depends on the script.</dd>
 
       <dt>Surfaces</dt>
       <dd>Warm paper in light, a near-black ground in dark, hairline rules, no rounded corners. The
@@ -2220,6 +2223,11 @@ def _piece_tail():
     m = re.search(r'</footer>\s*(.*?)\s*<script src="site\.js', foot(), re.S)
     tail = m.group(1)
     tail = re.sub(r'<!-- The keyboard routes.*?<dialog class="keys" id="keysheet".*?</dialog>\s*', "", tail, flags=re.S)
+    # the provenance dialog and its data serve the generated pages' counted
+    # numbers; a piece carries neither the script that opens it nor numbers
+    # that open, and its one word would be counted as the piece's
+    tail = re.sub(r'<!-- A counted number opens here.*?<dialog class="prov" id="prov".*?</dialog>\s*', "", tail, flags=re.S)
+    tail = re.sub(r'<script type="application/json" id="defs">.*?</script>\s*', "", tail, flags=re.S)
     return tail
 
 def _outside_tail(text):

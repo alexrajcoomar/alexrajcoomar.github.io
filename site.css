@@ -679,7 +679,7 @@ footer.site .fine b{font-weight:600;color:var(--ink-2)}
   :root{--paper:#fff;--panel:#fff;--ink:#000;--ink-2:#333;--ink-3:#555;--rule:#ccc;--rule-strong:#999;--accent:#000}
   header.top,.iconbtn,.cmdk,.tools-bar,footer.site .cols{display:none !important}
   body{font-size:10.5pt}
-  .row,.feature,.course,li{break-inside:avoid}
+  .row,.feature,.course,li,figure,.spec,.plot{break-inside:avoid}
   a[href^="http"]::after{content:" (" attr(href) ")";font-size:8pt;color:#555}
   .hero{padding-block:0 1rem}
 }
