@@ -968,8 +968,8 @@ def page_index():
       <script type="application/json" id="atlasmini-docs">{atlas_home_links()}</script>
       <div class="globe-card" id="atlasmini-card" hidden><a class="gc-t" href="atlas.html"></a><span class="gc-d"></span></div>
       <p class="globe-cap"><a class="inlink" href="atlas.html">{ATLAS_N} sections, every one a link <span aria-hidden="true">&#8594;</span></a>
-        <span class="globe-hint">Point at a mark: chords join its document to the documents its prose links, or that link it. {N_EDGES} such links are recorded.</span>
-        <span class="globe-hint-touch">Tap a mark: chords join its document to the documents its prose links, or that link it, and its name opens it. {N_EDGES} such links are recorded.</span></p>
+        <span class="globe-hint">Point at a mark: chords join its document to the documents its prose links, or that link it. <span class="gc-l">{N_EDGES}</span> such links are recorded.</span>
+        <span class="globe-hint-touch">Tap a mark: chords join its document to the documents its prose links, or that link it, and its name opens it. <span class="gc-l">{N_EDGES}</span> such links are recorded.</span></p>
       <noscript><p class="note">The sphere needs a browser that runs scripts.
       The <a class="inlink" href="atlas.html">full index</a> does not.</p></noscript>
     </div>
@@ -1565,12 +1565,15 @@ def page_colophon():
       rather than believed.</dd>
 
       <dt>Surfaces</dt>
-      <dd>Warm paper in light, a near-black ground in dark, hairline rules, no rounded corners, no
-      drop shadows. One accent, blue, for the independent work on the sphere and for links. A second
+      <dd>Warm paper in light, a near-black ground in dark, hairline rules, no rounded corners. The
+      shell pages paint no drop shadow; the search panel sits on the browser's own backdrop. On a
+      piece a shadow sits only under what floats over its text: the contents drawer on a phone, the
+      reading-position pill, the section menu and the tips; a piece's own sheet keeps whatever it
+      declared. One accent, blue, for the independent work on the sphere and for links. A second
       accent, violet, means one thing: a link one document's prose makes to another. It is the colour
-      of the chords on both spheres, of the key entry that names them and of the link counts in the
-      sphere's card, and it appears nowhere else; it is violet because no figure on this site has
-      spent that hue. A panel sits one step above the ground behind a one-pixel edge. The one gradient
+      of the chords on both spheres, of the key entry that names them, of the link counts in the
+      sphere's card and of the one count of recorded links under the home sphere, and it appears
+      nowhere else; it is violet because no figure on this site has spent that hue. A panel sits one step above the ground behind a one-pixel edge. The one gradient
       on the site is the light around the sphere, which encodes nothing and is drawn outside the disc
       so it darkens no mark. Dark mode is a selected set of tokens rather than an inversion, and the
       manual toggle wins over the system setting in both directions.</dd>
