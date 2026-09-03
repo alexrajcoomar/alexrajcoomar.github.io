@@ -96,41 +96,49 @@
   --t-in:         .3s;
   --ease-move:    cubic-bezier(.22,1,.36,1);
 }
+/* Dark is a deeper, cooler ground than the warm paper it replaces: a
+   near-black the sphere and the panels can stand off, rather than a dim
+   brown. Every pairing measured (WCAG 2.x, on --paper / --panel / --panel-2):
+   ink 17.4 / 16.3 / 15.1, ink-2 10.1 / 9.4 / 8.8, ink-3 6.2 / 5.8 / 5.4,
+   accent 9.3 / 8.7 / 8.1, tool 9.0, ref 9.2, edge 4.0 / 3.8 / 3.5, so the
+   smallest text and every control border clear their floors with more room
+   than before. Both blocks are required: keyed to the media query alone, a
+   component stays light when the reader presses the theme button. */
 @media (prefers-color-scheme: dark){
   :root:where(:not([data-theme="light"])){
-    --paper:       #131310;
-    --panel:       #1b1a16;
-    --panel-2:     #23221d;
-    --ink:         #f7f5ef;
-    --ink-2:       #c0bcb1;
-    --ink-3:       #948f85;
-    --rule:        #2c2b24;
-    --rule-strong: #454239;
-    --edge:        #6e6960;
-  --logo-chip:   #faf9f6;
-    --accent:      #85adea;
-    --accent-2:    #a8c6f3;
-    --tool:        #4fc0a3;
-    --ref:         #d6a558;
-    --selection:   #24405f;
+    --paper:       #0d0e11;
+    --panel:       #15161a;
+    --panel-2:     #1c1d22;
+    --ink:         #f3f3f0;
+    --ink-2:       #b9bbc1;
+    --ink-3:       #8f929a;
+    --rule:        #26282d;
+    --rule-strong: #3c3e45;
+    --edge:        #6f727b;
+    --logo-chip:   #faf9f6;
+    --accent:      #8fb6ee;
+    --accent-2:    #b2ccf5;
+    --tool:        #4fc4a6;
+    --ref:         #dbab5d;
+    --selection:   #223b5c;
   }
 }
 :root[data-theme="dark"]{
-  --paper:       #131310;
-  --panel:       #1b1a16;
-  --panel-2:     #23221d;
-  --ink:         #f7f5ef;
-  --ink-2:       #c0bcb1;
-  --ink-3:       #948f85;
-  --rule:        #2c2b24;
-  --rule-strong: #454239;
-  --edge:        #6e6960;
+  --paper:       #0d0e11;
+  --panel:       #15161a;
+  --panel-2:     #1c1d22;
+  --ink:         #f3f3f0;
+  --ink-2:       #b9bbc1;
+  --ink-3:       #8f929a;
+  --rule:        #26282d;
+  --rule-strong: #3c3e45;
+  --edge:        #6f727b;
   --logo-chip:   #faf9f6;
-  --accent:      #85adea;
-  --accent-2:    #a8c6f3;
-  --tool:        #4fc0a3;
-  --ref:         #d6a558;
-  --selection:   #24405f;
+  --accent:      #8fb6ee;
+  --accent-2:    #b2ccf5;
+  --tool:        #4fc4a6;
+  --ref:         #dbab5d;
+  --selection:   #223b5c;
 }
 
 /* ------------------------------ base ------------------------------ */

@@ -345,25 +345,25 @@ td.n{font-variant-numeric:tabular-nums;white-space:nowrap}
    media query is scoped so an explicit light choice wins, and the attribute
    selector is repeated so an explicit dark choice wins on a light system. */
 @media (prefers-color-scheme:dark){
-  :root:not([data-theme="light"]) #__rb{background:#131310;border-bottom-color:#2c2b24;color:#c0bcb1}
-  :root:not([data-theme="light"]) #__rb .__rb-home{color:#f7f5ef}
-  :root:not([data-theme="light"]) #__rb .__rb-home i{color:#948f85}
-  :root:not([data-theme="light"]) #__rb .__rb-row{color:#948f85}
-  :root:not([data-theme="light"]) #__rb .__rb-row b{color:#c0bcb1}
-  :root:not([data-theme="light"]) #__rb .__rb-from{color:#948f85}
-  :root:not([data-theme="light"]) #__rb .__rb-from b{color:#c0bcb1}
-  :root:not([data-theme="light"]) #__rb a{color:#85adea}
-  :root:not([data-theme="light"]) #__rb .__mark{background:#f7f5ef;color:#131310}
+  :root:not([data-theme="light"]) #__rb{background:#0d0e11;border-bottom-color:#26282d;color:#b9bbc1}
+  :root:not([data-theme="light"]) #__rb .__rb-home{color:#f3f3f0}
+  :root:not([data-theme="light"]) #__rb .__rb-home i{color:#8f929a}
+  :root:not([data-theme="light"]) #__rb .__rb-row{color:#8f929a}
+  :root:not([data-theme="light"]) #__rb .__rb-row b{color:#b9bbc1}
+  :root:not([data-theme="light"]) #__rb .__rb-from{color:#8f929a}
+  :root:not([data-theme="light"]) #__rb .__rb-from b{color:#b9bbc1}
+  :root:not([data-theme="light"]) #__rb a{color:#8fb6ee}
+  :root:not([data-theme="light"]) #__rb .__mark{background:#f3f3f0;color:#0d0e11}
 }
-:root[data-theme="dark"] #__rb{background:#131310;border-bottom-color:#2c2b24;color:#c0bcb1}
-:root[data-theme="dark"] #__rb .__rb-home{color:#f7f5ef}
-:root[data-theme="dark"] #__rb .__rb-home i{color:#948f85}
-:root[data-theme="dark"] #__rb .__rb-row{color:#948f85}
-:root[data-theme="dark"] #__rb .__rb-row b{color:#c0bcb1}
-:root[data-theme="dark"] #__rb .__rb-from{color:#948f85}
-:root[data-theme="dark"] #__rb .__rb-from b{color:#c0bcb1}
-:root[data-theme="dark"] #__rb a{color:#85adea}
-:root[data-theme="dark"] #__rb .__mark{background:#f7f5ef;color:#131310}
+:root[data-theme="dark"] #__rb{background:#0d0e11;border-bottom-color:#26282d;color:#b9bbc1}
+:root[data-theme="dark"] #__rb .__rb-home{color:#f3f3f0}
+:root[data-theme="dark"] #__rb .__rb-home i{color:#8f929a}
+:root[data-theme="dark"] #__rb .__rb-row{color:#8f929a}
+:root[data-theme="dark"] #__rb .__rb-row b{color:#b9bbc1}
+:root[data-theme="dark"] #__rb .__rb-from{color:#8f929a}
+:root[data-theme="dark"] #__rb .__rb-from b{color:#b9bbc1}
+:root[data-theme="dark"] #__rb a{color:#8fb6ee}
+:root[data-theme="dark"] #__rb .__mark{background:#f3f3f0;color:#0d0e11}
 @media print{#__rb{display:none !important}}
 </style>
 <nav id="__rb" aria-label="Portfolio">
@@ -1413,10 +1413,10 @@ function svgEl(n, a){
 #__rb-pill.__on{opacity:1;transform:none;pointer-events:auto}
 #__rb-pill:hover{background:#16150f;color:#fff}
 @media (prefers-color-scheme:dark){
-  :root:not([data-theme="light"]) #__rb-pill{background:rgba(247,245,239,.95);color:#131310;border-color:rgba(0,0,0,.2)}
+  :root:not([data-theme="light"]) #__rb-pill{background:rgba(243,243,240,.95);color:#0d0e11;border-color:rgba(0,0,0,.2)}
   :root:not([data-theme="light"]) #__rb-pill:hover{background:#fff;color:#000}
 }
-:root[data-theme="dark"] #__rb-pill{background:rgba(247,245,239,.95);color:#131310;border-color:rgba(0,0,0,.2)}
+:root[data-theme="dark"] #__rb-pill{background:rgba(243,243,240,.95);color:#0d0e11;border-color:rgba(0,0,0,.2)}
 :root[data-theme="dark"] #__rb-pill:hover{background:#fff;color:#000}
 @media (prefers-reduced-motion:reduce){#__rb-pill{transition:none}}
 @media print{#__rb-pill{display:none !important}}
@@ -1424,11 +1424,11 @@ function svgEl(n, a){
 #__rb-from{margin:1.25rem 1rem;font:400 13px/1.45 InterVar,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;color:#6f6c63;max-width:70ch}
 #__rb-from b{font-weight:600;color:#55524a}
 @media (prefers-color-scheme:dark){
-  :root:not([data-theme="light"]) #__rb-from{color:#948f85}
-  :root:not([data-theme="light"]) #__rb-from b{color:#c0bcb1}
+  :root:not([data-theme="light"]) #__rb-from{color:#8f929a}
+  :root:not([data-theme="light"]) #__rb-from b{color:#b9bbc1}
 }
-:root[data-theme="dark"] #__rb-from{color:#948f85}
-:root[data-theme="dark"] #__rb-from b{color:#c0bcb1}
+:root[data-theme="dark"] #__rb-from{color:#8f929a}
+:root[data-theme="dark"] #__rb-from b{color:#b9bbc1}
 </style>
 <!-- With scripts off nothing ever adds the __on class, and the only way
      back from a tool page vanished. The pill needs its script for the
