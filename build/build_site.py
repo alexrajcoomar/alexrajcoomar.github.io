@@ -55,6 +55,47 @@ FONT_CODEPOINTS = len([c for c in open(
     os.path.join(HERE, "font-subset-cmap.txt"), encoding="utf-8"
 ).read().strip().split(",") if c != ""])
 
+# The definitions behind the counted numbers, stated once. The colophon
+# prints them as a list, and every counted number on a generated page carries
+# the id of the definition it was counted under, so a reader can open the
+# definition from the number rather than hunt for it.
+DEFS = [
+    ("pieces", "Pieces",
+     "An entry in content/pieces.json with a file behind it. The three run transcripts are measured "
+     "and held to the same record but are not entries, so they are not pieces and not in the corpus line."),
+    ("words", "Words",
+     "The text of the rendered document after its own scripts have run, with script, style and "
+     "noscript removed and collapsed answers included, whether or not a reader has opened them. "
+     "The site's own chrome around a piece is not counted: the header, the return bar, the footer, "
+     "the contents rail, the search dialog and the line that says what the piece was built from. "
+     "A word is a whitespace-separated token containing at least one letter or digit. Question banks "
+     "inside the interactive tools are held in code, so they are not counted anywhere."),
+    ("mins", "Reading time",
+     f"Derived, not counted: words divided by {WPM} words per minute, rounded, minimum one minute. "
+     f"A page that renders under {DOC_MIN:,} words is treated as an instrument rather than a document "
+     "and carries no reading time."),
+    ("figures", "Figures",
+     "A top-level svg element in the rendered page, not nested inside another one, covering at least "
+     "6,000 square units, which excludes inline glyphs and icons. Counted after render, so it includes "
+     "charts a script draws on load; charts built purely from HTML and CSS are not counted, so the "
+     "number is a floor rather than a ceiling."),
+    ("tables", "Tables",
+     "A table element in the rendered document after its scripts have run, wherever it stands."),
+    ("checkpoints", "Checkpoint questions",
+     "A details element in the rendered document: a question or a worked answer folded away for the "
+     "reader to try first."),
+]
+DEF_BY_ID = {d[0]: d for d in DEFS}
+
+def md(value, kind, of=None, text=None):
+    """A counted number as a data element: the raw value, the id of the
+    definition it was counted under, and the piece it belongs to when it
+    belongs to one. With scripts on, the number opens its definition and its
+    measurement; with scripts off it stands as text, and the definition is on
+    the colophon."""
+    of_attr = f' data-of="{esc(of)}"' if of else ""
+    return f'<data class="m" value="{value}" data-m="{kind}"{of_attr}>{text if text is not None else n(value)}</data>'
+
 def reading_minutes(w): return max(1, round(w / WPM))
 
 def density_label(words, apparatus):
@@ -252,6 +293,20 @@ document.documentElement.className+=' js';}})();
 WORKJSON = json.dumps([{"t":p["t"],"s":p["s"],"u":p["url"],"k":p["k"],"c":p["c"],"d":p["d"]} for p in P],
                       separators=(",",":")).replace("</", "<\\/")
 
+def _defs_json():
+    """What a counted number can show: the definitions, the record's identity
+    and each listed piece's measured figures. The record is named by the
+    digest of content/metrics.json, so the dialog can say exactly which
+    record a number came from without a date that would go stale."""
+    mpath = os.path.join(ROOT, "content", "metrics.json")
+    digest = hashlib.sha1(open(mpath, "rb").read()).hexdigest()[:12] if os.path.exists(mpath) else ""
+    return json.dumps({
+        "defs": {d[0]: {"t": d[1], "d": d[2]} for d in DEFS},
+        "meas": {"tool": "build/measure.js", "record": "content/metrics.json", "digest": digest,
+                 "pieces": len(P), "transcripts": len([k for k in METRICS if k not in {p["slug"] for p in P}])},
+        "pieces": {p["slug"]: {"u": p["url"], "t": p["t"], "w": p["words"], "f": p["figures"], "b": p["tables"]} for p in P},
+    }, separators=(",", ":"), ensure_ascii=False).replace("</", "<\\/")
+
 def foot():
     return f"""</main>
 <footer class="site">
@@ -277,7 +332,7 @@ def foot():
   </div>
   <div class="fine">
     <span>&copy; {TODAY.year} {esc(NAME)}</span>
-    <span><b>{len(P)}</b> pieces &middot; <b>{TOTAL_WORDS:,}</b> words &middot; <b>{TOTAL_FIGS}</b> figures &middot; no framework, nothing external at runtime, one build you can read &middot; <button id="keysbtn" type="button" class="linkbtn">keyboard</button></span>
+    <span><b>{md(len(P), "pieces")}</b> pieces &middot; <b>{md(TOTAL_WORDS, "words")}</b> words &middot; <b>{md(TOTAL_FIGS, "figures")}</b> figures &middot; no framework, nothing external at runtime, one build you can read &middot; <button id="keysbtn" type="button" class="linkbtn">keyboard</button></span>
   </div>
 </footer>
 
@@ -315,6 +370,20 @@ def foot():
     <button class="close">Close</button>
   </form>
 </dialog>
+<!-- A counted number opens here: its definition, the file it was measured
+     from, the script and the record. The data is the build's, the text is the
+     colophon's, and the dialog is the browser's. -->
+<dialog class="prov" id="prov" aria-labelledby="prov-h">
+  <form method="dialog" class="prov-panel">
+    <p class="prov-k" id="prov-k"></p>
+    <h2 id="prov-h"></h2>
+    <p class="prov-def" id="prov-def"></p>
+    <p class="prov-src" id="prov-src"></p>
+    <p class="prov-links" id="prov-links"></p>
+    <button class="close">Close</button>
+  </form>
+</dialog>
+<script type="application/json" id="defs">{_defs_json()}</script>
 <script>
 window.WORK = {WORKJSON};
 </script>
@@ -332,14 +401,14 @@ window.WORK = {WORKJSON};
 def n(x):
     return f"{x:,}"
 
-def stmt_cells(w, f, t, mins=None):
+def stmt_cells(w, f, t, mins=None, of=None):
     # Minutes sit under the word count rather than in a column of their own:
     # a fifth column does not fit a 390px phone, and the two belong together
     # anyway, one counted and one derived from it. A page under DOC_MIN words
     # carries none, which is the colophon's rule, not a missing value.
-    m = f'<span class="mins">{mins} min</span>' if mins else ""
-    return (f'<td class="n">{n(w)}{m}</td><td class="n fig">{f}<span class="tb"> &middot; {t}</span></td>'
-            f'<td class="n tab">{t}</td>')
+    mm = f'<span class="mins">{md(mins, "mins", of, str(mins))} min</span>' if mins else ""
+    return (f'<td class="n">{md(w, "words", of)}{mm}</td><td class="n fig">{md(f, "figures", of, str(f))}<span class="tb"> &middot; {md(t, "tables", of, str(t))}</span></td>'
+            f'<td class="n tab">{md(t, "tables", of, str(t))}</td>')
 
 def flagged_lift(p):
     """The one graft from the Specimen thesis: the result line of Flagged in
@@ -365,7 +434,7 @@ def flagged_lift(p):
 def stmt_row(p, lift=None):
     sub = f'<span class="s">{esc(p["s"])}</span>' if p.get("s") else ""
     out = (f'<tr class="item{" haslift" if lift else ""}"><th scope="row"><a href="{p["url"]}">{esc(p["t"])}</a>{sub}</th>'
-           + stmt_cells(p["words"], p["figures"], p["tables"], piece_mins(p)) + "</tr>")
+           + stmt_cells(p["words"], p["figures"], p["tables"], piece_mins(p), of=p["slug"]) + "</tr>")
     if lift:
         out += (f'\n<tr class="liftrow"><td colspan="4"><span class="lift"><b>{esc(lift[0])}</b> {esc(lift[1])}</span></td></tr>')
     return out
@@ -404,7 +473,7 @@ def shelf_row(k, p, extra=""):
             <p class="meta">{kind_chip(p)}{surf(p)}{mins}<span class="metadate">{esc(p['d'])}</span>{tags}</p>
             {extra}
           </div>
-          <div class="sr-n"><span class="tnum">{n(p['words'])}</span><span class="tnum">{p['figures']}</span><span class="tnum">{p['tables']}</span></div>
+          <div class="sr-n"><span class="tnum">{md(p['words'], 'words', p['slug'])}</span><span class="tnum">{md(p['figures'], 'figures', p['slug'], str(p['figures']))}</span><span class="tnum">{md(p['tables'], 'tables', p['slug'], str(p['tables']))}</span></div>
         </div>
       </li>"""
 
@@ -787,7 +856,7 @@ def corpus_table():
         for p in items:
             rows.append(f'<tr><td><a href="{p["url"]}">{esc(p["t"])}</a></td>'
                         f'<td>{esc(p["k"])}{" &middot; " + esc(p["c"]) if p["c"] else ""}</td>'
-                        f'<td class="tnum">{p["words"]:,}</td></tr>')
+                        f'<td class="tnum">{md(p["words"], "words", p["slug"])}</td></tr>')
     return (f'<table class="ctab"><caption>Every document at or above {DOC_MIN:,} rendered words, with the word count each square is drawn from. '
             f'{len(t_drawn)} of the {N_TOOLS} interactive tools reach that floor and are drawn; the other {len(t_undrawn)} hold their content in code rather than prose and are not.</caption>'
             '<thead><tr><th scope="col">Piece</th><th scope="col">Kind</th>'
@@ -894,8 +963,8 @@ def corpus_line():
     """The corpus in four figures, each the same variable the statement's
     total row prints, so the two cannot drift. A definition list, because
     each cell is a label and its value."""
-    cells = (("Pieces", n(len(P))), ("Words", n(TOTAL_WORDS)),
-             ("Figures", n(TOTAL_FIGS)), ("Tables", n(TOTAL_TBLS)))
+    cells = (("Pieces", md(len(P), "pieces")), ("Words", md(TOTAL_WORDS, "words")),
+             ("Figures", md(TOTAL_FIGS, "figures")), ("Tables", md(TOTAL_TBLS, "tables")))
     return ('<dl class="corpusline">' + "".join(
         f'<div><dt>{a}</dt><dd class="tnum">{b}</dd></div>' for a, b in cells) + '</dl>')
 
@@ -1511,6 +1580,17 @@ def limits_block():
 </section>
 """
 
+DENSITY_DD = '      <dt>Density</dt>\n      <dd>Figures plus tables per thousand words. Under 1.0 is <b>Prose</b>, 1.0 to 3.0 is\n      <b>Mixed</b>, 3.0 and above is <b>Dense</b>. Documents under 400 words carry no label, because the\n      ratio is unstable at that length. It is a rough signal of what the page will feel like, not a\n      quality measure: a dense page is not a better page.</dd>'
+
+def defs_html():
+    """The definitions list, from DEFS, each term carrying the id a counted
+    number refers to."""
+    out = []
+    for did, term, text in DEFS:
+        out.append(f'      <dt id="def-{did}">{esc(term)}</dt>\n      <dd>{esc(text)}</dd>')
+    out.append(DENSITY_DD)
+    return "\n".join(out)
+
 def page_colophon(register=""):
     gt = figs.group_totals()
     ex = exceptions()
@@ -1536,36 +1616,14 @@ def page_colophon(register=""):
   <div class="sechead"><h2>The measurements</h2><span class="count">Definitions</span></div>
   <div class="prose measure">
     <dl>
-      <dt id="n1">Words</dt>
-      <dd>The text of the rendered document after its own scripts have run, with
-      <code>&lt;script&gt;</code>, <code>&lt;style&gt;</code> and <code>&lt;noscript&gt;</code> removed and
-      collapsed answers included, whether or not a reader has opened them.
-      The site's own chrome around a piece is not counted: the header, the return bar, the footer,
-      the contents rail, the search dialog and the line that says what the piece was built from.
-      A word is a whitespace-separated token containing at least one letter or digit. Question banks
-      inside the interactive tools are held in code, so they are not counted anywhere: the tools read
-      as {min(p['words'] for p in P if p['k']=='Tool')} to {max(p['words'] for p in P if p['k']=='Tool')}
-      words and are genuinely much larger than that.</dd>
-
-      <dt>Reading time</dt>
-      <dd>Derived, not counted: words divided by {WPM} words per minute, rounded, minimum one minute. {WPM} is a
-      middle estimate for careful reading of technical prose; a skim is faster and a first pass through
-      a figure-heavy section is slower. A page that renders under {DOC_MIN:,} words is treated as an
-      instrument rather than a document and carries no reading time, because a drill has no length,
-      only a session. That threshold is applied to what the page renders, not to what I would like it
-      to be, and it is why the {N_TOOLS} interactive tools carry no reading time at any length.</dd>
-
-      <dt>Figures</dt>
-      <dd>A top-level <code>&lt;svg&gt;</code> in the rendered page, not nested inside another one,
-      covering at least 6,000 square units, which excludes inline glyphs and icons. Because the count
-      runs after render it includes charts a script draws on load. Charts built purely from HTML and
-      CSS are still not counted, so the number remains a floor rather than a ceiling.</dd>
-
-      <dt>Density</dt>
-      <dd>Figures plus tables per thousand words. Under 1.0 is <b>Prose</b>, 1.0 to 3.0 is
-      <b>Mixed</b>, 3.0 and above is <b>Dense</b>. Documents under 400 words carry no label, because the
-      ratio is unstable at that length. It is a rough signal of what the page will feel like, not a
-      quality measure: a dense page is not a better page.</dd>
+{defs_html()}
+      <dt>Where the counts stop</dt>
+      <dd>The interactive tools read as {min(p['words'] for p in P if p['k']=='Tool')} to {max(p['words'] for p in P if p['k']=='Tool')}
+      words and are genuinely much larger than that: their question banks are held in code. The
+      {WPM} words per minute behind the reading time is a middle estimate for careful reading of
+      technical prose; a skim is faster and a first pass through a figure-heavy section is slower. The
+      instrument threshold is applied to what a page renders, not to what I would like it to be, and it
+      is why the {N_TOOLS} interactive tools carry no reading time at any length.</dd>
 
       <dt>Independent, coursework, personal</dt>
       <dd><b>Independent</b> means I chose the question, scoped it and finished it without a course
@@ -1600,6 +1658,12 @@ def page_colophon(register=""):
       reflow when the font lands. If the file fails to load, the site keeps working on the system
       stack. The build fails on any page character the subset lacks, so the number above is checked
       rather than believed.</dd>
+
+      <dt>A number you can open</dt>
+      <dd>A counted number on these pages is set with a dotted underline. Pointing at it or pressing it
+      shows the definition it was counted under, the file it was measured from, the script that measured
+      it and the record that holds it. With scripts off the number stands as text and the definitions
+      are the list above; nothing about the number itself depends on the script.</dd>
 
       <dt>Surfaces</dt>
       <dd>Warm paper in light, a near-black ground in dark, hairline rules, no rounded corners. The
@@ -1648,8 +1712,8 @@ def page_colophon(register=""):
     converted piece that says so, and the footer under it, and it proves on every run that the text
     outside those two blocks is byte for byte what it was.</p>
     {pass_sentence()}
-    <p>The corpus as of this build: {len(P)} pieces, {TOTAL_WORDS:,} words, {TOTAL_FIGS} figures,
-    {TOTAL_TBLS} tables and {CHECKPOINTS} checkpoint questions. {ST['independent']['words']:,} of those words
+    <p>The corpus as of this build: {md(len(P), "pieces")} pieces, {md(TOTAL_WORDS, "words")} words, {md(TOTAL_FIGS, "figures")} figures,
+    {md(TOTAL_TBLS, "tables")} tables and {md(CHECKPOINTS, "checkpoints")} checkpoint questions. {md(ST['independent']['words'], "words")} of those words
     were not assigned by anyone.</p>
   </div>
 </section>
@@ -1664,8 +1728,8 @@ def page_colophon(register=""):
     describes, rather than repeating a result that was true of an earlier build. The build refuses to
     publish when a checked claim fails, so a row can read held, asserted or not yet measured, and
     never failed, on a page that reached you.</p>
-    {register}
   </div>
+  {register}
 </section>
 
 {limits_block()}
@@ -2155,7 +2219,7 @@ def _piece_tail():
     is everything foot() emits between the footer and the script tag."""
     m = re.search(r'</footer>\s*(.*?)\s*<script src="site\.js', foot(), re.S)
     tail = m.group(1)
-    tail = re.sub(r'<!-- The keyboard routes.*?<div class="keys" id="keysheet".*?</div>\s*</div>\s*', "", tail, flags=re.S)
+    tail = re.sub(r'<!-- The keyboard routes.*?<dialog class="keys" id="keysheet".*?</dialog>\s*', "", tail, flags=re.S)
     return tail
 
 def _outside_tail(text):
@@ -3303,7 +3367,7 @@ def check_site():
     # can print a denominator beside each claim rather than a bare pass
     T = check_site.tally = {}
     html_files = sorted(f for f in files if f.endswith(".html"))
-    for sub in ("cards", "fonts", "content"):
+    for sub in ("cards", "fonts", "content", "build"):
         if os.path.isdir(os.path.join(OUT, sub)):
             files |= {sub + "/" + f for f in os.listdir(os.path.join(OUT, sub))}
 
@@ -3842,6 +3906,17 @@ def check_site():
     if te["cookie"]:
         problems.append("the cookie API is used %d time(s); the colophon says no cookies" % te["cookie"])
 
+    # 24. the workflow holds the build to its idempotence claim: a step that
+    # runs the build once more and fails the publish unless it reports
+    # nothing to rewrite. The register prints the claim as held only while
+    # that step is there.
+    wf = os.path.join(ROOT, ".github", "workflows", "build.yml")
+    T["workflow"] = {"idempotence": False}
+    if os.path.exists(wf):
+        wtext = open(wf, encoding="utf-8").read()
+        T["workflow"]["idempotence"] = ("rewrote: nothing" in wtext and "build/build_site.py" in wtext
+                                        and "A further build rewrites nothing" in wtext)
+
     # 23. no em dash on any generated page. The pieces are content and their
     # record holds them as written; their count is reported, not enforced.
     td = T["emdash"] = {"generated_pages": 0, "in_generated": 0, "pieces_with": 0, "in_pieces": 0}
@@ -3993,6 +4068,51 @@ def _typed_numerals():
     return out
 
 
+def write_offline(changed):
+    """The full-offline manifest and the worker, from the files as they stand.
+    Called after the register settled, because both digest every file the
+    offline copy holds, the colophon among them; and on its own by
+    --offline-only, which build/audit.js uses to turn a copy of the tree with
+    one changed page into the next generation a publish would produce."""
+    # The full-offline manifest: every file a reader needs to hold the whole
+    # site on a phone, from the one selection rule offline_files() states.
+    off_files = offline_files()
+    _oh = hashlib.sha1()
+    digests = {}
+    for f in off_files:
+        _oh.update((f + str(os.path.getsize(os.path.join(OUT, f)))).encode())
+        with open(os.path.join(OUT, f), "rb") as fh:
+            digests[f] = hashlib.sha1(fh.read()).hexdigest()[:12]
+    off_bytes = sum(os.path.getsize(os.path.join(OUT, f)) for f in off_files)
+    # a digest per file, so a saved copy can refresh only what changed
+    off = json.dumps({"version": _oh.hexdigest()[:12],
+                      "bytes": off_bytes,
+                      "files": off_files,
+                      "digests": digests}, indent=1)
+    offpath = os.path.join(OUT, "offline-manifest.json")
+    if (not os.path.exists(offpath)) or open(offpath, encoding="utf-8").read() != off:
+        open(offpath, "w", encoding="utf-8").write(off)
+        changed.append("offline-manifest.json")
+
+    # The page cache is named by a digest of the CONTENTS of every file the
+    # offline copy holds, computed here, after the piece pass, for the same
+    # reason the CORE digest is. It used to be the constant "site-pages-v1",
+    # which the activate filter exempted, so every page a reader had ever
+    # loaded persisted across every build and was served cache-first: two
+    # generations of the site in one session. A size digest would not do:
+    # 483,735 and 483,784 are the same number of characters.
+    _ph = hashlib.sha1()
+    for f in off_files:
+        with open(os.path.join(OUT, f), "rb") as fh:
+            _ph.update(f.encode("utf-8") + fh.read())
+    sw = page_sw(_ph.hexdigest()[:12])
+    swpath = os.path.join(OUT, "sw.js")
+    if (not os.path.exists(swpath)) or open(swpath, encoding="utf-8").read() != sw:
+        open(swpath, "w", encoding="utf-8").write(sw)
+        changed.append("sw.js")
+
+
+
 def main():
     # First, because it writes anchor ids into the pieces themselves and every
     # later pass reads those files. Giving a section a name is a content edit,
@@ -4066,44 +4186,7 @@ def main():
         problems.append("colophon.html: the register did not settle in four rounds")
     check_site.register = summary
 
-    # After the register settled, not before: the manifest and the worker
-    # digest every file the offline copy holds, the colophon among them.
-    # The full-offline manifest: every file a reader needs to hold the whole
-    # site on a phone, from the one selection rule offline_files() states.
-    off_files = offline_files()
-    _oh = hashlib.sha1()
-    digests = {}
-    for f in off_files:
-        _oh.update((f + str(os.path.getsize(os.path.join(OUT, f)))).encode())
-        with open(os.path.join(OUT, f), "rb") as fh:
-            digests[f] = hashlib.sha1(fh.read()).hexdigest()[:12]
-    off_bytes = sum(os.path.getsize(os.path.join(OUT, f)) for f in off_files)
-    # a digest per file, so a saved copy can refresh only what changed
-    off = json.dumps({"version": _oh.hexdigest()[:12],
-                      "bytes": off_bytes,
-                      "files": off_files,
-                      "digests": digests}, indent=1)
-    offpath = os.path.join(OUT, "offline-manifest.json")
-    if (not os.path.exists(offpath)) or open(offpath, encoding="utf-8").read() != off:
-        open(offpath, "w", encoding="utf-8").write(off)
-        changed.append("offline-manifest.json")
-
-    # The page cache is named by a digest of the CONTENTS of every file the
-    # offline copy holds, computed here, after the piece pass, for the same
-    # reason the CORE digest is. It used to be the constant "site-pages-v1",
-    # which the activate filter exempted, so every page a reader had ever
-    # loaded persisted across every build and was served cache-first: two
-    # generations of the site in one session. A size digest would not do:
-    # 483,735 and 483,784 are the same number of characters.
-    _ph = hashlib.sha1()
-    for f in off_files:
-        with open(os.path.join(OUT, f), "rb") as fh:
-            _ph.update(f.encode("utf-8") + fh.read())
-    sw = page_sw(_ph.hexdigest()[:12])
-    swpath = os.path.join(OUT, "sw.js")
-    if (not os.path.exists(swpath)) or open(swpath, encoding="utf-8").read() != sw:
-        open(swpath, "w", encoding="utf-8").write(sw)
-        changed.append("sw.js")
+    write_offline(changed)
 
     print(f"{len(P)} pieces · {TOTAL_WORDS:,} words · {TOTAL_FIGS} figures · {TOTAL_TBLS} tables")
     print("rewrote: " + (", ".join(changed) if changed else "nothing, pages already current"))
@@ -4142,4 +4225,9 @@ def main():
     print("checks passed: every link, canonical, icon and listed file resolves")
 
 if __name__ == "__main__":
+    if "--offline-only" in sys.argv:
+        _ch = []
+        write_offline(_ch)
+        print("offline: " + (", ".join(_ch) if _ch else "nothing, already current"))
+        sys.exit(0)
     main()

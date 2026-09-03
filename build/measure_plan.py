@@ -81,15 +81,34 @@ def cards_stale():
     return want
 
 
+def audit_stale():
+    """Pages the browser audit has no current record for, and whether the
+    worker's record is current, from build/claims.py so the plan and the
+    audit agree on what current means."""
+    import subprocess
+    try:
+        r = subprocess.run([sys.executable, os.path.join(ROOT, "build", "claims.py"), "--stale"],
+                           capture_output=True, text=True, check=True)
+        d = json.loads(r.stdout)
+        return d.get("pages", 0), bool(d.get("offline"))
+    except Exception:
+        return 1, True
+
+
 if __name__ == "__main__":
     todo, cards = stale(), cards_stale()
+    audit_pages, audit_offline = audit_stale()
+    audit = audit_pages > 0 or audit_offline
     out = os.environ.get("GITHUB_OUTPUT")
     line = (f"measure={'1' if todo else '0'}\n"
             f"cards={'1' if cards else '0'}\n"
-            f"needs={'1' if (todo or cards) else '0'}\n"
+            f"audit={'1' if audit else '0'}\n"
+            f"needs={'1' if (todo or cards or audit) else '0'}\n"
             f"count={len(todo)}\n")
     if out:
         open(out, "a", encoding="utf-8").write(line)
     sys.stderr.write(f"{len(todo)} page(s) need measuring, "
-                     f"{len(cards)} card(s) need drawing\n")
+                     f"{len(cards)} card(s) need drawing, "
+                     f"{audit_pages} page(s) need auditing"
+                     f"{', the worker too' if audit_offline else ''}\n")
     print(line, end="")

@@ -203,8 +203,8 @@ def build(ctx):
          f"{t.get('figures', 0)} figures on {t.get('pages', 0)} pages, 0 unnamed", ["colophon.html"])
     t = T.get("emdash", {})
     held("No em dash on any generated page.", "check 23",
-         f"{t.get('generated_pages', 0)} pages, 0 em dashes; the pieces carry {n(t.get('in_pieces', 0))} in "
-         f"{t.get('pieces_with', 0)} pieces, which their record holds",
+         f"{t.get('generated_pages', 0)} pages, 0 em dashes; the piece files carry {n(t.get('in_pieces', 0))} in "
+         f"{t.get('pieces_with', 0)} files, in text, code and data the build does not edit",
          ["colophon.html"])
     t = T.get("superlatives", {})
     held("A superlative in the owner's own fields is true of the data.", "check 14",
@@ -214,11 +214,11 @@ def build(ctx):
     def rt(claim, key, pages, agg, where, by="build/audit.js"):
         res, total, missing = _runtime(state, key, pages, None, agg)
         if res is None:
-            rows.append(_row(claim, by, f"not yet measured for this build ({total} pages)", "open", where))
+            rows.append(_row(claim, by, f"for this build: {total} pages to measure", "open", where))
             return
         text, ok = res
         if missing:
-            text += f"; {len(missing)} of {total} pages not yet measured for this build"
+            text += f"; {len(missing)} of {total} pages not measured for this build"
         rows.append(_row(claim, by, text, "held" if ok else "failed", where))
         if not ok:
             ctx["problems"].append("register: a measured claim fails: %s (%s)" % (claim, text))
@@ -258,6 +258,12 @@ def build(ctx):
         return (text, True)   # reported, not enforced: the overflowing pieces are named, not hidden
     rt("Every page fits a 320px viewport; the pages that do not are named here.", "fit", allp, agg_fit, ["colophon.html"])
 
+    def agg_chrome(recs, names):
+        bad = [nm for nm, r in zip(names, recs) if r and r.get("a") != r.get("b")]
+        return (f"{len(recs) - len(bad)} of {len(recs)} pages count the same words with and without the build's own blocks removed"
+                + ("; " + ", ".join(bad) if bad else ""), not bad)
+    rt("The word count leaves out the site's own chrome around a piece.", "chrome", allp, agg_chrome, ["colophon.html"])
+
     off = state.get("offline")
     if off:
         ok = off.get("before", 0) > 0 and off.get("after", 0) >= off.get("before", 0) and off.get("refreshed") is True
@@ -270,15 +276,20 @@ def build(ctx):
             ctx["problems"].append("register: the offline claim fails: %s" % json.dumps(off))
     else:
         rows.append(_row("A saved offline copy survives a publish, and the file that changed is refreshed in it.",
-                         "build/audit.js", "not yet measured for this build", "open", ["colophon.html"]))
+                         "build/audit.js", "for this build", "open", ["colophon.html"]))
 
     # --- asserted: no check exists yet ---
     asserted("Colour never carries meaning on its own: every mark that means something also differs in fill or shape.", ["colophon.html"])
     asserted("Every figure's numbers are restated in a table or in the running text.", ["colophon.html"])
-    asserted("The build is idempotent: a second run rewrites nothing.", ["colophon.html"],
-             note="Checked by hand on every commit of the branch that introduced this register; not yet by the workflow.")
-    asserted("The word count leaves out the site's own chrome around a piece.", ["colophon.html"],
-             note="The measurement removes the chrome by selector; nothing checks that the selectors still name all of it.")
+    t = T.get("workflow", {})
+    if t.get("idempotence"):
+        held("The build is idempotent: after everything is written, a further run rewrites nothing, or the publish fails.",
+             "check 24 and the workflow",
+             "the workflow carries the step that runs the build once more and fails the publish unless it reports nothing to rewrite",
+             ["colophon.html"])
+    else:
+        asserted("The build is idempotent: a second run rewrites nothing.", ["colophon.html"],
+                 note="The workflow carries no step that holds the build to this.")
 
     summary = {
         "rows": len(rows),
@@ -324,3 +335,39 @@ def render(rows, summary, audit_meta):
              '<thead><tr><th scope="col">The claim</th><th scope="col">Checked by</th><th scope="col">Last result</th></tr></thead>'
              '<tbody>' + "".join(out) + '</tbody></table></div>')
     return meta + table
+
+
+def _cli(argv):
+    """--digests: every page the register covers with its input fingerprint,
+    the generated pages named, and the worker's, as JSON for build/audit.js.
+    --stale: how many of those records content/audit.json lacks or holds
+    for other inputs, for the workflow's plan step."""
+    import sys
+    content = json.load(open(os.path.join(ROOT, "content", "pieces.json"), encoding="utf-8"))
+    metrics = json.load(open(os.path.join(ROOT, "content", "metrics.json"), encoding="utf-8"))
+    shell = ["index.html", "research.html", "coursework.html", "tools.html", "library.html",
+             "atlas.html", "about.html", "colophon.html", "404.html"]
+    listed = [p.get("url") or (p["slug"] + ".html") for p in content["pieces"]]
+    slugs = {p["slug"] for p in content["pieces"]}
+    transcripts = sorted(k + ".html" for k in metrics if k not in slugs and os.path.exists(os.path.join(ROOT, k + ".html")))
+    pages = [f for f in shell + listed + transcripts if os.path.exists(os.path.join(ROOT, f))]
+    dig = {"shell": shell, "pages": {f: page_input_digest(ROOT, f, f in shell) for f in pages},
+           "sw": sw_input_digest(ROOT)}
+    if "--digests" in argv:
+        print(json.dumps(dig, indent=1))
+        return 0
+    if "--stale" in argv:
+        audit = load_audit()
+        recs = audit.get("pages") or {}
+        stale = [f for f, d in dig["pages"].items() if not recs.get(f) or recs[f].get("inputs") != d]
+        off = audit.get("offline") or {}
+        off_stale = (not off) or off.get("inputs") != dig["sw"]
+        print(json.dumps({"pages": len(stale), "offline": off_stale, "total": len(dig["pages"])}))
+        return 0
+    print("usage: claims.py --digests | --stale")
+    return 2
+
+
+if __name__ == "__main__":
+    import sys
+    sys.exit(_cli(sys.argv[1:]))

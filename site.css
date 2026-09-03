@@ -2126,3 +2126,55 @@ details.cgroup + details.cgroup{margin-top:1.75rem}
 /* the pass's own account of its limits */
 .limits ol{padding-left:1.2rem}
 .limits li{margin:.5rem 0;color:var(--ink-2)}
+/* on a narrow screen the register stacks: claim, then the check and its
+   result, rather than scrolling three columns sideways */
+@media (max-width:44rem){
+  .tw > .register{min-width:0}
+  .register thead{display:none}
+  .register,.register tbody,.register tr,.register td,.register th{display:block}
+  .register tr{padding:.55rem 0;border-bottom:1px solid var(--rule)}
+  .register tr.grp th{padding:.9rem 0 .2rem;border:0}
+  .register td{border:0;padding:.1rem 0}
+  .register .rg-claim{max-width:none}
+  .register .rg-by{display:inline;white-space:normal}
+  .register .rg-by::after{content:" · "}
+  .register .rg-res{display:inline}
+}
+
+/* --------------------------- a number you can open --------------------- */
+/* A counted number carries a dotted underline once the script has made it
+   openable; with scripts off nothing is underlined, because nothing opens.
+   The colophon's design rules name this channel. */
+.js data.m{text-decoration:underline dotted;text-decoration-color:var(--edge);text-underline-offset:.16em;
+  text-decoration-thickness:1px;cursor:help;border-radius:1px}
+.js data.m:hover,.js data.m:focus-visible{text-decoration-color:var(--accent);text-decoration-style:solid}
+.js data.m:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+dialog.prov{
+  position:fixed;inset:0;z-index:80;width:100%;height:100%;max-width:none;max-height:none;
+  margin:0;border:0;background:transparent;color:inherit;padding:1.5rem}
+dialog.prov[open]{display:grid;place-items:center}
+dialog.prov::backdrop{background:rgba(10,10,8,.55);backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px)}
+dialog.prov{transition:opacity var(--t-in) var(--ease-weight),display var(--t-in) allow-discrete,overlay var(--t-in) allow-discrete}
+dialog.prov:not([open]){opacity:0}
+dialog.prov[open]{opacity:1}
+dialog.prov::backdrop{transition:background-color var(--t-in) ease,display var(--t-in) allow-discrete,overlay var(--t-in) allow-discrete}
+dialog.prov:not([open])::backdrop{background-color:rgba(10,10,8,0)}
+@starting-style{
+  dialog.prov[open]{opacity:0}
+  dialog.prov[open]::backdrop{background-color:rgba(10,10,8,0)}
+  dialog.prov[open] .prov-panel{transform:translateY(14px)}
+}
+.prov-panel{background:var(--paper);border:1px solid var(--ink);max-width:32rem;width:100%;padding:1.1rem 1.25rem 1rem;
+  transition:transform var(--t-weight) var(--ease-weight)}
+.prov-k{margin:0;font-size:var(--meta-size);letter-spacing:var(--meta-track);text-transform:uppercase;font-weight:var(--meta-weight);color:var(--ink-3)}
+.prov-panel h2{margin:.2rem 0 .6rem;font-size:1.45rem;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.prov-def,.prov-src{font-size:.92rem;color:var(--ink-2);margin:0 0 .6rem;line-height:1.5}
+.prov-src{color:var(--ink)}
+.prov-links{font-size:.86rem;margin:0 0 .9rem}
+.prov-links a{color:var(--accent)}
+.prov-panel .close{font:inherit;font-size:var(--btn-size);font-weight:var(--btn-weight);padding:.45rem .8rem;
+  border:1px solid var(--ink);background:var(--paper);color:var(--ink);cursor:pointer}
+.prov-panel .close:hover{background:var(--ink);color:var(--paper)}
+@media (prefers-reduced-motion:reduce){
+  dialog.prov,dialog.prov::backdrop,.prov-panel{transition:none}
+}

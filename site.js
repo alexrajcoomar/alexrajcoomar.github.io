@@ -636,6 +636,64 @@
   })();
 })();
 
+  /* --------------------------------------- a number you can open --
+     Every counted number on a generated page is a <data> element carrying
+     its raw value, the id of the definition it was counted under and, when
+     it belongs to one piece, that piece. Pointing at it or pressing it
+     opens the definition, the file it was measured from, the script and
+     the record. The data is the build's, printed into #defs; the text is
+     the colophon's; the dialog is the browser's. With scripts off the
+     number is plain text and the colophon holds the definitions. */
+  (function () {
+    var box = document.getElementById("defs"), dlg = document.getElementById("prov");
+    if (!box || !dlg || !dlg.showModal) return;
+    var D; try { D = JSON.parse(box.textContent); } catch (e) { return; }
+    var nums = [].slice.call(document.querySelectorAll("data.m"));
+    if (!nums.length) return;
+    var kEl = document.getElementById("prov-k"), hEl = document.getElementById("prov-h"),
+        defEl = document.getElementById("prov-def"), srcEl = document.getElementById("prov-src"),
+        lnEl = document.getElementById("prov-links");
+    function fmt(v) { var x = Number(v); return isFinite(x) ? x.toLocaleString("en-CA") : String(v); }
+    function a(href, text) { var l = document.createElement("a"); l.href = href; l.textContent = text; return l; }
+    function open(el) {
+      var kind = el.getAttribute("data-m"), of = el.getAttribute("data-of"), val = el.getAttribute("value");
+      var def = D.defs[kind]; if (!def) return;
+      var piece = of && D.pieces[of];
+      kEl.textContent = def.t;
+      hEl.textContent = fmt(val) + (kind === "mins" ? " minutes" : " " + def.t.toLowerCase());
+      defEl.textContent = def.d;
+      srcEl.textContent = "";
+      lnEl.textContent = "";
+      var meas = D.meas;
+      if (piece) {
+        srcEl.appendChild(document.createTextNode("Measured from "));
+        srcEl.appendChild(a(piece.u, piece.t));
+        srcEl.appendChild(document.createTextNode(" in a headless browser by " + meas.tool + ", and held in " + meas.record + " (digest " + meas.digest + ")" +
+          (kind === "mins" ? ", then divided by the rate the definition states." : ".")));
+      } else if (kind === "pieces") {
+        srcEl.textContent = "Counted from content/pieces.json: " + fmt(val) + " listed entries, each with a file behind it, checked on every build.";
+      } else {
+        srcEl.textContent = "The sum over the " + meas.pieces + " listed pieces of what " + meas.tool + " measured for each, held in " + meas.record + " (digest " + meas.digest + "); the " + meas.transcripts + " transcripts are measured there too but not summed here.";
+      }
+      lnEl.appendChild(a("colophon.html#def-" + kind, "The definition on the colophon"));
+      lnEl.appendChild(document.createTextNode(" · "));
+      lnEl.appendChild(a(meas.record, "The record"));
+      lnEl.appendChild(document.createTextNode(" · "));
+      lnEl.appendChild(a(meas.tool, "The script"));
+      dlg.showModal();
+    }
+    nums.forEach(function (el) {
+      el.setAttribute("tabindex", "0");
+      el.setAttribute("role", "button");
+      el.setAttribute("aria-haspopup", "dialog");
+      el.setAttribute("title", "What was counted, and where");
+      el.addEventListener("click", function (e) { e.preventDefault(); e.stopPropagation(); open(el); });
+      el.addEventListener("keydown", function (e) {
+        if (e.key === "Enter" || e.key === " ") { e.preventDefault(); open(el); }
+      });
+    });
+  })();
+
   /* --------------------------------------------- the atlas, in miniature
      The same sphere the atlas page draws, at a size where it is a picture
      rather than an instrument: no labels, no hit testing, no second copy of

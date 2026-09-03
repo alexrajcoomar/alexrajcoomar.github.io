@@ -1,9 +1,9 @@
 # Rebuilds the site's index pages whenever content changes.
 #
 # Nothing here touches design. It reads content/pieces.json, measures any
-# piece whose file changed, regenerates the nine shell pages, and commits
-# the result back. The commit carries [skip ci] so it cannot set itself off
-# again.
+# piece whose file changed, regenerates the nine shell pages, audits in a
+# browser what those pages claim about themselves, and commits the result
+# back. The commit carries [skip ci] so it cannot set itself off again.
 name: Rebuild site
 
 on:
@@ -55,6 +55,27 @@ jobs:
       # not resolve. A red mark here means the site was not published broken.
       - name: Rebuild the listing pages and check them
         run: python3 build/build_site.py
+
+      # What the pages claim about themselves at runtime (nothing external,
+      # nothing moving while idle, focus visible, printing, fitting a phone,
+      # the offline copy surviving a publish) is measured in the same browser
+      # and recorded in content/audit.json, for the pages whose inputs moved.
+      - name: Audit the rendered pages
+        if: steps.plan.outputs.audit == '1'
+        run: node build/audit.js
+
+      # The colophon's register prints the audit, so the pages are written
+      # once more from the fresh record. Nothing else changes.
+      - name: Print the audit on the colophon
+        if: steps.plan.outputs.audit == '1'
+        run: python3 build/build_site.py
+
+      # The build claims to be idempotent, so the workflow holds it to that:
+      # one more run must rewrite nothing, or the publish fails here.
+      - name: A further build rewrites nothing
+        run: |
+          python3 build/build_site.py | tee /tmp/build-again.log
+          grep -q "rewrote: nothing" /tmp/build-again.log
 
       - name: Commit anything that changed
         run: |
