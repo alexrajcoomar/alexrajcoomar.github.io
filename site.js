@@ -756,6 +756,13 @@
       C.c = s.getPropertyValue("--ink-3").trim() || "#6f6c63";
       C.t = s.getPropertyValue("--tool").trim() || "#0f6b58";
       C.r = s.getPropertyValue("--rule").trim() || "#ddd9cf";
+      C.e = s.getPropertyValue("--edge").trim() || "#8a847c";
+      C.p = s.getPropertyValue("--paper").trim() || "#faf9f6";
+    }
+    function dark() {
+      var h = C.p.replace("#", "");
+      if (h.length === 3) h = h[0] + h[0];
+      return parseInt(h.slice(0, 2), 16) < 128;
     }
     colours();
     new MutationObserver(function () { colours(); _cc = {}; paint(); })
@@ -770,7 +777,13 @@
         (n & 255) + "," + a.toFixed(3) + ")";
     }
 
-    var W = 0, H = 0, dpr = 1, R = 0, yaw = 0.5, pitch = -0.3;
+    var W = 0, H = 0, dpr = 1, R = 0, S = 1, yaw = 0.5, pitch = -0.3;
+    /* The light: a halo outside the limb, the way the Atlas page's
+       silhouette is drawn, and a broader, fainter one on the ground behind.
+       Both sit outside the disc on purpose: a gradient laid over the marks
+       would darken the ground every mark is measured against. Lighting,
+       not data; data-light="off" removes it. */
+    var lit = host.getAttribute("data-light") !== "off";
     function size() {
       var r = host.getBoundingClientRect();
       dpr = Math.min(2, window.devicePixelRatio || 1);
@@ -785,7 +798,11 @@
       cv.height = Math.round(H * dpr);
       cv.style.width = W + "px";
       cv.style.height = H + "px";
-      R = Math.min(W, H) * 0.44;
+      R = Math.min(W, H) * (+host.getAttribute("data-fill") || 0.44);
+      /* The marks were drawn for a 350px box (R = 154). At hero scale the
+         same rule is drawn proportionally, so a bigger sphere is the same
+         picture larger and not the same dots further apart. */
+      S = Math.max(1, R / 154);
     }
 
     /* The depth alpha is quantised to twelve steps and the colour strings
@@ -809,9 +826,27 @@
       var cpit = Math.cos(pitch), spit = Math.sin(pitch);
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       ctx.clearRect(0, 0, W, H);
+      if (lit) {
+        var isDark = dark();
+        var g0 = ctx.createRadialGradient(cx, cy, R * 1.02, cx, cy, R * 1.9);
+        g0.addColorStop(0, rgba(C.i, isDark ? 0.10 : 0.06));
+        g0.addColorStop(0.5, rgba(C.i, isDark ? 0.03 : 0.015));
+        g0.addColorStop(1, rgba(C.i, 0));
+        ctx.fillStyle = g0;
+        ctx.fillRect(0, 0, W, H);
+        var g1 = ctx.createRadialGradient(cx, cy, R, cx, cy, R * 1.13);
+        g1.addColorStop(0, rgba(C.e, isDark ? 0.30 : 0.16));
+        g1.addColorStop(0.45, rgba(C.e, isDark ? 0.10 : 0.05));
+        g1.addColorStop(1, rgba(C.e, 0));
+        ctx.fillStyle = g1;
+        ctx.beginPath();
+        ctx.arc(cx, cy, R * 1.13, 0, Math.PI * 2);
+        ctx.arc(cx, cy, R, 0, Math.PI * 2, true);
+        ctx.fill();
+      }
       ctx.beginPath();
       ctx.arc(cx, cy, R, 0, Math.PI * 2);
-      ctx.strokeStyle = rgba(C.r, 0.6);
+      ctx.strokeStyle = rgba(lit ? C.e : C.r, 0.6);
       ctx.lineWidth = 1;
       ctx.stroke();
       for (var i = 0; i < pts.length; i++) {
@@ -822,12 +857,12 @@
         var z2 = p.y * spit + z1 * cpit;
         var t = (z2 + 1) / 2;
         var q = (t * 12) | 0;
-        var rad = BAND_R[p.b] + 1.5 * t;
+        var rad = (BAND_R[p.b] + 1.5 * t) * S;
         ctx.beginPath();
         ctx.arc(cx + x1 * R, cy - y2 * R, rad, 0, Math.PI * 2);
         if (p.k === "c") {
           ctx.strokeStyle = tone("c", q);
-          ctx.lineWidth = 1;
+          ctx.lineWidth = Math.max(1, 0.9 * S);
           ctx.stroke();
         } else {
           ctx.fillStyle = tone(p.k, q);
