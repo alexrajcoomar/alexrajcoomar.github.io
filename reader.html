@@ -83,7 +83,7 @@ header.mast{padding:44px 0 20px;border-bottom:2px solid var(--ink)}
 <header class="mast">
   <p class="k">Alex Rajcoomar &middot; Portfolio &middot; Offline reader edition &middot; archived 23 August 2026</p>
   <h1>The whole shelf, in one file.</h1>
-  <p>65 pieces, 483,784 measured words, embedded in a single
+  <p>65 pieces, 483,790 measured words, embedded in a single
   document so every article opens instantly from this phone with no connection and no server.
   Interactive tools are programs, so they are listed here but run in the installed site app.
   The live site is <a href="https://alexrajcoomar.github.io">alexrajcoomar.github.io</a>.</p>
@@ -171,7 +171,7 @@ header.mast{padding:44px 0 20px;border-bottom:2px solid var(--ink)}
 <li data-t="daily learning cockpit"><a href="#p--daily-learning-cockpit">Daily Learning Cockpit</a><span class="toc-s">Tool · August 2026 · 251 words · interactive, see note</span></li>
 <li data-t="law arena"><a href="#p--law-arena">Law Arena</a><span class="toc-s">Tool · August 2026 · 316 words · interactive, see note</span></li>
 <li data-t="skill forge"><a href="#p--skill-forge">Skill Forge</a><span class="toc-s">Tool · August 2026 · 375 words · interactive, see note</span></li>
-<li data-t="afm 291 interactive study system"><a href="#p--afm291-study-system">AFM 291 Interactive Study System</a><span class="toc-s">Tool · August 2026 · 14,138 words · interactive, see note</span></li>
+<li data-t="afm 291 interactive study system"><a href="#p--afm291-study-system">AFM 291 Interactive Study System</a><span class="toc-s">Tool · August 2026 · 14,144 words · interactive, see note</span></li>
 <li data-t="afm 291 practice arena"><a href="#p--practice-arena">AFM 291 Practice Arena</a><span class="toc-s">Tool · August 2026 · 221 words · interactive, see note</span></li>
 <li data-t="econ 102 interactive exam trainer"><a href="#p--econ102-exam-trainer">ECON 102 Interactive Exam Trainer</a><span class="toc-s">Tool · August 2026 · 2,614 words · interactive, see note</span></li>
 </ol>
@@ -17063,13 +17063,13 @@ Taylor: i = π + 0.02 + 0.5y + 0.5(π − 0.02) &nbsp;&nbsp;→ slope <b style="
   </div>
   <div class="fine">
     <span>&copy; 2026 Leesharam Alexander Rajcoomar</span>
-    <span><b>65</b> pieces &middot; <b>483,784</b> words &middot; <b>182</b> figures &middot; no framework, nothing external at runtime, one build you can read</span>
+    <span><b>65</b> pieces &middot; <b>483,790</b> words &middot; <b>182</b> figures &middot; no framework, nothing external at runtime, one build you can read</span>
   </div>
 </footer><!--/__foot-->
 
 <!--__tail--><!-- Search across every piece. Progressive: every link on the site works
      without it, and the button is the same route as the keyboard. -->
-<div class="cmdk" id="the-delayed-test--cmdk" hidden role="dialog" aria-modal="true" aria-label="Search all work">
+<dialog class="cmdk" id="the-delayed-test--cmdk" aria-label="Search all work">
   <div class="cmdk-panel">
     <input id="the-delayed-test--cmdk-input" type="text" placeholder="Search 65 pieces by title, course or topic" autocomplete="off" spellcheck="false" role="combobox" aria-expanded="false" aria-autocomplete="list" aria-controls="cmdk-list">
     <ul class="cmdk-list" id="the-delayed-test--cmdk-list" role="listbox" aria-label="Results"></ul>
@@ -17077,8 +17077,30 @@ Taylor: i = π + 0.02 + 0.5y + 0.5(π − 0.02) &nbsp;&nbsp;→ slope <b style="
       <span><kbd>&#8593;</kbd><kbd>&#8595;</kbd> move</span><span><kbd>Enter</kbd> open</span><span><kbd>Esc</kbd> close</span>
     </div>
   </div>
-</div>
+</dialog>
 
+<!-- The keyboard routes, written down. A shortcut nobody can find is the
+     same as one that does not exist. Opened with ? or from the footer. -->
+<dialog class="keys" id="the-delayed-test--keysheet" aria-labelledby="keystitle">
+  <form method="dialog" class="keys-panel">
+    <h2 id="the-delayed-test--keystitle">Keyboard</h2>
+    <dl>
+      <dt><kbd>/</kbd></dt><dd>Search every piece</dd>
+      <dt><kbd>&#8984;</kbd><kbd>K</kbd></dt><dd>The same search</dd>
+      <dt><kbd>g</kbd> <kbd>h</kbd></dt><dd>Home</dd>
+      <dt><kbd>g</kbd> <kbd>r</kbd></dt><dd>Research</dd>
+      <dt><kbd>g</kbd> <kbd>c</kbd></dt><dd>Coursework</dd>
+      <dt><kbd>g</kbd> <kbd>t</kbd></dt><dd>Tools</dd>
+      <dt><kbd>g</kbd> <kbd>l</kbd></dt><dd>Library</dd>
+      <dt><kbd>g</kbd> <kbd>a</kbd></dt><dd>About</dd>
+      <dt><kbd>?</kbd></dt><dd>This list</dd>
+    </dl>
+    <p class="keys-pref"><label><input type="checkbox" id="the-delayed-test--keysingles" checked>
+      Single-key shortcuts. Turn these off if a key press where you did not
+      mean one keeps opening things; search stays on <kbd>&#8984;</kbd><kbd>K</kbd>.</label></p>
+    <button class="close">Close</button>
+  </form>
+</dialog>
 <!--/__tail-->
 
 
@@ -17426,13 +17448,13 @@ Individual debiasing training yields <strong>g ≈ 0.26</strong> on a weak liter
   </div>
   <div class="fine">
     <span>&copy; 2026 Leesharam Alexander Rajcoomar</span>
-    <span><b>65</b> pieces &middot; <b>483,784</b> words &middot; <b>182</b> figures &middot; no framework, nothing external at runtime, one build you can read</span>
+    <span><b>65</b> pieces &middot; <b>483,790</b> words &middot; <b>182</b> figures &middot; no framework, nothing external at runtime, one build you can read</span>
   </div>
 </footer><!--/__foot-->
 
 <!--__tail--><!-- Search across every piece. Progressive: every link on the site works
      without it, and the button is the same route as the keyboard. -->
-<div class="cmdk" id="the-calibrated-mind--cmdk" hidden role="dialog" aria-modal="true" aria-label="Search all work">
+<dialog class="cmdk" id="the-calibrated-mind--cmdk" aria-label="Search all work">
   <div class="cmdk-panel">
     <input id="the-calibrated-mind--cmdk-input" type="text" placeholder="Search 65 pieces by title, course or topic" autocomplete="off" spellcheck="false" role="combobox" aria-expanded="false" aria-autocomplete="list" aria-controls="cmdk-list">
     <ul class="cmdk-list" id="the-calibrated-mind--cmdk-list" role="listbox" aria-label="Results"></ul>
@@ -17440,8 +17462,30 @@ Individual debiasing training yields <strong>g ≈ 0.26</strong> on a weak liter
       <span><kbd>&#8593;</kbd><kbd>&#8595;</kbd> move</span><span><kbd>Enter</kbd> open</span><span><kbd>Esc</kbd> close</span>
     </div>
   </div>
-</div>
+</dialog>
 
+<!-- The keyboard routes, written down. A shortcut nobody can find is the
+     same as one that does not exist. Opened with ? or from the footer. -->
+<dialog class="keys" id="the-calibrated-mind--keysheet" aria-labelledby="keystitle">
+  <form method="dialog" class="keys-panel">
+    <h2 id="the-calibrated-mind--keystitle">Keyboard</h2>
+    <dl>
+      <dt><kbd>/</kbd></dt><dd>Search every piece</dd>
+      <dt><kbd>&#8984;</kbd><kbd>K</kbd></dt><dd>The same search</dd>
+      <dt><kbd>g</kbd> <kbd>h</kbd></dt><dd>Home</dd>
+      <dt><kbd>g</kbd> <kbd>r</kbd></dt><dd>Research</dd>
+      <dt><kbd>g</kbd> <kbd>c</kbd></dt><dd>Coursework</dd>
+      <dt><kbd>g</kbd> <kbd>t</kbd></dt><dd>Tools</dd>
+      <dt><kbd>g</kbd> <kbd>l</kbd></dt><dd>Library</dd>
+      <dt><kbd>g</kbd> <kbd>a</kbd></dt><dd>About</dd>
+      <dt><kbd>?</kbd></dt><dd>This list</dd>
+    </dl>
+    <p class="keys-pref"><label><input type="checkbox" id="the-calibrated-mind--keysingles" checked>
+      Single-key shortcuts. Turn these off if a key press where you did not
+      mean one keeps opening things; search stays on <kbd>&#8984;</kbd><kbd>K</kbd>.</label></p>
+    <button class="close">Close</button>
+  </form>
+</dialog>
 <!--/__tail-->
 
 
@@ -17706,13 +17750,13 @@ Individual debiasing training yields <strong>g ≈ 0.26</strong> on a weak liter
   </div>
   <div class="fine">
     <span>&copy; 2026 Leesharam Alexander Rajcoomar</span>
-    <span><b>65</b> pieces &middot; <b>483,784</b> words &middot; <b>182</b> figures &middot; no framework, nothing external at runtime, one build you can read</span>
+    <span><b>65</b> pieces &middot; <b>483,790</b> words &middot; <b>182</b> figures &middot; no framework, nothing external at runtime, one build you can read</span>
   </div>
 </footer><!--/__foot-->
 
 <!--__tail--><!-- Search across every piece. Progressive: every link on the site works
      without it, and the button is the same route as the keyboard. -->
-<div class="cmdk" id="us-canada-legal-architecture--cmdk" hidden role="dialog" aria-modal="true" aria-label="Search all work">
+<dialog class="cmdk" id="us-canada-legal-architecture--cmdk" aria-label="Search all work">
   <div class="cmdk-panel">
     <input id="us-canada-legal-architecture--cmdk-input" type="text" placeholder="Search 65 pieces by title, course or topic" autocomplete="off" spellcheck="false" role="combobox" aria-expanded="false" aria-autocomplete="list" aria-controls="cmdk-list">
     <ul class="cmdk-list" id="us-canada-legal-architecture--cmdk-list" role="listbox" aria-label="Results"></ul>
@@ -17720,8 +17764,30 @@ Individual debiasing training yields <strong>g ≈ 0.26</strong> on a weak liter
       <span><kbd>&#8593;</kbd><kbd>&#8595;</kbd> move</span><span><kbd>Enter</kbd> open</span><span><kbd>Esc</kbd> close</span>
     </div>
   </div>
-</div>
+</dialog>
 
+<!-- The keyboard routes, written down. A shortcut nobody can find is the
+     same as one that does not exist. Opened with ? or from the footer. -->
+<dialog class="keys" id="us-canada-legal-architecture--keysheet" aria-labelledby="keystitle">
+  <form method="dialog" class="keys-panel">
+    <h2 id="us-canada-legal-architecture--keystitle">Keyboard</h2>
+    <dl>
+      <dt><kbd>/</kbd></dt><dd>Search every piece</dd>
+      <dt><kbd>&#8984;</kbd><kbd>K</kbd></dt><dd>The same search</dd>
+      <dt><kbd>g</kbd> <kbd>h</kbd></dt><dd>Home</dd>
+      <dt><kbd>g</kbd> <kbd>r</kbd></dt><dd>Research</dd>
+      <dt><kbd>g</kbd> <kbd>c</kbd></dt><dd>Coursework</dd>
+      <dt><kbd>g</kbd> <kbd>t</kbd></dt><dd>Tools</dd>
+      <dt><kbd>g</kbd> <kbd>l</kbd></dt><dd>Library</dd>
+      <dt><kbd>g</kbd> <kbd>a</kbd></dt><dd>About</dd>
+      <dt><kbd>?</kbd></dt><dd>This list</dd>
+    </dl>
+    <p class="keys-pref"><label><input type="checkbox" id="us-canada-legal-architecture--keysingles" checked>
+      Single-key shortcuts. Turn these off if a key press where you did not
+      mean one keeps opening things; search stays on <kbd>&#8984;</kbd><kbd>K</kbd>.</label></p>
+    <button class="close">Close</button>
+  </form>
+</dialog>
 <!--/__tail-->
 
 
@@ -18231,13 +18297,13 @@ Individual debiasing training yields <strong>g ≈ 0.26</strong> on a weak liter
   </div>
   <div class="fine">
     <span>&copy; 2026 Leesharam Alexander Rajcoomar</span>
-    <span><b>65</b> pieces &middot; <b>483,784</b> words &middot; <b>182</b> figures &middot; no framework, nothing external at runtime, one build you can read</span>
+    <span><b>65</b> pieces &middot; <b>483,790</b> words &middot; <b>182</b> figures &middot; no framework, nothing external at runtime, one build you can read</span>
   </div>
 </footer><!--/__foot-->
 
 <!--__tail--><!-- Search across every piece. Progressive: every link on the site works
      without it, and the button is the same route as the keyboard. -->
-<div class="cmdk" id="how-to-judge-a-president--cmdk" hidden role="dialog" aria-modal="true" aria-label="Search all work">
+<dialog class="cmdk" id="how-to-judge-a-president--cmdk" aria-label="Search all work">
   <div class="cmdk-panel">
     <input id="how-to-judge-a-president--cmdk-input" type="text" placeholder="Search 65 pieces by title, course or topic" autocomplete="off" spellcheck="false" role="combobox" aria-expanded="false" aria-autocomplete="list" aria-controls="cmdk-list">
     <ul class="cmdk-list" id="how-to-judge-a-president--cmdk-list" role="listbox" aria-label="Results"></ul>
@@ -18245,8 +18311,30 @@ Individual debiasing training yields <strong>g ≈ 0.26</strong> on a weak liter
       <span><kbd>&#8593;</kbd><kbd>&#8595;</kbd> move</span><span><kbd>Enter</kbd> open</span><span><kbd>Esc</kbd> close</span>
     </div>
   </div>
-</div>
+</dialog>
 
+<!-- The keyboard routes, written down. A shortcut nobody can find is the
+     same as one that does not exist. Opened with ? or from the footer. -->
+<dialog class="keys" id="how-to-judge-a-president--keysheet" aria-labelledby="keystitle">
+  <form method="dialog" class="keys-panel">
+    <h2 id="how-to-judge-a-president--keystitle">Keyboard</h2>
+    <dl>
+      <dt><kbd>/</kbd></dt><dd>Search every piece</dd>
+      <dt><kbd>&#8984;</kbd><kbd>K</kbd></dt><dd>The same search</dd>
+      <dt><kbd>g</kbd> <kbd>h</kbd></dt><dd>Home</dd>
+      <dt><kbd>g</kbd> <kbd>r</kbd></dt><dd>Research</dd>
+      <dt><kbd>g</kbd> <kbd>c</kbd></dt><dd>Coursework</dd>
+      <dt><kbd>g</kbd> <kbd>t</kbd></dt><dd>Tools</dd>
+      <dt><kbd>g</kbd> <kbd>l</kbd></dt><dd>Library</dd>
+      <dt><kbd>g</kbd> <kbd>a</kbd></dt><dd>About</dd>
+      <dt><kbd>?</kbd></dt><dd>This list</dd>
+    </dl>
+    <p class="keys-pref"><label><input type="checkbox" id="how-to-judge-a-president--keysingles" checked>
+      Single-key shortcuts. Turn these off if a key press where you did not
+      mean one keeps opening things; search stays on <kbd>&#8984;</kbd><kbd>K</kbd>.</label></p>
+    <button class="close">Close</button>
+  </form>
+</dialog>
 <!--/__tail-->
 
 
@@ -18700,13 +18788,13 @@ Individual debiasing training yields <strong>g ≈ 0.26</strong> on a weak liter
   </div>
   <div class="fine">
     <span>&copy; 2026 Leesharam Alexander Rajcoomar</span>
-    <span><b>65</b> pieces &middot; <b>483,784</b> words &middot; <b>182</b> figures &middot; no framework, nothing external at runtime, one build you can read</span>
+    <span><b>65</b> pieces &middot; <b>483,790</b> words &middot; <b>182</b> figures &middot; no framework, nothing external at runtime, one build you can read</span>
   </div>
 </footer><!--/__foot-->
 
 <!--__tail--><!-- Search across every piece. Progressive: every link on the site works
      without it, and the button is the same route as the keyboard. -->
-<div class="cmdk" id="leadership-evaluation-kit--cmdk" hidden role="dialog" aria-modal="true" aria-label="Search all work">
+<dialog class="cmdk" id="leadership-evaluation-kit--cmdk" aria-label="Search all work">
   <div class="cmdk-panel">
     <input id="leadership-evaluation-kit--cmdk-input" type="text" placeholder="Search 65 pieces by title, course or topic" autocomplete="off" spellcheck="false" role="combobox" aria-expanded="false" aria-autocomplete="list" aria-controls="cmdk-list">
     <ul class="cmdk-list" id="leadership-evaluation-kit--cmdk-list" role="listbox" aria-label="Results"></ul>
@@ -18714,8 +18802,30 @@ Individual debiasing training yields <strong>g ≈ 0.26</strong> on a weak liter
       <span><kbd>&#8593;</kbd><kbd>&#8595;</kbd> move</span><span><kbd>Enter</kbd> open</span><span><kbd>Esc</kbd> close</span>
     </div>
   </div>
-</div>
+</dialog>
 
+<!-- The keyboard routes, written down. A shortcut nobody can find is the
+     same as one that does not exist. Opened with ? or from the footer. -->
+<dialog class="keys" id="leadership-evaluation-kit--keysheet" aria-labelledby="keystitle">
+  <form method="dialog" class="keys-panel">
+    <h2 id="leadership-evaluation-kit--keystitle">Keyboard</h2>
+    <dl>
+      <dt><kbd>/</kbd></dt><dd>Search every piece</dd>
+      <dt><kbd>&#8984;</kbd><kbd>K</kbd></dt><dd>The same search</dd>
+      <dt><kbd>g</kbd> <kbd>h</kbd></dt><dd>Home</dd>
+      <dt><kbd>g</kbd> <kbd>r</kbd></dt><dd>Research</dd>
+      <dt><kbd>g</kbd> <kbd>c</kbd></dt><dd>Coursework</dd>
+      <dt><kbd>g</kbd> <kbd>t</kbd></dt><dd>Tools</dd>
+      <dt><kbd>g</kbd> <kbd>l</kbd></dt><dd>Library</dd>
+      <dt><kbd>g</kbd> <kbd>a</kbd></dt><dd>About</dd>
+      <dt><kbd>?</kbd></dt><dd>This list</dd>
+    </dl>
+    <p class="keys-pref"><label><input type="checkbox" id="leadership-evaluation-kit--keysingles" checked>
+      Single-key shortcuts. Turn these off if a key press where you did not
+      mean one keeps opening things; search stays on <kbd>&#8984;</kbd><kbd>K</kbd>.</label></p>
+    <button class="close">Close</button>
+  </form>
+</dialog>
 <!--/__tail-->
 
 
@@ -19643,13 +19753,13 @@ Je  n'  ai      pas  la carte.    →  I don't have the menu.</code></pre>
   </div>
   <div class="fine">
     <span>&copy; 2026 Leesharam Alexander Rajcoomar</span>
-    <span><b>65</b> pieces &middot; <b>483,784</b> words &middot; <b>182</b> figures &middot; no framework, nothing external at runtime, one build you can read</span>
+    <span><b>65</b> pieces &middot; <b>483,790</b> words &middot; <b>182</b> figures &middot; no framework, nothing external at runtime, one build you can read</span>
   </div>
 </footer><!--/__foot-->
 
 <!--__tail--><!-- Search across every piece. Progressive: every link on the site works
      without it, and the button is the same route as the keyboard. -->
-<div class="cmdk" id="french-a1-cafe--cmdk" hidden role="dialog" aria-modal="true" aria-label="Search all work">
+<dialog class="cmdk" id="french-a1-cafe--cmdk" aria-label="Search all work">
   <div class="cmdk-panel">
     <input id="french-a1-cafe--cmdk-input" type="text" placeholder="Search 65 pieces by title, course or topic" autocomplete="off" spellcheck="false" role="combobox" aria-expanded="false" aria-autocomplete="list" aria-controls="cmdk-list">
     <ul class="cmdk-list" id="french-a1-cafe--cmdk-list" role="listbox" aria-label="Results"></ul>
@@ -19657,8 +19767,30 @@ Je  n'  ai      pas  la carte.    →  I don't have the menu.</code></pre>
       <span><kbd>&#8593;</kbd><kbd>&#8595;</kbd> move</span><span><kbd>Enter</kbd> open</span><span><kbd>Esc</kbd> close</span>
     </div>
   </div>
-</div>
+</dialog>
 
+<!-- The keyboard routes, written down. A shortcut nobody can find is the
+     same as one that does not exist. Opened with ? or from the footer. -->
+<dialog class="keys" id="french-a1-cafe--keysheet" aria-labelledby="keystitle">
+  <form method="dialog" class="keys-panel">
+    <h2 id="french-a1-cafe--keystitle">Keyboard</h2>
+    <dl>
+      <dt><kbd>/</kbd></dt><dd>Search every piece</dd>
+      <dt><kbd>&#8984;</kbd><kbd>K</kbd></dt><dd>The same search</dd>
+      <dt><kbd>g</kbd> <kbd>h</kbd></dt><dd>Home</dd>
+      <dt><kbd>g</kbd> <kbd>r</kbd></dt><dd>Research</dd>
+      <dt><kbd>g</kbd> <kbd>c</kbd></dt><dd>Coursework</dd>
+      <dt><kbd>g</kbd> <kbd>t</kbd></dt><dd>Tools</dd>
+      <dt><kbd>g</kbd> <kbd>l</kbd></dt><dd>Library</dd>
+      <dt><kbd>g</kbd> <kbd>a</kbd></dt><dd>About</dd>
+      <dt><kbd>?</kbd></dt><dd>This list</dd>
+    </dl>
+    <p class="keys-pref"><label><input type="checkbox" id="french-a1-cafe--keysingles" checked>
+      Single-key shortcuts. Turn these off if a key press where you did not
+      mean one keeps opening things; search stays on <kbd>&#8984;</kbd><kbd>K</kbd>.</label></p>
+    <button class="close">Close</button>
+  </form>
+</dialog>
 <!--/__tail-->
 
 
@@ -19681,7 +19813,7 @@ Je  n'  ai      pas  la carte.    →  I don't have the menu.</code></pre>
 <div class="stub"><p><b>This is an interactive tool.</b> Its question banks and scoring run as a program, which cannot execute inside this single-file archive. It works in full in the installed site app on this phone and in the complete site copy.</p><p class="stub-s">A drilling app for intermediate financial accounting, built to force retrieval rather than rereading.</p></div>
 <div class="pnav"><a href="#p--law-arena">&#8592; Law Arena</a> <a href="#top">&#8593; Contents</a> <a href="#p--afm291-study-system">AFM 291 Interactive Study System &#8594;</a></div>
 </article>
-<article class="piece" id="p--afm291-study-system"><div class="phead"><a class="up" href="#top">&#8593; Contents</a><p class="pkick">Interactive tools · Tool · August 2026 · 14,138 words</p><h1 class="pt">AFM 291 Interactive Study System</h1><p class="ps">Intermediate Financial Accounting 1</p><p class="pwhy">The full visual study system for AFM 291, covering the course end to end in one interactive document.</p></div>
+<article class="piece" id="p--afm291-study-system"><div class="phead"><a class="up" href="#top">&#8593; Contents</a><p class="pkick">Interactive tools · Tool · August 2026 · 14,144 words</p><h1 class="pt">AFM 291 Interactive Study System</h1><p class="ps">Intermediate Financial Accounting 1</p><p class="pwhy">The full visual study system for AFM 291, covering the course end to end in one interactive document.</p></div>
 <div class="stub"><p><b>This is an interactive tool.</b> Its question banks and scoring run as a program, which cannot execute inside this single-file archive. It works in full in the installed site app on this phone and in the complete site copy.</p><p class="stub-s">The full visual study system for AFM 291, covering the course end to end in one interactive document.</p></div>
 <div class="pnav"><a href="#p--skill-forge">&#8592; Skill Forge</a> <a href="#top">&#8593; Contents</a> <a href="#p--practice-arena">AFM 291 Practice Arena &#8594;</a></div>
 </article>
@@ -20135,13 +20267,13 @@ Je  n'  ai      pas  la carte.    →  I don't have the menu.</code></pre>
   </div>
   <div class="fine">
     <span>&copy; 2026 Leesharam Alexander Rajcoomar</span>
-    <span><b>65</b> pieces &middot; <b>483,784</b> words &middot; <b>182</b> figures &middot; no framework, nothing external at runtime, one build you can read</span>
+    <span><b>65</b> pieces &middot; <b>483,790</b> words &middot; <b>182</b> figures &middot; no framework, nothing external at runtime, one build you can read</span>
   </div>
 </footer><!--/__foot-->
 
 <!--__tail--><!-- Search across every piece. Progressive: every link on the site works
      without it, and the button is the same route as the keyboard. -->
-<div class="cmdk" id="afm291--cmdk" hidden role="dialog" aria-modal="true" aria-label="Search all work">
+<dialog class="cmdk" id="afm291--cmdk" aria-label="Search all work">
   <div class="cmdk-panel">
     <input id="afm291--cmdk-input" type="text" placeholder="Search 65 pieces by title, course or topic" autocomplete="off" spellcheck="false" role="combobox" aria-expanded="false" aria-autocomplete="list" aria-controls="cmdk-list">
     <ul class="cmdk-list" id="afm291--cmdk-list" role="listbox" aria-label="Results"></ul>
@@ -20149,8 +20281,30 @@ Je  n'  ai      pas  la carte.    →  I don't have the menu.</code></pre>
       <span><kbd>&#8593;</kbd><kbd>&#8595;</kbd> move</span><span><kbd>Enter</kbd> open</span><span><kbd>Esc</kbd> close</span>
     </div>
   </div>
-</div>
+</dialog>
 
+<!-- The keyboard routes, written down. A shortcut nobody can find is the
+     same as one that does not exist. Opened with ? or from the footer. -->
+<dialog class="keys" id="afm291--keysheet" aria-labelledby="keystitle">
+  <form method="dialog" class="keys-panel">
+    <h2 id="afm291--keystitle">Keyboard</h2>
+    <dl>
+      <dt><kbd>/</kbd></dt><dd>Search every piece</dd>
+      <dt><kbd>&#8984;</kbd><kbd>K</kbd></dt><dd>The same search</dd>
+      <dt><kbd>g</kbd> <kbd>h</kbd></dt><dd>Home</dd>
+      <dt><kbd>g</kbd> <kbd>r</kbd></dt><dd>Research</dd>
+      <dt><kbd>g</kbd> <kbd>c</kbd></dt><dd>Coursework</dd>
+      <dt><kbd>g</kbd> <kbd>t</kbd></dt><dd>Tools</dd>
+      <dt><kbd>g</kbd> <kbd>l</kbd></dt><dd>Library</dd>
+      <dt><kbd>g</kbd> <kbd>a</kbd></dt><dd>About</dd>
+      <dt><kbd>?</kbd></dt><dd>This list</dd>
+    </dl>
+    <p class="keys-pref"><label><input type="checkbox" id="afm291--keysingles" checked>
+      Single-key shortcuts. Turn these off if a key press where you did not
+      mean one keeps opening things; search stays on <kbd>&#8984;</kbd><kbd>K</kbd>.</label></p>
+    <button class="close">Close</button>
+  </form>
+</dialog>
 <!--/__tail-->
 
 
@@ -26936,13 +27090,13 @@ trial balances by hand       instantly at the click of          in both large ER
   </div>
   <div class="fine">
     <span>&copy; 2026 Leesharam Alexander Rajcoomar</span>
-    <span><b>65</b> pieces &middot; <b>483,784</b> words &middot; <b>182</b> figures &middot; no framework, nothing external at runtime, one build you can read</span>
+    <span><b>65</b> pieces &middot; <b>483,790</b> words &middot; <b>182</b> figures &middot; no framework, nothing external at runtime, one build you can read</span>
   </div>
 </footer><!--/__foot-->
 
 <!--__tail--><!-- Search across every piece. Progressive: every link on the site works
      without it, and the button is the same route as the keyboard. -->
-<div class="cmdk" id="afm291-ch1-theory-and-analytics--cmdk" hidden role="dialog" aria-modal="true" aria-label="Search all work">
+<dialog class="cmdk" id="afm291-ch1-theory-and-analytics--cmdk" aria-label="Search all work">
   <div class="cmdk-panel">
     <input id="afm291-ch1-theory-and-analytics--cmdk-input" type="text" placeholder="Search 65 pieces by title, course or topic" autocomplete="off" spellcheck="false" role="combobox" aria-expanded="false" aria-autocomplete="list" aria-controls="cmdk-list">
     <ul class="cmdk-list" id="afm291-ch1-theory-and-analytics--cmdk-list" role="listbox" aria-label="Results"></ul>
@@ -26950,8 +27104,30 @@ trial balances by hand       instantly at the click of          in both large ER
       <span><kbd>&#8593;</kbd><kbd>&#8595;</kbd> move</span><span><kbd>Enter</kbd> open</span><span><kbd>Esc</kbd> close</span>
     </div>
   </div>
-</div>
+</dialog>
 
+<!-- The keyboard routes, written down. A shortcut nobody can find is the
+     same as one that does not exist. Opened with ? or from the footer. -->
+<dialog class="keys" id="afm291-ch1-theory-and-analytics--keysheet" aria-labelledby="keystitle">
+  <form method="dialog" class="keys-panel">
+    <h2 id="afm291-ch1-theory-and-analytics--keystitle">Keyboard</h2>
+    <dl>
+      <dt><kbd>/</kbd></dt><dd>Search every piece</dd>
+      <dt><kbd>&#8984;</kbd><kbd>K</kbd></dt><dd>The same search</dd>
+      <dt><kbd>g</kbd> <kbd>h</kbd></dt><dd>Home</dd>
+      <dt><kbd>g</kbd> <kbd>r</kbd></dt><dd>Research</dd>
+      <dt><kbd>g</kbd> <kbd>c</kbd></dt><dd>Coursework</dd>
+      <dt><kbd>g</kbd> <kbd>t</kbd></dt><dd>Tools</dd>
+      <dt><kbd>g</kbd> <kbd>l</kbd></dt><dd>Library</dd>
+      <dt><kbd>g</kbd> <kbd>a</kbd></dt><dd>About</dd>
+      <dt><kbd>?</kbd></dt><dd>This list</dd>
+    </dl>
+    <p class="keys-pref"><label><input type="checkbox" id="afm291-ch1-theory-and-analytics--keysingles" checked>
+      Single-key shortcuts. Turn these off if a key press where you did not
+      mean one keeps opening things; search stays on <kbd>&#8984;</kbd><kbd>K</kbd>.</label></p>
+    <button class="close">Close</button>
+  </form>
+</dialog>
 <!--/__tail-->
 
 
@@ -29063,13 +29239,13 @@ Not-for-profit      For-profit              standards          standards
   </div>
   <div class="fine">
     <span>&copy; 2026 Leesharam Alexander Rajcoomar</span>
-    <span><b>65</b> pieces &middot; <b>483,784</b> words &middot; <b>182</b> figures &middot; no framework, nothing external at runtime, one build you can read</span>
+    <span><b>65</b> pieces &middot; <b>483,790</b> words &middot; <b>182</b> figures &middot; no framework, nothing external at runtime, one build you can read</span>
   </div>
 </footer><!--/__foot-->
 
 <!--__tail--><!-- Search across every piece. Progressive: every link on the site works
      without it, and the button is the same route as the keyboard. -->
-<div class="cmdk" id="afm291-ch2-conceptual-frameworks--cmdk" hidden role="dialog" aria-modal="true" aria-label="Search all work">
+<dialog class="cmdk" id="afm291-ch2-conceptual-frameworks--cmdk" aria-label="Search all work">
   <div class="cmdk-panel">
     <input id="afm291-ch2-conceptual-frameworks--cmdk-input" type="text" placeholder="Search 65 pieces by title, course or topic" autocomplete="off" spellcheck="false" role="combobox" aria-expanded="false" aria-autocomplete="list" aria-controls="cmdk-list">
     <ul class="cmdk-list" id="afm291-ch2-conceptual-frameworks--cmdk-list" role="listbox" aria-label="Results"></ul>
@@ -29077,8 +29253,30 @@ Not-for-profit      For-profit              standards          standards
       <span><kbd>&#8593;</kbd><kbd>&#8595;</kbd> move</span><span><kbd>Enter</kbd> open</span><span><kbd>Esc</kbd> close</span>
     </div>
   </div>
-</div>
+</dialog>
 
+<!-- The keyboard routes, written down. A shortcut nobody can find is the
+     same as one that does not exist. Opened with ? or from the footer. -->
+<dialog class="keys" id="afm291-ch2-conceptual-frameworks--keysheet" aria-labelledby="keystitle">
+  <form method="dialog" class="keys-panel">
+    <h2 id="afm291-ch2-conceptual-frameworks--keystitle">Keyboard</h2>
+    <dl>
+      <dt><kbd>/</kbd></dt><dd>Search every piece</dd>
+      <dt><kbd>&#8984;</kbd><kbd>K</kbd></dt><dd>The same search</dd>
+      <dt><kbd>g</kbd> <kbd>h</kbd></dt><dd>Home</dd>
+      <dt><kbd>g</kbd> <kbd>r</kbd></dt><dd>Research</dd>
+      <dt><kbd>g</kbd> <kbd>c</kbd></dt><dd>Coursework</dd>
+      <dt><kbd>g</kbd> <kbd>t</kbd></dt><dd>Tools</dd>
+      <dt><kbd>g</kbd> <kbd>l</kbd></dt><dd>Library</dd>
+      <dt><kbd>g</kbd> <kbd>a</kbd></dt><dd>About</dd>
+      <dt><kbd>?</kbd></dt><dd>This list</dd>
+    </dl>
+    <p class="keys-pref"><label><input type="checkbox" id="afm291-ch2-conceptual-frameworks--keysingles" checked>
+      Single-key shortcuts. Turn these off if a key press where you did not
+      mean one keeps opening things; search stays on <kbd>&#8984;</kbd><kbd>K</kbd>.</label></p>
+    <button class="close">Close</button>
+  </form>
+</dialog>
 <!--/__tail-->
 
 
@@ -31303,13 +31501,13 @@ fiscal period             fiscal period              authorized for issue
   </div>
   <div class="fine">
     <span>&copy; 2026 Leesharam Alexander Rajcoomar</span>
-    <span><b>65</b> pieces &middot; <b>483,784</b> words &middot; <b>182</b> figures &middot; no framework, nothing external at runtime, one build you can read</span>
+    <span><b>65</b> pieces &middot; <b>483,790</b> words &middot; <b>182</b> figures &middot; no framework, nothing external at runtime, one build you can read</span>
   </div>
 </footer><!--/__foot-->
 
 <!--__tail--><!-- Search across every piece. Progressive: every link on the site works
      without it, and the button is the same route as the keyboard. -->
-<div class="cmdk" id="afm291-ch3-accrual-accounting--cmdk" hidden role="dialog" aria-modal="true" aria-label="Search all work">
+<dialog class="cmdk" id="afm291-ch3-accrual-accounting--cmdk" aria-label="Search all work">
   <div class="cmdk-panel">
     <input id="afm291-ch3-accrual-accounting--cmdk-input" type="text" placeholder="Search 65 pieces by title, course or topic" autocomplete="off" spellcheck="false" role="combobox" aria-expanded="false" aria-autocomplete="list" aria-controls="cmdk-list">
     <ul class="cmdk-list" id="afm291-ch3-accrual-accounting--cmdk-list" role="listbox" aria-label="Results"></ul>
@@ -31317,8 +31515,30 @@ fiscal period             fiscal period              authorized for issue
       <span><kbd>&#8593;</kbd><kbd>&#8595;</kbd> move</span><span><kbd>Enter</kbd> open</span><span><kbd>Esc</kbd> close</span>
     </div>
   </div>
-</div>
+</dialog>
 
+<!-- The keyboard routes, written down. A shortcut nobody can find is the
+     same as one that does not exist. Opened with ? or from the footer. -->
+<dialog class="keys" id="afm291-ch3-accrual-accounting--keysheet" aria-labelledby="keystitle">
+  <form method="dialog" class="keys-panel">
+    <h2 id="afm291-ch3-accrual-accounting--keystitle">Keyboard</h2>
+    <dl>
+      <dt><kbd>/</kbd></dt><dd>Search every piece</dd>
+      <dt><kbd>&#8984;</kbd><kbd>K</kbd></dt><dd>The same search</dd>
+      <dt><kbd>g</kbd> <kbd>h</kbd></dt><dd>Home</dd>
+      <dt><kbd>g</kbd> <kbd>r</kbd></dt><dd>Research</dd>
+      <dt><kbd>g</kbd> <kbd>c</kbd></dt><dd>Coursework</dd>
+      <dt><kbd>g</kbd> <kbd>t</kbd></dt><dd>Tools</dd>
+      <dt><kbd>g</kbd> <kbd>l</kbd></dt><dd>Library</dd>
+      <dt><kbd>g</kbd> <kbd>a</kbd></dt><dd>About</dd>
+      <dt><kbd>?</kbd></dt><dd>This list</dd>
+    </dl>
+    <p class="keys-pref"><label><input type="checkbox" id="afm291-ch3-accrual-accounting--keysingles" checked>
+      Single-key shortcuts. Turn these off if a key press where you did not
+      mean one keeps opening things; search stays on <kbd>&#8984;</kbd><kbd>K</kbd>.</label></p>
+    <button class="close">Close</button>
+  </form>
+</dialog>
 <!--/__tail-->
 
 
@@ -33131,13 +33351,13 @@ Year 2: $(104 \div 104) \times (120 - 104) - 6 = 16 - 6 = \mathbf{\$10\text{M}}$
   </div>
   <div class="fine">
     <span>&copy; 2026 Leesharam Alexander Rajcoomar</span>
-    <span><b>65</b> pieces &middot; <b>483,784</b> words &middot; <b>182</b> figures &middot; no framework, nothing external at runtime, one build you can read</span>
+    <span><b>65</b> pieces &middot; <b>483,790</b> words &middot; <b>182</b> figures &middot; no framework, nothing external at runtime, one build you can read</span>
   </div>
 </footer><!--/__foot-->
 
 <!--__tail--><!-- Search across every piece. Progressive: every link on the site works
      without it, and the button is the same route as the keyboard. -->
-<div class="cmdk" id="afm291-ch4-revenue-recognition--cmdk" hidden role="dialog" aria-modal="true" aria-label="Search all work">
+<dialog class="cmdk" id="afm291-ch4-revenue-recognition--cmdk" aria-label="Search all work">
   <div class="cmdk-panel">
     <input id="afm291-ch4-revenue-recognition--cmdk-input" type="text" placeholder="Search 65 pieces by title, course or topic" autocomplete="off" spellcheck="false" role="combobox" aria-expanded="false" aria-autocomplete="list" aria-controls="cmdk-list">
     <ul class="cmdk-list" id="afm291-ch4-revenue-recognition--cmdk-list" role="listbox" aria-label="Results"></ul>
@@ -33145,8 +33365,30 @@ Year 2: $(104 \div 104) \times (120 - 104) - 6 = 16 - 6 = \mathbf{\$10\text{M}}$
       <span><kbd>&#8593;</kbd><kbd>&#8595;</kbd> move</span><span><kbd>Enter</kbd> open</span><span><kbd>Esc</kbd> close</span>
     </div>
   </div>
-</div>
+</dialog>
 
+<!-- The keyboard routes, written down. A shortcut nobody can find is the
+     same as one that does not exist. Opened with ? or from the footer. -->
+<dialog class="keys" id="afm291-ch4-revenue-recognition--keysheet" aria-labelledby="keystitle">
+  <form method="dialog" class="keys-panel">
+    <h2 id="afm291-ch4-revenue-recognition--keystitle">Keyboard</h2>
+    <dl>
+      <dt><kbd>/</kbd></dt><dd>Search every piece</dd>
+      <dt><kbd>&#8984;</kbd><kbd>K</kbd></dt><dd>The same search</dd>
+      <dt><kbd>g</kbd> <kbd>h</kbd></dt><dd>Home</dd>
+      <dt><kbd>g</kbd> <kbd>r</kbd></dt><dd>Research</dd>
+      <dt><kbd>g</kbd> <kbd>c</kbd></dt><dd>Coursework</dd>
+      <dt><kbd>g</kbd> <kbd>t</kbd></dt><dd>Tools</dd>
+      <dt><kbd>g</kbd> <kbd>l</kbd></dt><dd>Library</dd>
+      <dt><kbd>g</kbd> <kbd>a</kbd></dt><dd>About</dd>
+      <dt><kbd>?</kbd></dt><dd>This list</dd>
+    </dl>
+    <p class="keys-pref"><label><input type="checkbox" id="afm291-ch4-revenue-recognition--keysingles" checked>
+      Single-key shortcuts. Turn these off if a key press where you did not
+      mean one keeps opening things; search stays on <kbd>&#8984;</kbd><kbd>K</kbd>.</label></p>
+    <button class="close">Close</button>
+  </form>
+</dialog>
 <!--/__tail-->
 
 
@@ -35169,13 +35411,13 @@ Raw materials/WIP written down  →  ONLY if the finished product they become is
   </div>
   <div class="fine">
     <span>&copy; 2026 Leesharam Alexander Rajcoomar</span>
-    <span><b>65</b> pieces &middot; <b>483,784</b> words &middot; <b>182</b> figures &middot; no framework, nothing external at runtime, one build you can read</span>
+    <span><b>65</b> pieces &middot; <b>483,790</b> words &middot; <b>182</b> figures &middot; no framework, nothing external at runtime, one build you can read</span>
   </div>
 </footer><!--/__foot-->
 
 <!--__tail--><!-- Search across every piece. Progressive: every link on the site works
      without it, and the button is the same route as the keyboard. -->
-<div class="cmdk" id="afm291-ch6-inventories--cmdk" hidden role="dialog" aria-modal="true" aria-label="Search all work">
+<dialog class="cmdk" id="afm291-ch6-inventories--cmdk" aria-label="Search all work">
   <div class="cmdk-panel">
     <input id="afm291-ch6-inventories--cmdk-input" type="text" placeholder="Search 65 pieces by title, course or topic" autocomplete="off" spellcheck="false" role="combobox" aria-expanded="false" aria-autocomplete="list" aria-controls="cmdk-list">
     <ul class="cmdk-list" id="afm291-ch6-inventories--cmdk-list" role="listbox" aria-label="Results"></ul>
@@ -35183,8 +35425,30 @@ Raw materials/WIP written down  →  ONLY if the finished product they become is
       <span><kbd>&#8593;</kbd><kbd>&#8595;</kbd> move</span><span><kbd>Enter</kbd> open</span><span><kbd>Esc</kbd> close</span>
     </div>
   </div>
-</div>
+</dialog>
 
+<!-- The keyboard routes, written down. A shortcut nobody can find is the
+     same as one that does not exist. Opened with ? or from the footer. -->
+<dialog class="keys" id="afm291-ch6-inventories--keysheet" aria-labelledby="keystitle">
+  <form method="dialog" class="keys-panel">
+    <h2 id="afm291-ch6-inventories--keystitle">Keyboard</h2>
+    <dl>
+      <dt><kbd>/</kbd></dt><dd>Search every piece</dd>
+      <dt><kbd>&#8984;</kbd><kbd>K</kbd></dt><dd>The same search</dd>
+      <dt><kbd>g</kbd> <kbd>h</kbd></dt><dd>Home</dd>
+      <dt><kbd>g</kbd> <kbd>r</kbd></dt><dd>Research</dd>
+      <dt><kbd>g</kbd> <kbd>c</kbd></dt><dd>Coursework</dd>
+      <dt><kbd>g</kbd> <kbd>t</kbd></dt><dd>Tools</dd>
+      <dt><kbd>g</kbd> <kbd>l</kbd></dt><dd>Library</dd>
+      <dt><kbd>g</kbd> <kbd>a</kbd></dt><dd>About</dd>
+      <dt><kbd>?</kbd></dt><dd>This list</dd>
+    </dl>
+    <p class="keys-pref"><label><input type="checkbox" id="afm291-ch6-inventories--keysingles" checked>
+      Single-key shortcuts. Turn these off if a key press where you did not
+      mean one keeps opening things; search stays on <kbd>&#8984;</kbd><kbd>K</kbd>.</label></p>
+    <button class="close">Close</button>
+  </form>
+</dialog>
 <!--/__tail-->
 
 
@@ -36903,13 +37167,13 @@ Raw materials/WIP written down  →  ONLY if the finished product they become is
   </div>
   <div class="fine">
     <span>&copy; 2026 Leesharam Alexander Rajcoomar</span>
-    <span><b>65</b> pieces &middot; <b>483,784</b> words &middot; <b>182</b> figures &middot; no framework, nothing external at runtime, one build you can read</span>
+    <span><b>65</b> pieces &middot; <b>483,790</b> words &middot; <b>182</b> figures &middot; no framework, nothing external at runtime, one build you can read</span>
   </div>
 </footer><!--/__foot-->
 
 <!--__tail--><!-- Search across every piece. Progressive: every link on the site works
      without it, and the button is the same route as the keyboard. -->
-<div class="cmdk" id="afm291-ch9-intangibles-and-goodwill--cmdk" hidden role="dialog" aria-modal="true" aria-label="Search all work">
+<dialog class="cmdk" id="afm291-ch9-intangibles-and-goodwill--cmdk" aria-label="Search all work">
   <div class="cmdk-panel">
     <input id="afm291-ch9-intangibles-and-goodwill--cmdk-input" type="text" placeholder="Search 65 pieces by title, course or topic" autocomplete="off" spellcheck="false" role="combobox" aria-expanded="false" aria-autocomplete="list" aria-controls="cmdk-list">
     <ul class="cmdk-list" id="afm291-ch9-intangibles-and-goodwill--cmdk-list" role="listbox" aria-label="Results"></ul>
@@ -36917,8 +37181,30 @@ Raw materials/WIP written down  →  ONLY if the finished product they become is
       <span><kbd>&#8593;</kbd><kbd>&#8595;</kbd> move</span><span><kbd>Enter</kbd> open</span><span><kbd>Esc</kbd> close</span>
     </div>
   </div>
-</div>
+</dialog>
 
+<!-- The keyboard routes, written down. A shortcut nobody can find is the
+     same as one that does not exist. Opened with ? or from the footer. -->
+<dialog class="keys" id="afm291-ch9-intangibles-and-goodwill--keysheet" aria-labelledby="keystitle">
+  <form method="dialog" class="keys-panel">
+    <h2 id="afm291-ch9-intangibles-and-goodwill--keystitle">Keyboard</h2>
+    <dl>
+      <dt><kbd>/</kbd></dt><dd>Search every piece</dd>
+      <dt><kbd>&#8984;</kbd><kbd>K</kbd></dt><dd>The same search</dd>
+      <dt><kbd>g</kbd> <kbd>h</kbd></dt><dd>Home</dd>
+      <dt><kbd>g</kbd> <kbd>r</kbd></dt><dd>Research</dd>
+      <dt><kbd>g</kbd> <kbd>c</kbd></dt><dd>Coursework</dd>
+      <dt><kbd>g</kbd> <kbd>t</kbd></dt><dd>Tools</dd>
+      <dt><kbd>g</kbd> <kbd>l</kbd></dt><dd>Library</dd>
+      <dt><kbd>g</kbd> <kbd>a</kbd></dt><dd>About</dd>
+      <dt><kbd>?</kbd></dt><dd>This list</dd>
+    </dl>
+    <p class="keys-pref"><label><input type="checkbox" id="afm291-ch9-intangibles-and-goodwill--keysingles" checked>
+      Single-key shortcuts. Turn these off if a key press where you did not
+      mean one keeps opening things; search stays on <kbd>&#8984;</kbd><kbd>K</kbd>.</label></p>
+    <button class="close">Close</button>
+  </form>
+</dialog>
 <!--/__tail-->
 
 
@@ -39760,13 +40046,13 @@ $\$170{,}000 + \$450{,}000 + \$50{,}000 = \mathbf{\$670{,}000}$</p>
   </div>
   <div class="fine">
     <span>&copy; 2026 Leesharam Alexander Rajcoomar</span>
-    <span><b>65</b> pieces &middot; <b>483,784</b> words &middot; <b>182</b> figures &middot; no framework, nothing external at runtime, one build you can read</span>
+    <span><b>65</b> pieces &middot; <b>483,790</b> words &middot; <b>182</b> figures &middot; no framework, nothing external at runtime, one build you can read</span>
   </div>
 </footer><!--/__foot-->
 
 <!--__tail--><!-- Search across every piece. Progressive: every link on the site works
      without it, and the button is the same route as the keyboard. -->
-<div class="cmdk" id="afm291-ch10-fair-value--cmdk" hidden role="dialog" aria-modal="true" aria-label="Search all work">
+<dialog class="cmdk" id="afm291-ch10-fair-value--cmdk" aria-label="Search all work">
   <div class="cmdk-panel">
     <input id="afm291-ch10-fair-value--cmdk-input" type="text" placeholder="Search 65 pieces by title, course or topic" autocomplete="off" spellcheck="false" role="combobox" aria-expanded="false" aria-autocomplete="list" aria-controls="cmdk-list">
     <ul class="cmdk-list" id="afm291-ch10-fair-value--cmdk-list" role="listbox" aria-label="Results"></ul>
@@ -39774,8 +40060,30 @@ $\$170{,}000 + \$450{,}000 + \$50{,}000 = \mathbf{\$670{,}000}$</p>
       <span><kbd>&#8593;</kbd><kbd>&#8595;</kbd> move</span><span><kbd>Enter</kbd> open</span><span><kbd>Esc</kbd> close</span>
     </div>
   </div>
-</div>
+</dialog>
 
+<!-- The keyboard routes, written down. A shortcut nobody can find is the
+     same as one that does not exist. Opened with ? or from the footer. -->
+<dialog class="keys" id="afm291-ch10-fair-value--keysheet" aria-labelledby="keystitle">
+  <form method="dialog" class="keys-panel">
+    <h2 id="afm291-ch10-fair-value--keystitle">Keyboard</h2>
+    <dl>
+      <dt><kbd>/</kbd></dt><dd>Search every piece</dd>
+      <dt><kbd>&#8984;</kbd><kbd>K</kbd></dt><dd>The same search</dd>
+      <dt><kbd>g</kbd> <kbd>h</kbd></dt><dd>Home</dd>
+      <dt><kbd>g</kbd> <kbd>r</kbd></dt><dd>Research</dd>
+      <dt><kbd>g</kbd> <kbd>c</kbd></dt><dd>Coursework</dd>
+      <dt><kbd>g</kbd> <kbd>t</kbd></dt><dd>Tools</dd>
+      <dt><kbd>g</kbd> <kbd>l</kbd></dt><dd>Library</dd>
+      <dt><kbd>g</kbd> <kbd>a</kbd></dt><dd>About</dd>
+      <dt><kbd>?</kbd></dt><dd>This list</dd>
+    </dl>
+    <p class="keys-pref"><label><input type="checkbox" id="afm291-ch10-fair-value--keysingles" checked>
+      Single-key shortcuts. Turn these off if a key press where you did not
+      mean one keeps opening things; search stays on <kbd>&#8984;</kbd><kbd>K</kbd>.</label></p>
+    <button class="close">Close</button>
+  </form>
+</dialog>
 <!--/__tail-->
 
 
@@ -41327,13 +41635,13 @@ not yet eff.)   mandatory      mandatory
   </div>
   <div class="fine">
     <span>&copy; 2026 Leesharam Alexander Rajcoomar</span>
-    <span><b>65</b> pieces &middot; <b>483,784</b> words &middot; <b>182</b> figures &middot; no framework, nothing external at runtime, one build you can read</span>
+    <span><b>65</b> pieces &middot; <b>483,790</b> words &middot; <b>182</b> figures &middot; no framework, nothing external at runtime, one build you can read</span>
   </div>
 </footer><!--/__foot-->
 
 <!--__tail--><!-- Search across every piece. Progressive: every link on the site works
      without it, and the button is the same route as the keyboard. -->
-<div class="cmdk" id="afm291-key-takeaways--cmdk" hidden role="dialog" aria-modal="true" aria-label="Search all work">
+<dialog class="cmdk" id="afm291-key-takeaways--cmdk" aria-label="Search all work">
   <div class="cmdk-panel">
     <input id="afm291-key-takeaways--cmdk-input" type="text" placeholder="Search 65 pieces by title, course or topic" autocomplete="off" spellcheck="false" role="combobox" aria-expanded="false" aria-autocomplete="list" aria-controls="cmdk-list">
     <ul class="cmdk-list" id="afm291-key-takeaways--cmdk-list" role="listbox" aria-label="Results"></ul>
@@ -41341,8 +41649,30 @@ not yet eff.)   mandatory      mandatory
       <span><kbd>&#8593;</kbd><kbd>&#8595;</kbd> move</span><span><kbd>Enter</kbd> open</span><span><kbd>Esc</kbd> close</span>
     </div>
   </div>
-</div>
+</dialog>
 
+<!-- The keyboard routes, written down. A shortcut nobody can find is the
+     same as one that does not exist. Opened with ? or from the footer. -->
+<dialog class="keys" id="afm291-key-takeaways--keysheet" aria-labelledby="keystitle">
+  <form method="dialog" class="keys-panel">
+    <h2 id="afm291-key-takeaways--keystitle">Keyboard</h2>
+    <dl>
+      <dt><kbd>/</kbd></dt><dd>Search every piece</dd>
+      <dt><kbd>&#8984;</kbd><kbd>K</kbd></dt><dd>The same search</dd>
+      <dt><kbd>g</kbd> <kbd>h</kbd></dt><dd>Home</dd>
+      <dt><kbd>g</kbd> <kbd>r</kbd></dt><dd>Research</dd>
+      <dt><kbd>g</kbd> <kbd>c</kbd></dt><dd>Coursework</dd>
+      <dt><kbd>g</kbd> <kbd>t</kbd></dt><dd>Tools</dd>
+      <dt><kbd>g</kbd> <kbd>l</kbd></dt><dd>Library</dd>
+      <dt><kbd>g</kbd> <kbd>a</kbd></dt><dd>About</dd>
+      <dt><kbd>?</kbd></dt><dd>This list</dd>
+    </dl>
+    <p class="keys-pref"><label><input type="checkbox" id="afm291-key-takeaways--keysingles" checked>
+      Single-key shortcuts. Turn these off if a key press where you did not
+      mean one keeps opening things; search stays on <kbd>&#8984;</kbd><kbd>K</kbd>.</label></p>
+    <button class="close">Close</button>
+  </form>
+</dialog>
 <!--/__tail-->
 
 
@@ -41844,13 +42174,13 @@ not yet eff.)   mandatory      mandatory
   </div>
   <div class="fine">
     <span>&copy; 2026 Leesharam Alexander Rajcoomar</span>
-    <span><b>65</b> pieces &middot; <b>483,784</b> words &middot; <b>182</b> figures &middot; no framework, nothing external at runtime, one build you can read</span>
+    <span><b>65</b> pieces &middot; <b>483,790</b> words &middot; <b>182</b> figures &middot; no framework, nothing external at runtime, one build you can read</span>
   </div>
 </footer><!--/__foot-->
 
 <!--__tail--><!-- Search across every piece. Progressive: every link on the site works
      without it, and the button is the same route as the keyboard. -->
-<div class="cmdk" id="afm291-study-plan--cmdk" hidden role="dialog" aria-modal="true" aria-label="Search all work">
+<dialog class="cmdk" id="afm291-study-plan--cmdk" aria-label="Search all work">
   <div class="cmdk-panel">
     <input id="afm291-study-plan--cmdk-input" type="text" placeholder="Search 65 pieces by title, course or topic" autocomplete="off" spellcheck="false" role="combobox" aria-expanded="false" aria-autocomplete="list" aria-controls="cmdk-list">
     <ul class="cmdk-list" id="afm291-study-plan--cmdk-list" role="listbox" aria-label="Results"></ul>
@@ -41858,8 +42188,30 @@ not yet eff.)   mandatory      mandatory
       <span><kbd>&#8593;</kbd><kbd>&#8595;</kbd> move</span><span><kbd>Enter</kbd> open</span><span><kbd>Esc</kbd> close</span>
     </div>
   </div>
-</div>
+</dialog>
 
+<!-- The keyboard routes, written down. A shortcut nobody can find is the
+     same as one that does not exist. Opened with ? or from the footer. -->
+<dialog class="keys" id="afm291-study-plan--keysheet" aria-labelledby="keystitle">
+  <form method="dialog" class="keys-panel">
+    <h2 id="afm291-study-plan--keystitle">Keyboard</h2>
+    <dl>
+      <dt><kbd>/</kbd></dt><dd>Search every piece</dd>
+      <dt><kbd>&#8984;</kbd><kbd>K</kbd></dt><dd>The same search</dd>
+      <dt><kbd>g</kbd> <kbd>h</kbd></dt><dd>Home</dd>
+      <dt><kbd>g</kbd> <kbd>r</kbd></dt><dd>Research</dd>
+      <dt><kbd>g</kbd> <kbd>c</kbd></dt><dd>Coursework</dd>
+      <dt><kbd>g</kbd> <kbd>t</kbd></dt><dd>Tools</dd>
+      <dt><kbd>g</kbd> <kbd>l</kbd></dt><dd>Library</dd>
+      <dt><kbd>g</kbd> <kbd>a</kbd></dt><dd>About</dd>
+      <dt><kbd>?</kbd></dt><dd>This list</dd>
+    </dl>
+    <p class="keys-pref"><label><input type="checkbox" id="afm291-study-plan--keysingles" checked>
+      Single-key shortcuts. Turn these off if a key press where you did not
+      mean one keeps opening things; search stays on <kbd>&#8984;</kbd><kbd>K</kbd>.</label></p>
+    <button class="close">Close</button>
+  </form>
+</dialog>
 <!--/__tail-->
 
 
@@ -42379,13 +42731,13 @@ not yet eff.)   mandatory      mandatory
   </div>
   <div class="fine">
     <span>&copy; 2026 Leesharam Alexander Rajcoomar</span>
-    <span><b>65</b> pieces &middot; <b>483,784</b> words &middot; <b>182</b> figures &middot; no framework, nothing external at runtime, one build you can read</span>
+    <span><b>65</b> pieces &middot; <b>483,790</b> words &middot; <b>182</b> figures &middot; no framework, nothing external at runtime, one build you can read</span>
   </div>
 </footer><!--/__foot-->
 
 <!--__tail--><!-- Search across every piece. Progressive: every link on the site works
      without it, and the button is the same route as the keyboard. -->
-<div class="cmdk" id="afm291-reconciliation--cmdk" hidden role="dialog" aria-modal="true" aria-label="Search all work">
+<dialog class="cmdk" id="afm291-reconciliation--cmdk" aria-label="Search all work">
   <div class="cmdk-panel">
     <input id="afm291-reconciliation--cmdk-input" type="text" placeholder="Search 65 pieces by title, course or topic" autocomplete="off" spellcheck="false" role="combobox" aria-expanded="false" aria-autocomplete="list" aria-controls="cmdk-list">
     <ul class="cmdk-list" id="afm291-reconciliation--cmdk-list" role="listbox" aria-label="Results"></ul>
@@ -42393,8 +42745,30 @@ not yet eff.)   mandatory      mandatory
       <span><kbd>&#8593;</kbd><kbd>&#8595;</kbd> move</span><span><kbd>Enter</kbd> open</span><span><kbd>Esc</kbd> close</span>
     </div>
   </div>
-</div>
+</dialog>
 
+<!-- The keyboard routes, written down. A shortcut nobody can find is the
+     same as one that does not exist. Opened with ? or from the footer. -->
+<dialog class="keys" id="afm291-reconciliation--keysheet" aria-labelledby="keystitle">
+  <form method="dialog" class="keys-panel">
+    <h2 id="afm291-reconciliation--keystitle">Keyboard</h2>
+    <dl>
+      <dt><kbd>/</kbd></dt><dd>Search every piece</dd>
+      <dt><kbd>&#8984;</kbd><kbd>K</kbd></dt><dd>The same search</dd>
+      <dt><kbd>g</kbd> <kbd>h</kbd></dt><dd>Home</dd>
+      <dt><kbd>g</kbd> <kbd>r</kbd></dt><dd>Research</dd>
+      <dt><kbd>g</kbd> <kbd>c</kbd></dt><dd>Coursework</dd>
+      <dt><kbd>g</kbd> <kbd>t</kbd></dt><dd>Tools</dd>
+      <dt><kbd>g</kbd> <kbd>l</kbd></dt><dd>Library</dd>
+      <dt><kbd>g</kbd> <kbd>a</kbd></dt><dd>About</dd>
+      <dt><kbd>?</kbd></dt><dd>This list</dd>
+    </dl>
+    <p class="keys-pref"><label><input type="checkbox" id="afm291-reconciliation--keysingles" checked>
+      Single-key shortcuts. Turn these off if a key press where you did not
+      mean one keeps opening things; search stays on <kbd>&#8984;</kbd><kbd>K</kbd>.</label></p>
+    <button class="close">Close</button>
+  </form>
+</dialog>
 <!--/__tail-->
 
 
@@ -42576,13 +42950,13 @@ not yet eff.)   mandatory      mandatory
   </div>
   <div class="fine">
     <span>&copy; 2026 Leesharam Alexander Rajcoomar</span>
-    <span><b>65</b> pieces &middot; <b>483,784</b> words &middot; <b>182</b> figures &middot; no framework, nothing external at runtime, one build you can read</span>
+    <span><b>65</b> pieces &middot; <b>483,790</b> words &middot; <b>182</b> figures &middot; no framework, nothing external at runtime, one build you can read</span>
   </div>
 </footer><!--/__foot-->
 
 <!--__tail--><!-- Search across every piece. Progressive: every link on the site works
      without it, and the button is the same route as the keyboard. -->
-<div class="cmdk" id="afm291-w7-financial-assets--cmdk" hidden role="dialog" aria-modal="true" aria-label="Search all work">
+<dialog class="cmdk" id="afm291-w7-financial-assets--cmdk" aria-label="Search all work">
   <div class="cmdk-panel">
     <input id="afm291-w7-financial-assets--cmdk-input" type="text" placeholder="Search 65 pieces by title, course or topic" autocomplete="off" spellcheck="false" role="combobox" aria-expanded="false" aria-autocomplete="list" aria-controls="cmdk-list">
     <ul class="cmdk-list" id="afm291-w7-financial-assets--cmdk-list" role="listbox" aria-label="Results"></ul>
@@ -42590,8 +42964,30 @@ not yet eff.)   mandatory      mandatory
       <span><kbd>&#8593;</kbd><kbd>&#8595;</kbd> move</span><span><kbd>Enter</kbd> open</span><span><kbd>Esc</kbd> close</span>
     </div>
   </div>
-</div>
+</dialog>
 
+<!-- The keyboard routes, written down. A shortcut nobody can find is the
+     same as one that does not exist. Opened with ? or from the footer. -->
+<dialog class="keys" id="afm291-w7-financial-assets--keysheet" aria-labelledby="keystitle">
+  <form method="dialog" class="keys-panel">
+    <h2 id="afm291-w7-financial-assets--keystitle">Keyboard</h2>
+    <dl>
+      <dt><kbd>/</kbd></dt><dd>Search every piece</dd>
+      <dt><kbd>&#8984;</kbd><kbd>K</kbd></dt><dd>The same search</dd>
+      <dt><kbd>g</kbd> <kbd>h</kbd></dt><dd>Home</dd>
+      <dt><kbd>g</kbd> <kbd>r</kbd></dt><dd>Research</dd>
+      <dt><kbd>g</kbd> <kbd>c</kbd></dt><dd>Coursework</dd>
+      <dt><kbd>g</kbd> <kbd>t</kbd></dt><dd>Tools</dd>
+      <dt><kbd>g</kbd> <kbd>l</kbd></dt><dd>Library</dd>
+      <dt><kbd>g</kbd> <kbd>a</kbd></dt><dd>About</dd>
+      <dt><kbd>?</kbd></dt><dd>This list</dd>
+    </dl>
+    <p class="keys-pref"><label><input type="checkbox" id="afm291-w7-financial-assets--keysingles" checked>
+      Single-key shortcuts. Turn these off if a key press where you did not
+      mean one keeps opening things; search stays on <kbd>&#8984;</kbd><kbd>K</kbd>.</label></p>
+    <button class="close">Close</button>
+  </form>
+</dialog>
 <!--/__tail-->
 
 
@@ -42748,13 +43144,13 @@ not yet eff.)   mandatory      mandatory
   </div>
   <div class="fine">
     <span>&copy; 2026 Leesharam Alexander Rajcoomar</span>
-    <span><b>65</b> pieces &middot; <b>483,784</b> words &middot; <b>182</b> figures &middot; no framework, nothing external at runtime, one build you can read</span>
+    <span><b>65</b> pieces &middot; <b>483,790</b> words &middot; <b>182</b> figures &middot; no framework, nothing external at runtime, one build you can read</span>
   </div>
 </footer><!--/__foot-->
 
 <!--__tail--><!-- Search across every piece. Progressive: every link on the site works
      without it, and the button is the same route as the keyboard. -->
-<div class="cmdk" id="afm291-w7-cases--cmdk" hidden role="dialog" aria-modal="true" aria-label="Search all work">
+<dialog class="cmdk" id="afm291-w7-cases--cmdk" aria-label="Search all work">
   <div class="cmdk-panel">
     <input id="afm291-w7-cases--cmdk-input" type="text" placeholder="Search 65 pieces by title, course or topic" autocomplete="off" spellcheck="false" role="combobox" aria-expanded="false" aria-autocomplete="list" aria-controls="cmdk-list">
     <ul class="cmdk-list" id="afm291-w7-cases--cmdk-list" role="listbox" aria-label="Results"></ul>
@@ -42762,8 +43158,30 @@ not yet eff.)   mandatory      mandatory
       <span><kbd>&#8593;</kbd><kbd>&#8595;</kbd> move</span><span><kbd>Enter</kbd> open</span><span><kbd>Esc</kbd> close</span>
     </div>
   </div>
-</div>
+</dialog>
 
+<!-- The keyboard routes, written down. A shortcut nobody can find is the
+     same as one that does not exist. Opened with ? or from the footer. -->
+<dialog class="keys" id="afm291-w7-cases--keysheet" aria-labelledby="keystitle">
+  <form method="dialog" class="keys-panel">
+    <h2 id="afm291-w7-cases--keystitle">Keyboard</h2>
+    <dl>
+      <dt><kbd>/</kbd></dt><dd>Search every piece</dd>
+      <dt><kbd>&#8984;</kbd><kbd>K</kbd></dt><dd>The same search</dd>
+      <dt><kbd>g</kbd> <kbd>h</kbd></dt><dd>Home</dd>
+      <dt><kbd>g</kbd> <kbd>r</kbd></dt><dd>Research</dd>
+      <dt><kbd>g</kbd> <kbd>c</kbd></dt><dd>Coursework</dd>
+      <dt><kbd>g</kbd> <kbd>t</kbd></dt><dd>Tools</dd>
+      <dt><kbd>g</kbd> <kbd>l</kbd></dt><dd>Library</dd>
+      <dt><kbd>g</kbd> <kbd>a</kbd></dt><dd>About</dd>
+      <dt><kbd>?</kbd></dt><dd>This list</dd>
+    </dl>
+    <p class="keys-pref"><label><input type="checkbox" id="afm291-w7-cases--keysingles" checked>
+      Single-key shortcuts. Turn these off if a key press where you did not
+      mean one keeps opening things; search stays on <kbd>&#8984;</kbd><kbd>K</kbd>.</label></p>
+    <button class="close">Close</button>
+  </form>
+</dialog>
 <!--/__tail-->
 
 
@@ -42959,13 +43377,13 @@ not yet eff.)   mandatory      mandatory
   </div>
   <div class="fine">
     <span>&copy; 2026 Leesharam Alexander Rajcoomar</span>
-    <span><b>65</b> pieces &middot; <b>483,784</b> words &middot; <b>182</b> figures &middot; no framework, nothing external at runtime, one build you can read</span>
+    <span><b>65</b> pieces &middot; <b>483,790</b> words &middot; <b>182</b> figures &middot; no framework, nothing external at runtime, one build you can read</span>
   </div>
 </footer><!--/__foot-->
 
 <!--__tail--><!-- Search across every piece. Progressive: every link on the site works
      without it, and the button is the same route as the keyboard. -->
-<div class="cmdk" id="afm291-w8-financial-assets--cmdk" hidden role="dialog" aria-modal="true" aria-label="Search all work">
+<dialog class="cmdk" id="afm291-w8-financial-assets--cmdk" aria-label="Search all work">
   <div class="cmdk-panel">
     <input id="afm291-w8-financial-assets--cmdk-input" type="text" placeholder="Search 65 pieces by title, course or topic" autocomplete="off" spellcheck="false" role="combobox" aria-expanded="false" aria-autocomplete="list" aria-controls="cmdk-list">
     <ul class="cmdk-list" id="afm291-w8-financial-assets--cmdk-list" role="listbox" aria-label="Results"></ul>
@@ -42973,8 +43391,30 @@ not yet eff.)   mandatory      mandatory
       <span><kbd>&#8593;</kbd><kbd>&#8595;</kbd> move</span><span><kbd>Enter</kbd> open</span><span><kbd>Esc</kbd> close</span>
     </div>
   </div>
-</div>
+</dialog>
 
+<!-- The keyboard routes, written down. A shortcut nobody can find is the
+     same as one that does not exist. Opened with ? or from the footer. -->
+<dialog class="keys" id="afm291-w8-financial-assets--keysheet" aria-labelledby="keystitle">
+  <form method="dialog" class="keys-panel">
+    <h2 id="afm291-w8-financial-assets--keystitle">Keyboard</h2>
+    <dl>
+      <dt><kbd>/</kbd></dt><dd>Search every piece</dd>
+      <dt><kbd>&#8984;</kbd><kbd>K</kbd></dt><dd>The same search</dd>
+      <dt><kbd>g</kbd> <kbd>h</kbd></dt><dd>Home</dd>
+      <dt><kbd>g</kbd> <kbd>r</kbd></dt><dd>Research</dd>
+      <dt><kbd>g</kbd> <kbd>c</kbd></dt><dd>Coursework</dd>
+      <dt><kbd>g</kbd> <kbd>t</kbd></dt><dd>Tools</dd>
+      <dt><kbd>g</kbd> <kbd>l</kbd></dt><dd>Library</dd>
+      <dt><kbd>g</kbd> <kbd>a</kbd></dt><dd>About</dd>
+      <dt><kbd>?</kbd></dt><dd>This list</dd>
+    </dl>
+    <p class="keys-pref"><label><input type="checkbox" id="afm291-w8-financial-assets--keysingles" checked>
+      Single-key shortcuts. Turn these off if a key press where you did not
+      mean one keeps opening things; search stays on <kbd>&#8984;</kbd><kbd>K</kbd>.</label></p>
+    <button class="close">Close</button>
+  </form>
+</dialog>
 <!--/__tail-->
 
 
@@ -43148,13 +43588,13 @@ not yet eff.)   mandatory      mandatory
   </div>
   <div class="fine">
     <span>&copy; 2026 Leesharam Alexander Rajcoomar</span>
-    <span><b>65</b> pieces &middot; <b>483,784</b> words &middot; <b>182</b> figures &middot; no framework, nothing external at runtime, one build you can read</span>
+    <span><b>65</b> pieces &middot; <b>483,790</b> words &middot; <b>182</b> figures &middot; no framework, nothing external at runtime, one build you can read</span>
   </div>
 </footer><!--/__foot-->
 
 <!--__tail--><!-- Search across every piece. Progressive: every link on the site works
      without it, and the button is the same route as the keyboard. -->
-<div class="cmdk" id="afm291-w8-cases--cmdk" hidden role="dialog" aria-modal="true" aria-label="Search all work">
+<dialog class="cmdk" id="afm291-w8-cases--cmdk" aria-label="Search all work">
   <div class="cmdk-panel">
     <input id="afm291-w8-cases--cmdk-input" type="text" placeholder="Search 65 pieces by title, course or topic" autocomplete="off" spellcheck="false" role="combobox" aria-expanded="false" aria-autocomplete="list" aria-controls="cmdk-list">
     <ul class="cmdk-list" id="afm291-w8-cases--cmdk-list" role="listbox" aria-label="Results"></ul>
@@ -43162,8 +43602,30 @@ not yet eff.)   mandatory      mandatory
       <span><kbd>&#8593;</kbd><kbd>&#8595;</kbd> move</span><span><kbd>Enter</kbd> open</span><span><kbd>Esc</kbd> close</span>
     </div>
   </div>
-</div>
+</dialog>
 
+<!-- The keyboard routes, written down. A shortcut nobody can find is the
+     same as one that does not exist. Opened with ? or from the footer. -->
+<dialog class="keys" id="afm291-w8-cases--keysheet" aria-labelledby="keystitle">
+  <form method="dialog" class="keys-panel">
+    <h2 id="afm291-w8-cases--keystitle">Keyboard</h2>
+    <dl>
+      <dt><kbd>/</kbd></dt><dd>Search every piece</dd>
+      <dt><kbd>&#8984;</kbd><kbd>K</kbd></dt><dd>The same search</dd>
+      <dt><kbd>g</kbd> <kbd>h</kbd></dt><dd>Home</dd>
+      <dt><kbd>g</kbd> <kbd>r</kbd></dt><dd>Research</dd>
+      <dt><kbd>g</kbd> <kbd>c</kbd></dt><dd>Coursework</dd>
+      <dt><kbd>g</kbd> <kbd>t</kbd></dt><dd>Tools</dd>
+      <dt><kbd>g</kbd> <kbd>l</kbd></dt><dd>Library</dd>
+      <dt><kbd>g</kbd> <kbd>a</kbd></dt><dd>About</dd>
+      <dt><kbd>?</kbd></dt><dd>This list</dd>
+    </dl>
+    <p class="keys-pref"><label><input type="checkbox" id="afm291-w8-cases--keysingles" checked>
+      Single-key shortcuts. Turn these off if a key press where you did not
+      mean one keeps opening things; search stays on <kbd>&#8984;</kbd><kbd>K</kbd>.</label></p>
+    <button class="close">Close</button>
+  </form>
+</dialog>
 <!--/__tail-->
 
 
@@ -43360,13 +43822,13 @@ not yet eff.)   mandatory      mandatory
   </div>
   <div class="fine">
     <span>&copy; 2026 Leesharam Alexander Rajcoomar</span>
-    <span><b>65</b> pieces &middot; <b>483,784</b> words &middot; <b>182</b> figures &middot; no framework, nothing external at runtime, one build you can read</span>
+    <span><b>65</b> pieces &middot; <b>483,790</b> words &middot; <b>182</b> figures &middot; no framework, nothing external at runtime, one build you can read</span>
   </div>
 </footer><!--/__foot-->
 
 <!--__tail--><!-- Search across every piece. Progressive: every link on the site works
      without it, and the button is the same route as the keyboard. -->
-<div class="cmdk" id="afm291-w9-ppe--cmdk" hidden role="dialog" aria-modal="true" aria-label="Search all work">
+<dialog class="cmdk" id="afm291-w9-ppe--cmdk" aria-label="Search all work">
   <div class="cmdk-panel">
     <input id="afm291-w9-ppe--cmdk-input" type="text" placeholder="Search 65 pieces by title, course or topic" autocomplete="off" spellcheck="false" role="combobox" aria-expanded="false" aria-autocomplete="list" aria-controls="cmdk-list">
     <ul class="cmdk-list" id="afm291-w9-ppe--cmdk-list" role="listbox" aria-label="Results"></ul>
@@ -43374,8 +43836,30 @@ not yet eff.)   mandatory      mandatory
       <span><kbd>&#8593;</kbd><kbd>&#8595;</kbd> move</span><span><kbd>Enter</kbd> open</span><span><kbd>Esc</kbd> close</span>
     </div>
   </div>
-</div>
+</dialog>
 
+<!-- The keyboard routes, written down. A shortcut nobody can find is the
+     same as one that does not exist. Opened with ? or from the footer. -->
+<dialog class="keys" id="afm291-w9-ppe--keysheet" aria-labelledby="keystitle">
+  <form method="dialog" class="keys-panel">
+    <h2 id="afm291-w9-ppe--keystitle">Keyboard</h2>
+    <dl>
+      <dt><kbd>/</kbd></dt><dd>Search every piece</dd>
+      <dt><kbd>&#8984;</kbd><kbd>K</kbd></dt><dd>The same search</dd>
+      <dt><kbd>g</kbd> <kbd>h</kbd></dt><dd>Home</dd>
+      <dt><kbd>g</kbd> <kbd>r</kbd></dt><dd>Research</dd>
+      <dt><kbd>g</kbd> <kbd>c</kbd></dt><dd>Coursework</dd>
+      <dt><kbd>g</kbd> <kbd>t</kbd></dt><dd>Tools</dd>
+      <dt><kbd>g</kbd> <kbd>l</kbd></dt><dd>Library</dd>
+      <dt><kbd>g</kbd> <kbd>a</kbd></dt><dd>About</dd>
+      <dt><kbd>?</kbd></dt><dd>This list</dd>
+    </dl>
+    <p class="keys-pref"><label><input type="checkbox" id="afm291-w9-ppe--keysingles" checked>
+      Single-key shortcuts. Turn these off if a key press where you did not
+      mean one keeps opening things; search stays on <kbd>&#8984;</kbd><kbd>K</kbd>.</label></p>
+    <button class="close">Close</button>
+  </form>
+</dialog>
 <!--/__tail-->
 
 
@@ -43547,13 +44031,13 @@ not yet eff.)   mandatory      mandatory
   </div>
   <div class="fine">
     <span>&copy; 2026 Leesharam Alexander Rajcoomar</span>
-    <span><b>65</b> pieces &middot; <b>483,784</b> words &middot; <b>182</b> figures &middot; no framework, nothing external at runtime, one build you can read</span>
+    <span><b>65</b> pieces &middot; <b>483,790</b> words &middot; <b>182</b> figures &middot; no framework, nothing external at runtime, one build you can read</span>
   </div>
 </footer><!--/__foot-->
 
 <!--__tail--><!-- Search across every piece. Progressive: every link on the site works
      without it, and the button is the same route as the keyboard. -->
-<div class="cmdk" id="afm291-w9-cases--cmdk" hidden role="dialog" aria-modal="true" aria-label="Search all work">
+<dialog class="cmdk" id="afm291-w9-cases--cmdk" aria-label="Search all work">
   <div class="cmdk-panel">
     <input id="afm291-w9-cases--cmdk-input" type="text" placeholder="Search 65 pieces by title, course or topic" autocomplete="off" spellcheck="false" role="combobox" aria-expanded="false" aria-autocomplete="list" aria-controls="cmdk-list">
     <ul class="cmdk-list" id="afm291-w9-cases--cmdk-list" role="listbox" aria-label="Results"></ul>
@@ -43561,8 +44045,30 @@ not yet eff.)   mandatory      mandatory
       <span><kbd>&#8593;</kbd><kbd>&#8595;</kbd> move</span><span><kbd>Enter</kbd> open</span><span><kbd>Esc</kbd> close</span>
     </div>
   </div>
-</div>
+</dialog>
 
+<!-- The keyboard routes, written down. A shortcut nobody can find is the
+     same as one that does not exist. Opened with ? or from the footer. -->
+<dialog class="keys" id="afm291-w9-cases--keysheet" aria-labelledby="keystitle">
+  <form method="dialog" class="keys-panel">
+    <h2 id="afm291-w9-cases--keystitle">Keyboard</h2>
+    <dl>
+      <dt><kbd>/</kbd></dt><dd>Search every piece</dd>
+      <dt><kbd>&#8984;</kbd><kbd>K</kbd></dt><dd>The same search</dd>
+      <dt><kbd>g</kbd> <kbd>h</kbd></dt><dd>Home</dd>
+      <dt><kbd>g</kbd> <kbd>r</kbd></dt><dd>Research</dd>
+      <dt><kbd>g</kbd> <kbd>c</kbd></dt><dd>Coursework</dd>
+      <dt><kbd>g</kbd> <kbd>t</kbd></dt><dd>Tools</dd>
+      <dt><kbd>g</kbd> <kbd>l</kbd></dt><dd>Library</dd>
+      <dt><kbd>g</kbd> <kbd>a</kbd></dt><dd>About</dd>
+      <dt><kbd>?</kbd></dt><dd>This list</dd>
+    </dl>
+    <p class="keys-pref"><label><input type="checkbox" id="afm291-w9-cases--keysingles" checked>
+      Single-key shortcuts. Turn these off if a key press where you did not
+      mean one keeps opening things; search stays on <kbd>&#8984;</kbd><kbd>K</kbd>.</label></p>
+    <button class="close">Close</button>
+  </form>
+</dialog>
 <!--/__tail-->
 
 
