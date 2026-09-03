@@ -1,0 +1,20 @@
+{
+ "note": "Declared exceptions to two of the site's claims, named here so the claims can fail: check 23 holds every page's prose free of em dashes except the records listed under \"records\", which are transcripts and run reports kept as written; the fit row holds every page to a 320px viewport except the pages listed under \"overflow\". A page not listed here that breaks the rule fails the build, and so does a listed page that no longer needs the exception.",
+ "records": [
+  "crucible-run-0.html",
+  "crucible-run-b.html",
+  "crucible-run-c.html",
+  "crucible-run-0-transcript.html",
+  "crucible-run-b-transcript.html",
+  "crucible-run-c-transcript.html"
+ ],
+ "overflow": [
+  "afm241-cheat-sheet.html",
+  "brittle-network.html",
+  "crucible-run-0-transcript.html",
+  "crucible-run-b-transcript.html",
+  "crucible-run-c-transcript.html",
+  "ifrs15-judgment-trainer.html",
+  "predictive-history.html"
+ ]
+}
