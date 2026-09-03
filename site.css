@@ -663,27 +663,14 @@ footer.site .fine b{font-weight:600;color:var(--ink-2)}
 @media (max-width:52rem){ footer.site .cols{grid-template-columns:minmax(0,1fr)} }
 
 /* ------------------------------- motion ------------------------------- */
-/* 300ms, which is the Atlas label fade, on the site's own move curve.
-   It used to be 550ms on a second easing curve that appears nowhere
-   else, and because a .rise block starts at opacity 0 the browser
-   cannot treat it as a paint candidate until the transition ends: the
-   hero heading on the home page was arriving half a second after it
-   had been laid out. Shortening it aligns the motion with the Atlas
-   and moves the largest contentful paint at the same time. */
-/* The delayed animation is a dead-man's switch: if site.js never runs
-   (blocked, failed request) nothing would ever add .in, and content held
-   at opacity 0 is content the reader never sees. After 1.8s the keyframe
-   forces the end state; when the observer fires first, both write the
-   same values and nothing visibly changes. */
-.js .rise{opacity:0;transform:translateY(12px);animation:rise-auto 0s 1.8s forwards}
-.js .rise.in{opacity:1;transform:none;
-  transition:opacity var(--t-in) var(--ease-move),transform var(--t-in) var(--ease-move)}
-@keyframes rise-auto{to{opacity:1;transform:none}}
+/* Nothing on these pages is hidden until scrolled to: every block is
+   visible at rest, so the first frame, a thumbnail and a reader with a
+   blocked script all see the same page. The reveal-on-scroll that used to
+   hold blocks at opacity 0 until an observer fired was an interaction that
+   existed because it was possible, and it cost the home page its largest
+   contentful paint. */
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
-  /* Both states, so the transition declaration on .in cannot survive and
-     animate later on a hover or a class change. */
-  .js .rise,.js .rise.in{opacity:1;transform:none;transition:none;animation:none}
   .feature::after,.feature .arrow,.row .side .arrow{transition:none}
 }
 
@@ -692,7 +679,6 @@ footer.site .fine b{font-weight:600;color:var(--ink-2)}
   :root{--paper:#fff;--panel:#fff;--ink:#000;--ink-2:#333;--ink-3:#555;--rule:#ccc;--rule-strong:#999;--accent:#000}
   header.top,.iconbtn,.cmdk,.tools-bar,footer.site .cols{display:none !important}
   body{font-size:10.5pt}
-  .js .rise{opacity:1 !important;transform:none !important}
   .row,.feature,.course,li{break-inside:avoid}
   a[href^="http"]::after{content:" (" attr(href) ")";font-size:8pt;color:#555}
   .hero{padding-block:0 1rem}

@@ -536,7 +536,7 @@ def feature(p, delay=0, h=3):
     # band head on most pages and under an h3 course head on coursework.html,
     # where an h3 card would read as the course's sibling rather than its
     # member.
-    return f"""      <article class="feature rise" style="transition-delay:{delay}ms">
+    return f"""      <article class="feature" style="transition-delay:{delay}ms">
         <span class="kindrow">{kind_chip(p)}{surf(p)}</span>
         <h{h}><a class="cardlink" href="{p['url']}">{esc(p['t'])}</a></h{h}>
         <p>{esc(p['blurb'])}</p>
@@ -549,7 +549,7 @@ def feature_compact(p, delay=0):
     # The home page is the skim surface, so its cards carry the standfirst
     # rather than the full blurb; the blurbs stay on the section pages and in
     # the library, one click away, where the reader has chosen depth.
-    return f"""      <article class="feature feature-c rise" style="transition-delay:{delay}ms">
+    return f"""      <article class="feature feature-c" style="transition-delay:{delay}ms">
         <span class="kindrow">{kind_chip(p)}{surf(p)}</span>
         <h3><a class="cardlink" href="{p['url']}">{esc(p['t'])}</a></h3>
         <p>{esc(p['s'])}</p>
@@ -603,7 +603,7 @@ def lifted(fid, rule, title, note, href):
     """A figure lifted out of its own document together with the CSS rules its
     classes depend on, shown at the size it was drawn for."""
     d = STRIP[fid]
-    return f"""    <figure class="spec rise" id="{fid}">
+    return f"""    <figure class="spec" id="{fid}">
       <div class="frame">{strip_svg(fid)}</div>
       <figcaption>
         <div class="who">
@@ -1002,7 +1002,7 @@ def page_index():
   {sect_head(3, 'The statement, drawn to scale <a class="nref" href="#n6">6</a>', "Every document on this site, measured from the files themselves rather than estimated.", f"{TOTAL_WORDS:,} words", "corpus-h")}
   <div class="corpus">
     <a class="skip" href="#corpus-table">Skip the drawing to the table of its numbers</a>
-    <div class="plot rise">
+    <div class="plot">
       {figs.corpus_svg()}
     </div>
     <aside class="rail-app" aria-label="How to read the figure">

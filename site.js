@@ -46,46 +46,6 @@
     }
   }
 
-  /* ------------------------------------------------ reveal on view -
-     The pre-state is only applied by CSS under .js, and under reduced
-     motion the elements are snapped to their end state rather than
-     given a shorter animation. */
-  var risers = [].slice.call(document.querySelectorAll(".rise"));
-  if (reduced || !("IntersectionObserver" in window)) {
-    risers.forEach(function (n) { n.classList.add("in"); });
-  } else {
-    var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (e) {
-        if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); }
-      });
-    }, { rootMargin: "0px 0px -6% 0px", threshold: 0.05 });
-    risers.forEach(function (n) { io.observe(n); });
-
-    /* Safety sweep. A jump to an anchor, or a very fast scroll, can carry
-       an element past the viewport without the observer ever reporting an
-       intersection, and content that stays at opacity 0 is content the
-       reader never sees. This reveals anything already scrolled past. */
-    var sweeping = false;
-    function sweep() {
-      sweeping = false;
-      var h = window.innerHeight;
-      for (var i = risers.length - 1; i >= 0; i--) {
-        var n = risers[i];
-        if (n.classList.contains("in")) { risers.splice(i, 1); continue; }
-        if (n.getBoundingClientRect().top < h * 0.95) {
-          n.classList.add("in"); io.unobserve(n); risers.splice(i, 1);
-        }
-      }
-      if (!risers.length) removeEventListener("scroll", queueSweep);
-    }
-    function queueSweep() {
-      if (!sweeping) { sweeping = true; requestAnimationFrame(sweep); }
-    }
-    addEventListener("scroll", queueSweep, { passive: true });
-    addEventListener("hashchange", queueSweep);
-    setTimeout(sweep, 1200);
-  }
-
   /* The flat library-filter block that used to sit here targeted a
      #list element no page has carried since the library moved to
      grouped sections; the grouped filter below is the live one, and
