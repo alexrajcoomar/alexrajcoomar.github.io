@@ -1838,6 +1838,12 @@ a.nref{position:relative;display:inline;padding:.75rem .45rem;margin:0 -.35rem 0
 .stmt-list > li.sr-sub{border-top:1px solid var(--edge);border-bottom:3px double var(--ink)}
 .stmt-list .sr-sub a{color:inherit;text-decoration:none}
 .stmt-list .spec,.stmt-list .specimen{margin-top:1rem}
+/* The specimen figure carries a min-width floor so its type never shrinks
+   below the size it was drawn at, the same floor the lifted figures carry.
+   The lifted figures scroll inside .frame; the specimen's .fig had no scroll
+   port, so at 390px its 741px floor pushed the whole research page 371px
+   wide and every line of text slid with it. */
+.specimen .fig{overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:.25rem}
 @media (max-width:44rem){
   .stmt-list .srow{grid-template-columns:minmax(0,1fr)}
   .stmt-list .sr-n{justify-content:start;text-align:left;padding-top:0;gap:.3rem 1rem;grid-template-columns:repeat(3,auto)}
