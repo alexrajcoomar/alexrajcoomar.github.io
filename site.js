@@ -767,6 +767,11 @@
     if (own.length !== pts.length) { docs = []; own = []; }
     var card = document.getElementById("atlasmini-card");
     var cardT = card && card.querySelector(".gc-t"), cardD = card && card.querySelector(".gc-d");
+    /* A fine pointer hovers; a coarse one taps. A tap locks the document it
+       lands on, so the chords and the card hold until the next tap, and the
+       card's name is the link that opens it. */
+    var fine = !!(window.matchMedia && window.matchMedia("(pointer:fine)").matches);
+    var locked = false;
 
     /* atlas.js draws 0.55 + 0.028 * sqrt(words) plus a depth term. The
        payload carries sqrt(words) quantised to ten bands of 13, so the
@@ -1008,26 +1013,29 @@
       y = Math.max(4, Math.min(H - h - 4, y));
       card.style.transform = "translate(" + Math.round(x) + "px," + Math.round(y) + "px)";
     }
-    function setHover(i) {
-      if (i === hover) return;
+    function setHover(i, lock) {
+      locked = !!lock && i >= 0;
+      if (i === hover) { if (card && i >= 0) card.hidden = false; return; }
       hover = i;
       var hd = i >= 0 && own.length ? own[i] : -1;
       if (hd < 0 || !docs[hd]) {
         hover = -1;
         if (card) card.hidden = true;
         host.removeAttribute("data-doc");
-        host.style.cursor = "grab";
+        host.removeAttribute("data-locked");
+        host.style.cursor = fine ? "grab" : "";
         paint();
         return;
       }
       var D = docs[hd], out = 0, into = 0;
       for (var li = 0; li < D.lk.length; li++) { if (D.lk[li].out) out++; if (D.lk[li].into) into++; }
-      if (cardT) cardT.textContent = D.t;
+      if (cardT) { cardT.textContent = D.t; if (D.u) cardT.setAttribute("href", D.u); }
       if (cardD) cardD.textContent = D.k + "  ·  " + D.marks + (D.marks === 1 ? " section" : " sections") +
         (out ? "  ·  links " + out : "") + (into ? "  ·  linked by " + into : "") +
         (!out && !into ? "  ·  no links recorded" : "");
       if (card) card.hidden = false;
       host.setAttribute("data-doc", D.t);
+      if (locked) host.setAttribute("data-locked", "1"); else host.removeAttribute("data-locked");
       host.style.cursor = "pointer";
       paint();
       placeCard();
@@ -1106,11 +1114,32 @@
       };
       cv.addEventListener("pointerup", endT);
       cv.addEventListener("pointercancel", endT);
-      cv.addEventListener("pointerleave", function () { if (!dragT) setHover(-1); });
+      /* leaving the canvas for the card keeps the card, so its link can be reached */
+      cv.addEventListener("pointerleave", function (e) {
+        if (dragT || locked) return;
+        if (e.relatedTarget && card && card.contains(e.relatedTarget)) return;
+        setHover(-1);
+      });
+      if (card) card.addEventListener("pointerleave", function (e) {
+        if (locked) return;
+        if (e.relatedTarget === cv) return;
+        setHover(-1);
+      });
     }
-    host.addEventListener("click", function () {
+    host.addEventListener("click", function (e) {
       if (movedT > 8) { movedT = 0; return; }
-      /* a mark opens its document; the void opens the Atlas */
+      if (!fine) {
+        /* touch: a tap on a mark locks its document and draws what it
+           records; a tap on the void clears the lock, or with nothing
+           locked opens the Atlas. Each tap paints once. */
+        var rr = cv.getBoundingClientRect();
+        var i = docs.length ? hit(e.clientX - rr.left, e.clientY - rr.top) : -1;
+        if (i >= 0) { setHover(i, true); return; }
+        if (hover >= 0) { setHover(-1); return; }
+        window.location.href = "atlas.html";
+        return;
+      }
+      /* a fine pointer: a mark opens its document; the void opens the Atlas */
       var hd = hover >= 0 && own.length ? own[hover] : -1;
       window.location.href = (hd >= 0 && docs[hd] && docs[hd].u) ? docs[hd].u : "atlas.html";
     });

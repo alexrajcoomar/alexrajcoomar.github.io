@@ -966,9 +966,10 @@ def page_index():
     <div class="stage-globe">
       <div class="tease-globe hero-globe" id="atlasmini" data-pts="{ATLAS_PTS}" data-fill="0.44" aria-hidden="true"></div>
       <script type="application/json" id="atlasmini-docs">{atlas_home_links()}</script>
-      <div class="globe-card" id="atlasmini-card" hidden aria-hidden="true"><b class="gc-t"></b><span class="gc-d"></span></div>
+      <div class="globe-card" id="atlasmini-card" hidden><a class="gc-t" href="atlas.html"></a><span class="gc-d"></span></div>
       <p class="globe-cap"><a class="inlink" href="atlas.html">{ATLAS_N} sections, every one a link <span aria-hidden="true">&#8594;</span></a>
-        <span class="globe-hint">Point at a mark: chords join its document to the documents its prose links, or that link it. {N_EDGES} such links are recorded.</span></p>
+        <span class="globe-hint">Point at a mark: chords join its document to the documents its prose links, or that link it. {N_EDGES} such links are recorded.</span>
+        <span class="globe-hint-touch">Tap a mark: chords join its document to the documents its prose links, or that link it, and its name opens it. {N_EDGES} such links are recorded.</span></p>
       <noscript><p class="note">The sphere needs a browser that runs scripts.
       The <a class="inlink" href="atlas.html">full index</a> does not.</p></noscript>
     </div>
