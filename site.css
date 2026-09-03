@@ -499,11 +499,15 @@ ol.index li:last-child{border-bottom:1px solid var(--rule)}
    sweep for the same latent bug: site.js sets `hidden` on eight other
    things and none of them carries a display rule, so these two were
    the only components that ever had it. */
-.cmdk{
-  position:fixed;inset:0;z-index:80;display:grid;place-items:start center;
+/* a native dialog: the element is the full-screen layer, the backdrop is
+   the browser's, and the page behind it is inert while it is open */
+dialog.cmdk{
+  position:fixed;inset:0;z-index:80;width:100%;height:100%;max-width:none;max-height:none;
+  margin:0;border:0;background:transparent;color:inherit;
   padding:clamp(2rem,10vh,7rem) 1rem 1rem;
-  background:color-mix(in oklab, var(--ink) 38%, transparent)
 }
+dialog.cmdk[open]{display:grid;place-items:start center}
+dialog.cmdk::backdrop{background:rgba(10,10,8,.45)}
 .cmdk-panel{
   width:min(44rem,100%);background:var(--paper);border:1px solid var(--ink);
   box-shadow:0 24px 70px rgba(0,0,0,.24);display:flex;flex-direction:column;max-height:70vh
@@ -1243,14 +1247,17 @@ details.cal-q .cb > *:first-child{margin-top:.8rem}
 .cmdk-list li a{align-items:center}
 
 /* ---------------------------- shortcuts sheet ---------------- */
-.keys{
-  position:fixed;inset:0;z-index:80;display:grid;place-items:center;
-  background:rgba(10,10,8,.55);
-  padding:1.5rem;backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px)
+dialog.keys{
+  position:fixed;inset:0;z-index:80;width:100%;height:100%;max-width:none;max-height:none;
+  margin:0;border:0;background:transparent;color:inherit;padding:1.5rem
 }
+dialog.keys[open]{display:grid;place-items:center}
+dialog.keys::backdrop{background:rgba(10,10,8,.55);backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px)}
+/* while a dialog is open the page does not scroll behind it */
+body:has(dialog[open]){overflow:hidden}
 .keys-panel{
   background:var(--paper);border:1px solid var(--ink);max-width:26rem;width:100%;
-  padding:1.25rem 1.4rem 1.4rem
+  padding:1.25rem 1.4rem 1.4rem;margin:0
 }
 .keys h2{font-size:1rem;margin:0 0 .8rem;letter-spacing:-.01em}
 .keys dl{display:grid;grid-template-columns:auto 1fr;gap:.5rem .9rem;margin:0;font-size:.875rem}
@@ -2060,3 +2067,14 @@ section.band.ground .pane{background:var(--panel-2);border-color:var(--rule-stro
   background var(--t-fast) ease,border-color var(--t-fast) ease,visibility 0s linear var(--t-in)}
 .totop.on{visibility:visible;transition-delay:0s}
 @media (prefers-reduced-motion:reduce){.totop{transition:opacity .01s,visibility 0s}}
+
+/* ------------------------------------------------ course disclosures --
+   Each course on the coursework shelf is a native details element, open
+   by default: the head is its summary, the rows fold under it. */
+details.cgroup > summary.grouphead{list-style:none;cursor:pointer;display:flex}
+details.cgroup > summary.grouphead::-webkit-details-marker{display:none}
+details.cgroup > summary.grouphead::before{content:"\2212";color:var(--ink-3);font-weight:640;margin-right:.6rem;align-self:baseline;font-variant-numeric:tabular-nums}
+details.cgroup:not([open]) > summary.grouphead::before{content:"+"}
+details.cgroup > summary.grouphead:hover h3{color:var(--accent)}
+details.cgroup > summary.grouphead:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+details.cgroup + details.cgroup{margin-top:1.75rem}

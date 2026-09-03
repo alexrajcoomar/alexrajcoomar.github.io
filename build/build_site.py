@@ -276,7 +276,7 @@ def foot():
 
 <!-- Search across every piece. Progressive: every link on the site works
      without it, and the button is the same route as the keyboard. -->
-<div class="cmdk" id="cmdk" hidden role="dialog" aria-modal="true" aria-label="Search all work">
+<dialog class="cmdk" id="cmdk" aria-label="Search all work">
   <div class="cmdk-panel">
     <input id="cmdk-input" type="text" placeholder="Search {len(P)} pieces by title, course or topic" autocomplete="off" spellcheck="false" role="combobox" aria-expanded="false" aria-autocomplete="list" aria-controls="cmdk-list">
     <ul class="cmdk-list" id="cmdk-list" role="listbox" aria-label="Results"></ul>
@@ -284,12 +284,12 @@ def foot():
       <span><kbd>&#8593;</kbd><kbd>&#8595;</kbd> move</span><span><kbd>Enter</kbd> open</span><span><kbd>Esc</kbd> close</span>
     </div>
   </div>
-</div>
+</dialog>
 
 <!-- The keyboard routes, written down. A shortcut nobody can find is the
      same as one that does not exist. Opened with ? or from the footer. -->
-<div class="keys" id="keysheet" hidden role="dialog" aria-modal="true" aria-labelledby="keystitle">
-  <div class="keys-panel">
+<dialog class="keys" id="keysheet" aria-labelledby="keystitle">
+  <form method="dialog" class="keys-panel">
     <h2 id="keystitle">Keyboard</h2>
     <dl>
       <dt><kbd>/</kbd></dt><dd>Search every piece</dd>
@@ -305,9 +305,9 @@ def foot():
     <p class="keys-pref"><label><input type="checkbox" id="keysingles" checked>
       Single-key shortcuts. Turn these off if a key press where you did not
       mean one keeps opening things; search stays on <kbd>&#8984;</kbd><kbd>K</kbd>.</label></p>
-    <button class="close" type="button">Close</button>
-  </div>
-</div>
+    <button class="close">Close</button>
+  </form>
+</dialog>
 <script>
 window.WORK = {WORKJSON};
 </script>
@@ -1200,12 +1200,14 @@ def page_coursework():
             k += 1
             rows.append(shelf_row(k, p))
         rows.append(shelf_subtotal(f"{c}, {len(cs)} piece{'s' if len(cs) != 1 else ''}", cs))
-        groups.append(f"""  <div class="grouphead"><h3>{esc(c)}</h3>
+        groups.append(f"""  <details class="cgroup" open>
+    <summary class="grouphead"><h3>{esc(c)}</h3>
     <p class="gnote">{len(cs)} piece{'s' if len(cs)!=1 else ''}, {sum(p['words'] for p in cs):,} words.</p>
-    <span class="gcount">{len(cs)}</span></div>
+    <span class="gcount">{len(cs)}</span></summary>
   <ol class="index stmt-list">
 {chr(10).join(rows)}
-  </ol>""")
+  </ol>
+  </details>""")
     body = f"""<div class="hero tight shell">
   {section_eyebrow("coursework.html")}
   <h1 class="h1">Coursework</h1>
