@@ -193,7 +193,7 @@ CASES = [
       lambda t: _edit(t, BS, "<b>{md(TOTAL_FIGS, \"figures\")}</b> figures", "<b>{md(TOTAL_FIGS + 7, \"figures\")}</b> figures")),
     C("27", "channel-unnamed", "the home sphere declares a channel the Atlas key does not name",
       lambda t: _edit(t, "site.js", 'var CHANNELS = ["ind", "cou", "per", "too", "shr", "vis", "lnk"];', 'var CHANNELS = ["ind", "cou", "per", "too", "shr", "vis", "lnk", "halo"];')),
-    C("28", "placed-by-lattice", "documents are spread over the sphere by the old even lattice instead of by their words",
+    C("28", "placed-by-lattice", "documents are spread over the sphere by the old even lattice instead of by their sections",
       lambda t: _edit(t, "build/atlas.py", '    cents = {p["slug"]: centroid_of(rule[p["slug"]]) for p in order}\n',
                       '    cents = dict(zip([p["slug"] for p in order], _fib_sphere(len(order))))\n')),
     C("28", "scatter-past-the-cap", "a document's sections scatter twice as far as its cap allows",

@@ -10,19 +10,20 @@ corpus, including the three largest essays, carried no anchors at all.
 
 place() puts those sections on a unit sphere. Position is not decoration
 either. Each document gets a centroid by a rule the reader can check, and
-the rule is an equal-area projection of the corpus's words: each origin owns
-a zone of latitude whose area is its share of the words (independent work in
-the north, coursework across the middle, personal interest in the south);
-within its zone a document sits at the height its cumulative word count
+the rule divides the sphere equally among the sections: each origin owns a
+zone of latitude whose area is its share of the sections (independent work
+in the north, coursework across the middle, personal interest in the south);
+within its zone a document sits at the height its cumulative section count
 gives it, largest first, on a longitude that steps by the golden angle from
 one document to the next; and its sections scatter inside a cap whose area
-is the document's own share of the words, from a generator seeded by the
-document's name. So the marks cover the whole sphere in proportion to the
-words they stand for, and a dense patch is a long document. A dense patch on the globe is therefore
-a dense document, which is the same contract the corpus figure makes when it
-draws one square per five hundred words. A heading that appears in more than
-one document is placed between their centroids rather than duplicated, so
-proximity between two regions means the documents share language.
+is the document's own share, from a generator seeded by the document's name.
+So every mark owns the same area of the sphere, the marks cover the whole of
+it at one density, and a wide patch is a document of many sections. Words
+are drawn elsewhere: the corpus figure draws one square per five hundred of
+them, and a mark's drawn size is its document's words apportioned to that
+heading. A heading that appears in more than one document is placed between
+their centroids rather than duplicated, so proximity between two regions
+means the documents share language.
 
 Nothing here is capped or sampled. Every section in every readable document is
 on the globe.
@@ -195,11 +196,12 @@ def harvest(out_dir, pieces):
 
 
 # ------------------------------------------------------------------ place --
-# Where a document sits, by rule: an equal-area projection of the corpus's
-# words. The sphere's area between two parallels is proportional to the
+# Where a document sits, by rule: the sphere divided equally among the
+# sections. The sphere's area between two parallels is proportional to the
 # difference of their y (the sine of the latitude), so a zone whose y-range
-# is twice an origin's word share has exactly that share of the surface, and
-# a slab whose height is twice a document's share has the document's. Within
+# is twice an origin's share of the sections has exactly that share of the
+# surface, and a slab whose height is twice a document's share has the
+# document's; every section therefore owns the same area of the sphere. Within
 # a zone the documents run largest first from the north; the longitude of
 # the i-th document over the whole sphere is i times the golden angle, which
 # spreads neighbours apart evenly. check 28 recomputes all of this from the
@@ -209,21 +211,22 @@ GOLDEN = math.pi * (3.0 - math.sqrt(5.0))
 CAP_MIN = 0.05
 
 
-def plan(pieces):
+def plan(pieces, counts):
     """slug -> {"zone", "y", "theta", "cap", "share", "index"} for every
-    document, plus the zone boundaries, from the measured words alone."""
+    document, plus the zone boundaries, from the section counts alone
+    (counts: slug -> the number of section marks that document carries)."""
     docs = [p for p in pieces if p["surface"] in ZONE_ORDER]
-    total = float(sum(p.get("words", 0) for p in docs)) or 1.0
+    total = float(sum(counts.get(p["slug"], 0) for p in docs)) or 1.0
     out, zones = {}, {}
     y_top, index = 1.0, 0
     for surf in ZONE_ORDER:
         group = sorted((p for p in docs if p["surface"] == surf),
-                       key=lambda p: (-p.get("words", 0), p["slug"]))
-        share = sum(p.get("words", 0) for p in group) / total
+                       key=lambda p: (-counts.get(p["slug"], 0), p["slug"]))
+        share = sum(counts.get(p["slug"], 0) for p in group) / total
         zones[surf] = (round(y_top, 6), round(y_top - 2 * share, 6))
         y = y_top
         for p in group:
-            sh = p.get("words", 0) / total
+            sh = counts.get(p["slug"], 0) / total
             out[p["slug"]] = {"zone": surf, "y": y - sh, "theta": (index * GOLDEN) % (2 * math.pi),
                               "cap": max(CAP_MIN, math.acos(max(-1.0, 1.0 - 2.0 * sh))), "share": sh, "index": index}
             y -= 2 * sh
@@ -269,12 +272,17 @@ def _rand(seed):
 def place(sections, pieces):
     """Assign every section a point on the unit sphere."""
     order = [p for p in pieces if any(s["slug"] == p["slug"] for s in sections)]
-    rule, _zones = plan(order)
-    cents = {p["slug"]: centroid_of(rule[p["slug"]]) for p in order}
 
     by_slug = {}
     for s in sections:
         by_slug.setdefault(s["slug"], []).append(s)
+
+    # every section owns the same area of the sphere: a document's share is
+    # its count of sections (a heading it shares with another document counts
+    # to both), and the rule turns the shares into zones, heights and caps
+    counts = {slug: len(v) for slug, v in by_slug.items()}
+    rule, _zones = plan(order, counts)
+    cents = {p["slug"]: centroid_of(rule[p["slug"]]) for p in order}
 
     # a heading that occurs in several documents is one point, sitting between
     # the documents that share it
@@ -299,7 +307,7 @@ def place(sections, pieces):
         centre = _norm((cx, cy, cz))
 
         # the cap holds the document's own share of the sphere's area: a
-        # long document's sections spread wide, a short one's sit close
+        # document of many sections spreads wide, one of few sits close
         rad = rule[s["slug"]]["cap"] if s["slug"] in rule else CAP_MIN
         if len(shared[key]) > 1:
             rad = min(rule[o]["cap"] for o in shared[key] if o in rule) * 0.45 if any(o in rule for o in shared[key]) else CAP_MIN
@@ -749,7 +757,7 @@ def labels(F):
                 "documents that are not independent{}. "
                 "Another {} independent marks sit below it. The zone is "
                 "designed, not inherited: each origin owns the zone of "
-                "latitude whose area is its share of the words, so the "
+                "latitude whose area is its share of the sections, so the "
                 "independent work is the north zone by rule, and what "
                 "crosses the line is the scatter of sections inside each "
                 "document's cap, whose area is that document's own share."

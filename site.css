@@ -1,5 +1,5 @@
 /* ============================================================
-   Alex Rajcoomar — portfolio
+   Alex Rajcoomar: portfolio
    One stylesheet for every page. Change a token here and the
    whole site changes.
 
@@ -1425,7 +1425,7 @@ nav.main a[aria-current="page"]{border-bottom-color:transparent}
 /* ============================================================
    Atlas
    One camera, used twice: six wall labels hold it, then the
-   reader drives it. The canvas is aria-hidden on purpose — the
+   reader drives it. The canvas is aria-hidden on purpose: the
    index below is the accessible instrument and the sphere is a
    way of looking at it.
    ============================================================ */
@@ -1918,8 +1918,12 @@ a.nref{position:relative;display:inline;padding:.75rem .45rem;margin:0 -.35rem 0
 .descent > .stage .method{margin:0;font-size:.95rem;line-height:1.55;color:var(--ink-2);max-width:34rem}
 .descent > .stage .corpusline{margin:.35rem 0 0}
 .descent > .statement{padding-top:clamp(1.5rem,3vw,2.5rem)}
-/* the sphere: sticky under the header, on paper so the rows pass beneath it cleanly */
-.descent-globe{position:sticky;top:var(--stick);z-index:3;align-self:start;
+/* the sphere: sticky under the header, on paper so the rows pass beneath it
+   cleanly. The header's height is set by how its rows wrap (89px at 390, 129px
+   at 320, 94px at 768), so the script measures it and hands it over as
+   --pin-top; the block then meets the header's edge with no gap for the rows
+   to show through. Without the script the rem fallbacks hold. */
+.descent-globe{position:sticky;top:var(--pin-top,var(--stick));z-index:3;align-self:start;
   background:var(--paper);padding-block:.25rem .5rem;
   -webkit-print-color-adjust:exact;print-color-adjust:exact}
 .descent-globe .stage-globe{position:relative}
@@ -1927,13 +1931,18 @@ a.nref{position:relative;display:inline;padding:.75rem .45rem;margin:0 -.35rem 0
    the sphere steps back and the square becomes a tall rectangle */
 .descent-globe .tease-globe.hero-globe{aspect-ratio:1/1;max-height:none;min-height:0;overflow:hidden;width:100%;max-width:min(100%,42rem);
   margin-inline:auto;cursor:grab;touch-action:pan-y;transition:max-width var(--t-weight) var(--ease-weight)}
-/* on a phone the header wraps to two rows; and once the sphere has pinned it
-   steps back to make room for the rows it is facing */
-@media (max-width:44rem){
-  .descent-globe{top:6.35rem;border-bottom:1px solid var(--rule)}
-  .descent-globe.stuck .tease-globe.hero-globe{max-width:12.5rem}
+/* below the two-column layout the block pins above the rows, and once it has
+   pinned the sphere steps back to make room for the rows it is facing */
+@media (max-width:63.99rem){
+  .descent-globe{top:var(--pin-top,6.35rem);border-bottom:1px solid var(--rule)}
+  /* a tablet: the pinned sphere steps back to 17rem so the rows keep more than
+     half the viewport (at 768 x 1024 the full sphere left them 30px) */
+  .descent-globe.stuck .tease-globe.hero-globe{max-width:17rem}
   .descent-globe.stuck .globe-hint,.descent-globe.stuck .globe-hint-touch,.descent-globe.stuck .globe-key{display:none}
   .descent-globe.stuck .globe-cap{margin-top:0}
+}
+@media (max-width:44rem){
+  .descent-globe.stuck .tease-globe.hero-globe{max-width:12.5rem}
 }
 @media (min-width:64rem){
   .descent{grid-template-columns:minmax(0,1fr) minmax(18rem,32rem);column-gap:clamp(3rem,6vw,6rem);align-items:start}
@@ -1955,11 +1964,20 @@ table.st tr.item.cur th{box-shadow:inset 3px 0 0 var(--accent);padding-left:.6re
 table.st tr.item.cur th a{color:var(--accent)}
 table.st tr.item.cur td{color:var(--ink);font-weight:560}
 table.st tr.item.cur th .s{color:var(--ink-2)}
+/* a faced row's lifted figure line is part of the row: same tint, same bar, same nudge */
+table.st tr.item.cur+tr.liftrow td{background:color-mix(in srgb,var(--accent) 9%,transparent);box-shadow:inset 3px 0 0 var(--accent);padding-left:.6rem}
+table.st tr.liftrow td{transition:background 260ms var(--ease-weight),padding 260ms var(--ease-weight)}
 table.st tr.item th,table.st tr.item td{transition:background 260ms var(--ease-weight),padding 260ms var(--ease-weight),color 260ms var(--ease-weight)}
 table.st tr.item th a{transition:color 260ms var(--ease-weight)}
 @media (prefers-reduced-motion:reduce){
   .descent-globe .tease-globe.hero-globe{transition:none}
-  table.st tr.item th,table.st tr.item td{transition:none}
+  table.st tr.item th,table.st tr.item td,table.st tr.liftrow td{transition:none}
+}
+/* on paper the sphere is a figure again: a pinned block would float over
+   the page break, so the pin releases and the block prints in its place */
+@media print{
+  .descent-globe{position:static;background:#fff;border-bottom:0}
+  .stage-globe .facing{display:none}
 }
 /* the eyebrow chip: the standing in the accent, the owner's own line after it */
 .eyeb{

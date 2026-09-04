@@ -130,7 +130,7 @@ until it is fixed.
 | `build/claims.py` | The register of claims, the glyph walls on `controls.html`, the run record |
 | `build/negatives.py` | The tests of controls: a falsification per check, and what caught it |
 | `build/audit.js` | Measures the runtime claims in a browser; `--falsify` makes each false on a copy |
-| `build/atlas.py` | Places every section of every piece on the sphere, by origin and word count |
+| `build/atlas.py` | Places every section of every piece on the sphere: an equal area to every section, zoned by origin |
 | `build/invariance.py`, `build/ledger.py` | Hold every piece to its record; write the change ledger |
 | `build/emdash.py` | The rule that took the em dashes out of the prose |
 | `content/audit.json`, `content/negatives.json` | What the browser measured; what each falsification did. Written by the rebuild |

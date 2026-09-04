@@ -350,8 +350,8 @@ def build(ctx):
     t = T.get("weights", {})
     checked("The marks' apportioned word weights add back to the corpus line.", ["11a2"], f"{n(t.get('marks', 0))} weights sum to {n(t.get('sum', 0))}", ["atlas.html"])
     t = T.get("position", {})
-    checked("Where a document sits on the sphere is a rule: latitude by origin, and within the band east and north by measured word count.", ["28"],
-            f"{t.get('documents', 0)} documents in {t.get('bands', 0)} bands; {t.get('read_back', 0)} positions read back from {t.get('pages', 0)} pages against the rule, 0 out of place",
+    checked("Where a document sits on the sphere is a rule: the sphere is divided equally among the sections, each origin's zone of latitude has the area of its share, each document sits at the height its cumulative count gives it, and its sections stay inside a cap the size of its own share.", ["28"],
+            f"{t.get('documents', 0)} documents in {t.get('zones', 0)} zones; {t.get('read_back', 0)} positions read back from {t.get('pages', 0)} pages against the rule, 0 out of place; {n(t.get('marks', 0))} marks held inside their caps, {t.get('shared', 0)} shared marks placed between their owners, {t.get('outside', 0)} outside",
             ["atlas.html", "index.html"])
     t = T.get("channels", {})
     checked("Every visual channel the sphere draws is named in the Atlas key, and every entry in the key is drawn.", ["27"],

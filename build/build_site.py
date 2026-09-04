@@ -1134,7 +1134,7 @@ def page_index():
         <span class="globe-hint">Point at a mark: chords join its document to the documents its prose links, or that link it. <span class="gc-l">{N_EDGES}</span> such links are recorded.</span>
         <span class="globe-hint-touch">Tap a mark: chords join its document to the documents its prose links, or that link it, and its name opens it. <span class="gc-l">{N_EDGES}</span> such links are recorded.</span></p>
       <p class="facing" aria-live="off"></p>
-      <p class="globe-key">Where a mark sits is a rule the build checks: each origin's zone of latitude has the area of its share of the words, each document sits at the height its cumulative count gives it, and its sections fill a cap the size of its own share. As a featured row reaches the reading line the sphere turns to face that document.</p>
+      <p class="globe-key">Where a mark sits is a rule the build checks: the sphere is divided equally among the sections, so each origin's zone of latitude has the area of its share of them, each document sits at the height its cumulative count gives it, and its sections fill a cap the size of its own share. As a featured row reaches the reading line the sphere turns to face that document.</p>
       <noscript><p class="note">The sphere needs a browser that runs scripts.
       The <a class="inlink" href="atlas.html">full index</a> does not.</p></noscript>
     </div>
@@ -2885,17 +2885,17 @@ ATLAS_BODY = r"""<section class="band atlas-band" id="atlas">
           <p class="akey-note">A mark's area is apportioned from its document's measured word count by
           the share of the document's static text under that heading; it is not a per-section
           measurement. Heading level is no longer drawn on the sphere and is kept in the index
-          beside it. A document's area grows with its section count, and a heading several
-          documents carry is placed once, between them. Where a document sits is a rule, and the
-          rule is an equal-area projection of the corpus's words: each origin owns a zone of
-          latitude whose area is its share of the words (independent work in the north, coursework
-          across the middle, personal interest in the south); within its zone a document sits at
-          the height its cumulative word count gives it, largest first, on a longitude that steps
-          by the golden angle from one document to the next; and its sections scatter inside a cap
-          whose area is the document's own share of the words, from a generator seeded with the
-          document's name. So the marks cover the whole sphere in proportion to the words they
-          stand for, and a dense patch is a long document. The build recomputes every position
-          from the metrics on every run and refuses a sphere that disagrees (check 28).</p>
+          beside it. A heading several documents carry is placed once, between them. Where a
+          document sits is a rule, and the rule divides the sphere equally among the sections:
+          each origin owns a zone of latitude whose area is its share of the sections (independent
+          work in the north, coursework across the middle, personal interest in the south); within
+          its zone a document sits at the height its cumulative section count gives it, largest
+          first, on a longitude that steps by the golden angle from one document to the next; and
+          its sections scatter inside a cap whose area is the document's own share, from a
+          generator seeded with the document's name. So every mark owns the same area of the
+          sphere, the marks cover the whole of it at one density, and a wide patch is a document
+          of many sections. The build recomputes every position from the section counts on every
+          run and refuses a sphere that disagrees (check 28).</p>
         </div>
         <p class="replay"><button type="button" id="preplay" class="linkbtn">Replay the six labels</button></p>
       </div>
@@ -3875,20 +3875,23 @@ def check_site():
                             % (format(sum(ws), ","), format(TOTAL_WORDS, ","))))
 
     # 28. where a document sits is a rule, and the pages hold to it. The rule
-    # is an equal-area projection of the corpus's words: each origin's zone
-    # of latitude has the area of its word share, each document sits at the
-    # height its cumulative count gives it within the zone (largest first),
-    # on a longitude that steps by the golden angle, and its sections lie
-    # inside a cap whose area is the document's own share. Every centroid
+    # divides the sphere equally among the sections: each origin's zone of
+    # latitude has the area of its share of them, each document sits at the
+    # height its cumulative section count gives it within the zone (largest
+    # first), on a longitude that steps by the golden angle, and its sections
+    # lie inside a cap whose area is the document's own share. Every centroid
     # the Atlas index and the home sphere carry is recomputed from the
-    # metrics and compared; every section mark is held inside its cap.
+    # section counts and compared; every section mark is held inside its cap.
     regs = ATLAS.get("regions") or []
     placed_slugs = {r["s"] for r in regs}
-    rule28, zones28 = atlas_mod.plan([p for p in P if p["slug"] in placed_slugs])
+    counts28 = {}
+    for pt28 in ATLAS.get("points") or []:
+        for o28 in (pt28.get("o") or [pt28["s"]]):
+            counts28[o28] = counts28.get(o28, 0) + 1
+    rule28, zones28 = atlas_mod.plan([p for p in P if p["slug"] in placed_slugs], counts28)
     want_c = {slug: atlas_mod.centroid_of(e) for slug, e in rule28.items()}
     T["position"] = {"documents": len(want_c), "pages": 0, "zones": len(zones28), "read_back": 0,
                      "marks": 0, "shared": 0, "outside": 0}
-    words_of = {p["slug"]: p["words"] for p in P}
     def _ang28(a, b):
         d = sum(x * y for x, y in zip(a, b)) / max(1e-9, math.sqrt(sum(x * x for x in a)) * math.sqrt(sum(x * x for x in b)))
         return math.acos(max(-1.0, min(1.0, d)))
@@ -3902,11 +3905,11 @@ def check_site():
         for slug, xyz in got.items():
             w = want_c.get(slug)
             if w and max(abs(a - b) for a, b in zip(xyz, w)) > 2e-3:
-                problems.append(_p("28", "%s: %s sits at %s; its zone, cumulative words and golden-angle longitude put it at %s"
+                problems.append(_p("28", "%s: %s sits at %s; its zone, cumulative sections and golden-angle longitude put it at %s"
                                    % (f, slug, ",".join("%.3f" % v for v in xyz), ",".join("%.3f" % v for v in w))))
                 break
         for surf, (ytop, ybot) in zones28.items():
-            zone = sorted((s2 for s2 in got if rule28.get(s2, {}).get("zone") == surf), key=lambda s2: (-words_of.get(s2, 0), s2))
+            zone = sorted((s2 for s2 in got if rule28.get(s2, {}).get("zone") == surf), key=lambda s2: (-counts28.get(s2, 0), s2))
             prev = None
             for s2 in zone:
                 y = got[s2][1]
@@ -3914,7 +3917,7 @@ def check_site():
                     problems.append(_p("28", "%s: %s is %s work and sits outside its zone" % (f, s2, surf)))
                     break
                 if prev is not None and y > prev[0] + 1e-6:
-                    problems.append(_p("28", "%s: %s has fewer words than %s but sits north of it" % (f, s2, prev[1])))
+                    problems.append(_p("28", "%s: %s has fewer sections than %s but sits north of it" % (f, s2, prev[1])))
                     break
                 prev = (y, s2)
     if regs and os.path.exists(apath):

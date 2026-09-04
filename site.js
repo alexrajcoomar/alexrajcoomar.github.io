@@ -1,5 +1,5 @@
 /* ============================================================
-   Alex Rajcoomar — portfolio
+   Alex Rajcoomar: portfolio
    One script for every page. Hand-written, no dependencies.
 
    Everything here is an enhancement: with JavaScript off the
@@ -1172,6 +1172,7 @@
        scroll event, none while the reader is still. With reduced motion the
        camera holds and only the lighting follows the rows. */
     var wrap = host.closest(".descent-globe");
+    var hdrEl = document.querySelector("header.top"), lastPin = "";
     var rowsD = [];
     (function () {
       if (!docs.length) return;
@@ -1210,6 +1211,11 @@
          when its top clears the block, so the row faced is the row in view
          and never one under the block. Which layout holds is read off the
          boxes, not off a breakpoint. */
+      /* the block pins at the header's lower edge, wherever its rows wrapped to */
+      if (wrap && hdrEl) {
+        var pin = hdrEl.offsetHeight + "px";
+        if (pin !== lastPin) { lastPin = pin; wrap.style.setProperty("--pin-top", pin); }
+      }
       var wr = (wrap || host).getBoundingClientRect();
       var tr0 = rowsD[0].el.closest("table") || rowsD[0].el;
       var sr = tr0.getBoundingClientRect();

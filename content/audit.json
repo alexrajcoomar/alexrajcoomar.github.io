@@ -4,7 +4,7 @@
   "tool": "build/audit.js",
   "browser": "Chromium 141.0.7390.37",
   "date": "2026-09-04",
-  "commit": "20c534c",
+  "commit": "a42eb38",
   "runs": [
    {
     "commit": "21aacf2",
@@ -44,7 +44,7 @@
    "motion": {
     "animations": 0
    },
-   "inputs": "0958d700e69d",
+   "inputs": "a4e1ac3e01c1",
    "measured": "2026-09-04"
   },
   "about.html": {
@@ -77,7 +77,7 @@
    "motion": {
     "animations": 0
    },
-   "inputs": "48e89232fe0d",
+   "inputs": "fa9c85c6fd95",
    "measured": "2026-09-04"
   },
   "afm241-cheat-sheet.html": {
@@ -610,8 +610,8 @@
    },
    "errors": 0,
    "chrome": {
-    "a": 13904,
-    "b": 13859
+    "a": 13954,
+    "b": 13909
    },
    "print": {
     "stickyLeft": 0,
@@ -630,7 +630,7 @@
    "motion": {
     "animations": 0
    },
-   "inputs": "82964c958858",
+   "inputs": "9385cd5c4f5b",
    "measured": "2026-09-04"
   },
   "brittle-network.html": {
@@ -703,7 +703,7 @@
    "motion": {
     "animations": 0
    },
-   "inputs": "4fdc97d3d5b7",
+   "inputs": "13086b0d26a2",
    "measured": "2026-09-04"
   },
   "controls.html": {
@@ -716,8 +716,8 @@
    },
    "errors": 0,
    "chrome": {
-    "a": 3048,
-    "b": 3003
+    "a": 3213,
+    "b": 3168
    },
    "print": {
     "stickyLeft": 0,
@@ -736,7 +736,7 @@
    "motion": {
     "animations": 0
    },
-   "inputs": "68f4a5481d6e",
+   "inputs": "605ae5cc3981",
    "measured": "2026-09-04"
   },
   "coursework.html": {
@@ -769,7 +769,7 @@
    "motion": {
     "animations": 0
    },
-   "inputs": "625a5ce04a95",
+   "inputs": "82e599b8f2d9",
    "measured": "2026-09-04"
   },
   "crucible-cockpit.html": {
@@ -1202,8 +1202,8 @@
    },
    "errors": 0,
    "chrome": {
-    "a": 2215,
-    "b": 2170
+    "a": 2299,
+    "b": 2254
    },
    "print": {
     "stickyLeft": 0,
@@ -1215,6 +1215,20 @@
     "scrollWidth": 320,
     "overflow": false
    },
+   "descent": {
+    "wide": {
+     "rows": 6,
+     "faced": 6,
+     "framesAfter": 0,
+     "framesAtTop": 0
+    },
+    "phone": {
+     "rows": 6,
+     "faced": 6,
+     "framesAfter": 0,
+     "framesAtTop": 0
+    }
+   },
    "keyboard": {
     "stops": 137,
     "noRing": 0
@@ -1222,7 +1236,7 @@
    "motion": {
     "animations": 0
    },
-   "inputs": "e0a468761ec1",
+   "inputs": "a56e36dce545",
    "measured": "2026-09-04"
   },
   "kennedy-dossier.html": {
@@ -1315,7 +1329,7 @@
    "motion": {
     "animations": 0
    },
-   "inputs": "8c378cf956e6",
+   "inputs": "b7c283236f04",
    "measured": "2026-09-04"
   },
   "monroe-case-file.html": {
@@ -1488,7 +1502,7 @@
    "motion": {
     "animations": 0
    },
-   "inputs": "1aa899fdb61f",
+   "inputs": "2712ffe8c309",
    "measured": "2026-09-04"
   },
   "revenue-recognition.html": {
@@ -1621,7 +1635,7 @@
    "motion": {
     "animations": 0
    },
-   "inputs": "b0afd8250472",
+   "inputs": "721ad42bc8f3",
    "measured": "2026-09-04"
   },
   "transformers-study-guide.html": {
