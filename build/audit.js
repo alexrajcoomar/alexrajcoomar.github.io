@@ -11,6 +11,13 @@
      idle   frames requested in the second after the page settled
      fit    whether the document is wider than a 320px viewport
      errors console errors
+   The editor (admin.html), hand-maintained, on its own terms:
+     admin  console errors, uncaught exceptions and failed requests, served
+            from this tree with no connection saved; the tabs, the search and
+            the theme button; what the connection form stores and where; then,
+            connected through a stub of GitHub's API that serves this tree's
+            content and refuses every write, the list, the search, the editor,
+            an edit, the guard without a token, the files and the site text
    On the home page:
      theme     the selector's two states, its one pulse, its settled switch
      corona    the light behind the sphere names the faced row's origin
@@ -30,7 +37,9 @@
    page at its source (an image from another origin, a frame loop, a
    stylesheet that removes the focus ring, a print rule that lets figures
    break, an animation under reduced motion, a 900px block, a build-owned
-   block carrying words, a worker that forgets the saved copy), the same
+   block carrying words, a syntax error in the editor, a stylesheet the
+   editor cannot find, the editor's token written to long-term storage, a
+   worker that forgets the saved copy, a worker that stores the editor), the same
    measurements are taken, and the results go to content/negatives.json
    under "runtime", where the register grades them with the same rule it
    grades the real pages by. A falsification the rule does not fail is a
@@ -102,7 +111,128 @@ const RAF_COUNTER = `(function(){var n=0,o=window.requestAnimationFrame;
   window.requestAnimationFrame=function(cb){n++;return o.call(window,cb)};
   window.__rafReset=function(){n=0};window.__pageRaf=function(){return n};})();`;
 
+/* The editor, admin.html, is hand-maintained and talks to GitHub, so it is
+   measured on its own terms rather than under the rows the generated pages
+   share. Served from this tree with no connection saved, it must load with
+   no console error, no uncaught exception and no failed request, ask nothing
+   of another origin, request no frame while idle, and its tabs and search
+   must answer before a connection exists. Then, connected through a stub of
+   GitHub's API on the same page (this tree's content/pieces.json and file
+   list served back, every write refused), its controls must respond and
+   nothing may be written; the repository stays in this browser and the token
+   in this tab's session only. At 320px nothing may overflow. The numbers it
+   is held to (the pieces, the files, a search's matches) are the tree's own. */
+const EDITOR = 'admin.html';
+async function measureEditor(browser, base) {
+  const rec = {};
+  const content = readJSON(path.join(ROOT, 'content', 'pieces.json'), { pieces: [], site: {} });
+  const files = fs.readdirSync(ROOT).filter(f => { try { return fs.statSync(path.join(ROOT, f)).isFile(); } catch (e) { return false; } });
+  const a = { errors: 0, failed: 0, requests: 0, external: 0, stubbed: 0, writes: 0, idleFrames: -1,
+              tabs: 0, switched: 0, threwUnconnected: 0, themeSwitched: false, themeStored: false,
+              cfgSaved: false, tokenInSession: false, tokenInLocal: true, rows: -1, pieces: (content.pieces || []).length,
+              searched: -1, searchExpected: -1, editorOpened: false, editEnabledPublish: false, promptShown: false,
+              forgotten: false, guardHeld: false, files: -1, filesExpected: -1, siteFields: 0, scrollWidth: 0, overflow: true };
+  const watch = page => {
+    page.on('console', m => { if (m.type() === 'error') a.errors++; });
+    page.on('pageerror', () => { a.errors++; });
+    page.on('response', r => { if (r.status() >= 400) a.failed++; });
+    page.on('requestfailed', () => { a.failed++; });
+    page.on('request', r => { const u = r.url(); a.requests++; if (!u.startsWith(base) && !u.startsWith('data:') && !u.startsWith('https://api.github.com/')) a.external++; });
+    return page.route('https://api.github.com/**', route => {
+      const req = route.request(); const u = new URL(req.url());
+      if (req.method() !== 'GET') { a.writes++; return route.fulfill({ status: 500, contentType: 'application/json', body: '{"message":"the audit refuses writes"}' }); }
+      a.stubbed++;
+      if (u.pathname.endsWith('/contents/content/pieces.json')) return route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ content: fs.readFileSync(path.join(ROOT, 'content', 'pieces.json')).toString('base64') }) });
+      if (u.pathname.indexOf('/git/trees/') >= 0) return route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ tree: files.map(f => ({ path: f, type: 'blob' })) }) });
+      return route.fulfill({ status: 404, contentType: 'application/json', body: '{"message":"Not Found"}' });
+    });
+  };
+  {
+    const ctx = await browser.newContext({ viewport: { width: 1280, height: 800 } });
+    const page = await ctx.newPage();
+    await page.addInitScript(RAF_COUNTER);
+    await watch(page);
+    page.on('dialog', d => { if (d.type() === 'prompt') a.promptShown = true; if (d.type() === 'confirm') d.accept(); else d.dismiss(); });
+    try { await page.goto(base + '/' + EDITOR, { waitUntil: 'networkidle', timeout: 60000 }); } catch (e) { a.errors++; }
+    await page.waitForTimeout(700);
+    a.idleFrames = await page.evaluate(async () => { window.__rafReset(); await new Promise(r => setTimeout(r, 1000)); return window.__pageRaf(); }).catch(() => 99);
+    // the tabs and the search, before any connection exists
+    const before = a.errors;
+    for (const t of ['files', 'text', 'setup', 'pieces']) {
+      a.tabs++;
+      await page.click('.etab[data-tab="' + t + '"]').catch(() => {});
+      await page.waitForTimeout(60);
+      const ok = await page.evaluate(t => {
+        const on = [...document.querySelectorAll('.etab[aria-selected="true"]')].map(b => b.dataset.tab);
+        const panel = document.getElementById('tab-' + t); const shown = !!panel && getComputedStyle(panel).display !== 'none';
+        const others = ['pieces', 'add', 'files', 'text', 'setup'].filter(x => x !== t).every(x => { const p = document.getElementById('tab-' + x); return !p || getComputedStyle(p).display === 'none'; });
+        return on.length === 1 && on[0] === t && shown && others;
+      }, t).catch(() => false);
+      if (ok) a.switched++;
+    }
+    await page.fill('#search', 'x').catch(() => {}); await page.waitForTimeout(60);
+    await page.fill('#search', '').catch(() => {}); await page.waitForTimeout(60);   // cleared, or the list below is counted through this filter
+    a.threwUnconnected = a.errors - before;
+    // the theme button switches the theme and remembers it
+    const t0 = await page.evaluate(() => document.documentElement.getAttribute('data-theme') || '').catch(() => '');
+    await page.click('#themebtn').catch(() => {}); await page.waitForTimeout(60);
+    const t1 = await page.evaluate(() => [document.documentElement.getAttribute('data-theme') || '', (() => { try { return localStorage.getItem('theme') || ''; } catch (e) { return ''; } })()]).catch(() => ['', '']);
+    a.themeSwitched = !!t1[0] && t1[0] !== t0; a.themeStored = !!t1[0] && t1[1] === t1[0];
+    // the connection form: the repository stays in this browser, the token in this tab
+    await page.click('.etab[data-tab="setup"]').catch(() => {});
+    await page.fill('#owner', 'owner').catch(() => {}); await page.fill('#repo', 'repo').catch(() => {});
+    await page.fill('#branch', 'main').catch(() => {}); await page.fill('#tok', 'github_pat_AUDIT_ONLY').catch(() => {});
+    await page.click('#save-setup').catch(() => {});
+    await page.waitForFunction(() => /Connected to|Could not/.test((document.getElementById('status') || {}).textContent || ''), null, { timeout: 15000 }).catch(() => {});
+    const st = await page.evaluate(() => { try { const l = localStorage.getItem('siteeditor.v1') || ''; return { cfg: /"owner":"owner"/.test(l) && /"repo":"repo"/.test(l), tokenInLocal: /github_pat/.test(l), tokenInSession: sessionStorage.getItem('siteeditor.token') === 'github_pat_AUDIT_ONLY' }; } catch (e) { return { cfg: false, tokenInLocal: true, tokenInSession: false }; } }).catch(() => ({ cfg: false, tokenInLocal: true, tokenInSession: false }));
+    a.cfgSaved = st.cfg; a.tokenInLocal = st.tokenInLocal; a.tokenInSession = st.tokenInSession;
+    // the list, the search, the editor, an edit, Publish and its guard
+    a.rows = await page.$$eval('#plist .prow', els => els.length).catch(() => -1);
+    const q = 'afm 291';
+    a.searchExpected = (content.pieces || []).filter(p => [p.t, p.s, p.c, p.k, (p.tags || []).join(' ')].join(' ').toLowerCase().indexOf(q) >= 0).length;
+    await page.fill('#search', q).catch(() => {}); await page.waitForTimeout(60);
+    a.searched = await page.$$eval('#plist .prow', els => els.length).catch(() => -1);
+    await page.fill('#search', '').catch(() => {}); await page.waitForTimeout(60);
+    await page.click('#plist .prow >> nth=0').catch(() => {});
+    const first = (content.pieces || [])[0] || {};
+    a.editorOpened = (await page.$eval('#f_t', el => el.value).catch(() => null)) === first.t;
+    await page.fill('#f_t', (first.t || '') + ' x').catch(() => {}); await page.waitForTimeout(60);
+    a.editEnabledPublish = await page.evaluate(() => !document.getElementById('publish').disabled && !!document.querySelector('#plist .prow[aria-current="true"] .badge.edit') && !document.getElementById('pending').classList.contains('hide')).catch(() => false);
+    await page.click('#publish').catch(() => {}); await page.waitForTimeout(300);   // the note it asks for is declined: nothing is written
+    await page.click('.etab[data-tab="setup"]').catch(() => {}); await page.click('#forget').catch(() => {}); await page.waitForTimeout(60);
+    a.forgotten = await page.evaluate(() => { try { return sessionStorage.getItem('siteeditor.token') === null && document.getElementById('publish').disabled; } catch (e) { return false; } }).catch(() => false);
+    await page.click('.etab[data-tab="pieces"]').catch(() => {}); await page.click('#plist .prow >> nth=0').catch(() => {});
+    await page.fill('#f_t', (first.t || '') + ' xy').catch(() => {}); await page.waitForTimeout(60);
+    await page.click('#publish').catch(() => {}); await page.waitForTimeout(300);
+    const guard = await page.evaluate(() => /token/i.test(document.getElementById('status').textContent) && getComputedStyle(document.getElementById('tab-setup')).display !== 'none').catch(() => false);
+    a.guardHeld = guard && a.writes === 0;
+    // the files and the site text
+    await page.click('.etab[data-tab="files"]').catch(() => {}); await page.waitForTimeout(60);
+    a.filesExpected = files.filter(f => !/^(\.|build\/|\.github\/|content\/)/.test(f)).length;
+    a.files = await page.$$eval('#repolist tr', els => els.length).catch(() => -1);
+    await page.click('.etab[data-tab="text"]').catch(() => {}); await page.waitForTimeout(60);
+    a.siteFields = await page.evaluate(s => { const i = document.getElementById('s_short'); return i && i.value === s ? document.querySelectorAll('#siteform input').length : 0; }, (content.site || {}).short || '').catch(() => 0);
+    await ctx.close();
+  }
+  {
+    const ctx = await browser.newContext({ viewport: { width: 320, height: 844 }, isMobile: true, deviceScaleFactor: 1 });
+    const page = await ctx.newPage();
+    try { await page.goto(base + '/' + EDITOR, { waitUntil: 'networkidle', timeout: 60000 }); } catch (e) { /* measured anyway */ }
+    await page.waitForTimeout(400);
+    a.scrollWidth = await page.evaluate(() => document.documentElement.scrollWidth).catch(() => 0);
+    a.overflow = a.scrollWidth > 320;
+    await ctx.close();
+  }
+  rec.ext = { requests: a.requests, external: a.external };
+  rec.idle = { frames: a.idleFrames };
+  rec.errors = a.errors;
+  rec.fit = { scrollWidth: a.scrollWidth, overflow: a.overflow };
+  rec.admin = a;
+  return rec;
+}
+
 async function measurePage(browser, base, name, shell) {
+  if (name === EDITOR) return measureEditor(browser, base);
   const rec = {};
   // requests, idle frames and console errors at a desktop size
   {
@@ -325,6 +455,9 @@ function copyTree(src, dst) {
 function publish(copy, mutate) {
   const idx = path.join(copy, 'index.html');
   fs.writeFileSync(idx, fs.readFileSync(idx, 'utf8').replace('</body>', '<!-- audit: a publish changed this page --></body>'));
+  // the editor changes too: it must be the published one on the next visit
+  const adm = path.join(copy, EDITOR);
+  if (fs.existsSync(adm)) fs.writeFileSync(adm, fs.readFileSync(adm, 'utf8').replace('</body>', '<!-- audit: a publish changed the editor --></body>'));
   if (mutate) mutate(copy);
   execFileSync('python3', [path.join(copy, 'build', 'build_site.py'), '--offline-only'], { encoding: 'utf8' });
 }
@@ -348,6 +481,10 @@ async function measureOffline(port, mutate) {
     const r = await c.match('index.html'); const t = r ? await r.text() : '';
     return { files: n, of: files.length, marker: t.indexOf('audit: a publish changed this page') >= 0 };
   });
+  // the editor under the worker: reached over the network on every visit and
+  // held in no cache, before the publish and after it
+  const editor = { stored: null, fresh: null };
+  const stored = () => page.evaluate(async () => { for (const k of await caches.keys()) { const c = await caches.open(k); if (await c.match('admin.html')) return true; } return false; }).catch(() => null);
   let before = null, after = null;
   const server1 = serve(ROOT);
   await listen(server1, port);
@@ -358,6 +495,9 @@ async function measureOffline(port, mutate) {
     await page.waitForFunction(() => /is on this device|failed|Could not/.test(document.getElementById('offline-status').textContent), null, { timeout: 180000 });
     await page.waitForTimeout(1500);
     before = await held();
+    await page.goto(base + '/' + EDITOR, { waitUntil: 'networkidle' }); await page.waitForTimeout(500);
+    editor.stored = await stored();
+    await page.goto(base + '/colophon.html', { waitUntil: 'networkidle' });
   } finally {
     await new Promise(r => server1.close(r));
   }
@@ -367,12 +507,15 @@ async function measureOffline(port, mutate) {
     await page.reload({ waitUntil: 'networkidle' }); await page.waitForTimeout(3000);
     await page.reload({ waitUntil: 'networkidle' }); await page.waitForTimeout(4000);
     after = await held();
+    await page.goto(base + '/' + EDITOR, { waitUntil: 'networkidle' }); await page.waitForTimeout(500);
+    editor.fresh = await page.evaluate(() => document.documentElement.outerHTML.indexOf('audit: a publish changed the editor') >= 0).catch(() => false);
+    editor.stored = (await stored()) || editor.stored;
   } finally {
     await new Promise(r => server2.close(r));
   }
   await ctx.close();
   fs.rmSync(tmp, { recursive: true, force: true });
-  return { before: before.files, of: before.of, after: after.files, refreshed: after.marker };
+  return { before: before.files, of: before.of, after: after.files, refreshed: after.marker, editor };
 }
 
 /* The runtime falsifications: a page made false at its source, on a copy of
@@ -402,17 +545,31 @@ const FALSIFICATIONS = [
     apply: h => h.replace('<script src="site.js', '<script>(function(){var s=document.getElementById("atlasmini-docs");if(!s)return;var d=JSON.parse(s.textContent);d.docs.forEach(function(x){if(x.u==="flagged-in-hindsight.html"||x.u==="brittle-network.html")x.o="course";});s.textContent=JSON.stringify(d);})()</script><script src="site.js') },
   { key: 'descent', page: 'index.html', what: "the sphere's document payload names the wrong document for the first two featured rows",
     apply: h => h.replace('"u":"flagged-in-hindsight.html"', '"u":"__swap__"').replace('"u":"crucible-cockpit.html"', '"u":"flagged-in-hindsight.html"').replace('"u":"__swap__"', '"u":"crucible-cockpit.html"') },
+  { key: 'admin', page: 'admin.html', what: "a syntax error in the editor's script",
+    apply: h => h.replace('"use strict";', '"use strict"; this is not javascript;') },
+  { key: 'admin', page: 'admin.html', what: 'the editor links a stylesheet that does not exist',
+    apply: h => h.replace('href="site.css"', 'href="site-editor.css"') },
+  { key: 'admin', page: 'admin.html', what: "the editor writes the token to long-term storage beside the repository",
+    apply: h => h.replace('{ owner: cfg.owner, repo: cfg.repo, branch: cfg.branch }', '{ owner: cfg.owner, repo: cfg.repo, branch: cfg.branch, token: cfg.token }') },
 ];
-const SW_FALSIFICATION = {
-  key: 'offline', page: 'sw.js', what: 'the new worker neither carries the saved copy across nor syncs it, so a publish empties it',
-  mutate: copy => {
-    const bp = path.join(copy, 'build', 'build_site.py');
-    let src = fs.readFileSync(bp, 'utf8');
-    const a = '    await migrate();\n', b = '    if (await c.match(MANIFEST)) await sync(broadcast, false);\n';
-    if (!src.includes(a) || !src.includes(b)) throw new Error('the worker template has moved; the offline falsification cannot be applied');
-    fs.writeFileSync(bp, src.replace(a, '').replace(b, ''));
-  },
-};
+const SW_FALSIFICATIONS = [
+  { what: 'the new worker neither carries the saved copy across nor syncs it, so a publish empties it',
+    mutate: copy => {
+      const bp = path.join(copy, 'build', 'build_site.py');
+      let src = fs.readFileSync(bp, 'utf8');
+      const a = '    await migrate();\n', b = '    if (await c.match(MANIFEST)) await sync(broadcast, false);\n';
+      if (!src.includes(a) || !src.includes(b)) throw new Error('the worker template has moved; the offline falsification cannot be applied');
+      fs.writeFileSync(bp, src.replace(a, '').replace(b, ''));
+    } },
+  { what: 'the worker stores the editor like any other page, so a visit leaves it in the cache',
+    mutate: copy => {
+      const bp = path.join(copy, 'build', 'build_site.py');
+      const src = fs.readFileSync(bp, 'utf8');
+      const a = 'const NEVER_STORED = ["admin.html"];';
+      if (!src.includes(a)) throw new Error('the worker template has moved; the editor falsification cannot be applied');
+      fs.writeFileSync(bp, src.replace(a, 'const NEVER_STORED = [];'));
+    } },
+];
 
 async function falsify(dig) {
   const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'falsify-'));
@@ -440,9 +597,11 @@ async function falsify(dig) {
   await new Promise(r => server.close(r));
   fs.rmSync(tmp, { recursive: true, force: true });
   if (!NO_OFFLINE) {
-    const r = await measureOffline(port, SW_FALSIFICATION.mutate);
-    cases.push({ key: 'offline', page: 'sw.js', what: SW_FALSIFICATION.what, rec: r });
-    process.stdout.write(`falsified offline: ${r.before} held before, ${r.after} after\n`);
+    for (const sw of SW_FALSIFICATIONS) {
+      const r = await measureOffline(port, sw.mutate);
+      cases.push({ key: 'offline', page: 'sw.js', what: sw.what, rec: r });
+      process.stdout.write(`falsified offline: ${r.before} held before, ${r.after} after, the editor ${r.editor && r.editor.stored ? 'stored' : 'not stored'}, ${r.editor && r.editor.fresh ? 'fresh' : 'stale'}\n`);
+    }
   }
   const neg = readJSON(NEG_PATH, {});
   neg.runtime = {
@@ -487,7 +646,7 @@ async function falsify(dig) {
   if (!NO_OFFLINE && !ONLY && (ALL || offlineStale)) {
     const r = await measureOffline(port);
     offline = Object.assign(r, { inputs: dig.sw, measured: new Date().toISOString().slice(0, 10) });
-    process.stdout.write(`offline: ${r.before} files held before a publish, ${r.after} after, the changed page ${r.refreshed ? 'refreshed' : 'not refreshed'}\n`);
+    process.stdout.write(`offline: ${r.before} files held before a publish, ${r.after} after, the changed page ${r.refreshed ? 'refreshed' : 'not refreshed'}; the editor ${r.editor && r.editor.stored === false ? 'held in no cache' : 'stored'}, ${r.editor && r.editor.fresh ? 'fresh after the publish' : 'stale'}\n`);
   }
 
   const out = {

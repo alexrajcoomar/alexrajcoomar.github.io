@@ -6,7 +6,7 @@ This script never touches a piece's own HTML except to give it a way back
 into the site, and it never touches the stylesheet. Run by the GitHub
 Action on every push, so the site relists itself.
 """
-import datetime, hashlib, html, json, math, os, re, struct, sys
+import datetime, hashlib, html, json, math, os, re, shutil, struct, subprocess, sys, tempfile
 
 ROOT    = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 CONTENT = json.load(open(os.path.join(ROOT, "content", "pieces.json"), encoding="utf-8"))
@@ -1613,6 +1613,18 @@ OFFLINE_EXT  = (".html", ".css", ".js", ".woff2", ".webmanifest",
 OFFLINE_SKIP = {"og-card.png", "sw.js", "admin.html", "404.html", "reader.html",
                 "HANDOFF.md", "README.md"}
 
+# The editor is hand-maintained and the build never writes it: not a
+# generated page, not a piece, not a file any pass rewrites. Every pass that
+# walks the tree skips the names here; check 33 holds each file
+# byte-identical to the bytes the build started from, and main() puts those
+# bytes back should anything still have written it. The snapshot is taken
+# at import, before any pass runs.
+PROTECTED = ("admin.html",)
+_PROTECTED_BYTES = {}
+for _f in PROTECTED:
+    _pp = os.path.join(OUT, _f)
+    _PROTECTED_BYTES[_f] = open(_pp, "rb").read() if os.path.exists(_pp) else None
+
 def offline_files():
     root = [f for f in os.listdir(OUT)
             if f.endswith(OFFLINE_EXT) and f not in OFFLINE_SKIP
@@ -2771,7 +2783,7 @@ def add_returns_everywhere():
     every piece regardless, including the converted notes."""
     # the generated pages carry full navigation; the reader edition and the
     # editor are the two other pages that are not pieces
-    shell = set(SHELL_PAGES) | {"reader.html", "admin.html"}
+    shell = set(SHELL_PAGES) | {"reader.html"} | set(PROTECTED)
     where, by_url = {}, {}
     for p in P:
         by_url[p["url"]] = p
@@ -2785,12 +2797,12 @@ def add_returns_everywhere():
             where[p["url"]] = ("coursework.html", "Coursework")
     tools = {p["url"] for p in P if p["k"] == "Tool"}
     n = heads = navs = figs_named = tails = titles = longs = 0
-    # The nav runs over every hand-maintained page, including the two that
-    # carry their own navigation and are skipped below. A page the reader can
-    # land on and cannot leave for the Atlas is the defect being fixed, and
-    # reader.html is exactly such a page.
+    # The nav runs over every hand-maintained page but the protected editor,
+    # reader.html included though it carries its own navigation and is skipped
+    # below. A page the reader can land on and cannot leave for the Atlas is
+    # the defect being fixed, and reader.html is exactly such a page.
     for f in sorted(os.listdir(OUT)):
-        if f.endswith(".html") and f not in SHELL_PAGES:
+        if f.endswith(".html") and f not in SHELL_PAGES and f not in PROTECTED:
             if normalise_nav(os.path.join(OUT, f)):
                 navs += 1
             if own_tail(os.path.join(OUT, f)):
@@ -3288,6 +3300,11 @@ const CORE     = "site-" + VERSION;
 const PAGES    = "site-pages-__PAGES__";
 const MANIFEST = "offline-manifest.json";
 const FILES    = __FILES__;
+// The editor is never served from this cache: an administrative page read
+// from a stale copy would show yesterday's list and publish over today's.
+// It goes to the network every time, is stored by nothing here, and is
+// dropped from any earlier generation that held it.
+const NEVER_STORED = ["admin.html"];
 
 self.addEventListener("install", e => {
   e.waitUntil(
@@ -3331,6 +3348,7 @@ self.addEventListener("activate", e => {
     await self.clients.claim();
     // a saved full copy refreshes itself against the new manifest
     const c = await caches.open(PAGES);
+    for (const f of NEVER_STORED) await c.delete(f);
     if (await c.match(MANIFEST)) await sync(broadcast, false);
   })());
 });
@@ -3340,6 +3358,12 @@ self.addEventListener("fetch", e => {
   if (req.method !== "GET") return;
   const url = new URL(req.url);
   if (url.origin !== location.origin) return;
+  if (NEVER_STORED.indexOf(url.pathname.replace(/^\//, "")) >= 0) {
+    e.respondWith(fetch(req).catch(() =>
+      new Response("The editor is never served from the cache; it needs the network.",
+        { status: 503, headers: { "content-type": "text/plain; charset=utf-8" } })));
+    return;
+  }
 
   // Cache first, refresh behind: a click on a saved page opens from disk
   // with no network wait at all, while the fetch that follows replaces the
@@ -3597,8 +3621,8 @@ def _claims_ctx(problems=()):
     all_pages = list(SHELL_PAGES) + [p["url"] for p in P] + [k + ".html" for k in exceptions()["transcripts"]]
     fired = {m.group(1) for m in (re.match(r"check (\S+):", x) for x in problems) if m}
     return {"tally": getattr(check_site, "tally", {}), "records": getattr(check_site, "records", {}),
-            "shell_pages": list(SHELL_PAGES), "all_pages": all_pages,
-            "audit": claims.audit_state(OUT, set(SHELL_PAGES), all_pages),
+            "shell_pages": list(SHELL_PAGES), "all_pages": all_pages, "aux_pages": list(claims.AUX),
+            "audit": claims.audit_state(OUT, set(SHELL_PAGES), all_pages + list(claims.AUX)),
             "negatives": claims.negatives_state(ROOT), "fired": fired, "problems": []}
 
 
@@ -4664,6 +4688,119 @@ def check_site():
             if lost:
                 t31["missing"] += len(lost)
                 problems.append(_p("31", f"{f}: a figure draws {', '.join(lost[:5])}, which the page's text does not restate"))
+    # 33. the editor. admin.html is hand-maintained and the build never
+    # writes it. Held here: the file is byte-identical to the bytes this run
+    # started from; it is a whole document (the doctype at one end, </html> at
+    # the other, every script and style block closed); every stylesheet,
+    # script and local asset it references resolves to a file here; every
+    # custom property its own styles read is defined by a stylesheet it loads
+    # or by the page; every element id its script names as a literal is in
+    # its markup; each inline script parses (node --check, when node is on
+    # the path; the tally says whether it was, and without node the
+    # falsification for it is missed and the row prints untested); it invites
+    # no index (noindex on the page, Disallow in robots.txt); the worker the
+    # build writes never stores it and the offline copy never lists it. What
+    # the page does when opened (console errors, exceptions, failed requests,
+    # its controls) is the audit's to measure, under the register's editor
+    # row.
+    t33 = T["editor"] = {"files": 0, "bytes": 0, "rewritten": 0, "refs": 0, "broken": 0, "tokens": 0,
+                         "undefined": 0, "ids": 0, "missing": 0, "scripts": 0, "unparsed": 0,
+                         "parsed_by": "node" if shutil.which("node") else "none"}
+
+    def _scripts_parse(text):
+        # Only the blocks a browser runs as script: one carrying a type that is
+        # not JavaScript is data (a JSON payload is the case on the generated
+        # pages) and is not parsed as a program.
+        node = shutil.which("node")
+        bad = []
+        for i, m in enumerate(re.finditer(r"<script\b([^>]*)>(.*?)</script>", text, re.S | re.I)):
+            attrs, src = m.group(1), m.group(2)
+            mt = re.search(r'\btype\s*=\s*"([^"]*)"', attrs, re.I)
+            if mt and mt.group(1).strip().lower() not in ("", "text/javascript", "application/javascript", "module"):
+                continue
+            if not src.strip():
+                continue
+            t33["scripts"] += 1
+            if not node:
+                continue
+            fd, tmp = tempfile.mkstemp(suffix=".js")
+            with os.fdopen(fd, "w", encoding="utf-8") as fh:
+                fh.write(src)
+            try:
+                r = subprocess.run([node, "--check", tmp], capture_output=True, text=True, timeout=60)
+            finally:
+                os.unlink(tmp)
+            if r.returncode != 0:
+                lines = [ln.strip() for ln in (r.stderr or "").strip().splitlines() if ln.strip()]
+                why = next((ln for ln in lines if "Error" in ln), lines[0] if lines else "did not parse")
+                bad.append((i + 1, why[:120]))
+        return bad
+
+    for f in PROTECTED:
+        look("33", f)
+        path = os.path.join(OUT, f)
+        if not os.path.exists(path):
+            problems.append(_p("33", f"{f}: missing"))
+            continue
+        raw = open(path, "rb").read()
+        text = raw.decode("utf-8", errors="ignore")
+        t33["files"] += 1
+        t33["bytes"] += len(raw)
+        was = _PROTECTED_BYTES.get(f)
+        if was is None:
+            problems.append(_p("33", f"{f}: was not on disk when the build started"))
+        elif raw != was:
+            t33["rewritten"] += 1
+            problems.append(_p("33", f"{f}: the build rewrote it ({len(was):,} bytes became {len(raw):,}); no build step may write the editor"))
+        stripped = text.strip()
+        if not stripped.lower().startswith("<!doctype html>") or not stripped.lower().endswith("</html>"):
+            problems.append(_p("33", f"{f}: is not a whole document; it must open with the doctype and close with </html>"))
+        for tag in ("script", "style"):
+            opened = len(re.findall(r"<%s\b" % tag, text, re.I))
+            closed = len(re.findall(r"</%s>" % tag, text, re.I))
+            if opened != closed:
+                problems.append(_p("33", f"{f}: {opened} <{tag}> tags open and {closed} close"))
+        prose = re.sub(r"<(script|style)\b[^>]*>.*?</\1>", "", text, flags=re.S | re.I)
+        for m in re.finditer(r'(?:href|src)="([^"]+)"', prose):
+            u = local(m.group(1))
+            if u:
+                t33["refs"] += 1
+                if u not in files:
+                    t33["broken"] += 1
+                    problems.append(_p("33", f"{f}: references {u}, which is not a file here"))
+        defined = set(re.findall(r"(--[A-Za-z0-9_-]+)\s*:", text))
+        for sheet in re.findall(r'<link rel="stylesheet" href="([^"?]+)', text):
+            sp = os.path.join(OUT, sheet)
+            if os.path.exists(sp):
+                defined |= set(re.findall(r"(--[A-Za-z0-9_-]+)\s*:", open(sp, encoding="utf-8", errors="ignore").read()))
+        for tok in sorted(set(re.findall(r"var\((--[A-Za-z0-9_-]+)", text))):
+            t33["tokens"] += 1
+            if tok not in defined:
+                t33["undefined"] += 1
+                problems.append(_p("33", f"{f}: reads {tok}, which no stylesheet it loads defines"))
+        ids = set(re.findall(r'\bid="([^"]+)"', prose))
+        for name in sorted(set(re.findall(r"(?:\$|getElementById)\(\s*'([A-Za-z][\w-]*)'\s*\)", text))):
+            t33["ids"] += 1
+            if name not in ids:
+                t33["missing"] += 1
+                problems.append(_p("33", f"{f}: its script asks for #{name}, which its markup does not carry"))
+        for which, why in _scripts_parse(text):
+            t33["unparsed"] += 1
+            problems.append(_p("33", f"{f}: script block {which} does not parse: {why}"))
+        if not re.search(r'<meta name="robots" content="[^"]*noindex', text):
+            problems.append(_p("33", f"{f}: carries no noindex"))
+    robots33 = page_robots()
+    m33 = re.search(r"const NEVER_STORED\s*=\s*\[(.*?)\]", SW_TEMPLATE, re.S)
+    never33 = set(re.findall(r'"([^"]+)"', m33.group(1))) if m33 else set()
+    off33 = set(offline_files())
+    for f in PROTECTED:
+        if f"Disallow: /{f}" not in robots33:
+            problems.append(_p("33", f"robots.txt: does not disallow /{f}"))
+        if f not in never33:
+            problems.append(_p("33", f"sw.js: the worker the build writes does not name {f} among the files it never stores"))
+        if f in off33:
+            problems.append(_p("33", f"offline-manifest.json: the offline copy lists {f}"))
+
     # 29. every glyph on the controls page is a record. The page wall and the
     # falsification ledger are parsed back from the rendered page and each
     # glyph is compared with the record it stands for: the check's per-page
@@ -4680,7 +4817,7 @@ def check_site():
         cctx = _claims_ctx(problems)
         st29, R29 = cctx["audit"], check_site.records
         decl29 = set(DECLARED.get("overflow") or [])
-        rt_keys = {"E": "ext", "I": "idle", "K": "keyboard", "P": "print", "M": "motion", "F": "fit", "C": "chrome", "D": "descent", "T": "theme", "H": "corona"}
+        rt_keys = {lab: key for key, lab in claims.RUNTIME_COLS}
         wall = re.search(r'<table class="inst" id="page-wall">(.*?)</table>', ctext, re.S)
         if not wall:
             problems.append(_p("29", "controls.html: carries no page wall"))
@@ -4708,14 +4845,8 @@ def check_site():
                         exp = "" if v is None else ("#" if v else "x")
                     else:
                         key = rt_keys.get(lab)
-                        if key in ("keyboard", "print", "motion", "theme"):
-                            applies = page in SHELL_PAGES
-                        elif key == "chrome":
-                            applies = page not in SHELL_PAGES
-                        elif key in ("descent", "corona"):
-                            applies = page == "index.html"
-                        else:
-                            applies = key is not None
+                        # which pages a runtime key applies to is said once, in claims.py
+                        applies = key is not None and page in claims.runtime_pages(key, SHELL_PAGES, cctx["all_pages"], cctx["aux_pages"])
                         if not applies:
                             exp = ""
                         elif page in st29["fresh"] and st29["fresh"][page].get(key) is not None:
@@ -4728,7 +4859,7 @@ def check_site():
                         if shown < 5:
                             shown += 1
                             problems.append(_p("29", f"controls.html: {page} under {lab} shows {glyph!r}, the record says {exp!r}"))
-            all29 = set(cctx["all_pages"])
+            all29 = set(cctx["all_pages"]) | set(cctx["aux_pages"])
             if seen_pages != all29:
                 problems.append(_p("29", "controls.html: the wall lists %d pages, the site has %d" % (len(seen_pages), len(all29))))
             foot = re.search(r'<tr class="isum"><th scope="row" class="ip">pages the check looked at</th>(.*?)</tr>', wall.group(1), re.S)
@@ -4990,7 +5121,7 @@ def main():
 
     for f, css in OVERFLOWING.items():
         path = os.path.join(OUT, f)
-        if os.path.exists(path):
+        if os.path.exists(path) and f not in PROTECTED:
             fit_mobile(path, css)
 
     n, heads, navs, figs_named, tails, titles = add_returns_everywhere()
@@ -5046,6 +5177,17 @@ def main():
         if open(pth, encoding="utf-8").read() != started_with[pth] and name not in changed:
             changed.append(name)
     check_site.register = summary
+
+    # the editor is never the build's to write: should any pass have changed
+    # a protected file, the bytes the build started from go back, and check
+    # 33 has already refused the build that did it
+    for _f, _was in _PROTECTED_BYTES.items():
+        _pth = os.path.join(OUT, _f)
+        _now = open(_pth, "rb").read() if os.path.exists(_pth) else None
+        if _was is not None and _now != _was:
+            open(_pth, "wb").write(_was)
+            problems.append(_p("33", f"{_f}: restored from the bytes the build started with"))
+            problems = sorted(set(problems))
 
     write_offline(changed)
 

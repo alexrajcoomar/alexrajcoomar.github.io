@@ -4,7 +4,7 @@
   "tool": "build/audit.js",
   "browser": "Chromium 141.0.7390.37",
   "date": "2026-09-04",
-  "commit": "edb8ab9",
+  "commit": "f6df0fc",
   "runs": [
    {
     "commit": "21aacf2",
@@ -103,6 +103,53 @@
     "animations": 0
    },
    "inputs": "9085846a2969",
+   "measured": "2026-09-04"
+  },
+  "admin.html": {
+   "ext": {
+    "requests": 5,
+    "external": 0
+   },
+   "idle": {
+    "frames": 0
+   },
+   "errors": 0,
+   "fit": {
+    "scrollWidth": 320,
+    "overflow": false
+   },
+   "admin": {
+    "errors": 0,
+    "failed": 0,
+    "requests": 5,
+    "external": 0,
+    "stubbed": 2,
+    "writes": 0,
+    "idleFrames": 0,
+    "tabs": 4,
+    "switched": 4,
+    "threwUnconnected": 0,
+    "themeSwitched": true,
+    "themeStored": true,
+    "cfgSaved": true,
+    "tokenInSession": true,
+    "tokenInLocal": false,
+    "rows": 65,
+    "pieces": 65,
+    "searched": 25,
+    "searchExpected": 25,
+    "editorOpened": true,
+    "editEnabledPublish": true,
+    "promptShown": true,
+    "forgotten": true,
+    "guardHeld": true,
+    "files": 125,
+    "filesExpected": 125,
+    "siteFields": 13,
+    "scrollWidth": 320,
+    "overflow": false
+   },
+   "inputs": "df145382e3c0",
    "measured": "2026-09-04"
   },
   "afm241-cheat-sheet.html": {
@@ -1839,11 +1886,15 @@
   }
  },
  "offline": {
-  "before": 182,
-  "of": 182,
-  "after": 182,
+  "before": 183,
+  "of": 183,
+  "after": 183,
   "refreshed": true,
-  "inputs": "7e296fe63007",
-  "measured": "2026-09-03"
+  "editor": {
+   "stored": false,
+   "fresh": true
+  },
+  "inputs": "4743e020054b",
+  "measured": "2026-09-04"
  }
 }

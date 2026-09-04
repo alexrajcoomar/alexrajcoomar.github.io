@@ -30,10 +30,13 @@ NEG_PATH = os.path.join(ROOT, "content", "negatives.json")
 DECL_PATH = os.path.join(ROOT, "content", "declared.json")
 SHELL = ["index.html", "research.html", "coursework.html", "tools.html", "library.html",
          "atlas.html", "about.html", "colophon.html", "controls.html", "404.html"]
+# the pages the register measures that are neither generated nor pieces: the
+# editor, hand-maintained, measured on its own terms under the editor row
+AUX = ["admin.html"]
 # the code a runtime falsification exercises: the audit, this module's
-# aggregators, and what the pages run; the worker is read with its per-build
-# constants removed
-RUNTIME_CODE = ["build/audit.js", "build/claims.py", "site.js", "site.css", "atlas.js"]
+# aggregators, what the pages run, and the editor's page (its falsifications
+# edit it); the worker is read with its per-build constants removed
+RUNTIME_CODE = ["build/audit.js", "build/claims.py", "site.js", "site.css", "atlas.js", "admin.html"]
 
 
 def esc(s):
@@ -101,6 +104,12 @@ def page_input_digest(out_dir, name, shell):
             dp = os.path.join(out_dir, dep)
             if os.path.exists(dp):
                 h.update(open(dp, "rb").read())
+    elif name in AUX:
+        # the editor loads the site's stylesheet and nothing else of the site's
+        h.update(raw.encode("utf-8"))
+        dp = os.path.join(out_dir, "site.css")
+        if os.path.exists(dp):
+            h.update(open(dp, "rb").read())
     else:
         raw = re.sub(r"\?v=[0-9a-f]{8}", "", raw)
         h.update(raw.encode("utf-8"))
@@ -180,7 +189,32 @@ def page_ok(key, rec, declared_overflow=()):
     if key == "theme":
         return (r.get("options") == 2 and r.get("pressed") == 1 and bool(r.get("pulsed")) and bool(r.get("pulseEnded"))
                 and not r.get("repeated", True) and bool(r.get("switched")) and r.get("framesAfterSwitch", 1) == 0 and bool(r.get("focusRing")))
+    if key == "admin":
+        return (r.get("errors", 1) == 0 and r.get("failed", 1) == 0 and r.get("external", 1) == 0 and r.get("idleFrames", 1) == 0
+                and r.get("tabs", 0) > 0 and r.get("switched", -1) == r.get("tabs") and r.get("threwUnconnected", 1) == 0
+                and bool(r.get("themeSwitched")) and bool(r.get("themeStored"))
+                and bool(r.get("cfgSaved")) and bool(r.get("tokenInSession")) and not r.get("tokenInLocal", True)
+                and r.get("pieces", 0) > 0 and r.get("rows", -1) == r.get("pieces") and r.get("searched", -1) == r.get("searchExpected", -2)
+                and bool(r.get("editorOpened")) and bool(r.get("editEnabledPublish")) and bool(r.get("promptShown"))
+                and bool(r.get("forgotten")) and bool(r.get("guardHeld"))
+                and r.get("files", 0) > 0 and r.get("files", -1) == r.get("filesExpected", -2) and r.get("siteFields", 0) > 0
+                and r.get("writes", 1) == 0 and not r.get("overflow", True))
     return None
+
+
+def runtime_pages(key, shell, allp, aux=()):
+    """The pages one runtime claim is made about: said once, here, and read
+    by the register's rows, the wall and check 29."""
+    shell = list(shell)
+    if key in ("keyboard", "print", "motion", "theme"):
+        return shell
+    if key == "chrome":
+        return [p for p in allp if p not in shell]
+    if key in ("descent", "corona"):
+        return ["index.html"]
+    if key == "admin":
+        return list(aux)
+    return list(allp)
 
 
 def _runtime(state, key, pages):
@@ -248,11 +282,31 @@ def agg(key, recs, names, declared_overflow=()):
                 f"and repeated on a second visit on {rep}; the switch changed the theme on {sw}, with {fr} frames requested in the second after settling; "
                 f"a focus ring on the offer from the keyboard on {ring}",
                 two == len(rs) and pulsed == len(rs) and rep == 0 and sw == len(rs) and fr == 0 and ring == len(rs))
+    if key == "admin":
+        r = rs[0] if rs else {}
+        ok = page_ok("admin", {"admin": r})
+        kept = bool(r.get("cfgSaved")) and bool(r.get("tokenInSession")) and not r.get("tokenInLocal", True)
+        return (f"served from this tree with no connection saved: {r.get('errors', 0)} console errors or uncaught exceptions, "
+                f"{r.get('failed', 0)} failed requests, {r.get('external', 0)} requests to another origin, {r.get('idleFrames', 0)} idle frames; "
+                f"{r.get('switched', 0)} of {r.get('tabs', 0)} tabs switched and the search answered before a connection, {r.get('threwUnconnected', 0)} exceptions; "
+                f"the theme button {'switched the theme and it was remembered' if r.get('themeSwitched') and r.get('themeStored') else 'did not switch the theme'}; "
+                f"the connection form kept the repository in this browser and the token in this tab only: {'yes' if kept else 'no'}; "
+                f"connected through a stub of GitHub: {r.get('rows', 0)} of {r.get('pieces', 0)} recorded pieces listed, "
+                f"a search matched {r.get('searched', 0)} of {r.get('searchExpected', 0)}, "
+                f"the editor {'opened on the first piece' if r.get('editorOpened') else 'did not open'}, "
+                f"an edit {'marked it and enabled Publish' if r.get('editEnabledPublish') else 'did not enable Publish'}, "
+                f"Publish {'asked for a note' if r.get('promptShown') else 'asked for nothing'}, "
+                f"forgetting the token {'disabled Publish' if r.get('forgotten') else 'did not disable Publish'}, "
+                f"and without a token Publish {'stopped at the Connection tab' if r.get('guardHeld') else 'did not stop'}; "
+                f"{r.get('files', 0)} of {r.get('filesExpected', 0)} files listed, {r.get('siteFields', 0)} site text fields; "
+                f"{r.get('writes', 0)} writes attempted; {r.get('scrollWidth', 0)}px wide at 320px", bool(ok))
     return ("", False)
 
 
 def offline_ok(off):
-    return bool(off) and off.get("before", 0) > 0 and off.get("after", 0) >= off.get("before", 0) and off.get("refreshed") is True
+    ed = (off or {}).get("editor") or {}
+    return (bool(off) and off.get("before", 0) > 0 and off.get("after", 0) >= off.get("before", 0) and off.get("refreshed") is True
+            and ed.get("stored") is False and ed.get("fresh") is True)
 
 
 # ----------------------------------------------------------- negatives --
@@ -325,6 +379,7 @@ def build(ctx):
     fired = set(ctx.get("fired") or ())
     shell = ctx["shell_pages"]
     allp = ctx["all_pages"]
+    aux = ctx.get("aux_pages") or []
     decl = declared()
     rows = []
 
@@ -427,47 +482,58 @@ def build(ctx):
             note="Whether the gate operated on a given publish is visible on the repository's Actions page, not here: a run that fails leaves no page to print it on.")
 
     # --- measured in a browser, per page, with a fingerprint of what was measured ---
-    def rt(claim, key, pages, where):
+    def rt(claim, key, pages, where, note=None):
         recs, missing = _runtime(state, key, pages)
         cases = neg["runtime"].get(key, [])
         when, gate = _when_false(cases)
         if not recs:
-            rows.append(_row(claim, "build/audit.js", [], f"for this build: {len(pages)} pages to measure", "open", where, None, when, key))
+            rows.append(_row(claim, "build/audit.js", [], f"for this build: {len(pages)} pages to measure", "open", where, note, when, key))
             return
         text, ok = agg(key, [r for _, r in recs], [p for p, _ in recs], decl.get("overflow") or [])
         if missing:
             text += f"; {len(missing)} of {len(pages)} pages not measured for this build"
         if not ok:
-            status, note = "failed", None
+            status = "failed"
             ctx["problems"].append("register: a measured claim fails: %s (%s)" % (claim, text))
         elif gate:
-            status, note = "untested", gate.capitalize() + "."
+            status, note = "untested", (note + " " if note else "") + gate.capitalize() + "."
         else:
-            status, note = "held", None
+            status = "held"
         rows.append(_row(claim, "build/audit.js", [], text, status, where, note, when, key))
 
-    rt("At runtime the pages request nothing from another origin.", "ext", allp, ["index.html", "colophon.html"])
-    rt("Nothing on a page moves while the reader is idle: no frame is requested once a page has loaded.", "idle", allp, ["atlas.html", "index.html"])
-    rt("Focus is visible at every keyboard stop on the generated pages.", "keyboard", shell, ["colophon.html"])
-    rt("The generated pages print: sticky elements release, nothing stays hidden, figures do not break across pages.", "print", shell, ["colophon.html"])
-    rt("Reduced motion is respected: nothing animates for a reader who asked for none.", "motion", shell, ["colophon.html"])
-    rt("Every page fits a 320px viewport, except the pages declared in content/declared.json, each of which must still need the exception.", "fit", allp, ["colophon.html"])
-    rt("The word count leaves out the site's own chrome around a piece.", "chrome", [p for p in allp if p not in shell], ["colophon.html"])
+    rt("At runtime the pages request nothing from another origin.", "ext", runtime_pages("ext", shell, allp, aux), ["index.html", "colophon.html"])
+    rt("Nothing on a page moves while the reader is idle: no frame is requested once a page has loaded.", "idle", runtime_pages("idle", shell, allp, aux), ["atlas.html", "index.html"])
+    rt("Focus is visible at every keyboard stop on the generated pages.", "keyboard", runtime_pages("keyboard", shell, allp, aux), ["colophon.html"])
+    rt("The generated pages print: sticky elements release, nothing stays hidden, figures do not break across pages.", "print", runtime_pages("print", shell, allp, aux), ["colophon.html"])
+    rt("Reduced motion is respected: nothing animates for a reader who asked for none.", "motion", runtime_pages("motion", shell, allp, aux), ["colophon.html"])
+    rt("Every page fits a 320px viewport, except the pages declared in content/declared.json, each of which must still need the exception.", "fit", runtime_pages("fit", shell, allp, aux), ["colophon.html"])
+    rt("The word count leaves out the site's own chrome around a piece.", "chrome", runtime_pages("chrome", shell, allp, aux), ["colophon.html"])
     rt("The home sphere turns to face the document whose featured row is at the reading line, at desktop and phone widths, carried by a critically damped spring that settles within 700ms of the last scroll, after which no frame is requested.",
-       "descent", ["index.html"], ["index.html"])
+       "descent", runtime_pages("descent", shell, allp, aux), ["index.html"])
     rt("The light behind the home sphere takes the hue of the faced document's recorded origin, the field the statement sorts by, and names no origin when nothing is faced.",
-       "corona", ["index.html"], ["index.html"])
+       "corona", runtime_pages("corona", shell, allp, aux), ["index.html"])
     rt("The theme selector is an offer, not an icon: two named states, Obsidian and Archival light, one pressed; a single soft pulse on the first visit from a browser and none after; a switch that settles with no frame requested; a focus ring on the offer from the keyboard.",
-       "theme", shell, ["index.html"])
+       "theme", runtime_pages("theme", shell, allp, aux), ["index.html"])
+    rt("The editor, admin.html, loads with no console error, no uncaught exception and no failed request, asks nothing of another origin until it is connected, "
+       "requests no frame while idle, and its controls respond: the tabs and the search before a connection exists, the theme button, the connection form "
+       "keeping the repository in this browser and the token in this tab only, and, connected through a stub of GitHub that refuses every write, "
+       "the list of every recorded piece, the search, the editor, an edit that enables Publish, the guard that holds Publish without a token, "
+       "the files and the site text; nothing is written.",
+       "admin", runtime_pages("admin", shell, allp, aux), ["controls.html"],
+       note="Measured on this tree's copy, served locally, with GitHub stubbed. On the live site the editor talks to GitHub, and a refusal there "
+            "(a rate limit, an expired token) logs one resource error in the console that the page reports in its own words.")
 
     off = state.get("offline")
     cases = neg["runtime"].get("offline", [])
     when, gate = _when_false(cases)
-    claim = "A saved offline copy survives a publish, and the file that changed is refreshed in it."
+    claim = "A saved offline copy survives a publish, the file that changed is refreshed in it, and the editor is never served from it."
     if off:
         ok = offline_ok(off)
+        ed = off.get("editor") or {}
+        edt = ("not measured" if not ed else "served from the network on both visits and held in no cache"
+               if (ed.get("stored") is False and ed.get("fresh") is True) else "held in the cache" if ed.get("stored") else "served stale after the publish")
         text = (f"{off.get('before', 0)} files held before a simulated publish, {off.get('after', 0)} after, "
-                f"the changed page {'refreshed' if off.get('refreshed') else 'not refreshed'}")
+                f"the changed page {'refreshed' if off.get('refreshed') else 'not refreshed'}; the editor {edt}")
         status = "failed" if not ok else ("untested" if gate else "held")
         if not ok:
             ctx["problems"].append("register: the offline claim fails: %s" % json.dumps(off))
@@ -484,6 +550,17 @@ def build(ctx):
     checked("Every number a figure on the generated pages draws is restated in the page's text outside the drawing.", ["31"],
             f"{n(t.get('numerals', 0))} numerals drawn by {t.get('figures', 0)} figures on {t.get('pages', 0)} pages, {t.get('missing', 0)} not restated",
             ["research.html", "index.html", "colophon.html"])
+
+    t = T.get("editor", {})
+    checked("The editor, admin.html, exists and the build never writes it: every stylesheet, script and local asset it references resolves to a file, "
+            "every custom property its styles read is defined by the stylesheet it loads, every element id its script names is in its markup, "
+            "its script parses, the worker never stores it, the offline copy never lists it, and no index is invited to it.", ["33"],
+            f"{t.get('files', 0)} file of {n(t.get('bytes', 0))} bytes, {t.get('rewritten', 0)} rewritten by the build; {t.get('refs', 0)} references, {t.get('broken', 0)} broken; "
+            f"{t.get('tokens', 0)} custom properties read, {t.get('undefined', 0)} undefined; {t.get('ids', 0)} element ids named, {t.get('missing', 0)} missing; "
+            f"{t.get('scripts', 0)} scripts, {t.get('unparsed', 0)} that do not parse"
+            + (" (parsed by node)" if t.get("parsed_by") == "node" else " (node was not on the path, so parsing was not checked)"),
+            ["controls.html"],
+            note="Hand-maintained, so the em dash rule and the head rewrite leave it alone; what it does when opened is the editor row below, measured in a browser.")
 
     # --- asserted: no check exists ---
     # (none this build: the two claims that stood here are checks 30 and 31)
@@ -564,7 +641,7 @@ def render(rows, summary, audit_meta, neg_state=None):
 # --------------------------------------------------------- the instrument --
 GLYPH = {"held": "#", "failed": "x", "stale": "?", "declared": "~", "none": ""}
 GLYPH_CLASS = {"held": "g-h", "failed": "g-x", "stale": "g-q", "declared": "g-d", "none": "g-n"}
-RUNTIME_COLS = [("ext", "E"), ("idle", "I"), ("keyboard", "K"), ("print", "P"), ("motion", "M"), ("fit", "F"), ("chrome", "C"), ("descent", "D"), ("theme", "T"), ("corona", "H")]
+RUNTIME_COLS = [("ext", "E"), ("idle", "I"), ("keyboard", "K"), ("print", "P"), ("motion", "M"), ("fit", "F"), ("chrome", "C"), ("descent", "D"), ("theme", "T"), ("corona", "H"), ("admin", "A")]
 
 
 def _sort_key(cid):
@@ -580,12 +657,13 @@ def matrix(ctx):
     state = ctx["audit"]
     shell = ctx["shell_pages"]
     allp = ctx["all_pages"]
+    aux = ctx.get("aux_pages") or []
     decl = set((declared().get("overflow")) or [])
-    listed = set(allp)
+    listed = set(allp) | set(aux)
     cols = [(cid, cid, "build") for cid in sorted(R, key=_sort_key) if any(p in listed for p in R[cid])]
     cols += [(k, lab, "runtime") for k, lab in RUNTIME_COLS]
     rows = []
-    for page in allp:
+    for page in list(allp) + [p for p in aux if p not in allp]:
         cells = {}
         for cid, _lab, kind in cols:
             if kind == "build":
@@ -596,9 +674,7 @@ def matrix(ctx):
                     v = None
                 cells[cid] = "none" if v is None else ("held" if v else "failed")
             else:
-                applies = ((page in shell) if cid in ("keyboard", "print", "motion", "theme")
-                           else (page not in shell) if cid == "chrome"
-                           else (page == "index.html") if cid in ("descent", "corona") else True)
+                applies = page in runtime_pages(cid, shell, allp, aux)
                 if not applies:
                     cells[cid] = "none"
                 elif page in state["fresh"] and state["fresh"][page].get(cid) is not None:
@@ -641,7 +717,8 @@ def render_instrument(ctx, page_titles=None):
     head = "".join(f'<th scope="col" class="ic ic-{kind}"><span>{esc(lab)}</span></th>' for _cid, lab, kind in cols)
     body = []
     for page, cells in rows:
-        kind = "shell" if page in ctx["shell_pages"] else ("record" if page in (declared().get("records") or []) else "piece")
+        kind = ("shell" if page in ctx["shell_pages"] else "editor" if page in (ctx.get("aux_pages") or [])
+                else "record" if page in (declared().get("records") or []) else "piece")
         tds = "".join(f'<td class="g {GLYPH_CLASS[cells[cid]]}">{GLYPH[cells[cid]]}</td>' for cid, _l, _k in cols)
         body.append(f'<tr class="ir ir-{kind}"><th scope="row" class="ip"><a href="{esc(page)}">{esc(page)}</a></th>{tds}</tr>')
     foot_cov = "".join(f'<td class="is">{covered[c[0]]}</td>' for c in cols)
@@ -670,7 +747,7 @@ def render_instrument(ctx, page_titles=None):
     key = ('<p class="inst-key"><code>#</code> held on that page for this build &middot; <code>x</code> failed &middot; '
            '<code>?</code> not measured for this build &middot; <code>~</code> held by a declared exception &middot; '
            'blank: the check does not look at that page. Columns: the build\'s checks by number; E requests from another origin, '
-           'I idle frames, K keyboard focus, P print media, M reduced motion, F fit at 320px, C the chrome exclusion, D the descent on the home page, T the theme selector, H the corona\'s hue, O the offline copy.</p>')
+           'I idle frames, K keyboard focus, P print media, M reduced motion, F fit at 320px, C the chrome exclusion, D the descent on the home page, T the theme selector, H the corona\'s hue, A the editor, O the offline copy.</p>')
     return key + wall + ledg, {"pages": len(rows), "columns": len(cols), "glyphs": total_cells, "held": total_held,
                               "failed": total_failed, "stale": total_stale, "falsifications": nc, "caught": ncaught}
 
@@ -720,7 +797,7 @@ def _cli(argv):
     listed = [p.get("url") or (p["slug"] + ".html") for p in content["pieces"]]
     slugs = {p["slug"] for p in content["pieces"]}
     transcripts = sorted(k + ".html" for k in metrics if k not in slugs and os.path.exists(os.path.join(ROOT, k + ".html")))
-    pages = [f for f in SHELL + listed + transcripts if os.path.exists(os.path.join(ROOT, f))]
+    pages = [f for f in SHELL + AUX + listed + transcripts if os.path.exists(os.path.join(ROOT, f))]
     dig = {"shell": SHELL, "pages": {f: page_input_digest(ROOT, f, f in SHELL) for f in pages},
            "sw": sw_input_digest(ROOT), "runtime_code": runtime_code_digest(ROOT)}
     if "--digests" in argv:

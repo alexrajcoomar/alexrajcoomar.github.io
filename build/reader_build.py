@@ -8,6 +8,13 @@ at the installed app and the full copy."""
 import json, re, os, base64, html, io, datetime
 
 os.chdir(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+# The editor is hand-maintained and no build writes it. This script writes one
+# file and reads the listed pieces; the name it writes is held against the
+# protected list rather than assumed, so no future edition of this script can
+# land its output on the editor. Same list as build/build_site.py's PROTECTED.
+PROTECTED = ('admin.html',)
+
 P = json.load(open('content/pieces.json'))['pieces']
 M = json.load(open('content/metrics.json'))
 
@@ -307,5 +314,6 @@ document.body.className+=' js';
 </html>'''
 # the reader edition lives beside the pieces it embeds; the script chdir'd to the repository root above
 out = 'reader.html'
+assert out not in PROTECTED, 'the reader edition may not be written over %s' % out
 open(out, 'w', encoding='utf-8').write(page)
 print("written:", out, "%.1f MB" % (len(page)/1048576))

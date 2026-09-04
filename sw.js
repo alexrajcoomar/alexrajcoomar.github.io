@@ -13,7 +13,7 @@
    this worker's to delete. */
 const VERSION  = "0545d2eb1dc4";
 const CORE     = "site-" + VERSION;
-const PAGES    = "site-pages-8d8a35e6a26c";
+const PAGES    = "site-pages-5c36061f0a46";
 const MANIFEST = "offline-manifest.json";
 const FILES    = [
   "daily-learning-cockpit-192.png",
@@ -29,6 +29,11 @@ const FILES    = [
   "skill-forge.html",
   "skill-forge.webmanifest"
 ];
+// The editor is never served from this cache: an administrative page read
+// from a stale copy would show yesterday's list and publish over today's.
+// It goes to the network every time, is stored by nothing here, and is
+// dropped from any earlier generation that held it.
+const NEVER_STORED = ["admin.html"];
 
 self.addEventListener("install", e => {
   e.waitUntil(
@@ -72,6 +77,7 @@ self.addEventListener("activate", e => {
     await self.clients.claim();
     // a saved full copy refreshes itself against the new manifest
     const c = await caches.open(PAGES);
+    for (const f of NEVER_STORED) await c.delete(f);
     if (await c.match(MANIFEST)) await sync(broadcast, false);
   })());
 });
@@ -81,6 +87,12 @@ self.addEventListener("fetch", e => {
   if (req.method !== "GET") return;
   const url = new URL(req.url);
   if (url.origin !== location.origin) return;
+  if (NEVER_STORED.indexOf(url.pathname.replace(/^\//, "")) >= 0) {
+    e.respondWith(fetch(req).catch(() =>
+      new Response("The editor is never served from the cache; it needs the network.",
+        { status: 503, headers: { "content-type": "text/plain; charset=utf-8" } })));
+    return;
+  }
 
   // Cache first, refresh behind: a click on a saved page opens from disk
   // with no network wait at all, while the fetch that follows replaces the
