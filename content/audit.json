@@ -4,7 +4,14 @@
   "tool": "build/audit.js",
   "browser": "Chromium 141.0.7390.37",
   "date": "2026-09-04",
-  "commit": "20c534c"
+  "commit": "20c534c",
+  "runs": [
+   {
+    "commit": "21aacf2",
+    "date": "2026-09-04",
+    "audit": "kept"
+   }
+  ]
  },
  "pages": {
   "404.html": {
