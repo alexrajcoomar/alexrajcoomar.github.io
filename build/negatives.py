@@ -192,7 +192,7 @@ CASES = [
     C("26", "number-without-record", "the footer carries a counted number whose value no record holds",
       lambda t: _edit(t, BS, "<b>{md(TOTAL_FIGS, \"figures\")}</b> figures", "<b>{md(TOTAL_FIGS + 7, \"figures\")}</b> figures")),
     C("27", "channel-unnamed", "the home sphere declares a channel the Atlas key does not name",
-      lambda t: _edit(t, "site.js", 'var CHANNELS = ["ind", "cou", "per", "too", "shr", "vis", "lnk", "dsc", "zon"];', 'var CHANNELS = ["ind", "cou", "per", "too", "shr", "vis", "lnk", "dsc", "zon", "halo"];')),
+      lambda t: _edit(t, "site.js", 'var CHANNELS = ["ind", "cou", "per", "too", "shr", "vis", "lnk", "dsc", "zon", "aut", "cor"];', 'var CHANNELS = ["ind", "cou", "per", "too", "shr", "vis", "lnk", "dsc", "zon", "aut", "cor", "halo"];')),
     C("28", "placed-by-lattice", "documents are spread over the sphere by the old even lattice instead of settled by their sections",
       lambda t: _edit(t, "build/atlas.py", '    cents = {p["slug"]: centroid_of(rule[p["slug"]]) for p in order}\n',
                       '    cents = dict(zip([p["slug"] for p in order], _fib_sphere(len(order))))\n')),
@@ -214,6 +214,10 @@ CASES = [
       lambda t: _json(t, "build/figures.json", lambda d: d["fs-wlc"]["meanings"].pop("--outside"))),
     C("31", "numbers-not-restated", "the lifted figures no longer restate the numbers they draw",
       lambda t: _edit(t, BS, "          {figure_restated(fid, href)}\n", "")),
+    C("32", "author-unplaced", "the author is left off the sphere: no entry, no zone, no anchor",
+      lambda t: _edit(t, "build/atlas.py", "    if AUTHOR:\n", "    if AUTHOR and False:\n")),
+    C("32", "author-card-inflated", "the author's card claims seven words more than the featured pieces hold",
+      lambda t: _edit(t, BS, "{f['words']:,} words, {f['figures']} figures", "{f['words'] + 7:,} words, {f['figures']} figures")),
 ]
 
 

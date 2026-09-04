@@ -49,6 +49,10 @@
   --edge:         #8a847c;   /*  3.5:1 on paper, 3.3:1 on panel */
   --logo-chip:    transparent; /* behind the university mark; cream in dark */
   --accent:       #14509b;   /*  7.4:1 on paper */
+  /* the other face's paper, ink and accent, for the selector's preview swatch */
+  --alt-paper:    #0d0e11;
+  --alt-ink:      #f3f3f0;
+  --alt-accent:   #8fb6ee;
   --accent-2:     #1a5fb4;
   /* The second accent means one thing: a link one document's prose makes
      to another. It is the colour of the chords on both spheres, of the key
@@ -134,6 +138,9 @@
     --logo-chip:   #faf9f6;
     --accent:      #8fb6ee;
     --accent-2:    #b2ccf5;
+    --alt-paper:   #faf9f6;
+    --alt-ink:     #16150f;
+    --alt-accent:  #14509b;
     --link:#bfa2ff;   /* 9.0:1 on paper, 7.9 on panel-2 */
     --tool:        #4fc4a6;
     --ref:         #dbab5d;
@@ -153,6 +160,9 @@
   --logo-chip:   #faf9f6;
   --accent:      #8fb6ee;
   --accent-2:    #b2ccf5;
+  --alt-paper:   #faf9f6;
+  --alt-ink:     #16150f;
+  --alt-accent:  #14509b;
     --link:#bfa2ff;   /* 9.0:1 on paper, 7.9 on panel-2 */
   --tool:        #4fc4a6;
   --ref:         #dbab5d;
@@ -682,7 +692,7 @@ footer.site .fine b{font-weight:600;color:var(--ink-2)}
 /* ------------------------------- print ------------------------------- */
 @media print{
   :root{--paper:#fff;--panel:#fff;--ink:#000;--ink-2:#333;--ink-3:#555;--rule:#ccc;--rule-strong:#999;--accent:#000}
-  header.top,.iconbtn,.cmdk,.tools-bar,footer.site .cols{display:none !important}
+  header.top,.iconbtn,.themesel,.cmdk,.tools-bar,footer.site .cols{display:none !important}
   body{font-size:10.5pt}
   .row,.feature,.course,li,figure,.spec,.plot{break-inside:avoid}
   a[href^="http"]::after{content:" (" attr(href) ")";font-size:8pt;color:#555}
@@ -1345,10 +1355,48 @@ nav.main a[aria-current="page"]{border-bottom-color:transparent}
   100%{background:transparent}
 }
 
-/* ---------------------------- the theme button ---------------- */
-#themebtn{transition:transform var(--t-in) var(--ease-move),
-  color var(--t-fast) ease,border-color var(--t-fast) ease}
-#themebtn:active{transform:rotate(180deg)}
+/* ---------------------------- the theme selector --------------
+   Two named states in one group. The pressed chip is the theme in
+   force, in ink on paper; the other chip is the offer, legible as a
+   word and carrying a dot of the palette it would bring. Hover or
+   focus the offer and the dot opens into a three-colour swatch of that
+   palette (its paper, ink and accent), so the switch says what it does
+   before it is pressed. */
+.themesel{display:inline-flex;align-items:center;margin-left:.45rem;padding:.14rem;
+  border:1px solid var(--edge);border-radius:var(--radius);background:color-mix(in srgb,var(--paper) 70%,transparent)}
+.tsel{font:inherit;font-size:.66rem;font-weight:660;letter-spacing:.1em;text-transform:uppercase;line-height:1;
+  cursor:pointer;background:none;color:var(--ink-2);border:0;border-radius:calc(var(--radius) - 2px);
+  padding:.36rem .55rem;display:inline-flex;align-items:center;gap:.42rem;white-space:nowrap;
+  transition:color var(--t-fast) ease,background var(--t-fast) ease}
+.tsel i{width:.56rem;height:.56rem;border-radius:50%;flex:none;border:1px solid var(--ink-3);
+  background:linear-gradient(90deg,var(--alt-paper) 50%,var(--alt-ink) 50%);
+  transition:width var(--t-in) var(--ease-move),border-radius var(--t-in) var(--ease-move)}
+.tsel[aria-pressed="true"]{background:var(--ink);color:var(--paper);cursor:default}
+.tsel[aria-pressed="true"] i{background:var(--paper);border-color:var(--paper);width:.4rem;height:.4rem}
+.tsel[aria-pressed="false"]:hover{color:var(--ink);background:var(--panel)}
+.tsel[aria-pressed="false"]:hover i,.tsel[aria-pressed="false"]:focus-visible i{width:1.35rem;border-radius:2px;
+  background:linear-gradient(90deg,var(--alt-paper) 0 34%,var(--alt-ink) 34% 67%,var(--alt-accent) 67%)}
+.tsel:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+/* the first visit: one soft glow on the offer, 1.6s, once, and never again from this browser */
+@keyframes tsel-pulse{
+  0%{box-shadow:0 0 0 0 color-mix(in srgb,var(--accent) 0%,transparent)}
+  40%{box-shadow:0 0 0 8px color-mix(in srgb,var(--accent) 36%,transparent)}
+  100%{box-shadow:0 0 0 0 color-mix(in srgb,var(--accent) 0%,transparent)}
+}
+.themesel[data-pulse="1"] .tsel[aria-pressed="false"]{animation:tsel-pulse 1.6s var(--ease-weight) .5s 1 both}
+/* the switch: an exposure change, 320ms decelerating, then still. A view
+   transition where the browser has one; elsewhere every colour property
+   moves together for the same 320ms and the class comes off. */
+::view-transition-old(root),::view-transition-new(root){animation-duration:.32s;animation-timing-function:var(--ease-weight)}
+html.theme-switching,html.theme-switching *,html.theme-switching *::before,html.theme-switching *::after{
+  transition:background-color .32s var(--ease-weight),color .32s var(--ease-weight),border-color .32s var(--ease-weight),
+  fill .32s var(--ease-weight),stroke .32s var(--ease-weight),box-shadow .32s var(--ease-weight) !important}
+/* on a narrow bar only the offer is shown: the theme in force is the page itself */
+@media (max-width:36rem){
+  .themesel{padding:0;border:0;background:none}
+  .tsel[aria-pressed="true"]{display:none}
+  .tsel[aria-pressed="false"]{border:1px solid var(--edge);padding:.4rem .5rem}
+}
 
 /* ---------------------------- feature tiles ------------------- */
 .feature{transition:background var(--t-fast) ease,border-color var(--t-fast) ease}
@@ -1361,9 +1409,11 @@ nav.main a[aria-current="page"]{border-bottom-color:transparent}
 @media (prefers-reduced-motion:reduce){
   .row::after,.row .title,.row .num,
   .cf-bar i,.corpusfig .cf-row rect,.corpusfig .cf-row text,
-  nav.main .navink,#themebtn,.totop,.feature,.feature h3,.feature h4{
+  nav.main .navink,.tsel,.tsel i,.totop,.feature,.feature h3,.feature h4{
     transition:none !important
   }
+  .themesel[data-pulse] .tsel{animation:none !important}
+  ::view-transition-old(root),::view-transition-new(root){animation:none !important}
   :target{animation:none}
   .totop{transition:opacity .01s}
 }
@@ -1534,6 +1584,16 @@ body.atlas-free .atlas-h1{font-size:clamp(1.2rem,1.7vw,1.42rem);max-width:24em;
   background:var(--link)}
 /* a document's disc: a hairline ring; the zone parallel: a dashed rule */
 .ak-dsc{background:none;border:1px solid var(--ink-2);width:.7rem;height:.7rem}
+/* the author's anchor: ink, ringed in the chord colour; the corona: its three hues */
+.ak-aut{background:var(--ink);box-shadow:0 0 0 2px var(--paper),0 0 0 3px var(--link)}
+.ak-cor{width:.95rem;height:.6rem;border-radius:2px;background:linear-gradient(90deg,#6d5ce0 0 34%,#2e6fe0 34% 67%,#b98a4c 67%)}
+:root:where(:not([data-theme="dark"])) .ak-cor{background:linear-gradient(90deg,#c9b27a 0 34%,#e6dcbc 34% 67%,#c9bfa6 67%)}
+@media (prefers-color-scheme:dark){:root:where(:not([data-theme="light"])) .ak-cor{background:linear-gradient(90deg,#6d5ce0 0 34%,#2e6fe0 34% 67%,#b98a4c 67%)}}
+/* the author's card in the index: a native disclosure */
+.acard{margin:.4rem 0 .2rem;font-size:.85rem}
+.acard summary{cursor:pointer;color:var(--accent);font-weight:560}
+.acard summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.acard-p{margin:.35rem 0 0;color:var(--ink-2);line-height:1.5}
 .ak-zon{width:.85rem;height:0;border-radius:0;background:none;border-top:1px dashed var(--ink-2);margin-top:.3rem}
 /* the one entry that needs a sentence gets its own line and hangs its swatch */
 .akey-list li.akey-wide{flex:1 1 100%;align-items:flex-start}

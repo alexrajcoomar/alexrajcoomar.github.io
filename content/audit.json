@@ -4,7 +4,7 @@
   "tool": "build/audit.js",
   "browser": "Chromium 141.0.7390.37",
   "date": "2026-09-04",
-  "commit": "a5ec047",
+  "commit": "edb8ab9",
   "runs": [
    {
     "commit": "21aacf2",
@@ -38,13 +38,23 @@
     "overflow": false
    },
    "keyboard": {
-    "stops": 25,
+    "stops": 26,
     "noRing": 0
+   },
+   "theme": {
+    "options": 2,
+    "pressed": 1,
+    "pulsed": true,
+    "pulseEnded": true,
+    "repeated": false,
+    "switched": true,
+    "framesAfterSwitch": 0,
+    "focusRing": true
    },
    "motion": {
     "animations": 0
    },
-   "inputs": "e4ff22c545e9",
+   "inputs": "b58e87eb992b",
    "measured": "2026-09-04"
   },
   "about.html": {
@@ -71,13 +81,23 @@
     "overflow": false
    },
    "keyboard": {
-    "stops": 30,
+    "stops": 31,
     "noRing": 0
+   },
+   "theme": {
+    "options": 2,
+    "pressed": 1,
+    "pulsed": true,
+    "pulseEnded": true,
+    "repeated": false,
+    "switched": true,
+    "framesAfterSwitch": 0,
+    "focusRing": true
    },
    "motion": {
     "animations": 0
    },
-   "inputs": "6e8100da7ed8",
+   "inputs": "9085846a2969",
    "measured": "2026-09-04"
   },
   "afm241-cheat-sheet.html": {
@@ -610,8 +630,8 @@
    },
    "errors": 0,
    "chrome": {
-    "a": 14056,
-    "b": 14011
+    "a": 14231,
+    "b": 14186
    },
    "print": {
     "stickyLeft": 0,
@@ -624,13 +644,23 @@
     "overflow": false
    },
    "keyboard": {
-    "stops": 32,
+    "stops": 33,
     "noRing": 0
+   },
+   "theme": {
+    "options": 2,
+    "pressed": 1,
+    "pulsed": true,
+    "pulseEnded": true,
+    "repeated": false,
+    "switched": true,
+    "framesAfterSwitch": 0,
+    "focusRing": true
    },
    "motion": {
     "animations": 0
    },
-   "inputs": "21c348bc6fa8",
+   "inputs": "0f66cebc0969",
    "measured": "2026-09-04"
   },
   "brittle-network.html": {
@@ -697,13 +727,23 @@
     "overflow": false
    },
    "keyboard": {
-    "stops": 44,
+    "stops": 45,
     "noRing": 0
+   },
+   "theme": {
+    "options": 2,
+    "pressed": 1,
+    "pulsed": true,
+    "pulseEnded": true,
+    "repeated": false,
+    "switched": true,
+    "framesAfterSwitch": 0,
+    "focusRing": true
    },
    "motion": {
     "animations": 0
    },
-   "inputs": "b5de2e2cab9c",
+   "inputs": "4f543421c3c5",
    "measured": "2026-09-04"
   },
   "controls.html": {
@@ -716,8 +756,8 @@
    },
    "errors": 0,
    "chrome": {
-    "a": 3304,
-    "b": 3259
+    "a": 3605,
+    "b": 3560
    },
    "print": {
     "stickyLeft": 0,
@@ -730,13 +770,23 @@
     "overflow": false
    },
    "keyboard": {
-    "stops": 107,
+    "stops": 108,
     "noRing": 0
+   },
+   "theme": {
+    "options": 2,
+    "pressed": 1,
+    "pulsed": true,
+    "pulseEnded": true,
+    "repeated": false,
+    "switched": true,
+    "framesAfterSwitch": 0,
+    "focusRing": true
    },
    "motion": {
     "animations": 0
    },
-   "inputs": "fdaf00c73456",
+   "inputs": "983cca85dd01",
    "measured": "2026-09-04"
   },
   "coursework.html": {
@@ -763,13 +813,23 @@
     "overflow": false
    },
    "keyboard": {
-    "stops": 70,
+    "stops": 71,
     "noRing": 0
+   },
+   "theme": {
+    "options": 2,
+    "pressed": 1,
+    "pulsed": true,
+    "pulseEnded": true,
+    "repeated": false,
+    "switched": true,
+    "framesAfterSwitch": 0,
+    "focusRing": true
    },
    "motion": {
     "animations": 0
    },
-   "inputs": "36e2ceb5e2a3",
+   "inputs": "2e65da3dd717",
    "measured": "2026-09-04"
   },
   "crucible-cockpit.html": {
@@ -1202,8 +1262,8 @@
    },
    "errors": 0,
    "chrome": {
-    "a": 2309,
-    "b": 2264
+    "a": 2314,
+    "b": 2269
    },
    "print": {
     "stickyLeft": 0,
@@ -1219,24 +1279,48 @@
     "wide": {
      "rows": 6,
      "faced": 6,
+     "framesSettle": 0,
      "framesAfter": 0,
      "framesAtTop": 0
     },
     "phone": {
      "rows": 6,
      "faced": 6,
+     "framesSettle": 0,
      "framesAfter": 0,
      "framesAtTop": 0
     }
    },
+   "corona": {
+    "wide": {
+     "rows": 6,
+     "matched": 6,
+     "atTop": "none"
+    },
+    "phone": {
+     "rows": 6,
+     "matched": 6,
+     "atTop": "none"
+    }
+   },
    "keyboard": {
-    "stops": 137,
+    "stops": 138,
     "noRing": 0
+   },
+   "theme": {
+    "options": 2,
+    "pressed": 1,
+    "pulsed": true,
+    "pulseEnded": true,
+    "repeated": false,
+    "switched": true,
+    "framesAfterSwitch": 0,
+    "focusRing": true
    },
    "motion": {
     "animations": 0
    },
-   "inputs": "a7bb9adaebff",
+   "inputs": "ef0ecbbcf5e1",
    "measured": "2026-09-04"
   },
   "kennedy-dossier.html": {
@@ -1323,13 +1407,23 @@
     "overflow": false
    },
    "keyboard": {
-    "stops": 99,
+    "stops": 100,
     "noRing": 0
+   },
+   "theme": {
+    "options": 2,
+    "pressed": 1,
+    "pulsed": true,
+    "pulseEnded": true,
+    "repeated": false,
+    "switched": true,
+    "framesAfterSwitch": 0,
+    "focusRing": true
    },
    "motion": {
     "animations": 0
    },
-   "inputs": "7e742aeaf9ad",
+   "inputs": "534330d1d6af",
    "measured": "2026-09-04"
   },
   "monroe-case-file.html": {
@@ -1496,13 +1590,23 @@
     "overflow": false
    },
    "keyboard": {
-    "stops": 74,
+    "stops": 75,
     "noRing": 0
+   },
+   "theme": {
+    "options": 2,
+    "pressed": 1,
+    "pulsed": true,
+    "pulseEnded": true,
+    "repeated": false,
+    "switched": true,
+    "framesAfterSwitch": 0,
+    "focusRing": true
    },
    "motion": {
     "animations": 0
    },
-   "inputs": "bad9a2517ff2",
+   "inputs": "ccf3b0aaa021",
    "measured": "2026-09-04"
   },
   "revenue-recognition.html": {
@@ -1629,13 +1733,23 @@
     "overflow": false
    },
    "keyboard": {
-    "stops": 34,
+    "stops": 35,
     "noRing": 0
+   },
+   "theme": {
+    "options": 2,
+    "pressed": 1,
+    "pulsed": true,
+    "pulseEnded": true,
+    "repeated": false,
+    "switched": true,
+    "framesAfterSwitch": 0,
+    "focusRing": true
    },
    "motion": {
     "animations": 0
    },
-   "inputs": "fdec321919da",
+   "inputs": "4eb10f717dd7",
    "measured": "2026-09-04"
   },
   "transformers-study-guide.html": {

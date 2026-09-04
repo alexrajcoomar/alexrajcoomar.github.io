@@ -12,6 +12,8 @@
      fit    whether the document is wider than a 320px viewport
      errors console errors
    On the home page:
+     theme     the selector's two states, its one pulse, its settled switch
+     corona    the light behind the sphere names the faced row's origin
      descent   each featured row scrolled to the reading line at 1440 and
                at 390: the document the sphere faces, and the frames
                requested once the scroll has stopped
@@ -183,7 +185,7 @@ async function measurePage(browser, base, name, shell) {
       await page.addStyleTag({ content: 'html{scroll-behavior:auto!important}' });
       await page.waitForTimeout(600);
       const rows = await page.$$eval('#statement table.st tr.item', trs => trs.map(tr => tr.querySelector('th a').textContent.trim()));
-      let faced = 0, framesAfter = 0;
+      let faced = 0, framesAfter = 0, framesSettle = 0, corMatched = 0;
       const aim = async title => page.evaluate(t => {
         const wrap = document.querySelector('.descent-globe'); const wb = wrap ? wrap.getBoundingClientRect() : null;
         const tr = [...document.querySelectorAll('#statement table.st tr.item')].find(x => x.querySelector('th a').textContent.trim() === t);
@@ -205,11 +207,24 @@ async function measurePage(browser, base, name, shell) {
         }
         const facing = await page.evaluate(() => { const h = document.getElementById('atlasmini'); return h ? h.getAttribute('data-facing') : null; });
         if (facing === title) faced++;
+        // the spring settles within half a second of the last scroll; the
+        // frames it takes are recorded, and after 700ms none may follow
+        framesSettle += await page.evaluate(async () => { window.__rafReset(); await new Promise(r => setTimeout(r, 700)); return window.__pageRaf(); }).catch(() => 99);
         framesAfter += await page.evaluate(async () => { window.__rafReset(); await new Promise(r => setTimeout(r, 1000)); return window.__pageRaf(); }).catch(() => 99);
+        // the corona names the faced row's recorded origin
+        const cor = await page.evaluate(t => {
+          const h = document.getElementById('atlasmini');
+          const tr = [...document.querySelectorAll('#statement table.st tr.item')].find(x => x.querySelector('th a').textContent.trim() === t);
+          return { drawn: h ? h.getAttribute('data-corona') : null, row: tr ? tr.getAttribute('data-o') : null };
+        }, title).catch(() => ({ drawn: null, row: null }));
+        if (cor.drawn && cor.drawn === cor.row) corMatched++;
       }
-      await page.evaluate(() => window.scrollTo(0, 0)); await page.waitForTimeout(300);
+      await page.evaluate(() => window.scrollTo(0, 0)); await page.waitForTimeout(700);
       const framesAtTop = await page.evaluate(async () => { window.__rafReset(); await new Promise(r => setTimeout(r, 1000)); return window.__pageRaf(); }).catch(() => 99);
-      rec.descent[shape.key] = { rows: rows.length, faced, framesAfter, framesAtTop };
+      const corTop = await page.evaluate(() => { const h = document.getElementById('atlasmini'); return h ? h.getAttribute('data-corona') : null; }).catch(() => null);
+      rec.descent[shape.key] = { rows: rows.length, faced, framesSettle, framesAfter, framesAtTop };
+      rec.corona = rec.corona || {};
+      rec.corona[shape.key] = { rows: rows.length, matched: corMatched, atTop: corTop };
       await ctx.close();
     }
   }
@@ -242,6 +257,42 @@ async function measurePage(browser, base, name, shell) {
         if (!info.ok) noRing++;
       }
       rec.keyboard = { stops: seen.length, noRing };
+      await ctx.close();
+    }
+    // the theme selector: two named states, one of them pressed; a pulse on
+    // the first visit that ends, and none on the second; a switch that
+    // changes the theme and requests no frame once it has settled; a
+    // focus ring on the offer when reached from the keyboard
+    {
+      const ctx = await browser.newContext({ viewport: { width: 1280, height: 800 } });
+      const page = await ctx.newPage();
+      await page.addInitScript(RAF_COUNTER);
+      try { await page.goto(base + '/' + name, { waitUntil: 'networkidle', timeout: 60000 }); } catch (e) { /* measured anyway */ }
+      const theme = { options: 0, pressed: 0, pulsed: false, pulseEnded: false, repeated: true, switched: false, framesAfterSwitch: -1, focusRing: false };
+      const sel = await page.evaluate(() => {
+        const g = document.getElementById('themesel'); if (!g) return null;
+        const opts = [...g.querySelectorAll('.tsel')];
+        return { options: opts.length, pressed: opts.filter(o => o.getAttribute('aria-pressed') === 'true').length, pulsed: g.getAttribute('data-pulse') === '1' };
+      }).catch(() => null);
+      if (sel) {
+        theme.options = sel.options; theme.pressed = sel.pressed; theme.pulsed = sel.pulsed;
+        await page.waitForTimeout(3000);
+        theme.pulseEnded = await page.evaluate(() => !document.getElementById('themesel').hasAttribute('data-pulse') && document.getAnimations().filter(a => a.playState === 'running').length === 0).catch(() => false);
+        for (let i = 0; i < 16; i++) {
+          await page.keyboard.press('Tab'); await page.waitForTimeout(60);
+          const on = await page.evaluate(() => { const el = document.activeElement; if (!el || !el.classList.contains('tsel') || el.getAttribute('aria-pressed') === 'true') return null; const cs = getComputedStyle(el); return (parseFloat(cs.outlineWidth) > 0 && cs.outlineStyle !== 'none') || (cs.boxShadow && cs.boxShadow !== 'none'); }).catch(() => null);
+          if (on !== null) { theme.focusRing = !!on; break; }
+        }
+        const before = await page.evaluate(() => document.documentElement.getAttribute('data-theme') || '');
+        await page.click('#themesel .tsel[aria-pressed="false"]').catch(() => {});
+        await page.waitForTimeout(500);
+        const after = await page.evaluate(() => document.documentElement.getAttribute('data-theme') || '');
+        theme.switched = !!after && after !== before;
+        theme.framesAfterSwitch = await page.evaluate(async () => { window.__rafReset(); await new Promise(r => setTimeout(r, 1000)); return window.__pageRaf(); }).catch(() => 99);
+        try { await page.reload({ waitUntil: 'networkidle', timeout: 60000 }); } catch (e) { /* measured anyway */ }
+        theme.repeated = await page.evaluate(() => document.getElementById('themesel').getAttribute('data-pulse') === '1').catch(() => true);
+      }
+      rec.theme = theme;
       await ctx.close();
     }
     // reduced motion: nothing animating after load
@@ -343,6 +394,12 @@ const FALSIFICATIONS = [
     apply: h => h.replace('</body>', '<p id="__meta-negative">words the count must leave out</p></body>') },
   { key: 'descent', page: 'index.html', what: 'a script keeps requesting frames after the scroll has stopped',
     apply: h => h.replace('</body>', '<script>addEventListener("scroll",function(){(function f(){requestAnimationFrame(f)})()},{passive:true})</script></body>') },
+  { key: 'theme', page: 'index.html', what: 'the first-visit pulse repeats on every visit',
+    apply: h => h.replace('<script src="site.js', '<script>try{localStorage.removeItem("theme.seen")}catch(e){}</script><script src="site.js') },
+  { key: 'theme', page: 'index.html', what: 'a switch of theme starts a loop that keeps requesting frames',
+    apply: h => h.replace('</body>', '<script>document.addEventListener("click",function(e){if(e.target.closest&&e.target.closest(".tsel"))(function f(){requestAnimationFrame(f)})()})</script></body>') },
+  { key: 'corona', page: 'index.html', what: "the sphere's payload records the wrong origin for two featured documents, so the corona names an origin the row does not have",
+    apply: h => h.replace('<script src="site.js', '<script>(function(){var s=document.getElementById("atlasmini-docs");if(!s)return;var d=JSON.parse(s.textContent);d.docs.forEach(function(x){if(x.u==="flagged-in-hindsight.html"||x.u==="brittle-network.html")x.o="course";});s.textContent=JSON.stringify(d);})()</script><script src="site.js') },
   { key: 'descent', page: 'index.html', what: "the sphere's document payload names the wrong document for the first two featured rows",
     apply: h => h.replace('"u":"flagged-in-hindsight.html"', '"u":"__swap__"').replace('"u":"crucible-cockpit.html"', '"u":"flagged-in-hindsight.html"').replace('"u":"__swap__"', '"u":"crucible-cockpit.html"') },
 ];

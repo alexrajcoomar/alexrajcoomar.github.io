@@ -38,7 +38,7 @@
      check 27 holds this list and the key on the page to each other, so a
      channel drawn without a key entry, or a key entry nothing draws, fails
      the build. The label stages carry their own keys beside them. */
-  var CHANNELS = ["ind", "per", "cou", "too", "shr", "vis", "lnk", "dsc", "zon"];
+  var CHANNELS = ["ind", "per", "cou", "too", "shr", "vis", "lnk", "dsc", "zon", "aut", "cor"];
   /* Narrow: the sphere leads and the index follows. Tiny: there is no clear
      ring around the sphere to put type in at all. A tablet is the first and
      not the second. */
@@ -989,6 +989,12 @@
       } else if (p.r.surface === "course") {
         ctx.strokeStyle = tone2(C.cou, Math.min(1, a * 1.25));
         ctx.lineWidth = 1.15; ctx.stroke();
+      } else if (p.r.surface === "author") {
+        /* the author's anchor: ink, ringed in the chord colour */
+        ctx.fillStyle = tone2(C.ink, Math.min(1, a + 0.2)); ctx.fill();
+        ctx.beginPath();
+        ctx.arc(p.sx, p.sy, rad + 2.4, 0, Math.PI * 2);
+        ctx.strokeStyle = tone2(C.lnk, Math.min(1, a)); ctx.lineWidth = 1; ctx.stroke();
       } else if (p.r.kind === "Tool") {
         ctx.fillStyle = tone2(C.too, a); ctx.fill();
       } else {

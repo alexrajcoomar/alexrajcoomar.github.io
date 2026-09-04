@@ -210,7 +210,15 @@ def harvest(out_dir, pieces):
 # sections lie on an equal-area spiral inside its disc. Every step is a
 # formula of the counts, so check 28 recomputes the whole sphere and refuses
 # one that disagrees.
-ZONE_ORDER = ("independent", "course", "personal")
+ZONE_ORDER = ("author", "independent", "course", "personal")
+# The author is the register's last entry, and an origin of his own: one
+# section, one zone of latitude with the area of its share, a cap at the north
+# pole above his own independent work (the zones run north to south, and a
+# one-section zone can only be a cap at a pole: a band that thin holds no
+# disc), one disc at the floor, one mark at the centre of its spiral. Set by the build from content/pieces.json; nothing
+# here is typed. A copy of the tree that leaves this None has no author on the
+# sphere, which check 32 refuses.
+AUTHOR = None
 GOLDEN = math.pi * (3.0 - math.sqrt(5.0))
 CAP_MIN = 0.05
 # a disc holds this fraction of its document's share of the area; the rest of
@@ -486,6 +494,13 @@ def build(out_dir, pieces):
     works with no JavaScript, a screen reader gets every section, and there is
     no separate asset that can drift out of step with the documents."""
     sections, wrote = harvest(out_dir, pieces)
+    if AUTHOR:
+        # the author's anchor: a section of the about page, the heading that
+        # names him, owned by a document of one section with its own origin
+        sections.append({"t": AUTHOR["t"], "url": AUTHOR["url"], "id": AUTHOR["id"],
+                         "slug": "author", "lvl": 1, "w": 0})
+        pieces = list(pieces) + [{"slug": "author", "surface": "author", "t": AUTHOR["t"],
+                                  "url": AUTHOR["url"], "k": "Author", "c": "", "d": ""}]
     points, regions, zones = place(sections, pieces)
     return {"points": points, "regions": regions, "zones": zones}, wrote
 
@@ -540,13 +555,16 @@ def facts(points, regions):
         cnt[p["s"]] = cnt.get(p["s"], 0) + 1
 
     F["total"] = len(points)
-    F["docs"] = len(regions)
+    # the author's anchor is a mark and an entry, not a document of the corpus
+    F["authorN"] = sum(1 for r in regions if r["surface"] == "author")
+    F["docs"] = len(regions) - F["authorN"]
     # the six tool marks are catalogue titles placed whole, not harvested
     # headings, and their links carry no fragment. Label 01 has to say so or
     # it is false twice: once about what a mark is, once about where a click
     # lands. Both counts come from the data, not from a constant.
+    surfA = {r["s"]: r["surface"] for r in regions}
     F["toolN"] = sum(1 for p in points if "#" not in p["u"])
-    F["headN"] = len(points) - F["toolN"]
+    F["headN"] = len(points) - F["toolN"] - sum(1 for p in points if surfA.get(p["s"]) == "author")
     F["shared"] = sum(1 for p in points if p["n"] > 1)
     lv = {}
     for p in points:
@@ -564,7 +582,7 @@ def facts(points, regions):
                 not t[0].isdigit(),
                 p["l"] == 2,
                 -abs(len(t) - 46))
-    F["one"] = max((p for p in points if p["n"] == 1), key=_readable_score)
+    F["one"] = max((p for p in points if p["n"] == 1 and surf0.get(p["s"]) != "author"), key=_readable_score)
     F["oneDoc"] = by[F["one"]["s"]]["t"]
 
     # 1b — the flagship: the largest independent document, and one readable
@@ -713,7 +731,10 @@ def facts(points, regions):
                 bestf, besty = f, y
         y += 0.01
     above = [p for p in points if p["p"][1] >= besty]
-    exc = [p for p in above if surf.get(p["s"]) != "independent"]
+    # the author's anchor at the pole is above the line by rule and is
+    # neither independent work nor an exception to it
+    F["authorAbove"] = sum(1 for p in above if surf.get(p["s"]) == "author")
+    exc = [p for p in above if surf.get(p["s"]) not in ("independent", "author")]
     ec = {}
     for p in exc:
         ec[p["s"]] = ec.get(p["s"], 0) + 1
@@ -721,7 +742,7 @@ def facts(points, regions):
     F["parDeg"] = round(math.degrees(math.asin(besty)))
     F["indTotal"] = len(ind)
     F["nAbove"] = len(above)
-    F["nIndAbove"] = len(above) - len(exc)
+    F["nIndAbove"] = len(above) - len(exc) - F["authorAbove"]
     F["nExc"] = len(exc)
     F["excDocs"] = len(ec)
     # The line has two kinds of error and the label used to report only one.
@@ -793,13 +814,15 @@ def labels(F):
                 .format(F["flag"]["s"], _esc(F["flag"]["t"]), _n(F["flagN"]),
                         round(F["flagCap"]), _esc(F["flagOne"]["t"])),
                 "{} of the {} marks are headings somebody typed into a "
-                "document; the other {} are whole tools, placed as one mark "
-                "each, and a tool opens the tool. A mark's area is apportioned "
+                "document; {} are whole tools, placed as one mark each, and a "
+                "tool opens the tool; {} is the author's own anchor, at the "
+                "north pole, an entry by the same rule as every document. A "
+                "mark's area is apportioned "
                 "from its document's measured word count by the share of the "
                 "document's text under that heading, so a big mark is a long "
                 "section by that rule and not a count of its own. Nothing is "
                 "sampled and nothing is capped."
-                .format(_n(F["headN"]), _n(F["total"]), F["toolN"]),
+                .format(_n(F["headN"]), _n(F["total"]), F["toolN"], F["authorN"]),
             ],
         },
         {
@@ -872,10 +895,12 @@ def labels(F):
             "title": "North is the independent work.",
             "stage": "north",
             "body": [
-                "The hairline is the parallel at {}&deg;N. Above it sit {} "
-                "marks, and {} of them are independent work: writing chosen, "
-                "scoped and finished without a course asking for it."
-                .format(F["parDeg"], _n(F["nAbove"]), _n(F["nIndAbove"])),
+                ("The hairline is the parallel at {}&deg;N. Above it sit {} "
+                 "marks, and {} of them are independent work: writing chosen, "
+                 "scoped and finished without a course asking for it{}.")
+                .format(F["parDeg"], _n(F["nAbove"]), _n(F["nIndAbove"]),
+                        ("; {} at the pole is the author's own anchor".format(F["authorAbove"])
+                         if F.get("authorAbove") else "")),
                 (("The line misses in both directions, and both are drawn. {} "
                   "marks above it are ringed, because they come from {} "
                   "documents that are not independent{}. "
@@ -906,9 +931,10 @@ def labels(F):
                 "document and the camera flies in; its sections are named on "
                 "the sphere where they fit, and listed in full beside it "
                 "either way.",
-                "Everything is also a list: {} sections under {} documents, "
-                "the same data, the same links, reachable from the keyboard, "
-                "and the only version a page with no JavaScript can show."
+                "Everything is also a list: {} marks under {} documents and "
+                "the author, the same data, the same links, reachable from the "
+                "keyboard, and the only version a page with no JavaScript can "
+                "show."
                 .format(_n(F["total"]), F["docs"]),
             ],
         },
