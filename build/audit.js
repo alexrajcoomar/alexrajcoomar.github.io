@@ -20,7 +20,17 @@
      offline   files held before and after a simulated publish, and whether
                the page that changed was refreshed in the saved copy
 
-   usage: node build/audit.js [--all] [--no-offline] [--only a.html,b.html]
+   Falsified (--falsify): each runtime claim is made false on a copy of a
+   page at its source (an image from another origin, a frame loop, a
+   stylesheet that removes the focus ring, a print rule that lets figures
+   break, an animation under reduced motion, a 900px block, a build-owned
+   block carrying words, a worker that forgets the saved copy), the same
+   measurements are taken, and the results go to content/negatives.json
+   under "runtime", where the register grades them with the same rule it
+   grades the real pages by. A falsification the rule does not fail is a
+   claim the register prints as untested.
+
+   usage: node build/audit.js [--all] [--no-offline] [--only a.html,b.html] [--falsify]
    CI installs playwright beside the site; a machine with its own copy can
    point at it with PW_MODULE, and at a browser with PW_CHROMIUM. */
 const fs = require('fs');
@@ -34,6 +44,8 @@ const OUT_PATH = path.join(ROOT, 'content', 'audit.json');
 const ALL = process.argv.includes('--all');
 const ONLY = (() => { const i = process.argv.indexOf('--only'); return i > -1 ? process.argv[i + 1].split(',') : null; })();
 const NO_OFFLINE = process.argv.includes('--no-offline');
+const FALSIFY = process.argv.includes('--falsify');
+const NEG_PATH = path.join(ROOT, 'content', 'negatives.json');
 const { chromium } = require(process.env.PW_MODULE || 'playwright');
 const LAUNCH = Object.assign({ args: ['--no-sandbox'] },
   process.env.PW_CHROMIUM ? { executablePath: process.env.PW_CHROMIUM } : {});
@@ -199,19 +211,29 @@ async function measurePage(browser, base, name, shell) {
 /* A publish, simulated: save the full copy from this tree, then serve a copy
    of the tree in which one page changed and the worker and manifest were
    regenerated, on the same origin, and see what the saved copy holds. */
-async function measureOffline(port) {
+function copyTree(src, dst) {
+  fs.mkdirSync(dst, { recursive: true });
+  for (const f of fs.readdirSync(src)) {
+    if (f === '.git' || f === 'node_modules' || f === 'cards' || f === '__pycache__') continue;
+    fs.cpSync(path.join(src, f), path.join(dst, f), { recursive: true });
+  }
+}
+
+/* The published copy: one page changes, and the worker and the manifest
+   follow it. A falsification may edit the copy first. */
+function publish(copy, mutate) {
+  const idx = path.join(copy, 'index.html');
+  fs.writeFileSync(idx, fs.readFileSync(idx, 'utf8').replace('</body>', '<!-- audit: a publish changed this page --></body>'));
+  if (mutate) mutate(copy);
+  execFileSync('python3', [path.join(copy, 'build', 'build_site.py'), '--offline-only'], { encoding: 'utf8' });
+}
+
+async function measureOffline(port, mutate) {
   const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'audit-'));
   const profile = path.join(tmp, 'profile');
   const copy = path.join(tmp, 'site');
-  fs.mkdirSync(copy);
-  for (const f of fs.readdirSync(ROOT)) {
-    if (f === '.git' || f === 'node_modules' || f === 'cards') continue;
-    fs.cpSync(path.join(ROOT, f), path.join(copy, f), { recursive: true });
-  }
-  // one page changes; the worker and the manifest follow it
-  const idx = path.join(copy, 'index.html');
-  fs.writeFileSync(idx, fs.readFileSync(idx, 'utf8').replace('</body>', '<!-- audit: a publish changed this page --></body>'));
-  execFileSync('python3', [path.join(copy, 'build', 'build_site.py'), '--offline-only'], { encoding: 'utf8' });
+  copyTree(ROOT, copy);
+  publish(copy, mutate);
 
   const base = 'http://127.0.0.1:' + port;
   const ctx = await chromium.launchPersistentContext(profile, Object.assign({ serviceWorkers: 'allow', viewport: { width: 1280, height: 800 } }, LAUNCH));
@@ -252,8 +274,78 @@ async function measureOffline(port) {
   return { before: before.files, of: before.of, after: after.files, refreshed: after.marker };
 }
 
+/* The runtime falsifications: a page made false at its source, on a copy of
+   the tree served on its own port, measured exactly as the real page is. */
+const FALSIFICATIONS = [
+  { key: 'ext', page: 'about.html', what: 'the page loads an image from another origin',
+    apply: h => h.replace('</body>', '<img src="https://not-this-origin.invalid/x.png" alt=""></body>') },
+  { key: 'idle', page: 'about.html', what: 'a script requests a new frame on every frame after load',
+    apply: h => h.replace('</body>', '<script>(function f(){requestAnimationFrame(f)})()</script></body>') },
+  { key: 'keyboard', page: 'about.html', what: 'a stylesheet removes the focus ring from every element',
+    apply: h => h.replace('</head>', '<style>*:focus,*:focus-visible{outline:none!important;box-shadow:none!important;border-bottom-width:0!important}</style></head>') },
+  { key: 'print', page: 'index.html', what: 'under print media the figures may break across pages and the header stays pinned',
+    apply: h => h.replace('</head>', '<style>@media print{figure,.spec,.plot{break-inside:auto!important;page-break-inside:auto!important}header.top{position:sticky!important;top:0;display:block!important}}</style></head>') },
+  { key: 'motion', page: 'about.html', what: 'the brand mark spins under reduced motion',
+    apply: h => h.replace('</head>', '<style>@keyframes neg-spin{to{transform:rotate(1turn)}}.brand .mark{animation:neg-spin 2s linear infinite!important}</style></head>') },
+  { key: 'fit', page: 'about.html', what: 'a 900px block that no declaration allows',
+    apply: h => h.replace('</body>', '<div style="width:900px;height:2px"></div></body>') },
+  { key: 'chrome', page: 'positive-vs-normative.html', what: 'a block the build owns carries words the count would include',
+    apply: h => h.replace('</body>', '<p id="__meta-negative">words the count must leave out</p></body>') },
+];
+const SW_FALSIFICATION = {
+  key: 'offline', page: 'sw.js', what: 'the new worker neither carries the saved copy across nor syncs it, so a publish empties it',
+  mutate: copy => {
+    const bp = path.join(copy, 'build', 'build_site.py');
+    let src = fs.readFileSync(bp, 'utf8');
+    const a = '    await migrate();\n', b = '    if (await c.match(MANIFEST)) await sync(broadcast, false);\n';
+    if (!src.includes(a) || !src.includes(b)) throw new Error('the worker template has moved; the offline falsification cannot be applied');
+    fs.writeFileSync(bp, src.replace(a, '').replace(b, ''));
+  },
+};
+
+async function falsify(dig) {
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'falsify-'));
+  const copy = path.join(tmp, 'site');
+  copyTree(ROOT, copy);
+  const cases = [];
+  for (const c of FALSIFICATIONS) {
+    const fp = path.join(copy, c.page);
+    const orig = fs.readFileSync(fp, 'utf8');
+    const mutated = c.apply(orig);
+    if (mutated === orig) throw new Error('falsification ' + c.key + ' changed nothing on ' + c.page);
+    fs.writeFileSync(fp, mutated);
+  }
+  const server = serve(copy);
+  const port = await listen(server, 0);
+  const base = 'http://127.0.0.1:' + port;
+  const browser = await chromium.launch(LAUNCH);
+  for (const c of FALSIFICATIONS) {
+    const rec = await measurePage(browser, base, c.page, dig.shell.includes(c.page));
+    cases.push({ key: c.key, page: c.page, what: c.what, rec: { [c.key]: rec[c.key] } });
+    process.stdout.write(`falsified ${c.key} on ${c.page}: ${JSON.stringify(rec[c.key])}\n`);
+  }
+  await browser.close();
+  await new Promise(r => server.close(r));
+  fs.rmSync(tmp, { recursive: true, force: true });
+  if (!NO_OFFLINE) {
+    const r = await measureOffline(port, SW_FALSIFICATION.mutate);
+    cases.push({ key: 'offline', page: 'sw.js', what: SW_FALSIFICATION.what, rec: r });
+    process.stdout.write(`falsified offline: ${r.before} held before, ${r.after} after\n`);
+  }
+  const neg = readJSON(NEG_PATH, {});
+  neg.runtime = {
+    meta: { tool: 'build/audit.js --falsify', date: new Date().toISOString().slice(0, 10),
+            commit: git(['rev-parse', '--short', 'HEAD']) || 'unknown', code: dig.runtime_code },
+    cases,
+  };
+  if (!neg.note) neg.note = 'Written by build/negatives.py and build/audit.js --falsify: for each check and each runtime claim, a falsification and what caught it.';
+  fs.writeFileSync(NEG_PATH, JSON.stringify(neg, null, 1) + '\n');
+  console.log(`falsified ${cases.length} runtime claims; the register grades them by the rule it grades the pages by`);
+}
+
 (async () => {
   const dig = digests();
+  if (FALSIFY) { await falsify(dig); return; }
   const audit = readJSON(OUT_PATH, {});
   const pages = audit.pages || {};
   const names = Object.keys(dig.pages);
@@ -288,7 +380,7 @@ async function measureOffline(port) {
 
   const out = {
     note: 'Written by build/audit.js: what a headless browser measured on each page, with the fingerprint of the inputs it measured. The register on the colophon prints these results; a page whose inputs moved since is not yet measured for that build.',
-    meta: { tool: 'build/audit.js', browser: 'Chromium ' + version, date: new Date().toISOString().slice(0, 10), commit: git(['rev-parse', '--short', 'HEAD']) || 'unknown' },
+    meta: Object.assign({}, audit.meta || {}, { tool: 'build/audit.js', browser: 'Chromium ' + version, date: new Date().toISOString().slice(0, 10), commit: git(['rev-parse', '--short', 'HEAD']) || 'unknown' }),
     pages: Object.fromEntries(Object.keys(pages).sort().map(k => [k, pages[k]])),
     offline,
   };

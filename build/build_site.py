@@ -354,6 +354,7 @@ def foot():
       <h2>This site</h2>
       <a href="about.html">About and contact</a>
       <a href="colophon.html">Colophon and method</a>
+      <a href="controls.html">Controls: what is tested</a>
       <a href="{SITE_URL}">{HOST}</a>
     </nav>
   </div>
@@ -701,6 +702,59 @@ def strip_svg(fid):
                  '<g class="hit"', svg)
     return svg
 
+FIG_NEUTRAL = re.compile(r"^--(gridline|baseline|rule(-\w+)?|text-\w+|surface-\d|ink(-\d)?|sans|paper|axis)$")
+
+
+def figure_colour_vars(fid):
+    """The colour variables a lifted figure's marks use, less the neutral ones
+    (grid, rules, text, surfaces): the colours that carry a meaning."""
+    d = STRIP[fid]
+    used = set(re.findall(r"var\((--[\w-]+)\)", (d.get("css") or "") + d.get("svg", "")))
+    return {v for v in used if not FIG_NEUTRAL.match(v)}
+
+
+def figure_numbers(svg):
+    """Every line of visible text in a figure that carries a numeral: the
+    text elements, with styles, titles and descriptions left out."""
+    body = re.sub(r"<(style|title|desc|script)\b[^>]*>.*?</\1>", " ", svg, flags=re.S | re.I)
+    out = []
+    for t in re.findall(r"<text\b[^>]*>(.*?)</text>", body, re.S):
+        line = html.unescape(re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", t))).strip()
+        if line and re.search(r"\d", line) and line not in out:
+            out.append(line)
+    return out
+
+
+def figure_key(fid):
+    """The colours that carry a meaning, each named in words beside a swatch,
+    from the meanings figures.json declares; check 30 holds the declaration
+    to the variables the marks use and this key to the declaration."""
+    means = STRIP[fid].get("meanings") or {}
+    if not means:
+        return ""
+    items = "".join(f'<span class="fk-item" data-var="{esc(v)}"><i class="sw" style="background:var({esc(v)})" aria-hidden="true"></i>{esc(w)}</span>'
+                    for v, w in means.items())
+    return f'<p class="fkey">{items}</p>'
+
+
+def restated_block(svg, href):
+    """The numbers a drawing carries, restated as text under it so that no
+    number is carried by the drawing alone; check 31 holds every numeral in
+    the figure's text to the page's text outside it, and check 13 holds the
+    restatement to the piece the figure was lifted from."""
+    lines = figure_numbers(svg)
+    if not lines:
+        return ""
+    for line in lines:
+        CAPTIONS.append((line, href))
+    return ('<details class="fignums"><summary>The numbers this figure draws</summary><p>'
+            + " &middot; ".join(esc(x) for x in lines) + "</p></details>")
+
+
+def figure_restated(fid, href):
+    return restated_block(STRIP[fid].get("svg", ""), href)
+
+
 def lifted(fid, rule, title, note, href):
     CAPTIONS.append((rule + " " + note, href))
     """A figure lifted out of its own document together with the CSS rules its
@@ -715,6 +769,8 @@ def lifted(fid, rule, title, note, href):
         </div>
         <div class="what">
           <p>{esc(note)}</p>
+          {figure_key(fid)}
+          {figure_restated(fid, href)}
           <a class="open" href="{href}">Open the piece <span aria-hidden="true">&#8594;</span></a>
         </div>
       </figcaption>
@@ -1199,7 +1255,7 @@ def page_research():
         if spec:
             CAPTIONS.append((spec[1], p["url"]))
             extra += (f'<div class="specimen" id="{spec[0]}"><div class="fig">{fit(spec[0])}</div>'
-                      f'<p class="figcap">{esc(spec[1])}</p></div>')
+                      f'<p class="figcap">{esc(spec[1])}</p>{restated_block(SPECS[spec[0]]["svg"], p["url"])}</div>')
         rows.append(shelf_row(k, p, extra))
     rows.append(shelf_subtotal(f"Independent, {len(items)} pieces", items))
     body = f"""<div class="hero tight shell">
@@ -1579,6 +1635,13 @@ def pass_sentence():
             f'were left untouched, and {sm["new"]} were added in the pass. The ledger of every change '
             f'is <code>content/ledger.json</code>.</p>')
 
+def _register_sentence(summary):
+    if not summary:
+        return "This build's register is not yet settled."
+    return (f"This build: {summary['rows']} claims, {summary['held']} held, {summary['untested']} untested, "
+            f"{summary['open']} not yet measured, {summary['asserted']} asserted with no check, {summary['failed']} failed.")
+
+
 def limits_block():
     """What the last pass got wrong and what it did not do, in the words it
     wrote at the time. Absent when there are no notes."""
@@ -1618,7 +1681,7 @@ def defs_html():
     out.append(DENSITY_DD)
     return "\n".join(out)
 
-def page_colophon(register=""):
+def page_colophon(summary=None):
     gt = figs.group_totals()
     ex = exceptions()
     fams = google_font_families()
@@ -1733,7 +1796,7 @@ def page_colophon(register=""):
     <p>Accessibility: skip link, visible focus, headings in order, every figure labelled, colour never
     load-bearing on its own, and reduced motion respected. The generated pages print: sticky elements
     release, nothing stays hidden, and figures avoid breaking across pages. Each of those sentences is a
-    row in the <a href="#claims">register below</a>, with the check that tests it and the last result,
+    row in the <a href="controls.html#register">register</a>, with the check that tests it and the last result,
     or the word asserted where nothing tests it yet.</p>
     <p>{ex['kinds']['doc']} of these pages began as Word documents and {ex['kinds']['md']} as markdown
     notes. Each was converted once, by a script that lives outside this repository, and the HTML it
@@ -1750,16 +1813,12 @@ def page_colophon(register=""):
 
 <section class="band shell colo" id="claims">
   <div class="sechead"><h2>What this site claims about itself, and what checks it</h2><span class="count">The register</span></div>
-  <div class="prose">
-    <p class="measure">Every sentence the generated pages say about this site is listed here beside the check
-    that tests it. A checked claim prints its last result with the denominator: so many of so many, on
-    so many pages. A claim nothing tests yet says <b>asserted</b> where a result would be. A claim
-    measured in a browser says <b>not yet measured</b> when the record is older than the pages it
-    describes, rather than repeating a result that was true of an earlier build. The build refuses to
-    publish when a checked claim fails, so a row can read held, asserted or not yet measured, and
-    never failed, on a page that reached you.</p>
+  <div class="prose measure">
+    <p>Every sentence the generated pages say about this site is a row in a register, beside the check
+    that tests it, the last result with its denominator, and what happened when the claim was
+    deliberately made false. {_register_sentence(summary)} The register, and the same records drawn one
+    glyph each, are on the <a href="controls.html#register">controls page</a>.</p>
   </div>
-  {register}
 </section>
 
 {limits_block()}
@@ -3050,6 +3109,68 @@ def atlas_home_links():
                       separators=(",", ":")).replace("</", "<\\/")
 
 
+def page_controls(register, instrument, counts, summary):
+    """The tests of controls: the register, the page wall and the
+    falsification ledger. Every glyph and every number on it is a record;
+    check 29 reads the page back against the records on every build."""
+    body = f"""
+<section class="band shell colo" id="controls-top">
+  <div class="sechead"><h1>What this site claims, what tests it, and what happened when each claim was made false</h1><span class="count">Tests of controls</span></div>
+  <div class="prose measure">
+    <p>A register that prints <b>held</b> beside every claim proves only that the checks agree with
+    themselves. In the language of audit that is inquiry: a control described, not observed. A test
+    of controls is different. The control is watched operating, and a control that has never been
+    seen to fail is not evidence that it can. So every check on this site has a falsification on
+    record: an edit to a copy of the site that makes the claim false at its source (a piece, the
+    content, a font, the workflow, or the build's own code), after which the whole build is run in
+    that copy and must refuse, naming the check. A claim prints <b>held</b> only while a current,
+    caught falsification stands behind every check it cites; otherwise it prints <b>untested</b>.
+    A claim nothing tests prints <b>asserted</b>; a claim measured in a browser prints <b>not yet
+    measured</b> when its record is older than the page.</p>
+    <p>Nothing on this page is typed. Every number is a check's own tally or a record's count, every
+    glyph in the two walls below is one record, and check 29 reads this page back against the
+    records on every build. The <a href="colophon.html">colophon</a> says how the site is built and
+    defines every number it counts; this page says which of its claims are tested, which are
+    asserted, which are stale, and what happened when each was false.</p>
+  </div>
+</section>
+
+<section class="band shell colo" id="register">
+  <div class="sechead"><h2>The register</h2><span class="count">{summary["rows"]} claims</span></div>
+  {register}
+</section>
+
+<section class="band shell colo ground" id="instrument">
+  <div class="sechead"><h2>The same records, one glyph each</h2><span class="count">{counts["glyphs"]:,} glyphs</span></div>
+  <div class="prose measure">
+    <p>One line per page and one column per check that looks at pages. A glyph is a record: the
+    check's outcome on that page for this build, or the browser's current measurement of it. A blank
+    is a check that does not look at that page, so the columns that reach only the generated pages
+    show their reach as absence. Under it, one line per check and one glyph per falsification.</p>
+  </div>
+  {instrument}
+</section>
+
+<section class="band shell colo" id="not-shown">
+  <div class="sechead"><h2>What this page cannot show</h2><span class="count">Limits</span></div>
+  <div class="prose measure">
+    <p>Its own glyph. The cell for check 29 on this page is blank: a check that graded its own
+    outcome could never settle, so the page is held to the records by a check the page does not
+    grade in turn.</p>
+    <p>Whether the deploy gate operated on a given publish. The workflow deploys only what the build
+    passed, and a run that fails leaves no page to print its failure on; the record of that is the
+    repository's Actions page. The falsifications were written by the same hand as the checks and
+    break what the checks look for; each is described in one sentence so a reader can judge whether
+    it is the failure that matters. A wall of held glyphs is the honest read-out of a site that
+    refuses to publish a failure; its blanks are the argument.</p>
+  </div>
+</section>
+"""
+    return head(f"Controls · {SHORT}",
+                "Every claim this site makes about itself, the check that tests it, and what happened when the claim was deliberately made false.",
+                "controls.html") + body + foot()
+
+
 def page_404():
     """Generated like every other shell page, so its piece count and contact
     address cannot fall behind. It used to be the one page the build touched
@@ -3387,7 +3508,7 @@ def jsonld_person():
 
 SHELL_PAGES = ("index.html", "research.html", "coursework.html", "tools.html",
                "library.html", "atlas.html", "about.html", "colophon.html",
-               "404.html")
+               "controls.html", "404.html")
 
 # ------------------------------------------------------------- checks ----
 # The build guarantees what it generates. Everything it merely touches was
@@ -3397,6 +3518,18 @@ SHELL_PAGES = ("index.html", "research.html", "coursework.html", "tools.html",
 # visible in a diff, because nothing was looking. These three assertions look.
 # They run on every build and fail it, which is the same move as the colophon
 # applied to the build: state the rule, then let something disagree with you.
+
+def _claims_ctx(problems=()):
+    """What the register and the instrument are built from: the tallies and
+    per-page records of the checks that have run, the audit's state, the
+    falsifications on record, and the checks whose problems exist so far."""
+    all_pages = list(SHELL_PAGES) + [p["url"] for p in P] + [k + ".html" for k in exceptions()["transcripts"]]
+    fired = {m.group(1) for m in (re.match(r"check (\S+):", x) for x in problems) if m}
+    return {"tally": getattr(check_site, "tally", {}), "records": getattr(check_site, "records", {}),
+            "shell_pages": list(SHELL_PAGES), "all_pages": all_pages,
+            "audit": claims.audit_state(OUT, set(SHELL_PAGES), all_pages),
+            "negatives": claims.negatives_state(ROOT), "fired": fired, "problems": []}
+
 
 def _look(cid, page):
     """A check looked at a page: recorded as held until a problem names it."""
@@ -3432,6 +3565,12 @@ def check_site():
     # instrument on the controls page can draw one glyph per (page, check)
     R = check_site.records = {}
     look = _look
+    # check 13's coverage is known up front (the scan runs in main's fixpoint,
+    # after the pages are written), so the controls page can be read back
+    # against it by check 29
+    for f in SHELL_PAGES:
+        look("13", f)
+    T["numerals"] = {"n": getattr(_typed_numerals, "checked", 0), "pages": len(SHELL_PAGES)}
     html_files = sorted(f for f in files if f.endswith(".html"))
     for sub in ("cards", "fonts", "content", "build"):
         if os.path.isdir(os.path.join(OUT, sub)):
@@ -3831,17 +3970,6 @@ def check_site():
                 problems.append(_p("14", "content/pieces.json: %s says %s is the largest piece; %s is, at %s words"
                                 % (x["slug"], named, top_piece["t"], format(top_piece["words"], ","))))
 
-    # 13. no numeral in shell copy is typed. Every numeral of two or more
-    # digits, or carrying a decimal or a thousands separator, on a generated
-    # page must be a value the build computed, or a figure a piece states in
-    # its own text where the shell quotes that piece. One-digit numerals are
-    # left alone: note references and the small counts of a sentence.
-    for f in SHELL_PAGES:
-        look("13", f)
-    for line in _typed_numerals():
-        problems.append(_p("13", line))
-    T["numerals"] = {"n": getattr(_typed_numerals, "checked", 0), "pages": len(SHELL_PAGES)}
-
     # 15. nothing a piece claims has moved. Every numeral, reference,
     # provenance label, chip, anchor id, URL, heading and result sentence in
     # every piece is held to the record in content/invariants.json; a strike
@@ -4057,17 +4185,47 @@ def check_site():
     if te["cookie"]:
         problems.append(_p("22", "the cookie API is used %d time(s); the colophon says no cookies" % te["cookie"]))
 
-    # 24. the workflow holds the build to its idempotence claim: a step that
-    # runs the build once more and fails the publish unless it reports
-    # nothing to rewrite. The register prints the claim as held only while
-    # that step is there.
+    # 24. the deploy gate: the site is deployed by the workflow only after the
+    # build, its checks, the tests of controls, the browser audit and the
+    # idempotence proof have passed. The workflow file is held to that shape:
+    # a build job that runs those steps in that order, none allowed to fail
+    # quietly, and a deploy job that needs the build job and deploys with
+    # actions/deploy-pages. A workflow without the gate fails the build, so
+    # the claim cannot outlive the file that makes it true.
     wf = os.path.join(ROOT, ".github", "workflows", "build.yml")
-    T["workflow"] = {"idempotence": False}
     look("24", "site")
-    if os.path.exists(wf):
+    T["workflow"] = {"idempotence": False, "gate": False, "steps": 0, "missing": []}
+    if not os.path.exists(wf):
+        problems.append(_p("24", ".github/workflows/build.yml: missing; nothing gates the deploy"))
+    else:
         wtext = open(wf, encoding="utf-8").read()
-        T["workflow"]["idempotence"] = ("rewrote: nothing" in wtext and "build/build_site.py" in wtext
-                                        and "A further build rewrites nothing" in wtext)
+        wants = [("build_site.py", "python3 build/build_site.py"),
+                 ("negatives.py", "python3 build/negatives.py"),
+                 ("audit.js", "node build/audit.js"),
+                 ("audit.js --falsify", "node build/audit.js --falsify"),
+                 ("record-run", "claims.py --record-run"),
+                 ("idempotence", 'grep -q "rewrote: nothing"'),
+                 ("upload", "actions/upload-pages-artifact"),
+                 ("deploy", "actions/deploy-pages")]
+        pos, missing = -1, []
+        for name, needle in wants:
+            i = wtext.find(needle, pos + 1)
+            if i == -1:
+                missing.append(name)
+            else:
+                pos = i
+        T["workflow"]["steps"] = len(wants) - len(missing)
+        T["workflow"]["missing"] = missing
+        T["workflow"]["idempotence"] = "idempotence" not in missing
+        gated = bool(re.search(r"^\s*needs:\s*(\[\s*build\s*\]|build)\s*$", wtext, re.M)) and "branches: [main]" in wtext
+        quiet = "continue-on-error: true" in wtext
+        T["workflow"]["gate"] = gated and not missing and not quiet
+        if missing:
+            problems.append(_p("24", ".github/workflows/build.yml: the gate lacks, in order, %s" % ", ".join(missing)))
+        if not gated:
+            problems.append(_p("24", ".github/workflows/build.yml: no deploy job needs the build job"))
+        if quiet:
+            problems.append(_p("24", ".github/workflows/build.yml: a step may fail quietly (continue-on-error)"))
 
     # 23. no em dash in the prose of any page, except the records declared in
     # content/declared.json (transcripts and run reports kept as written). A
@@ -4216,6 +4374,183 @@ def check_site():
     for ch in sorted(key_items - declared.get("atlas.js", set())):
         t27["stray"] += 1
         problems.append(_p("27", f"atlas.html: the key names {ch!r}, which atlas.js does not draw"))
+
+    # 30. on the lifted figures, no meaning is carried by colour alone: every
+    # colour variable a figure's marks use is declared with a meaning in
+    # words, the declaration names no colour the marks do not use, and the
+    # rendered key under the figure names each one.
+    t30 = T["colour"] = {"figures": 0, "pages": 0, "colours": 0, "unnamed": 0, "stray": 0}
+    for f in SHELL_PAGES:
+        path = os.path.join(OUT, f)
+        if not os.path.exists(path):
+            continue
+        text = open(path, encoding="utf-8", errors="ignore").read()
+        fids = re.findall(r'<figure class="spec" id="(fs-[a-z0-9]+)">', text)
+        if not fids:
+            continue
+        look("30", f)
+        t30["pages"] += 1
+        for fid in fids:
+            if fid not in STRIP:
+                continue
+            t30["figures"] += 1
+            used = figure_colour_vars(fid)
+            means = STRIP[fid].get("meanings") or {}
+            block = re.search(r'<figure class="spec" id="%s">.*?</figure>' % fid, text, re.S)
+            shown = set(re.findall(r'<span class="fk-item" data-var="([^"]+)">', block.group(0))) if block else set()
+            t30["colours"] += len(used)
+            for v in sorted(used - set(means)):
+                t30["unnamed"] += 1
+                problems.append(_p("30", f"{f}: {fid} draws with {v}, which carries no declared meaning"))
+            for v in sorted(set(means) - used):
+                t30["stray"] += 1
+                problems.append(_p("30", f"{f}: {fid} declares a meaning for {v}, which its marks do not use"))
+            for v in sorted(used - shown):
+                t30["unnamed"] += 1
+                problems.append(_p("30", f"{f}: {fid}'s key does not name {v}"))
+
+    # 31. every number a figure on the generated pages draws is restated in
+    # the page's text outside the drawing: the numerals in the figure's
+    # visible text, each found in the page with its figures removed.
+    t31 = T["restated"] = {"figures": 0, "pages": 0, "numerals": 0, "missing": 0}
+    for f in SHELL_PAGES:
+        path = os.path.join(OUT, f)
+        if not os.path.exists(path):
+            continue
+        text = open(path, encoding="utf-8", errors="ignore").read()
+        svgs = []
+        depth = 0; start = None
+        for m in re.finditer(r"<(/?)svg\b([^>]*)>", text):
+            if m.group(1):
+                depth -= 1
+                if depth == 0 and start is not None:
+                    svgs.append(text[start:m.end()])
+                continue
+            if depth == 0:
+                start = m.start()
+            depth += 1
+        big = []
+        for sv in svgs:
+            vb = re.search(r'viewBox="([^"]+)"', sv[:400])
+            q = [float(x) for x in re.split(r"[\s,]+", vb.group(1).strip()) if x] if vb else []
+            if len(q) == 4 and q[2] * q[3] >= 6000:
+                big.append(sv)
+        if not big:
+            continue
+        look("31", f)
+        t31["pages"] += 1
+        outside = re.sub(r"<svg\b.*?</svg>", " ", text, flags=re.S)
+        outside = re.sub(r"<(script|style)\b[^>]*>.*?</\1>", " ", outside, flags=re.S | re.I)
+        outside = html.unescape(re.sub(r"<[^>]+>", " ", outside))
+        outside = re.sub(r"\s+", " ", outside)
+        for sv in big:
+            t31["figures"] += 1
+            nums = set()
+            for line in figure_numbers(sv):
+                nums |= set(re.findall(r"\d[\d,]*(?:\.\d+)?", line))
+            t31["numerals"] += len(nums)
+            lost = sorted(x for x in nums if x not in outside)
+            if lost:
+                t31["missing"] += len(lost)
+                problems.append(_p("31", f"{f}: a figure draws {', '.join(lost[:5])}, which the page's text does not restate"))
+    # 29. every glyph on the controls page is a record. The page wall and the
+    # falsification ledger are parsed back from the rendered page and each
+    # glyph is compared with the record it stands for: the check's per-page
+    # outcome, the audit's current measurement, or the falsification's
+    # result, with the glyph vocabulary stated here a second time on purpose,
+    # so the page is held to the records and not to the code that drew it.
+    cpath = os.path.join(OUT, "controls.html")
+    look("29", "controls.html")
+    t29 = T["instrument"] = {"glyphs": 0, "pages": 0, "columns": 0, "disagree": 0, "falsifications": 0, "ledger_disagree": 0}
+    if not os.path.exists(cpath):
+        problems.append(_p("29", "controls.html: missing"))
+    else:
+        ctext = open(cpath, encoding="utf-8", errors="ignore").read()
+        cctx = _claims_ctx(problems)
+        st29, R29 = cctx["audit"], check_site.records
+        decl29 = set(DECLARED.get("overflow") or [])
+        rt_keys = {"E": "ext", "I": "idle", "K": "keyboard", "P": "print", "M": "motion", "F": "fit", "C": "chrome"}
+        wall = re.search(r'<table class="inst" id="page-wall">(.*?)</table>', ctext, re.S)
+        if not wall:
+            problems.append(_p("29", "controls.html: carries no page wall"))
+        else:
+            cols = re.findall(r'<th scope="col" class="ic ic-(build|runtime)"><span>([^<]+)</span></th>', wall.group(1))
+            t29["columns"] = len(cols)
+            seen_pages, shown = set(), 0
+            colsum = {lab: 0 for _k, lab in cols}
+            for m in re.finditer(r'<tr class="ir ir-\w+"><th scope="row" class="ip"><a href="([^"]+)">[^<]*</a></th>(.*?)</tr>', wall.group(1), re.S):
+                page = m.group(1)
+                cells = re.findall(r'<td class="g (g-[hxqdn])">([^<]*)</td>', m.group(2))
+                t29["pages"] += 1
+                seen_pages.add(page)
+                if len(cells) != len(cols):
+                    problems.append(_p("29", f"controls.html: {page} shows {len(cells)} glyph cells under {len(cols)} columns"))
+                    continue
+                for (kind, lab), (cls, glyph) in zip(cols, cells):
+                    if glyph:
+                        t29["glyphs"] += 1
+                        colsum[lab] += 1
+                    if kind == "build":
+                        v = R29.get(lab, {}).get(page)
+                        if lab == "29" and page == "controls.html":
+                            v = None   # a check does not grade its own glyph
+                        exp = "" if v is None else ("#" if v else "x")
+                    else:
+                        key = rt_keys.get(lab)
+                        if key in ("keyboard", "print", "motion"):
+                            applies = page in SHELL_PAGES
+                        elif key == "chrome":
+                            applies = page not in SHELL_PAGES
+                        else:
+                            applies = key is not None
+                        if not applies:
+                            exp = ""
+                        elif page in st29["fresh"] and st29["fresh"][page].get(key) is not None:
+                            ok = claims.page_ok(key, st29["fresh"][page])
+                            exp = "~" if (key == "fit" and not ok and page in decl29) else ("#" if ok else "x")
+                        else:
+                            exp = "?"
+                    if glyph != exp:
+                        t29["disagree"] += 1
+                        if shown < 5:
+                            shown += 1
+                            problems.append(_p("29", f"controls.html: {page} under {lab} shows {glyph!r}, the record says {exp!r}"))
+            all29 = set(cctx["all_pages"])
+            if seen_pages != all29:
+                problems.append(_p("29", "controls.html: the wall lists %d pages, the site has %d" % (len(seen_pages), len(all29))))
+            foot = re.search(r'<tr class="isum"><th scope="row" class="ip">pages the check looked at</th>(.*?)</tr>', wall.group(1), re.S)
+            sums = [int(x) for x in re.findall(r'<td class="is">(\d+)</td>', foot.group(1))] if foot else []
+            if sums != [colsum[lab] for _k, lab in cols]:
+                problems.append(_p("29", "controls.html: the wall's column totals are not the count of its glyphs"))
+        ledg = re.search(r'<table class="inst inst-ledger" id="falsifications">(.*?)</table>', ctext, re.S)
+        if not ledg:
+            problems.append(_p("29", "controls.html: carries no falsification ledger"))
+        else:
+            neg29 = cctx["negatives"]
+            rt_names = {lab: key for key, lab in claims.RUNTIME_COLS} | {"O": "offline"}
+            for m in re.finditer(r'<tr><th scope="row" class="ip">([^<]+)</th><td class="ig">(.*?)</td><td class="is">([^<]*)</td>', ledg.group(1), re.S):
+                name, glyphs, count = m.group(1), re.findall(r'class="g (g-[hxqdn])"', m.group(2)), m.group(3)
+                if name.startswith("check "):
+                    cases = neg29["build"].get(name[6:], [])
+                else:
+                    cases = neg29["runtime"].get(name, [])
+                exp = ["g-q" if not c.get("current") else ("g-h" if c.get("caught") else "g-x") for c in cases] or ["g-n"]
+                t29["falsifications"] += len(cases)
+                if glyphs != exp:
+                    t29["ledger_disagree"] += 1
+                    problems.append(_p("29", f"controls.html: the ledger line for {name} shows {len(glyphs)} glyph(s) that are not the record's"))
+
+    # 13. no numeral in shell copy is typed. Every numeral of two or more
+    # digits, or carrying a decimal or a thousands separator, on a generated
+    # page must be a value the build computed, or a figure a piece states in
+    # its own text where the shell quotes that piece. One-digit numerals are
+    # left alone: note references and the small counts of a sentence.
+    # The scan itself runs in main's fixpoint, on the pages as written from
+    # this round's records, so the register's and the instrument's numbers
+    # are known to it from the very records that produced them (read from the
+    # computed strings, never from a claim sentence). Here the check records
+    # its coverage and the previous scan's count for the register's row.
+
     return sorted(set(problems))
 
 
@@ -4237,12 +4572,18 @@ def _num(s):
 
 def _piece_numbers(url):
     """Every numeral a piece states in its own readable text, as values, so a
-    shell caption that says 0.20 matches a piece that says 0.2."""
+    shell caption that says 0.20 matches a piece that says 0.2. The text a
+    piece draws inside its figures counts as stated: a lifted figure's
+    restated numbers are held to it."""
     path = os.path.join(OUT, url)
     if not os.path.exists(path):
         return set()
-    return {_num(x) for x in _NUM.findall(_readable_text(path))} | \
-        {_num(x) for x in re.findall(r"(?<![\w.])(\d{1,2}(?:\.\d+)?)(?![\w])", _readable_text(path))}
+    text = _readable_text(path)
+    raw = open(path, encoding="utf-8", errors="ignore").read()
+    for sv in re.findall(r"<svg\b.*?</svg>", raw, flags=re.S | re.I):
+        text += " " + " ".join(figure_numbers(sv))
+    return {_num(x) for x in _NUM.findall(text)} | \
+        {_num(x) for x in re.findall(r"(?<![\w.])(\d{1,2}(?:\.\d+)?)(?![\w])", text)}
 
 
 def _known_numbers():
@@ -4295,12 +4636,19 @@ def _known_numbers():
     add([len(x) for x in tools_drawn()])
     add(LEDGER.get("summary") or {})
     add(built_from_counts([p for p in P if p["surface"] == "course"]))
+    # the register's numbers: every tally the checks kept on this run, what
+    # the browser audit recorded for the pages whose record is current, the
+    # sums the register prints over them, and the negatives' counts. Check
+    # 13 runs after every other check, so the tallies are complete; the
+    # register on the page was printed from the previous round of the
+    # fixpoint, and the round that settles is the one whose numbers agree.
+    add(getattr(check_site, "tally", {}))
     return vals
 
 
-def _typed_numerals():
+def _typed_numerals(extra_known=None):
     out = []
-    known = _known_numbers()
+    known = _known_numbers() | set(extra_known or ())
     years = {float(y) for y in range(1900, 2031)}
     # what the shell quotes from pieces: the owner's own fields, and lifted captions
     quoted = set()
@@ -4333,10 +4681,6 @@ def _typed_numerals():
         # the last pass's notes on the colophon are a record reproduced as
         # written; their numerals are the pass's own, not this build's
         raw = re.sub(r'<section[^>]*id="limits".*?</section>', " ", raw, flags=re.S)
-        # the register's tallies are the checks' own output, this count among
-        # them: a scan cannot hold a page to the count it is about to produce
-        raw = re.sub(r'<table class="ctab register".*?</table>', " ", raw, flags=re.S)
-        raw = re.sub(r'<p class="audit-line">.*?</p>', " ", raw, flags=re.S)
         raw = re.sub(r"<(script|style|svg)\b[^>]*>.*?</\1>", " ", raw, flags=re.S | re.I)
         # the statement rows are numbered by position, which is a count of
         # the list, not a quantity; the number is cut out before the scan
@@ -4445,29 +4789,48 @@ def main():
     # that ran on the colophon as finally written decides the build.
     all_pages = list(SHELL_PAGES) + [p["url"] for p in P] + [k + ".html" for k in exceptions()["transcripts"]]
     colpath = os.path.join(OUT, "colophon.html")
-    # the colophon is written only here, with the register in it: written
-    # first without it and again with it, every build rewrote the page
+    ctlpath = os.path.join(OUT, "controls.html")
+    started_with = {pth: (open(pth, encoding="utf-8").read() if os.path.exists(pth) else None) for pth in (colpath, ctlpath)}
+    # the two pages are written only here, from the records: written first
+    # without them and again with them, every build rewrote the pages
     if not os.path.exists(colpath):
         open(colpath, "w", encoding="utf-8").write(page_colophon())
         changed.append("colophon.html")
+    if not os.path.exists(ctlpath):
+        open(ctlpath, "w", encoding="utf-8").write("<!DOCTYPE html><html><head><title>Controls</title></head><body><a class=\"skip\" href=\"#main\">Skip to content</a><main id=\"main\"></main></body></html>")
+        changed.append("controls.html")
     settled = False
-    for _round in range(4):
+    for _round in range(5):
         problems = check_site()
-        ctx = {"tally": check_site.tally, "shell_pages": list(SHELL_PAGES), "all_pages": all_pages,
-               "audit": claims.audit_state(OUT, set(SHELL_PAGES), all_pages), "problems": []}
+        ctx = _claims_ctx(problems)
         rows, summary = claims.build(ctx)
         problems = sorted(set(problems + ctx["problems"]))
         meta = (ctx["audit"]["audit"] or {}).get("meta") or {}
-        new_col = page_colophon(register=claims.render(rows, summary, meta))
-        on_disk = open(colpath, encoding="utf-8").read() if os.path.exists(colpath) else ""
-        if new_col == on_disk:
+        register_html = claims.render(rows, summary, meta, ctx["negatives"])
+        instrument_html, counts = claims.render_instrument(ctx)
+        new_ctl = page_controls(register_html, instrument_html, counts, summary)
+        new_col = page_colophon(summary=summary)
+        moved = False
+        for path, text, name in ((ctlpath, new_ctl, "controls.html"), (colpath, new_col, "colophon.html")):
+            on_disk = open(path, encoding="utf-8").read() if os.path.exists(path) else ""
+            if text != on_disk:
+                open(path, "w", encoding="utf-8").write(text)
+                moved = True
+        # check 13, on the pages just written, knowing every number this
+        # round's records put on them
+        for line in _typed_numerals(claims.known_numbers(ctx)):
+            problems.append(_p("13", line))
+        problems = sorted(set(problems))
+        if not moved:
             settled = True
             break
-        open(colpath, "w", encoding="utf-8").write(new_col)
-        if "colophon.html" not in changed:
-            changed.append("colophon.html")
     if not settled:
-        problems.append("colophon.html: the register did not settle in four rounds")
+        problems.append("controls.html: the register did not settle in five rounds")
+    # the first round prints the previous scan's count and is rewritten by the
+    # second, so a page counts as rewritten only if it ends up different
+    for pth, name in ((ctlpath, "controls.html"), (colpath, "colophon.html")):
+        if open(pth, encoding="utf-8").read() != started_with[pth] and name not in changed:
+            changed.append(name)
     check_site.register = summary
 
     write_offline(changed)

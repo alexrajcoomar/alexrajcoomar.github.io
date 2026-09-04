@@ -15,7 +15,7 @@ const http = require('http');
 const path = require('path');
 
 const ROOT = path.dirname(__dirname);
-const SHELL = new Set(['index.html', 'library.html', 'about.html', '404.html',
+const SHELL = new Set(['index.html', 'library.html', 'about.html', '404.html', 'controls.html',
                        'research.html', 'coursework.html', 'tools.html',
                        'reader.html', 'colophon.html', 'admin.html', 'atlas.html']);
 const TYPES = { '.html': 'text/html; charset=utf-8', '.css': 'text/css', '.js': 'text/javascript',
