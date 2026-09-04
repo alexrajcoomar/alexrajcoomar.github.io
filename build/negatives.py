@@ -218,6 +218,21 @@ CASES = [
       lambda t: _edit(t, "build/atlas.py", "    if AUTHOR:\n", "    if AUTHOR and False:\n")),
     C("32", "author-card-inflated", "the author's card claims seven words more than the featured pieces hold",
       lambda t: _edit(t, BS, "{f['words']:,} words, {f['figures']} figures", "{f['words'] + 7:,} words, {f['figures']} figures")),
+    # the editor: hand-maintained, never the build's to write, held whole
+    C("33", "asset-missing", "the editor links a stylesheet that does not exist",
+      lambda t: _edit(t, "admin.html", 'href="site.css"', 'href="site-editor.css"')),
+    C("33", "editor-overwritten", "the build writes the editor as if it were a generated page",
+      lambda t: _edit(t, BS, '             "404.html": page_404(),\n', '             "404.html": page_404(), "admin.html": page_404(),\n')),
+    C("33", "token-undefined", "the editor reads a custom property no stylesheet it loads defines",
+      lambda t: _regex(t, "admin.html", r"var\(--edge\)", "var(--edge-2)")),
+    C("33", "id-missing", "the editor's script asks for an element its markup no longer carries",
+      lambda t: _edit(t, "admin.html", 'id="save-setup"', 'id="save-setup-2"')),
+    C("33", "script-broken", "a syntax error in the editor's script",
+      lambda t: _edit(t, "admin.html", '"use strict";\n', '"use strict";\nthis is not javascript;\n')),
+    C("33", "worker-stores-the-editor", "the worker the build writes stores the editor like any other page",
+      lambda t: _edit(t, BS, 'const NEVER_STORED = ["admin.html"];', 'const NEVER_STORED = [];')),
+    C("33", "truncated", "the editor's file ends before its markup does",
+      lambda t: _edit(t, "admin.html", "</script>\n</body>\n</html>\n", "</script>\n")),
 ]
 
 

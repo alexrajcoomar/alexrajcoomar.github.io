@@ -122,7 +122,7 @@ until it is fixed.
 
 | Path | What it is |
 |---|---|
-| `admin.html` | The editor |
+| `admin.html` | The editor. Hand-maintained: the build never writes it (check 33 holds it whole and unchanged, the worker never stores it, the audit opens it and works its controls) |
 | `content/pieces.json` | **The content.** Every piece, in order |
 | `content/metrics.json` | Word, figure and table counts. Written by the rebuild, not by you |
 | `content/fingerprints.json` | Lets the rebuild skip pieces that did not change |

@@ -45,8 +45,12 @@ body{margin:0}
 .btn-go:hover{background:var(--accent);border-color:var(--accent);color:#fff}
 .btn-quiet{border-color:var(--rule-strong);color:var(--ink-2);font-weight:500}
 .btn-warn{border-color:#a1341c;color:#a1341c}
-:root[data-theme="dark"] .btn-warn,
-:root:where(:not([data-theme="light"])) .btn-warn{border-color:#e08a72;color:#e08a72}
+:root[data-theme="dark"] .btn-warn{border-color:#e08a72;color:#e08a72}
+/* the same scoping site.css uses: the dark palette follows the system only
+   while no theme has been chosen on the page */
+@media (prefers-color-scheme:dark){
+  :root:where(:not([data-theme="light"])) .btn-warn{border-color:#e08a72;color:#e08a72}
+}
 .wrap{max-width:84rem;margin:0 auto;padding:clamp(1rem,3vw,2rem)}
 .panel{border:1px solid var(--rule);background:var(--panel);padding:clamp(1rem,2.5vw,1.5rem)}
 .notice{
@@ -146,6 +150,7 @@ kbd{font:inherit;font-size:.8em;border:1px solid var(--rule-strong);padding:0 .2
      ground prints white on white and disappears. Same declaration the AFM 291
      workbook and both AFM 274 sheets already carry on body, where it inherits. */
   body{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  @media print{.ehead{position:static}}
 </style>
 </head>
 <body>
@@ -551,6 +556,7 @@ function surfaceLabel(s) {
 
 function renderList() {
   var host = $('plist'); host.innerHTML = '';
+  if (!doc) return;   // nothing to list before a connection
   var q = ($('search').value || '').toLowerCase().trim();
   var shown = 0;
   var base = baseline ? JSON.parse(baseline).pieces : [];
@@ -870,6 +876,7 @@ function titleFromHTML(text) {
 
 function addHTMLFile(file) {
   var path = safeName(file.name);
+  if (!doc) { say('Connect to the site first, on the <b>Connection</b> tab; then add the file.', 'bad'); show('setup'); return; }
   if (!/\.html?$/i.test(path)) { $('addlog').textContent = 'That is not an HTML file. Use the Files tab for images and PDFs.'; return; }
   var already = doc.pieces.filter(function (p) { return p.url === path; })[0];
   var reader = new FileReader();
@@ -909,6 +916,7 @@ function renderFiles() {
   }
 
   var host = $('repolist'); host.innerHTML = '';
+  if (!doc) return;   // the repository's files arrive with the connection
   var q = ($('fsearch').value || '').toLowerCase().trim();
   var listed = {}; doc.pieces.forEach(function (p) { listed[p.url] = p.t; });
   repoFiles.filter(function (f) {
@@ -1067,6 +1075,7 @@ wireDrop('filedrop', 'filepick', function (f) {
 $('addlink').onclick = function () {
   var path = safeName($('addpath').value.trim());
   if (!path) { $('addlog').textContent = 'Type the file name first.'; return; }
+  if (!doc) { $('addlog').textContent = 'Connect to the site first, on the Connection tab.'; return; }
   if (repoFiles.indexOf(path) === -1 && !uploads[path]) {
     $('addlog').textContent = 'There is no file called ' + path + ' on the site yet. Check the Files tab for the exact name.';
     return;
