@@ -22,13 +22,16 @@
 <link rel="manifest" href="/site.webmanifest">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="preload" href="/InterVariable-sub.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/site.css?v=068b32a2">
+<link rel="stylesheet" href="/site.css?v=fb98d868">
 <link rel="stylesheet" href="/figures.css?v=2e8b6e1e">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%2316150f'/><text x='50' y='72' font-size='64' font-family='Helvetica,Arial' font-weight='bold' fill='%23faf9f6' text-anchor='middle'>A</text></svg>">
 <script>
-/* Theme before first paint, so there is no flash. Wrapped because some
-   embedded contexts throw on storage access. */
-(function(){try{var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}
+/* Theme before first paint, so there is no flash. Obsidian is the site's
+   default: a browser that holds no choice lands dark, and only the stored
+   word "light" lands light. Wrapped because some embedded contexts throw
+   on storage access, and a browser that throws still lands dark. */
+(function(){var t=null;try{t=localStorage.getItem('theme');}catch(e){}
+document.documentElement.setAttribute('data-theme',t==='light'?'light':'dark');
 document.documentElement.className+=' js';})();
 </script>
 <!-- A control that can do nothing is worse than no control: with scripts

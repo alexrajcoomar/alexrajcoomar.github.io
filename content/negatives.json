@@ -4,8 +4,8 @@
   "meta": {
    "tool": "build/negatives.py",
    "date": "2026-09-04",
-   "commit": "f6df0fc",
-   "code": "7898d5cb84eb",
+   "commit": "26a33a3",
+   "code": "0cca7a2c3ece",
    "code_files": [
     "build/build_site.py",
     "build/claims.py",
@@ -28,7 +28,7 @@
     ],
     "caught": true,
     "line": "check 1: 404.html: canonical points off-site, https://elsewhere.invalid/404.html",
-    "seconds": 59.6
+    "seconds": 60.4
    },
    {
     "id": "2-other-host-named",
@@ -40,7 +40,7 @@
     ],
     "caught": true,
     "line": "check 2: 404.html: mentions someone-else.github.io, which is not this site",
-    "seconds": 59.6
+    "seconds": 61.9
    },
    {
     "id": "3-dead-link",
@@ -65,7 +65,7 @@
     ],
     "caught": true,
     "line": "check 4: site.webmanifest: names icon site-192-gone.png, which does not exist",
-    "seconds": 59.0
+    "seconds": 58.8
    },
    {
     "id": "5-figure-scope-missing",
@@ -77,7 +77,7 @@
     ],
     "caught": true,
     "line": "check 5: index.html: shows figure fs-tv1, which has no colour scope in figures.css",
-    "seconds": 59.1
+    "seconds": 58.7
    },
    {
     "id": "6-second-h1",
@@ -90,7 +90,7 @@
     ],
     "caught": true,
     "line": "check 6: afm291-ch1-theory-and-analytics.html: 2 top-level headings in a document body; all but the first are hidden by the stylesheet",
-    "seconds": 59.5
+    "seconds": 59.1
    },
    {
     "id": "7-head-ended-early",
@@ -102,7 +102,7 @@
     ],
     "caught": true,
     "line": "check 7: 404.html: </div> inside <head> ends the head early; everything after it is parsed into the body",
-    "seconds": 58.6
+    "seconds": 58.7
    },
    {
     "id": "8-atlas-anchor-dead",
@@ -115,7 +115,7 @@
     ],
     "caught": true,
     "line": "check 8: atlas.html: 1 mark(s) point at anchors about.html does not carry, first is #author-gone",
-    "seconds": 58.7
+    "seconds": 58.5
    },
    {
     "id": "9-listed-file-missing",
@@ -130,7 +130,7 @@
     ],
     "caught": true,
     "line": "check 9: content/pieces.json: french-a1-cafe points at not-there.html, which does not exist",
-    "seconds": 58.6
+    "seconds": 58.2
    },
    {
     "id": "10-glyph-outside-subset",
@@ -142,7 +142,7 @@
     ],
     "caught": true,
     "line": "check 10: font subset: U+03A9 ('Ω') in 404.html renders in the fallback, not Inter; re-subset InterVariable-sub.woff2",
-    "seconds": 58.5
+    "seconds": 59.0
    },
    {
     "id": "11-chrome-colour-unknown",
@@ -154,7 +154,7 @@
     ],
     "caught": true,
     "line": "check 11: injected chrome: #123456 is not a colour site.css knows; the chrome palette in build_site.py has drifted from the stylesheet",
-    "seconds": 58.2
+    "seconds": 59.3
    },
    {
     "id": "11a-stray-mark",
@@ -168,7 +168,7 @@
     ],
     "caught": true,
     "line": "check 11a: atlas.html: 1728 marks and 1728 links read back, 1662 points placed",
-    "seconds": 58.5
+    "seconds": 59.2
    },
    {
     "id": "11a2-weight-inflated",
@@ -180,7 +180,7 @@
     ],
     "caught": true,
     "line": "check 11a2: atlas.html: mark weights add to 483,919, the corpus line says 483,853",
-    "seconds": 58.5
+    "seconds": 58.7
    },
    {
     "id": "12-corpus-line-off",
@@ -194,7 +194,7 @@
     ],
     "caught": true,
     "line": "check 12: origin totals: words add to 483853, the corpus line says 483854",
-    "seconds": 58.5
+    "seconds": 58.6
    },
    {
     "id": "13-typed-numeral",
@@ -206,7 +206,7 @@
     ],
     "caught": true,
     "line": "check 13: 404.html: prints 1,234, which the build did not compute and no piece states",
-    "seconds": 58.8
+    "seconds": 59.4
    },
    {
     "id": "14-false-superlative",
@@ -218,7 +218,7 @@
     ],
     "caught": true,
     "line": "check 14: content/pieces.json: heartbeat-budget calls itself the largest essay; the-trillion-dollar-vintage is, at 18,610 words",
-    "seconds": 59.5
+    "seconds": 57.9
    },
    {
     "id": "15-result-sentence-added",
@@ -230,7 +230,7 @@
     ],
     "caught": true,
     "line": "check 15: positive-vs-normative.html: numerals gained, not declared in the ledger: 12,344, 12,345",
-    "seconds": 59.5
+    "seconds": 58.1
    },
    {
     "id": "16-ledger-class-stale",
@@ -242,7 +242,7 @@
     ],
     "caught": true,
     "line": "check 16: content/ledger.json: flagged-in-hindsight is styling, the files say copy; run build/ledger.py",
-    "seconds": 59.1
+    "seconds": 57.9
    },
    {
     "id": "17-built-from-empty",
@@ -254,7 +254,7 @@
     ],
     "caught": true,
     "line": "check 17: content/pieces.json: flagged-in-hindsight has no built_from line",
-    "seconds": 58.5
+    "seconds": 58.2
    },
    {
     "id": "18-font-digest-wrong",
@@ -266,7 +266,7 @@
     ],
     "caught": true,
     "line": "check 18: fonts/manifest.json: fonts/bricolagegrotesque-afm291-journal-entries.woff2 does not match its recorded sha256; run the rename",
-    "seconds": 59.5
+    "seconds": 58.3
    },
    {
     "id": "19-heading-skips",
@@ -278,7 +278,7 @@
     ],
     "caught": true,
     "line": "check 19: 404.html: a heading skips from h2 to h4",
-    "seconds": 58.0
+    "seconds": 58.3
    },
    {
     "id": "20-skip-link-gone",
@@ -290,7 +290,7 @@
     ],
     "caught": true,
     "line": "check 20: 404.html: has no skip link to #main",
-    "seconds": 58.2
+    "seconds": 59.8
    },
    {
     "id": "21-figure-unnamed",
@@ -302,7 +302,7 @@
     ],
     "caught": true,
     "line": "check 21: index.html: a figure carries no accessible name",
-    "seconds": 58.0
+    "seconds": 58.8
    },
    {
     "id": "22-script-from-elsewhere",
@@ -314,7 +314,7 @@
     ],
     "caught": true,
     "line": "check 22: 404.html: loads https://cdn.elsewhere.invalid/x.js from another origin",
-    "seconds": 58.8
+    "seconds": 58.9
    },
    {
     "id": "23-dash-on-generated-page",
@@ -326,7 +326,7 @@
     ],
     "caught": true,
     "line": "check 23: 404.html: carries 1 em dash(es) in its prose",
-    "seconds": 58.9
+    "seconds": 58.5
    },
    {
     "id": "23-dash-in-piece-prose",
@@ -338,7 +338,7 @@
     ],
     "caught": true,
     "line": "check 23: positive-vs-normative.html: carries 1 em dash(es) in its prose",
-    "seconds": 58.5
+    "seconds": 58.1
    },
    {
     "id": "24-idempotence-step-gone",
@@ -350,7 +350,7 @@
     ],
     "caught": true,
     "line": "check 24: .github/workflows/build.yml: the gate lacks, in order, idempotence",
-    "seconds": 58.7
+    "seconds": 57.7
    },
    {
     "id": "24-deploy-ungated",
@@ -362,7 +362,7 @@
     ],
     "caught": true,
     "line": "check 24: .github/workflows/build.yml: no deploy job needs the build job",
-    "seconds": 58.3
+    "seconds": 58.1
    },
    {
     "id": "25-american-spelling",
@@ -374,7 +374,7 @@
     ],
     "caught": true,
     "line": "check 25: 404.html: spells color the American way",
-    "seconds": 58.8
+    "seconds": 57.9
    },
    {
     "id": "26-number-without-record",
@@ -387,7 +387,7 @@
     ],
     "caught": true,
     "line": "check 26: 404.html: figures prints 189, which is no aggregate the build computes for that definition",
-    "seconds": 58.3
+    "seconds": 58.2
    },
    {
     "id": "27-channel-unnamed",
@@ -399,7 +399,7 @@
     ],
     "caught": true,
     "line": "check 27: index.html: site.js draws the channel 'halo', which the Atlas key does not name",
-    "seconds": 58.1
+    "seconds": 58.9
    },
    {
     "id": "28-placed-by-lattice",
@@ -411,7 +411,7 @@
     ],
     "caught": true,
     "line": "check 28: atlas.html: afm291 is course work and its disc crosses out of its zone",
-    "seconds": 58.1
+    "seconds": 58.6
    },
    {
     "id": "28-marks-off-the-spiral",
@@ -423,7 +423,7 @@
     ],
     "caught": true,
     "line": "check 28: atlas.html: a mark of five-shall-paragraphs lies 0.34 rad from its centre, outside its disc of 0.32",
-    "seconds": 58.3
+    "seconds": 58.4
    },
    {
     "id": "28-discs-left-overlapping",
@@ -447,7 +447,7 @@
     ],
     "caught": true,
     "line": "check 28: atlas.html: the discs of afm241-cheat-sheet and afm274-capital-structure overlap",
-    "seconds": 58.9
+    "seconds": 59.0
    },
    {
     "id": "29-stale-drawn-as-held",
@@ -459,7 +459,7 @@
     ],
     "caught": true,
     "line": "check 29: controls.html: 404.html under E shows '#', the record says '?'",
-    "seconds": 58.4
+    "seconds": 58.6
    },
    {
     "id": "30-colour-unnamed",
@@ -471,7 +471,7 @@
     ],
     "caught": true,
     "line": "check 30: index.html: fs-wlc draws with --outside, which carries no declared meaning",
-    "seconds": 57.9
+    "seconds": 59.4
    },
    {
     "id": "31-numbers-not-restated",
@@ -483,7 +483,7 @@
     ],
     "caught": true,
     "line": "check 31: index.html: a figure draws 0.24, 0.8, 190, 5.6, 7.5, which the page's text does not restate",
-    "seconds": 53.4
+    "seconds": 56.0
    },
    {
     "id": "32-author-unplaced",
@@ -495,7 +495,7 @@
     ],
     "caught": true,
     "line": "check 32: atlas.html: the author is not one entry of the register (0 regions, 0 marks)",
-    "seconds": 57.6
+    "seconds": 58.9
    },
    {
     "id": "32-author-card-inflated",
@@ -507,7 +507,7 @@
     ],
     "caught": true,
     "line": "check 32: atlas.html: the author's card reads '2B, Accounting and Financial Management, Analytics stream · co-op term January to April 2027, 119 days from this build (2026-09-04) · 6 featured pieces: 47,041 words, 35 figures, 54 tables'; th",
-    "seconds": 57.1
+    "seconds": 59.2
    },
    {
     "id": "33-asset-missing",
@@ -520,7 +520,7 @@
     ],
     "caught": true,
     "line": "check 33: admin.html: reads --accent, which no stylesheet it loads defines",
-    "seconds": 57.3
+    "seconds": 58.8
    },
    {
     "id": "33-editor-overwritten",
@@ -532,7 +532,7 @@
     ],
     "caught": true,
     "line": "check 33: admin.html: carries no noindex",
-    "seconds": 57.4
+    "seconds": 59.0
    },
    {
     "id": "33-token-undefined",
@@ -544,7 +544,7 @@
     ],
     "caught": true,
     "line": "check 33: admin.html: reads --edge-2, which no stylesheet it loads defines",
-    "seconds": 58.8
+    "seconds": 59.2
    },
    {
     "id": "33-id-missing",
@@ -556,7 +556,7 @@
     ],
     "caught": true,
     "line": "check 33: admin.html: its script asks for #save-setup, which its markup does not carry",
-    "seconds": 58.9
+    "seconds": 58.0
    },
    {
     "id": "33-script-broken",
@@ -568,7 +568,7 @@
     ],
     "caught": true,
     "line": "check 33: admin.html: script block 2 does not parse: SyntaxError: Unexpected identifier 'is'",
-    "seconds": 58.3
+    "seconds": 58.6
    },
    {
     "id": "33-worker-stores-the-editor",
@@ -580,7 +580,7 @@
     ],
     "caught": true,
     "line": "check 33: sw.js: the worker the build writes does not name admin.html among the files it never stores",
-    "seconds": 58.2
+    "seconds": 59.2
    },
    {
     "id": "33-truncated",
@@ -592,7 +592,7 @@
     ],
     "caught": true,
     "line": "check 33: admin.html: is not a whole document; it must open with the doctype and close with </html>",
-    "seconds": 58.0
+    "seconds": 58.9
    }
   ]
  },
@@ -600,8 +600,8 @@
   "meta": {
    "tool": "build/audit.js --falsify",
    "date": "2026-09-04",
-   "commit": "f6df0fc",
-   "code": "57c90cdb2760"
+   "commit": "26a33a3",
+   "code": "ecb8c269c840"
   },
   "cases": [
    {
@@ -621,7 +621,7 @@
     "what": "a script requests a new frame on every frame after load",
     "rec": {
      "idle": {
-      "frames": 61
+      "frames": 60
      }
     }
    },
@@ -691,14 +691,14 @@
        "rows": 6,
        "faced": 6,
        "framesSettle": 1554,
-       "framesAfter": 2215,
+       "framesAfter": 2230,
        "framesAtTop": 660
       },
       "phone": {
        "rows": 6,
        "faced": 6,
        "framesSettle": 2352,
-       "framesAfter": 3351,
+       "framesAfter": 3360,
        "framesAtTop": 780
       }
      }
