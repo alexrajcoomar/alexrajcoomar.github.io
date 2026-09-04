@@ -2761,9 +2761,9 @@ def add_returns_everywhere():
     navigation, and the tools get the floating pill only, because a bar inside a
     full-screen application sits in the wrong place. The head is normalised on
     every piece regardless, including the converted notes."""
-    shell = {"index.html", "library.html", "about.html", "404.html", "research.html",
-             "coursework.html", "tools.html", "reader.html", "colophon.html",
-             "admin.html", "atlas.html"}
+    # the generated pages carry full navigation; the reader edition and the
+    # editor are the two other pages that are not pieces
+    shell = set(SHELL_PAGES) | {"reader.html", "admin.html"}
     where, by_url = {}, {}
     for p in P:
         by_url[p["url"]] = p
