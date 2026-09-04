@@ -4,7 +4,7 @@
   "tool": "build/audit.js",
   "browser": "Chromium 141.0.7390.37",
   "date": "2026-09-04",
-  "commit": "26a33a3",
+  "commit": "b78b1ae",
   "runs": [
    {
     "commit": "21aacf2",
@@ -69,7 +69,7 @@
    "motion": {
     "animations": 0
    },
-   "inputs": "8001dbc95dd3",
+   "inputs": "8d36075af08a",
    "measured": "2026-09-04"
   },
   "about.html": {
@@ -112,7 +112,7 @@
    "motion": {
     "animations": 0
    },
-   "inputs": "cc7ea792a48c",
+   "inputs": "7e13f3ec458d",
    "measured": "2026-09-04"
   },
   "admin.html": {
@@ -159,7 +159,7 @@
     "scrollWidth": 320,
     "overflow": false
    },
-   "inputs": "3a28047613ab",
+   "inputs": "a5dbef1d877c",
    "measured": "2026-09-04"
   },
   "afm241-cheat-sheet.html": {
@@ -179,8 +179,8 @@
     "scrollWidth": 340,
     "overflow": true
    },
-   "inputs": "a69ab5cb21cd",
-   "measured": "2026-09-03"
+   "inputs": "51dd4e1eab3a",
+   "measured": "2026-09-04"
   },
   "afm241-study-reference.html": {
    "ext": {
@@ -199,7 +199,7 @@
     "scrollWidth": 320,
     "overflow": false
    },
-   "inputs": "c3167625c8ed",
+   "inputs": "1c9a630f0e5d",
    "measured": "2026-09-04"
   },
   "afm274-capital-structure.html": {
@@ -219,8 +219,8 @@
     "scrollWidth": 320,
     "overflow": false
    },
-   "inputs": "be94c8f703b7",
-   "measured": "2026-09-03"
+   "inputs": "d988e906ea03",
+   "measured": "2026-09-04"
   },
   "afm274-financial-distress.html": {
    "ext": {
@@ -239,8 +239,8 @@
     "scrollWidth": 320,
     "overflow": false
    },
-   "inputs": "b7d3066d0ce9",
-   "measured": "2026-09-03"
+   "inputs": "01e26a1811a6",
+   "measured": "2026-09-04"
   },
   "afm291-ch1-theory-and-analytics.html": {
    "ext": {
@@ -259,7 +259,7 @@
     "scrollWidth": 320,
     "overflow": false
    },
-   "inputs": "0d69309b9bc3",
+   "inputs": "41ed381e4906",
    "measured": "2026-09-04"
   },
   "afm291-ch10-fair-value.html": {
@@ -279,7 +279,7 @@
     "scrollWidth": 320,
     "overflow": false
    },
-   "inputs": "cb22576babc1",
+   "inputs": "3e31ebc60b27",
    "measured": "2026-09-04"
   },
   "afm291-ch2-conceptual-frameworks.html": {
@@ -299,7 +299,7 @@
     "scrollWidth": 320,
     "overflow": false
    },
-   "inputs": "25a895b7ddf1",
+   "inputs": "5e5908ba4a60",
    "measured": "2026-09-04"
   },
   "afm291-ch3-accrual-accounting.html": {
@@ -319,7 +319,7 @@
     "scrollWidth": 320,
     "overflow": false
    },
-   "inputs": "ec4576d6cea9",
+   "inputs": "0e42aa00f350",
    "measured": "2026-09-04"
   },
   "afm291-ch4-revenue-recognition.html": {
@@ -339,7 +339,7 @@
     "scrollWidth": 320,
     "overflow": false
    },
-   "inputs": "ac21fcc8db3b",
+   "inputs": "617332f7e484",
    "measured": "2026-09-04"
   },
   "afm291-ch6-inventories.html": {
@@ -359,7 +359,7 @@
     "scrollWidth": 320,
     "overflow": false
    },
-   "inputs": "f2c495a27a05",
+   "inputs": "c59740ab370e",
    "measured": "2026-09-04"
   },
   "afm291-ch9-intangibles-and-goodwill.html": {
@@ -379,7 +379,7 @@
     "scrollWidth": 320,
     "overflow": false
    },
-   "inputs": "545903837c82",
+   "inputs": "5fe9f5b245e9",
    "measured": "2026-09-04"
   },
   "afm291-field-manual.html": {
@@ -399,8 +399,8 @@
     "scrollWidth": 320,
     "overflow": false
    },
-   "inputs": "1bf765d45bc9",
-   "measured": "2026-09-03"
+   "inputs": "f54288e6106b",
+   "measured": "2026-09-04"
   },
   "afm291-inventory-gap-map.html": {
    "ext": {
@@ -419,8 +419,8 @@
     "scrollWidth": 320,
     "overflow": false
    },
-   "inputs": "8de503708131",
-   "measured": "2026-09-03"
+   "inputs": "12fad655d789",
+   "measured": "2026-09-04"
   },
   "afm291-journal-entries.html": {
    "ext": {
@@ -439,8 +439,8 @@
     "scrollWidth": 320,
     "overflow": false
    },
-   "inputs": "4e55882a3d93",
-   "measured": "2026-09-03"
+   "inputs": "c1c7d2d743cd",
+   "measured": "2026-09-04"
   },
   "afm291-key-takeaways.html": {
    "ext": {
@@ -459,7 +459,7 @@
     "scrollWidth": 320,
     "overflow": false
    },
-   "inputs": "d542b9958d4a",
+   "inputs": "a3ddb1c4ab58",
    "measured": "2026-09-04"
   },
   "afm291-reconciliation.html": {
@@ -479,7 +479,7 @@
     "scrollWidth": 320,
     "overflow": false
    },
-   "inputs": "ddadde319932",
+   "inputs": "a52d73312c91",
    "measured": "2026-09-04"
   },
   "afm291-study-plan.html": {
@@ -499,7 +499,7 @@
     "scrollWidth": 320,
     "overflow": false
    },
-   "inputs": "327651391776",
+   "inputs": "34daf50e4311",
    "measured": "2026-09-04"
   },
   "afm291-study-system.html": {
@@ -512,15 +512,15 @@
    },
    "errors": 0,
    "chrome": {
-    "a": 14215,
-    "b": 14215
+    "a": 14090,
+    "b": 14090
    },
    "fit": {
     "scrollWidth": 320,
     "overflow": false
    },
-   "inputs": "a0424bc0b873",
-   "measured": "2026-09-03"
+   "inputs": "31b34a42a565",
+   "measured": "2026-09-04"
   },
   "afm291-w7-cases.html": {
    "ext": {
@@ -539,7 +539,7 @@
     "scrollWidth": 320,
     "overflow": false
    },
-   "inputs": "6714b6bd10c0",
+   "inputs": "aaacd6650ae9",
    "measured": "2026-09-04"
   },
   "afm291-w7-financial-assets.html": {
@@ -559,7 +559,7 @@
     "scrollWidth": 320,
     "overflow": false
    },
-   "inputs": "782338bbd311",
+   "inputs": "1132471630f1",
    "measured": "2026-09-04"
   },
   "afm291-w8-cases.html": {
@@ -579,7 +579,7 @@
     "scrollWidth": 320,
     "overflow": false
    },
-   "inputs": "d307cc2c984e",
+   "inputs": "0a727db96622",
    "measured": "2026-09-04"
   },
   "afm291-w8-financial-assets.html": {
@@ -599,7 +599,7 @@
     "scrollWidth": 320,
     "overflow": false
    },
-   "inputs": "75faf47d100a",
+   "inputs": "be508ceb4efe",
    "measured": "2026-09-04"
   },
   "afm291-w9-cases.html": {
@@ -619,7 +619,7 @@
     "scrollWidth": 320,
     "overflow": false
    },
-   "inputs": "4cd1e633155e",
+   "inputs": "7e350ed65546",
    "measured": "2026-09-04"
   },
   "afm291-w9-ppe.html": {
@@ -639,7 +639,7 @@
     "scrollWidth": 320,
     "overflow": false
    },
-   "inputs": "17c9cf63950f",
+   "inputs": "fafa3046e1f7",
    "measured": "2026-09-04"
   },
   "afm291-workbook.html": {
@@ -659,8 +659,8 @@
     "scrollWidth": 320,
     "overflow": false
    },
-   "inputs": "e95d38f52d52",
-   "measured": "2026-09-03"
+   "inputs": "87b337fe1770",
+   "measured": "2026-09-04"
   },
   "afm291.html": {
    "ext": {
@@ -679,7 +679,7 @@
     "scrollWidth": 320,
     "overflow": false
    },
-   "inputs": "e73ba33f8938",
+   "inputs": "6a0c6bef0ce3",
    "measured": "2026-09-04"
   },
   "atlas.html": {
@@ -722,7 +722,7 @@
    "motion": {
     "animations": 0
    },
-   "inputs": "3037adb06276",
+   "inputs": "bfddd575bd60",
    "measured": "2026-09-04"
   },
   "brittle-network.html": {
@@ -742,7 +742,7 @@
     "scrollWidth": 407,
     "overflow": true
    },
-   "inputs": "c50f67d4b1ed",
+   "inputs": "bf658daf0dcc",
    "measured": "2026-09-04"
   },
   "business-law-primer.html": {
@@ -762,8 +762,8 @@
     "scrollWidth": 320,
     "overflow": false
    },
-   "inputs": "82c1d5efb304",
-   "measured": "2026-09-03"
+   "inputs": "957d36934868",
+   "measured": "2026-09-04"
   },
   "colophon.html": {
    "ext": {
@@ -775,8 +775,8 @@
    },
    "errors": 0,
    "chrome": {
-    "a": 2785,
-    "b": 2740
+    "a": 3137,
+    "b": 3092
    },
    "print": {
     "stickyLeft": 0,
@@ -789,7 +789,7 @@
     "overflow": false
    },
    "keyboard": {
-    "stops": 45,
+    "stops": 46,
     "noRing": 0
    },
    "theme": {
@@ -805,7 +805,7 @@
    "motion": {
     "animations": 0
    },
-   "inputs": "21e3e8233638",
+   "inputs": "ca42235b1100",
    "measured": "2026-09-04"
   },
   "controls.html": {
@@ -818,8 +818,8 @@
    },
    "errors": 0,
    "chrome": {
-    "a": 4434,
-    "b": 4389
+    "a": 4594,
+    "b": 4549
    },
    "print": {
     "stickyLeft": 0,
@@ -848,7 +848,7 @@
    "motion": {
     "animations": 0
    },
-   "inputs": "cbe4d77ff125",
+   "inputs": "1b64bd826e4c",
    "measured": "2026-09-04"
   },
   "coursework.html": {
@@ -891,7 +891,7 @@
    "motion": {
     "animations": 0
    },
-   "inputs": "da4e0208b726",
+   "inputs": "75f3f1e2552e",
    "measured": "2026-09-04"
   },
   "crucible-cockpit.html": {
@@ -911,8 +911,8 @@
     "scrollWidth": 320,
     "overflow": false
    },
-   "inputs": "9dad6784151b",
-   "measured": "2026-09-03"
+   "inputs": "af5e59e3ec43",
+   "measured": "2026-09-04"
   },
   "crucible-run-0-transcript.html": {
    "ext": {
@@ -922,17 +922,17 @@
    "idle": {
     "frames": 0
    },
-   "errors": 1,
+   "errors": 0,
    "chrome": {
     "a": 22248,
     "b": 22248
    },
    "fit": {
-    "scrollWidth": 644,
+    "scrollWidth": 628,
     "overflow": true
    },
-   "inputs": "df08c4dcf3d4",
-   "measured": "2026-09-03"
+   "inputs": "15a91ee58ba1",
+   "measured": "2026-09-04"
   },
   "crucible-run-0.html": {
    "ext": {
@@ -951,8 +951,8 @@
     "scrollWidth": 320,
     "overflow": false
    },
-   "inputs": "24d3a4974477",
-   "measured": "2026-09-03"
+   "inputs": "a4119c8ee77e",
+   "measured": "2026-09-04"
   },
   "crucible-run-b-transcript.html": {
    "ext": {
@@ -968,11 +968,11 @@
     "b": 74118
    },
    "fit": {
-    "scrollWidth": 590,
+    "scrollWidth": 588,
     "overflow": true
    },
-   "inputs": "9bd70df749b3",
-   "measured": "2026-09-03"
+   "inputs": "a9ed15ae2321",
+   "measured": "2026-09-04"
   },
   "crucible-run-b.html": {
    "ext": {
@@ -991,8 +991,8 @@
     "scrollWidth": 320,
     "overflow": false
    },
-   "inputs": "82d8c9b7f027",
-   "measured": "2026-09-03"
+   "inputs": "f976fd08d74e",
+   "measured": "2026-09-04"
   },
   "crucible-run-c-transcript.html": {
    "ext": {
@@ -1008,11 +1008,11 @@
     "b": 70442
    },
    "fit": {
-    "scrollWidth": 951,
+    "scrollWidth": 936,
     "overflow": true
    },
-   "inputs": "03bce77a5f07",
-   "measured": "2026-09-03"
+   "inputs": "d75a55139806",
+   "measured": "2026-09-04"
   },
   "crucible-run-c.html": {
    "ext": {
@@ -1031,8 +1031,8 @@
     "scrollWidth": 320,
     "overflow": false
    },
-   "inputs": "36c9f827bb36",
-   "measured": "2026-09-03"
+   "inputs": "c1320eeb54d4",
+   "measured": "2026-09-04"
   },
   "daily-learning-cockpit.html": {
    "ext": {
@@ -1051,8 +1051,8 @@
     "scrollWidth": 320,
     "overflow": false
    },
-   "inputs": "f329517fe171",
-   "measured": "2026-09-03"
+   "inputs": "165712b2fdd3",
+   "measured": "2026-09-04"
   },
   "econ102-exam-trainer.html": {
    "ext": {
@@ -1071,8 +1071,8 @@
     "scrollWidth": 320,
     "overflow": false
    },
-   "inputs": "bb831b716a55",
-   "measured": "2026-09-03"
+   "inputs": "2e7c60586751",
+   "measured": "2026-09-04"
   },
   "econ102-visual-reference.html": {
    "ext": {
@@ -1091,8 +1091,8 @@
     "scrollWidth": 320,
     "overflow": false
    },
-   "inputs": "a97a6040a60a",
-   "measured": "2026-09-03"
+   "inputs": "91322ae61a82",
+   "measured": "2026-09-04"
   },
   "epistemic-quality-directive.html": {
    "ext": {
@@ -1111,7 +1111,7 @@
     "scrollWidth": 320,
     "overflow": false
    },
-   "inputs": "1e3b9e7af759",
+   "inputs": "79cbe0413e10",
    "measured": "2026-09-04"
   },
   "exam-day-final-load.html": {
@@ -1131,8 +1131,8 @@
     "scrollWidth": 320,
     "overflow": false
    },
-   "inputs": "5271157b8890",
-   "measured": "2026-09-03"
+   "inputs": "e5997941cc12",
+   "measured": "2026-09-04"
   },
   "five-shall-paragraphs.html": {
    "ext": {
@@ -1151,8 +1151,8 @@
     "scrollWidth": 320,
     "overflow": false
    },
-   "inputs": "9ad5ae67b923",
-   "measured": "2026-09-03"
+   "inputs": "5c471a792d8a",
+   "measured": "2026-09-04"
   },
   "flagged-in-hindsight.html": {
    "ext": {
@@ -1171,8 +1171,8 @@
     "scrollWidth": 320,
     "overflow": false
    },
-   "inputs": "f79963694aba",
-   "measured": "2026-09-03"
+   "inputs": "5bca21b56634",
+   "measured": "2026-09-04"
   },
   "french-a1-cafe.html": {
    "ext": {
@@ -1191,7 +1191,7 @@
     "scrollWidth": 320,
     "overflow": false
    },
-   "inputs": "684d85571e48",
+   "inputs": "332faf87ff2a",
    "measured": "2026-09-04"
   },
   "global-spending-and-wealth.html": {
@@ -1211,8 +1211,8 @@
     "scrollWidth": 320,
     "overflow": false
    },
-   "inputs": "6b4eed12abaf",
-   "measured": "2026-09-03"
+   "inputs": "0c164ad01197",
+   "measured": "2026-09-04"
   },
   "heartbeat-budget.html": {
    "ext": {
@@ -1231,8 +1231,8 @@
     "scrollWidth": 320,
     "overflow": false
    },
-   "inputs": "13b1186f6a54",
-   "measured": "2026-09-03"
+   "inputs": "de8b8d54f0e4",
+   "measured": "2026-09-04"
   },
   "how-to-judge-a-president.html": {
    "ext": {
@@ -1251,7 +1251,7 @@
     "scrollWidth": 320,
     "overflow": false
    },
-   "inputs": "c1e6509a54a1",
+   "inputs": "5d6638019bed",
    "measured": "2026-09-04"
   },
   "hype-cycle.html": {
@@ -1271,8 +1271,8 @@
     "scrollWidth": 320,
     "overflow": false
    },
-   "inputs": "9bb1ba76871d",
-   "measured": "2026-09-03"
+   "inputs": "dae5a7bb27d3",
+   "measured": "2026-09-04"
   },
   "ifrs15-judgment-trainer.html": {
    "ext": {
@@ -1288,11 +1288,11 @@
     "b": 3946
    },
    "fit": {
-    "scrollWidth": 328,
+    "scrollWidth": 331,
     "overflow": true
    },
-   "inputs": "df2736245c3f",
-   "measured": "2026-09-03"
+   "inputs": "183ca3f58fb4",
+   "measured": "2026-09-04"
   },
   "ifrs15-verification-memo.html": {
    "ext": {
@@ -1311,8 +1311,8 @@
     "scrollWidth": 320,
     "overflow": false
    },
-   "inputs": "e36aa5d62d7d",
-   "measured": "2026-09-03"
+   "inputs": "e73e5d2a7c7f",
+   "measured": "2026-09-04"
   },
   "index.html": {
    "ext": {
@@ -1382,7 +1382,7 @@
    "motion": {
     "animations": 0
    },
-   "inputs": "50f25c757bee",
+   "inputs": "a0036fbaa3b3",
    "measured": "2026-09-04"
   },
   "kennedy-dossier.html": {
@@ -1402,8 +1402,8 @@
     "scrollWidth": 320,
     "overflow": false
    },
-   "inputs": "92cbbfd4a78a",
-   "measured": "2026-09-03"
+   "inputs": "48b6e34874ef",
+   "measured": "2026-09-04"
   },
   "law-arena.html": {
    "ext": {
@@ -1422,8 +1422,8 @@
     "scrollWidth": 320,
     "overflow": false
    },
-   "inputs": "3980413e817f",
-   "measured": "2026-09-03"
+   "inputs": "a2a85b4bb267",
+   "measured": "2026-09-04"
   },
   "leadership-evaluation-kit.html": {
    "ext": {
@@ -1442,7 +1442,7 @@
     "scrollWidth": 320,
     "overflow": false
    },
-   "inputs": "59568bbe8a7a",
+   "inputs": "55835c76c4e2",
    "measured": "2026-09-04"
   },
   "library.html": {
@@ -1485,7 +1485,7 @@
    "motion": {
     "animations": 0
    },
-   "inputs": "c68ba11ba793",
+   "inputs": "d029abf6557a",
    "measured": "2026-09-04"
   },
   "monroe-case-file.html": {
@@ -1505,8 +1505,8 @@
     "scrollWidth": 320,
     "overflow": false
    },
-   "inputs": "bd6d1be071f3",
-   "measured": "2026-09-03"
+   "inputs": "02d5e0f0dfdb",
+   "measured": "2026-09-04"
   },
   "not-significant.html": {
    "ext": {
@@ -1525,8 +1525,8 @@
     "scrollWidth": 320,
     "overflow": false
    },
-   "inputs": "6f2663f14d14",
-   "measured": "2026-09-03"
+   "inputs": "19f6098e2ad0",
+   "measured": "2026-09-04"
   },
   "positive-vs-normative.html": {
    "ext": {
@@ -1545,8 +1545,8 @@
     "scrollWidth": 320,
     "overflow": false
    },
-   "inputs": "597302ac2705",
-   "measured": "2026-09-03"
+   "inputs": "c5edea6eabfc",
+   "measured": "2026-09-04"
   },
   "practice-arena.html": {
    "ext": {
@@ -1565,8 +1565,8 @@
     "scrollWidth": 320,
     "overflow": false
    },
-   "inputs": "9a5a44f18940",
-   "measured": "2026-09-03"
+   "inputs": "e0777320323c",
+   "measured": "2026-09-04"
   },
   "predictive-history-archive.html": {
    "ext": {
@@ -1585,8 +1585,8 @@
     "scrollWidth": 320,
     "overflow": false
    },
-   "inputs": "377ebcc945a5",
-   "measured": "2026-09-03"
+   "inputs": "552b6fafba5b",
+   "measured": "2026-09-04"
   },
   "predictive-history.html": {
    "ext": {
@@ -1605,7 +1605,7 @@
     "scrollWidth": 333,
     "overflow": true
    },
-   "inputs": "8b7ebd8b455c",
+   "inputs": "27432a4dd334",
    "measured": "2026-09-04"
   },
   "price-of-divergence.html": {
@@ -1625,7 +1625,7 @@
     "scrollWidth": 320,
     "overflow": false
    },
-   "inputs": "63a1add9c79f",
+   "inputs": "4779ff2f391e",
    "measured": "2026-09-04"
   },
   "research.html": {
@@ -1668,7 +1668,7 @@
    "motion": {
     "animations": 0
    },
-   "inputs": "b3e4baea7fb3",
+   "inputs": "b1acd46467f7",
    "measured": "2026-09-04"
   },
   "revenue-recognition.html": {
@@ -1688,8 +1688,8 @@
     "scrollWidth": 320,
     "overflow": false
    },
-   "inputs": "6167f7db7674",
-   "measured": "2026-09-03"
+   "inputs": "7902b8216d61",
+   "measured": "2026-09-04"
   },
   "skill-forge.html": {
    "ext": {
@@ -1708,8 +1708,8 @@
     "scrollWidth": 320,
     "overflow": false
    },
-   "inputs": "1b1125005788",
-   "measured": "2026-09-03"
+   "inputs": "a7cd83bfb67b",
+   "measured": "2026-09-04"
   },
   "the-calibrated-mind.html": {
    "ext": {
@@ -1728,7 +1728,7 @@
     "scrollWidth": 320,
     "overflow": false
    },
-   "inputs": "2ff0dc7adf40",
+   "inputs": "1196324c734c",
    "measured": "2026-09-04"
   },
   "the-delayed-test.html": {
@@ -1748,7 +1748,7 @@
     "scrollWidth": 320,
     "overflow": false
    },
-   "inputs": "08fd5e22247d",
+   "inputs": "817c929cebcb",
    "measured": "2026-09-04"
   },
   "the-trillion-dollar-vintage.html": {
@@ -1768,7 +1768,7 @@
     "scrollWidth": 320,
     "overflow": false
    },
-   "inputs": "055481214786",
+   "inputs": "66cc81537f40",
    "measured": "2026-09-04"
   },
   "tools.html": {
@@ -1811,7 +1811,7 @@
    "motion": {
     "animations": 0
    },
-   "inputs": "5eae5347d443",
+   "inputs": "f264b2a4b173",
    "measured": "2026-09-04"
   },
   "transformers-study-guide.html": {
@@ -1831,8 +1831,8 @@
     "scrollWidth": 320,
     "overflow": false
    },
-   "inputs": "2559ec8200ac",
-   "measured": "2026-09-03"
+   "inputs": "44493f67f9d9",
+   "measured": "2026-09-04"
   },
   "us-canada-legal-architecture.html": {
    "ext": {
@@ -1851,7 +1851,7 @@
     "scrollWidth": 320,
     "overflow": false
    },
-   "inputs": "b09ef580f25b",
+   "inputs": "2f988294fbb0",
    "measured": "2026-09-04"
   },
   "whose-losses-count.html": {
@@ -1871,7 +1871,7 @@
     "scrollWidth": 320,
     "overflow": false
    },
-   "inputs": "22415219a0f7",
+   "inputs": "792d7128a114",
    "measured": "2026-09-04"
   },
   "zakaria-putin-audited.html": {
@@ -1891,8 +1891,8 @@
     "scrollWidth": 320,
     "overflow": false
    },
-   "inputs": "84f4b451a310",
-   "measured": "2026-09-03"
+   "inputs": "c7d23ec301dd",
+   "measured": "2026-09-04"
   }
  },
  "offline": {

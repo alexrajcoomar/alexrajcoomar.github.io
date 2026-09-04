@@ -551,6 +551,22 @@ def build(ctx):
             f"{n(t.get('numerals', 0))} numerals drawn by {t.get('figures', 0)} figures on {t.get('pages', 0)} pages, {t.get('missing', 0)} not restated",
             ["research.html", "index.html", "colophon.html"])
 
+    t = T.get("marks", {})
+    checked("The three marks the pages draw are the geometry in content/marks and nothing else: every element, "
+            "coordinate and stroke width is the file's, no surface draws an element its file does not carry, "
+            "the thinnest stroke on every surface clears one device pixel at the size it is drawn, and the "
+            "stylesheet does not resize any of them.", ["34"],
+            f"{t.get('files', 0)} files of {t.get('elements', 0)} elements on a {t.get('grid', 0)} unit grid, drawn on {t.get('pages', 0)} pages: "
+            + "; ".join("%s draws %d of %d at %g times, %.2f device pixels at %gpx"
+                        % (d["key"], d["drawn"], d["of"], d["scale"], d["thin"], d["px"])
+                        for d in (t.get("detail") or []))
+            + f"; {t.get('mismatched', 0)} marks that are not their file's geometry, {t.get('unknown', 0)} elements "
+              f"drawn that no file carries, {t.get('thin', 0)} strokes under a device pixel; of the "
+              f"{t.get('invariants', 0)} values the marks' own sheet states, {t.get('carried', 0)} are readings the files bear out",
+            ["colophon.html", "controls.html"],
+            note="The sheet that came with the marks is not a source here: where a stated value and the drawn path "
+                 "disagree, the path is what the site draws and what this check reads.")
+
     t = T.get("editor", {})
     checked("The editor, admin.html, exists and the build never writes it: every stylesheet, script and local asset it references resolves to a file, "
             "every custom property its styles read is defined by the stylesheet it loads, every element id its script names is in its markup, "

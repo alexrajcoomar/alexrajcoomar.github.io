@@ -278,11 +278,19 @@ header.top .bar{
   font-weight:680;letter-spacing:-.02em;text-decoration:none;font-size:1.02rem;
   display:inline-flex;align-items:baseline;gap:.5rem;white-space:nowrap;order:1
 }
-.brand .mark{
-  width:1.45rem;height:1.45rem;flex:none;align-self:center;
-  display:grid;place-items:center;background:var(--ink);color:var(--paper);
-  font-size:.82rem;font-weight:760;letter-spacing:0
-}
+/* The marks. Each is inline SVG in currentColor, drawn at the size its
+   thinnest stroke clears one device pixel (rendered weight is stroke x size
+   / 64), so none of them is resized here: a mark scaled by CSS would break
+   the threshold that check 34 holds it to. */
+.mk{flex:none;display:block}
+.brand .mk-brand{align-self:center;margin-right:-.12rem}
+.markhead{display:flex;align-items:center;gap:1rem}
+.markhead .mk{color:var(--ink-2)}
+.markhead h1{margin:0}
+.atlas-mark{margin:0 0 .9rem}
+.atlas-mark .mk{color:var(--ink-2)}
+.namerow .h1{display:flex;align-items:center;gap:.75rem}
+.namerow .h1 .mk{color:var(--ink-2)}
 .brand span.sub{color:var(--ink-3);font-weight:500;font-size:.86rem;letter-spacing:0}
 nav.main{display:flex;align-items:center;gap:.15rem;order:2;min-width:0}
 .hbtns{display:flex;align-items:center;order:3;flex:none}

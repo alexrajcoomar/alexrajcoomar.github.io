@@ -530,7 +530,7 @@ const FALSIFICATIONS = [
   { key: 'print', page: 'index.html', what: 'under print media the figures may break across pages and the header stays pinned',
     apply: h => h.replace('</head>', '<style>@media print{figure,.spec,.plot{break-inside:auto!important;page-break-inside:auto!important}header.top{position:sticky!important;top:0;display:block!important}}</style></head>') },
   { key: 'motion', page: 'about.html', what: 'the brand mark spins under reduced motion',
-    apply: h => h.replace('</head>', '<style>@keyframes neg-spin{to{transform:rotate(1turn)}}.brand .mark{animation:neg-spin 2s linear infinite!important}</style></head>') },
+    apply: h => h.replace('</head>', '<style>@keyframes neg-spin{to{transform:rotate(1turn)}}.brand .mk{animation:neg-spin 2s linear infinite!important}</style></head>') },
   { key: 'fit', page: 'about.html', what: 'a 900px block that no declaration allows',
     apply: h => h.replace('</body>', '<div style="width:900px;height:2px"></div></body>') },
   { key: 'chrome', page: 'positive-vs-normative.html', what: 'a block the build owns carries words the count would include',

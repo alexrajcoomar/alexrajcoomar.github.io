@@ -1,0 +1,27 @@
+<svg viewBox="0 0 64 64"
+     xmlns="http://www.w3.org/2000/svg"
+     fill="none"
+     stroke="currentColor"
+     stroke-linecap="round"
+     stroke-linejoin="round">
+
+  <!-- Delta / verification frame -->
+  <path d="M32 6 L12 48 L52 48 Z"
+        stroke-width="1.5"/>
+
+  <!-- Central audit datum -->
+  <path d="M32 6 V48" stroke-width="1"/>
+
+  <!-- Precision node -->
+  <circle cx="32" cy="32" r="4" stroke-width="1.5"/>
+  <circle cx="32" cy="32" r="1" fill="currentColor" stroke="none"/>
+
+  <!-- Ledger baseline -->
+  <path d="M8 52 H56" stroke-width="1"/>
+  <path d="M8 56 H56" stroke-width="1"/>
+
+  <!-- Endpoint verification nodes -->
+  <circle cx="12" cy="48" r="2" stroke-width="1.5"/>
+  <circle cx="52" cy="48" r="2" stroke-width="1.5"/>
+
+</svg>

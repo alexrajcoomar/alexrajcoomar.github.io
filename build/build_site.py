@@ -150,6 +150,7 @@ def kwords(n):
 import atlas as atlas_mod
 import invariance
 import claims
+import marks as marks_mod
 # the last content pass's own account of what it got wrong and left undone,
 # written by hand during the pass; printed on the colophon, not filed away
 try:
@@ -282,7 +283,7 @@ def head(title, desc, page, extra=""):
 <link rel="preload" href="InterVariable-sub.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="{asset("site.css")}">
 <link rel="stylesheet" href="{asset("figures.css")}">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%2316150f'/><text x='50' y='72' font-size='64' font-family='Helvetica,Arial' font-weight='bold' fill='%23faf9f6' text-anchor='middle'>A</text></svg>">
+<link rel="icon" href="{FAVICON}">
 <script>
 /* Theme before first paint, so there is no flash. Obsidian is the site's
    default: a browser that holds no choice lands dark, and only the stored
@@ -301,7 +302,7 @@ document.documentElement.className+=' js';}})();
 <a class="skip" href="#main">Skip to content</a>
 <header class="top">
   <div class="bar">
-    <a class="brand" href="index.html"><span class="mark" aria-hidden="true">A</span>{esc(SHORT)} <span class="sub">portfolio</span></a>
+    <a class="brand" href="index.html">{marks_mod.svg("brand")}{esc(SHORT)} <span class="sub">portfolio</span></a>
     <nav class="main" aria-label="Sections">
       {nav}
     </nav>
@@ -1514,7 +1515,7 @@ def page_about():
     body = f"""<div class="hero tight shell">
   <p class="eyebrow accent">About</p>
   <div class="namerow">
-    <h1 class="h1" id="author">{esc(NAME)}</h1>
+    <h1 class="h1" id="author">{marks_mod.svg("author")}{esc(NAME)}</h1>
     <div class="affil">
       <img class="affil-logo" src="uw-logo.png" alt="University of Waterloo"
         width="280" height="67" decoding="async">
@@ -1704,6 +1705,64 @@ def defs_html():
     out.append(DENSITY_DD)
     return "\n".join(out)
 
+def marks_block():
+    """The colophon's account of the three marks: what each one stands for,
+    the rule that decides what a surface may draw, and what the sheet that came
+    with them claims against what the files carry. Every number here is read
+    from content/marks by build/marks.py on this build."""
+    F = marks_mod.facts()
+    A = marks_mod.audit()
+    V = F["variants"]
+    # a mark whose file is missing has no reading; check 34 refuses the build
+    # over that, and this page says so rather than falling over first
+    thin = min([v["thinnest_px"] for v in V.values() if v["thinnest_px"]] or [0])
+    rows = "".join(
+        "<tr><th scope=\"row\">{}</th><td>{}</td><td class=\"tnum\">{} of {}</td>"
+        "<td class=\"tnum\">{:g}</td><td class=\"tnum\">{:g}</td><td class=\"tnum\">{}</td></tr>".format(
+            esc(lbl), esc(V[k]["mark"]), V[k]["drawn"], V[k]["of"], V[k]["scale"], V[k]["px"],
+            ("%.2f" % V[k]["thinnest_px"]) if V[k]["thinnest_px"] else "not drawn")
+        for k, lbl in (("brand", "The header"),
+                       ("bar", "The bar at the top of every piece"),
+                       ("favicon", "The tab icon"),
+                       ("controls", "The tests of controls"),
+                       ("atlas", "The Atlas"),
+                       ("author", "Beside the author's name")))
+    return f"""
+<section class="band colo ground" id="marks">
+  <div class="shell">
+  <div class="sechead"><h2>The three marks</h2><span class="count">{F['elements']} elements in {len(F['marks'])} files</span></div>
+  <div class="prose measure">
+    <p>The identity is drawn rather than typed: a monogram whose A and R stand on one vertical datum, in the
+    header of every generated page, on the bar at the top of every standalone piece, and in the tab icon.
+    The other two stand where they mean something. The delta heads the tests of controls because its own
+    sequence is that page's: evidence, a change, a verified datum, a ledger record. The polar datum heads
+    the Atlas and stands beside the author's name because it is this site's own sphere abstracted, and the
+    filled node at its north pole is the author's mark among the {format(len(ATLAS['points']), ',')} on that sphere.</p>
+    <p>A stroke renders at its width times the size it is drawn, over the {F['grid']} unit grid the marks are
+    authored on, so a line thinner than one device pixel cannot hold an edge. Each surface therefore draws
+    only what it can hold and multiplies every stroke it keeps by one factor. The thinnest line any surface
+    draws measures {thin:.2f} device pixels. Nothing is resized by the stylesheet, because a mark scaled after
+    the fact would be a mark whose arithmetic was done for another size.</p>
+  </div>
+  <div class="tw"><table class="ctab">
+    <caption>What each surface draws, from which mark, how much of it, and how thin its finest line ends up.</caption>
+    <thead><tr><th scope="col">Surface</th><th scope="col">Mark</th><th scope="col">Elements</th>
+    <th scope="col">Stroke factor</th><th scope="col">Drawn at</th><th scope="col">Thinnest line</th></tr></thead>
+    <tbody>{rows}</tbody>
+  </table></div>
+  <div class="prose measure">
+    <p>The marks arrived with a sheet of stated geometry. {A['n']} of its values are readings this build takes
+    from the files themselves, and {A['carried']} of those readings bear the sheet out. The rest do not, so the site
+    draws the files: the sheet gives the monogram's bowl a radius the path does not describe, sets the delta's
+    two ledger rules closer together than they sit, and asks the polar datum for finer angular divisions than
+    it carries. Check 34 recomputes all of this on every build, from the files, without asking the module
+    that drew them.</p>
+  </div>
+  </div>
+</section>
+"""
+
+
 def page_colophon(summary=None):
     gt = figs.group_totals()
     ex = exceptions()
@@ -1865,6 +1924,8 @@ def page_colophon(summary=None):
   </div>
 </section>
 
+{marks_block()}
+
 <section class="band shell colo" id="offline">
   <div class="sechead"><h2>On your phone</h2><span class="count">Offline</span></div>
   <div class="prose measure">
@@ -1988,8 +2049,11 @@ RETURN_BAR = """
 #__rb .__rb-from{flex-basis:100%;order:5;font-weight:400;color:#66635a;line-height:1.4;max-width:70ch}
 #__rb .__rb-from b{font-weight:600;color:#55524a}
 #__rb .__mark{
-  display:inline-grid;place-items:center;width:1.2rem;height:1.2rem;flex:none;
-  background:#16150f;color:#faf9f6;font-size:.72rem;font-weight:700;
+  flex:none;align-self:center;color:inherit;
+  /* pinned: six pieces give every svg a width of 100 per cent, and this
+     mark's stroke factor was computed for the size named here. Check 34
+     holds the two to each other. */
+  width:__MARKPX__px;height:__MARKPX__px;
 }
 /* Dark has to answer to two things: the reader's system setting, and the
    theme button on the page, which sets data-theme on <html>. Keyed to the
@@ -2020,7 +2084,7 @@ RETURN_BAR = """
 @media print{#__rb{display:none !important}}
 </style>
 <nav id="__rb" aria-label="Portfolio">
-  <a class="__rb-home" href="index.html"><span class="__mark" aria-hidden="true">A</span>Alex Rajcoomar <i>portfolio</i></a>
+  <a class="__rb-home" href="index.html">__MARK__Alex Rajcoomar <i>portfolio</i></a>
   <span class="__rb-row">__ROW__</span>
   <span class="__rb-right"><a href="__UP__">__UPNAME__</a><a href="atlas.html">Atlas</a><a href="library.html">All work</a></span>
   __FROM__
@@ -2273,7 +2337,9 @@ def add_return(path, up="index.html", upname="Home", bar=True, p=None):
     # carries the pill alone, carries the line at the foot of its document
     pill = pill.replace("__FROM__", "" if bar else piece_from(p).replace('class="__rb-from"', 'id="__rb-from"').replace("<span", "<p").replace("</span>", "</p>"))
     if bar:
-        top = (RETURN_BAR.replace("__UP__", up).replace("__UPNAME__", upname)
+        top = (RETURN_BAR.replace("__MARKPX__", str(marks_mod.VARIANTS["bar"]["px"]))
+               .replace("__MARK__", marks_mod.svg("bar", cls="__mark mk-bar"))
+               .replace("__UP__", up).replace("__UPNAME__", upname)
                .replace("__ROW__", piece_row(p)).replace("__FROM__", piece_from(p)))
         m = _body_tag(text)
         text = (text[:m.end()] + top + text[m.end():]) if m else (top + text)
@@ -2482,10 +2548,11 @@ _HEAD_START, _HEAD_END = "<!--__meta-->", "<!--/__meta-->"
 # The pieces were written before the site had a mark, so twenty-six of them
 # showed a blank tab icon and asked the server for a favicon.ico that is not
 # there. One definition, used by the shell pages and injected into the pieces.
-FAVICON = ("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'>"
-           "<rect width='100' height='100' fill='%2316150f'/><text x='50' y='72' font-size='64' "
-           "font-family='Helvetica,Arial' font-weight='bold' fill='%23faf9f6' "
-           "text-anchor='middle'>A</text></svg>")
+# The tab icon is the monogram reduced to what a 16px square can hold: the
+# A and the R's leg, at 3.3 times the authored stroke, which puts the thinnest
+# line over one device pixel. The bowl is dropped because its counter falls to
+# about a pixel and a quarter at that size and fills in.
+FAVICON = marks_mod.favicon_uri("#16150f", "#faf9f6")
 
 def head_block(p):
     url  = SITE_URL + "/" + p["url"]
@@ -2856,6 +2923,7 @@ def add_returns_everywhere():
 ATLAS_BODY = r"""<section class="band atlas-band" id="atlas">
   <div class="shell atlas-grid">
     <div class="atlas-side">
+      <div class="atlas-mark">{mark_atlas}</div>
       <p class="eyebrow accent">Atlas</p>
       <h1 class="atlas-h1">Every section of everything, on one sphere.</h1>
       <p class="atlas-lede">{lede}</p>
@@ -3116,6 +3184,7 @@ def page_atlas():
     nsec, ndoc = len(pts), len(ordered)
     zones_a = ",".join("%.3f" % ATLAS["zones"][z][1] for z in ("independent", "course") if z in ATLAS["zones"])
     body = ATLAS_BODY.format(nsec=format(nsec, ","), ndoc=ndoc, ATLAS_ZONES_A=zones_a,
+                             mark_atlas=marks_mod.svg("atlas"),
                              plates="\n".join(plates), guide="\n".join(guide),
                              facts=json.dumps(F["js"], separators=(",", ":")).replace("</", "<\\/"),
                              lede=("{} marks from {} documents and the author: {} "
@@ -3201,7 +3270,7 @@ def page_controls(register, instrument, counts, summary):
     check 29 reads the page back against the records on every build."""
     body = f"""
 <section class="band shell colo" id="controls-top">
-  <div class="sechead"><h1>What this site claims, what tests it, and what happened when each claim was made false</h1><span class="count">Tests of controls</span></div>
+  <div class="sechead"><div class="markhead">{marks_mod.svg("controls")}<h1>What this site claims, what tests it, and what happened when each claim was made false</h1></div><span class="count">Tests of controls</span></div>
   <div class="prose measure">
     <p>A register that prints <b>held</b> beside every claim proves only that the checks agree with
     themselves. In the language of audit that is inquiry: a control described, not observed. A test
@@ -4691,6 +4760,111 @@ def check_site():
             if lost:
                 t31["missing"] += len(lost)
                 problems.append(_p("31", f"{f}: a figure draws {', '.join(lost[:5])}, which the page's text does not restate"))
+    # 34. the marks. Three files in content/marks are the geometry; every mark
+    # a page draws is read back and recomputed here from those files, by this
+    # check's own reader rather than by the module that wrote them, so an
+    # emitter that invents an element or forgets to scale one is caught. Two
+    # rules are held besides: a surface may only draw elements its source
+    # carries, and the thinnest stroke it draws must clear one device pixel at
+    # the size it is drawn (a stroke renders at its width times that size over
+    # the 64 unit grid the marks are authored on), which is the whole reason a
+    # reduction exists. The stylesheet may not resize a mark, or that
+    # arithmetic would be about a size nothing draws.
+    t34 = T["marks"] = {"files": 0, "elements": 0, "surfaces": 0, "drawn": 0,
+                        "pages": 0, "mismatched": 0, "unknown": 0, "thin": 0,
+                        "invariants": 0, "carried": 0, "detail": []}
+
+    def _read_mark(path):
+        """The elements of a mark file, in order, id'd by the comment above
+        them: this check's own reading of the source."""
+        raw = open(path, encoding="utf-8").read()
+        label, seen, els = "", {}, []
+        for m in re.finditer(r"<!--(.*?)-->|<(circle|path)\b([^>]*?)/>", raw, re.S):
+            if m.group(1) is not None:
+                label = re.sub(r"\s+", " ", m.group(1)).strip()
+                continue
+            a = dict(re.findall(r'([a-zA-Z-]+)\s*=\s*"([^"]*)"', m.group(3)))
+            if "d" in a:
+                a["d"] = re.sub(r"\s+", " ", a["d"]).strip()
+            seen[label] = seen.get(label, 0) + 1
+            els.append(("%s#%d" % (label, seen[label]), m.group(2), a))
+        return els
+
+    want34 = {}
+    for key, spec in marks_mod.VARIANTS.items():
+        src = os.path.join(OUT, "content", "marks", marks_mod.FILES[spec["mark"]])
+        if not os.path.exists(src):
+            problems.append(_p("34", "content/marks/%s: missing, so the %s mark cannot be drawn"
+                                     % (marks_mod.FILES[spec["mark"]], key))); continue
+        els = _read_mark(src)
+        t34["surfaces"] += 1
+        ids = {e[0] for e in els}
+        for want in (spec["keep"] or ()):
+            if want not in ids:
+                t34["unknown"] += 1
+                problems.append(_p("34", "the %s mark draws %s, which %s does not carry"
+                                         % (key, want, marks_mod.FILES[spec["mark"]])))
+        parts, widths = [], []
+        for eid, tag, a in els:
+            if spec["keep"] is not None and eid not in spec["keep"]:
+                continue
+            a = dict(a)
+            if "stroke-width" in a:
+                w = float(a["stroke-width"]) * spec["scale"]
+                widths.append(w)
+                a["stroke-width"] = ("%.4f" % w).rstrip("0").rstrip(".")
+            parts.append("<%s %s/>" % (tag, " ".join('%s="%s"' % (k, a[k]) for k in
+                         ("cx", "cy", "r", "d", "stroke-width", "opacity", "fill", "stroke") if k in a)))
+        t34["drawn"] += len(parts)
+        want34[key] = "".join(parts)
+        if widths:
+            thin = min(widths) * spec["px"] / 64.0
+            t34["detail"].append({"key": key, "drawn": len(parts), "of": len(els),
+                                  "scale": spec["scale"], "px": spec["px"], "thin": round(thin, 2)})
+            if thin < 1.0:
+                t34["thin"] += 1
+                problems.append(_p("34", "the %s mark's thinnest stroke draws %.3f device pixels at %dpx, "
+                                         "under the one pixel an edge needs" % (key, thin, spec["px"])))
+    for name in sorted(marks_mod.FILES.values()):
+        sp = os.path.join(OUT, "content", "marks", name)
+        if os.path.exists(sp):
+            t34["files"] += 1
+            t34["elements"] += len(_read_mark(sp))
+    # every mark on every page is the geometry above, and nothing else
+    for f in html_files:
+        text34 = open(os.path.join(OUT, f), encoding="utf-8", errors="ignore").read()
+        found = re.findall(r'<svg class="[^"]*\bmk-([a-z]+)\b[^"]*"[^>]*>(.*?)</svg>', text34, re.S)
+        if not found:
+            continue
+        look("34", f)
+        t34["pages"] += 1
+        for key, drawn in found:
+            if key not in want34:
+                t34["mismatched"] += 1
+                problems.append(_p("34", "%s: draws a mark named %s, which the build defines no geometry for" % (f, key)))
+            elif drawn != want34[key]:
+                t34["mismatched"] += 1
+                problems.append(_p("34", "%s: the %s mark drawn is not the geometry content/marks holds" % (f, key)))
+    # the stylesheet may not resize a mark out from under that arithmetic
+    css34 = open(os.path.join(OUT, "site.css"), encoding="utf-8", errors="ignore").read()
+    for m in re.finditer(r"\.mk(-[a-z]+)?\s*\{([^}]*)\}", css34):
+        key34, decl = (m.group(1) or "")[1:], m.group(2)
+        for prop, val in re.findall(r"\b(width|height)\s*:\s*([^;}]+)", decl):
+            want = marks_mod.VARIANTS.get(key34, {}).get("px")
+            if want is None or val.strip() != "%dpx" % want:
+                problems.append(_p("34", "site.css: a rule on the marks sets %s to %s; a mark may only be pinned to "
+                                         "the size its stroke rule was computed for" % (prop, val.strip())))
+    # the bar injected into a piece meets that piece's stylesheet, so its box is
+    # pinned there; the pin must name the size the bar's mark is drawn at
+    barpx = marks_mod.VARIANTS["bar"]["px"]
+    barcss = re.search(r"#__rb \.__mark\{([^}]*)\}", RETURN_BAR.replace("__MARKPX__", str(barpx)), re.S)
+    if not barcss or not re.search(r"width:%dpx;height:%dpx" % (barpx, barpx), re.sub(r"\s+", "", barcss.group(1))):
+        problems.append(_p("34", "the bar injected into every piece does not pin its mark to %dpx, so a piece's own "
+                                 "stylesheet can draw it at a size its stroke rule was not computed for" % barpx))
+    aud34 = marks_mod.audit(os.path.join(OUT, "content", "marks"))
+    t34["invariants"], t34["carried"] = aud34["n"], aud34["carried"]
+    t34["grid"] = marks_mod.grid(os.path.join(OUT, "content", "marks"))
+
     # 33. the editor. admin.html is hand-maintained and the build never
     # writes it. Held here: the file is byte-identical to the bytes this run
     # started from; it is a whole document (the doctype at one end, </html> at
