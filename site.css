@@ -2143,7 +2143,8 @@ details.cgroup + details.cgroup{margin-top:1.75rem}
 .inst th,.inst td{padding:.05em .18em;border:0;text-align:center;font-weight:400;vertical-align:middle}
 .inst caption{text-align:left;font-family:inherit;font-size:.82rem;color:var(--ink-2);padding:0 0 .7rem;max-width:44rem;caption-side:top}
 .inst .ip{text-align:left;white-space:nowrap;padding-right:1.1em;color:var(--ink-2)}
-.inst .ip a{color:inherit;text-decoration:none}
+.inst .ip a{color:inherit;text-decoration:none;display:inline-block;min-height:24px;line-height:24px}
+.inst tbody .ip{padding-top:0;padding-bottom:0}
 .inst .ip a:hover{text-decoration:underline}
 .inst .ir-shell .ip{color:var(--ink);font-weight:600}
 .inst .ir-record .ip{font-style:italic}

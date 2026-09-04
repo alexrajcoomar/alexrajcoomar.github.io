@@ -128,7 +128,7 @@
     ],
     "caught": true,
     "line": "check 9: content/pieces.json: french-a1-cafe points at not-there.html, which does not exist",
-    "seconds": 47.0
+    "seconds": 47
    },
    {
     "id": "10-glyph-outside-subset",
@@ -215,7 +215,7 @@
     ],
     "caught": true,
     "line": "check 14: content/pieces.json: heartbeat-budget calls itself the largest essay; the-trillion-dollar-vintage is, at 18,610 words",
-    "seconds": 47.0
+    "seconds": 47
    },
    {
     "id": "15-result-sentence-added",
@@ -452,8 +452,8 @@
   "meta": {
    "tool": "build/audit.js --falsify",
    "date": "2026-09-04",
-   "commit": "e6282cf",
-   "code": "6e5f0a097ba1"
+   "commit": "afe85c0",
+   "code": "44c7e6778a6d"
   },
   "cases": [
    {
