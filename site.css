@@ -2168,8 +2168,11 @@ details.cgroup + details.cgroup{margin-top:1.75rem}
 .inst-key code{font-size:.9em}
 #controls-top h1{font-size:clamp(1.5rem,2.4vw,2.1rem);line-height:1.15;max-width:26em}
 @media (max-width:48rem){
+  /* the wall scrolls inside its own frame on a narrow screen; nothing in it
+     is clipped, and the page names are set a step smaller so the columns
+     stay in reach */
   .inst{font-size:.66rem}
-  .inst .ip{max-width:9.5rem;overflow:hidden;text-overflow:ellipsis}
+  .inst .ip{font-size:.6rem;padding-right:.7em}
   .inst-ledger .iw{max-width:none}
 }
 
