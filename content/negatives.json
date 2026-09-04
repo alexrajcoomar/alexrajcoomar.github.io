@@ -1,0 +1,549 @@
+{
+ "note": "Written by build/negatives.py: for each check, a falsification applied to a copy of the tree and the build's answer. A claim is held only while a current, caught falsification stands behind every check it cites.",
+ "build": {
+  "meta": {
+   "tool": "build/negatives.py",
+   "date": "2026-09-04",
+   "commit": "8d8c5dc",
+   "code": "a1bf5bc43784",
+   "code_files": [
+    "build/build_site.py",
+    "build/claims.py",
+    "build/atlas.py",
+    "build/invariance.py",
+    "build/ledger.py",
+    "build/negatives.py",
+    ".github/workflows/build.yml"
+   ]
+  },
+  "cases": [
+   {
+    "id": "1-canonical-offsite",
+    "check": "1",
+    "what": "the build writes every canonical address on another site",
+    "exit": 1,
+    "fired": [
+     "1",
+     "22"
+    ],
+    "caught": true,
+    "line": "check 1: 404.html: canonical points off-site, https://elsewhere.invalid/404.html",
+    "seconds": 46.9
+   },
+   {
+    "id": "2-other-host-named",
+    "check": "2",
+    "what": "the footer of every generated page names another GitHub Pages host",
+    "exit": 1,
+    "fired": [
+     "2"
+    ],
+    "caught": true,
+    "line": "check 2: 404.html: mentions someone-else.github.io, which is not this site",
+    "seconds": 47.2
+   },
+   {
+    "id": "3-dead-link",
+    "check": "3",
+    "what": "a piece links to a file that does not exist",
+    "exit": 1,
+    "fired": [
+     "3",
+     "15"
+    ],
+    "caught": true,
+    "line": "check 3: positive-vs-normative.html: links to no-such-page.html, which does not exist",
+    "seconds": 47.4
+   },
+   {
+    "id": "4-icon-missing",
+    "check": "4",
+    "what": "the site manifest names an icon file that does not exist",
+    "exit": 1,
+    "fired": [
+     "4"
+    ],
+    "caught": true,
+    "line": "check 4: site.webmanifest: names icon site-192-gone.png, which does not exist",
+    "seconds": 47.8
+   },
+   {
+    "id": "5-figure-scope-missing",
+    "check": "5",
+    "what": "a lifted figure loses its colour scope in figures.css",
+    "exit": 1,
+    "fired": [
+     "5"
+    ],
+    "caught": true,
+    "line": "check 5: index.html: shows figure fs-tv1, which has no colour scope in figures.css",
+    "seconds": 48.8
+   },
+   {
+    "id": "6-second-h1",
+    "check": "6",
+    "what": "a converted document gains a second top-level heading in its body",
+    "exit": 1,
+    "fired": [
+     "6",
+     "15"
+    ],
+    "caught": true,
+    "line": "check 6: afm291-ch1-theory-and-analytics.html: 2 top-level headings in a document body; all but the first are hidden by the stylesheet",
+    "seconds": 48.6
+   },
+   {
+    "id": "7-head-ended-early",
+    "check": "7",
+    "what": "the build puts a div inside head, which ends the head before the canonical",
+    "exit": 1,
+    "fired": [
+     "7"
+    ],
+    "caught": true,
+    "line": "check 7: 404.html: </div> inside <head> ends the head early; everything after it is parsed into the body",
+    "seconds": 45.5
+   },
+   {
+    "id": "8-atlas-anchor-dead",
+    "check": "8",
+    "what": "the placement points every mark at an anchor no document carries",
+    "exit": 1,
+    "fired": [
+     "8"
+    ],
+    "caught": true,
+    "line": "check 8: atlas.html: 1 mark(s) point at anchors afm241-cheat-sheet.html does not carry, first is #afm-241-exam-cheat-sheet-gone",
+    "seconds": 48.5
+   },
+   {
+    "id": "9-listed-file-missing",
+    "check": "9",
+    "what": "content/pieces.json lists a file that does not exist",
+    "exit": 1,
+    "fired": [
+     "3",
+     "9",
+     "11a2"
+    ],
+    "caught": true,
+    "line": "check 9: content/pieces.json: french-a1-cafe points at not-there.html, which does not exist",
+    "seconds": 47
+   },
+   {
+    "id": "10-glyph-outside-subset",
+    "check": "10",
+    "what": "the build prints a character Inter could render that the self-hosted subset lacks",
+    "exit": 1,
+    "fired": [
+     "10"
+    ],
+    "caught": true,
+    "line": "check 10: font subset: U+03A9 ('Ω') in 404.html renders in the fallback, not Inter; re-subset InterVariable-sub.woff2",
+    "seconds": 47.4
+   },
+   {
+    "id": "11-chrome-colour-unknown",
+    "check": "11",
+    "what": "the chrome the build writes into pieces states a colour the stylesheet does not know",
+    "exit": 1,
+    "fired": [
+     "11"
+    ],
+    "caught": true,
+    "line": "check 11: injected chrome: #123456 is not a colour site.css knows; the chrome palette in build_site.py has drifted from the stylesheet",
+    "seconds": 47.6
+   },
+   {
+    "id": "11a-stray-mark",
+    "check": "11a",
+    "what": "the Atlas page carries a mark at a position the placement did not produce",
+    "exit": 1,
+    "fired": [
+     "11a",
+     "11a2"
+    ],
+    "caught": true,
+    "line": "check 11a: atlas.html: 1726 marks and 1726 links read back, 1661 points placed",
+    "seconds": 45.2
+   },
+   {
+    "id": "11a2-weight-inflated",
+    "check": "11a2",
+    "what": "one mark on the Atlas carries a word weight the apportionment did not give it",
+    "exit": 1,
+    "fired": [
+     "11a2"
+    ],
+    "caught": true,
+    "line": "check 11a2: atlas.html: mark weights add to 483,918, the corpus line says 483,853",
+    "seconds": 45.6
+   },
+   {
+    "id": "12-corpus-line-off",
+    "check": "12",
+    "what": "the corpus line's word total is one more than the three origins add to",
+    "exit": 1,
+    "fired": [
+     "11a2",
+     "12",
+     "26"
+    ],
+    "caught": true,
+    "line": "check 12: origin totals: words add to 483853, the corpus line says 483854",
+    "seconds": 47.4
+   },
+   {
+    "id": "13-typed-numeral",
+    "check": "13",
+    "what": "the build types a numeral into the footer that nothing computed",
+    "exit": 1,
+    "fired": [
+     "13"
+    ],
+    "caught": true,
+    "line": "check 13: 404.html: prints 1,234, which the build did not compute and no piece states",
+    "seconds": 46.7
+   },
+   {
+    "id": "14-false-superlative",
+    "check": "14",
+    "what": "a short essay's blurb calls it the largest essay on the site",
+    "exit": 1,
+    "fired": [
+     "14"
+    ],
+    "caught": true,
+    "line": "check 14: content/pieces.json: heartbeat-budget calls itself the largest essay; the-trillion-dollar-vintage is, at 18,610 words",
+    "seconds": 47
+   },
+   {
+    "id": "15-result-sentence-added",
+    "check": "15",
+    "what": "a piece gains a result sentence with a numeral that its record does not hold",
+    "exit": 1,
+    "fired": [
+     "15"
+    ],
+    "caught": true,
+    "line": "check 15: positive-vs-normative.html: numerals gained, not declared in the ledger: 12,344, 12,345",
+    "seconds": 46.4
+   },
+   {
+    "id": "16-ledger-class-stale",
+    "check": "16",
+    "what": "the ledger's class for a piece is not what the files show",
+    "exit": 1,
+    "fired": [
+     "16"
+    ],
+    "caught": true,
+    "line": "check 16: content/ledger.json: flagged-in-hindsight is styling, the files say copy; run build/ledger.py",
+    "seconds": 47.8
+   },
+   {
+    "id": "17-built-from-empty",
+    "check": "17",
+    "what": "a listed piece has no built_from line",
+    "exit": 1,
+    "fired": [
+     "17"
+    ],
+    "caught": true,
+    "line": "check 17: content/pieces.json: flagged-in-hindsight has no built_from line",
+    "seconds": 45.2
+   },
+   {
+    "id": "18-font-digest-wrong",
+    "check": "18",
+    "what": "a self-hosted font file no longer matches the digest its manifest records",
+    "exit": 1,
+    "fired": [
+     "18"
+    ],
+    "caught": true,
+    "line": "check 18: fonts/manifest.json: fonts/bricolagegrotesque-afm291-journal-entries.woff2 does not match its recorded sha256; run the rename",
+    "seconds": 45.2
+   },
+   {
+    "id": "19-heading-skips",
+    "check": "19",
+    "what": "the footer's headings skip from h2 to h4",
+    "exit": 1,
+    "fired": [
+     "19"
+    ],
+    "caught": true,
+    "line": "check 19: 404.html: a heading skips from h2 to h4",
+    "seconds": 46.1
+   },
+   {
+    "id": "20-skip-link-gone",
+    "check": "20",
+    "what": "the generated pages open without a skip link",
+    "exit": 1,
+    "fired": [
+     "20"
+    ],
+    "caught": true,
+    "line": "check 20: 404.html: has no skip link to #main",
+    "seconds": 45.4
+   },
+   {
+    "id": "21-figure-unnamed",
+    "check": "21",
+    "what": "a lifted figure on the home and research pages loses its accessible name",
+    "exit": 1,
+    "fired": [
+     "21"
+    ],
+    "caught": true,
+    "line": "check 21: index.html: a figure carries no accessible name",
+    "seconds": 45.8
+   },
+   {
+    "id": "22-script-from-elsewhere",
+    "check": "22",
+    "what": "every generated page loads a script from another origin",
+    "exit": 1,
+    "fired": [
+     "22"
+    ],
+    "caught": true,
+    "line": "check 22: 404.html: loads https://cdn.elsewhere.invalid/x.js from another origin",
+    "seconds": 43.4
+   },
+   {
+    "id": "23-dash-on-generated-page",
+    "check": "23",
+    "what": "the footer of every generated page carries an em dash",
+    "exit": 1,
+    "fired": [
+     "23"
+    ],
+    "caught": true,
+    "line": "check 23: 404.html: carries 1 em dash(es) in its prose",
+    "seconds": 45.8
+   },
+   {
+    "id": "23-dash-in-piece-prose",
+    "check": "23",
+    "what": "a listed piece that is not a declared record carries an em dash in its prose",
+    "exit": 1,
+    "fired": [
+     "23"
+    ],
+    "caught": true,
+    "line": "check 23: positive-vs-normative.html: carries 1 em dash(es) in its prose",
+    "seconds": 45.9
+   },
+   {
+    "id": "24-idempotence-step-gone",
+    "check": "24",
+    "what": "the workflow no longer fails the run when a further build rewrites something",
+    "exit": 1,
+    "fired": [
+     "24"
+    ],
+    "caught": true,
+    "line": "check 24: .github/workflows/build.yml: the gate lacks, in order, idempotence",
+    "seconds": 44.4
+   },
+   {
+    "id": "24-deploy-ungated",
+    "check": "24",
+    "what": "the deploy job no longer waits for the build job",
+    "exit": 1,
+    "fired": [
+     "24"
+    ],
+    "caught": true,
+    "line": "check 24: .github/workflows/build.yml: no deploy job needs the build job",
+    "seconds": 44.1
+   },
+   {
+    "id": "25-american-spelling",
+    "check": "25",
+    "what": "the footer of every generated page spells colour the American way",
+    "exit": 1,
+    "fired": [
+     "25"
+    ],
+    "caught": true,
+    "line": "check 25: 404.html: spells color the American way",
+    "seconds": 47.6
+   },
+   {
+    "id": "26-number-without-record",
+    "check": "26",
+    "what": "the footer carries a counted number whose value no record holds",
+    "exit": 1,
+    "fired": [
+     "13",
+     "26"
+    ],
+    "caught": true,
+    "line": "check 26: 404.html: figures prints 189, which is no aggregate the build computes for that definition",
+    "seconds": 46.2
+   },
+   {
+    "id": "27-channel-unnamed",
+    "check": "27",
+    "what": "the home sphere declares a channel the Atlas key does not name",
+    "exit": 1,
+    "fired": [
+     "27"
+    ],
+    "caught": true,
+    "line": "check 27: index.html: site.js draws the channel 'halo', which the Atlas key does not name",
+    "seconds": 46.4
+   },
+   {
+    "id": "28-placed-by-lattice",
+    "check": "28",
+    "what": "documents are spread over the sphere by the old lattice instead of by origin and word rank",
+    "exit": 1,
+    "fired": [
+     "28"
+    ],
+    "caught": true,
+    "line": "check 28: atlas.html: exam-day-final-load has more words than daily-learning-cockpit but sits west or south of it",
+    "seconds": 46.5
+   },
+   {
+    "id": "29-stale-drawn-as-held",
+    "check": "29",
+    "what": "the instrument draws a page whose record is stale as held",
+    "exit": 1,
+    "fired": [
+     "29"
+    ],
+    "caught": true,
+    "line": "check 29: controls.html: index.html under E shows '#', the record says '?'",
+    "seconds": 46.6
+   },
+   {
+    "id": "30-colour-unnamed",
+    "check": "30",
+    "what": "a lifted figure's colour loses its declared meaning",
+    "exit": 1,
+    "fired": [
+     "30"
+    ],
+    "caught": true,
+    "line": "check 30: index.html: fs-wlc draws with --outside, which carries no declared meaning",
+    "seconds": 42.3
+   },
+   {
+    "id": "31-numbers-not-restated",
+    "check": "31",
+    "what": "the lifted figures no longer restate the numbers they draw",
+    "exit": 1,
+    "fired": [
+     "31"
+    ],
+    "caught": true,
+    "line": "check 31: index.html: a figure draws 0.24, 0.8, 190, 5.6, 7.5, which the page's text does not restate",
+    "seconds": 39.1
+   }
+  ]
+ },
+ "runtime": {
+  "meta": {
+   "tool": "build/audit.js --falsify",
+   "date": "2026-09-04",
+   "commit": "20c534c",
+   "code": "42b9f36679be"
+  },
+  "cases": [
+   {
+    "key": "ext",
+    "page": "about.html",
+    "what": "the page loads an image from another origin",
+    "rec": {
+     "ext": {
+      "requests": 7,
+      "external": 1
+     }
+    }
+   },
+   {
+    "key": "idle",
+    "page": "about.html",
+    "what": "a script requests a new frame on every frame after load",
+    "rec": {
+     "idle": {
+      "frames": 60
+     }
+    }
+   },
+   {
+    "key": "keyboard",
+    "page": "about.html",
+    "what": "a stylesheet removes the focus ring from every element",
+    "rec": {
+     "keyboard": {
+      "stops": 30,
+      "noRing": 30
+     }
+    }
+   },
+   {
+    "key": "print",
+    "page": "index.html",
+    "what": "under print media the figures may break across pages and the header stays pinned",
+    "rec": {
+     "print": {
+      "stickyLeft": 1,
+      "hidden": 0,
+      "figures": 3,
+      "figuresBreakable": 3
+     }
+    }
+   },
+   {
+    "key": "motion",
+    "page": "about.html",
+    "what": "the brand mark spins under reduced motion",
+    "rec": {
+     "motion": {
+      "animations": 1
+     }
+    }
+   },
+   {
+    "key": "fit",
+    "page": "about.html",
+    "what": "a 900px block that no declaration allows",
+    "rec": {
+     "fit": {
+      "scrollWidth": 900,
+      "overflow": true
+     }
+    }
+   },
+   {
+    "key": "chrome",
+    "page": "positive-vs-normative.html",
+    "what": "a block the build owns carries words the count would include",
+    "rec": {
+     "chrome": {
+      "a": 603,
+      "b": 597
+     }
+    }
+   },
+   {
+    "key": "offline",
+    "page": "sw.js",
+    "what": "the new worker neither carries the saved copy across nor syncs it, so a publish empties it",
+    "rec": {
+     "before": 183,
+     "of": 183,
+     "after": 0,
+     "refreshed": false
+    }
+   }
+  ]
+ }
+}

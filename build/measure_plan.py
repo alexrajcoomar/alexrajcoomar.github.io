@@ -95,14 +95,28 @@ def audit_stale():
         return 1, True
 
 
+def negatives_stale():
+    """Whether the tests of controls need running: the record is missing, or
+    was taken against other code, or lacks a case. From build/negatives.py."""
+    import subprocess
+    try:
+        r = subprocess.run([sys.executable, os.path.join(ROOT, "build", "negatives.py"), "--stale"],
+                           capture_output=True, text=True, check=True)
+        return bool(json.loads(r.stdout).get("stale"))
+    except Exception:
+        return True
+
+
 if __name__ == "__main__":
     todo, cards = stale(), cards_stale()
     audit_pages, audit_offline = audit_stale()
     audit = audit_pages > 0 or audit_offline
+    negatives = negatives_stale()
     out = os.environ.get("GITHUB_OUTPUT")
     line = (f"measure={'1' if todo else '0'}\n"
             f"cards={'1' if cards else '0'}\n"
             f"audit={'1' if audit else '0'}\n"
+            f"negatives={'1' if negatives else '0'}\n"
             f"needs={'1' if (todo or cards or audit) else '0'}\n"
             f"count={len(todo)}\n")
     if out:
@@ -110,5 +124,6 @@ if __name__ == "__main__":
     sys.stderr.write(f"{len(todo)} page(s) need measuring, "
                      f"{len(cards)} card(s) need drawing, "
                      f"{audit_pages} page(s) need auditing"
-                     f"{', the worker too' if audit_offline else ''}\n")
+                     f"{', the worker too' if audit_offline else ''}; "
+                     f"the tests of controls are {'stale' if negatives else 'current'}\n")
     print(line, end="")

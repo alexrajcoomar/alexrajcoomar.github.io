@@ -15,7 +15,7 @@ const http = require('http');
 const path = require('path');
 
 const ROOT = path.dirname(__dirname);
-const SHELL = new Set(['index.html', 'library.html', 'about.html', '404.html',
+const SHELL = new Set(['index.html', 'library.html', 'about.html', '404.html', 'controls.html',
                        'research.html', 'coursework.html', 'tools.html',
                        'reader.html', 'colophon.html', 'admin.html', 'atlas.html']);
 const TYPES = { '.html': 'text/html; charset=utf-8', '.css': 'text/css', '.js': 'text/javascript',
@@ -50,7 +50,15 @@ const INJECTED = new RegExp([
   '<div id="__rb">[\\s\\S]*?<\\/div>',
   '<a id="__rb-pill"[^>]*>[\\s\\S]*?<\\/a>',
   "<script>\\s*\\(function\\(\\)\\{\\s*var p=document\\.getElementById\\('__rb-pill'\\)[\\s\\S]*?<\\/script>",
-  '<style id="__mobile_fit">[\\s\\S]*?<\\/style>'
+  '<style id="__mobile_fit">[\\s\\S]*?<\\/style>',
+  // the blocks the build owns at the foot of a converted piece and the
+  // reading kit: chrome, which the count leaves out, so a change to the
+  // site's footer does not send every converted piece back to be counted
+  '<!--__docend[^>]*-->[\\s\\S]*?<!--\\/__docend-->',
+  '<!--__foot-->[\\s\\S]*?<!--\\/__foot-->',
+  '<!--__tail-->[\\s\\S]*?<!--\\/__tail-->',
+  '<!--__from-->[\\s\\S]*?<!--\\/__from-->',
+  '<!--__long-->[\\s\\S]*?<!--\\/__long-->'
 ].join('|'), 'g');
 const now = {};
 for (const f of files) {

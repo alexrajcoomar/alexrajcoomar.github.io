@@ -9,10 +9,13 @@ point that cannot land on the passage it names is decoration, and half the
 corpus, including the three largest essays, carried no anchors at all.
 
 place() puts those sections on a unit sphere. Position is not decoration
-either. Each document gets a centroid, the centroids are spread evenly by the
-Fibonacci lattice so no region is arbitrarily crowded, and a document's
-sections scatter around its own centroid inside a cap whose radius grows with
-the square root of the section count. A dense patch on the globe is therefore
+either. Each document gets a centroid by a rule the reader can check: its
+latitude is its origin (independent work in the north band, coursework in the
+middle, personal interest in the south), and within the band it climbs east
+and north by measured word count, shortest first. A document's sections
+scatter around its own centroid inside a cap whose radius grows with the
+square root of the section count, from a generator seeded by the document's
+own name, so adding a piece moves only the band it joins. A dense patch on the globe is therefore
 a dense document, which is the same contract the corpus figure makes when it
 draws one square per five hundred words. A heading that appears in more than
 one document is placed between their centroids rather than duplicated, so
@@ -27,6 +30,7 @@ import json
 import math
 import os
 import re
+import zlib
 
 # Headings that are page furniture rather than passages. Anything repeated
 # this many times inside one document is furniture by construction, which is a
@@ -188,6 +192,39 @@ def harvest(out_dir, pieces):
 
 
 # ------------------------------------------------------------------ place --
+# Where a document sits, by rule. Each origin owns a band of latitude, given
+# here as the range of y (the sine of the latitude) on the unit sphere; the
+# gaps between the bands are the sea. Within a band the documents are ranked
+# by measured word count, shortest first, and the rank sets both the
+# longitude (a full turn across the band) and the height inside the band, so
+# neighbours share an origin and a size. check 28 recomputes this from the
+# metrics and refuses a sphere that disagrees.
+BANDS = {"independent": (0.34, 0.86), "course": (-0.26, 0.26), "personal": (-0.86, -0.42)}
+BAND_NAMES = {"independent": "north", "course": "middle", "personal": "south"}
+
+
+def rank_by_words(pieces):
+    """slug -> (surface, rank, n): the rank of each document by measured words
+    within its origin, shortest first, ties broken by slug."""
+    out = {}
+    for surf in BANDS:
+        docs = sorted((p for p in pieces if p["surface"] == surf),
+                      key=lambda p: (p.get("words", 0), p["slug"]))
+        for i, p in enumerate(docs):
+            out[p["slug"]] = (surf, i, len(docs))
+    return out
+
+
+def centroid(surface, rank, n):
+    """The point the rule puts a document at, rounded as the pages carry it."""
+    lo, hi = BANDS[surface]
+    f = (rank + 0.5) / n
+    y = lo + (hi - lo) * f
+    th = 2 * math.pi * f
+    r = math.sqrt(max(0.0, 1 - y * y))
+    return (round(math.cos(th) * r, 4), round(y, 4), round(math.sin(th) * r, 4))
+
+
 def _fib_sphere(n):
     """Evenly spread points, so no document lands in a crowd by accident."""
     pts, ga = [], math.pi * (3.0 - math.sqrt(5.0))
@@ -217,7 +254,8 @@ def _rand(seed):
 def place(sections, pieces):
     """Assign every section a point on the unit sphere."""
     order = [p for p in pieces if any(s["slug"] == p["slug"] for s in sections)]
-    cents = dict(zip([p["slug"] for p in order], _fib_sphere(len(order))))
+    ranks = rank_by_words(order)
+    cents = {p["slug"]: centroid(*ranks[p["slug"]]) for p in order}
 
     by_slug = {}
     for s in sections:
@@ -229,7 +267,9 @@ def place(sections, pieces):
     for s in sections:
         shared.setdefault(s["t"].lower(), set()).add(s["slug"])
 
-    rnd = _rand(20260819)
+    # one generator per document, seeded by its name, so the scatter of one
+    # document's sections does not depend on which documents precede it
+    gens = {}
     placed, done = [], set()
     for s in sections:
         key = s["t"].lower()
@@ -251,6 +291,10 @@ def place(sections, pieces):
             rad *= 0.45
 
         # a random direction in the tangent plane, then a random arc along it
+        gkey = ",".join(sorted(shared[key])) if len(shared[key]) > 1 else s["slug"]
+        rnd = gens.get(gkey)
+        if rnd is None:
+            rnd = gens[gkey] = _rand(zlib.crc32(gkey.encode("utf-8")))
         a, b, c = next(rnd), next(rnd), next(rnd)
         tang = _norm((a - 0.5, b - 0.5, c - 0.5))
         dot = sum(tang[i] * centre[i] for i in range(3))
@@ -687,14 +731,17 @@ def labels(F):
                 .format(F["parDeg"], _n(F["nAbove"]), _n(F["nIndAbove"])),
                 "The line misses in both directions, and both are drawn. {} "
                 "marks above it are ringed, because they come from {} "
-                "documents that are not independent, {} of them from {}. "
-                "Another {} independent marks sit below it. The arrangement is "
-                "also inherited rather than designed: documents are laid out "
-                "in the order the library lists them, so the sphere took a "
-                "shelf order and the pattern followed."
-                .format(F["nExc"], F["excDocs"], F["excTopN"],
-                        "<span class=\"lw\" data-reg=\"%s\" tabindex=\"0\">%s</span>"
-                        % (F["excTopS"], _esc(F["excTop"])), F["indBelow"]),
+                "documents that are not independent{}. "
+                "Another {} independent marks sit below it. The band is "
+                "designed, not inherited: a document's latitude is its "
+                "origin, so the independent work is the north band by rule, "
+                "and what crosses the line is the scatter of sections around "
+                "their documents, drawn at the radius each document's size "
+                "gives it."
+                .format(F["nExc"], F["excDocs"],
+                        (", {} of them from <span class=\"lw\" data-reg=\"{}\" tabindex=\"0\">{}</span>"
+                         .format(F["excTopN"], F["excTopS"], _esc(F["excTop"]))) if F.get("excTop") else "",
+                        F["indBelow"]),
             ],
         },
         {

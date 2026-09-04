@@ -6,7 +6,7 @@ This script never touches a piece's own HTML except to give it a way back
 into the site, and it never touches the stylesheet. Run by the GitHub
 Action on every push, so the site relists itself.
 """
-import datetime, hashlib, html, json, os, re, struct, sys
+import datetime, hashlib, html, json, math, os, re, struct, sys
 
 ROOT    = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 CONTENT = json.load(open(os.path.join(ROOT, "content", "pieces.json"), encoding="utf-8"))
@@ -156,6 +156,33 @@ try:
     LEDGER_NOTES = json.load(open(os.path.join(HERE, "ledger-notes.json"), encoding="utf-8"))
 except Exception:
     LEDGER_NOTES = {}
+
+# The exceptions the site declares by name, so the claims they qualify can
+# fail: the records the em dash rule leaves as written, and the pages the
+# fit row allows past 320px. A page not named here that breaks the rule
+# fails the build; a page named here that no longer needs it does too.
+try:
+    DECLARED = json.load(open(os.path.join(ROOT, "content", "declared.json"), encoding="utf-8"))
+except (OSError, ValueError):
+    DECLARED = {}
+import emdash
+
+# American spellings the build's own words must not use. Whole words, any
+# case; -ize forms are Canadian and are not listed, and "dialog" is the HTML
+# element's name as well as a word, so it is not listed either.
+US_SPELLINGS = {
+    "color", "colors", "colored", "coloring", "colorful", "center", "centers", "centered", "centering",
+    "meter", "meters", "liter", "liters", "fiber", "fibers", "theater", "theaters", "gray", "grays",
+    "favor", "favors", "favored", "favorite", "favorites", "flavor", "flavors", "flavored", "honor",
+    "honors", "honored", "humor", "labor", "labors", "neighbor", "neighbors", "neighboring", "harbor",
+    "rumor", "rumors", "vigor", "behavior", "behaviors", "defense", "defenses", "offense", "pretense",
+    "catalog", "catalogs", "traveled", "traveling", "traveler", "modeled", "modeling", "canceled",
+    "canceling", "labeled", "labeling", "signaled", "totaling", "totaled", "jewelry", "fulfill",
+    "fulfills", "fulfilled", "enrollment", "installment", "skillful", "mold", "molds", "plow", "sulfur",
+    "maneuver", "counselor", "marvelous", "armor", "clamor", "endeavor", "odor", "parlor", "savior",
+    "splendor", "valor", "somber", "specter", "caliber", "saber", "chili", "draft-", "pajamas", "ax",
+    "esthetic", "leukemia", "anemia", "paralyzed-", "dependent-", "checkered", "encyclopedia-",
+}
 
 # Five entries. The four shelves are one statement filtered four ways and are
 # reached from the statement's own subtotal rows and from Work, which is the
@@ -327,6 +354,7 @@ def foot():
       <h2>This site</h2>
       <a href="about.html">About and contact</a>
       <a href="colophon.html">Colophon and method</a>
+      <a href="controls.html">Controls: what is tested</a>
       <a href="{SITE_URL}">{HOST}</a>
     </nav>
   </div>
@@ -674,6 +702,59 @@ def strip_svg(fid):
                  '<g class="hit"', svg)
     return svg
 
+FIG_NEUTRAL = re.compile(r"^--(gridline|baseline|rule(-\w+)?|text-\w+|surface-\d|ink(-\d)?|sans|paper|axis)$")
+
+
+def figure_colour_vars(fid):
+    """The colour variables a lifted figure's marks use, less the neutral ones
+    (grid, rules, text, surfaces): the colours that carry a meaning."""
+    d = STRIP[fid]
+    used = set(re.findall(r"var\((--[\w-]+)\)", (d.get("css") or "") + d.get("svg", "")))
+    return {v for v in used if not FIG_NEUTRAL.match(v)}
+
+
+def figure_numbers(svg):
+    """Every line of visible text in a figure that carries a numeral: the
+    text elements, with styles, titles and descriptions left out."""
+    body = re.sub(r"<(style|title|desc|script)\b[^>]*>.*?</\1>", " ", svg, flags=re.S | re.I)
+    out = []
+    for t in re.findall(r"<text\b[^>]*>(.*?)</text>", body, re.S):
+        line = html.unescape(re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", t))).strip()
+        if line and re.search(r"\d", line) and line not in out:
+            out.append(line)
+    return out
+
+
+def figure_key(fid):
+    """The colours that carry a meaning, each named in words beside a swatch,
+    from the meanings figures.json declares; check 30 holds the declaration
+    to the variables the marks use and this key to the declaration."""
+    means = STRIP[fid].get("meanings") or {}
+    if not means:
+        return ""
+    items = "".join(f'<span class="fk-item" data-var="{esc(v)}"><i class="sw" style="background:var({esc(v)})" aria-hidden="true"></i>{esc(w)}</span>'
+                    for v, w in means.items())
+    return f'<p class="fkey">{items}</p>'
+
+
+def restated_block(svg, href):
+    """The numbers a drawing carries, restated as text under it so that no
+    number is carried by the drawing alone; check 31 holds every numeral in
+    the figure's text to the page's text outside it, and check 13 holds the
+    restatement to the piece the figure was lifted from."""
+    lines = figure_numbers(svg)
+    if not lines:
+        return ""
+    for line in lines:
+        CAPTIONS.append((line, href))
+    return ('<details class="fignums"><summary>The numbers this figure draws</summary><p>'
+            + " &middot; ".join(esc(x) for x in lines) + "</p></details>")
+
+
+def figure_restated(fid, href):
+    return restated_block(STRIP[fid].get("svg", ""), href)
+
+
 def lifted(fid, rule, title, note, href):
     CAPTIONS.append((rule + " " + note, href))
     """A figure lifted out of its own document together with the CSS rules its
@@ -688,6 +769,8 @@ def lifted(fid, rule, title, note, href):
         </div>
         <div class="what">
           <p>{esc(note)}</p>
+          {figure_key(fid)}
+          {figure_restated(fid, href)}
           <a class="open" href="{href}">Open the piece <span aria-hidden="true">&#8594;</span></a>
         </div>
       </figcaption>
@@ -1172,7 +1255,7 @@ def page_research():
         if spec:
             CAPTIONS.append((spec[1], p["url"]))
             extra += (f'<div class="specimen" id="{spec[0]}"><div class="fig">{fit(spec[0])}</div>'
-                      f'<p class="figcap">{esc(spec[1])}</p></div>')
+                      f'<p class="figcap">{esc(spec[1])}</p>{restated_block(SPECS[spec[0]]["svg"], p["url"])}</div>')
         rows.append(shelf_row(k, p, extra))
     rows.append(shelf_subtotal(f"Independent, {len(items)} pieces", items))
     body = f"""<div class="hero tight shell">
@@ -1552,6 +1635,13 @@ def pass_sentence():
             f'were left untouched, and {sm["new"]} were added in the pass. The ledger of every change '
             f'is <code>content/ledger.json</code>.</p>')
 
+def _register_sentence(summary):
+    if not summary:
+        return "This build's register is not yet settled."
+    return (f"This build: {summary['rows']} claims, {summary['held']} held, {summary['untested']} untested, "
+            f"{summary['open']} not yet measured, {summary['asserted']} asserted with no check, {summary['failed']} failed.")
+
+
 def limits_block():
     """What the last pass got wrong and what it did not do, in the words it
     wrote at the time. Absent when there are no notes."""
@@ -1591,7 +1681,7 @@ def defs_html():
     out.append(DENSITY_DD)
     return "\n".join(out)
 
-def page_colophon(register=""):
+def page_colophon(summary=None):
     gt = figs.group_totals()
     ex = exceptions()
     fams = google_font_families()
@@ -1706,7 +1796,7 @@ def page_colophon(register=""):
     <p>Accessibility: skip link, visible focus, headings in order, every figure labelled, colour never
     load-bearing on its own, and reduced motion respected. The generated pages print: sticky elements
     release, nothing stays hidden, and figures avoid breaking across pages. Each of those sentences is a
-    row in the <a href="#claims">register below</a>, with the check that tests it and the last result,
+    row in the <a href="controls.html#register">register</a>, with the check that tests it and the last result,
     or the word asserted where nothing tests it yet.</p>
     <p>{ex['kinds']['doc']} of these pages began as Word documents and {ex['kinds']['md']} as markdown
     notes. Each was converted once, by a script that lives outside this repository, and the HTML it
@@ -1723,16 +1813,12 @@ def page_colophon(register=""):
 
 <section class="band shell colo" id="claims">
   <div class="sechead"><h2>What this site claims about itself, and what checks it</h2><span class="count">The register</span></div>
-  <div class="prose">
-    <p class="measure">Every sentence the generated pages say about this site is listed here beside the check
-    that tests it. A checked claim prints its last result with the denominator: so many of so many, on
-    so many pages. A claim nothing tests yet says <b>asserted</b> where a result would be. A claim
-    measured in a browser says <b>not yet measured</b> when the record is older than the pages it
-    describes, rather than repeating a result that was true of an earlier build. The build refuses to
-    publish when a checked claim fails, so a row can read held, asserted or not yet measured, and
-    never failed, on a page that reached you.</p>
+  <div class="prose measure">
+    <p>Every sentence the generated pages say about this site is a row in a register, beside the check
+    that tests it, the last result with its denominator, and what happened when the claim was
+    deliberately made false. {_register_sentence(summary)} The register, and the same records drawn one
+    glyph each, are on the <a href="controls.html#register">controls page</a>.</p>
   </div>
-  {register}
 </section>
 
 {limits_block()}
@@ -2675,9 +2761,9 @@ def add_returns_everywhere():
     navigation, and the tools get the floating pill only, because a bar inside a
     full-screen application sits in the wrong place. The head is normalised on
     every piece regardless, including the converted notes."""
-    shell = {"index.html", "library.html", "about.html", "404.html", "research.html",
-             "coursework.html", "tools.html", "reader.html", "colophon.html",
-             "admin.html", "atlas.html"}
+    # the generated pages carry full navigation; the reader edition and the
+    # editor are the two other pages that are not pieces
+    shell = set(SHELL_PAGES) | {"reader.html", "admin.html"}
     where, by_url = {}, {}
     for p in P:
         by_url[p["url"]] = p
@@ -2797,12 +2883,14 @@ ATLAS_BODY = r"""<section class="band atlas-band" id="atlas">
           the share of the document's static text under that heading; it is not a per-section
           measurement. Heading level is no longer drawn on the sphere and is kept in the index
           beside it. A document's area grows with its section count, and a heading several
-          documents carry is placed once, between them. Where a document sits carries no meaning
-          of its own: documents are spread evenly over the sphere in the order the site lists them,
-          and their sections are scattered around them, so two documents standing near each other
-          are near because of the list, not because of anything they share. Positions are
-          deterministic for a given corpus: the same pieces and headings give the same sphere on
-          every build, and adding or removing a piece re-spaces the lattice and moves every mark.</p>
+          documents carry is placed once, between them. Where a document sits is a rule: its
+          latitude is its origin (independent work in the north band, coursework in the middle,
+          personal interest in the south), and within its band it climbs east and north by
+          measured word count, shortest first, so two documents standing near each other share an
+          origin and a size. Its sections are scattered around it by a generator seeded with the
+          document's own name, so adding a piece moves only the band it joins. The build
+          recomputes every position from the metrics on every run and refuses a sphere that
+          disagrees (check 28).</p>
         </div>
         <p class="replay"><button type="button" id="preplay" class="linkbtn">Replay the six labels</button></p>
       </div>
@@ -3019,6 +3107,68 @@ def atlas_home_links():
     lk = [[idx[a], idx[b]] for a, b in ATLAS.get("edges", []) if a in idx and b in idx]
     return json.dumps({"docs": docs, "own": ",".join(own), "lk": lk},
                       separators=(",", ":")).replace("</", "<\\/")
+
+
+def page_controls(register, instrument, counts, summary):
+    """The tests of controls: the register, the page wall and the
+    falsification ledger. Every glyph and every number on it is a record;
+    check 29 reads the page back against the records on every build."""
+    body = f"""
+<section class="band shell colo" id="controls-top">
+  <div class="sechead"><h1>What this site claims, what tests it, and what happened when each claim was made false</h1><span class="count">Tests of controls</span></div>
+  <div class="prose measure">
+    <p>A register that prints <b>held</b> beside every claim proves only that the checks agree with
+    themselves. In the language of audit that is inquiry: a control described, not observed. A test
+    of controls is different. The control is watched operating, and a control that has never been
+    seen to fail is not evidence that it can. So every check on this site has a falsification on
+    record: an edit to a copy of the site that makes the claim false at its source (a piece, the
+    content, a font, the workflow, or the build's own code), after which the whole build is run in
+    that copy and must refuse, naming the check. A claim prints <b>held</b> only while a current,
+    caught falsification stands behind every check it cites; otherwise it prints <b>untested</b>.
+    A claim nothing tests prints <b>asserted</b>; a claim measured in a browser prints <b>not yet
+    measured</b> when its record is older than the page.</p>
+    <p>Nothing on this page is typed. Every number is a check's own tally or a record's count, every
+    glyph in the two walls below is one record, and check 29 reads this page back against the
+    records on every build. The <a href="colophon.html">colophon</a> says how the site is built and
+    defines every number it counts; this page says which of its claims are tested, which are
+    asserted, which are stale, and what happened when each was false.</p>
+  </div>
+</section>
+
+<section class="band shell colo" id="register">
+  <div class="sechead"><h2>The register</h2><span class="count">{summary["rows"]} claims</span></div>
+  {register}
+</section>
+
+<section class="band shell colo ground" id="instrument">
+  <div class="sechead"><h2>The same records, one glyph each</h2><span class="count">{counts["glyphs"]:,} glyphs</span></div>
+  <div class="prose measure">
+    <p>One line per page and one column per check that looks at pages. A glyph is a record: the
+    check's outcome on that page for this build, or the browser's current measurement of it. A blank
+    is a check that does not look at that page, so the columns that reach only the generated pages
+    show their reach as absence. Under it, one line per check and one glyph per falsification.</p>
+  </div>
+  {instrument}
+</section>
+
+<section class="band shell colo" id="not-shown">
+  <div class="sechead"><h2>What this page cannot show</h2><span class="count">Limits</span></div>
+  <div class="prose measure">
+    <p>Its own glyph. The cell for check 29 on this page is blank: a check that graded its own
+    outcome could never settle, so the page is held to the records by a check the page does not
+    grade in turn.</p>
+    <p>Whether the deploy gate operated on a given publish. The workflow deploys only what the build
+    passed, and a run that fails leaves no page to print its failure on; the record of that is the
+    repository's Actions page. The falsifications were written by the same hand as the checks and
+    break what the checks look for; each is described in one sentence so a reader can judge whether
+    it is the failure that matters. A wall of held glyphs is the honest read-out of a site that
+    refuses to publish a failure; its blanks are the argument.</p>
+  </div>
+</section>
+"""
+    return head(f"Controls · {SHORT}",
+                "Every claim this site makes about itself, the check that tests it, and what happened when the claim was deliberately made false.",
+                "controls.html") + body + foot()
 
 
 def page_404():
@@ -3358,7 +3508,7 @@ def jsonld_person():
 
 SHELL_PAGES = ("index.html", "research.html", "coursework.html", "tools.html",
                "library.html", "atlas.html", "about.html", "colophon.html",
-               "404.html")
+               "controls.html", "404.html")
 
 # ------------------------------------------------------------- checks ----
 # The build guarantees what it generates. Everything it merely touches was
@@ -3369,11 +3519,58 @@ SHELL_PAGES = ("index.html", "research.html", "coursework.html", "tools.html",
 # They run on every build and fail it, which is the same move as the colophon
 # applied to the build: state the rule, then let something disagree with you.
 
+def _claims_ctx(problems=()):
+    """What the register and the instrument are built from: the tallies and
+    per-page records of the checks that have run, the audit's state, the
+    falsifications on record, and the checks whose problems exist so far."""
+    all_pages = list(SHELL_PAGES) + [p["url"] for p in P] + [k + ".html" for k in exceptions()["transcripts"]]
+    fired = {m.group(1) for m in (re.match(r"check (\S+):", x) for x in problems) if m}
+    return {"tally": getattr(check_site, "tally", {}), "records": getattr(check_site, "records", {}),
+            "shell_pages": list(SHELL_PAGES), "all_pages": all_pages,
+            "audit": claims.audit_state(OUT, set(SHELL_PAGES), all_pages),
+            "negatives": claims.negatives_state(ROOT), "fired": fired, "problems": []}
+
+
+def _look(cid, page):
+    """A check looked at a page: recorded as held until a problem names it."""
+    check_site.records.setdefault(cid, {}).setdefault(page, True)
+
+
+_PAGE_IN_PROBLEM = re.compile(r"^([A-Za-z0-9_.\-]+\.(?:html|webmanifest|json|css|js)): ")
+
+
+def _p(cid, msg):
+    """A problem line, named by the check that found it. When the line opens
+    with a file name that check looked at, the record for that page turns
+    false; otherwise the check's site-level record does."""
+    m = _PAGE_IN_PROBLEM.match(msg)
+    rec = check_site.records.setdefault(cid, {})
+    page = "site"
+    if m and m.group(1) in rec:
+        page = m.group(1)
+    else:
+        m2 = re.match(r"^([\w.\-]+): ", msg)
+        if m2 and (m2.group(1) + ".html") in rec:
+            page = m2.group(1) + ".html"
+    rec[page] = False
+    return "check %s: %s" % (cid, msg)
+
+
 def check_site():
     problems, files = [], set(os.listdir(OUT))
     # every check tallies what it looked at, so the register on the colophon
     # can print a denominator beside each claim rather than a bare pass
     T = check_site.tally = {}
+    # and which pages each check looked at, with the outcome per page, so the
+    # instrument on the controls page can draw one glyph per (page, check)
+    R = check_site.records = {}
+    look = _look
+    # check 13's coverage is known up front (the scan runs in main's fixpoint,
+    # after the pages are written), so the controls page can be read back
+    # against it by check 29
+    for f in SHELL_PAGES:
+        look("13", f)
+    T["numerals"] = {"n": getattr(_typed_numerals, "checked", 0), "pages": len(SHELL_PAGES)}
     html_files = sorted(f for f in files if f.endswith(".html"))
     for sub in ("cards", "fonts", "content", "build"):
         if os.path.isdir(os.path.join(OUT, sub)):
@@ -3391,6 +3588,7 @@ def check_site():
         if not f.endswith(".html"):
             continue
         text = open(os.path.join(OUT, f), encoding="utf-8", errors="ignore").read()
+        look("1", f); look("2", f); look("3", f)
 
         # 1. every canonical resolves to a file that exists
         T.setdefault("hosts", {"pages": 0})["pages"] += 1
@@ -3398,18 +3596,18 @@ def check_site():
             href = m.group(1)
             T.setdefault("canonicals", {"n": 0})["n"] += 1
             if not href.startswith(SITE_URL):
-                problems.append(f"{f}: canonical points off-site, {href}")
+                problems.append(_p("1", f"{f}: canonical points off-site, {href}"))
                 continue
             rest = href[len(SITE_URL):].lstrip("/") or "index.html"
             if rest not in files:
-                problems.append(f"{f}: canonical is {href}, which is not a file here")
+                problems.append(_p("1", f"{f}: canonical is {href}, which is not a file here"))
 
         # 2. no page names a host other than this one
         # bare, not just inside a URL: the stale address that survived the
         # move was sitting in link text, where a URL pattern never saw it
         for host in set(re.findall(r"\b[A-Za-z0-9][A-Za-z0-9-]*\.github\.io\b", text)):
             if host != HOST:
-                problems.append(f"{f}: mentions {host}, which is not this site")
+                problems.append(_p("2", f"{f}: mentions {host}, which is not this site"))
 
         # 3. every local href and src resolves. Script and style blocks are cut
         # first: a page that builds its own markup client-side has href= inside
@@ -3423,21 +3621,22 @@ def check_site():
             if u and "' +" not in u:
                 tl["n"] += 1
                 if u not in files:
-                    problems.append(f"{f}: links to {u}, which does not exist")
+                    problems.append(_p("3", f"{f}: links to {u}, which does not exist"))
 
     # 4. every manifest icon resolves
     for f in sorted(os.listdir(OUT)):
         if not f.endswith(".webmanifest"):
             continue
+        look("4", f)
         try:
             data = json.load(open(os.path.join(OUT, f), encoding="utf-8"))
         except Exception as e:
-            problems.append(f"{f}: is not readable as JSON ({e})")
+            problems.append(_p("4", f"{f}: is not readable as JSON ({e})"))
             continue
         for icon in data.get("icons", []):
             T.setdefault("icons", {"n": 0})["n"] += 1
             if icon.get("src") not in files:
-                problems.append(f"{f}: names icon {icon.get('src')}, which does not exist")
+                problems.append(_p("4", f"{f}: names icon {icon.get('src')}, which does not exist"))
 
     # 5. a figure shown on a page must have its colour scope generated. A
     # lifted figure inherits nothing from the page it lands on: registering it
@@ -3452,11 +3651,12 @@ def check_site():
         if not os.path.exists(path):
             continue
         text = open(path, encoding="utf-8", errors="ignore").read()
+        look("5", f)
         for fid in set(re.findall(r'id="(fs-[a-z0-9]+)"', text)):
             T.setdefault("figscope", {"n": 0})["n"] += 1
             if ("#" + fid) not in sheet:
-                problems.append(f"{f}: shows figure {fid}, which has no colour "
-                                f"scope in figures.css")
+                problems.append(_p("5", f"{f}: shows figure {fid}, which has no colour "
+                                f"scope in figures.css"))
 
     # 6. a converted document must carry exactly one top-level heading in its
     # body. More than one means the stylesheet's title-suppressing rule is
@@ -3469,6 +3669,7 @@ def check_site():
         i = text.find('class="docbody"')
         if i == -1:
             continue
+        look("6", f)
         # per document body: the reader edition embeds every converted note,
         # each with its own body and its own single heading
         bodies = re.findall(r'<article class="docbody"[^>]*>(.*?)</article>', text, re.S)
@@ -3476,8 +3677,8 @@ def check_site():
         T.setdefault("onehead", {"docs": 0})["docs"] += len(counts)
         for n in counts:
             if n > 1:
-                problems.append(f"{f}: {n} top-level headings in a document body; "
-                                f"all but the first are hidden by the stylesheet")
+                problems.append(_p("6", f"{f}: {n} top-level headings in a document body; "
+                                f"all but the first are hidden by the stylesheet"))
                 break
 
     # 7. the head has to hold. Every generated tag can be correct and still be
@@ -3495,8 +3696,9 @@ def check_site():
         text = open(os.path.join(OUT, f), encoding="utf-8", errors="ignore").read()
         j = text.lower().find("</head>")
         T.setdefault("heads", {"pages": 0})["pages"] += 1
+        look("7", f)
         if j == -1:
-            problems.append(f"{f}: has no </head>")
+            problems.append(_p("7", f"{f}: has no </head>"))
             continue
         # Style and script bodies go first. Their contents are not markup, and
         # the quotes inside a stylesheet do not pair with the quotes in the
@@ -3509,8 +3711,8 @@ def check_site():
         head_txt = re.sub(r"'[^']*'", "''", head_txt)
         for tag in set(re.findall(r"<(/?[A-Za-z!][A-Za-z0-9]*)", head_txt)):
             if tag.lower() not in HEAD_OK:
-                problems.append(f"{f}: <{tag}> inside <head> ends the head early; "
-                                f"everything after it is parsed into the body")
+                problems.append(_p("7", f"{f}: <{tag}> inside <head> ends the head early; "
+                                f"everything after it is parsed into the body"))
 
     # 8. every mark on the atlas lands somewhere real. The globe is only worth
     # having if a click opens the passage it names, and the passage is named by
@@ -3526,27 +3728,29 @@ def check_site():
             f, _, frag = href.partition("#")
             want.setdefault(f, set()).add(frag)
         T["atlas_marks"] = {"n": len(marks), "files": len(want)}
+        look("8", "atlas.html")
         for f, frags in sorted(want.items()):
             fp = os.path.join(OUT, f)
             if not os.path.exists(fp):
-                problems.append(f"atlas.html: {len(frags)} marks point into {f}, "
-                                f"which does not exist")
+                problems.append(_p("8", f"atlas.html: {len(frags)} marks point into {f}, "
+                                f"which does not exist"))
                 continue
             have = set(re.findall(r'\bid="([^"]+)"',
                                   open(fp, encoding="utf-8", errors="ignore").read()))
             missing = sorted(x for x in frags if x and x not in have)
             if missing:
-                problems.append(f"atlas.html: {len(missing)} mark(s) point at "
+                problems.append(_p("8", f"atlas.html: {len(missing)} mark(s) point at "
                                 f"anchors {f} does not carry, first is "
-                                f"#{missing[0]}")
+                                f"#{missing[0]}"))
         if marks and not want:
-            problems.append("atlas.html: carries no marks")
+            problems.append(_p("8", "atlas.html: carries no marks"))
 
     # 9. every listed piece has a file behind it
     T["listed"] = {"n": len(P)}
     for x in P:
+        look("9", x["url"])
         if x["url"] not in files:
-            problems.append(f"content/pieces.json: {x['slug']} points at {x['url']}, which does not exist")
+            problems.append(_p("9", f"content/pieces.json: {x['slug']} points at {x['url']}, which does not exist"))
 
     # 10. every character the pages show that Inter could render is in the
     # self-hosted subset. A glyph outside the subset silently falls to the
@@ -3571,6 +3775,7 @@ def check_site():
                           flags=re.S | re.I)
             body = re.sub(r"<[^>]+>", "", body)
             _ts["pages"] += 1
+            look("10", f)
             for ch in set(body):
                 cp = ord(ch)
                 if cp > 32:
@@ -3579,11 +3784,11 @@ def check_site():
                     _missing.setdefault(ch, f)
         _ts["chars"] = len(_seen_chars)
         for ch, f in sorted(_missing.items()):
-            problems.append(
+            problems.append(_p("10", 
                 "font subset: U+%04X (%r) in %s renders in the fallback, "
-                "not Inter; re-subset InterVariable-sub.woff2" % (ord(ch), ch, f))
+                "not Inter; re-subset InterVariable-sub.woff2" % (ord(ch), ch, f)))
     except FileNotFoundError:
-        problems.append("font subset: build/font-*-cmap.txt missing")
+        problems.append(_p("10", "font subset: build/font-*-cmap.txt missing"))
 
     # 11. the injected chrome carries the palette as literals, because the
     # standalone pieces do not load site.css. Nothing kept the two in
@@ -3605,13 +3810,14 @@ def check_site():
         _vocab = _hexes(open(os.path.join(OUT, "site.css"), encoding="utf-8").read())
         _chrome = _hexes(RETURN_BAR) | _hexes(RETURN_PILL)
         T["chrome"] = {"n": len(_chrome)}
+        look("11", "site")
         _stray = _chrome - _vocab - {"ffffff", "000000"}
         for h in sorted(_stray):
-            problems.append("injected chrome: #%s is not a colour site.css knows; "
+            problems.append(_p("11", "injected chrome: #%s is not a colour site.css knows; "
                             "the chrome palette in build_site.py has drifted from "
-                            "the stylesheet" % h)
+                            "the stylesheet" % h))
     except FileNotFoundError:
-        problems.append("injected chrome: site.css missing, palette unverifiable")
+        problems.append(_p("11", "injected chrome: site.css missing, palette unverifiable"))
     # 11a. one placement, two renderers, one picture. The Atlas page's marks
     # and the home page's teaser payload are both read back from the built
     # files and held to the points place() produced: the same count, and the
@@ -3622,30 +3828,32 @@ def check_site():
     apath = os.path.join(OUT, "atlas.html")
     if pts and os.path.exists(apath):
         atext = open(apath, encoding="utf-8", errors="ignore").read()
+        look("11a", "atlas.html")
         marks = re.findall(r'<li data-p="([^"]+)"', atext)
         links = re.findall(r'<li data-p="[^"]*"[^>]*>\s*<a href="[^"]+"', atext)
         if len(marks) != len(pts) or len(links) != len(pts):
-            problems.append("atlas.html: %d marks and %d links read back, %d points placed"
-                            % (len(marks), len(links), len(pts)))
+            problems.append(_p("11a", "atlas.html: %d marks and %d links read back, %d points placed"
+                            % (len(marks), len(links), len(pts))))
         want = {p3(q["p"]) for q in pts}
         T.setdefault("placement", {})["marks"] = len(marks)
         stray = [m for m in marks if m not in want]
         if stray:
-            problems.append("atlas.html: %d mark(s) at positions the placement did not produce, first %s"
-                            % (len(stray), stray[0]))
+            problems.append(_p("11a", "atlas.html: %d mark(s) at positions the placement did not produce, first %s"
+                            % (len(stray), stray[0])))
     ipath = os.path.join(OUT, "index.html")
     if pts and os.path.exists(ipath):
         itext = open(ipath, encoding="utf-8", errors="ignore").read()
+        look("11a", "index.html")
         m = re.search(r'data-pts="([^"]*)"', itext)
         tease = [x for x in (m.group(1).split(";") if m else []) if x]
         T.setdefault("placement", {})["teaser"] = len(tease)
         if len(tease) != len(pts):
-            problems.append("index.html: teaser carries %d marks, %d points placed" % (len(tease), len(pts)))
+            problems.append(_p("11a", "index.html: teaser carries %d marks, %d points placed" % (len(tease), len(pts))))
         want2 = {"%.2f,%.2f,%.2f" % (q["p"][0], q["p"][1], q["p"][2]) for q in pts}
         stray2 = [x for x in tease if ",".join(x.split(",")[:3]) not in want2]
         if stray2:
-            problems.append("index.html: %d teaser mark(s) at positions the placement did not produce, first %s"
-                            % (len(stray2), stray2[0]))
+            problems.append(_p("11a", "index.html: %d teaser mark(s) at positions the placement did not produce, first %s"
+                            % (len(stray2), stray2[0])))
 
     # 11a2. the weights add back. Every mark's apportioned word weight is read
     # from the built page and summed; the sum must equal the corpus line, because
@@ -3654,29 +3862,89 @@ def check_site():
     if pts and os.path.exists(apath):
         ws = [int(x) for x in re.findall(r'<li data-p="[^"]*" data-w="(\d+)"', atext)]
         T["weights"] = {"marks": len(ws), "sum": sum(ws)}
+        look("11a2", "atlas.html")
         if len(ws) != len(pts):
-            problems.append("atlas.html: %d marks carry a weight, %d points placed" % (len(ws), len(pts)))
+            problems.append(_p("11a2", "atlas.html: %d marks carry a weight, %d points placed" % (len(ws), len(pts))))
         elif sum(ws) != TOTAL_WORDS:
-            problems.append("atlas.html: mark weights add to %s, the corpus line says %s"
-                            % (format(sum(ws), ","), format(TOTAL_WORDS, ",")))
+            problems.append(_p("11a2", "atlas.html: mark weights add to %s, the corpus line says %s"
+                            % (format(sum(ws), ","), format(TOTAL_WORDS, ","))))
+
+    # 28. where a document sits is a rule, and the pages hold to it: every
+    # centroid the Atlas index and the home sphere carry is recomputed from
+    # the metrics (band by origin, rank by words within the band), and within
+    # each band the documents read back from the page climb east and north
+    # with their word counts.
+    regs = ATLAS.get("regions") or []
+    placed_slugs = {r["s"] for r in regs}
+    ranks = atlas_mod.rank_by_words([p for p in P if p["slug"] in placed_slugs])
+    want_c = {slug: atlas_mod.centroid(*v) for slug, v in ranks.items()}
+    T["position"] = {"documents": len(want_c), "pages": 0, "bands": len(atlas_mod.BANDS), "read_back": 0}
+    words_of = {p["slug"]: p["words"] for p in P}
+    def _hold_positions(f, got):
+        """got: slug -> (x, y, z) as the page carries them."""
+        look("28", f)
+        T["position"]["pages"] += 1
+        T["position"]["read_back"] += len(got)
+        if set(got) != set(want_c):
+            problems.append(_p("28", "%s: carries %d document positions, the rule places %d" % (f, len(got), len(want_c))))
+        for slug, xyz in got.items():
+            w = want_c.get(slug)
+            if w and max(abs(a - b) for a, b in zip(xyz, w)) > 2e-3:
+                problems.append(_p("28", "%s: %s sits at %s; its origin and word rank put it at %s"
+                                   % (f, slug, ",".join("%.3f" % v for v in xyz), ",".join("%.3f" % v for v in w))))
+                break
+        for surf in atlas_mod.BANDS:
+            lo, hi = atlas_mod.BANDS[surf]
+            band = sorted((s2 for s2 in got if ranks.get(s2, ("",))[0] == surf), key=lambda s2: (words_of.get(s2, 0), s2))
+            prev = None
+            for s2 in band:
+                x, y, z = got[s2]
+                if not (lo - 2e-3 <= y <= hi + 2e-3):
+                    problems.append(_p("28", "%s: %s is %s work and sits outside its band" % (f, s2, surf)))
+                    break
+                th = math.atan2(z, x) % (2 * math.pi)
+                if prev is not None and (y < prev[0] - 1e-6 or th < prev[1] - 1e-6):
+                    problems.append(_p("28", "%s: %s has more words than %s but sits west or south of it" % (f, s2, prev[2])))
+                    break
+                prev = (y, th, s2)
+    if regs and os.path.exists(apath):
+        got = {}
+        for m in re.finditer(r'<section class="areg" data-s="([^"]+)"[^>]*?data-c="([^"]+)"', atext, re.S):
+            got[m.group(1)] = tuple(float(v) for v in m.group(2).split(","))
+        _hold_positions("atlas.html", got)
+    if regs and os.path.exists(ipath):
+        m = re.search(r'<script type="application/json" id="atlasmini-docs">(.*?)</script>', itext, re.S)
+        if m:
+            try:
+                docs = json.loads(m.group(1).replace("<\\/", "</"))["docs"]
+                url_slug = {p["url"]: p["slug"] for p in P}
+                got = {url_slug[d["u"]]: tuple(d["p"]) for d in docs if d["u"] in url_slug}
+                _hold_positions("index.html", got)
+            except (ValueError, KeyError) as e:
+                problems.append(_p("28", "index.html: the sphere's document payload is unreadable (%s)" % e))
 
     # 11b. the converted pieces' owned blocks changed nothing outside themselves
+    for p in P:
+        if os.path.exists(os.path.join(OUT, p["url"])) and \
+           "<!--__docend" in open(os.path.join(OUT, p["url"]), encoding="utf-8", errors="ignore").read():
+            look("11b", p["url"])
     for line in TAIL_PROBLEMS:
-        problems.append("converted piece: " + line)
+        problems.append(_p("11b", "converted piece: " + line))
     for line in TITLE_PROBLEMS:
-        problems.append("piece title: " + line)
+        problems.append(_p("11b", "piece title: " + line))
 
     # 12. the statement's subtotals add to the corpus line. Three origins, one
     # total, and the arithmetic is the reader's to check on the page, so the
     # build checks it first.
     st = surface_totals()
     T["origins"] = {"keys": 4}
+    look("12", "site")
     for key, tot in (("n", len(P)), ("words", TOTAL_WORDS),
                      ("figures", TOTAL_FIGS), ("tables", TOTAL_TBLS)):
         got = sum(st[k][key] for k in st)
         if got != tot:
-            problems.append("origin totals: %s add to %s, the corpus line says %s"
-                            % (key, got, tot))
+            problems.append(_p("12", "origin totals: %s add to %s, the corpus line says %s"
+                            % (key, got, tot)))
 
     # 14. a superlative in the owner's fields is held to the data. "The largest
     # essay" and "X is the largest piece on the site" are claims a build can
@@ -3689,26 +3957,18 @@ def check_site():
     top_piece = max(P, key=lambda x: x["words"])
     T["superlatives"] = {"fields": 3 * len(P)}
     for x in P:
+        look("14", x["url"])
         text = " ".join(str(x.get(k) or "") for k in ("s", "blurb", "demo"))
         if re.search(r"\blargest essay\b", text, re.I) and top_essay and x is not top_essay:
-            problems.append("content/pieces.json: %s calls itself the largest essay; %s is, at %s words"
-                            % (x["slug"], top_essay["slug"], format(top_essay["words"], ",")))
+            problems.append(_p("14", "content/pieces.json: %s calls itself the largest essay; %s is, at %s words"
+                            % (x["slug"], top_essay["slug"], format(top_essay["words"], ","))))
         for m in re.finditer(r"([A-Z][^.()]*?) is the largest piece on the site", text):
             named = m.group(1).strip().lower()
             # a piece may be named by its title, or by its title before the colon
             full = top_piece["t"].lower()
             if named not in (full, full.split(":")[0].strip()):
-                problems.append("content/pieces.json: %s says %s is the largest piece; %s is, at %s words"
-                                % (x["slug"], named, top_piece["t"], format(top_piece["words"], ",")))
-
-    # 13. no numeral in shell copy is typed. Every numeral of two or more
-    # digits, or carrying a decimal or a thousands separator, on a generated
-    # page must be a value the build computed, or a figure a piece states in
-    # its own text where the shell quotes that piece. One-digit numerals are
-    # left alone: note references and the small counts of a sentence.
-    for line in _typed_numerals():
-        problems.append(line)
-    T["numerals"] = {"n": getattr(_typed_numerals, "checked", 0), "pages": len(SHELL_PAGES)}
+                problems.append(_p("14", "content/pieces.json: %s says %s is the largest piece; %s is, at %s words"
+                                % (x["slug"], named, top_piece["t"], format(top_piece["words"], ","))))
 
     # 15. nothing a piece claims has moved. Every numeral, reference,
     # provenance label, chip, anchor id, URL, heading and result sentence in
@@ -3716,7 +3976,11 @@ def check_site():
     # or a stale-count fix must be declared in content/ledger.json for the
     # piece, and the record is renewed only by hand (build/invariance.py).
     inv_problems, inv_summary = invariance.check(OUT, P, extra=exceptions()["transcripts"])
-    problems.extend(inv_problems)
+    for p in P:
+        look("15", p["url"])
+    for k in exceptions()["transcripts"]:
+        look("15", k + ".html")
+    problems.extend((_p("15", _x) for _x in inv_problems))
     check_site.invariance = inv_summary
     T["invariance"] = dict(inv_summary, listed=len(P), transcripts=len(exceptions()["transcripts"]))
 
@@ -3731,22 +3995,23 @@ def check_site():
             man = json.load(open(mpath, encoding="utf-8"))
         except Exception:
             man = None
-            problems.append("fonts/manifest.json: unreadable")
+            problems.append(_p("18", "fonts/manifest.json: unreadable"))
         if man:
             T["fonts"] = {"files": len(man.get("files") or {})}
             by_piece = {}
             for fname, rec in (man.get("files") or {}).items():
                 if not os.path.exists(os.path.join(OUT, fname)):
-                    problems.append("fonts/manifest.json: %s is listed but missing" % fname)
+                    problems.append(_p("18", "fonts/manifest.json: %s is listed but missing" % fname))
                     continue
                 by_piece.setdefault(rec["piece"], []).append((fname, rec))
             for p in P:
                 recs = by_piece.get(p["slug"])
                 if not recs:
                     continue
+                look("18", p["url"])
                 raw = open(os.path.join(OUT, p["url"]), encoding="utf-8", errors="ignore").read()
                 if "fonts.googleapis" in raw:
-                    problems.append("%s: still loads Google Fonts although fonts/ carries its faces" % p["url"])
+                    problems.append(_p("18", "%s: still loads Google Fonts although fonts/ carries its faces" % p["url"]))
                 shown = re.sub(r"<style\b[^>]*>.*?</style>", " ", raw, flags=re.S | re.I)
                 shown = html.unescape(re.sub(r"<[^>]+>", " ", shown))
                 cps = {ord(c) for c in set(shown) if ord(c) > 32}
@@ -3758,10 +4023,10 @@ def check_site():
                     fam_cmap = set(((man.get("families") or {}).get(rec.get("family_dir")) or {}).get("cmap") or [])
                     lacking = sorted(c for c in cps if c not in have and c in fam_cmap)
                     for c in lacking[:3]:
-                        problems.append("font subset: U+%04X (%r) in %s is not in %s; re-subset" % (c, chr(c), p["url"], fname))
+                        problems.append(_p("18", "font subset: U+%04X (%r) in %s is not in %s; re-subset" % (c, chr(c), p["url"], fname)))
             for fname in sorted(os.listdir(os.path.join(OUT, "fonts"))):
                 if fname.endswith(".woff2") and ("fonts/" + fname) not in (man.get("files") or {}):
-                    problems.append("fonts/%s: not in the manifest" % fname)
+                    problems.append(_p("18", "fonts/%s: not in the manifest" % fname))
 
             # the subsets are distributed under non-reserved internal names
             # (a subset is a Modified Version under the OFL); the rename
@@ -3773,15 +4038,15 @@ def check_site():
                 if not os.path.exists(fp):
                     continue
                 if not rec.get("internal_name"):
-                    problems.append("fonts/manifest.json: %s has no internal_name; run the rename" % fname)
+                    problems.append(_p("18", "fonts/manifest.json: %s has no internal_name; run the rename" % fname))
                 digest = hashlib.sha256(open(fp, "rb").read()).hexdigest()
                 if digest != rec.get("sha256"):
-                    problems.append("fonts/manifest.json: %s does not match its recorded sha256; run the rename" % fname)
+                    problems.append(_p("18", "fonts/manifest.json: %s does not match its recorded sha256; run the rename" % fname))
             inter = man.get("inter") or {}
             if inter.get("file"):
                 ip = os.path.join(OUT, inter["file"])
                 if not os.path.exists(ip) or hashlib.sha256(open(ip, "rb").read()).hexdigest() != inter.get("sha256"):
-                    problems.append("%s: does not match the sha256 in fonts/manifest.json; run the rename" % inter["file"])
+                    problems.append(_p("18", "%s: does not match the sha256 in fonts/manifest.json; run the rename" % inter["file"]))
 
     # 17. every listed piece states what it was built from, in the owner's
     # voice: the field is present, never carries an em dash, and never
@@ -3792,14 +4057,15 @@ def check_site():
     # of them did.
     T["built_from"] = {"n": len(P)}
     for p in P:
+        look("17", p["url"])
         bf = (p.get("built_from") or "").strip()
         if not bf:
-            problems.append("content/pieces.json: %s has no built_from line" % p["slug"])
+            problems.append(_p("17", "content/pieces.json: %s has no built_from line" % p["slug"]))
         elif "\u2014" in bf:
-            problems.append("content/pieces.json: %s built_from carries an em dash" % p["slug"])
+            problems.append(_p("17", "content/pieces.json: %s built_from carries an em dash" % p["slug"]))
         elif " ".join(bf.split()[:2]).lower().strip(",;:") == "built from":
-            problems.append("content/pieces.json: %s built_from restates the label; "
-                            "the field is the complement of \"Built from\"" % p["slug"])
+            problems.append(_p("17", "content/pieces.json: %s built_from restates the label; "
+                            "the field is the complement of \"Built from\"" % p["slug"]))
 
     # 16. the ledger's class for every piece is what the files show. The
     # colophon prints the ledger's summary, so a stale ledger would print a
@@ -3808,10 +4074,11 @@ def check_site():
         live = invariance.classes(OUT, P)
         T["ledger"] = {"n": len(live)}
         for slug, cls in live.items():
+            look("16", slug + ".html")
             said = ((LEDGER.get("pieces") or {}).get(slug) or {}).get("class")
             if said != cls:
-                problems.append("content/ledger.json: %s is %s, the files say %s; run build/ledger.py"
-                                % (slug, said or "missing", cls))
+                problems.append(_p("16", "content/ledger.json: %s is %s, the files say %s; run build/ledger.py"
+                                % (slug, said or "missing", cls)))
     # 19. headings on the generated pages run in order. A level skipped is a
     # section a screen reader's outline cannot place; the colophon claims the
     # order, so the build holds it.
@@ -3824,11 +4091,12 @@ def check_site():
         body = re.sub(r"<(script|style|svg)\b[^>]*>.*?</\1>", " ", text, flags=re.S | re.I)
         levels = [int(x) for x in re.findall(r"<h([1-6])[\s>]", body)]
         th["pages"] += 1
+        look("19", f)
         th["headings"] += len(levels)
         last = 0
         for lv in levels:
             if lv > last + 1 and last:
-                problems.append(f"{f}: a heading skips from h{last} to h{lv}")
+                problems.append(_p("19", f"{f}: a heading skips from h{last} to h{lv}"))
                 break
             last = lv
 
@@ -3840,8 +4108,9 @@ def check_site():
             continue
         text = open(path, encoding="utf-8", errors="ignore").read()
         ts["pages"] += 1
+        look("20", f)
         if not re.search(r'<a class="skip" href="#main"', text) or 'id="main"' not in text:
-            problems.append(f"{f}: has no skip link to #main")
+            problems.append(_p("20", f"{f}: has no skip link to #main"))
 
     # 21. every figure on the generated pages carries an accessible name: a
     # top-level svg on a real artboard has role="img" with a label, or a
@@ -3854,6 +4123,7 @@ def check_site():
             continue
         text = open(path, encoding="utf-8", errors="ignore").read()
         tf["pages"] += 1
+        look("21", f)
         depth = 0
         for m in re.finditer(r"<(/?)svg\b([^>]*)>", text):
             if m.group(1):
@@ -3876,7 +4146,7 @@ def check_site():
                      or re.search(r'aria-hidden="true"', attrs)
                      or re.search(r"<title[\s>]", inner))
             if not named:
-                problems.append(f"{f}: a figure carries no accessible name")
+                problems.append(_p("21", f"{f}: a figure carries no accessible name"))
 
     # 22. nothing on any page is loaded from another origin: no script,
     # stylesheet, image, frame, font or media with a src or href on another
@@ -3888,6 +4158,7 @@ def check_site():
     for f in html_files:
         text = open(os.path.join(OUT, f), encoding="utf-8", errors="ignore").read()
         te["pages"] += 1
+        look("22", f)
         te["cookie"] += len(re.findall(r"document\.cookie", text))
         for m in re.finditer(r'<(?:script|link|img|iframe|source|video|audio|embed|object)\b[^>]*\b(?:src|href)="(https?://[^"]+)"', text):
             te["refs"] += 1
@@ -3897,7 +4168,7 @@ def check_site():
             elif host == HOST:
                 te["allowed"] += 1
             else:
-                problems.append(f"{f}: loads {m.group(1)} from another origin")
+                problems.append(_p("22", f"{f}: loads {m.group(1)} from another origin"))
         for m in re.finditer(r"url\((?:'|\")?(https?://[^)'\"]+)", text):
             te["refs"] += 1
             host = re.sub(r"^https?://", "", m.group(1)).split("/")[0]
@@ -3906,40 +4177,380 @@ def check_site():
             elif host == HOST:
                 te["allowed"] += 1
             else:
-                problems.append(f"{f}: loads {m.group(1)} from another origin")
+                problems.append(_p("22", f"{f}: loads {m.group(1)} from another origin"))
     for jsname in ("site.js", "atlas.js"):
         jp = os.path.join(OUT, jsname)
         if os.path.exists(jp):
             te["cookie"] += len(re.findall(r"document\.cookie", open(jp, encoding="utf-8").read()))
     if te["cookie"]:
-        problems.append("the cookie API is used %d time(s); the colophon says no cookies" % te["cookie"])
+        problems.append(_p("22", "the cookie API is used %d time(s); the colophon says no cookies" % te["cookie"]))
 
-    # 24. the workflow holds the build to its idempotence claim: a step that
-    # runs the build once more and fails the publish unless it reports
-    # nothing to rewrite. The register prints the claim as held only while
-    # that step is there.
+    # 24. the deploy gate: the site is deployed by the workflow only after the
+    # build, its checks, the tests of controls, the browser audit and the
+    # idempotence proof have passed. The workflow file is held to that shape:
+    # a build job that runs those steps in that order, none allowed to fail
+    # quietly, and a deploy job that needs the build job and deploys with
+    # actions/deploy-pages. A workflow without the gate fails the build, so
+    # the claim cannot outlive the file that makes it true.
     wf = os.path.join(ROOT, ".github", "workflows", "build.yml")
-    T["workflow"] = {"idempotence": False}
-    if os.path.exists(wf):
+    look("24", "site")
+    T["workflow"] = {"idempotence": False, "gate": False, "steps": 0, "missing": []}
+    if not os.path.exists(wf):
+        problems.append(_p("24", ".github/workflows/build.yml: missing; nothing gates the deploy"))
+    else:
         wtext = open(wf, encoding="utf-8").read()
-        T["workflow"]["idempotence"] = ("rewrote: nothing" in wtext and "build/build_site.py" in wtext
-                                        and "A further build rewrites nothing" in wtext)
+        wants = [("build_site.py", "python3 build/build_site.py"),
+                 ("negatives.py", "python3 build/negatives.py"),
+                 ("audit.js", "node build/audit.js"),
+                 ("audit.js --falsify", "node build/audit.js --falsify"),
+                 ("record-run", "claims.py --record-run"),
+                 ("idempotence", 'grep -q "rewrote: nothing"'),
+                 ("upload", "actions/upload-pages-artifact"),
+                 ("deploy", "actions/deploy-pages")]
+        pos, missing = -1, []
+        for name, needle in wants:
+            i = wtext.find(needle, pos + 1)
+            if i == -1:
+                missing.append(name)
+            else:
+                pos = i
+        T["workflow"]["steps"] = len(wants) - len(missing)
+        T["workflow"]["missing"] = missing
+        T["workflow"]["idempotence"] = "idempotence" not in missing
+        gated = bool(re.search(r"^\s*needs:\s*(\[\s*build\s*\]|build)\s*$", wtext, re.M)) and "branches: [main]" in wtext
+        quiet = "continue-on-error: true" in wtext
+        T["workflow"]["gate"] = gated and not missing and not quiet
+        if missing:
+            problems.append(_p("24", ".github/workflows/build.yml: the gate lacks, in order, %s" % ", ".join(missing)))
+        if not gated:
+            problems.append(_p("24", ".github/workflows/build.yml: no deploy job needs the build job"))
+        if quiet:
+            problems.append(_p("24", ".github/workflows/build.yml: a step may fail quietly (continue-on-error)"))
 
-    # 23. no em dash on any generated page. The pieces are content and their
-    # record holds them as written; their count is reported, not enforced.
-    td = T["emdash"] = {"generated_pages": 0, "in_generated": 0, "pieces_with": 0, "in_pieces": 0}
+    # 23. no em dash in the prose of any page, except the records declared in
+    # content/declared.json (transcripts and run reports kept as written). A
+    # dash standing alone as a cell or a chip is a symbol, not prose, and
+    # dashes inside script, style, code and data are counted and reported,
+    # not held. A declared record that no longer carries one is stale.
+    td = T["emdash"] = {"pages": 0, "prose": 0, "alone": 0, "code": 0, "records": 0, "in_records": 0,
+                        "generated_pages": 0}
+    records = set(DECLARED.get("records") or [])
     for f in html_files:
+        if f in ("reader.html", "admin.html"):
+            continue
         text = open(os.path.join(OUT, f), encoding="utf-8", errors="ignore").read()
-        c = text.count("\u2014")
+        pr, al, co = emdash.prose_dashes(text)
+        if f in records:
+            td["records"] += 1
+            td["in_records"] += pr
+            if not pr:
+                problems.append(_p("23", f"{f}: is declared a record exempt from the em dash rule but carries none; content/declared.json is stale"))
+            continue
+        look("23", f)
+        td["pages"] += 1
         if f in SHELL_PAGES:
             td["generated_pages"] += 1
-            td["in_generated"] += c
-            if c:
-                problems.append(f"{f}: carries {c} em dash(es)")
-        elif f != "reader.html" and f != "admin.html":
-            if c:
-                td["pieces_with"] += 1
-                td["in_pieces"] += c
+        td["alone"] += al
+        td["code"] += co
+        if pr:
+            td["prose"] += pr
+            problems.append(_p("23", f"{f}: carries {pr} em dash(es) in its prose"))
+    for f in records:
+        if f not in html_files:
+            problems.append(_p("23", f"content/declared.json: {f} is declared a record but is not a page here"))
+
+    # 25. the build's own words are spelled the Canadian way. The generated
+    # pages are scanned with the text the build quotes removed (the owner's
+    # fields, the lifted captions, the Atlas index of the pieces' headings,
+    # the last pass's notes, and the two run-transcript names), and held
+    # against a list of American spellings, whole words, any case.
+    quoted_text = []
+    for p in P:
+        for k in ("t", "s", "blurb", "demo", "built_from"):
+            v = p.get(k)
+            if v:
+                quoted_text.append(str(v))
+        for tg in p.get("tags") or []:
+            quoted_text.append(str(tg))
+    for text_c, _href in CAPTIONS:
+        quoted_text.append(text_c)
+    ts25 = T["spelling"] = {"pages": 0, "words": 0, "hits": 0, "list": len(US_SPELLINGS)}
+    for f in SHELL_PAGES:
+        path = os.path.join(OUT, f)
+        if not os.path.exists(path):
+            continue
+        look("25", f)
+        raw = open(path, encoding="utf-8", errors="ignore").read()
+        raw = re.sub(r'<section class="areg".*?</section>', " ", raw, flags=re.S)
+        raw = re.sub(r'<section[^>]*id="limits".*?</section>', " ", raw, flags=re.S)
+        raw = re.sub(r"<(script|style|svg)\b[^>]*>.*?</\1>", " ", raw, flags=re.S | re.I)
+        text = html.unescape(re.sub(r"<[^>]+>", " ", raw))
+        for q in quoted_text:
+            if q:
+                text = text.replace(html.unescape(q), " ")
+        ts25["pages"] += 1
+        words25 = re.findall(r"[A-Za-z][A-Za-z'-]*", text)
+        ts25["words"] += len(words25)
+        found = sorted({w for w in words25 if w.lower() in US_SPELLINGS})
+        if found:
+            ts25["hits"] += len(found)
+            problems.append(_p("25", f"{f}: spells {', '.join(found[:5])} the American way"))
+
+    # 26. every counted number on the generated pages names a definition the
+    # colophon prints, and carries the value the record holds for it: a
+    # number with data-of must equal that piece's metric, and a total must be
+    # one of the aggregates the build computes over the pieces for that
+    # definition (the corpus, an origin, a course, a kind, or the transcripts).
+    def _aggregates():
+        agg = {k: set() for k in ("pieces", "words", "figures", "tables", "checkpoints", "mins")}
+        groups = [P] + [[p for p in P if p["surface"] == sf] for sf in ("independent", "course", "personal")]
+        groups += [[p for p in P if p["c"] == c] for c in COURSES]
+        groups += [[p for p in P if p["k"] == kd] for kd in ("Essay", "Reference", "Tool")]
+        groups += [[p for p in P if p["surface"] == sf and p["k"] == kd] for sf in ("independent", "course", "personal") for kd in ("Essay", "Reference", "Tool")]
+        groups += [[p for p in P if p["slug"] in ("crucible-run-0", "crucible-run-b", "crucible-run-c")]]
+        groups += [[p for p in P if not p["is_doc"]]]
+        for g in groups:
+            agg["pieces"].add(len(g)); agg["words"].add(sum(p["words"] for p in g))
+            agg["figures"].add(sum(p["figures"] for p in g)); agg["tables"].add(sum(p["tables"] for p in g))
+        agg["checkpoints"].add(CHECKPOINTS)
+        agg["words"].add(TRANSCRIPT_WORDS); agg["words"].add(TOTAL_WORDS + TRANSCRIPT_WORDS)
+        agg["pieces"].add(len(P) + len(exceptions()["transcripts"]))
+        return agg
+    agg26 = _aggregates()
+    by_slug26 = {p["slug"]: p for p in P}
+    t26 = T["defined"] = {"numbers": 0, "pages": 0, "undefined": 0, "disagree": 0}
+    for f in SHELL_PAGES:
+        path = os.path.join(OUT, f)
+        if not os.path.exists(path):
+            continue
+        look("26", f)
+        t26["pages"] += 1
+        raw = open(path, encoding="utf-8", errors="ignore").read()
+        for m in re.finditer(r'<data class="m" value="([^"]*)" data-m="([^"]*)"(?: data-of="([^"]*)")?>', raw):
+            t26["numbers"] += 1
+            val, kind, of = m.group(1), m.group(2), m.group(3)
+            if kind not in DEF_BY_ID:
+                t26["undefined"] += 1
+                problems.append(_p("26", f"{f}: a counted number names the definition {kind!r}, which the colophon does not print"))
+                continue
+            try:
+                v = float(val)
+            except ValueError:
+                t26["disagree"] += 1
+                problems.append(_p("26", f"{f}: a counted number carries the value {val!r}, which is not a number"))
+                continue
+            if of:
+                pc = by_slug26.get(of)
+                want = None if not pc else {"words": pc["words"], "figures": pc["figures"], "tables": pc["tables"],
+                                            "mins": pc.get("mins"), "pieces": 1}.get(kind)
+                if want is None or float(want) != v:
+                    t26["disagree"] += 1
+                    problems.append(_p("26", f"{f}: {kind} for {of} prints {val}; the record holds {want}"))
+            elif v not in {float(x) for x in agg26.get(kind, set())}:
+                t26["disagree"] += 1
+                problems.append(_p("26", f"{f}: {kind} prints {val}, which is no aggregate the build computes for that definition"))
+
+    # 27. every visual channel the two sphere scripts declare is named in the
+    # Atlas key, and every key entry is a channel one of them draws; the home
+    # sphere's key is the Atlas key, one link from its caption.
+    declared = {}
+    for jsname in ("site.js", "atlas.js"):
+        jp = os.path.join(OUT, jsname)
+        if os.path.exists(jp):
+            mm = re.search(r"CHANNELS\s*=\s*\[([^\]]*)\]", open(jp, encoding="utf-8").read())
+            declared[jsname] = set(re.findall(r'"([a-z]+)"', mm.group(1))) if mm else set()
+    key_items = set()
+    if os.path.exists(apath):
+        key_items = set(re.findall(r'<li[^>]*><i class="ak ak-([a-z]+)"', atext))
+    t27 = T["channels"] = {"scripts": len(declared), "declared": len(set().union(*declared.values()) if declared else set()),
+                           "key": len(key_items), "unnamed": 0, "stray": 0}
+    look("27", "atlas.html"); look("27", "index.html")
+    for jsname, chs in declared.items():
+        if not chs:
+            problems.append(_p("27", f"{jsname}: declares no channels; the sphere cannot be held to its key"))
+        for ch in sorted(chs - key_items):
+            t27["unnamed"] += 1
+            problems.append(_p("27", f"{'index.html' if jsname == 'site.js' else 'atlas.html'}: {jsname} draws the channel {ch!r}, which the Atlas key does not name"))
+    for ch in sorted(key_items - declared.get("atlas.js", set())):
+        t27["stray"] += 1
+        problems.append(_p("27", f"atlas.html: the key names {ch!r}, which atlas.js does not draw"))
+
+    # 30. on the lifted figures, no meaning is carried by colour alone: every
+    # colour variable a figure's marks use is declared with a meaning in
+    # words, the declaration names no colour the marks do not use, and the
+    # rendered key under the figure names each one.
+    t30 = T["colour"] = {"figures": 0, "pages": 0, "colours": 0, "unnamed": 0, "stray": 0}
+    for f in SHELL_PAGES:
+        path = os.path.join(OUT, f)
+        if not os.path.exists(path):
+            continue
+        text = open(path, encoding="utf-8", errors="ignore").read()
+        fids = re.findall(r'<figure class="spec" id="(fs-[a-z0-9]+)">', text)
+        if not fids:
+            continue
+        look("30", f)
+        t30["pages"] += 1
+        for fid in fids:
+            if fid not in STRIP:
+                continue
+            t30["figures"] += 1
+            used = figure_colour_vars(fid)
+            means = STRIP[fid].get("meanings") or {}
+            block = re.search(r'<figure class="spec" id="%s">.*?</figure>' % fid, text, re.S)
+            shown = set(re.findall(r'<span class="fk-item" data-var="([^"]+)">', block.group(0))) if block else set()
+            t30["colours"] += len(used)
+            for v in sorted(used - set(means)):
+                t30["unnamed"] += 1
+                problems.append(_p("30", f"{f}: {fid} draws with {v}, which carries no declared meaning"))
+            for v in sorted(set(means) - used):
+                t30["stray"] += 1
+                problems.append(_p("30", f"{f}: {fid} declares a meaning for {v}, which its marks do not use"))
+            for v in sorted(used - shown):
+                t30["unnamed"] += 1
+                problems.append(_p("30", f"{f}: {fid}'s key does not name {v}"))
+
+    # 31. every number a figure on the generated pages draws is restated in
+    # the page's text outside the drawing: the numerals in the figure's
+    # visible text, each found in the page with its figures removed.
+    t31 = T["restated"] = {"figures": 0, "pages": 0, "numerals": 0, "missing": 0}
+    for f in SHELL_PAGES:
+        path = os.path.join(OUT, f)
+        if not os.path.exists(path):
+            continue
+        text = open(path, encoding="utf-8", errors="ignore").read()
+        svgs = []
+        depth = 0; start = None
+        for m in re.finditer(r"<(/?)svg\b([^>]*)>", text):
+            if m.group(1):
+                depth -= 1
+                if depth == 0 and start is not None:
+                    svgs.append(text[start:m.end()])
+                continue
+            if depth == 0:
+                start = m.start()
+            depth += 1
+        big = []
+        for sv in svgs:
+            vb = re.search(r'viewBox="([^"]+)"', sv[:400])
+            q = [float(x) for x in re.split(r"[\s,]+", vb.group(1).strip()) if x] if vb else []
+            if len(q) == 4 and q[2] * q[3] >= 6000:
+                big.append(sv)
+        if not big:
+            continue
+        look("31", f)
+        t31["pages"] += 1
+        outside = re.sub(r"<svg\b.*?</svg>", " ", text, flags=re.S)
+        outside = re.sub(r"<(script|style)\b[^>]*>.*?</\1>", " ", outside, flags=re.S | re.I)
+        outside = html.unescape(re.sub(r"<[^>]+>", " ", outside))
+        outside = re.sub(r"\s+", " ", outside)
+        for sv in big:
+            t31["figures"] += 1
+            nums = set()
+            for line in figure_numbers(sv):
+                nums |= set(re.findall(r"\d[\d,]*(?:\.\d+)?", line))
+            t31["numerals"] += len(nums)
+            lost = sorted(x for x in nums if x not in outside)
+            if lost:
+                t31["missing"] += len(lost)
+                problems.append(_p("31", f"{f}: a figure draws {', '.join(lost[:5])}, which the page's text does not restate"))
+    # 29. every glyph on the controls page is a record. The page wall and the
+    # falsification ledger are parsed back from the rendered page and each
+    # glyph is compared with the record it stands for: the check's per-page
+    # outcome, the audit's current measurement, or the falsification's
+    # result, with the glyph vocabulary stated here a second time on purpose,
+    # so the page is held to the records and not to the code that drew it.
+    cpath = os.path.join(OUT, "controls.html")
+    look("29", "controls.html")
+    t29 = T["instrument"] = {"glyphs": 0, "pages": 0, "columns": 0, "disagree": 0, "falsifications": 0, "ledger_disagree": 0}
+    if not os.path.exists(cpath):
+        problems.append(_p("29", "controls.html: missing"))
+    else:
+        ctext = open(cpath, encoding="utf-8", errors="ignore").read()
+        cctx = _claims_ctx(problems)
+        st29, R29 = cctx["audit"], check_site.records
+        decl29 = set(DECLARED.get("overflow") or [])
+        rt_keys = {"E": "ext", "I": "idle", "K": "keyboard", "P": "print", "M": "motion", "F": "fit", "C": "chrome"}
+        wall = re.search(r'<table class="inst" id="page-wall">(.*?)</table>', ctext, re.S)
+        if not wall:
+            problems.append(_p("29", "controls.html: carries no page wall"))
+        else:
+            cols = re.findall(r'<th scope="col" class="ic ic-(build|runtime)"><span>([^<]+)</span></th>', wall.group(1))
+            t29["columns"] = len(cols)
+            seen_pages, shown = set(), 0
+            colsum = {lab: 0 for _k, lab in cols}
+            for m in re.finditer(r'<tr class="ir ir-\w+"><th scope="row" class="ip"><a href="([^"]+)">[^<]*</a></th>(.*?)</tr>', wall.group(1), re.S):
+                page = m.group(1)
+                cells = re.findall(r'<td class="g (g-[hxqdn])">([^<]*)</td>', m.group(2))
+                t29["pages"] += 1
+                seen_pages.add(page)
+                if len(cells) != len(cols):
+                    problems.append(_p("29", f"controls.html: {page} shows {len(cells)} glyph cells under {len(cols)} columns"))
+                    continue
+                for (kind, lab), (cls, glyph) in zip(cols, cells):
+                    if glyph:
+                        t29["glyphs"] += 1
+                        colsum[lab] += 1
+                    if kind == "build":
+                        v = R29.get(lab, {}).get(page)
+                        if lab == "29" and page == "controls.html":
+                            v = None   # a check does not grade its own glyph
+                        exp = "" if v is None else ("#" if v else "x")
+                    else:
+                        key = rt_keys.get(lab)
+                        if key in ("keyboard", "print", "motion"):
+                            applies = page in SHELL_PAGES
+                        elif key == "chrome":
+                            applies = page not in SHELL_PAGES
+                        else:
+                            applies = key is not None
+                        if not applies:
+                            exp = ""
+                        elif page in st29["fresh"] and st29["fresh"][page].get(key) is not None:
+                            ok = claims.page_ok(key, st29["fresh"][page])
+                            exp = "~" if (key == "fit" and not ok and page in decl29) else ("#" if ok else "x")
+                        else:
+                            exp = "?"
+                    if glyph != exp:
+                        t29["disagree"] += 1
+                        if shown < 5:
+                            shown += 1
+                            problems.append(_p("29", f"controls.html: {page} under {lab} shows {glyph!r}, the record says {exp!r}"))
+            all29 = set(cctx["all_pages"])
+            if seen_pages != all29:
+                problems.append(_p("29", "controls.html: the wall lists %d pages, the site has %d" % (len(seen_pages), len(all29))))
+            foot = re.search(r'<tr class="isum"><th scope="row" class="ip">pages the check looked at</th>(.*?)</tr>', wall.group(1), re.S)
+            sums = [int(x) for x in re.findall(r'<td class="is">(\d+)</td>', foot.group(1))] if foot else []
+            if sums != [colsum[lab] for _k, lab in cols]:
+                problems.append(_p("29", "controls.html: the wall's column totals are not the count of its glyphs"))
+        ledg = re.search(r'<table class="inst inst-ledger" id="falsifications">(.*?)</table>', ctext, re.S)
+        if not ledg:
+            problems.append(_p("29", "controls.html: carries no falsification ledger"))
+        else:
+            neg29 = cctx["negatives"]
+            rt_names = {lab: key for key, lab in claims.RUNTIME_COLS} | {"O": "offline"}
+            for m in re.finditer(r'<tr><th scope="row" class="ip">([^<]+)</th><td class="ig">(.*?)</td><td class="is">([^<]*)</td>', ledg.group(1), re.S):
+                name, glyphs, count = m.group(1), re.findall(r'class="g (g-[hxqdn])"', m.group(2)), m.group(3)
+                if name.startswith("check "):
+                    cases = neg29["build"].get(name[6:], [])
+                else:
+                    cases = neg29["runtime"].get(name, [])
+                exp = ["g-q" if not c.get("current") else ("g-h" if c.get("caught") else "g-x") for c in cases] or ["g-n"]
+                t29["falsifications"] += len(cases)
+                if glyphs != exp:
+                    t29["ledger_disagree"] += 1
+                    problems.append(_p("29", f"controls.html: the ledger line for {name} shows {len(glyphs)} glyph(s) that are not the record's"))
+
+    # 13. no numeral in shell copy is typed. Every numeral of two or more
+    # digits, or carrying a decimal or a thousands separator, on a generated
+    # page must be a value the build computed, or a figure a piece states in
+    # its own text where the shell quotes that piece. One-digit numerals are
+    # left alone: note references and the small counts of a sentence.
+    # The scan itself runs in main's fixpoint, on the pages as written from
+    # this round's records, so the register's and the instrument's numbers
+    # are known to it from the very records that produced them (read from the
+    # computed strings, never from a claim sentence). Here the check records
+    # its coverage and the previous scan's count for the register's row.
+
     return sorted(set(problems))
 
 
@@ -3961,12 +4572,18 @@ def _num(s):
 
 def _piece_numbers(url):
     """Every numeral a piece states in its own readable text, as values, so a
-    shell caption that says 0.20 matches a piece that says 0.2."""
+    shell caption that says 0.20 matches a piece that says 0.2. The text a
+    piece draws inside its figures counts as stated: a lifted figure's
+    restated numbers are held to it."""
     path = os.path.join(OUT, url)
     if not os.path.exists(path):
         return set()
-    return {_num(x) for x in _NUM.findall(_readable_text(path))} | \
-        {_num(x) for x in re.findall(r"(?<![\w.])(\d{1,2}(?:\.\d+)?)(?![\w])", _readable_text(path))}
+    text = _readable_text(path)
+    raw = open(path, encoding="utf-8", errors="ignore").read()
+    for sv in re.findall(r"<svg\b.*?</svg>", raw, flags=re.S | re.I):
+        text += " " + " ".join(figure_numbers(sv))
+    return {_num(x) for x in _NUM.findall(text)} | \
+        {_num(x) for x in re.findall(r"(?<![\w.])(\d{1,2}(?:\.\d+)?)(?![\w])", text)}
 
 
 def _known_numbers():
@@ -4019,12 +4636,19 @@ def _known_numbers():
     add([len(x) for x in tools_drawn()])
     add(LEDGER.get("summary") or {})
     add(built_from_counts([p for p in P if p["surface"] == "course"]))
+    # the register's numbers: every tally the checks kept on this run, what
+    # the browser audit recorded for the pages whose record is current, the
+    # sums the register prints over them, and the negatives' counts. Check
+    # 13 runs after every other check, so the tallies are complete; the
+    # register on the page was printed from the previous round of the
+    # fixpoint, and the round that settles is the one whose numbers agree.
+    add(getattr(check_site, "tally", {}))
     return vals
 
 
-def _typed_numerals():
+def _typed_numerals(extra_known=None):
     out = []
-    known = _known_numbers()
+    known = _known_numbers() | set(extra_known or ())
     years = {float(y) for y in range(1900, 2031)}
     # what the shell quotes from pieces: the owner's own fields, and lifted captions
     quoted = set()
@@ -4057,10 +4681,6 @@ def _typed_numerals():
         # the last pass's notes on the colophon are a record reproduced as
         # written; their numerals are the pass's own, not this build's
         raw = re.sub(r'<section[^>]*id="limits".*?</section>', " ", raw, flags=re.S)
-        # the register's tallies are the checks' own output, this count among
-        # them: a scan cannot hold a page to the count it is about to produce
-        raw = re.sub(r'<table class="ctab register".*?</table>', " ", raw, flags=re.S)
-        raw = re.sub(r'<p class="audit-line">.*?</p>', " ", raw, flags=re.S)
         raw = re.sub(r"<(script|style|svg)\b[^>]*>.*?</\1>", " ", raw, flags=re.S | re.I)
         # the statement rows are numbered by position, which is a count of
         # the list, not a quantity; the number is cut out before the scan
@@ -4169,29 +4789,48 @@ def main():
     # that ran on the colophon as finally written decides the build.
     all_pages = list(SHELL_PAGES) + [p["url"] for p in P] + [k + ".html" for k in exceptions()["transcripts"]]
     colpath = os.path.join(OUT, "colophon.html")
-    # the colophon is written only here, with the register in it: written
-    # first without it and again with it, every build rewrote the page
+    ctlpath = os.path.join(OUT, "controls.html")
+    started_with = {pth: (open(pth, encoding="utf-8").read() if os.path.exists(pth) else None) for pth in (colpath, ctlpath)}
+    # the two pages are written only here, from the records: written first
+    # without them and again with them, every build rewrote the pages
     if not os.path.exists(colpath):
         open(colpath, "w", encoding="utf-8").write(page_colophon())
         changed.append("colophon.html")
+    if not os.path.exists(ctlpath):
+        open(ctlpath, "w", encoding="utf-8").write("<!DOCTYPE html><html><head><title>Controls</title></head><body><a class=\"skip\" href=\"#main\">Skip to content</a><main id=\"main\"></main></body></html>")
+        changed.append("controls.html")
     settled = False
-    for _round in range(4):
+    for _round in range(5):
         problems = check_site()
-        ctx = {"tally": check_site.tally, "shell_pages": list(SHELL_PAGES), "all_pages": all_pages,
-               "audit": claims.audit_state(OUT, set(SHELL_PAGES), all_pages), "problems": []}
+        ctx = _claims_ctx(problems)
         rows, summary = claims.build(ctx)
         problems = sorted(set(problems + ctx["problems"]))
         meta = (ctx["audit"]["audit"] or {}).get("meta") or {}
-        new_col = page_colophon(register=claims.render(rows, summary, meta))
-        on_disk = open(colpath, encoding="utf-8").read() if os.path.exists(colpath) else ""
-        if new_col == on_disk:
+        register_html = claims.render(rows, summary, meta, ctx["negatives"])
+        instrument_html, counts = claims.render_instrument(ctx)
+        new_ctl = page_controls(register_html, instrument_html, counts, summary)
+        new_col = page_colophon(summary=summary)
+        moved = False
+        for path, text, name in ((ctlpath, new_ctl, "controls.html"), (colpath, new_col, "colophon.html")):
+            on_disk = open(path, encoding="utf-8").read() if os.path.exists(path) else ""
+            if text != on_disk:
+                open(path, "w", encoding="utf-8").write(text)
+                moved = True
+        # check 13, on the pages just written, knowing every number this
+        # round's records put on them
+        for line in _typed_numerals(claims.known_numbers(ctx)):
+            problems.append(_p("13", line))
+        problems = sorted(set(problems))
+        if not moved:
             settled = True
             break
-        open(colpath, "w", encoding="utf-8").write(new_col)
-        if "colophon.html" not in changed:
-            changed.append("colophon.html")
     if not settled:
-        problems.append("colophon.html: the register did not settle in four rounds")
+        problems.append("controls.html: the register did not settle in five rounds")
+    # the first round prints the previous scan's count and is rewritten by the
+    # second, so a page counts as rewritten only if it ends up different
+    for pth, name in ((ctlpath, "controls.html"), (colpath, "colophon.html")):
+        if open(pth, encoding="utf-8").read() != started_with[pth] and name not in changed:
+            changed.append(name)
     check_site.register = summary
 
     write_offline(changed)
@@ -4224,7 +4863,14 @@ def main():
               f"label, anchor and result sentence ({len(P)} listed pieces and {n_tr} transcripts); "
               f"{inv['declared']} carry declared strikes")
     if problems:
+        # the checks that fired, by id, on one line: what build/negatives.py
+        # reads to decide whether a falsification was caught by the check
+        # the claim names, rather than by the build failing for any reason
+        fired = sorted({m.group(1) for m in (re.match(r"check (\S+):", x) for x in problems) if m},
+                       key=lambda k: (int(re.match(r"\d+", k).group(0)), k))
         print(f"\n{len(problems)} problem(s) found. The site was written, but this is broken:")
+        if fired:
+            print("checks that failed: " + ", ".join(fired))
         for line in problems[:40]:
             print("  " + line)
         if len(problems) > 40:

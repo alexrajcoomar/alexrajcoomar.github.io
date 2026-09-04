@@ -718,6 +718,11 @@
   (function () {
     var host = document.getElementById("atlasmini");
     if (!host || !host.getAttribute("data-pts")) return;
+    /* Every visual channel this sphere draws, by the id its key entry carries
+       on the Atlas page, which is this sphere's key; check 27 holds the two
+       lists to each other. A channel drawn here and not listed there fails
+       the build, and so does a key entry nothing draws. */
+    var CHANNELS = ["ind", "cou", "per", "too", "shr", "vis", "lnk"];
 
     /* This block sits outside the file's main closure, so it reads the motion
        preference for itself rather than borrowing a variable that is not in

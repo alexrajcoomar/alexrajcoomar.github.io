@@ -1,10 +1,14 @@
-# Rebuilds the site's index pages whenever content changes.
+# Builds the site, checks it, falsifies its checks, audits it in a browser,
+# proves the build idempotent, and only then deploys it to GitHub Pages.
 #
 # Nothing here touches design. It reads content/pieces.json, measures any
-# piece whose file changed, regenerates the nine shell pages, audits in a
-# browser what those pages claim about themselves, and commits the result
-# back. The commit carries [skip ci] so it cannot set itself off again.
-name: Rebuild site
+# piece whose file changed, regenerates the generated pages, runs the tests
+# of controls the register requires, audits in a browser what the pages
+# claim about themselves, writes the records back, and deploys the tree
+# that passed. A failure anywhere in the chain leaves the last good site
+# live: the deploy job runs only when the build job succeeded. The
+# commit-back carries [skip ci] so it cannot set itself off again.
+name: Build, check and deploy
 
 on:
   push:
@@ -13,6 +17,8 @@ on:
 
 permissions:
   contents: write
+  pages: write
+  id-token: write
 
 concurrency:
   group: rebuild
@@ -33,8 +39,7 @@ jobs:
         run: python3 build/measure_plan.py
 
       # Opening pages in a real browser is the slow part, so it only happens
-      # when a piece's own file changed. Editing a title or reordering the
-      # list skips this entirely.
+      # when a piece's own file changed or a runtime record is stale.
       - name: Install a browser
         if: steps.plan.outputs.needs == '1'
         run: |
@@ -51,27 +56,42 @@ jobs:
         if: steps.plan.outputs.cards == '1'
         run: node build/cards.js
 
-      # Fails the build if a link, a canonical, an icon or a listed file does
-      # not resolve. A red mark here means the site was not published broken.
-      - name: Rebuild the listing pages and check them
+      # Fails the run if any check fails. A red mark here means the site was
+      # not deployed broken.
+      - name: Rebuild the generated pages and check them
         run: python3 build/build_site.py
+
+      # Tests of controls: for every check, a falsification applied to a copy
+      # of the tree, after which the build must refuse naming that check. Run
+      # when the record in content/negatives.json is missing or was taken
+      # against other code; a falsification the checks miss fails the run.
+      - name: Falsify every check and record what caught it
+        if: steps.plan.outputs.negatives == '1'
+        run: python3 build/negatives.py --jobs 3
 
       # What the pages claim about themselves at runtime (nothing external,
       # nothing moving while idle, focus visible, printing, fitting a phone,
       # the offline copy surviving a publish) is measured in the same browser
-      # and recorded in content/audit.json, for the pages whose inputs moved.
-      - name: Audit the rendered pages
+      # and recorded in content/audit.json, for the pages whose inputs moved;
+      # then each runtime claim is falsified on a copy of a page and the
+      # measurement must fail it.
+      - name: Audit the rendered pages and falsify the audit
         if: steps.plan.outputs.audit == '1'
-        run: node build/audit.js
+        run: node build/audit.js && node build/audit.js --falsify
 
-      # The colophon's register prints the audit, so the pages are written
-      # once more from the fresh record. Nothing else changes.
-      - name: Print the audit on the colophon
-        if: steps.plan.outputs.audit == '1'
+      # Every run leaves a line in the record, whether the audit ran or its
+      # records were kept, so the register can say how old its measurements
+      # are rather than fall silent.
+      - name: Record this run
+        run: python3 build/claims.py --record-run "${{ steps.plan.outputs.audit }}"
+
+      # The register and the controls page print the records, so the pages
+      # are written once more from them. Nothing else changes.
+      - name: Print the records on the pages
         run: python3 build/build_site.py
 
       # The build claims to be idempotent, so the workflow holds it to that:
-      # one more run must rewrite nothing, or the publish fails here.
+      # one more run must rewrite nothing, or the deploy does not happen.
       - name: A further build rewrites nothing
         run: |
           python3 build/build_site.py | tee /tmp/build-again.log
@@ -81,11 +101,6 @@ jobs:
         run: |
           git config user.name  "site build"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          # Installing the browser driver leaves a dependency cache behind.
-          # .gitignore keeps it out from now on; this untracks the copy an
-          # earlier run committed before that file existed.
-          # --ignore-unmatch matters: without it, git rm aborts the moment one
-          # of these paths is not tracked, and removes none of them.
           git rm -r --cached --quiet --ignore-unmatch node_modules package.json package-lock.json || true
           git add -A
           if git diff --cached --quiet; then
@@ -94,3 +109,27 @@ jobs:
             git commit -m "Rebuild site [skip ci]"
             git push
           fi
+
+      # The tree that passed, without the repository's own machinery.
+      - name: Package the site
+        run: |
+          mkdir -p /tmp/site
+          rsync -a --exclude .git --exclude .github --exclude node_modules --exclude __pycache__ ./ /tmp/site/
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: /tmp/site
+
+  # Deploys only what the build job passed. A red build leaves the last good
+  # site live; nothing is served that a check refused.
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/configure-pages@v5
+        with:
+          enablement: true
+      - id: deployment
+        uses: actions/deploy-pages@v4

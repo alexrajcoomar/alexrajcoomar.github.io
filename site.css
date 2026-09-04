@@ -2123,6 +2123,60 @@ details.cgroup + details.cgroup{margin-top:1.75rem}
 .register .rg-note{display:block;margin-top:.2rem;font-size:.76rem;color:var(--ink-3)}
 .tw > .register{min-width:40rem}
 .audit-line{font-size:.9rem;color:var(--ink-2)}
+.register-line{font-size:.9rem;color:var(--ink-2)}
+/* a lifted figure's key: each colour that carries a meaning, named in words */
+.spec .fkey{display:flex;flex-wrap:wrap;gap:.35rem 1rem;margin:.6rem 0 .2rem;font-size:.82rem;color:var(--ink-2)}
+.spec .fk-item{display:inline-flex;align-items:center;gap:.4rem}
+.spec .sw{display:inline-block;width:.7em;height:.7em;border-radius:2px;border:1px solid color-mix(in srgb,var(--ink) 25%,transparent)}
+.spec .fignums{margin:.5rem 0 .6rem;font-size:.8rem;color:var(--ink-3)}
+.spec .fignums summary{cursor:pointer;color:var(--ink-2)}
+.spec .fignums p{margin:.35rem 0 0;line-height:1.5}
+
+.register .rg-when{color:var(--ink-3);font-size:.78rem;max-width:22rem}
+.register .rg-untested .rg-st{color:var(--ink-2);border-style:dotted}
+
+/* The instrument: the records as glyphs, in the code face the site already
+   uses. A glyph is one record; the wall is a table because it is one, so a
+   screen reader gets the page name and the column under every glyph. */
+.inst{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.78rem;line-height:1.3;
+  border-collapse:collapse;width:auto;margin:0}
+.inst th,.inst td{padding:.05em .18em;border:0;text-align:center;font-weight:400;vertical-align:middle}
+.inst caption{text-align:left;font-family:inherit;font-size:.82rem;color:var(--ink-2);padding:0 0 .7rem;max-width:44rem;caption-side:top}
+.inst .ip{text-align:left;white-space:nowrap;padding-right:1.1em;color:var(--ink-2)}
+.inst .ip a{color:inherit;text-decoration:none;display:inline-block;min-height:24px;line-height:24px}
+.inst tbody .ip{padding-top:0;padding-bottom:0}
+.inst .ip a:hover{text-decoration:underline}
+.inst .ir-shell .ip{color:var(--ink);font-weight:600}
+.inst .ir-record .ip{font-style:italic}
+.inst thead .ic span{writing-mode:vertical-rl;transform:rotate(180deg);display:inline-block;color:var(--ink-3);padding:.2em 0;letter-spacing:.04em}
+.inst thead .ic-runtime span{color:var(--ink-2)}
+.inst .ic-runtime:first-of-type,.inst td.g:nth-child(32){border-left:0}
+.inst th.ic-runtime~th,.inst thead .ic-runtime{border-left:0}
+.inst .g{width:1.35em;min-width:1.35em;font-variant-numeric:tabular-nums}
+.inst .g-h{color:var(--ink)}
+.inst .g-x{color:var(--paper);background:var(--ink);font-weight:700}
+.inst .g-q{color:var(--ink-3)}
+.inst .g-d{color:var(--ink-2)}
+.inst tbody tr:nth-child(odd) td{background:color-mix(in srgb,var(--ink) 3%,transparent)}
+.inst tfoot .isum td,.inst tfoot .isum th{color:var(--ink-3);font-size:.7rem;border-top:1px solid var(--rule);padding-top:.3em}
+.inst-ledger th,.inst-ledger td{text-align:left}
+.inst-ledger .ig{letter-spacing:.14em;white-space:nowrap}
+.inst-ledger .ig .g{display:inline-block;width:auto;min-width:1em;padding:0 .1em}
+.inst-ledger .is{white-space:nowrap;color:var(--ink-2)}
+.inst-ledger .iw{font-size:.72rem;color:var(--ink-3);max-width:44rem;line-height:1.4}
+.inst-wrap{overflow-x:auto;max-width:100%;margin:1rem 0 1.6rem;padding-bottom:.4rem}
+.inst-key{font-size:.85rem;color:var(--ink-2);max-width:60ch}
+.inst-key code{font-size:.9em}
+#controls-top h1{font-size:clamp(1.5rem,2.4vw,2.1rem);line-height:1.15;max-width:26em}
+@media (max-width:48rem){
+  /* the wall scrolls inside its own frame on a narrow screen; nothing in it
+     is clipped, and the page names are set a step smaller so the columns
+     stay in reach */
+  .inst{font-size:.66rem}
+  .inst .ip{font-size:.6rem;padding-right:.7em}
+  .inst-ledger .iw{max-width:none}
+}
+
 /* the pass's own account of its limits */
 .limits ol{padding-left:1.2rem}
 .limits li{margin:.5rem 0;color:var(--ink-2)}
@@ -2140,6 +2194,7 @@ details.cgroup + details.cgroup{margin-top:1.75rem}
   .register .rg-by{display:inline;white-space:normal}
   .register .rg-by::after{content:" · "}
   .register .rg-res{display:inline}
+  .register .rg-when{display:block;max-width:none;margin-top:.2rem}
 }
 
 /* --------------------------- a number you can open --------------------- */

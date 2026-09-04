@@ -1125,7 +1125,8 @@
     "The 15 map nodes' aria-labels now begin with the text each node shows (the name and its fraction), so the accessible name contains the visible label; the rest of each label is unchanged.",
     "The map aside's two script-written headings carry aria-level 3.",
     "Each map node's count label (15 of them) is aria-hidden: the node's accessible name already states the count and the resolved share, and the audit's name-mismatch rule reads the two text runs as one word.",
-    "Two last audit items: 12 bare h5 tags the map aside's script writes carry aria-level 3 (the aside sits under a section heading), and a space now separates each map node's name from its count so the visible text reads as two words, which is what the node's accessible name states."
+    "Two last audit items: 12 bare h5 tags the map aside's script writes carry aria-level 3 (the aside sits under a section heading), and a space now separates each map node's name from its count so the visible text reads as two words, which is what the node's accessible name states.",
+    "Em dashes, this phase: 1 replaced by rule (comma 1). The rule is build/emdash.py; a dash inside quotation marks was converted like any other, and no word moved."
    ]
   },
   "the-trillion-dollar-vintage": {
@@ -1140,7 +1141,8 @@
     "Em dashes: 209 replaced by rule (commas 19, parentheses 17, colon 30, comma 142, dropped after punctuation 1); 1 kept (inside a quotation 1).",
     "Canadian spelling: 17 words changed (center to centre 2, favor to favour 1, favorable to favourable 1, favorite to favourite 2, favors to favours 2, fiber to fibre 4, labeled to labelled 2, modeled to modelled 1, modeling to modelling 1, rumor to rumour 1).",
     "Heading order: 1 headings that skipped a level keep their tag and text and carry aria-level for the level the outline needs (h3 read as level 2).",
-    "Stray space before punctuation removed in 6 places (a non-breaking space or a line break that the dash rules left before a comma or a colon; a space before a semicolon in one publisher name)."
+    "Stray space before punctuation removed in 6 places (a non-breaking space or a line break that the dash rules left before a comma or a colon; a space before a semicolon in one publisher name).",
+    "Em dashes, this phase: 1 replaced by rule (colon 1). The rule is build/emdash.py; a dash inside quotation marks was converted like any other, and no word moved."
    ],
    "spellings": [
     {
@@ -1197,7 +1199,8 @@
     "Em dashes: 30 replaced by rule (commas 4, parentheses 2, colon 6, comma 11, dropped after punctuation 7); 5 kept (a nil placeholder standing alone 1, inside a quotation 4).",
     "Heading order: 7 headings that skipped a level keep their tag and text and carry aria-level for the level the outline needs (h4 read as level 3, h4 read as level 3, h4 read as level 3, h4 read as level 3, h4 read as level 3, h4 read as level 3, h4 read as level 3).",
     "Table headers: in 2 tables whose header row opens with an empty cell, 8 row-label cells became th scope=\"row\" (tag only; the text is unchanged) so every data cell has a header; a rule keeps them looking as they did.",
-    "Colour contrast: variable --outside #e34948 to #db2928 (4.69:1 on #fcfcfb, 1 uses); variable --inside #2a78d6 to #2672ca (4.71:1 on #fcfcfb, 1 uses)."
+    "Colour contrast: variable --outside #e34948 to #db2928 (4.69:1 on #fcfcfb, 1 uses); variable --inside #2a78d6 to #2672ca (4.71:1 on #fcfcfb, 1 uses).",
+    "Em dashes, this phase: 4 replaced by rule (comma 4); 1 kept (a nil placeholder standing alone 1). The rule is build/emdash.py; a dash inside quotation marks was converted like any other, and no word moved."
    ],
    "contrast": [
     {
@@ -1267,7 +1270,8 @@
    ],
    "notes": [
     "Em dashes: 27 replaced by rule (commas 2, colon 3, colon in a heading 3, comma 19); 3 kept (inside a quotation 3).",
-    "Table headers: in 1 tables whose header row opens with an empty cell, 3 row-label cells became th scope=\"row\" (tag only; the text is unchanged) so every data cell has a header; a rule keeps them looking as they did."
+    "Table headers: in 1 tables whose header row opens with an empty cell, 3 row-label cells became th scope=\"row\" (tag only; the text is unchanged) so every data cell has a header; a rule keeps them looking as they did.",
+    "Em dashes, this phase: 2 replaced by rule (commas 1, comma 1). The rule is build/emdash.py; a dash inside quotation marks was converted like any other, and no word moved."
    ]
   },
   "afm291": {
@@ -1437,7 +1441,8 @@
     "Colour contrast: variable --disr #0e7c86 to #0e747c (4.84:1 on #e4f3f4, 1 uses); variable --num #b45309 to #aa4f09 (4.62:1 on #efe9fa, 1 uses). Not resolved here: #dbebed on #0e7c86 (1); #ddebe3 on #1f7a44 (1).",
     "4 section-header sub-labels no longer sit at opacity .85 on their coloured band; the white text reads at full strength.",
     "Dark palette: 15 colour tokens redeclared for a dark scheme and for data-theme=\"dark\" by rule (surfaces deep, ink near-white, accents lifted), 0 text tokens lifted to 4.5:1 on the darkest surface (#211a2c); 51 literal colour declarations re-emitted under the same selectors with the literal mapped; 3 inline literal styles left as they are; a print block restores the light tokens. The rendered dark audit's result is recorded beside this note.",
-    "Rendered contrast audit (lh/dark-audit.mjs, headless Chrome at 1440, every visible element with its own text against its nearest opaque background): dark scheme 620 elements checked, 0 below the AA floor; light scheme 0 below the floor."
+    "Rendered contrast audit (lh/dark-audit.mjs, headless Chrome at 1440, every visible element with its own text against its nearest opaque background): dark scheme 620 elements checked, 0 below the AA floor; light scheme 0 below the floor.",
+    "Em dashes, this phase: 1 replaced by rule (colon 1). The rule is build/emdash.py; a dash inside quotation marks was converted like any other, and no word moved."
    ],
    "spellings": [
     {
@@ -1814,7 +1819,8 @@
     "Em dashes: 204 replaced by rule (commas 10, parentheses 4, colon 13, colon in a heading 52, comma 125); 6 kept (inside a quotation 6).",
     "Canadian spelling: 2 words changed (labeled to labelled 2).",
     "4 sentences an assistant addressed to the owner struck; what each said the piece was built from is now the built_from line the bar renders.",
-    "Table headers: in 3 tables whose header row opens with an empty cell, 13 row-label cells became th scope=\"row\" (tag only; the text is unchanged) so every data cell has a header; a rule keeps them looking as they did."
+    "Table headers: in 3 tables whose header row opens with an empty cell, 13 row-label cells became th scope=\"row\" (tag only; the text is unchanged) so every data cell has a header; a rule keeps them looking as they did.",
+    "Em dashes, this phase: 6 replaced by rule (colon 1, comma 4, dropped at a line end 1). The rule is build/emdash.py; a dash inside quotation marks was converted like any other, and no word moved."
    ],
    "spellings": [
     {
@@ -1856,7 +1862,8 @@
     "Em dashes: 280 replaced by rule (commas 5, parentheses 3, colon 32, colon in a heading 71, comma 169); 12 kept (a nil placeholder standing alone 3, inside a quotation 9).",
     "Canadian spelling: 15 words changed (fulfill to fulfil 1, fulfillment to fulfilment 14).",
     "2 sentences an assistant addressed to the owner struck; what each said the piece was built from is now the built_from line the bar renders.",
-    "Table headers: in 6 tables whose header row opens with an empty cell, 17 row-label cells became th scope=\"row\" (tag only; the text is unchanged) so every data cell has a header; a rule keeps them looking as they did."
+    "Table headers: in 6 tables whose header row opens with an empty cell, 17 row-label cells became th scope=\"row\" (tag only; the text is unchanged) so every data cell has a header; a rule keeps them looking as they did.",
+    "Em dashes, this phase: 8 replaced by rule (colon in a heading 1, comma 7); 4 kept (a nil placeholder standing alone 4). The rule is build/emdash.py; a dash inside quotation marks was converted like any other, and no word moved."
    ],
    "spellings": [
     {
@@ -1892,7 +1899,8 @@
    "notes": [
     "Em dashes: 263 replaced by rule (commas 6, parentheses 2, colon 28, colon in a heading 79, comma 148); 37 kept (a nil placeholder standing alone 31, inside a quotation 6).",
     "3 sentences an assistant addressed to the owner struck; what each said the piece was built from is now the built_from line the bar renders.",
-    "Table headers: in 10 tables whose header row opens with an empty cell, 129 row-label cells became th scope=\"row\" (tag only; the text is unchanged) so every data cell has a header; a rule keeps them looking as they did."
+    "Table headers: in 10 tables whose header row opens with an empty cell, 129 row-label cells became th scope=\"row\" (tag only; the text is unchanged) so every data cell has a header; a rule keeps them looking as they did.",
+    "Em dashes, this phase: 5 replaced by rule (commas 1, comma 4); 31 kept (a nil placeholder standing alone 31). The rule is build/emdash.py; a dash inside quotation marks was converted like any other, and no word moved."
    ],
    "strikes": [
     {
@@ -1924,7 +1932,8 @@
     "Em dashes: 273 replaced by rule (commas 8, parentheses 4, colon 42, colon in a heading 53, comma 166); 18 kept (a nil placeholder standing alone 14, inside a quotation 4).",
     "Canadian spelling: 3 words changed (fulfill to fulfil 1, fulfillment to fulfilment 2).",
     "4 sentences an assistant addressed to the owner struck; what each said the piece was built from is now the built_from line the bar renders.",
-    "Table headers: in 6 tables whose header row opens with an empty cell, 19 row-label cells became th scope=\"row\" (tag only; the text is unchanged) so every data cell has a header; a rule keeps them looking as they did."
+    "Table headers: in 6 tables whose header row opens with an empty cell, 19 row-label cells became th scope=\"row\" (tag only; the text is unchanged) so every data cell has a header; a rule keeps them looking as they did.",
+    "Em dashes, this phase: 3 replaced by rule (colon 2, comma 1); 15 kept (a nil placeholder standing alone 15). The rule is build/emdash.py; a dash inside quotation marks was converted like any other, and no word moved."
    ],
    "spellings": [
     {
@@ -1968,7 +1977,8 @@
    "notes": [
     "Em dashes: 307 replaced by rule (commas 6, parentheses 3, colon 29, colon in a heading 106, comma 163); 8 kept (a nil placeholder standing alone 3, inside a quotation 5).",
     "1 sentence an assistant addressed to the owner struck; what each said the piece was built from is now the built_from line the bar renders.",
-    "Table headers: in 13 tables whose header row opens with an empty cell, 80 row-label cells became th scope=\"row\" (tag only; the text is unchanged) so every data cell has a header; a rule keeps them looking as they did."
+    "Table headers: in 13 tables whose header row opens with an empty cell, 80 row-label cells became th scope=\"row\" (tag only; the text is unchanged) so every data cell has a header; a rule keeps them looking as they did.",
+    "Em dashes, this phase: 5 replaced by rule (colon 1, comma 4); 3 kept (a nil placeholder standing alone 3). The rule is build/emdash.py; a dash inside quotation marks was converted like any other, and no word moved."
    ],
    "strikes": [
     {
@@ -1992,7 +2002,8 @@
     "Em dashes: 314 replaced by rule (commas 5, parentheses 4, colon 48, colon in a heading 80, comma 177); 5 kept (a nil placeholder standing alone 1, inside a quotation 4).",
     "Canadian spelling: 2 words changed (labeled to labelled 2).",
     "3 sentences an assistant addressed to the owner struck; what each said the piece was built from is now the built_from line the bar renders.",
-    "Table headers: in 8 tables whose header row opens with an empty cell, 30 row-label cells became th scope=\"row\" (tag only; the text is unchanged) so every data cell has a header; a rule keeps them looking as they did."
+    "Table headers: in 8 tables whose header row opens with an empty cell, 30 row-label cells became th scope=\"row\" (tag only; the text is unchanged) so every data cell has a header; a rule keeps them looking as they did.",
+    "Em dashes, this phase: 4 replaced by rule (colon in a heading 1, comma 3); 1 kept (a nil placeholder standing alone 1). The rule is build/emdash.py; a dash inside quotation marks was converted like any other, and no word moved."
    ],
    "spellings": [
     {
@@ -2033,7 +2044,8 @@
     "6 sentences an assistant addressed to the owner struck; what each said the piece was built from is now the built_from line the bar renders.",
     "Table headers: in 22 tables whose header row opens with an empty cell, 89 row-label cells became th scope=\"row\" (tag only; the text is unchanged) so every data cell has a header; a rule keeps them looking as they did.",
     "Stray space before punctuation removed in 20 places: the dash rules had left a space before the colon in the Instructor's Note callout titles.",
-    "Table headers: in 2 tables whose header row opens with an empty cell, 20 row-label cells became th scope=\"row\" (tag only; the text is unchanged) so every data cell has a header; a rule keeps them looking as they did."
+    "Table headers: in 2 tables whose header row opens with an empty cell, 20 row-label cells became th scope=\"row\" (tag only; the text is unchanged) so every data cell has a header; a rule keeps them looking as they did.",
+    "Em dashes, this phase: 8 replaced by rule (commas 1, colon in a heading 1, comma 6); 4 kept (a nil placeholder standing alone 4). The rule is build/emdash.py; a dash inside quotation marks was converted like any other, and no word moved."
    ],
    "spellings": [
     {
@@ -2083,7 +2095,8 @@
    ],
    "notes": [
     "Em dashes: 327 replaced by rule (commas 30, parentheses 12, colon 24, colon in a heading 72, comma 189); 9 kept (a nil placeholder standing alone 2, inside a quotation 7).",
-    "Canadian spelling: 4 words changed (behavior to behaviour 1, favorite to favourite 1, fulfillment to fulfilment 1, labeled to labelled 1)."
+    "Canadian spelling: 4 words changed (behavior to behaviour 1, favorite to favourite 1, fulfillment to fulfilment 1, labeled to labelled 1).",
+    "Em dashes, this phase: 7 replaced by rule (colon 1, colon in a heading 1, comma 5); 2 kept (a nil placeholder standing alone 2). The rule is build/emdash.py; a dash inside quotation marks was converted like any other, and no word moved."
    ],
    "spellings": [
     {
@@ -2112,7 +2125,8 @@
    ],
    "notes": [
     "Em dashes: 86 replaced by rule (commas 2, colon 15, colon in a heading 21, comma 48); 4 kept (a nil placeholder standing alone 3, inside a quotation 1).",
-    "1 sentence an assistant addressed to the owner struck; what each said the piece was built from is now the built_from line the bar renders."
+    "1 sentence an assistant addressed to the owner struck; what each said the piece was built from is now the built_from line the bar renders.",
+    "Em dashes, this phase: 1 replaced by rule (colon 1); 3 kept (a nil placeholder standing alone 3). The rule is build/emdash.py; a dash inside quotation marks was converted like any other, and no word moved."
    ],
    "strikes": [
     {
@@ -2130,7 +2144,8 @@
     "built_from"
    ],
    "notes": [
-    "Em dashes: 72 replaced by rule (commas 2, parentheses 3, colon 12, colon in a heading 17, comma 38); 12 kept (a nil placeholder standing alone 3, inside a quotation 9)."
+    "Em dashes: 72 replaced by rule (commas 2, parentheses 3, colon 12, colon in a heading 17, comma 38); 12 kept (a nil placeholder standing alone 3, inside a quotation 9).",
+    "Em dashes, this phase: 9 replaced by rule (colon 2, colon in a heading 1, comma 4, dropped at a line end 2); 3 kept (a nil placeholder standing alone 3). The rule is build/emdash.py; a dash inside quotation marks was converted like any other, and no word moved."
    ],
    "kept": [
     "Second-person and assistant-voice wording left in place: 4 phrases (your textbook, your source, per your instruction, I've flagged) in sentences that carry a gap statement, a verification caveat, a scope decision or a legend; striking them would take the claim or the caveat with them, and paraphrase was ruled out."
@@ -2144,7 +2159,8 @@
    ],
    "notes": [
     "Em dashes: 114 replaced by rule (commas 1, parentheses 1, colon 11, colon in a heading 38, comma 63); 5 kept (a nil placeholder standing alone 3, inside a quotation 2).",
-    "Heading order: 1 headings that skipped a level keep their tag and text and carry aria-level for the level the outline needs (h4 read as level 3)."
+    "Heading order: 1 headings that skipped a level keep their tag and text and carry aria-level for the level the outline needs (h4 read as level 3).",
+    "Em dashes, this phase: 1 replaced by rule (commas 1); 3 kept (a nil placeholder standing alone 3). The rule is build/emdash.py; a dash inside quotation marks was converted like any other, and no word moved."
    ]
   },
   "afm291-w7-cases": {
@@ -2153,7 +2169,8 @@
     "built_from"
    ],
    "notes": [
-    "Em dashes: 81 replaced by rule (commas 1, colon 10, colon in a heading 40, comma 30); 11 kept (a nil placeholder standing alone 8, inside a quotation 3)."
+    "Em dashes: 81 replaced by rule (commas 1, colon 10, colon in a heading 40, comma 30); 11 kept (a nil placeholder standing alone 8, inside a quotation 3).",
+    "Em dashes, this phase: 3 replaced by rule (colon 2, comma 1); 8 kept (a nil placeholder standing alone 8). The rule is build/emdash.py; a dash inside quotation marks was converted like any other, and no word moved."
    ]
   },
   "afm291-w8-financial-assets": {
@@ -2189,7 +2206,8 @@
     "built_from"
    ],
    "notes": [
-    "Em dashes: 153 replaced by rule (colon 27, colon in a heading 73, comma 53); 1 kept (inside a quotation 1)."
+    "Em dashes: 153 replaced by rule (colon 27, colon in a heading 73, comma 53); 1 kept (inside a quotation 1).",
+    "Em dashes, this phase: 1 replaced by rule (comma 1). The rule is build/emdash.py; a dash inside quotation marks was converted like any other, and no word moved."
    ]
   },
   "kennedy-dossier": {
@@ -2290,7 +2308,8 @@
     "built_from"
    ],
    "notes": [
-    "Em dashes: 120 replaced by rule (commas 8, parentheses 13, colon 12, colon in a heading 18, comma 69); 6 kept (inside a quotation 6)."
+    "Em dashes: 120 replaced by rule (commas 8, parentheses 13, colon 12, colon in a heading 18, comma 69); 6 kept (inside a quotation 6).",
+    "Em dashes, this phase: 6 replaced by rule (colon 1, comma 5). The rule is build/emdash.py; a dash inside quotation marks was converted like any other, and no word moved."
    ]
   },
   "leadership-evaluation-kit": {
@@ -2303,7 +2322,8 @@
    "notes": [
     "Em dashes: 102 replaced by rule (commas 8, parentheses 2, colon 4, colon in a heading 41, comma 47); 2 kept (inside a quotation 2).",
     "Canadian spelling: 12 words changed (behavior to behaviour 1, defense to defence 2, favor to favour 2, favorable to favourable 3, labeled to labelled 2, labeling to labelling 2).",
-    "Heading order: 3 headings that skipped a level keep their tag and text and carry aria-level for the level the outline needs (h3 read as level 2, h4 read as level 3, h4 read as level 3)."
+    "Heading order: 3 headings that skipped a level keep their tag and text and carry aria-level for the level the outline needs (h3 read as level 2, h4 read as level 3, h4 read as level 3).",
+    "Em dashes, this phase: 2 replaced by rule (comma 2). The rule is build/emdash.py; a dash inside quotation marks was converted like any other, and no word moved."
    ],
    "spellings": [
     {
@@ -2350,20 +2370,24 @@
   "brittle-network": {
    "changes": [
     "built_from",
-    "measure"
+    "measure",
+    "em dashes"
    ],
    "notes": [
     "Measure: the shared case-method stylesheet now holds concession paragraphs, claim texts, falsifiers and source lines to 70ch (styling only on the frozen pieces); the family's running text was already at 66ch.",
-    "Measure: .disc-note, the widest text block the survey found on the page, is held to the reading measure (max-width:66ch)."
+    "Measure: .disc-note, the widest text block the survey found on the page, is held to the reading measure (max-width:66ch).",
+    "Em dashes, this phase: 87 replaced by rule (commas 3, parentheses 5, colon 4, colon in a heading 9, comma 64, dropped at a line end 2); 9 kept (a nil placeholder standing alone 9). The rule is build/emdash.py; a dash inside quotation marks was converted like any other, and no word moved."
    ]
   },
   "price-of-divergence": {
    "changes": [
     "built_from",
-    "measure"
+    "measure",
+    "em dashes"
    ],
    "notes": [
-    "Measure: the shared case-method stylesheet now holds concession paragraphs, claim texts, falsifiers and source lines to 70ch (styling only on the frozen pieces); the family's running text was already at 66ch."
+    "Measure: the shared case-method stylesheet now holds concession paragraphs, claim texts, falsifiers and source lines to 70ch (styling only on the frozen pieces); the family's running text was already at 66ch.",
+    "Em dashes, this phase: 104 replaced by rule (commas 5, parentheses 4, colon 28, colon in a heading 15, comma 52). The rule is build/emdash.py; a dash inside quotation marks was converted like any other, and no word moved."
    ]
   },
   "five-shall-paragraphs": {
@@ -2639,7 +2663,8 @@
    "notes": [
     "Converted from pending/french-a1-unit01-cafe-interactions.md by scripts/md2piece.py: blockquotes became callouts (the warning sign became a Watch out callout), the answer key's twelve blocks became collapsed details in the checkpoint style, tables are wrapped for horizontal scrolling. French dialogue tirets (the dash that opens a line of dialogue) are kept as French punctuation; em dashes in the English prose follow the site rule. Personal Reference.",
     "Em dashes: 82 replaced by rule (commas 1, colon 10, colon in a heading 26, comma 44, comma (other) 1); 19 kept (a dialogue tiret opening a line 14, a nil placeholder standing alone 3, inside a quotation 2).",
-    "Table headers: in 3 tables whose header row opens with an empty cell, 10 row-label cells became th scope=\"row\" (tag only; the text is unchanged) so every data cell has a header; a rule keeps them looking as they did."
+    "Table headers: in 3 tables whose header row opens with an empty cell, 10 row-label cells became th scope=\"row\" (tag only; the text is unchanged) so every data cell has a header; a rule keeps them looking as they did.",
+    "Em dashes, this phase: 16 replaced by rule (colon 13, colon in a heading 1, comma 2); 3 kept (a nil placeholder standing alone 3). The rule is build/emdash.py; a dash inside quotation marks was converted like any other, and no word moved."
    ]
   }
  },
@@ -2687,6 +2712,10 @@
   {
    "commit": "Reserved Font Names, the Atlas key and one count",
    "what": "Every self-hosted subset and the Inter subset renamed internally to a Portfolio alias (section 6c), fonts/manifest.json carries internal_name and sha256 per file and check 18 holds the files to them; the Atlas key and context/ARCHITECTURE.md say positions are deterministic for a given corpus, not that they never change; section 8's count of built_from lines that read Not declared on file is printed from content/pieces.json."
+  },
+  {
+   "commit": "Em dashes out of the remaining prose",
+   "what": "By rule (build/emdash.py, kept in the repository this time): 285 em dashes replaced in the prose of 23 listed pieces, so that check 23 can hold the prose of every page except the six declared records, which are transcripts and run reports kept as written and named in content/declared.json. A dash between digits became an en dash; a pair setting off a phrase became commas, or parentheses when the phrase carried a comma or opened with a figure; a single dash became a colon in a heading, a table head, a caption or a summary, a colon before a capital, a digit, a currency sign, a quotation mark or a bracket, and a comma before anything else; a dash with nothing after it was dropped; a dash standing alone as a cell or a chip was kept, as were dashes inside script, style, code, pre and SVG, which check 23 counts and reports rather than holds. Dashes inside quotation marks were converted like any other, which the last pass did not do: the quoted words are unchanged, and a check that cannot see quotation marks cannot hold an exception for them. The invariance check holds every converted piece to its record without a declaration, because it compares sentences with their punctuation removed. A dash set tight between two words became a comma and a space, which the word count sees as one word more, so every converted piece was measured again by CI's own script."
   }
  ],
  "scans": [
@@ -3289,7 +3318,8 @@
   "The invariance check was rewritten three times as the passes found cases it read wrongly (a sentence boundary moved by a dash, a callout title glued to its first sentence, a respelled strike). Each time the record was regenerated from the baseline commit, not from the working tree, so the record never absorbed an edit; but a reader should know the check that stands at the end is not the check that stood at the start.",
   "Clarity edits (step 10) were not made. With the check in place, every sentence that carries a numeral, a reference, a label or a verdict word is held word for word, which is most of the sentences an editor would touch in these pieces; the remaining candidates are the owner's own voice, and rewriting them without him is a judgement an autonomous pass should not make. The mechanical classes were done in full; the sentence-level pass waits for a session with him.",
   "The em-dash rules were applied by machine to 4,499 dashes. Sampled pages read correctly, and the invariance check proves no word moved, but nobody has read all 49 pieces end to end after the change; a comma where a colon would read better is possible on any page, and the full readable-text diff is in content/ledger.json for exactly that reason.",
-  "Nine derived dark palettes were audited rendered, but only at one viewport, with one contrast rule, and without a person looking at them; a colour that passes the ratio can still be wrong for the page."
+  "Nine derived dark palettes were audited rendered, but only at one viewport, with one contrast rule, and without a person looking at them; a colour that passes the ratio can still be wrong for the page.",
+  "Phase four: one interactive piece, the AFM 291 study system, does not count the same twice. Its file was unchanged and CI's own script counted 14,208 words where the record held 14,144; five further measurements by the same rule on the same file ranged from 14,107 to 14,183. The page's script assembles part of its text at load, and the definition of a word does not say that such a count is one sample. The record holds the last sample; the definition should say so, and the measurement should fix what the page's script draws from before it counts."
  ],
  "not_done": [
   "Sentence-level clarity edits: none, for the reason in section 0.",
