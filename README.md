@@ -66,10 +66,10 @@ and which file it opens. The order of the entries is the order on the site. The 
 this file and nothing else.
 
 **`build/build_site.py` is the design.** It reads `content/pieces.json` and
-writes the seven pages that list things: `index.html`, `research.html`,
-`coursework.html`, `tools.html`, `library.html`, `about.html`, `colophon.html`.
-Those seven files are *output*. Editing them by hand is pointless: the next
-publish overwrites them.
+writes the generated pages: `index.html`, `research.html`, `coursework.html`,
+`tools.html`, `library.html`, `atlas.html`, `about.html`, `colophon.html`,
+`controls.html`, `404.html`. Those files are *output*. Editing them by hand is
+pointless: the next publish overwrites them.
 
 **`site.css` is the look.** One stylesheet for the whole site. It is not
 generated, and nothing in the editor touches it.
@@ -92,11 +92,24 @@ So: content changes in the editor, design changes in `build_site.py` and
    piece rather than a grey box.
 5. It runs `build/build_site.py`, which regenerates the listing pages, writes
    the head metadata on every piece, refreshes `sitemap.xml` and the offline
-   cache, and then **checks its own work**: every link, every canonical
-   address, every icon and every listed file has to resolve, and no page may
-   name an address other than this site's. If any of that fails, the rebuild
-   goes red and the site keeps serving the last good version.
-6. It commits the result. GitHub Pages publishes it.
+   cache, and then **checks its own work**: thirty-odd checks, from every
+   link resolving to every number on a generated page being one the build
+   computed. Every claim the site makes about itself is a row on
+   `controls.html`, beside the check that tests it and its last result.
+6. It **falsifies its own checks** (`build/negatives.py`): for each check, a
+   copy of the site is edited so the claim is false, and the build must
+   refuse, naming that check. A claim prints *held* only while a falsification
+   its check caught is on record for the current code; otherwise *untested*.
+   This runs only when the checks' code changed.
+7. It opens the generated pages and every piece in the browser once more and
+   measures what they claim at runtime (`build/audit.js`): nothing requested
+   from another origin, nothing moving while idle, focus visible, printing,
+   fitting a phone, the offline copy surviving a publish. Then it makes each
+   of those claims false on a copy of a page and checks that the measurement
+   fails it.
+8. It runs the build again and requires it to rewrite nothing, commits the
+   result, and only then **deploys** it to GitHub Pages from the workflow. A
+   failure anywhere in this chain leaves the last good site live.
 
 You can watch step 2 onwards at
 `https://github.com/alexrajcoomar/alexrajcoomar.github.io/actions`. A red mark
@@ -113,7 +126,16 @@ until it is fixed.
 | `content/pieces.json` | **The content.** Every piece, in order |
 | `content/metrics.json` | Word, figure and table counts. Written by the rebuild, not by you |
 | `content/fingerprints.json` | Lets the rebuild skip pieces that did not change |
-| `build/build_site.py` | Generates the seven listing pages |
+| `build/build_site.py` | Generates the listing pages and runs the checks |
+| `build/claims.py` | The register of claims, the glyph walls on `controls.html`, the run record |
+| `build/negatives.py` | The tests of controls: a falsification per check, and what caught it |
+| `build/audit.js` | Measures the runtime claims in a browser; `--falsify` makes each false on a copy |
+| `build/atlas.py` | Places every section of every piece on the sphere, by origin and word count |
+| `build/invariance.py`, `build/ledger.py` | Hold every piece to its record; write the change ledger |
+| `build/emdash.py` | The rule that took the em dashes out of the prose |
+| `content/audit.json`, `content/negatives.json` | What the browser measured; what each falsification did. Written by the rebuild |
+| `content/declared.json` | The named exceptions: the six records kept as written, the pages allowed past 320px |
+| `content/invariants.json`, `content/ledger.json` | The record every piece is held to, and the change ledger |
 | `build/measure.js` | Counts what is on each page, in a real browser |
 | `build/measure_plan.py` | Works out which pieces need recounting |
 | `build/cards.js` | Draws the link-preview card for each piece |
@@ -155,11 +177,12 @@ with it. Make a new one; the six steps are above.
 is treated as an instrument rather than a document and carries no reading time
 by design. The colophon explains the rule.
 
-**The rebuild went red and says something does not resolve.** That is the check
-doing its job: a link, an image or a listed file is pointing at something that
-is not there. The message names the page and the address. Usually it means a
-file was renamed or a piece was added to the list before its file was uploaded.
-Fix it in the editor and publish again; the site was never published broken.
+**The rebuild went red and names a check.** That is the check doing its job:
+the message opens with `check N:` and names the page and what is wrong (a link
+to a file that is not there, a numeral typed where nothing computed it, a
+spelling, an em dash in prose). Fix it and publish again; the deploy waits for
+the checks, so the site was never published broken. `controls.html` lists
+every check with the falsification that proved it can catch what it claims.
 
 **The site did not update.** Check the Actions tab (link above). If the rebuild
 failed, the message there says why. Nothing is lost: every version is in the

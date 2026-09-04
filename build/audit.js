@@ -1,7 +1,7 @@
 /* Measure in a browser what the generated pages claim about themselves.
 
-   The register on the colophon prints these results beside the claims they
-   test. Each page is measured against a fingerprint of its inputs, computed
+   The register on the controls page prints these results beside the claims
+   they test. Each page is measured against a fingerprint of its inputs, computed
    by build/claims.py so the browser and the build agree on what "the same
    page" means; a page whose inputs moved since its record is measured again,
    the rest are kept. Results go to content/audit.json.
@@ -379,7 +379,7 @@ async function falsify(dig) {
   }
 
   const out = {
-    note: 'Written by build/audit.js: what a headless browser measured on each page, with the fingerprint of the inputs it measured. The register on the colophon prints these results; a page whose inputs moved since is not yet measured for that build.',
+    note: 'Written by build/audit.js: what a headless browser measured on each page, with the fingerprint of the inputs it measured. The register on the controls page prints these results; a page whose inputs moved since is not yet measured for that build. meta.runs is appended by build/claims.py --record-run on every publish.',
     meta: Object.assign({}, audit.meta || {}, { tool: 'build/audit.js', browser: 'Chromium ' + version, date: new Date().toISOString().slice(0, 10), commit: git(['rev-parse', '--short', 'HEAD']) || 'unknown' }),
     pages: Object.fromEntries(Object.keys(pages).sort().map(k => [k, pages[k]])),
     offline,

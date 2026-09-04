@@ -2149,6 +2149,8 @@ details.cgroup + details.cgroup{margin-top:1.75rem}
 .inst .ir-record .ip{font-style:italic}
 .inst thead .ic span{writing-mode:vertical-rl;transform:rotate(180deg);display:inline-block;color:var(--ink-3);padding:.2em 0;letter-spacing:.04em}
 .inst thead .ic-runtime span{color:var(--ink-2)}
+.inst .ic-runtime:first-of-type,.inst td.g:nth-child(32){border-left:0}
+.inst th.ic-runtime~th,.inst thead .ic-runtime{border-left:0}
 .inst .g{width:1.35em;min-width:1.35em;font-variant-numeric:tabular-nums}
 .inst .g-h{color:var(--ink)}
 .inst .g-x{color:var(--paper);background:var(--ink);font-weight:700}

@@ -527,7 +527,8 @@ def matrix(ctx):
     shell = ctx["shell_pages"]
     allp = ctx["all_pages"]
     decl = set((declared().get("overflow")) or [])
-    cols = [(cid, cid, "build") for cid in sorted(R, key=_sort_key) if any(p != "site" for p in R[cid])]
+    listed = set(allp)
+    cols = [(cid, cid, "build") for cid in sorted(R, key=_sort_key) if any(p in listed for p in R[cid])]
     cols += [(k, lab, "runtime") for k, lab in RUNTIME_COLS]
     rows = []
     for page in allp:
