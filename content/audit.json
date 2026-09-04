@@ -4,7 +4,7 @@
   "tool": "build/audit.js",
   "browser": "Chromium 141.0.7390.37",
   "date": "2026-09-04",
-  "commit": "20c534c",
+  "commit": "edb8ab9",
   "runs": [
    {
     "commit": "21aacf2",
@@ -38,13 +38,23 @@
     "overflow": false
    },
    "keyboard": {
-    "stops": 25,
+    "stops": 26,
     "noRing": 0
+   },
+   "theme": {
+    "options": 2,
+    "pressed": 1,
+    "pulsed": true,
+    "pulseEnded": true,
+    "repeated": false,
+    "switched": true,
+    "framesAfterSwitch": 0,
+    "focusRing": true
    },
    "motion": {
     "animations": 0
    },
-   "inputs": "0958d700e69d",
+   "inputs": "b58e87eb992b",
    "measured": "2026-09-04"
   },
   "about.html": {
@@ -71,13 +81,23 @@
     "overflow": false
    },
    "keyboard": {
-    "stops": 30,
+    "stops": 31,
     "noRing": 0
+   },
+   "theme": {
+    "options": 2,
+    "pressed": 1,
+    "pulsed": true,
+    "pulseEnded": true,
+    "repeated": false,
+    "switched": true,
+    "framesAfterSwitch": 0,
+    "focusRing": true
    },
    "motion": {
     "animations": 0
    },
-   "inputs": "48e89232fe0d",
+   "inputs": "9085846a2969",
    "measured": "2026-09-04"
   },
   "afm241-cheat-sheet.html": {
@@ -610,8 +630,8 @@
    },
    "errors": 0,
    "chrome": {
-    "a": 13904,
-    "b": 13859
+    "a": 14231,
+    "b": 14186
    },
    "print": {
     "stickyLeft": 0,
@@ -624,13 +644,23 @@
     "overflow": false
    },
    "keyboard": {
-    "stops": 32,
+    "stops": 33,
     "noRing": 0
+   },
+   "theme": {
+    "options": 2,
+    "pressed": 1,
+    "pulsed": true,
+    "pulseEnded": true,
+    "repeated": false,
+    "switched": true,
+    "framesAfterSwitch": 0,
+    "focusRing": true
    },
    "motion": {
     "animations": 0
    },
-   "inputs": "82964c958858",
+   "inputs": "0f66cebc0969",
    "measured": "2026-09-04"
   },
   "brittle-network.html": {
@@ -697,13 +727,23 @@
     "overflow": false
    },
    "keyboard": {
-    "stops": 44,
+    "stops": 45,
     "noRing": 0
+   },
+   "theme": {
+    "options": 2,
+    "pressed": 1,
+    "pulsed": true,
+    "pulseEnded": true,
+    "repeated": false,
+    "switched": true,
+    "framesAfterSwitch": 0,
+    "focusRing": true
    },
    "motion": {
     "animations": 0
    },
-   "inputs": "4fdc97d3d5b7",
+   "inputs": "4f543421c3c5",
    "measured": "2026-09-04"
   },
   "controls.html": {
@@ -716,8 +756,8 @@
    },
    "errors": 0,
    "chrome": {
-    "a": 3048,
-    "b": 3003
+    "a": 3605,
+    "b": 3560
    },
    "print": {
     "stickyLeft": 0,
@@ -730,13 +770,23 @@
     "overflow": false
    },
    "keyboard": {
-    "stops": 107,
+    "stops": 108,
     "noRing": 0
+   },
+   "theme": {
+    "options": 2,
+    "pressed": 1,
+    "pulsed": true,
+    "pulseEnded": true,
+    "repeated": false,
+    "switched": true,
+    "framesAfterSwitch": 0,
+    "focusRing": true
    },
    "motion": {
     "animations": 0
    },
-   "inputs": "68f4a5481d6e",
+   "inputs": "983cca85dd01",
    "measured": "2026-09-04"
   },
   "coursework.html": {
@@ -763,13 +813,23 @@
     "overflow": false
    },
    "keyboard": {
-    "stops": 70,
+    "stops": 71,
     "noRing": 0
+   },
+   "theme": {
+    "options": 2,
+    "pressed": 1,
+    "pulsed": true,
+    "pulseEnded": true,
+    "repeated": false,
+    "switched": true,
+    "framesAfterSwitch": 0,
+    "focusRing": true
    },
    "motion": {
     "animations": 0
    },
-   "inputs": "625a5ce04a95",
+   "inputs": "2e65da3dd717",
    "measured": "2026-09-04"
   },
   "crucible-cockpit.html": {
@@ -1202,8 +1262,8 @@
    },
    "errors": 0,
    "chrome": {
-    "a": 2215,
-    "b": 2170
+    "a": 2314,
+    "b": 2269
    },
    "print": {
     "stickyLeft": 0,
@@ -1215,14 +1275,52 @@
     "scrollWidth": 320,
     "overflow": false
    },
+   "descent": {
+    "wide": {
+     "rows": 6,
+     "faced": 6,
+     "framesSettle": 0,
+     "framesAfter": 0,
+     "framesAtTop": 0
+    },
+    "phone": {
+     "rows": 6,
+     "faced": 6,
+     "framesSettle": 0,
+     "framesAfter": 0,
+     "framesAtTop": 0
+    }
+   },
+   "corona": {
+    "wide": {
+     "rows": 6,
+     "matched": 6,
+     "atTop": "none"
+    },
+    "phone": {
+     "rows": 6,
+     "matched": 6,
+     "atTop": "none"
+    }
+   },
    "keyboard": {
-    "stops": 137,
+    "stops": 138,
     "noRing": 0
+   },
+   "theme": {
+    "options": 2,
+    "pressed": 1,
+    "pulsed": true,
+    "pulseEnded": true,
+    "repeated": false,
+    "switched": true,
+    "framesAfterSwitch": 0,
+    "focusRing": true
    },
    "motion": {
     "animations": 0
    },
-   "inputs": "e0a468761ec1",
+   "inputs": "ef0ecbbcf5e1",
    "measured": "2026-09-04"
   },
   "kennedy-dossier.html": {
@@ -1309,13 +1407,23 @@
     "overflow": false
    },
    "keyboard": {
-    "stops": 99,
+    "stops": 100,
     "noRing": 0
+   },
+   "theme": {
+    "options": 2,
+    "pressed": 1,
+    "pulsed": true,
+    "pulseEnded": true,
+    "repeated": false,
+    "switched": true,
+    "framesAfterSwitch": 0,
+    "focusRing": true
    },
    "motion": {
     "animations": 0
    },
-   "inputs": "8c378cf956e6",
+   "inputs": "534330d1d6af",
    "measured": "2026-09-04"
   },
   "monroe-case-file.html": {
@@ -1482,13 +1590,23 @@
     "overflow": false
    },
    "keyboard": {
-    "stops": 74,
+    "stops": 75,
     "noRing": 0
+   },
+   "theme": {
+    "options": 2,
+    "pressed": 1,
+    "pulsed": true,
+    "pulseEnded": true,
+    "repeated": false,
+    "switched": true,
+    "framesAfterSwitch": 0,
+    "focusRing": true
    },
    "motion": {
     "animations": 0
    },
-   "inputs": "1aa899fdb61f",
+   "inputs": "ccf3b0aaa021",
    "measured": "2026-09-04"
   },
   "revenue-recognition.html": {
@@ -1615,13 +1733,23 @@
     "overflow": false
    },
    "keyboard": {
-    "stops": 34,
+    "stops": 35,
     "noRing": 0
+   },
+   "theme": {
+    "options": 2,
+    "pressed": 1,
+    "pulsed": true,
+    "pulseEnded": true,
+    "repeated": false,
+    "switched": true,
+    "framesAfterSwitch": 0,
+    "focusRing": true
    },
    "motion": {
     "animations": 0
    },
-   "inputs": "b0afd8250472",
+   "inputs": "4eb10f717dd7",
    "measured": "2026-09-04"
   },
   "transformers-study-guide.html": {

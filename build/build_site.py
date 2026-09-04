@@ -306,7 +306,10 @@ document.documentElement.className+=' js';}})();
       <button class="iconbtn searchbtn" type="button" id="searchbtn" aria-label="Search all work">
         <span aria-hidden="true">&#9906;</span><span class="lbl">Search</span> <kbd>/</kbd>
       </button>
-      <button class="iconbtn" type="button" id="themebtn" aria-label="Switch between light and dark">&#9686;</button>
+      <div class="themesel" id="themesel" role="group" aria-label="Theme">
+        <button type="button" class="tsel" data-pick="dark" aria-pressed="false"><i aria-hidden="true"></i>Obsidian</button>
+        <button type="button" class="tsel" data-pick="light" aria-pressed="false"><i aria-hidden="true"></i>Archival light</button>
+      </div>
     </div>
   </div>
 </header>
@@ -461,7 +464,7 @@ def flagged_lift(p):
 
 def stmt_row(p, lift=None):
     sub = f'<span class="s">{esc(p["s"])}</span>' if p.get("s") else ""
-    out = (f'<tr class="item{" haslift" if lift else ""}"><th scope="row"><a href="{p["url"]}">{esc(p["t"])}</a>{sub}</th>'
+    out = (f'<tr class="item{" haslift" if lift else ""}" data-o="{p["surface"]}"><th scope="row"><a href="{p["url"]}">{esc(p["t"])}</a>{sub}</th>'
            + stmt_cells(p["words"], p["figures"], p["tables"], piece_mins(p), of=p["slug"]) + "</tr>")
     if lift:
         out += (f'\n<tr class="liftrow"><td colspan="4"><span class="lift"><b>{esc(lift[0])}</b> {esc(lift[1])}</span></td></tr>')
@@ -1070,6 +1073,8 @@ def page_index():
     ex = exceptions()
     fams = google_font_families()
     ATLAS_N, ATLAS_PTS, ATLAS_SHARED = atlas_teaser_bits()
+    # the two parallels that bound the zones, as y, for the sphere to draw
+    ATLAS_ZONES = ",".join("%.3f" % ATLAS["zones"][z][1] for z in ("independent", "course") if z in ATLAS["zones"])
     F = atlas_facts()
     N_EDGES = len(ATLAS.get("edges", []))
     n_undrawn = len(ex["undrawn"])
@@ -1117,38 +1122,41 @@ def page_index():
         for i, p in enumerate(tools, 1))
     lifts_count = (f'{len(LIFTS)} lifted on the <a class="inlink" href="research.html">research shelf</a>')
 
-    body = f"""<section class="stage" aria-label="Who this is">
-  <div class="shell stage-grid">
+    body = f"""<div class="shell descent">
+  <section class="stage" aria-label="Who this is">
     {eyebrow_chip()}
     {hero_identity()}
     <p class="display">{S["headline"]}</p>
     <p class="method">Every figure below is counted from the published files by the build, never typed. The notes define each column and state every exception.</p>
     {corpus_line()}
+  </section>
+  <div class="descent-globe">
     <div class="stage-globe">
-      <div class="tease-globe hero-globe" id="atlasmini" data-pts="{ATLAS_PTS}" data-fill="0.44" aria-hidden="true"></div>
+      <div class="tease-globe hero-globe" id="atlasmini" data-pts="{ATLAS_PTS}" data-zones="{ATLAS_ZONES}" data-fill="0.44" aria-hidden="true"></div>
       <script type="application/json" id="atlasmini-docs">{atlas_home_links()}</script>
       <div class="globe-card" id="atlasmini-card" hidden><a class="gc-t" href="atlas.html"></a><span class="gc-d"></span></div>
       <p class="globe-cap"><a class="inlink" href="atlas.html">{ATLAS_N} sections, every one a link <span aria-hidden="true">&#8594;</span></a>
         <span class="globe-hint">Point at a mark: chords join its document to the documents its prose links, or that link it. <span class="gc-l">{N_EDGES}</span> such links are recorded.</span>
         <span class="globe-hint-touch">Tap a mark: chords join its document to the documents its prose links, or that link it, and its name opens it. <span class="gc-l">{N_EDGES}</span> such links are recorded.</span></p>
+      <p class="facing" aria-live="off"></p>
+      <p class="globe-key">Where a mark sits is a rule the build checks: each origin's zone of latitude has the area of its share of the sections, each document is a disc of two thirds of its share's area, settled clear of every other inside its zone, and its sections lie on a spiral inside the disc, the first at the centre and the last at the rim. As a featured row reaches the reading line the sphere turns to face that document.</p>
       <noscript><p class="note">The sphere needs a browser that runs scripts.
       The <a class="inlink" href="atlas.html">full index</a> does not.</p></noscript>
     </div>
   </div>
-</section>
-
-<section class="band shell" id="statement" aria-labelledby="stmt-h">
-  {sect_head(1, "Statement of work", "Six featured pieces, then every origin, then the whole.", f'<a class="inlink" href="#notes">Notes 1 to 6 &#8595;</a>', "stmt-h")}
-  <div class="pane">
-    <table class="st">
-      {stmt_head_cells()}
-      <tbody>
+  <section class="band statement" id="statement" aria-labelledby="stmt-h">
+    {sect_head(1, "Statement of work", "Six featured pieces, then every origin, then the whole. As a row reaches the reading line the sphere turns to face that document.", f'<a class="inlink" href="#notes">Notes 1 to 6 &#8595;</a>', "stmt-h")}
+    <div class="pane">
+      <table class="st">
+        {stmt_head_cells()}
+        <tbody>
 {chr(10).join(rows)}
 {chr(10).join(subs)}
-      </tbody>
-    </table>
-  </div>
-</section>
+        </tbody>
+      </table>
+    </div>
+  </section>
+</div>
 
 <section class="band ground" id="figures" aria-labelledby="fig-h">
   <div class="shell">
@@ -1212,7 +1220,7 @@ def page_index():
     <li id="n2"><b>Origin.</b> Independent means I chose the question and finished it without a course asking for it: {ind['n']} pieces, the {n_feat_ind} above and {more} more on the <a href="research.html">research shelf</a>. Coursework means built while taking one of {len(COURSES)} courses, for the assessment that was coming: {ST['course']['n']} pieces, built from my course materials with AI assistance and then verified. Anything built alongside a course is filed as coursework even where the question was my own.</li>
     <li id="n3"><b>Personal.</b> {ST['personal']['n']} pieces read and written for their own sake, with no claim on either shelf. They are counted above and listed in the <a href="library.html#personal">library</a>, not here.</li>
     <li id="n4"><b>Exceptions.</b> {fonts_sentence} {n_undrawn} pieces render under {DOC_MIN:,} words and are counted above but not drawn in the figure; together they hold {ex['undrawn_words']:,} words. {len(ex['transcripts'])} run transcripts are measured but not listed. The {N_TOOLS} interactive tools sit on the shelf of the course or research that produced them and are counted once. <a href="colophon.html#exceptions">The exceptions, by name.</a></li>
-    <li id="n5"><b>The index.</b> {F["headN"]:,} section headings and {F["toolN"]} whole tools from the {len(P)} documents, {F["total"]:,} marks placed on one sphere, every mark a link. <a href="atlas.html">The Atlas.</a></li>
+    <li id="n5"><b>The index.</b> {F["headN"]:,} section headings and {F["toolN"]} whole tools from the {len(P)} documents, and the author's own anchor: {F["total"]:,} marks placed on one sphere, every mark a link. <a href="atlas.html">The Atlas.</a></li>
     <li id="n6"><b>The drawing.</b> The statement drawn to scale above, one square {figs.UNIT} words, solid for independent work, an open outline for coursework, lighter for personal. The square never rescales, so a long piece is long on the page.</li>
   </ol>
   <div class="prose measure material">
@@ -1503,7 +1511,7 @@ def page_about():
     body = f"""<div class="hero tight shell">
   <p class="eyebrow accent">About</p>
   <div class="namerow">
-    <h1 class="h1">{esc(NAME)}</h1>
+    <h1 class="h1" id="author">{esc(NAME)}</h1>
     <div class="affil">
       <img class="affil-logo" src="uw-logo.png" alt="University of Waterloo"
         width="280" height="67" decoding="async">
@@ -2878,19 +2886,28 @@ ATLAS_BODY = r"""<section class="band atlas-band" id="atlas">
             <li class="akey-wide"><i class="ak ak-shr"></i>Headings carried by more than one document, standing off the surface by how many carry them; point at one and the fan to its documents is drawn</li>
             <li class="akey-wide"><i class="ak ak-vis"></i><span id="aseen">Passages</span> this browser has opened, ringed. The record stays in this browser</li>
             <li class="akey-wide"><i class="ak ak-lnk"></i>Point at any mark and chords join its document to the documents its text links, or that link it; each chord's tick sits nearer the linked one</li>
+            <li class="akey-wide"><i class="ak ak-dsc"></i>A document's disc, a hairline: two thirds of its share of the sphere, settled clear of every other disc; the document under the pointer, or faced by the home sphere, has its disc drawn in the chord colour</li>
+            <li class="akey-wide"><i class="ak ak-zon"></i>The two parallels that bound the origins' zones: independent work north of the first, coursework between them, personal interest south of the second</li>
+            <li class="akey-wide"><i class="ak ak-aut"></i>The author, one anchor at the north pole, above his own independent work: an origin of his own, its zone, disc and position by the rule every document follows; its card is the recorded standing, the recorded co-op term counted from this build's date, and the featured pieces' subtotal</li>
+            <li class="akey-wide"><i class="ak ak-cor"></i>The light behind the home sphere takes the hue of the faced document's recorded origin: indigo over slate for independent work, cobalt for coursework, bronze over slate for personal interest; parchment, ivory and bone on paper</li>
           </ul>
           <p class="akey-note">A mark's area is apportioned from its document's measured word count by
           the share of the document's static text under that heading; it is not a per-section
           measurement. Heading level is no longer drawn on the sphere and is kept in the index
-          beside it. A document's area grows with its section count, and a heading several
-          documents carry is placed once, between them. Where a document sits is a rule: its
-          latitude is its origin (independent work in the north band, coursework in the middle,
-          personal interest in the south), and within its band it climbs east and north by
-          measured word count, shortest first, so two documents standing near each other share an
-          origin and a size. Its sections are scattered around it by a generator seeded with the
-          document's own name, so adding a piece moves only the band it joins. The build
-          recomputes every position from the metrics on every run and refuses a sphere that
-          disagrees (check 28).</p>
+          beside it. A heading several documents carry is placed once, between them. Where a
+          document sits is a rule: each origin owns a zone of latitude whose area is its share
+          of the sections (independent work in the north, coursework across the middle, personal
+          interest in the south); within its zone each document starts at the height its
+          cumulative section count gives it, largest first, on a longitude that steps by the
+          golden angle from one document to the next, and is drawn as a disc of two thirds of its
+          share of the sphere; the discs are settled apart, a fixed number of steps with no
+          randomness, until no two touch, each held inside its zone. A document's own sections lie
+          on an equal-area spiral inside its disc, the first at the centre, each next one a golden
+          angle round and a ring further out, so a document reads as one cluster and its reading
+          order runs from the centre to the rim. A wide disc is a document of many sections, and
+          the third of the sphere that no disc holds is the space between documents. The build
+          recomputes every centre, every radius and every mark from the section counts on every
+          run and refuses a sphere that disagrees (check 28).</p>
         </div>
         <p class="replay"><button type="button" id="preplay" class="linkbtn">Replay the six labels</button></p>
       </div>
@@ -2922,7 +2939,7 @@ ATLAS_BODY = r"""<section class="band atlas-band" id="atlas">
   </div>
 
   <div class="shell">
-    <div class="atlas-list" id="atlaslist">
+    <div class="atlas-list" id="atlaslist" data-zones="{ATLAS_ZONES_A}">
 {blocks}
     </div>
   </div>
@@ -2935,10 +2952,56 @@ ATLAS_BODY = r"""<section class="band atlas-band" id="atlas">
 # element; the script reads those elements and draws them. Turn the script off
 # and the page is still the complete table of contents for the whole corpus,
 # which is also what a screen reader and a crawler get.
-ATLAS = {"points": [], "regions": []}
+ATLAS = {"points": [], "regions": [], "zones": {}}
 
 SURF_NAME = {"independent": "Independent", "course": "Coursework",
-             "personal": "Personal interest"}
+             "personal": "Personal interest", "author": "The author"}
+
+
+def coop_window():
+    """The recorded co-op term ("January to April 2027") as dates, and the
+    days from this build's date to its first day. None when the term is not
+    recorded in that form, and then nothing about it is printed."""
+    m = re.match(r"^\s*([A-Z][a-z]+)\s+to\s+([A-Z][a-z]+)\s+(\d{4})\s*$", COOP_TERM or "")
+    if not m:
+        return None
+    months = ["January", "February", "March", "April", "May", "June", "July",
+              "August", "September", "October", "November", "December"]
+    if m.group(1) not in months or m.group(2) not in months:
+        return None
+    y = int(m.group(3)); a = months.index(m.group(1)) + 1; b = months.index(m.group(2)) + 1
+    start = datetime.date(y, a, 1)
+    end = (datetime.date(y + (b // 12), (b % 12) + 1, 1) - datetime.timedelta(days=1))
+    return {"start": start, "end": end, "days": (start - TODAY).days}
+
+
+def featured_subtotal():
+    """Words, figures and tables over the pieces recorded as featured."""
+    fp = [p for p in P if p.get("featured")]
+    return {"n": len(fp), "words": sum(p["words"] for p in fp),
+            "figures": sum(p["figures"] for p in fp), "tables": sum(p["tables"] for p in fp)}
+
+
+def author_card():
+    """The author's card, one line, from the recorded standing, the recorded
+    co-op term counted from this build's date, and the featured subtotal.
+    check 32 recomputes each figure on its own and holds both pages to it."""
+    bits = []
+    if STANDING:
+        bits.append(f"{STANDING}, Accounting and Financial Management, Analytics stream")
+    else:
+        bits.append("Accounting and Financial Management, Analytics stream")
+    w = coop_window()
+    if w:
+        if w["days"] > 0:
+            bits.append(f"co-op term {COOP_TERM}, {w['days']:,} days from this build ({TODAY.isoformat()})")
+        elif w["end"] >= TODAY:
+            bits.append(f"co-op term {COOP_TERM}, under way at this build ({TODAY.isoformat()})")
+        else:
+            bits.append(f"co-op term {COOP_TERM}, past at this build ({TODAY.isoformat()})")
+    f = featured_subtotal()
+    bits.append(f"{f['n']} featured pieces: {f['words']:,} words, {f['figures']} figures, {f['tables']} tables")
+    return " \u00b7 ".join(bits)
 
 def p3(v):
     """A unit-sphere position at three decimals, trailing zeros dropped, the
@@ -2968,7 +3031,7 @@ def page_atlas():
     # Independent work first, then personal, then coursework, and by size
     # inside each. The old order was section count alone, which opened the
     # index on a course document and buried the writing the page exists for.
-    RANK = {"independent": 0, "personal": 1, "course": 2}
+    RANK = {"independent": 0, "personal": 1, "course": 2, "author": 3}
     ordered = sorted((r for r in regs if by.get(r["s"])),
                      key=lambda r: (RANK.get(r["surface"], 3),
                                     -len(by[r["s"]]), r["t"]))
@@ -2994,17 +3057,22 @@ def page_atlas():
                % (format(pc["words"], ","), pc["figures"], pc["tables"])) if pc else ""
         meta = " &#183; ".join(x for x in (
             esc(r["k"]), esc(r["c"] or SURF_NAME[r["surface"]]), esc(r["d"]), row) if x)
+        # the author's entry carries his card as a native disclosure, reachable
+        # from the keyboard like everything else in the list
+        extra = ("        <details class=\"acard\"><summary>The author's card</summary>\n"
+                 "          <p class=\"acard-p\" id=\"author-card\">%s</p>\n"
+                 "        </details>\n" % esc(author_card()).replace("&#183;", "&#183;")) if r["s"] == "author" else ""
         blocks.append(
             '      <section class="areg" data-s="%s" data-k="%s" data-surface="%s"\n'
-            '        data-c="%s,%s,%s" data-t="%s" data-u="%s">\n'
+            '        data-c="%s,%s,%s" data-r="%s" data-t="%s" data-u="%s">\n'
             '        <h2 class="areg-h"><a href="%s">%s</a>\n'
             '          <span class="areg-n">%d %s</span></h2>\n'
             '        <p class="areg-m">%s</p>\n'
-            '        <ol class="areg-l">\n%s\n        </ol>\n'
+            '        <ol class="areg-l">\n%s\n        </ol>\n%s'
             '      </section>'
-            % (r["s"], r["k"], r["surface"], r["p"][0], r["p"][1], r["p"][2],
+            % (r["s"], r["k"], r["surface"], r["p"][0], r["p"][1], r["p"][2], r["r"],
                esc(r["t"]), r["u"], r["u"], esc(r["t"]), len(items), word,
-               meta, lis))
+               meta, lis, extra))
 
     plates, guide = [], []
     for i, L in enumerate(LABELS, 1):
@@ -3031,20 +3099,22 @@ def page_atlas():
     F["js"]["lk"] = [list(e) for e in ATLAS.get("edges", [])]
 
     nsec, ndoc = len(pts), len(ordered)
-    body = ATLAS_BODY.format(nsec=format(nsec, ","), ndoc=ndoc,
+    zones_a = ",".join("%.3f" % ATLAS["zones"][z][1] for z in ("independent", "course") if z in ATLAS["zones"])
+    body = ATLAS_BODY.format(nsec=format(nsec, ","), ndoc=ndoc, ATLAS_ZONES_A=zones_a,
                              plates="\n".join(plates), guide="\n".join(guide),
                              facts=json.dumps(F["js"], separators=(",", ":")).replace("</", "<\\/"),
-                             lede=("{} sections from {} documents: {} "
+                             lede=("{} marks from {} documents and the author: {} "
                                    "independent works, {} personal "
-                                   "investigations, {} course references. "
+                                   "investigations, {} course references, and "
+                                   "one anchor for the author. "
                                    "Every mark is a link into a passage."
                                    .format(format(F["total"], ","), F["docs"],
                                            F["indD"], F["perD"], F["couD"])),
                              blocks="\n".join(blocks))
     return head("Atlas · " + SHORT,
-                "All %s sections of all %d documents on this site, placed on a "
+                "All %s sections of all %d documents on this site, and the author, placed on a "
                 "sphere by the document they belong to and linked to the passage "
-                "itself." % (format(nsec, ","), ndoc),
+                "itself." % (format(nsec, ","), ndoc - 1),
                 "atlas.html",
                 extra='<script src="' + asset("atlas.js") + '" defer></script>') + body + foot()
 
@@ -3069,7 +3139,7 @@ def atlas_teaser_bits():
     the same kind two bands up. The bands are the Atlas's own size rule
     quantised, so the home page and the atlas make the same claim about the
     same points; check 11a holds the positions to the placement pass."""
-    code = {"independent": "i", "personal": "p", "course": "c"}
+    code = {"independent": "i", "personal": "p", "course": "c", "author": "a"}
     surf = {r["s"]: ("t" if r["k"] == "Tool" else code[r["surface"]])
             for r in ATLAS["regions"]}
     out = []
@@ -3084,15 +3154,16 @@ def atlas_teaser_bits():
 def atlas_home_links():
     """The connective layer for the home sphere. The positions stay in
     data-pts, where check 11a reads them back against the placement; this
-    carries only what a chord needs: the documents (centroid, title, address,
-    kind, in placement order), which document each mark belongs to, run-length
+    carries only what a chord needs: the documents (centre, disc radius, title,
+    address, kind, in placement order), which document each mark belongs to, run-length
     over the payload order, and the links edges() harvested from prose, as
     index pairs with their direction. No headings and no second copy of the
     marks, so the home page still draws from one placement and one harvest."""
     regs = ATLAS["regions"]
     idx = {r["s"]: i for i, r in enumerate(regs)}
-    docs = [{"t": r["t"], "u": r["u"], "k": r["k"],
-             "p": [round(x, 3) for x in r["p"]]} for r in regs]
+    docs = [dict({"t": r["t"], "u": r["u"], "k": r["k"], "o": r["surface"],
+                  "p": [round(x, 4) for x in r["p"]], "r": round(r["r"], 4)},
+                 **({"card": author_card()} if r["surface"] == "author" else {})) for r in regs]
     own, run, last = [], 0, None
     for q in ATLAS["points"]:
         i = idx[q["s"]]
@@ -3869,19 +3940,36 @@ def check_site():
             problems.append(_p("11a2", "atlas.html: mark weights add to %s, the corpus line says %s"
                             % (format(sum(ws), ","), format(TOTAL_WORDS, ","))))
 
-    # 28. where a document sits is a rule, and the pages hold to it: every
-    # centroid the Atlas index and the home sphere carry is recomputed from
-    # the metrics (band by origin, rank by words within the band), and within
-    # each band the documents read back from the page climb east and north
-    # with their word counts.
+    # 28. where a document sits is a rule, and the pages hold to it. The rule
+    # gives each origin a zone of latitude with the area of its share of the
+    # sections, draws each document as a disc of two thirds of its share's
+    # area, settles the discs apart inside their zones until no two touch, and
+    # lays a document's own sections on an equal-area spiral inside its disc,
+    # the first at the centre. Every centre and radius the Atlas index and the
+    # home sphere carry is recomputed from the section counts and compared;
+    # every disc is held inside its zone and clear of every other; every own
+    # mark is held at its spiral position; a shared heading is counted, not
+    # held, because it sits between its owners.
     regs = ATLAS.get("regions") or []
     placed_slugs = {r["s"] for r in regs}
-    ranks = atlas_mod.rank_by_words([p for p in P if p["slug"] in placed_slugs])
-    want_c = {slug: atlas_mod.centroid(*v) for slug, v in ranks.items()}
-    T["position"] = {"documents": len(want_c), "pages": 0, "bands": len(atlas_mod.BANDS), "read_back": 0}
-    words_of = {p["slug"]: p["words"] for p in P}
-    def _hold_positions(f, got):
-        """got: slug -> (x, y, z) as the page carries them."""
+    counts28 = {}
+    for pt28 in ATLAS.get("points") or []:
+        for o28 in (pt28.get("o") or [pt28["s"]]):
+            counts28[o28] = counts28.get(o28, 0) + 1
+    # the author is a document of the rule too, with the origin the placement gave him
+    pieces28 = [p for p in P if p["slug"] in placed_slugs]
+    if "author" in placed_slugs:
+        pieces28.append({"slug": "author", "surface": "author"})
+    rule28, zones28 = atlas_mod.layout(pieces28, counts28)
+    want_c = {slug: atlas_mod.centroid_of(e) for slug, e in rule28.items()}
+    want_r = {slug: e["r"] for slug, e in rule28.items()}
+    T["position"] = {"documents": len(want_c), "pages": 0, "zones": len(zones28), "read_back": 0,
+                     "pairs": 0, "overlap": 0, "marks": 0, "shared": 0, "off": 0, "outside": 0}
+    def _ang28(a, b):
+        d = sum(x * y for x, y in zip(a, b)) / max(1e-9, math.sqrt(sum(x * x for x in a)) * math.sqrt(sum(x * x for x in b)))
+        return math.acos(max(-1.0, min(1.0, d)))
+    def _hold_positions(f, got, radii):
+        """got: slug -> (x, y, z) and radii: slug -> disc radius, as the page carries them."""
         look("28", f)
         T["position"]["pages"] += 1
         T["position"]["read_back"] += len(got)
@@ -3890,38 +3978,87 @@ def check_site():
         for slug, xyz in got.items():
             w = want_c.get(slug)
             if w and max(abs(a - b) for a, b in zip(xyz, w)) > 2e-3:
-                problems.append(_p("28", "%s: %s sits at %s; its origin and word rank put it at %s"
+                problems.append(_p("28", "%s: %s sits at %s; its zone, its start and the settling put it at %s"
                                    % (f, slug, ",".join("%.3f" % v for v in xyz), ",".join("%.3f" % v for v in w))))
                 break
-        for surf in atlas_mod.BANDS:
-            lo, hi = atlas_mod.BANDS[surf]
-            band = sorted((s2 for s2 in got if ranks.get(s2, ("",))[0] == surf), key=lambda s2: (words_of.get(s2, 0), s2))
-            prev = None
-            for s2 in band:
-                x, y, z = got[s2]
-                if not (lo - 2e-3 <= y <= hi + 2e-3):
-                    problems.append(_p("28", "%s: %s is %s work and sits outside its band" % (f, s2, surf)))
+        for slug, r in radii.items():
+            if slug in want_r and abs(r - want_r[slug]) > 2e-3:
+                problems.append(_p("28", "%s: %s is drawn as a disc of %.3f rad; two thirds of its share is %.3f"
+                                   % (f, slug, r, want_r[slug])))
+                break
+        for surf, (ytop, ybot) in zones28.items():
+            lo = math.acos(max(-1.0, min(1.0, ytop))); hi = math.acos(max(-1.0, min(1.0, ybot)))
+            for s2 in sorted(got):
+                if rule28.get(s2, {}).get("zone") != surf:
+                    continue
+                th = math.acos(max(-1.0, min(1.0, got[s2][1])))
+                r = radii.get(s2, want_r.get(s2, 0.0))
+                if (lo > 1e-9 and th < lo + r - 2e-3) or (hi < math.pi - 1e-9 and th > hi - r + 2e-3):
+                    problems.append(_p("28", "%s: %s is %s work and its disc crosses out of its zone" % (f, s2, surf)))
                     break
-                th = math.atan2(z, x) % (2 * math.pi)
-                if prev is not None and (y < prev[0] - 1e-6 or th < prev[1] - 1e-6):
-                    problems.append(_p("28", "%s: %s has more words than %s but sits west or south of it" % (f, s2, prev[2])))
-                    break
-                prev = (y, th, s2)
+        slugs = sorted(got)
+        shown = 0
+        for i28, a in enumerate(slugs):
+            for b in slugs[i28 + 1:]:
+                T["position"]["pairs"] += 1
+                if _ang28(got[a], got[b]) < radii.get(a, want_r.get(a, 0.0)) + radii.get(b, want_r.get(b, 0.0)) - 2e-3:
+                    T["position"]["overlap"] += 1
+                    if shown < 2:
+                        shown += 1
+                        problems.append(_p("28", "%s: the discs of %s and %s overlap" % (f, a, b)))
     if regs and os.path.exists(apath):
-        got = {}
-        for m in re.finditer(r'<section class="areg" data-s="([^"]+)"[^>]*?data-c="([^"]+)"', atext, re.S):
+        got, radii = {}, {}
+        for m in re.finditer(r'<section class="areg" data-s="([^"]+)"[^>]*?data-c="([^"]+)" data-r="([^"]+)"', atext, re.S):
             got[m.group(1)] = tuple(float(v) for v in m.group(2).split(","))
-        _hold_positions("atlas.html", got)
+            radii[m.group(1)] = float(m.group(3))
+        _hold_positions("atlas.html", got, radii)
+        # every own mark at its point on the spiral, and inside its disc. The
+        # spiral is recomputed by the placement's own formula, so a change to
+        # that formula would agree with itself; the disc is the invariant the
+        # formula does not share, and it is what caught the first
+        # falsification that doubled every ring. A heading several documents
+        # carry is placed between them and is counted, not held.
+        shown28 = 0
+        for m in re.finditer(r'<section class="areg" data-s="([^"]+)".*?</section>', atext, re.S):
+            slug = m.group(1); e = rule28.get(slug)
+            if not e:
+                continue
+            lis = list(re.finditer(r'<li data-p="([^"]+)"([^>]*)>', m.group(0)))
+            own = [mm for mm in lis if ' data-o="' not in mm.group(2)]
+            T["position"]["shared"] += len(lis) - len(own)
+            for i28, mm in enumerate(own):
+                T["position"]["marks"] += 1
+                pt = tuple(float(v) for v in mm.group(1).split(","))
+                want = atlas_mod.mark_at(e, i28, len(own))
+                if max(abs(a - b) for a, b in zip(pt, want)) > 2e-3:
+                    T["position"]["off"] += 1
+                    if shown28 < 3:
+                        shown28 += 1
+                        problems.append(_p("28", "atlas.html: section %d of %d of %s sits at %s; its spiral puts it at %s"
+                                           % (i28 + 1, len(own), slug, ",".join("%.3f" % v for v in pt), ",".join("%.3f" % v for v in want))))
+                if _ang28(pt, want_c[slug]) > e["r"] + 0.01:
+                    T["position"]["outside"] += 1
+                    if shown28 < 3:
+                        shown28 += 1
+                        problems.append(_p("28", "atlas.html: a mark of %s lies %.2f rad from its centre, outside its disc of %.2f"
+                                           % (slug, _ang28(pt, want_c[slug]), e["r"])))
     if regs and os.path.exists(ipath):
         m = re.search(r'<script type="application/json" id="atlasmini-docs">(.*?)</script>', itext, re.S)
         if m:
             try:
                 docs = json.loads(m.group(1).replace("<\\/", "</"))["docs"]
                 url_slug = {p["url"]: p["slug"] for p in P}
-                got = {url_slug[d["u"]]: tuple(d["p"]) for d in docs if d["u"] in url_slug}
-                _hold_positions("index.html", got)
+                def _slug28(d):
+                    return "author" if d.get("o") == "author" else url_slug.get(d["u"])
+                got = {_slug28(d): tuple(d["p"]) for d in docs if _slug28(d)}
+                radii = {_slug28(d): float(d.get("r", 0)) for d in docs if _slug28(d)}
+                _hold_positions("index.html", got, radii)
             except (ValueError, KeyError) as e:
                 problems.append(_p("28", "index.html: the sphere's document payload is unreadable (%s)" % e))
+        mz = re.search(r'id="atlasmini"[^>]*data-zones="([^"]*)"', itext)
+        want_z = ",".join("%.3f" % zones28[z][1] for z in ("independent", "course") if z in zones28)
+        if mz and mz.group(1) != want_z:
+            problems.append(_p("28", "index.html: the sphere draws its zone parallels at %s; the shares put them at %s" % (mz.group(1), want_z)))
 
     # 11b. the converted pieces' owned blocks changed nothing outside themselves
     for p in P:
@@ -4350,6 +4487,79 @@ def check_site():
                 t26["disagree"] += 1
                 problems.append(_p("26", f"{f}: {kind} prints {val}, which is no aggregate the build computes for that definition"))
 
+    # 32. the author is an entry in the register, by the rule, and his card is
+    # the build's own arithmetic. One region of origin author with one mark,
+    # linking to the heading on the about page that names him; the card on
+    # the Atlas and in the home sphere's payload equal to a second computation
+    # of the standing, the co-op window and the featured subtotal, made here
+    # without the writer's function, so a writer that drifts is caught.
+    look("32", "atlas.html"); look("32", "index.html"); look("32", "about.html")
+    T["author"] = {"marks": 0, "total": len(ATLAS.get("points") or []), "zone": "", "share": 0.0, "link": "", "cards": 0, "off": 0, "card": ""}
+    aregs32 = [r for r in regs if r["surface"] == "author"]
+    apts32 = [q for q in (ATLAS.get("points") or []) if q["s"] == "author"]
+    T["author"]["marks"] = len(apts32)
+    if len(aregs32) != 1 or len(apts32) != 1:
+        problems.append(_p("32", "atlas.html: the author is not one entry of the register (%d regions, %d marks)" % (len(aregs32), len(apts32))))
+    else:
+        q32 = apts32[0]
+        T["author"]["link"] = q32["u"]
+        if q32["u"] != "about.html#author":
+            problems.append(_p("32", "atlas.html: the author's anchor links to %s, not to the heading that names him" % q32["u"]))
+        about32 = os.path.join(OUT, "about.html")
+        if not (os.path.exists(about32) and 'id="author"' in open(about32, encoding="utf-8", errors="ignore").read()):
+            problems.append(_p("32", "about.html: carries no heading with the id the author's anchor links to"))
+        e32 = rule28.get("author") or {}
+        T["author"]["zone"] = e32.get("zone", "")
+        T["author"]["share"] = e32.get("share", 0.0)
+        if e32.get("zone") != "author":
+            problems.append(_p("32", "atlas.html: the author's mark is not in a zone of his own"))
+        # the card, a second time, without author_card()
+        f32 = [p for p in P if p.get("featured")]
+        bits32 = [(STANDING + ", " if STANDING else "") + "Accounting and Financial Management, Analytics stream"]
+        m32 = re.match(r"^\s*([A-Z][a-z]+)\s+to\s+([A-Z][a-z]+)\s+(\d{4})\s*$", COOP_TERM or "")
+        months32 = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+        if m32 and m32.group(1) in months32 and m32.group(2) in months32:
+            y32, a32, b32 = int(m32.group(3)), months32.index(m32.group(1)) + 1, months32.index(m32.group(2)) + 1
+            start32 = datetime.date(y32, a32, 1)
+            end32 = datetime.date(y32 + (b32 // 12), (b32 % 12) + 1, 1) - datetime.timedelta(days=1)
+            days32 = (start32 - TODAY).days
+            if days32 > 0:
+                bits32.append("co-op term %s, %s days from this build (%s)" % (COOP_TERM, format(days32, ","), TODAY.isoformat()))
+            elif end32 >= TODAY:
+                bits32.append("co-op term %s, under way at this build (%s)" % (COOP_TERM, TODAY.isoformat()))
+            else:
+                bits32.append("co-op term %s, past at this build (%s)" % (COOP_TERM, TODAY.isoformat()))
+        bits32.append("%d featured pieces: %s words, %d figures, %d tables" % (len(f32), format(sum(p["words"] for p in f32), ","),
+                                                                              sum(p["figures"] for p in f32), sum(p["tables"] for p in f32)))
+        want32 = " \u00b7 ".join(bits32)
+        T["author"]["card"] = want32
+        def _norm32(s32):
+            return re.sub(r"\s+", " ", html.unescape(s32 or "")).strip()
+        m = re.search(r'id="author-card">([^<]*)<', atext)
+        if m:
+            T["author"]["cards"] += 1
+            if _norm32(m.group(1)) != want32:
+                T["author"]["off"] += 1
+                problems.append(_p("32", "atlas.html: the author's card reads %r; the build's own arithmetic says %r" % (_norm32(m.group(1)), want32)))
+        else:
+            problems.append(_p("32", "atlas.html: carries no card for the author"))
+        m = re.search(r'<script type="application/json" id="atlasmini-docs">(.*?)</script>', itext, re.S)
+        card32 = None
+        if m:
+            try:
+                for d32 in json.loads(m.group(1).replace("<\\/", "</"))["docs"]:
+                    if d32.get("o") == "author":
+                        card32 = d32.get("card")
+            except (ValueError, KeyError):
+                card32 = None
+        if card32 is None:
+            problems.append(_p("32", "index.html: the sphere's payload carries no card for the author"))
+        else:
+            T["author"]["cards"] += 1
+            if _norm32(card32) != want32:
+                T["author"]["off"] += 1
+                problems.append(_p("32", "index.html: the author's card reads %r; the build's own arithmetic says %r" % (_norm32(card32), want32)))
+
     # 27. every visual channel the two sphere scripts declare is named in the
     # Atlas key, and every key entry is a channel one of them draws; the home
     # sphere's key is the Atlas key, one link from its caption.
@@ -4371,9 +4581,10 @@ def check_site():
         for ch in sorted(chs - key_items):
             t27["unnamed"] += 1
             problems.append(_p("27", f"{'index.html' if jsname == 'site.js' else 'atlas.html'}: {jsname} draws the channel {ch!r}, which the Atlas key does not name"))
-    for ch in sorted(key_items - declared.get("atlas.js", set())):
+    drawn27 = set().union(*declared.values()) if declared else set()
+    for ch in sorted(key_items - drawn27):
         t27["stray"] += 1
-        problems.append(_p("27", f"atlas.html: the key names {ch!r}, which atlas.js does not draw"))
+        problems.append(_p("27", f"atlas.html: the key names {ch!r}, which neither sphere draws"))
 
     # 30. on the lifted figures, no meaning is carried by colour alone: every
     # colour variable a figure's marks use is declared with a meaning in
@@ -4469,7 +4680,7 @@ def check_site():
         cctx = _claims_ctx(problems)
         st29, R29 = cctx["audit"], check_site.records
         decl29 = set(DECLARED.get("overflow") or [])
-        rt_keys = {"E": "ext", "I": "idle", "K": "keyboard", "P": "print", "M": "motion", "F": "fit", "C": "chrome"}
+        rt_keys = {"E": "ext", "I": "idle", "K": "keyboard", "P": "print", "M": "motion", "F": "fit", "C": "chrome", "D": "descent", "T": "theme", "H": "corona"}
         wall = re.search(r'<table class="inst" id="page-wall">(.*?)</table>', ctext, re.S)
         if not wall:
             problems.append(_p("29", "controls.html: carries no page wall"))
@@ -4497,10 +4708,12 @@ def check_site():
                         exp = "" if v is None else ("#" if v else "x")
                     else:
                         key = rt_keys.get(lab)
-                        if key in ("keyboard", "print", "motion"):
+                        if key in ("keyboard", "print", "motion", "theme"):
                             applies = page in SHELL_PAGES
                         elif key == "chrome":
                             applies = page not in SHELL_PAGES
+                        elif key in ("descent", "corona"):
+                            applies = page == "index.html"
                         else:
                             applies = key is not None
                         if not applies:
@@ -4745,7 +4958,8 @@ def main():
     # First, because it writes anchor ids into the pieces themselves and every
     # later pass reads those files. Giving a section a name is a content edit,
     # so it happens once and then never again: an id already present is kept.
-    ATLAS["points"], ATLAS["regions"] = (lambda d: (d["points"], d["regions"]))(
+    atlas_mod.AUTHOR = {"t": NAME, "url": "about.html", "id": "author"}
+    ATLAS["points"], ATLAS["regions"], ATLAS["zones"] = (lambda d: (d["points"], d["regions"], d["zones"]))(
         atlas_mod.build(OUT, P)[0])
     ATLAS["edges"] = atlas_mod.edges(OUT, P)
 

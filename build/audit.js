@@ -11,6 +11,12 @@
      idle   frames requested in the second after the page settled
      fit    whether the document is wider than a 320px viewport
      errors console errors
+   On the home page:
+     theme     the selector's two states, its one pulse, its settled switch
+     corona    the light behind the sphere names the faced row's origin
+     descent   each featured row scrolled to the reading line at 1440 and
+               at 390: the document the sphere faces, and the frames
+               requested once the scroll has stopped
    Per generated page, which share site.css and site.js:
      keyboard  Tab stops, and how many had no visible focus ring
      print     under print media: sticky elements still pinned, blocks of
@@ -163,6 +169,65 @@ async function measurePage(browser, base, name, shell) {
     rec.fit = { scrollWidth: sw, overflow: sw > 320 };
     await ctx.close();
   }
+  if (name === 'index.html') {
+    // the descent: each featured row of the statement scrolled to the reading
+    // line, at a desktop width (the sphere beside the rows) and a phone width
+    // (the block pinned above them); the document the sphere reports facing
+    // must be the row's, and once the scroll has stopped no frame may be
+    // requested. Scrolls are instant here: the browser's own smooth scroll
+    // is not what is being measured.
+    rec.descent = { wide: null, phone: null };
+    for (const shape of [{ key: 'wide', vp: { width: 1440, height: 900 }, touch: false }, { key: 'phone', vp: { width: 390, height: 844 }, touch: true }]) {
+      const ctx = await browser.newContext({ viewport: shape.vp, hasTouch: shape.touch, isMobile: shape.touch, deviceScaleFactor: 1 });
+      const page = await ctx.newPage();
+      await page.addInitScript(RAF_COUNTER);
+      try { await page.goto(base + '/' + name, { waitUntil: 'networkidle', timeout: 60000 }); } catch (e) { /* measured anyway */ }
+      await page.addStyleTag({ content: 'html{scroll-behavior:auto!important}' });
+      await page.waitForTimeout(600);
+      const rows = await page.$$eval('#statement table.st tr.item', trs => trs.map(tr => tr.querySelector('th a').textContent.trim()));
+      let faced = 0, framesAfter = 0, framesSettle = 0, corMatched = 0;
+      const aim = async title => page.evaluate(t => {
+        const wrap = document.querySelector('.descent-globe'); const wb = wrap ? wrap.getBoundingClientRect() : null;
+        const tr = [...document.querySelectorAll('#statement table.st tr.item')].find(x => x.querySelector('th a').textContent.trim() === t);
+        if (!tr) return;
+        const rr = tr.getBoundingClientRect(); const sr = tr.closest('table').getBoundingClientRect();
+        const beside = wb && (wb.left >= sr.right - 1 || wb.right <= sr.left + 1);
+        const line = beside ? innerHeight * 0.5 : (wb ? wb.bottom + 12 : innerHeight * 0.5);
+        const target = beside ? scrollY + rr.top + rr.height / 2 - line : scrollY + rr.top - line;
+        window.scrollTo(0, Math.max(0, target));
+      }, title);
+      for (const title of rows) {
+        // aim until the target holds still: on a phone the block pins and
+        // steps back as the page scrolls, which moves the reading line
+        for (let k = 0; k < 4; k++) {
+          const before = await page.evaluate(() => scrollY);
+          await aim(title); await page.waitForTimeout(400);
+          const after = await page.evaluate(() => scrollY);
+          if (Math.abs(after - before) < 3) break;
+        }
+        const facing = await page.evaluate(() => { const h = document.getElementById('atlasmini'); return h ? h.getAttribute('data-facing') : null; });
+        if (facing === title) faced++;
+        // the spring settles within half a second of the last scroll; the
+        // frames it takes are recorded, and after 700ms none may follow
+        framesSettle += await page.evaluate(async () => { window.__rafReset(); await new Promise(r => setTimeout(r, 700)); return window.__pageRaf(); }).catch(() => 99);
+        framesAfter += await page.evaluate(async () => { window.__rafReset(); await new Promise(r => setTimeout(r, 1000)); return window.__pageRaf(); }).catch(() => 99);
+        // the corona names the faced row's recorded origin
+        const cor = await page.evaluate(t => {
+          const h = document.getElementById('atlasmini');
+          const tr = [...document.querySelectorAll('#statement table.st tr.item')].find(x => x.querySelector('th a').textContent.trim() === t);
+          return { drawn: h ? h.getAttribute('data-corona') : null, row: tr ? tr.getAttribute('data-o') : null };
+        }, title).catch(() => ({ drawn: null, row: null }));
+        if (cor.drawn && cor.drawn === cor.row) corMatched++;
+      }
+      await page.evaluate(() => window.scrollTo(0, 0)); await page.waitForTimeout(700);
+      const framesAtTop = await page.evaluate(async () => { window.__rafReset(); await new Promise(r => setTimeout(r, 1000)); return window.__pageRaf(); }).catch(() => 99);
+      const corTop = await page.evaluate(() => { const h = document.getElementById('atlasmini'); return h ? h.getAttribute('data-corona') : null; }).catch(() => null);
+      rec.descent[shape.key] = { rows: rows.length, faced, framesSettle, framesAfter, framesAtTop };
+      rec.corona = rec.corona || {};
+      rec.corona[shape.key] = { rows: rows.length, matched: corMatched, atTop: corTop };
+      await ctx.close();
+    }
+  }
   if (shell) {
     // keyboard: real Tab presses, a ring on every stop
     {
@@ -192,6 +257,42 @@ async function measurePage(browser, base, name, shell) {
         if (!info.ok) noRing++;
       }
       rec.keyboard = { stops: seen.length, noRing };
+      await ctx.close();
+    }
+    // the theme selector: two named states, one of them pressed; a pulse on
+    // the first visit that ends, and none on the second; a switch that
+    // changes the theme and requests no frame once it has settled; a
+    // focus ring on the offer when reached from the keyboard
+    {
+      const ctx = await browser.newContext({ viewport: { width: 1280, height: 800 } });
+      const page = await ctx.newPage();
+      await page.addInitScript(RAF_COUNTER);
+      try { await page.goto(base + '/' + name, { waitUntil: 'networkidle', timeout: 60000 }); } catch (e) { /* measured anyway */ }
+      const theme = { options: 0, pressed: 0, pulsed: false, pulseEnded: false, repeated: true, switched: false, framesAfterSwitch: -1, focusRing: false };
+      const sel = await page.evaluate(() => {
+        const g = document.getElementById('themesel'); if (!g) return null;
+        const opts = [...g.querySelectorAll('.tsel')];
+        return { options: opts.length, pressed: opts.filter(o => o.getAttribute('aria-pressed') === 'true').length, pulsed: g.getAttribute('data-pulse') === '1' };
+      }).catch(() => null);
+      if (sel) {
+        theme.options = sel.options; theme.pressed = sel.pressed; theme.pulsed = sel.pulsed;
+        await page.waitForTimeout(3000);
+        theme.pulseEnded = await page.evaluate(() => !document.getElementById('themesel').hasAttribute('data-pulse') && document.getAnimations().filter(a => a.playState === 'running').length === 0).catch(() => false);
+        for (let i = 0; i < 16; i++) {
+          await page.keyboard.press('Tab'); await page.waitForTimeout(60);
+          const on = await page.evaluate(() => { const el = document.activeElement; if (!el || !el.classList.contains('tsel') || el.getAttribute('aria-pressed') === 'true') return null; const cs = getComputedStyle(el); return (parseFloat(cs.outlineWidth) > 0 && cs.outlineStyle !== 'none') || (cs.boxShadow && cs.boxShadow !== 'none'); }).catch(() => null);
+          if (on !== null) { theme.focusRing = !!on; break; }
+        }
+        const before = await page.evaluate(() => document.documentElement.getAttribute('data-theme') || '');
+        await page.click('#themesel .tsel[aria-pressed="false"]').catch(() => {});
+        await page.waitForTimeout(500);
+        const after = await page.evaluate(() => document.documentElement.getAttribute('data-theme') || '');
+        theme.switched = !!after && after !== before;
+        theme.framesAfterSwitch = await page.evaluate(async () => { window.__rafReset(); await new Promise(r => setTimeout(r, 1000)); return window.__pageRaf(); }).catch(() => 99);
+        try { await page.reload({ waitUntil: 'networkidle', timeout: 60000 }); } catch (e) { /* measured anyway */ }
+        theme.repeated = await page.evaluate(() => document.getElementById('themesel').getAttribute('data-pulse') === '1').catch(() => true);
+      }
+      rec.theme = theme;
       await ctx.close();
     }
     // reduced motion: nothing animating after load
@@ -291,6 +392,16 @@ const FALSIFICATIONS = [
     apply: h => h.replace('</body>', '<div style="width:900px;height:2px"></div></body>') },
   { key: 'chrome', page: 'positive-vs-normative.html', what: 'a block the build owns carries words the count would include',
     apply: h => h.replace('</body>', '<p id="__meta-negative">words the count must leave out</p></body>') },
+  { key: 'descent', page: 'index.html', what: 'a script keeps requesting frames after the scroll has stopped',
+    apply: h => h.replace('</body>', '<script>addEventListener("scroll",function(){(function f(){requestAnimationFrame(f)})()},{passive:true})</script></body>') },
+  { key: 'theme', page: 'index.html', what: 'the first-visit pulse repeats on every visit',
+    apply: h => h.replace('<script src="site.js', '<script>try{localStorage.removeItem("theme.seen")}catch(e){}</script><script src="site.js') },
+  { key: 'theme', page: 'index.html', what: 'a switch of theme starts a loop that keeps requesting frames',
+    apply: h => h.replace('</body>', '<script>document.addEventListener("click",function(e){if(e.target.closest&&e.target.closest(".tsel"))(function f(){requestAnimationFrame(f)})()})</script></body>') },
+  { key: 'corona', page: 'index.html', what: "the sphere's payload records the wrong origin for two featured documents, so the corona names an origin the row does not have",
+    apply: h => h.replace('<script src="site.js', '<script>(function(){var s=document.getElementById("atlasmini-docs");if(!s)return;var d=JSON.parse(s.textContent);d.docs.forEach(function(x){if(x.u==="flagged-in-hindsight.html"||x.u==="brittle-network.html")x.o="course";});s.textContent=JSON.stringify(d);})()</script><script src="site.js') },
+  { key: 'descent', page: 'index.html', what: "the sphere's document payload names the wrong document for the first two featured rows",
+    apply: h => h.replace('"u":"flagged-in-hindsight.html"', '"u":"__swap__"').replace('"u":"crucible-cockpit.html"', '"u":"flagged-in-hindsight.html"').replace('"u":"__swap__"', '"u":"crucible-cockpit.html"') },
 ];
 const SW_FALSIFICATION = {
   key: 'offline', page: 'sw.js', what: 'the new worker neither carries the saved copy across nor syncs it, so a publish empties it',
@@ -308,19 +419,20 @@ async function falsify(dig) {
   const copy = path.join(tmp, 'site');
   copyTree(ROOT, copy);
   const cases = [];
-  for (const c of FALSIFICATIONS) {
-    const fp = path.join(copy, c.page);
-    const orig = fs.readFileSync(fp, 'utf8');
-    const mutated = c.apply(orig);
-    if (mutated === orig) throw new Error('falsification ' + c.key + ' changed nothing on ' + c.page);
-    fs.writeFileSync(fp, mutated);
-  }
   const server = serve(copy);
   const port = await listen(server, 0);
   const base = 'http://127.0.0.1:' + port;
   const browser = await chromium.launch(LAUNCH);
   for (const c of FALSIFICATIONS) {
+    // one falsification at a time on its page, restored afterwards, so two
+    // falsifications of the same page do not measure each other
+    const fp = path.join(copy, c.page);
+    const orig = fs.readFileSync(fp, 'utf8');
+    const mutated = c.apply(orig);
+    if (mutated === orig) throw new Error('falsification ' + c.key + ' changed nothing on ' + c.page);
+    fs.writeFileSync(fp, mutated);
     const rec = await measurePage(browser, base, c.page, dig.shell.includes(c.page));
+    fs.writeFileSync(fp, orig);
     cases.push({ key: c.key, page: c.page, what: c.what, rec: { [c.key]: rec[c.key] } });
     process.stdout.write(`falsified ${c.key} on ${c.page}: ${JSON.stringify(rec[c.key])}\n`);
   }

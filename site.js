@@ -1,5 +1,5 @@
 /* ============================================================
-   Alex Rajcoomar — portfolio
+   Alex Rajcoomar: portfolio
    One script for every page. Hand-written, no dependencies.
 
    Everything here is an enhancement: with JavaScript off the
@@ -18,31 +18,70 @@
     try { return localStorage.getItem(SINGLES) !== "off"; } catch (e) { return true; }
   }
 
-  /* ---------------------------------------------------- theme ----- */
-  var themebtn = document.getElementById("themebtn");
+  /* ---------------------------------------------------- theme -----
+     Two named states, Obsidian and Archival light, as a group of two
+     buttons: the pressed one is the theme in force, the other is the
+     offer. On the first visit only the offer pulses once, so a reader
+     learns the site has two faces without a tour; the flag is kept in
+     this browser and the pulse never repeats. A switch is an exposure
+     change: a view transition where the browser has one, a synchronised
+     transition of the colour properties elsewhere, 320ms decelerating
+     into the new state, and nothing moving once it has settled. */
+  var themesel = document.getElementById("themesel");
+  var picks = themesel ? [].slice.call(themesel.querySelectorAll(".tsel")) : [];
   function isDark() {
     var t = document.documentElement.getAttribute("data-theme");
     if (t) return t === "dark";
     return !!(window.matchMedia && matchMedia("(prefers-color-scheme: dark)").matches);
   }
   function paintTheme() {
-    if (!themebtn) return;
-    themebtn.setAttribute("aria-label",
-      isDark() ? "Switch to light mode" : "Switch to dark mode");
+    var dark = isDark();
+    for (var i = 0; i < picks.length; i++) {
+      var on = (picks[i].getAttribute("data-pick") === "dark") === dark;
+      picks[i].setAttribute("aria-pressed", on ? "true" : "false");
+    }
   }
-  if (themebtn) {
-    themebtn.addEventListener("click", function () {
-      var next = isDark() ? "light" : "dark";
-      document.documentElement.setAttribute("data-theme", next);
-      /* Guarded: some embedded contexts throw on storage access, and the
-         toggle must still work when they do. */
-      try { localStorage.setItem("theme", next); } catch (e) {}
-      paintTheme();
-    });
+  function setTheme(next) {
+    document.documentElement.setAttribute("data-theme", next);
+    /* Guarded: some embedded contexts throw on storage access, and the
+       switch must still work when they do. */
+    try { localStorage.setItem("theme", next); } catch (e) {}
+    paintTheme();
+  }
+  var switching = 0;
+  function switchTheme(next) {
+    if (next === (isDark() ? "dark" : "light")) return;
+    var root = document.documentElement;
+    if (!reduced && typeof document.startViewTransition === "function") {
+      document.startViewTransition(function () { setTheme(next); });
+      return;
+    }
+    if (!reduced) {
+      root.classList.add("theme-switching");
+      clearTimeout(switching);
+      switching = setTimeout(function () { root.classList.remove("theme-switching"); }, 380);
+    }
+    setTheme(next);
+  }
+  if (themesel) {
+    for (var pi = 0; pi < picks.length; pi++) {
+      picks[pi].addEventListener("click", function () { switchTheme(this.getAttribute("data-pick")); });
+    }
     paintTheme();
     if (window.matchMedia) {
       var mq = matchMedia("(prefers-color-scheme: dark)");
       if (mq.addEventListener) mq.addEventListener("change", paintTheme);
+    }
+    /* the pressed chip follows the attribute however it is set */
+    new MutationObserver(paintTheme).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+    /* the first visit's one pulse, and the flag that ends it */
+    var SEEN = "theme.seen", first = false;
+    try { first = !localStorage.getItem(SEEN); localStorage.setItem(SEEN, "1"); } catch (e) { first = false; }
+    if (first && !reduced) {
+      themesel.setAttribute("data-pulse", "1");
+      var endPulse = function () { themesel.removeAttribute("data-pulse"); };
+      themesel.addEventListener("animationend", endPulse, { once: true });
+      setTimeout(endPulse, 2600);
     }
   }
 
@@ -722,7 +761,7 @@
        on the Atlas page, which is this sphere's key; check 27 holds the two
        lists to each other. A channel drawn here and not listed there fails
        the build, and so does a key entry nothing draws. */
-    var CHANNELS = ["ind", "cou", "per", "too", "shr", "vis", "lnk"];
+    var CHANNELS = ["ind", "cou", "per", "too", "shr", "vis", "lnk", "dsc", "zon", "aut", "cor"];
 
     /* This block sits outside the file's main closure, so it reads the motion
        preference for itself rather than borrowing a variable that is not in
@@ -755,6 +794,9 @@
        it the sphere still draws; with it, pointing at a mark draws the
        chords its document records, as the Atlas does, on demand. */
     var docs = [], own = [], lk = [];
+    /* the two parallels that bound the origins' zones, as y, from the build */
+    var zonesY = (host.getAttribute("data-zones") || "").split(",").map(Number)
+      .filter(function (v) { return isFinite(v) && v > -1 && v < 1; });
     try {
       var dj = JSON.parse(document.getElementById("atlasmini-docs").textContent);
       docs = dj.docs || [];
@@ -799,7 +841,7 @@
     var ctx = cv.getContext && cv.getContext("2d");
     if (!ctx) return;
 
-    var C = {};
+    var C = {}, DK = false;
     function colours() {
       var s = getComputedStyle(document.documentElement);
       C.i = s.getPropertyValue("--accent").trim() || "#14509b";
@@ -811,6 +853,7 @@
       C.k = s.getPropertyValue("--ink").trim() || "#16150f";
       /* the second accent: a link the prose records, and nothing else */
       C.l = s.getPropertyValue("--link").trim() || C.k;
+      DK = dark();
     }
     function dark() {
       var h = C.p.replace("#", "");
@@ -830,7 +873,13 @@
         (n & 255) + "," + a.toFixed(3) + ")";
     }
 
-    var W = 0, H = 0, dpr = 1, R = 0, S = 1, yaw = 0.5, pitch = -0.3;
+    var W = 0, H = 0, dpr = 1, R = 0, S = 1, yaw = 0.5, pitch = 0.3;
+    /* the reader's own turn (drag) rides on top of the descent's camera */
+    var offYaw = 0, offPitch = 0, curDoc = -1;
+    /* the camera may tip to just short of the pole: the placement puts real
+       documents there (the lattice's first point is the pole itself), and a
+       camera that cannot face them cannot keep the descent's promise */
+    var PITCH_MAX = Math.PI / 2 - 0.02;
     /* The light: a halo outside the limb, the way the Atlas page's
        silhouette is drawn, and a broader, fainter one on the ground behind.
        Both sit outside the disc on purpose: a gradient laid over the marks
@@ -866,10 +915,13 @@
       var key = k + q;
       var s = _cc[key];
       if (s) return s;
-      var a = 0.08 + 0.72 * (q / 12);
+      /* on paper the far side needs a higher floor than on the dark ground,
+         or the back of the sphere reads as empty */
+      var a = DK ? 0.08 + 0.72 * (q / 12) : 0.18 + 0.66 * (q / 12);
       s = k === "c" ? rgba(C.c, a)
         : k === "t" ? rgba(C.t, a)
         : k === "p" ? rgba(C.i, a * 0.55)
+        : k === "a" ? rgba(C.k, Math.min(1, a + 0.2))
         : rgba(C.i, a);
       return (_cc[key] = s);
     }
@@ -908,26 +960,104 @@
       ctx.lineWidth = 1.2;
       ctx.stroke();
     }
-    function drawChord(a, b, tickAB, tickBA) {
+    function drawChord(a, b, tickAB, tickBA, prog) {
       var A = nrm(a.p), B = nrm(b.p);
       var dot = Math.max(-1, Math.min(1, A[0] * B[0] + A[1] * B[1] + A[2] * B[2]));
       var om = Math.acos(dot), so = Math.sin(om) || 1e-6;
-      ctx.strokeStyle = rgba(C.l, 0.85);
-      ctx.lineWidth = 1.25;
+      var upto = prog === undefined ? 48 : Math.round(48 * Math.max(0, Math.min(1, prog)));
+      var started = false, seen = false, i, t, k1, k2, s;
+      /* the halo under the line, then the line, each drawn to the same point */
+      for (var pass = 0; pass < 2; pass++) {
+        ctx.strokeStyle = pass ? rgba(C.l, 0.92) : rgba(C.l, DK ? 0.16 : 0.2);
+        ctx.lineWidth = pass ? 1.35 : 4.5;
+        started = false;
+        ctx.beginPath();
+        for (i = 0; i <= upto; i++) {
+          t = i / 48;
+          k1 = Math.sin((1 - t) * om) / so; k2 = Math.sin(t * om) / so;
+          s = project([A[0] * k1 + B[0] * k2, A[1] * k1 + B[1] * k2, A[2] * k1 + B[2] * k2]);
+          if (s[2] < -0.02) { started = false; continue; }
+          seen = true;
+          if (!started) { ctx.moveTo(s[0], s[1]); started = true; }
+          else ctx.lineTo(s[0], s[1]);
+        }
+        ctx.stroke();
+      }
+      if (upto >= 48) {
+        if (tickAB) chordTick(A, B, om, so, 0.72);
+        if (tickBA) chordTick(A, B, om, so, 0.28);
+      }
+      return seen;
+    }
+    /* One curve for everything that settles here: the response of a
+       critically damped spring, 1 - (1 + wt) e^(-wt). No overshoot, zero
+       velocity at the start, and it decelerates into the end state the way
+       a weight settles rather than the way a panel slides. w = 17 settles
+       the camera within 1% by 390ms; w = 30 draws a chord within 1% by
+       220ms. */
+    function damped(t, w) { if (t <= 0) return 0; var x = w * t; return 1 - (1 + x) * Math.exp(-x); }
+    var SPRING_W = 17, CHORD_W = 30;
+    var chordT0 = 0, corT0 = 0;
+    /* The corona: the light behind the sphere takes the hue of the faced
+       document's recorded origin, the field the statement sorts by. On
+       the dark ground independent work reads indigo over slate, coursework
+       cobalt, personal interest bronze over slate; on paper the same
+       origins read parchment, ivory and bone. Nothing faced: the accent,
+       as the sphere is lit at rest. The pair is the ground glow and the
+       limb halo. */
+    var CORONA = {
+      dark:  { independent: ["#6d5ce0", "#6b7aa6"], course: ["#2e6fe0", "#4a68a8"], personal: ["#b98a4c", "#6b7aa6"], author: ["#f3f3f0", "#6b7aa6"] },
+      light: { independent: ["#c9b27a", "#b8a374"], course: ["#e6dcbc", "#cfc39c"], personal: ["#c9bfa6", "#b3a88c"], author: ["#8a847c", "#8a847c"], none: ["#ddd9cf", "#bfb9aa"] }
+    };
+    var corOrigin = "none", corFrom = null, corTo = null;
+    function hexRgb(h) { h = h.replace("#", ""); if (h.length === 3) h = h[0] + h[0] + h[1] + h[1] + h[2] + h[2]; var n = parseInt(h, 16); return [(n >> 16) & 255, (n >> 8) & 255, n & 255]; }
+    function rgbaArr(c, a) { return "rgba(" + Math.round(c[0]) + "," + Math.round(c[1]) + "," + Math.round(c[2]) + "," + a.toFixed(3) + ")"; }
+    function coronaPair(origin) {
+      /* at rest on paper the light is the paper's own rule tones; on the
+         dark ground it is the accent, as the sphere has always been lit */
+      var tab = CORONA[DK ? "dark" : "light"][origin];
+      return tab ? [hexRgb(tab[0]), hexRgb(tab[1])] : [hexRgb(C.i), hexRgb(C.e)];
+    }
+    function setCorona(origin) {
+      if (origin === corOrigin) return;
+      var nowPair = coronaNow();
+      corOrigin = origin;
+      corFrom = nowPair; corTo = coronaPair(origin);
+      corT0 = reducedM ? 0 : performance.now();
+      host.setAttribute("data-corona", origin);
+    }
+    function coronaNow() {
+      var to = corTo || coronaPair(corOrigin);
+      if (!corT0 || !corFrom) return to;
+      var p = damped((performance.now() - corT0) / 1000, SPRING_W);
+      if (p >= 0.999) { corT0 = 0; return to; }
+      return [[corFrom[0][0] + (to[0][0] - corFrom[0][0]) * p, corFrom[0][1] + (to[0][1] - corFrom[0][1]) * p, corFrom[0][2] + (to[0][2] - corFrom[0][2]) * p],
+              [corFrom[1][0] + (to[1][0] - corFrom[1][0]) * p, corFrom[1][1] + (to[1][1] - corFrom[1][1]) * p, corFrom[1][2] + (to[1][2] - corFrom[1][2]) * p]];
+    }
+    /* A small circle on the sphere: a document's disc, or a zone parallel
+       (a disc about the pole). Only the part facing the viewer is drawn. */
+    function ring(c, rad, colour, alpha, width, dash) {
+      var up = Math.abs(c[1]) > 0.9 ? [1, 0, 0] : [0, 1, 0];
+      var e1 = nrm([up[1] * c[2] - up[2] * c[1], up[2] * c[0] - up[0] * c[2], up[0] * c[1] - up[1] * c[0]]);
+      var e2 = nrm([c[1] * e1[2] - c[2] * e1[1], c[2] * e1[0] - c[0] * e1[2], c[0] * e1[1] - c[1] * e1[0]]);
+      var ca = Math.cos(rad), sa = Math.sin(rad), n = rad > 0.5 ? 96 : 48;
       var started = false, seen = false;
+      if (dash) ctx.setLineDash(dash);
+      ctx.strokeStyle = rgba(colour, alpha);
+      ctx.lineWidth = width;
       ctx.beginPath();
-      for (var i = 0; i <= 48; i++) {
-        var t = i / 48;
-        var k1 = Math.sin((1 - t) * om) / so, k2 = Math.sin(t * om) / so;
-        var s = project([A[0] * k1 + B[0] * k2, A[1] * k1 + B[1] * k2, A[2] * k1 + B[2] * k2]);
+      for (var i = 0; i <= n; i++) {
+        var th = i / n * Math.PI * 2, cp = Math.cos(th), sp = Math.sin(th);
+        var s = project([c[0] * ca + (e1[0] * cp + e2[0] * sp) * sa,
+                         c[1] * ca + (e1[1] * cp + e2[1] * sp) * sa,
+                         c[2] * ca + (e1[2] * cp + e2[2] * sp) * sa]);
         if (s[2] < -0.02) { started = false; continue; }
         seen = true;
         if (!started) { ctx.moveTo(s[0], s[1]); started = true; }
         else ctx.lineTo(s[0], s[1]);
       }
       ctx.stroke();
-      if (tickAB) chordTick(A, B, om, so, 0.72);
-      if (tickBA) chordTick(A, B, om, so, 0.28);
+      if (dash) ctx.setLineDash([]);
       return seen;
     }
     var hover = -1;
@@ -939,38 +1069,78 @@
       ctx.clearRect(0, 0, W, H);
       if (lit) {
         var isDark = dark();
-        /* fades to nothing at the box edge, so the canvas boundary never
-           shows as a line through the light */
+        /* the corona: the ground glow and the limb halo in the faced
+           document's origin hue (see CORONA), blending on the spring's
+           curve when the origin changes. Fades to nothing at the box edge,
+           so the canvas boundary never shows as a line through the light. */
+        var cp = coronaNow(), g0c = cp[0], g1c = cp[1];
         var edge = Math.min(W, H) / 2;
         var g0 = ctx.createRadialGradient(cx, cy, R * 1.02, cx, cy, Math.max(R * 1.05, edge));
-        g0.addColorStop(0, rgba(C.i, isDark ? 0.09 : 0.05));
-        g0.addColorStop(0.55, rgba(C.i, isDark ? 0.03 : 0.015));
-        g0.addColorStop(1, rgba(C.i, 0));
+        g0.addColorStop(0, rgbaArr(g0c, isDark ? 0.11 : 0.3));
+        g0.addColorStop(0.55, rgbaArr(g0c, isDark ? 0.035 : 0.1));
+        g0.addColorStop(1, rgbaArr(g0c, 0));
         ctx.fillStyle = g0;
         ctx.fillRect(0, 0, W, H);
         var g1 = ctx.createRadialGradient(cx, cy, R, cx, cy, R * 1.13);
-        g1.addColorStop(0, rgba(C.e, isDark ? 0.22 : 0.14));
-        g1.addColorStop(0.45, rgba(C.e, isDark ? 0.07 : 0.04));
-        g1.addColorStop(1, rgba(C.e, 0));
+        g1.addColorStop(0, rgbaArr(g1c, isDark ? 0.24 : 0.42));
+        g1.addColorStop(0.45, rgbaArr(g1c, isDark ? 0.08 : 0.14));
+        g1.addColorStop(1, rgbaArr(g1c, 0));
         ctx.fillStyle = g1;
         ctx.beginPath();
         ctx.arc(cx, cy, R * 1.13, 0, Math.PI * 2);
         ctx.arc(cx, cy, R, 0, Math.PI * 2, true);
         ctx.fill();
       }
+      /* the body of the sphere: a faint limb shading inside the disc, so
+         the ball reads as a ball on paper as well as on the dark ground.
+         It is at most a twentieth of the ink at the very edge, under the
+         marks, and it carries no data. */
+      if (lit) {
+        var g2 = ctx.createRadialGradient(cx, cy, R * 0.58, cx, cy, R);
+        g2.addColorStop(0, rgba(DK ? C.i : C.k, 0));
+        g2.addColorStop(1, rgba(DK ? C.i : C.k, DK ? 0.07 : 0.05));
+        ctx.fillStyle = g2;
+        ctx.beginPath();
+        ctx.arc(cx, cy, R, 0, Math.PI * 2);
+        ctx.fill();
+      }
       ctx.beginPath();
       ctx.arc(cx, cy, R, 0, Math.PI * 2);
-      ctx.strokeStyle = rgba(lit ? C.e : C.r, 0.6);
+      ctx.strokeStyle = rgba(lit ? C.e : C.r, DK ? 0.6 : 0.75);
       ctx.lineWidth = 1;
       ctx.stroke();
       /* the document under the pointer: its marks come forward, the rest
          hold; the chords its prose records are drawn under the marks */
-      var hd = hover >= 0 && own.length ? own[hover] : -1;
+      var hd = hover >= 0 && own.length ? own[hover] : curDoc;
+      /* the chords of a newly faced document draw outward over 220ms on
+         the same curve the camera settles on; a pointed document's chords
+         are drawn whole, one paint per change */
+      var chordP = 1;
+      if (hd === curDoc && chordT0) {
+        chordP = damped((performance.now() - chordT0) / 1000, CHORD_W);
+        if (chordP >= 0.995) { chordP = 1; chordT0 = 0; }
+      }
+      /* the rule, drawn: the two parallels that bound the zones, and every
+         document's disc as a hairline; the document the sphere is showing
+         has its disc drawn in the chord colour, so the cluster the marks
+         make is also the boundary the rule gave it */
+      for (var zi = 0; zi < zonesY.length; zi++) {
+        ring([0, 1, 0], Math.acos(zonesY[zi]), C.k, DK ? 0.2 : 0.16, 1, [3, 5]);
+      }
+      for (var di = 0; di < docs.length; di++) {
+        var dd = docs[di];
+        if (!(dd.r > 0) || di === hd) continue;
+        ring(nrm(dd.p), dd.r, C.k, DK ? 0.18 : 0.14, 1);
+      }
+      if (hd >= 0 && docs[hd] && docs[hd].r > 0) {
+        ring(nrm(docs[hd].p), docs[hd].r, C.l, DK ? 0.28 : 0.22, 5);
+        ring(nrm(docs[hd].p), docs[hd].r, C.l, 0.85, 1.2);
+      }
       var drawn = 0;
       if (hd >= 0 && docs[hd]) {
         var D = docs[hd];
         for (var lc = 0; lc < D.lk.length; lc++) {
-          if (drawChord(D, D.lk[lc].g, D.lk[lc].out, D.lk[lc].into)) drawn++;
+          if (drawChord(D, D.lk[lc].g, D.lk[lc].out, D.lk[lc].into, chordP)) drawn++;
         }
       }
       /* the sphere says what it is showing: the chords with a visible
@@ -988,7 +1158,7 @@
         var q = (t * 12) | 0;
         var rad = (BAND_R[p.b] + 1.5 * t) * S;
         var kin = hd >= 0 && own[i] === hd;
-        if (kin) { q = Math.min(12, q + 4); }
+        if (kin) { q = Math.min(12, q + 4); rad += 0.6 * S; }
         if (i === hover) rad += 2.4;
         ctx.beginPath();
         ctx.arc(sx, sy, rad, 0, Math.PI * 2);
@@ -999,6 +1169,14 @@
         } else {
           ctx.fillStyle = tone(p.k, q);
           ctx.fill();
+        }
+        /* the faced document's marks on the near side carry a ring in the
+           chord violet, so the region the sphere has turned to reads as one
+           lit constellation rather than a scatter of brighter dots */
+        if (kin && z2 > 0) {
+          ctx.beginPath();
+          ctx.arc(sx, sy, rad + 2.2, 0, Math.PI * 2);
+          ctx.strokeStyle = rgba(C.l, 0.22 + 0.33 * t); ctx.lineWidth = 1; ctx.stroke();
         }
         if (i === hover) {
           ctx.beginPath();
@@ -1039,13 +1217,21 @@
         host.removeAttribute("data-doc");
         host.removeAttribute("data-locked");
         host.style.cursor = fine ? "grab" : "";
-        paint();
+        setCorona(curDoc >= 0 && docs[curDoc].o ? docs[curDoc].o : "none");
+        if (corT0) kick(); else paint();
         return;
       }
+      /* the corona takes the pointed document's origin while it is pointed at */
+      setCorona(docs[hd].o || "none");
       var D = docs[hd], out = 0, into = 0;
       for (var li = 0; li < D.lk.length; li++) { if (D.lk[li].out) out++; if (D.lk[li].into) into++; }
       if (cardT) { cardT.textContent = D.t; if (D.u) cardT.setAttribute("href", D.u); }
-      if (cardD) {
+      if (cardD && D.card) {
+        /* the author's anchor: the recorded standing, the co-op window the
+           build computed from the recorded term, and the featured pieces'
+           subtotal; all of it from the build, none of it typed here */
+        cardD.textContent = D.card;
+      } else if (cardD) {
         cardD.textContent = D.k + "  \u00b7  " + D.marks + (D.marks === 1 ? " section" : " sections") + "  \u00b7  ";
         var lk = document.createElement("span");
         lk.className = "gc-l";
@@ -1057,7 +1243,7 @@
       host.setAttribute("data-doc", D.t);
       if (locked) host.setAttribute("data-locked", "1"); else host.removeAttribute("data-locked");
       host.style.cursor = "pointer";
-      paint();
+      if (corT0) kick(); else paint();
       placeCard();
     }
 
@@ -1071,26 +1257,47 @@
        eat the scroll, so there the sphere holds still and a tap opens the
        Atlas. */
     var raf = 0, lastT = 0, vy = 0, vp = 0, dragT = false, lxT = 0, lyT = 0, movedT = 0;
+    /* the camera's spring: the target the descent sets, the velocity it
+       carries, and whether it is still settling. The step is the exact
+       solution of a critically damped spring over dt, so it is stable at
+       any frame rate and never overshoots. */
+    var sYawT = null, sPitchT = null, sVy = 0, sVp = 0, springOn = false;
+    function springStep(dt) {
+      var e = Math.exp(-SPRING_W * dt), settled = true;
+      var x = yaw - sYawT, b = sVy + SPRING_W * x;
+      var nx = (x + b * dt) * e, nv = (b - SPRING_W * (x + b * dt)) * e;
+      yaw = sYawT + nx; sVy = nv;
+      if (Math.abs(nx) > 2e-4 || Math.abs(nv) > 2e-3) settled = false;
+      x = pitch - sPitchT; b = sVp + SPRING_W * x;
+      nx = (x + b * dt) * e; nv = (b - SPRING_W * (x + b * dt)) * e;
+      pitch = Math.max(-PITCH_MAX, Math.min(PITCH_MAX, sPitchT + nx)); sVp = nv;
+      if (Math.abs(nx) > 2e-4 || Math.abs(nv) > 2e-3) settled = false;
+      if (settled) { yaw = sYawT; pitch = sPitchT; sVy = sVp = 0; springOn = false; }
+    }
     function kick() { if (!raf) raf = requestAnimationFrame(frame); }
     function frame(now) {
       raf = 0;
       var dt = lastT ? Math.min(0.05, (now - lastT) / 1000) : 0.016;
       lastT = now;
       if (!dragT) {
-        yaw += vy * dt;
-        pitch = Math.max(-1.2, Math.min(1.2, pitch + vp * dt));
+        yaw += vy * dt; offYaw += vy * dt;
+        pitch = Math.max(-PITCH_MAX, Math.min(PITCH_MAX, pitch + vp * dt)); offPitch += vp * dt;
         vy *= 0.94; vp *= 0.94;
         if (Math.abs(vy) < 0.0006) vy = 0;
         if (Math.abs(vp) < 0.0006) vp = 0;
+        if (springOn && vy === 0 && vp === 0) springStep(dt);
       }
       paint();
-      if (dragT || vy !== 0 || vp !== 0) kick(); else lastT = 0;
+      host.setAttribute("data-yaw", yaw.toFixed(3));
+      host.setAttribute("data-pitch", pitch.toFixed(3));
+      /* one more frame while anything is still settling; none once it has */
+      if (dragT || vy !== 0 || vp !== 0 || springOn || chordT0 || corT0) kick(); else lastT = 0;
     }
 
     /* First paint waits for an idle main thread: the home page is the LCP
        surface and the sphere must not cost it. The box is sized by CSS, so
        nothing shifts when the canvas fills in. */
-    function bootTeaser() { size(); paint(); }
+    function bootTeaser() { host.setAttribute("data-corona", "none"); size(); paint(); }
     if ("requestIdleCallback" in window) {
       requestIdleCallback(bootTeaser, { timeout: 1500 });
     } else {
@@ -1104,6 +1311,7 @@
     if (window.matchMedia && window.matchMedia("(pointer:fine)").matches) {
       cv.addEventListener("pointerdown", function (e) {
         dragT = true; movedT = 0; vy = vp = 0; lxT = e.clientX; lyT = e.clientY;
+        springOn = false; sVy = sVp = 0;
         try { cv.setPointerCapture(e.pointerId); } catch (x) {}
         host.style.cursor = "grabbing";
         kick();
@@ -1120,8 +1328,8 @@
         if (hover >= 0) setHover(-1);
         var dx = e.clientX - lxT, dy = e.clientY - lyT;
         movedT += Math.abs(dx) + Math.abs(dy);
-        yaw += dx * 0.006;
-        pitch = Math.max(-1.2, Math.min(1.2, pitch + dy * 0.005));
+        yaw += dx * 0.006; offYaw += dx * 0.006;
+        pitch = Math.max(-PITCH_MAX, Math.min(PITCH_MAX, pitch + dy * 0.005)); offPitch += dy * 0.005;
         vy = dx * 0.09; vp = dy * 0.07;
         lxT = e.clientX; lyT = e.clientY;
         kick();
@@ -1145,6 +1353,131 @@
         if (e.relatedTarget === cv) return;
         setHover(-1);
       });
+    }
+    /* ---- the descent ----------------------------------------------
+       The statement's featured rows are documents on the sphere. As each
+       row reaches the reading line the camera turns to face that document's
+       centroid (the same rotation the Atlas uses to face a mark), its marks
+       come forward and the chords its prose records are drawn. The scroll
+       position sets where the camera should be; a critically damped spring
+       carries it there, so a change of document reads as a weight settling
+       and not a panel sliding, and once it has settled (within half a
+       second) no frame is requested until the next scroll. With reduced
+       motion the camera holds and only the lighting follows the rows. */
+    var wrap = host.closest(".descent-globe");
+    var hdrEl = document.querySelector("header.top"), lastPin = "";
+    var rowsD = [];
+    (function () {
+      if (!docs.length) return;
+      var byUrl = {};
+      docs.forEach(function (d, i) { byUrl[d.u] = i; });
+      var trs = document.querySelectorAll("#statement table.st tr.item");
+      for (var r = 0; r < trs.length; r++) {
+        var a = trs[r].querySelector("th a");
+        var u = a && a.getAttribute("href");
+        if (u && (u in byUrl)) rowsD.push({ el: trs[r], doc: byUrl[u] });
+      }
+    })();
+    var homeYaw = yaw, homePitch = pitch;
+    var facingEl = wrap && wrap.querySelector(".facing");
+    var reducedM = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    function facingOf(v) {
+      var n = nrm(v);
+      return { yaw: Math.atan2(-n[0], n[2]), pitch: Math.atan2(n[1], Math.sqrt(n[0] * n[0] + n[2] * n[2])) };
+    }
+    function shortest(a, b) {
+      var d = (b - a) % (Math.PI * 2);
+      if (d > Math.PI) d -= Math.PI * 2;
+      if (d < -Math.PI) d += Math.PI * 2;
+      return a + d;
+    }
+    var sraf = 0, lastStuck = false;
+    function descend() {
+      sraf = 0;
+      if (!rowsD.length) return;
+      /* the reading line. With the sphere beside the rows (a wide viewport)
+         a row is faced when its middle reaches mid-viewport. With the pinned
+         block (sphere, caption, facing line) above the rows, a row is faced
+         when its top clears the block, so the row faced is the row in view
+         and never one under the block. Which layout holds is read off the
+         boxes, not off a breakpoint. */
+      /* the block pins at the header's lower edge, wherever its rows wrapped to */
+      if (wrap && hdrEl) {
+        var pin = hdrEl.offsetHeight + "px";
+        if (pin !== lastPin) { lastPin = pin; wrap.style.setProperty("--pin-top", pin); }
+      }
+      var wr = (wrap || host).getBoundingClientRect();
+      var tr0 = rowsD[0].el.closest("table") || rowsD[0].el;
+      var sr = tr0.getBoundingClientRect();
+      var beside = wr.left >= sr.right - 1 || wr.right <= sr.left + 1;
+      var line = beside ? innerHeight * 0.5 : wr.bottom + 12;
+      var y = window.scrollY || document.documentElement.scrollTop;
+      var anchors = [];
+      for (var i = 0; i < rowsD.length; i++) {
+        var rr = rowsD[i].el.getBoundingClientRect();
+        var f = facingOf(docs[rowsD[i].doc].p);
+        var at = beside ? rr.top + rr.height / 2 : rr.top;
+        anchors.push({ s: y + at - line, yaw: f.yaw, pitch: f.pitch, doc: rowsD[i].doc });
+      }
+      /* the row nearest the line is the document faced, once the first row
+         is within three quarters of a row of it; the camera's target is that
+         document's centre, or home above the first row */
+      var byaw, bpitch, cur = -1, near = -1;
+      var bestD = Infinity, gap = anchors.length > 1 ? (anchors[1].s - anchors[0].s) : 400;
+      for (var c = 0; c < anchors.length; c++) {
+        var d = Math.abs(y - anchors[c].s);
+        if (d < bestD) { bestD = d; near = c; }
+      }
+      if (bestD <= gap * 0.75) cur = near;
+      if (y <= 0 || y < anchors[0].s - gap * 0.75) { byaw = homeYaw; bpitch = homePitch; }
+      else { byaw = anchors[near].yaw; bpitch = anchors[near].pitch; }
+      var changed = false;
+      if (!reducedM) {
+        /* the target is named relative to the last target, so a yaw that has
+           wound past a turn is never asked to unwind it */
+        var ny = shortest(sYawT === null ? yaw : sYawT, byaw + offYaw), np = Math.max(-PITCH_MAX, Math.min(PITCH_MAX, bpitch + offPitch));
+        if (sYawT === null || Math.abs(ny - sYawT) > 1e-4 || Math.abs(np - sPitchT) > 1e-4) {
+          sYawT = ny; sPitchT = np;
+          if (Math.abs(ny - yaw) > 1e-4 || Math.abs(np - pitch) > 1e-4) springOn = true;
+        }
+      }
+      var nd = cur >= 0 ? anchors[cur].doc : -1;
+      if (nd !== curDoc) {
+        curDoc = nd; changed = true;
+        if (!reducedM && curDoc >= 0) chordT0 = performance.now(); else chordT0 = 0;
+        setCorona(curDoc >= 0 && docs[curDoc].o ? docs[curDoc].o : "none");
+        for (var q = 0; q < rowsD.length; q++) rowsD[q].el.classList.toggle("cur", rowsD[q].doc === curDoc);
+        if (facingEl) {
+          facingEl.textContent = "";
+          if (curDoc >= 0) {
+            facingEl.appendChild(document.createTextNode("Facing "));
+            var bb = document.createElement("b"); bb.textContent = docs[curDoc].t; facingEl.appendChild(bb);
+          }
+        }
+        if (curDoc >= 0) host.setAttribute("data-facing", docs[curDoc].t); else host.removeAttribute("data-facing");
+      }
+      /* pinned on a phone: the sphere steps back to make room for the rows */
+      if (wrap) {
+        var top = parseFloat(getComputedStyle(wrap).top) || 0;
+        var stuck = y > 0 && wrap.getBoundingClientRect().top <= top + 1;
+        if (stuck !== lastStuck) { lastStuck = stuck; wrap.classList.toggle("stuck", stuck); }
+      }
+      if (springOn || chordT0 || corT0) { if (!dragT) kick(); }
+      else if (changed && !dragT) {
+        paint();
+        host.setAttribute("data-yaw", yaw.toFixed(3));
+        host.setAttribute("data-pitch", pitch.toFixed(3));
+      }
+    }
+    if (rowsD.length) {
+      window.addEventListener("scroll", function () { if (!sraf) sraf = requestAnimationFrame(descend); }, { passive: true });
+      window.addEventListener("resize", function () { if (!sraf) sraf = requestAnimationFrame(descend); });
+      /* the box changes size when it pins on a phone; the canvas follows */
+      if ("ResizeObserver" in window) {
+        new ResizeObserver(function () { size(); paint(); }).observe(host);
+      }
+      if ("requestIdleCallback" in window) requestIdleCallback(descend, { timeout: 1500 });
+      else setTimeout(descend, 300);
     }
     host.addEventListener("click", function (e) {
       if (movedT > 8) { movedT = 0; return; }

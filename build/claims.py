@@ -170,6 +170,16 @@ def page_ok(key, rec, declared_overflow=()):
         return not r.get("overflow")
     if key == "chrome":
         return r.get("a") == r.get("b")
+    if key == "descent":
+        shapes = [r.get("wide") or {}, r.get("phone") or {}]
+        return all(sh.get("rows", 0) > 0 and sh.get("faced", -1) == sh.get("rows") and sh.get("framesAfter", 1) == 0
+                   and sh.get("framesAtTop", 1) == 0 for sh in shapes)
+    if key == "corona":
+        shapes = [r.get("wide") or {}, r.get("phone") or {}]
+        return all(sh.get("rows", 0) > 0 and sh.get("matched", -1) == sh.get("rows") and sh.get("atTop") == "none" for sh in shapes)
+    if key == "theme":
+        return (r.get("options") == 2 and r.get("pressed") == 1 and bool(r.get("pulsed")) and bool(r.get("pulseEnded"))
+                and not r.get("repeated", True) and bool(r.get("switched")) and r.get("framesAfterSwitch", 1) == 0 and bool(r.get("focusRing")))
     return None
 
 
@@ -213,6 +223,31 @@ def agg(key, recs, names, declared_overflow=()):
         bad = [nm for nm, r in zip(names, rs) if r and r.get("a") != r.get("b")]
         return (f"{len(rs) - len(bad)} of {len(rs)} pages count the same words with and without the build's own blocks removed"
                 + ("; " + ", ".join(bad) if bad else ""), not bad)
+    if key == "descent":
+        r = rs[0] if rs else {}
+        w, ph = r.get("wide") or {}, r.get("phone") or {}
+        ok = page_ok("descent", {"descent": r})
+        return (f"{w.get('faced', 0)} of {w.get('rows', 0)} featured rows faced at 1440 and {ph.get('faced', 0)} of {ph.get('rows', 0)} at 390; "
+                f"{w.get('framesSettle', 0) + ph.get('framesSettle', 0)} frames while the spring settled (within 700ms of each stop), "
+                f"{w.get('framesAfter', 0) + ph.get('framesAfter', 0)} in the second after that, "
+                f"{w.get('framesAtTop', 0) + ph.get('framesAtTop', 0)} at the top", bool(ok))
+    if key == "corona":
+        r = rs[0] if rs else {}
+        w, ph = r.get("wide") or {}, r.get("phone") or {}
+        ok = page_ok("corona", {"corona": r})
+        return (f"{w.get('matched', 0)} of {w.get('rows', 0)} stops at 1440 and {ph.get('matched', 0)} of {ph.get('rows', 0)} at 390 show the faced row's recorded origin; "
+                f"at the top the corona names {w.get('atTop')!s} and {ph.get('atTop')!s}", bool(ok))
+    if key == "theme":
+        two = sum(1 for r in rs if r.get("options") == 2 and r.get("pressed") == 1)
+        pulsed = sum(1 for r in rs if r.get("pulsed") and r.get("pulseEnded"))
+        rep = sum(1 for r in rs if r.get("repeated"))
+        sw = sum(1 for r in rs if r.get("switched"))
+        fr = sum(max(0, r.get("framesAfterSwitch", 0)) for r in rs)
+        ring = sum(1 for r in rs if r.get("focusRing"))
+        return (f"{two} of {len(rs)} pages show two named states with one pressed; the first visit pulsed once and the pulse ended on {pulsed}, "
+                f"and repeated on a second visit on {rep}; the switch changed the theme on {sw}, with {fr} frames requested in the second after settling; "
+                f"a focus ring on the offer from the keyboard on {ring}",
+                two == len(rs) and pulsed == len(rs) and rep == 0 and sw == len(rs) and fr == 0 and ring == len(rs))
     return ("", False)
 
 
@@ -339,11 +374,15 @@ def build(ctx):
     t = T.get("weights", {})
     checked("The marks' apportioned word weights add back to the corpus line.", ["11a2"], f"{n(t.get('marks', 0))} weights sum to {n(t.get('sum', 0))}", ["atlas.html"])
     t = T.get("position", {})
-    checked("Where a document sits on the sphere is a rule: latitude by origin, and within the band east and north by measured word count.", ["28"],
-            f"{t.get('documents', 0)} documents in {t.get('bands', 0)} bands; {t.get('read_back', 0)} positions read back from {t.get('pages', 0)} pages against the rule, 0 out of place",
+    checked("Where a document sits on the sphere is a rule: each origin's zone of latitude has the area of its share of the sections, each document is a disc of two thirds of its share's area, settled clear of every other inside its zone, and its own sections lie on an equal-area spiral inside the disc, the first at the centre.", ["28"],
+            f"{t.get('documents', 0)} documents in {t.get('zones', 0)} zones; {t.get('read_back', 0)} centres and radii read back from {t.get('pages', 0)} pages against the rule, 0 out of place; {t.get('overlap', 0)} of {n(t.get('pairs', 0))} disc pairs overlap; {n(t.get('marks', 0))} marks held at their spiral positions and inside their discs, {t.get('off', 0)} off, {t.get('outside', 0)} outside; {t.get('shared', 0)} shared marks placed between their owners",
             ["atlas.html", "index.html"])
+    t = T.get("author", {})
+    checked("The author is an entry in the section register, placed by the rule every document follows: one mark in an origin of his own, in a zone of latitude with the area of its share, linking to the passage that names him; his card is the recorded standing, the recorded co-op term counted from the build's date, and the featured pieces' subtotal, and the pages carry the build's own arithmetic.", ["32"],
+            f"{t.get('marks', 0)} mark of {n(t.get('total', 0))}, zone {t.get('zone') or 'none'} of {t.get('share', 0.0):.3%} of the sphere, linked to {t.get('link') or 'nothing'}; the card read back from {t.get('cards', 0)} pages, {t.get('off', 0)} off: {t.get('card') or ''}",
+            ["atlas.html", "index.html", "about.html"])
     t = T.get("channels", {})
-    checked("Every visual channel the sphere draws is named in the Atlas key, and every entry in the key is drawn.", ["27"],
+    checked("Every visual channel either sphere draws is named in the Atlas key, and every entry in the key is drawn.", ["27"],
             f"{t.get('declared', 0)} channels declared by {t.get('scripts', 0)} scripts, {t.get('key', 0)} key entries, {t.get('unnamed', 0)} unnamed, {t.get('stray', 0)} stray",
             ["atlas.html", "index.html"])
     t10, t18 = T.get("subset", {}), T.get("fonts", {})
@@ -414,6 +453,12 @@ def build(ctx):
     rt("Reduced motion is respected: nothing animates for a reader who asked for none.", "motion", shell, ["colophon.html"])
     rt("Every page fits a 320px viewport, except the pages declared in content/declared.json, each of which must still need the exception.", "fit", allp, ["colophon.html"])
     rt("The word count leaves out the site's own chrome around a piece.", "chrome", [p for p in allp if p not in shell], ["colophon.html"])
+    rt("The home sphere turns to face the document whose featured row is at the reading line, at desktop and phone widths, carried by a critically damped spring that settles within 700ms of the last scroll, after which no frame is requested.",
+       "descent", ["index.html"], ["index.html"])
+    rt("The light behind the home sphere takes the hue of the faced document's recorded origin, the field the statement sorts by, and names no origin when nothing is faced.",
+       "corona", ["index.html"], ["index.html"])
+    rt("The theme selector is an offer, not an icon: two named states, Obsidian and Archival light, one pressed; a single soft pulse on the first visit from a browser and none after; a switch that settles with no frame requested; a focus ring on the offer from the keyboard.",
+       "theme", shell, ["index.html"])
 
     off = state.get("offline")
     cases = neg["runtime"].get("offline", [])
@@ -519,7 +564,7 @@ def render(rows, summary, audit_meta, neg_state=None):
 # --------------------------------------------------------- the instrument --
 GLYPH = {"held": "#", "failed": "x", "stale": "?", "declared": "~", "none": ""}
 GLYPH_CLASS = {"held": "g-h", "failed": "g-x", "stale": "g-q", "declared": "g-d", "none": "g-n"}
-RUNTIME_COLS = [("ext", "E"), ("idle", "I"), ("keyboard", "K"), ("print", "P"), ("motion", "M"), ("fit", "F"), ("chrome", "C")]
+RUNTIME_COLS = [("ext", "E"), ("idle", "I"), ("keyboard", "K"), ("print", "P"), ("motion", "M"), ("fit", "F"), ("chrome", "C"), ("descent", "D"), ("theme", "T"), ("corona", "H")]
 
 
 def _sort_key(cid):
@@ -551,7 +596,9 @@ def matrix(ctx):
                     v = None
                 cells[cid] = "none" if v is None else ("held" if v else "failed")
             else:
-                applies = (page in shell) if cid in ("keyboard", "print", "motion") else (page not in shell if cid == "chrome" else True)
+                applies = ((page in shell) if cid in ("keyboard", "print", "motion", "theme")
+                           else (page not in shell) if cid == "chrome"
+                           else (page == "index.html") if cid in ("descent", "corona") else True)
                 if not applies:
                     cells[cid] = "none"
                 elif page in state["fresh"] and state["fresh"][page].get(cid) is not None:
@@ -623,7 +670,7 @@ def render_instrument(ctx, page_titles=None):
     key = ('<p class="inst-key"><code>#</code> held on that page for this build &middot; <code>x</code> failed &middot; '
            '<code>?</code> not measured for this build &middot; <code>~</code> held by a declared exception &middot; '
            'blank: the check does not look at that page. Columns: the build\'s checks by number; E requests from another origin, '
-           'I idle frames, K keyboard focus, P print media, M reduced motion, F fit at 320px, C the chrome exclusion, O the offline copy.</p>')
+           'I idle frames, K keyboard focus, P print media, M reduced motion, F fit at 320px, C the chrome exclusion, D the descent on the home page, T the theme selector, H the corona\'s hue, O the offline copy.</p>')
     return key + wall + ledg, {"pages": len(rows), "columns": len(cols), "glyphs": total_cells, "held": total_held,
                               "failed": total_failed, "stale": total_stale, "falsifications": nc, "caught": ncaught}
 

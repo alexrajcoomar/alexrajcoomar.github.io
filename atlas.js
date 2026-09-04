@@ -38,7 +38,7 @@
      check 27 holds this list and the key on the page to each other, so a
      channel drawn without a key entry, or a key entry nothing draws, fails
      the build. The label stages carry their own keys beside them. */
-  var CHANNELS = ["ind", "per", "cou", "too", "shr", "vis", "lnk"];
+  var CHANNELS = ["ind", "per", "cou", "too", "shr", "vis", "lnk", "dsc", "zon", "aut", "cor"];
   /* Narrow: the sphere leads and the index follows. Tiny: there is no clear
      ring around the sphere to put type in at all. A tablet is the first and
      not the second. */
@@ -47,6 +47,9 @@
 
   /* ------------------------------------------------- read the page ---- */
   var pts = [], regions = [], byUrl = {}, bySlug = {};
+  /* the two parallels that bound the origins' zones, as y, from the build */
+  var ZONES = (list.getAttribute("data-zones") || "").split(",").map(Number)
+    .filter(function (v) { return isFinite(v) && v > -1 && v < 1; });
   var TRAIL = {};
   try { TRAIL = JSON.parse(localStorage.getItem("atlas.trail") || "{}"); } catch (e) {}
   [].forEach.call(list.querySelectorAll(".areg"), function (sec, ri) {
@@ -61,6 +64,8 @@
       meta: (sec.querySelector(".areg-m") || {}).textContent || "",
       el: sec,
       x: c[0], y: c[1], z: c[2],
+      /* the disc the rule gives the document, as an angular radius */
+      disc: parseFloat(sec.getAttribute("data-r")) || 0,
       n: 0, items: []
     };
     regions.push(reg);
@@ -690,7 +695,11 @@
      it projects to. This is the construction line that turns "a document is an
      area" from a claim into something the reader can measure by eye. */
   function drawCap(g, deg, dash) {
-    var c = [g.x, g.y, g.z];
+    smallCircle([g.x, g.y, g.z], deg * Math.PI / 180, rgba(C.ink, 0.55), 1, dash ? [3, 4] : null);
+  }
+
+  /* a small circle on the sphere, the part of it facing the reader */
+  function smallCircle(c, rad, style, width, dash) {
     var up = Math.abs(c[1]) > 0.9 ? [1, 0, 0] : [0, 1, 0];
     var e1 = nrm([up[1] * c[2] - up[2] * c[1],
                   up[2] * c[0] - up[0] * c[2],
@@ -698,15 +707,15 @@
     var e2 = nrm([c[1] * e1[2] - c[2] * e1[1],
                   c[2] * e1[0] - c[0] * e1[2],
                   c[0] * e1[1] - c[1] * e1[0]]);
-    var rad = deg * Math.PI / 180, ca = Math.cos(rad), sa = Math.sin(rad);
+    var ca = Math.cos(rad), sa = Math.sin(rad), n = rad > 0.5 ? 96 : 48;
     ctx.save();
-    if (dash) ctx.setLineDash([3, 4]);
-    ctx.strokeStyle = rgba(C.ink, 0.55);
-    ctx.lineWidth = 1;
+    if (dash) ctx.setLineDash(dash);
+    ctx.strokeStyle = style;
+    ctx.lineWidth = width;
     var started = false;
     ctx.beginPath();
-    for (var i = 0; i <= 96; i++) {
-      var th = i / 96 * Math.PI * 2;
+    for (var i = 0; i <= n; i++) {
+      var th = i / n * Math.PI * 2;
       var v = [c[0] * ca + (e1[0] * Math.cos(th) + e2[0] * Math.sin(th)) * sa,
                c[1] * ca + (e1[1] * Math.cos(th) + e2[1] * Math.sin(th)) * sa,
                c[2] * ca + (e1[2] * Math.cos(th) + e2[2] * Math.sin(th)) * sa];
@@ -717,6 +726,28 @@
     }
     ctx.stroke();
     ctx.restore();
+  }
+
+  /* the rule, drawn: every document's disc as a hairline and the two zone
+     parallels dashed; the document under the pointer, or named in the word
+     list, has its disc in the chord colour. Not drawn inside a flown-in
+     document, whose own boundary is drawn as the cap. */
+  function drawDiscs() {
+    if (focus) return;
+    var dk = dark();
+    for (var zi = 0; zi < ZONES.length; zi++) {
+      smallCircle([0, 1, 0], Math.acos(ZONES[zi]), rgba(C.ink, dk ? 0.2 : 0.16), 1, [3, 5]);
+    }
+    var lit = (hover && hover.r) || wlR;
+    for (var i = 0; i < regions.length; i++) {
+      var g = regions[i];
+      if (!(g.disc > 0) || g === lit) continue;
+      smallCircle([g.x, g.y, g.z], g.disc, rgba(C.ink, dk ? 0.18 : 0.14), 1, null);
+    }
+    if (lit && lit.disc > 0) {
+      smallCircle([lit.x, lit.y, lit.z], lit.disc, tone2(C.lnk, dk ? 0.28 : 0.22), 5, null);
+      smallCircle([lit.x, lit.y, lit.z], lit.disc, tone2(C.lnk, 0.85), 1.2, null);
+    }
   }
 
   function drawParallel(y) {
@@ -855,6 +886,7 @@
     ctx.clearRect(0, 0, W, H);
     drawSilhouette();
     drawGraticule(gridA);
+    drawDiscs();
     drawStems(true);
     /* Flown in, the silhouette runs off the frame, so the document's own cap
        is drawn as the boundary the reader is inside. */
@@ -957,6 +989,12 @@
       } else if (p.r.surface === "course") {
         ctx.strokeStyle = tone2(C.cou, Math.min(1, a * 1.25));
         ctx.lineWidth = 1.15; ctx.stroke();
+      } else if (p.r.surface === "author") {
+        /* the author's anchor: ink, ringed in the chord colour */
+        ctx.fillStyle = tone2(C.ink, Math.min(1, a + 0.2)); ctx.fill();
+        ctx.beginPath();
+        ctx.arc(p.sx, p.sy, rad + 2.4, 0, Math.PI * 2);
+        ctx.strokeStyle = tone2(C.lnk, Math.min(1, a)); ctx.lineWidth = 1; ctx.stroke();
       } else if (p.r.kind === "Tool") {
         ctx.fillStyle = tone2(C.too, a); ctx.fill();
       } else {
@@ -1505,6 +1543,7 @@
   /* ---------------------------------------------------------- focus --- */
   /* The cap the reader is inside, in degrees, from the marks themselves. */
   function focusCapDeg(g) {
+    if (g.disc > 0) return g.disc * 180 / Math.PI;
     if (g.capDeg !== undefined) return g.capDeg;
     var m = 0;
     for (var i = 0; i < g.items.length; i++) {
