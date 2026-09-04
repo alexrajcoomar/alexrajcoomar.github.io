@@ -90,7 +90,7 @@
     ],
     "caught": true,
     "line": "check 6: afm291-ch1-theory-and-analytics.html: 2 top-level headings in a document body; all but the first are hidden by the stylesheet",
-    "seconds": 46.0
+    "seconds": 46
    },
    {
     "id": "7-head-ended-early",
@@ -140,7 +140,7 @@
     ],
     "caught": true,
     "line": "check 10: font subset: U+03A9 ('Ω') in 404.html renders in the fallback, not Inter; re-subset InterVariable-sub.woff2",
-    "seconds": 47.0
+    "seconds": 47
    },
    {
     "id": "11-chrome-colour-unknown",
@@ -177,7 +177,7 @@
     ],
     "caught": true,
     "line": "check 11a2: atlas.html: mark weights add to 483,854, the corpus line says 483,789",
-    "seconds": 42.0
+    "seconds": 42
    },
    {
     "id": "12-corpus-line-off",
@@ -287,7 +287,7 @@
     ],
     "caught": true,
     "line": "check 20: 404.html: has no skip link to #main",
-    "seconds": 46.0
+    "seconds": 46
    },
    {
     "id": "21-figure-unnamed",
@@ -323,7 +323,7 @@
     ],
     "caught": true,
     "line": "check 23: 404.html: carries 1 em dash(es) in its prose",
-    "seconds": 45.0
+    "seconds": 45
    },
    {
     "id": "23-dash-in-piece-prose",
@@ -448,5 +448,102 @@
    }
   ]
  },
- "runtime": null
+ "runtime": {
+  "meta": {
+   "tool": "build/audit.js --falsify",
+   "date": "2026-09-04",
+   "commit": "e6282cf",
+   "code": "6e5f0a097ba1"
+  },
+  "cases": [
+   {
+    "key": "ext",
+    "page": "about.html",
+    "what": "the page loads an image from another origin",
+    "rec": {
+     "ext": {
+      "requests": 7,
+      "external": 1
+     }
+    }
+   },
+   {
+    "key": "idle",
+    "page": "about.html",
+    "what": "a script requests a new frame on every frame after load",
+    "rec": {
+     "idle": {
+      "frames": 60
+     }
+    }
+   },
+   {
+    "key": "keyboard",
+    "page": "about.html",
+    "what": "a stylesheet removes the focus ring from every element",
+    "rec": {
+     "keyboard": {
+      "stops": 30,
+      "noRing": 30
+     }
+    }
+   },
+   {
+    "key": "print",
+    "page": "index.html",
+    "what": "under print media the figures may break across pages and the header stays pinned",
+    "rec": {
+     "print": {
+      "stickyLeft": 1,
+      "hidden": 0,
+      "figures": 3,
+      "figuresBreakable": 3
+     }
+    }
+   },
+   {
+    "key": "motion",
+    "page": "about.html",
+    "what": "the brand mark spins under reduced motion",
+    "rec": {
+     "motion": {
+      "animations": 1
+     }
+    }
+   },
+   {
+    "key": "fit",
+    "page": "about.html",
+    "what": "a 900px block that no declaration allows",
+    "rec": {
+     "fit": {
+      "scrollWidth": 900,
+      "overflow": true
+     }
+    }
+   },
+   {
+    "key": "chrome",
+    "page": "positive-vs-normative.html",
+    "what": "a block the build owns carries words the count would include",
+    "rec": {
+     "chrome": {
+      "a": 603,
+      "b": 597
+     }
+    }
+   },
+   {
+    "key": "offline",
+    "page": "sw.js",
+    "what": "the new worker neither carries the saved copy across nor syncs it, so a publish empties it",
+    "rec": {
+     "before": 183,
+     "of": 183,
+     "after": 0,
+     "refreshed": false
+    }
+   }
+  ]
+ }
 }
