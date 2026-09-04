@@ -170,6 +170,10 @@ def page_ok(key, rec, declared_overflow=()):
         return not r.get("overflow")
     if key == "chrome":
         return r.get("a") == r.get("b")
+    if key == "descent":
+        shapes = [r.get("wide") or {}, r.get("phone") or {}]
+        return all(sh.get("rows", 0) > 0 and sh.get("faced", -1) == sh.get("rows") and sh.get("framesAfter", 1) == 0
+                   and sh.get("framesAtTop", 1) == 0 for sh in shapes)
     return None
 
 
@@ -213,6 +217,13 @@ def agg(key, recs, names, declared_overflow=()):
         bad = [nm for nm, r in zip(names, rs) if r and r.get("a") != r.get("b")]
         return (f"{len(rs) - len(bad)} of {len(rs)} pages count the same words with and without the build's own blocks removed"
                 + ("; " + ", ".join(bad) if bad else ""), not bad)
+    if key == "descent":
+        r = rs[0] if rs else {}
+        w, ph = r.get("wide") or {}, r.get("phone") or {}
+        ok = page_ok("descent", {"descent": r})
+        return (f"{w.get('faced', 0)} of {w.get('rows', 0)} featured rows faced at 1440 and {ph.get('faced', 0)} of {ph.get('rows', 0)} at 390; "
+                f"{w.get('framesAfter', 0) + ph.get('framesAfter', 0)} frames requested in the second after each stop, "
+                f"{w.get('framesAtTop', 0) + ph.get('framesAtTop', 0)} at the top", bool(ok))
     return ("", False)
 
 
@@ -414,6 +425,8 @@ def build(ctx):
     rt("Reduced motion is respected: nothing animates for a reader who asked for none.", "motion", shell, ["colophon.html"])
     rt("Every page fits a 320px viewport, except the pages declared in content/declared.json, each of which must still need the exception.", "fit", allp, ["colophon.html"])
     rt("The word count leaves out the site's own chrome around a piece.", "chrome", [p for p in allp if p not in shell], ["colophon.html"])
+    rt("The home sphere turns to face the document whose featured row is at the reading line, at desktop and phone widths, and requests no frame once the scroll has stopped.",
+       "descent", ["index.html"], ["index.html"])
 
     off = state.get("offline")
     cases = neg["runtime"].get("offline", [])
@@ -519,7 +532,7 @@ def render(rows, summary, audit_meta, neg_state=None):
 # --------------------------------------------------------- the instrument --
 GLYPH = {"held": "#", "failed": "x", "stale": "?", "declared": "~", "none": ""}
 GLYPH_CLASS = {"held": "g-h", "failed": "g-x", "stale": "g-q", "declared": "g-d", "none": "g-n"}
-RUNTIME_COLS = [("ext", "E"), ("idle", "I"), ("keyboard", "K"), ("print", "P"), ("motion", "M"), ("fit", "F"), ("chrome", "C")]
+RUNTIME_COLS = [("ext", "E"), ("idle", "I"), ("keyboard", "K"), ("print", "P"), ("motion", "M"), ("fit", "F"), ("chrome", "C"), ("descent", "D")]
 
 
 def _sort_key(cid):
@@ -551,7 +564,9 @@ def matrix(ctx):
                     v = None
                 cells[cid] = "none" if v is None else ("held" if v else "failed")
             else:
-                applies = (page in shell) if cid in ("keyboard", "print", "motion") else (page not in shell if cid == "chrome" else True)
+                applies = ((page in shell) if cid in ("keyboard", "print", "motion")
+                           else (page not in shell) if cid == "chrome"
+                           else (page == "index.html") if cid == "descent" else True)
                 if not applies:
                     cells[cid] = "none"
                 elif page in state["fresh"] and state["fresh"][page].get(cid) is not None:
@@ -623,7 +638,7 @@ def render_instrument(ctx, page_titles=None):
     key = ('<p class="inst-key"><code>#</code> held on that page for this build &middot; <code>x</code> failed &middot; '
            '<code>?</code> not measured for this build &middot; <code>~</code> held by a declared exception &middot; '
            'blank: the check does not look at that page. Columns: the build\'s checks by number; E requests from another origin, '
-           'I idle frames, K keyboard focus, P print media, M reduced motion, F fit at 320px, C the chrome exclusion, O the offline copy.</p>')
+           'I idle frames, K keyboard focus, P print media, M reduced motion, F fit at 320px, C the chrome exclusion, D the descent on the home page, O the offline copy.</p>')
     return key + wall + ledg, {"pages": len(rows), "columns": len(cols), "glyphs": total_cells, "held": total_held,
                               "failed": total_failed, "stale": total_stale, "falsifications": nc, "caught": ncaught}
 

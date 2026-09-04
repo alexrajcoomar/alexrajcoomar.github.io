@@ -9,13 +9,16 @@ point that cannot land on the passage it names is decoration, and half the
 corpus, including the three largest essays, carried no anchors at all.
 
 place() puts those sections on a unit sphere. Position is not decoration
-either. Each document gets a centroid by a rule the reader can check: its
-latitude is its origin (independent work in the north band, coursework in the
-middle, personal interest in the south), and within the band it climbs east
-and north by measured word count, shortest first. A document's sections
-scatter around its own centroid inside a cap whose radius grows with the
-square root of the section count, from a generator seeded by the document's
-own name, so adding a piece moves only the band it joins. A dense patch on the globe is therefore
+either. Each document gets a centroid by a rule the reader can check, and
+the rule is an equal-area projection of the corpus's words: each origin owns
+a zone of latitude whose area is its share of the words (independent work in
+the north, coursework across the middle, personal interest in the south);
+within its zone a document sits at the height its cumulative word count
+gives it, largest first, on a longitude that steps by the golden angle from
+one document to the next; and its sections scatter inside a cap whose area
+is the document's own share of the words, from a generator seeded by the
+document's name. So the marks cover the whole sphere in proportion to the
+words they stand for, and a dense patch is a long document. A dense patch on the globe is therefore
 a dense document, which is the same contract the corpus figure makes when it
 draws one square per five hundred words. A heading that appears in more than
 one document is placed between their centroids rather than duplicated, so
@@ -192,36 +195,48 @@ def harvest(out_dir, pieces):
 
 
 # ------------------------------------------------------------------ place --
-# Where a document sits, by rule. Each origin owns a band of latitude, given
-# here as the range of y (the sine of the latitude) on the unit sphere; the
-# gaps between the bands are the sea. Within a band the documents are ranked
-# by measured word count, shortest first, and the rank sets both the
-# longitude (a full turn across the band) and the height inside the band, so
-# neighbours share an origin and a size. check 28 recomputes this from the
+# Where a document sits, by rule: an equal-area projection of the corpus's
+# words. The sphere's area between two parallels is proportional to the
+# difference of their y (the sine of the latitude), so a zone whose y-range
+# is twice an origin's word share has exactly that share of the surface, and
+# a slab whose height is twice a document's share has the document's. Within
+# a zone the documents run largest first from the north; the longitude of
+# the i-th document over the whole sphere is i times the golden angle, which
+# spreads neighbours apart evenly. check 28 recomputes all of this from the
 # metrics and refuses a sphere that disagrees.
-BANDS = {"independent": (0.34, 0.86), "course": (-0.26, 0.26), "personal": (-0.86, -0.42)}
-BAND_NAMES = {"independent": "north", "course": "middle", "personal": "south"}
+ZONE_ORDER = ("independent", "course", "personal")
+GOLDEN = math.pi * (3.0 - math.sqrt(5.0))
+CAP_MIN = 0.05
 
 
-def rank_by_words(pieces):
-    """slug -> (surface, rank, n): the rank of each document by measured words
-    within its origin, shortest first, ties broken by slug."""
-    out = {}
-    for surf in BANDS:
-        docs = sorted((p for p in pieces if p["surface"] == surf),
-                      key=lambda p: (p.get("words", 0), p["slug"]))
-        for i, p in enumerate(docs):
-            out[p["slug"]] = (surf, i, len(docs))
-    return out
+def plan(pieces):
+    """slug -> {"zone", "y", "theta", "cap", "share", "index"} for every
+    document, plus the zone boundaries, from the measured words alone."""
+    docs = [p for p in pieces if p["surface"] in ZONE_ORDER]
+    total = float(sum(p.get("words", 0) for p in docs)) or 1.0
+    out, zones = {}, {}
+    y_top, index = 1.0, 0
+    for surf in ZONE_ORDER:
+        group = sorted((p for p in docs if p["surface"] == surf),
+                       key=lambda p: (-p.get("words", 0), p["slug"]))
+        share = sum(p.get("words", 0) for p in group) / total
+        zones[surf] = (round(y_top, 6), round(y_top - 2 * share, 6))
+        y = y_top
+        for p in group:
+            sh = p.get("words", 0) / total
+            out[p["slug"]] = {"zone": surf, "y": y - sh, "theta": (index * GOLDEN) % (2 * math.pi),
+                              "cap": max(CAP_MIN, math.acos(max(-1.0, 1.0 - 2.0 * sh))), "share": sh, "index": index}
+            y -= 2 * sh
+            index += 1
+        y_top -= 2 * share
+    return out, zones
 
 
-def centroid(surface, rank, n):
+def centroid_of(entry):
     """The point the rule puts a document at, rounded as the pages carry it."""
-    lo, hi = BANDS[surface]
-    f = (rank + 0.5) / n
-    y = lo + (hi - lo) * f
-    th = 2 * math.pi * f
+    y = max(-1.0, min(1.0, entry["y"]))
     r = math.sqrt(max(0.0, 1 - y * y))
+    th = entry["theta"]
     return (round(math.cos(th) * r, 4), round(y, 4), round(math.sin(th) * r, 4))
 
 
@@ -254,8 +269,8 @@ def _rand(seed):
 def place(sections, pieces):
     """Assign every section a point on the unit sphere."""
     order = [p for p in pieces if any(s["slug"] == p["slug"] for s in sections)]
-    ranks = rank_by_words(order)
-    cents = {p["slug"]: centroid(*ranks[p["slug"]]) for p in order}
+    rule, _zones = plan(order)
+    cents = {p["slug"]: centroid_of(rule[p["slug"]]) for p in order}
 
     by_slug = {}
     for s in sections:
@@ -283,12 +298,11 @@ def place(sections, pieces):
         cz = sum(h[2] for h in homes) / len(homes)
         centre = _norm((cx, cy, cz))
 
-        # cap radius grows with the square root of the document's size, so the
-        # area a document occupies is proportional to how much it holds
-        n = len(by_slug.get(s["slug"], []))
-        rad = min(0.62, 0.13 + 0.055 * math.sqrt(n))
+        # the cap holds the document's own share of the sphere's area: a
+        # long document's sections spread wide, a short one's sit close
+        rad = rule[s["slug"]]["cap"] if s["slug"] in rule else CAP_MIN
         if len(shared[key]) > 1:
-            rad *= 0.45
+            rad = min(rule[o]["cap"] for o in shared[key] if o in rule) * 0.45 if any(o in rule for o in shared[key]) else CAP_MIN
 
         # a random direction in the tangent plane, then a random arc along it
         gkey = ",".join(sorted(shared[key])) if len(shared[key]) > 1 else s["slug"]
@@ -299,7 +313,8 @@ def place(sections, pieces):
         tang = _norm((a - 0.5, b - 0.5, c - 0.5))
         dot = sum(tang[i] * centre[i] for i in range(3))
         tang = _norm(tuple(tang[i] - dot * centre[i] for i in range(3)))
-        ang = rad * math.sqrt(next(rnd))
+        # uniform over the cap's area, not its radius
+        ang = math.acos(1.0 - next(rnd) * (1.0 - math.cos(rad)))
         v = _norm(tuple(centre[i] * math.cos(ang) + tang[i] * math.sin(ang)
                         for i in range(3)))
 
@@ -732,12 +747,12 @@ def labels(F):
                 "The line misses in both directions, and both are drawn. {} "
                 "marks above it are ringed, because they come from {} "
                 "documents that are not independent{}. "
-                "Another {} independent marks sit below it. The band is "
-                "designed, not inherited: a document's latitude is its "
-                "origin, so the independent work is the north band by rule, "
-                "and what crosses the line is the scatter of sections around "
-                "their documents, drawn at the radius each document's size "
-                "gives it."
+                "Another {} independent marks sit below it. The zone is "
+                "designed, not inherited: each origin owns the zone of "
+                "latitude whose area is its share of the words, so the "
+                "independent work is the north zone by rule, and what "
+                "crosses the line is the scatter of sections inside each "
+                "document's cap, whose area is that document's own share."
                 .format(F["nExc"], F["excDocs"],
                         (", {} of them from <span class=\"lw\" data-reg=\"{}\" tabindex=\"0\">{}</span>"
                          .format(F["excTopN"], F["excTopS"], _esc(F["excTop"]))) if F.get("excTop") else "",

@@ -11,6 +11,10 @@
      idle   frames requested in the second after the page settled
      fit    whether the document is wider than a 320px viewport
      errors console errors
+   On the home page:
+     descent   each featured row scrolled to the reading line at 1440 and
+               at 390: the document the sphere faces, and the frames
+               requested once the scroll has stopped
    Per generated page, which share site.css and site.js:
      keyboard  Tab stops, and how many had no visible focus ring
      print     under print media: sticky elements still pinned, blocks of
@@ -163,6 +167,52 @@ async function measurePage(browser, base, name, shell) {
     rec.fit = { scrollWidth: sw, overflow: sw > 320 };
     await ctx.close();
   }
+  if (name === 'index.html') {
+    // the descent: each featured row of the statement scrolled to the reading
+    // line, at a desktop width (the sphere beside the rows) and a phone width
+    // (the block pinned above them); the document the sphere reports facing
+    // must be the row's, and once the scroll has stopped no frame may be
+    // requested. Scrolls are instant here: the browser's own smooth scroll
+    // is not what is being measured.
+    rec.descent = { wide: null, phone: null };
+    for (const shape of [{ key: 'wide', vp: { width: 1440, height: 900 }, touch: false }, { key: 'phone', vp: { width: 390, height: 844 }, touch: true }]) {
+      const ctx = await browser.newContext({ viewport: shape.vp, hasTouch: shape.touch, isMobile: shape.touch, deviceScaleFactor: 1 });
+      const page = await ctx.newPage();
+      await page.addInitScript(RAF_COUNTER);
+      try { await page.goto(base + '/' + name, { waitUntil: 'networkidle', timeout: 60000 }); } catch (e) { /* measured anyway */ }
+      await page.addStyleTag({ content: 'html{scroll-behavior:auto!important}' });
+      await page.waitForTimeout(600);
+      const rows = await page.$$eval('#statement table.st tr.item', trs => trs.map(tr => tr.querySelector('th a').textContent.trim()));
+      let faced = 0, framesAfter = 0;
+      const aim = async title => page.evaluate(t => {
+        const wrap = document.querySelector('.descent-globe'); const wb = wrap ? wrap.getBoundingClientRect() : null;
+        const tr = [...document.querySelectorAll('#statement table.st tr.item')].find(x => x.querySelector('th a').textContent.trim() === t);
+        if (!tr) return;
+        const rr = tr.getBoundingClientRect(); const sr = tr.closest('table').getBoundingClientRect();
+        const beside = wb && (wb.left >= sr.right - 1 || wb.right <= sr.left + 1);
+        const line = beside ? innerHeight * 0.5 : (wb ? wb.bottom + 12 : innerHeight * 0.5);
+        const target = beside ? scrollY + rr.top + rr.height / 2 - line : scrollY + rr.top - line;
+        window.scrollTo(0, Math.max(0, target));
+      }, title);
+      for (const title of rows) {
+        // aim until the target holds still: on a phone the block pins and
+        // steps back as the page scrolls, which moves the reading line
+        for (let k = 0; k < 4; k++) {
+          const before = await page.evaluate(() => scrollY);
+          await aim(title); await page.waitForTimeout(400);
+          const after = await page.evaluate(() => scrollY);
+          if (Math.abs(after - before) < 3) break;
+        }
+        const facing = await page.evaluate(() => { const h = document.getElementById('atlasmini'); return h ? h.getAttribute('data-facing') : null; });
+        if (facing === title) faced++;
+        framesAfter += await page.evaluate(async () => { window.__rafReset(); await new Promise(r => setTimeout(r, 1000)); return window.__pageRaf(); }).catch(() => 99);
+      }
+      await page.evaluate(() => window.scrollTo(0, 0)); await page.waitForTimeout(300);
+      const framesAtTop = await page.evaluate(async () => { window.__rafReset(); await new Promise(r => setTimeout(r, 1000)); return window.__pageRaf(); }).catch(() => 99);
+      rec.descent[shape.key] = { rows: rows.length, faced, framesAfter, framesAtTop };
+      await ctx.close();
+    }
+  }
   if (shell) {
     // keyboard: real Tab presses, a ring on every stop
     {
@@ -291,6 +341,10 @@ const FALSIFICATIONS = [
     apply: h => h.replace('</body>', '<div style="width:900px;height:2px"></div></body>') },
   { key: 'chrome', page: 'positive-vs-normative.html', what: 'a block the build owns carries words the count would include',
     apply: h => h.replace('</body>', '<p id="__meta-negative">words the count must leave out</p></body>') },
+  { key: 'descent', page: 'index.html', what: 'a script keeps requesting frames after the scroll has stopped',
+    apply: h => h.replace('</body>', '<script>addEventListener("scroll",function(){(function f(){requestAnimationFrame(f)})()},{passive:true})</script></body>') },
+  { key: 'descent', page: 'index.html', what: "the sphere's document payload names the wrong document for the first two featured rows",
+    apply: h => h.replace('"u":"flagged-in-hindsight.html"', '"u":"__swap__"').replace('"u":"crucible-cockpit.html"', '"u":"flagged-in-hindsight.html"').replace('"u":"__swap__"', '"u":"crucible-cockpit.html"') },
 ];
 const SW_FALSIFICATION = {
   key: 'offline', page: 'sw.js', what: 'the new worker neither carries the saved copy across nor syncs it, so a publish empties it',
@@ -308,19 +362,20 @@ async function falsify(dig) {
   const copy = path.join(tmp, 'site');
   copyTree(ROOT, copy);
   const cases = [];
-  for (const c of FALSIFICATIONS) {
-    const fp = path.join(copy, c.page);
-    const orig = fs.readFileSync(fp, 'utf8');
-    const mutated = c.apply(orig);
-    if (mutated === orig) throw new Error('falsification ' + c.key + ' changed nothing on ' + c.page);
-    fs.writeFileSync(fp, mutated);
-  }
   const server = serve(copy);
   const port = await listen(server, 0);
   const base = 'http://127.0.0.1:' + port;
   const browser = await chromium.launch(LAUNCH);
   for (const c of FALSIFICATIONS) {
+    // one falsification at a time on its page, restored afterwards, so two
+    // falsifications of the same page do not measure each other
+    const fp = path.join(copy, c.page);
+    const orig = fs.readFileSync(fp, 'utf8');
+    const mutated = c.apply(orig);
+    if (mutated === orig) throw new Error('falsification ' + c.key + ' changed nothing on ' + c.page);
+    fs.writeFileSync(fp, mutated);
     const rec = await measurePage(browser, base, c.page, dig.shell.includes(c.page));
+    fs.writeFileSync(fp, orig);
     cases.push({ key: c.key, page: c.page, what: c.what, rec: { [c.key]: rec[c.key] } });
     process.stdout.write(`falsified ${c.key} on ${c.page}: ${JSON.stringify(rec[c.key])}\n`);
   }

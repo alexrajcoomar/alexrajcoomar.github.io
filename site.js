@@ -831,6 +831,12 @@
     }
 
     var W = 0, H = 0, dpr = 1, R = 0, S = 1, yaw = 0.5, pitch = -0.3;
+    /* the reader's own turn (drag) rides on top of the descent's camera */
+    var offYaw = 0, offPitch = 0, curDoc = -1;
+    /* the camera may tip to just short of the pole: the placement puts real
+       documents there (the lattice's first point is the pole itself), and a
+       camera that cannot face them cannot keep the descent's promise */
+    var PITCH_MAX = Math.PI / 2 - 0.02;
     /* The light: a halo outside the limb, the way the Atlas page's
        silhouette is drawn, and a broader, fainter one on the ground behind.
        Both sit outside the disc on purpose: a gradient laid over the marks
@@ -912,8 +918,11 @@
       var A = nrm(a.p), B = nrm(b.p);
       var dot = Math.max(-1, Math.min(1, A[0] * B[0] + A[1] * B[1] + A[2] * B[2]));
       var om = Math.acos(dot), so = Math.sin(om) || 1e-6;
-      ctx.strokeStyle = rgba(C.l, 0.85);
-      ctx.lineWidth = 1.25;
+      ctx.strokeStyle = rgba(C.l, 0.16);
+      ctx.lineWidth = 4.5;
+      ctx.stroke();
+      ctx.strokeStyle = rgba(C.l, 0.92);
+      ctx.lineWidth = 1.35;
       var started = false, seen = false;
       ctx.beginPath();
       for (var i = 0; i <= 48; i++) {
@@ -965,7 +974,7 @@
       ctx.stroke();
       /* the document under the pointer: its marks come forward, the rest
          hold; the chords its prose records are drawn under the marks */
-      var hd = hover >= 0 && own.length ? own[hover] : -1;
+      var hd = hover >= 0 && own.length ? own[hover] : curDoc;
       var drawn = 0;
       if (hd >= 0 && docs[hd]) {
         var D = docs[hd];
@@ -988,7 +997,7 @@
         var q = (t * 12) | 0;
         var rad = (BAND_R[p.b] + 1.5 * t) * S;
         var kin = hd >= 0 && own[i] === hd;
-        if (kin) { q = Math.min(12, q + 4); }
+        if (kin) { q = Math.min(12, q + 4); rad += 0.6 * S; }
         if (i === hover) rad += 2.4;
         ctx.beginPath();
         ctx.arc(sx, sy, rad, 0, Math.PI * 2);
@@ -999,6 +1008,14 @@
         } else {
           ctx.fillStyle = tone(p.k, q);
           ctx.fill();
+        }
+        /* the faced document's marks on the near side carry a ring in the
+           chord violet, so the region the sphere has turned to reads as one
+           lit constellation rather than a scatter of brighter dots */
+        if (kin && z2 > 0) {
+          ctx.beginPath();
+          ctx.arc(sx, sy, rad + 2.2, 0, Math.PI * 2);
+          ctx.strokeStyle = rgba(C.l, 0.22 + 0.33 * t); ctx.lineWidth = 1; ctx.stroke();
         }
         if (i === hover) {
           ctx.beginPath();
@@ -1077,8 +1094,8 @@
       var dt = lastT ? Math.min(0.05, (now - lastT) / 1000) : 0.016;
       lastT = now;
       if (!dragT) {
-        yaw += vy * dt;
-        pitch = Math.max(-1.2, Math.min(1.2, pitch + vp * dt));
+        yaw += vy * dt; offYaw += vy * dt;
+        pitch = Math.max(-PITCH_MAX, Math.min(PITCH_MAX, pitch + vp * dt)); offPitch += vp * dt;
         vy *= 0.94; vp *= 0.94;
         if (Math.abs(vy) < 0.0006) vy = 0;
         if (Math.abs(vp) < 0.0006) vp = 0;
@@ -1120,8 +1137,8 @@
         if (hover >= 0) setHover(-1);
         var dx = e.clientX - lxT, dy = e.clientY - lyT;
         movedT += Math.abs(dx) + Math.abs(dy);
-        yaw += dx * 0.006;
-        pitch = Math.max(-1.2, Math.min(1.2, pitch + dy * 0.005));
+        yaw += dx * 0.006; offYaw += dx * 0.006;
+        pitch = Math.max(-PITCH_MAX, Math.min(PITCH_MAX, pitch + dy * 0.005)); offPitch += dy * 0.005;
         vy = dx * 0.09; vp = dy * 0.07;
         lxT = e.clientX; lyT = e.clientY;
         kick();
@@ -1145,6 +1162,129 @@
         if (e.relatedTarget === cv) return;
         setHover(-1);
       });
+    }
+    /* ---- the descent ----------------------------------------------
+       The statement's featured rows are documents on the sphere. As each
+       row reaches the reading line the camera turns to face that document's
+       centroid (the same rotation the Atlas uses to face a mark), its marks
+       come forward and the chords its prose records are drawn. The camera is
+       a function of the scroll position and nothing else: one frame per
+       scroll event, none while the reader is still. With reduced motion the
+       camera holds and only the lighting follows the rows. */
+    var wrap = host.closest(".descent-globe");
+    var rowsD = [];
+    (function () {
+      if (!docs.length) return;
+      var byUrl = {};
+      docs.forEach(function (d, i) { byUrl[d.u] = i; });
+      var trs = document.querySelectorAll("#statement table.st tr.item");
+      for (var r = 0; r < trs.length; r++) {
+        var a = trs[r].querySelector("th a");
+        var u = a && a.getAttribute("href");
+        if (u && (u in byUrl)) rowsD.push({ el: trs[r], doc: byUrl[u] });
+      }
+    })();
+    var homeYaw = yaw, homePitch = pitch;
+    var facingEl = wrap && wrap.querySelector(".facing");
+    var reducedM = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    function facingOf(v) {
+      var n = nrm(v);
+      return { yaw: Math.atan2(-n[0], n[2]), pitch: Math.atan2(n[1], Math.sqrt(n[0] * n[0] + n[2] * n[2])) };
+    }
+    function shortest(a, b) {
+      var d = (b - a) % (Math.PI * 2);
+      if (d > Math.PI) d -= Math.PI * 2;
+      if (d < -Math.PI) d += Math.PI * 2;
+      return a + d;
+    }
+    /* quintic: zero velocity and zero acceleration at both ends, so the
+       camera leaves one document and settles on the next without a kink */
+    function smooth(t) { t = Math.max(0, Math.min(1, t)); return t * t * t * (t * (t * 6 - 15) + 10); }
+    var sraf = 0, lastStuck = false;
+    function descend() {
+      sraf = 0;
+      if (!rowsD.length) return;
+      /* the reading line. With the sphere beside the rows (a wide viewport)
+         a row is faced when its middle reaches mid-viewport. With the pinned
+         block (sphere, caption, facing line) above the rows, a row is faced
+         when its top clears the block, so the row faced is the row in view
+         and never one under the block. Which layout holds is read off the
+         boxes, not off a breakpoint. */
+      var wr = (wrap || host).getBoundingClientRect();
+      var tr0 = rowsD[0].el.closest("table") || rowsD[0].el;
+      var sr = tr0.getBoundingClientRect();
+      var beside = wr.left >= sr.right - 1 || wr.right <= sr.left + 1;
+      var line = beside ? innerHeight * 0.5 : wr.bottom + 12;
+      var y = window.scrollY || document.documentElement.scrollTop;
+      var anchors = [];
+      for (var i = 0; i < rowsD.length; i++) {
+        var rr = rowsD[i].el.getBoundingClientRect();
+        var f = facingOf(docs[rowsD[i].doc].p);
+        var at = beside ? rr.top + rr.height / 2 : rr.top;
+        anchors.push({ s: y + at - line, yaw: f.yaw, pitch: f.pitch, doc: rowsD[i].doc });
+      }
+      var byaw, bpitch, cur = -1;
+      if (y <= 0 || y < anchors[0].s - Math.max(1, anchors[0].s)) {
+        byaw = homeYaw; bpitch = homePitch;
+      } else if (y < anchors[0].s) {
+        var t0 = smooth(y / anchors[0].s);
+        byaw = homeYaw + (shortest(homeYaw, anchors[0].yaw) - homeYaw) * t0;
+        bpitch = homePitch + (anchors[0].pitch - homePitch) * t0;
+      } else {
+        var k = anchors.length - 1;
+        for (var a = 0; a < anchors.length - 1; a++) { if (y < anchors[a + 1].s) { k = a; break; } }
+        if (k >= anchors.length - 1) { byaw = anchors[k].yaw; bpitch = anchors[k].pitch; }
+        else {
+          var t1 = smooth((y - anchors[k].s) / Math.max(1, anchors[k + 1].s - anchors[k].s));
+          byaw = anchors[k].yaw + (shortest(anchors[k].yaw, anchors[k + 1].yaw) - anchors[k].yaw) * t1;
+          bpitch = anchors[k].pitch + (anchors[k + 1].pitch - anchors[k].pitch) * t1;
+        }
+      }
+      /* the row nearest the line is the document faced, once the first row
+         is within half a row of it */
+      var bestD = Infinity, gap = anchors.length > 1 ? (anchors[1].s - anchors[0].s) : 400;
+      for (var c = 0; c < anchors.length; c++) {
+        var d = Math.abs(y - anchors[c].s);
+        if (d < bestD) { bestD = d; cur = c; }
+      }
+      if (bestD > gap * 0.75) cur = -1;
+      var changed = false;
+      if (!reducedM) {
+        var ny = byaw + offYaw, np = Math.max(-PITCH_MAX, Math.min(PITCH_MAX, bpitch + offPitch));
+        if (Math.abs(ny - yaw) > 1e-4 || Math.abs(np - pitch) > 1e-4) { yaw = ny; pitch = np; changed = true; }
+      }
+      var nd = cur >= 0 ? anchors[cur].doc : -1;
+      if (nd !== curDoc) {
+        curDoc = nd; changed = true;
+        for (var q = 0; q < rowsD.length; q++) rowsD[q].el.classList.toggle("cur", rowsD[q].doc === curDoc);
+        if (facingEl) {
+          facingEl.textContent = "";
+          if (curDoc >= 0) {
+            facingEl.appendChild(document.createTextNode("Facing "));
+            var bb = document.createElement("b"); bb.textContent = docs[curDoc].t; facingEl.appendChild(bb);
+          }
+        }
+        if (curDoc >= 0) host.setAttribute("data-facing", docs[curDoc].t); else host.removeAttribute("data-facing");
+      }
+      /* pinned on a phone: the sphere steps back to make room for the rows */
+      if (wrap) {
+        var top = parseFloat(getComputedStyle(wrap).top) || 0;
+        var stuck = y > 0 && wrap.getBoundingClientRect().top <= top + 1;
+        if (stuck !== lastStuck) { lastStuck = stuck; wrap.classList.toggle("stuck", stuck); }
+      }
+      host.setAttribute("data-yaw", yaw.toFixed(3));
+      host.setAttribute("data-pitch", pitch.toFixed(3));
+      if (changed && !dragT) paint();
+    }
+    if (rowsD.length) {
+      window.addEventListener("scroll", function () { if (!sraf) sraf = requestAnimationFrame(descend); }, { passive: true });
+      window.addEventListener("resize", function () { if (!sraf) sraf = requestAnimationFrame(descend); });
+      /* the box changes size when it pins on a phone; the canvas follows */
+      if ("ResizeObserver" in window) {
+        new ResizeObserver(function () { size(); paint(); }).observe(host);
+      }
+      if ("requestIdleCallback" in window) requestIdleCallback(descend, { timeout: 1500 });
+      else setTimeout(descend, 300);
     }
     host.addEventListener("click", function (e) {
       if (movedT > 8) { movedT = 0; return; }

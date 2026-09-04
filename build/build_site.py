@@ -1117,13 +1117,15 @@ def page_index():
         for i, p in enumerate(tools, 1))
     lifts_count = (f'{len(LIFTS)} lifted on the <a class="inlink" href="research.html">research shelf</a>')
 
-    body = f"""<section class="stage" aria-label="Who this is">
-  <div class="shell stage-grid">
+    body = f"""<div class="shell descent">
+  <section class="stage" aria-label="Who this is">
     {eyebrow_chip()}
     {hero_identity()}
     <p class="display">{S["headline"]}</p>
     <p class="method">Every figure below is counted from the published files by the build, never typed. The notes define each column and state every exception.</p>
     {corpus_line()}
+  </section>
+  <div class="descent-globe">
     <div class="stage-globe">
       <div class="tease-globe hero-globe" id="atlasmini" data-pts="{ATLAS_PTS}" data-fill="0.44" aria-hidden="true"></div>
       <script type="application/json" id="atlasmini-docs">{atlas_home_links()}</script>
@@ -1131,24 +1133,25 @@ def page_index():
       <p class="globe-cap"><a class="inlink" href="atlas.html">{ATLAS_N} sections, every one a link <span aria-hidden="true">&#8594;</span></a>
         <span class="globe-hint">Point at a mark: chords join its document to the documents its prose links, or that link it. <span class="gc-l">{N_EDGES}</span> such links are recorded.</span>
         <span class="globe-hint-touch">Tap a mark: chords join its document to the documents its prose links, or that link it, and its name opens it. <span class="gc-l">{N_EDGES}</span> such links are recorded.</span></p>
+      <p class="facing" aria-live="off"></p>
+      <p class="globe-key">Where a mark sits is a rule the build checks: each origin's zone of latitude has the area of its share of the words, each document sits at the height its cumulative count gives it, and its sections fill a cap the size of its own share. As a featured row reaches the reading line the sphere turns to face that document.</p>
       <noscript><p class="note">The sphere needs a browser that runs scripts.
       The <a class="inlink" href="atlas.html">full index</a> does not.</p></noscript>
     </div>
   </div>
-</section>
-
-<section class="band shell" id="statement" aria-labelledby="stmt-h">
-  {sect_head(1, "Statement of work", "Six featured pieces, then every origin, then the whole.", f'<a class="inlink" href="#notes">Notes 1 to 6 &#8595;</a>', "stmt-h")}
-  <div class="pane">
-    <table class="st">
-      {stmt_head_cells()}
-      <tbody>
+  <section class="band statement" id="statement" aria-labelledby="stmt-h">
+    {sect_head(1, "Statement of work", "Six featured pieces, then every origin, then the whole. As a row reaches the reading line the sphere turns to face that document.", f'<a class="inlink" href="#notes">Notes 1 to 6 &#8595;</a>', "stmt-h")}
+    <div class="pane">
+      <table class="st">
+        {stmt_head_cells()}
+        <tbody>
 {chr(10).join(rows)}
 {chr(10).join(subs)}
-      </tbody>
-    </table>
-  </div>
-</section>
+        </tbody>
+      </table>
+    </div>
+  </section>
+</div>
 
 <section class="band ground" id="figures" aria-labelledby="fig-h">
   <div class="shell">
@@ -2883,14 +2886,16 @@ ATLAS_BODY = r"""<section class="band atlas-band" id="atlas">
           the share of the document's static text under that heading; it is not a per-section
           measurement. Heading level is no longer drawn on the sphere and is kept in the index
           beside it. A document's area grows with its section count, and a heading several
-          documents carry is placed once, between them. Where a document sits is a rule: its
-          latitude is its origin (independent work in the north band, coursework in the middle,
-          personal interest in the south), and within its band it climbs east and north by
-          measured word count, shortest first, so two documents standing near each other share an
-          origin and a size. Its sections are scattered around it by a generator seeded with the
-          document's own name, so adding a piece moves only the band it joins. The build
-          recomputes every position from the metrics on every run and refuses a sphere that
-          disagrees (check 28).</p>
+          documents carry is placed once, between them. Where a document sits is a rule, and the
+          rule is an equal-area projection of the corpus's words: each origin owns a zone of
+          latitude whose area is its share of the words (independent work in the north, coursework
+          across the middle, personal interest in the south); within its zone a document sits at
+          the height its cumulative word count gives it, largest first, on a longitude that steps
+          by the golden angle from one document to the next; and its sections scatter inside a cap
+          whose area is the document's own share of the words, from a generator seeded with the
+          document's name. So the marks cover the whole sphere in proportion to the words they
+          stand for, and a dense patch is a long document. The build recomputes every position
+          from the metrics on every run and refuses a sphere that disagrees (check 28).</p>
         </div>
         <p class="replay"><button type="button" id="preplay" class="linkbtn">Replay the six labels</button></p>
       </div>
@@ -3869,17 +3874,24 @@ def check_site():
             problems.append(_p("11a2", "atlas.html: mark weights add to %s, the corpus line says %s"
                             % (format(sum(ws), ","), format(TOTAL_WORDS, ","))))
 
-    # 28. where a document sits is a rule, and the pages hold to it: every
-    # centroid the Atlas index and the home sphere carry is recomputed from
-    # the metrics (band by origin, rank by words within the band), and within
-    # each band the documents read back from the page climb east and north
-    # with their word counts.
+    # 28. where a document sits is a rule, and the pages hold to it. The rule
+    # is an equal-area projection of the corpus's words: each origin's zone
+    # of latitude has the area of its word share, each document sits at the
+    # height its cumulative count gives it within the zone (largest first),
+    # on a longitude that steps by the golden angle, and its sections lie
+    # inside a cap whose area is the document's own share. Every centroid
+    # the Atlas index and the home sphere carry is recomputed from the
+    # metrics and compared; every section mark is held inside its cap.
     regs = ATLAS.get("regions") or []
     placed_slugs = {r["s"] for r in regs}
-    ranks = atlas_mod.rank_by_words([p for p in P if p["slug"] in placed_slugs])
-    want_c = {slug: atlas_mod.centroid(*v) for slug, v in ranks.items()}
-    T["position"] = {"documents": len(want_c), "pages": 0, "bands": len(atlas_mod.BANDS), "read_back": 0}
+    rule28, zones28 = atlas_mod.plan([p for p in P if p["slug"] in placed_slugs])
+    want_c = {slug: atlas_mod.centroid_of(e) for slug, e in rule28.items()}
+    T["position"] = {"documents": len(want_c), "pages": 0, "zones": len(zones28), "read_back": 0,
+                     "marks": 0, "shared": 0, "outside": 0}
     words_of = {p["slug"]: p["words"] for p in P}
+    def _ang28(a, b):
+        d = sum(x * y for x, y in zip(a, b)) / max(1e-9, math.sqrt(sum(x * x for x in a)) * math.sqrt(sum(x * x for x in b)))
+        return math.acos(max(-1.0, min(1.0, d)))
     def _hold_positions(f, got):
         """got: slug -> (x, y, z) as the page carries them."""
         look("28", f)
@@ -3890,28 +3902,44 @@ def check_site():
         for slug, xyz in got.items():
             w = want_c.get(slug)
             if w and max(abs(a - b) for a, b in zip(xyz, w)) > 2e-3:
-                problems.append(_p("28", "%s: %s sits at %s; its origin and word rank put it at %s"
+                problems.append(_p("28", "%s: %s sits at %s; its zone, cumulative words and golden-angle longitude put it at %s"
                                    % (f, slug, ",".join("%.3f" % v for v in xyz), ",".join("%.3f" % v for v in w))))
                 break
-        for surf in atlas_mod.BANDS:
-            lo, hi = atlas_mod.BANDS[surf]
-            band = sorted((s2 for s2 in got if ranks.get(s2, ("",))[0] == surf), key=lambda s2: (words_of.get(s2, 0), s2))
+        for surf, (ytop, ybot) in zones28.items():
+            zone = sorted((s2 for s2 in got if rule28.get(s2, {}).get("zone") == surf), key=lambda s2: (-words_of.get(s2, 0), s2))
             prev = None
-            for s2 in band:
-                x, y, z = got[s2]
-                if not (lo - 2e-3 <= y <= hi + 2e-3):
-                    problems.append(_p("28", "%s: %s is %s work and sits outside its band" % (f, s2, surf)))
+            for s2 in zone:
+                y = got[s2][1]
+                if not (ybot - 2e-3 <= y <= ytop + 2e-3):
+                    problems.append(_p("28", "%s: %s is %s work and sits outside its zone" % (f, s2, surf)))
                     break
-                th = math.atan2(z, x) % (2 * math.pi)
-                if prev is not None and (y < prev[0] - 1e-6 or th < prev[1] - 1e-6):
-                    problems.append(_p("28", "%s: %s has more words than %s but sits west or south of it" % (f, s2, prev[2])))
+                if prev is not None and y > prev[0] + 1e-6:
+                    problems.append(_p("28", "%s: %s has fewer words than %s but sits north of it" % (f, s2, prev[1])))
                     break
-                prev = (y, th, s2)
+                prev = (y, s2)
     if regs and os.path.exists(apath):
         got = {}
         for m in re.finditer(r'<section class="areg" data-s="([^"]+)"[^>]*?data-c="([^"]+)"', atext, re.S):
             got[m.group(1)] = tuple(float(v) for v in m.group(2).split(","))
         _hold_positions("atlas.html", got)
+        # every section mark inside its document's cap; a heading several
+        # documents carry is placed between them and is counted, not held
+        shown28 = 0
+        for m in re.finditer(r'<section class="areg" data-s="([^"]+)".*?</section>', atext, re.S):
+            slug = m.group(1); cent = want_c.get(slug); e = rule28.get(slug)
+            if not cent or not e:
+                continue
+            for mm in re.finditer(r'<li data-p="([^"]+)"([^>]*)>', m.group(0)):
+                if ' data-o="' in mm.group(2):
+                    T["position"]["shared"] += 1
+                    continue
+                T["position"]["marks"] += 1
+                pt = tuple(float(v) for v in mm.group(1).split(","))
+                if _ang28(pt, cent) > e["cap"] + 0.01:
+                    T["position"]["outside"] += 1
+                    if shown28 < 3:
+                        shown28 += 1
+                        problems.append(_p("28", "atlas.html: a mark of %s lies %.2f rad from its centroid, outside its cap of %.2f" % (slug, _ang28(pt, cent), e["cap"])))
     if regs and os.path.exists(ipath):
         m = re.search(r'<script type="application/json" id="atlasmini-docs">(.*?)</script>', itext, re.S)
         if m:
@@ -4469,7 +4497,7 @@ def check_site():
         cctx = _claims_ctx(problems)
         st29, R29 = cctx["audit"], check_site.records
         decl29 = set(DECLARED.get("overflow") or [])
-        rt_keys = {"E": "ext", "I": "idle", "K": "keyboard", "P": "print", "M": "motion", "F": "fit", "C": "chrome"}
+        rt_keys = {"E": "ext", "I": "idle", "K": "keyboard", "P": "print", "M": "motion", "F": "fit", "C": "chrome", "D": "descent"}
         wall = re.search(r'<table class="inst" id="page-wall">(.*?)</table>', ctext, re.S)
         if not wall:
             problems.append(_p("29", "controls.html: carries no page wall"))
@@ -4501,6 +4529,8 @@ def check_site():
                             applies = page in SHELL_PAGES
                         elif key == "chrome":
                             applies = page not in SHELL_PAGES
+                        elif key == "descent":
+                            applies = page == "index.html"
                         else:
                             applies = key is not None
                         if not applies:
