@@ -284,9 +284,12 @@ def head(title, desc, page, extra=""):
 <link rel="stylesheet" href="{asset("figures.css")}">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%2316150f'/><text x='50' y='72' font-size='64' font-family='Helvetica,Arial' font-weight='bold' fill='%23faf9f6' text-anchor='middle'>A</text></svg>">
 <script>
-/* Theme before first paint, so there is no flash. Wrapped because some
-   embedded contexts throw on storage access. */
-(function(){{try{{var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);}}catch(e){{}}
+/* Theme before first paint, so there is no flash. Obsidian is the site's
+   default: a browser that holds no choice lands dark, and only the stored
+   word "light" lands light. Wrapped because some embedded contexts throw
+   on storage access, and a browser that throws still lands dark. */
+(function(){{var t=null;try{{t=localStorage.getItem('theme');}}catch(e){{}}
+document.documentElement.setAttribute('data-theme',t==='light'?'light':'dark');
 document.documentElement.className+=' js';}})();
 </script>
 <!-- A control that can do nothing is worse than no control: with scripts
