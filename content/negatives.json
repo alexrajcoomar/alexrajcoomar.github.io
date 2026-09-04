@@ -452,8 +452,8 @@
   "meta": {
    "tool": "build/audit.js --falsify",
    "date": "2026-09-04",
-   "commit": "afe85c0",
-   "code": "44c7e6778a6d"
+   "commit": "20c534c",
+   "code": "42b9f36679be"
   },
   "cases": [
    {

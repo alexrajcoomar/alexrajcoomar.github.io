@@ -4,7 +4,7 @@
   "tool": "build/audit.js",
   "browser": "Chromium 141.0.7390.37",
   "date": "2026-09-04",
-  "commit": "afe85c0"
+  "commit": "20c534c"
  },
  "pages": {
   "404.html": {
@@ -37,7 +37,7 @@
    "motion": {
     "animations": 0
    },
-   "inputs": "a8b077821518",
+   "inputs": "0958d700e69d",
    "measured": "2026-09-04"
   },
   "about.html": {
@@ -70,7 +70,7 @@
    "motion": {
     "animations": 0
    },
-   "inputs": "8855f72a2195",
+   "inputs": "48e89232fe0d",
    "measured": "2026-09-04"
   },
   "afm241-cheat-sheet.html": {
@@ -623,7 +623,7 @@
    "motion": {
     "animations": 0
    },
-   "inputs": "2e1cadb56458",
+   "inputs": "82964c958858",
    "measured": "2026-09-04"
   },
   "brittle-network.html": {
@@ -696,7 +696,7 @@
    "motion": {
     "animations": 0
    },
-   "inputs": "ff5cb3d4581f",
+   "inputs": "4fdc97d3d5b7",
    "measured": "2026-09-04"
   },
   "controls.html": {
@@ -709,8 +709,8 @@
    },
    "errors": 0,
    "chrome": {
-    "a": 3057,
-    "b": 3012
+    "a": 3048,
+    "b": 3003
    },
    "print": {
     "stickyLeft": 0,
@@ -729,7 +729,7 @@
    "motion": {
     "animations": 0
    },
-   "inputs": "d66194f8889d",
+   "inputs": "68f4a5481d6e",
    "measured": "2026-09-04"
   },
   "coursework.html": {
@@ -762,7 +762,7 @@
    "motion": {
     "animations": 0
    },
-   "inputs": "a714ff339d4a",
+   "inputs": "625a5ce04a95",
    "measured": "2026-09-04"
   },
   "crucible-cockpit.html": {
@@ -1215,7 +1215,7 @@
    "motion": {
     "animations": 0
    },
-   "inputs": "e8a4a28607e5",
+   "inputs": "e0a468761ec1",
    "measured": "2026-09-04"
   },
   "kennedy-dossier.html": {
@@ -1308,7 +1308,7 @@
    "motion": {
     "animations": 0
    },
-   "inputs": "24138a79bbb1",
+   "inputs": "8c378cf956e6",
    "measured": "2026-09-04"
   },
   "monroe-case-file.html": {
@@ -1481,7 +1481,7 @@
    "motion": {
     "animations": 0
    },
-   "inputs": "eca7eba3b44d",
+   "inputs": "1aa899fdb61f",
    "measured": "2026-09-04"
   },
   "revenue-recognition.html": {
@@ -1614,7 +1614,7 @@
    "motion": {
     "animations": 0
    },
-   "inputs": "5b40b1ed7903",
+   "inputs": "b0afd8250472",
    "measured": "2026-09-04"
   },
   "transformers-study-guide.html": {
