@@ -430,9 +430,18 @@ def build(ctx):
     else:
         rows.append(_row(claim, "build/audit.js", [], "for this build", "open", ["colophon.html"], None, when, "offline"))
 
-    # --- asserted: no check exists yet ---
-    asserted("Colour never carries meaning on its own: every mark that means something also differs in fill or shape.", ["colophon.html"])
-    asserted("Every figure's numbers are restated in a table or in the running text.", ["colophon.html"])
+    t = T.get("colour", {})
+    checked("On the figures the site lifts out of its pieces, no meaning is carried by colour alone: every colour a figure's marks use is declared with a meaning in words and named in a key under the figure.",
+            ["30"], f"{t.get('colours', 0)} meaning colours across {t.get('figures', 0)} lifted figures on {t.get('pages', 0)} pages, {t.get('unnamed', 0)} unnamed, {t.get('stray', 0)} declared and unused",
+            ["research.html", "index.html", "colophon.html"],
+            note="The figures a piece draws inside itself are the piece's own and are not held to this; the sphere and the corpus figure carry their keys on their pages.")
+    t = T.get("restated", {})
+    checked("Every number a figure on the generated pages draws is restated in the page's text outside the drawing.", ["31"],
+            f"{n(t.get('numerals', 0))} numerals drawn by {t.get('figures', 0)} figures on {t.get('pages', 0)} pages, {t.get('missing', 0)} not restated",
+            ["research.html", "index.html", "colophon.html"])
+
+    # --- asserted: no check exists ---
+    # (none this build: the two claims that stood here are checks 30 and 31)
 
     summary = {"rows": len(rows)}
     for st in ("held", "untested", "open", "asserted", "failed"):
