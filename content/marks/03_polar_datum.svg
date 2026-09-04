@@ -1,0 +1,35 @@
+<svg viewBox="0 0 64 64"
+     xmlns="http://www.w3.org/2000/svg"
+     fill="none"
+     stroke="currentColor"
+     stroke-linecap="round">
+
+  <!-- Polar rings -->
+  <circle cx="32" cy="32" r="28" stroke-width="1"/>
+  <circle cx="32" cy="32" r="22" stroke-width="0.75"/>
+  <circle cx="32" cy="32" r="16" stroke-width="0.75"/>
+  <circle cx="32" cy="32" r="8" stroke-width="0.75"/>
+
+  <!-- Longitude axes -->
+  <path d="M32 2 V62" stroke-width="0.75"/>
+  <path d="M2 32 H62" stroke-width="0.75"/>
+  <path d="M10.8 10.8 L53.2 53.2" stroke-width="0.75"/>
+  <path d="M53.2 10.8 L10.8 53.2" stroke-width="0.75"/>
+
+  <!-- Cardinal datum ticks -->
+  <path d="M32 1 V6" stroke-width="1"/>
+  <path d="M32 58 V63" stroke-width="1"/>
+  <path d="M1 32 H6" stroke-width="1"/>
+  <path d="M58 32 H63" stroke-width="1"/>
+
+  <!-- North Pole observer -->
+  <circle cx="32" cy="4" r="2.5"
+          fill="currentColor"
+          stroke="none"/>
+
+  <!-- Author datum -->
+  <circle cx="32" cy="32" r="1.5"
+          fill="currentColor"
+          stroke="none"/>
+
+</svg>

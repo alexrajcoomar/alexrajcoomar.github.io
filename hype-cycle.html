@@ -117,7 +117,7 @@ body{background:var(--page-ground)}
 </style><!--__meta-->
 <meta name="color-scheme" content="light dark">
 <meta name="description" content="A visual walk through the hype cycle, phase by phase, with what each phase predicts and what it does not.">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%2316150f'/><text x='50' y='72' font-size='64' font-family='Helvetica,Arial' font-weight='bold' fill='%23faf9f6' text-anchor='middle'>A</text></svg>">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' fill='%2316150f'/><g fill='none' stroke='%23faf9f6' stroke-linecap='round' stroke-linejoin='round'><path d='M12 56 L32 6 L52 56' stroke-width='4.95'/><path d='M20 38 H44' stroke-width='4.95'/><path d='M32 36 L51 56' stroke-width='4.95'/></g></svg>">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="manifest" href="site.webmanifest">
 <link rel="canonical" href="https://alexrajcoomar.github.io/hype-cycle.html">
@@ -172,8 +172,11 @@ body{background:var(--page-ground)}
 #__rb .__rb-from{flex-basis:100%;order:5;font-weight:400;color:#66635a;line-height:1.4;max-width:70ch}
 #__rb .__rb-from b{font-weight:600;color:#55524a}
 #__rb .__mark{
-  display:inline-grid;place-items:center;width:1.2rem;height:1.2rem;flex:none;
-  background:#16150f;color:#faf9f6;font-size:.72rem;font-weight:700;
+  flex:none;align-self:center;color:inherit;
+  /* pinned: six pieces give every svg a width of 100 per cent, and this
+     mark's stroke factor was computed for the size named here. Check 34
+     holds the two to each other. */
+  width:19px;height:19px;
 }
 /* Dark has to answer to two things: the reader's system setting, and the
    theme button on the page, which sets data-theme on <html>. Keyed to the
@@ -204,7 +207,7 @@ body{background:var(--page-ground)}
 @media print{#__rb{display:none !important}}
 </style>
 <nav id="__rb" aria-label="Portfolio">
-  <a class="__rb-home" href="index.html"><span class="__mark" aria-hidden="true">A</span>Alex Rajcoomar <i>portfolio</i></a>
+  <a class="__rb-home" href="index.html"><svg class="__mark mk-bar" viewBox="0 0 64 64" width="19" height="19" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 56 L32 6 L52 56" stroke-width="3.6"/><path d="M20 38 H44" stroke-width="3.6"/><path d="M32 18 H42 C51 18 51 35 42 36 H32" stroke-width="3.6"/><path d="M32 36 L51 56" stroke-width="3.6"/></svg>Alex Rajcoomar <i>portfolio</i></a>
   <span class="__rb-row">Coursework &middot; <b>830</b> words &middot; <b>2</b> figures &middot; <b>2</b> tables</span>
   <span class="__rb-right"><a href="coursework.html">Coursework</a><a href="atlas.html">Atlas</a><a href="library.html">All work</a></span>
   <span class="__rb-from">Not declared on file.</span>

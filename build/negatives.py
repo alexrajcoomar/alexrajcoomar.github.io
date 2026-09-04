@@ -35,7 +35,7 @@ BS = "build/build_site.py"
 # the code a build-level falsification exercises: the checks, the modules
 # they call, this file, and the workflow the deploy gate reads
 BUILD_CODE = ["build/build_site.py", "build/claims.py", "build/atlas.py", "build/invariance.py",
-              "build/ledger.py", "build/negatives.py", ".github/workflows/build.yml"]
+              "build/ledger.py", "build/marks.py", "build/negatives.py", ".github/workflows/build.yml"]
 PIECE_SMALL = "positive-vs-normative.html"          # a short listed piece, not a record
 PIECE_CONVERTED = "afm291-ch1-theory-and-analytics.html"   # a converted document with a body
 
@@ -233,6 +233,16 @@ CASES = [
       lambda t: _edit(t, BS, 'const NEVER_STORED = ["admin.html"];', 'const NEVER_STORED = [];')),
     C("33", "truncated", "the editor's file ends before its markup does",
       lambda t: _edit(t, "admin.html", "</script>\n</body>\n</html>\n", "</script>\n")),
+    # the marks: geometry the files do not carry, a stroke too thin to hold an
+    # edge at the size it is drawn, and a source file that is not there
+    C("34", "mark-element-invented", "the pages draw a line the mark's file does not carry",
+      lambda t: _edit(t, "build/marks.py", '    return "".join(parts)\n',
+                      '    return "".join(parts) + \'<path d="M2 2 L62 62" stroke-width="1"/>\'\n')),
+    C("34", "mark-stroke-unscaled", "the tab icon is drawn at the authored stroke, which cannot hold an edge at that size",
+      lambda t: _edit(t, "build/marks.py", '"keep": ("A#1", "A#2", "R leg#1"), "scale": 3.3, "px": 16',
+                      '"keep": ("A#1", "A#2", "R leg#1"), "scale": 1.0, "px": 16')),
+    C("34", "mark-source-missing", "a mark's source file is gone, so what the pages draw answers to nothing",
+      lambda t: os.remove(os.path.join(t, "content", "marks", "02_forensic_audit_delta.svg"))),
 ]
 
 

@@ -11,9 +11,9 @@
    digest moved are fetched again. Caches named term-* belong to the /term/
    instrument's own worker, which manages its own versions; they are not
    this worker's to delete. */
-const VERSION  = "0545d2eb1dc4";
+const VERSION  = "34465567bbe9";
 const CORE     = "site-" + VERSION;
-const PAGES    = "site-pages-fff0bcb312af";
+const PAGES    = "site-pages-2d9d0acf1432";
 const MANIFEST = "offline-manifest.json";
 const FILES    = [
   "daily-learning-cockpit-192.png",
