@@ -4,7 +4,7 @@
   "tool": "build/audit.js",
   "browser": "Chromium 141.0.7390.37",
   "date": "2026-09-04",
-  "commit": "a42eb38",
+  "commit": "a5ec047",
   "runs": [
    {
     "commit": "21aacf2",
@@ -44,7 +44,7 @@
    "motion": {
     "animations": 0
    },
-   "inputs": "a4e1ac3e01c1",
+   "inputs": "e4ff22c545e9",
    "measured": "2026-09-04"
   },
   "about.html": {
@@ -77,7 +77,7 @@
    "motion": {
     "animations": 0
    },
-   "inputs": "fa9c85c6fd95",
+   "inputs": "6e8100da7ed8",
    "measured": "2026-09-04"
   },
   "afm241-cheat-sheet.html": {
@@ -610,8 +610,8 @@
    },
    "errors": 0,
    "chrome": {
-    "a": 13954,
-    "b": 13909
+    "a": 14056,
+    "b": 14011
    },
    "print": {
     "stickyLeft": 0,
@@ -630,7 +630,7 @@
    "motion": {
     "animations": 0
    },
-   "inputs": "9385cd5c4f5b",
+   "inputs": "21c348bc6fa8",
    "measured": "2026-09-04"
   },
   "brittle-network.html": {
@@ -703,7 +703,7 @@
    "motion": {
     "animations": 0
    },
-   "inputs": "13086b0d26a2",
+   "inputs": "b5de2e2cab9c",
    "measured": "2026-09-04"
   },
   "controls.html": {
@@ -716,8 +716,8 @@
    },
    "errors": 0,
    "chrome": {
-    "a": 3213,
-    "b": 3168
+    "a": 3304,
+    "b": 3259
    },
    "print": {
     "stickyLeft": 0,
@@ -736,7 +736,7 @@
    "motion": {
     "animations": 0
    },
-   "inputs": "605ae5cc3981",
+   "inputs": "fdaf00c73456",
    "measured": "2026-09-04"
   },
   "coursework.html": {
@@ -769,7 +769,7 @@
    "motion": {
     "animations": 0
    },
-   "inputs": "82e599b8f2d9",
+   "inputs": "36e2ceb5e2a3",
    "measured": "2026-09-04"
   },
   "crucible-cockpit.html": {
@@ -1202,8 +1202,8 @@
    },
    "errors": 0,
    "chrome": {
-    "a": 2299,
-    "b": 2254
+    "a": 2309,
+    "b": 2264
    },
    "print": {
     "stickyLeft": 0,
@@ -1236,7 +1236,7 @@
    "motion": {
     "animations": 0
    },
-   "inputs": "a56e36dce545",
+   "inputs": "a7bb9adaebff",
    "measured": "2026-09-04"
   },
   "kennedy-dossier.html": {
@@ -1329,7 +1329,7 @@
    "motion": {
     "animations": 0
    },
-   "inputs": "b7c283236f04",
+   "inputs": "7e742aeaf9ad",
    "measured": "2026-09-04"
   },
   "monroe-case-file.html": {
@@ -1502,7 +1502,7 @@
    "motion": {
     "animations": 0
    },
-   "inputs": "2712ffe8c309",
+   "inputs": "bad9a2517ff2",
    "measured": "2026-09-04"
   },
   "revenue-recognition.html": {
@@ -1635,7 +1635,7 @@
    "motion": {
     "animations": 0
    },
-   "inputs": "721ad42bc8f3",
+   "inputs": "fdec321919da",
    "measured": "2026-09-04"
   },
   "transformers-study-guide.html": {

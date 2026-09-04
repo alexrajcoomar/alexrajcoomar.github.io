@@ -722,7 +722,7 @@
        on the Atlas page, which is this sphere's key; check 27 holds the two
        lists to each other. A channel drawn here and not listed there fails
        the build, and so does a key entry nothing draws. */
-    var CHANNELS = ["ind", "cou", "per", "too", "shr", "vis", "lnk"];
+    var CHANNELS = ["ind", "cou", "per", "too", "shr", "vis", "lnk", "dsc", "zon"];
 
     /* This block sits outside the file's main closure, so it reads the motion
        preference for itself rather than borrowing a variable that is not in
@@ -755,6 +755,9 @@
        it the sphere still draws; with it, pointing at a mark draws the
        chords its document records, as the Atlas does, on demand. */
     var docs = [], own = [], lk = [];
+    /* the two parallels that bound the origins' zones, as y, from the build */
+    var zonesY = (host.getAttribute("data-zones") || "").split(",").map(Number)
+      .filter(function (v) { return isFinite(v) && v > -1 && v < 1; });
     try {
       var dj = JSON.parse(document.getElementById("atlasmini-docs").textContent);
       docs = dj.docs || [];
@@ -799,7 +802,7 @@
     var ctx = cv.getContext && cv.getContext("2d");
     if (!ctx) return;
 
-    var C = {};
+    var C = {}, DK = false;
     function colours() {
       var s = getComputedStyle(document.documentElement);
       C.i = s.getPropertyValue("--accent").trim() || "#14509b";
@@ -811,6 +814,7 @@
       C.k = s.getPropertyValue("--ink").trim() || "#16150f";
       /* the second accent: a link the prose records, and nothing else */
       C.l = s.getPropertyValue("--link").trim() || C.k;
+      DK = dark();
     }
     function dark() {
       var h = C.p.replace("#", "");
@@ -872,7 +876,9 @@
       var key = k + q;
       var s = _cc[key];
       if (s) return s;
-      var a = 0.08 + 0.72 * (q / 12);
+      /* on paper the far side needs a higher floor than on the dark ground,
+         or the back of the sphere reads as empty */
+      var a = DK ? 0.08 + 0.72 * (q / 12) : 0.18 + 0.66 * (q / 12);
       s = k === "c" ? rgba(C.c, a)
         : k === "t" ? rgba(C.t, a)
         : k === "p" ? rgba(C.i, a * 0.55)
@@ -918,7 +924,7 @@
       var A = nrm(a.p), B = nrm(b.p);
       var dot = Math.max(-1, Math.min(1, A[0] * B[0] + A[1] * B[1] + A[2] * B[2]));
       var om = Math.acos(dot), so = Math.sin(om) || 1e-6;
-      ctx.strokeStyle = rgba(C.l, 0.16);
+      ctx.strokeStyle = rgba(C.l, DK ? 0.16 : 0.2);
       ctx.lineWidth = 4.5;
       ctx.stroke();
       ctx.strokeStyle = rgba(C.l, 0.92);
@@ -937,6 +943,32 @@
       ctx.stroke();
       if (tickAB) chordTick(A, B, om, so, 0.72);
       if (tickBA) chordTick(A, B, om, so, 0.28);
+      return seen;
+    }
+    /* A small circle on the sphere: a document's disc, or a zone parallel
+       (a disc about the pole). Only the part facing the viewer is drawn. */
+    function ring(c, rad, colour, alpha, width, dash) {
+      var up = Math.abs(c[1]) > 0.9 ? [1, 0, 0] : [0, 1, 0];
+      var e1 = nrm([up[1] * c[2] - up[2] * c[1], up[2] * c[0] - up[0] * c[2], up[0] * c[1] - up[1] * c[0]]);
+      var e2 = nrm([c[1] * e1[2] - c[2] * e1[1], c[2] * e1[0] - c[0] * e1[2], c[0] * e1[1] - c[1] * e1[0]]);
+      var ca = Math.cos(rad), sa = Math.sin(rad), n = rad > 0.5 ? 96 : 48;
+      var started = false, seen = false;
+      if (dash) ctx.setLineDash(dash);
+      ctx.strokeStyle = rgba(colour, alpha);
+      ctx.lineWidth = width;
+      ctx.beginPath();
+      for (var i = 0; i <= n; i++) {
+        var th = i / n * Math.PI * 2, cp = Math.cos(th), sp = Math.sin(th);
+        var s = project([c[0] * ca + (e1[0] * cp + e2[0] * sp) * sa,
+                         c[1] * ca + (e1[1] * cp + e2[1] * sp) * sa,
+                         c[2] * ca + (e1[2] * cp + e2[2] * sp) * sa]);
+        if (s[2] < -0.02) { started = false; continue; }
+        seen = true;
+        if (!started) { ctx.moveTo(s[0], s[1]); started = true; }
+        else ctx.lineTo(s[0], s[1]);
+      }
+      ctx.stroke();
+      if (dash) ctx.setLineDash([]);
       return seen;
     }
     var hover = -1;
@@ -967,14 +999,43 @@
         ctx.arc(cx, cy, R, 0, Math.PI * 2, true);
         ctx.fill();
       }
+      /* the body of the sphere: a faint limb shading inside the disc, so
+         the ball reads as a ball on paper as well as on the dark ground.
+         It is at most a twentieth of the ink at the very edge, under the
+         marks, and it carries no data. */
+      if (lit) {
+        var g2 = ctx.createRadialGradient(cx, cy, R * 0.58, cx, cy, R);
+        g2.addColorStop(0, rgba(DK ? C.i : C.k, 0));
+        g2.addColorStop(1, rgba(DK ? C.i : C.k, DK ? 0.07 : 0.05));
+        ctx.fillStyle = g2;
+        ctx.beginPath();
+        ctx.arc(cx, cy, R, 0, Math.PI * 2);
+        ctx.fill();
+      }
       ctx.beginPath();
       ctx.arc(cx, cy, R, 0, Math.PI * 2);
-      ctx.strokeStyle = rgba(lit ? C.e : C.r, 0.6);
+      ctx.strokeStyle = rgba(lit ? C.e : C.r, DK ? 0.6 : 0.75);
       ctx.lineWidth = 1;
       ctx.stroke();
       /* the document under the pointer: its marks come forward, the rest
          hold; the chords its prose records are drawn under the marks */
       var hd = hover >= 0 && own.length ? own[hover] : curDoc;
+      /* the rule, drawn: the two parallels that bound the zones, and every
+         document's disc as a hairline; the document the sphere is showing
+         has its disc drawn in the chord colour, so the cluster the marks
+         make is also the boundary the rule gave it */
+      for (var zi = 0; zi < zonesY.length; zi++) {
+        ring([0, 1, 0], Math.acos(zonesY[zi]), C.k, DK ? 0.2 : 0.16, 1, [3, 5]);
+      }
+      for (var di = 0; di < docs.length; di++) {
+        var dd = docs[di];
+        if (!(dd.r > 0) || di === hd) continue;
+        ring(nrm(dd.p), dd.r, C.k, DK ? 0.18 : 0.14, 1);
+      }
+      if (hd >= 0 && docs[hd] && docs[hd].r > 0) {
+        ring(nrm(docs[hd].p), docs[hd].r, C.l, DK ? 0.28 : 0.22, 5);
+        ring(nrm(docs[hd].p), docs[hd].r, C.l, 0.85, 1.2);
+      }
       var drawn = 0;
       if (hd >= 0 && docs[hd]) {
         var D = docs[hd];

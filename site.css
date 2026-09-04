@@ -1532,6 +1532,9 @@ body.atlas-free .atlas-h1{font-size:clamp(1.2rem,1.7vw,1.42rem);max-width:24em;
   border-top:1.5px solid var(--link);border-radius:50% 50% 0 0/100% 100% 0 0}
 .ak-lnk::after{content:"";position:absolute;right:.16rem;top:.02rem;width:1.5px;height:.28rem;
   background:var(--link)}
+/* a document's disc: a hairline ring; the zone parallel: a dashed rule */
+.ak-dsc{background:none;border:1px solid var(--ink-2);width:.7rem;height:.7rem}
+.ak-zon{width:.85rem;height:0;border-radius:0;background:none;border-top:1px dashed var(--ink-2);margin-top:.3rem}
 /* the one entry that needs a sentence gets its own line and hangs its swatch */
 .akey-list li.akey-wide{flex:1 1 100%;align-items:flex-start}
 .akey-list li.akey-wide .ak{margin-top:-.05rem}

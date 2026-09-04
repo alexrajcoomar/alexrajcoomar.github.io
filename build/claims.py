@@ -350,8 +350,8 @@ def build(ctx):
     t = T.get("weights", {})
     checked("The marks' apportioned word weights add back to the corpus line.", ["11a2"], f"{n(t.get('marks', 0))} weights sum to {n(t.get('sum', 0))}", ["atlas.html"])
     t = T.get("position", {})
-    checked("Where a document sits on the sphere is a rule: the sphere is divided equally among the sections, each origin's zone of latitude has the area of its share, each document sits at the height its cumulative count gives it, and its sections stay inside a cap the size of its own share.", ["28"],
-            f"{t.get('documents', 0)} documents in {t.get('zones', 0)} zones; {t.get('read_back', 0)} positions read back from {t.get('pages', 0)} pages against the rule, 0 out of place; {n(t.get('marks', 0))} marks held inside their caps, {t.get('shared', 0)} shared marks placed between their owners, {t.get('outside', 0)} outside",
+    checked("Where a document sits on the sphere is a rule: each origin's zone of latitude has the area of its share of the sections, each document is a disc of two thirds of its share's area, settled clear of every other inside its zone, and its own sections lie on an equal-area spiral inside the disc, the first at the centre.", ["28"],
+            f"{t.get('documents', 0)} documents in {t.get('zones', 0)} zones; {t.get('read_back', 0)} centres and radii read back from {t.get('pages', 0)} pages against the rule, 0 out of place; {t.get('overlap', 0)} of {n(t.get('pairs', 0))} disc pairs overlap; {n(t.get('marks', 0))} marks held at their spiral positions and inside their discs, {t.get('off', 0)} off, {t.get('outside', 0)} outside; {t.get('shared', 0)} shared marks placed between their owners",
             ["atlas.html", "index.html"])
     t = T.get("channels", {})
     checked("Every visual channel the sphere draws is named in the Atlas key, and every entry in the key is drawn.", ["27"],

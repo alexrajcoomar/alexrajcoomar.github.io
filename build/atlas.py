@@ -9,21 +9,24 @@ point that cannot land on the passage it names is decoration, and half the
 corpus, including the three largest essays, carried no anchors at all.
 
 place() puts those sections on a unit sphere. Position is not decoration
-either. Each document gets a centroid by a rule the reader can check, and
-the rule divides the sphere equally among the sections: each origin owns a
-zone of latitude whose area is its share of the sections (independent work
-in the north, coursework across the middle, personal interest in the south);
-within its zone a document sits at the height its cumulative section count
-gives it, largest first, on a longitude that steps by the golden angle from
-one document to the next; and its sections scatter inside a cap whose area
-is the document's own share, from a generator seeded by the document's name.
-So every mark owns the same area of the sphere, the marks cover the whole of
-it at one density, and a wide patch is a document of many sections. Words
-are drawn elsewhere: the corpus figure draws one square per five hundred of
-them, and a mark's drawn size is its document's words apportioned to that
-heading. A heading that appears in more than one document is placed between
-their centroids rather than duplicated, so proximity between two regions
-means the documents share language.
+either. Each document gets a disc by a rule the reader can check: each
+origin owns a zone of latitude whose area is its share of the sections
+(independent work in the north, coursework across the middle, personal
+interest in the south); within its zone each document starts at the height
+its cumulative section count gives it, largest first, on a longitude that
+steps by the golden angle from one document to the next, and is drawn as a
+disc of two thirds of its share of the sphere's area; the discs are then
+settled apart, a fixed number of repulsion steps, until no two touch, each
+held inside its zone. A document's own sections lie on an equal-area spiral
+inside its disc, the first at the centre, each next one a golden angle round
+and a ring further out, so a document reads as one cluster and its reading
+order runs from the centre to the rim. Nothing is random: every position is
+a formula of the section counts, and check 28 recomputes all 1,600-odd of
+them on every build. Words are drawn elsewhere: the corpus figure draws one
+square per five hundred of them, and a mark's drawn size is its document's
+words apportioned to that heading. A heading that appears in more than one
+document is placed once, between the documents that carry it, so a mark in
+the space between two discs is language they share.
 
 Nothing here is capped or sampled. Every section in every readable document is
 on the globe.
@@ -196,25 +199,35 @@ def harvest(out_dir, pieces):
 
 
 # ------------------------------------------------------------------ place --
-# Where a document sits, by rule: the sphere divided equally among the
-# sections. The sphere's area between two parallels is proportional to the
-# difference of their y (the sine of the latitude), so a zone whose y-range
-# is twice an origin's share of the sections has exactly that share of the
-# surface, and a slab whose height is twice a document's share has the
-# document's; every section therefore owns the same area of the sphere. Within
-# a zone the documents run largest first from the north; the longitude of
-# the i-th document over the whole sphere is i times the golden angle, which
-# spreads neighbours apart evenly. check 28 recomputes all of this from the
-# metrics and refuses a sphere that disagrees.
+# Where a document sits, by rule. The sphere's area between two parallels is
+# proportional to the difference of their y (the sine of the latitude), so a
+# zone whose y-range is twice an origin's share of the sections has exactly
+# that share of the surface. Within its zone a document starts at the height
+# its cumulative section count gives it, largest first, on a longitude i
+# times the golden angle, and is drawn as a disc holding DISC_AREA of its
+# share of the sphere; the discs are settled apart by SETTLE_STEPS repulsion
+# steps until no two touch, each held inside its zone. A document's own
+# sections lie on an equal-area spiral inside its disc. Every step is a
+# formula of the counts, so check 28 recomputes the whole sphere and refuses
+# one that disagrees.
 ZONE_ORDER = ("independent", "course", "personal")
 GOLDEN = math.pi * (3.0 - math.sqrt(5.0))
 CAP_MIN = 0.05
+# a disc holds this fraction of its document's share of the area; the rest of
+# the share is the space that keeps it clear of its neighbours
+DISC_AREA = 2.0 / 3.0
+DISC_MIN = 0.04
+DISC_GAP = 0.012
+SETTLE_STEPS = 800
+SETTLE_RATE = 0.5
 
 
 def plan(pieces, counts):
-    """slug -> {"zone", "y", "theta", "cap", "share", "index"} for every
+    """slug -> {"zone", "y", "theta", "cap", "r", "share", "index"} for every
     document, plus the zone boundaries, from the section counts alone
-    (counts: slug -> the number of section marks that document carries)."""
+    (counts: slug -> the number of section marks that document carries).
+    "y" and "theta" are the starting height and longitude; "cap" is the
+    radius of a cap holding the whole share, "r" of the disc that is drawn."""
     docs = [p for p in pieces if p["surface"] in ZONE_ORDER]
     total = float(sum(counts.get(p["slug"], 0) for p in docs)) or 1.0
     out, zones = {}, {}
@@ -228,19 +241,129 @@ def plan(pieces, counts):
         for p in group:
             sh = counts.get(p["slug"], 0) / total
             out[p["slug"]] = {"zone": surf, "y": y - sh, "theta": (index * GOLDEN) % (2 * math.pi),
-                              "cap": max(CAP_MIN, math.acos(max(-1.0, 1.0 - 2.0 * sh))), "share": sh, "index": index}
+                              "cap": max(CAP_MIN, math.acos(max(-1.0, 1.0 - 2.0 * sh))),
+                              "r": max(DISC_MIN, math.acos(max(-1.0, 1.0 - 2.0 * sh * DISC_AREA))),
+                              "share": sh, "index": index}
             y -= 2 * sh
             index += 1
         y_top -= 2 * share
     return out, zones
 
 
-def centroid_of(entry):
-    """The point the rule puts a document at, rounded as the pages carry it."""
+def _unit(v):
+    m = math.sqrt(v[0] * v[0] + v[1] * v[1] + v[2] * v[2]) or 1.0
+    return (v[0] / m, v[1] / m, v[2] / m)
+
+
+def _angle(a, b):
+    return math.acos(max(-1.0, min(1.0, a[0] * b[0] + a[1] * b[1] + a[2] * b[2])))
+
+
+def _start(entry):
+    """The point a document starts from: its cumulative height, its golden-angle longitude."""
     y = max(-1.0, min(1.0, entry["y"]))
     r = math.sqrt(max(0.0, 1 - y * y))
-    th = entry["theta"]
-    return (round(math.cos(th) * r, 4), round(y, 4), round(math.sin(th) * r, 4))
+    return (math.cos(entry["theta"]) * r, y, math.sin(entry["theta"]) * r)
+
+
+def settle(rule, zones):
+    """Push the discs apart until no two touch, each kept inside its zone.
+    A fixed number of steps in a fixed order, with no randomness, so the
+    same counts settle to the same sphere on every machine. The smaller of
+    two touching discs moves the further. Returns slug -> centre."""
+    slugs = sorted(rule, key=lambda s: rule[s]["index"])
+    cen = {s: list(_start(rule[s])) for s in slugs}
+    rad = {s: rule[s]["r"] for s in slugs}
+    band = {}
+    for s in slugs:
+        ytop, ybot = zones[rule[s]["zone"]]
+        band[s] = (math.acos(max(-1.0, min(1.0, ytop))), math.acos(max(-1.0, min(1.0, ybot))))
+    for _step in range(SETTLE_STEPS):
+        moved = 0.0
+        for i, a in enumerate(slugs):
+            for b in slugs[i + 1:]:
+                A, B = cen[a], cen[b]
+                d = _angle(A, B)
+                need = rad[a] + rad[b] + DISC_GAP
+                if d >= need:
+                    continue
+                push = (need - d) * SETTLE_RATE
+                dot = A[0] * B[0] + A[1] * B[1] + A[2] * B[2]
+                # the direction along the surface away from the other disc
+                ta = _unit((A[0] * dot - B[0], A[1] * dot - B[1], A[2] * dot - B[2]))
+                tb = _unit((B[0] * dot - A[0], B[1] * dot - A[1], B[2] * dot - A[2]))
+                wa = rad[b] / (rad[a] + rad[b])
+                for c, t, w in ((A, ta, wa), (B, tb, 1.0 - wa)):
+                    m = push * w
+                    n = _unit((c[0] * math.cos(m) + t[0] * math.sin(m),
+                               c[1] * math.cos(m) + t[1] * math.sin(m),
+                               c[2] * math.cos(m) + t[2] * math.sin(m)))
+                    c[0], c[1], c[2] = n
+                moved += push
+        # the whole disc inside its zone: its centre no nearer a zone edge
+        # than its radius (the poles are not edges)
+        for s in slugs:
+            th = math.acos(max(-1.0, min(1.0, cen[s][1])))
+            lo, hi = band[s]
+            lo2 = lo + rad[s] if lo > 1e-9 else 0.0
+            hi2 = hi - rad[s] if hi < math.pi - 1e-9 else math.pi
+            t2 = min(max(th, lo2), hi2)
+            if abs(t2 - th) > 1e-12:
+                r0 = math.sqrt(max(0.0, cen[s][0] ** 2 + cen[s][2] ** 2)) or 1e-9
+                sr = math.sin(t2)
+                cen[s] = [cen[s][0] / r0 * sr, math.cos(t2), cen[s][2] / r0 * sr]
+        if moved < 1e-9:
+            break
+    return {s: tuple(cen[s]) for s in slugs}
+
+
+def layout(pieces, counts):
+    """plan() and settle() together: every document's zone, disc radius and
+    settled centre ("c"), plus the zone boundaries."""
+    rule, zones = plan(pieces, counts)
+    cen = settle(rule, zones)
+    for s in rule:
+        rule[s]["c"] = cen[s]
+    return rule, zones
+
+
+def centroid_of(entry):
+    """The point the rule puts a document at, rounded as the pages carry it."""
+    c = entry.get("c") or _start(entry)
+    return (round(c[0], 4), round(c[1], 4), round(c[2], 4))
+
+
+def _frame(c):
+    """Two unit tangents at c, fixed by c alone, so a spiral's orientation
+    is a property of the disc and not of the order things were computed in."""
+    up = (1.0, 0.0, 0.0) if abs(c[1]) > 0.9 else (0.0, 1.0, 0.0)
+    e1 = _unit((up[1] * c[2] - up[2] * c[1], up[2] * c[0] - up[0] * c[2], up[0] * c[1] - up[1] * c[0]))
+    e2 = _unit((c[1] * e1[2] - c[2] * e1[1], c[2] * e1[0] - c[0] * e1[2], c[0] * e1[1] - c[1] * e1[0]))
+    return e1, e2
+
+
+def spiral_at(centre, radius, phase, i, n):
+    """The i-th of n points on an equal-area spiral inside a disc of the given
+    angular radius: ring i holds the fraction i/n of the disc's area, so the
+    first point is the centre, and the angle steps by the golden angle from a
+    phase fixed by the document."""
+    c = _unit(centre)
+    e1, e2 = _frame(c)
+    frac = (i / float(n)) if n > 0 else 0.0
+    rho = math.acos(max(-1.0, min(1.0, 1.0 - (1.0 - math.cos(radius)) * frac)))
+    phi = phase + i * GOLDEN
+    ca, sa = math.cos(rho), math.sin(rho)
+    cp, sp = math.cos(phi), math.sin(phi)
+    v = _unit((c[0] * ca + (e1[0] * cp + e2[0] * sp) * sa,
+               c[1] * ca + (e1[1] * cp + e2[1] * sp) * sa,
+               c[2] * ca + (e1[2] * cp + e2[2] * sp) * sa))
+    return (round(v[0], 4), round(v[1], 4), round(v[2], 4))
+
+
+def mark_at(entry, i, n):
+    """Where a document's i-th own section (of n) sits: on the spiral inside
+    its disc, from the disc's centre, at the document's own phase."""
+    return spiral_at(centroid_of(entry), entry["r"], entry["theta"], i, n)
 
 
 def _fib_sphere(n):
@@ -277,11 +400,11 @@ def place(sections, pieces):
     for s in sections:
         by_slug.setdefault(s["slug"], []).append(s)
 
-    # every section owns the same area of the sphere: a document's share is
-    # its count of sections (a heading it shares with another document counts
-    # to both), and the rule turns the shares into zones, heights and caps
+    # a document's share is its count of sections (a heading it shares with
+    # another document counts to both), and the rule turns the shares into
+    # zones, discs and settled centres
     counts = {slug: len(v) for slug, v in by_slug.items()}
-    rule, _zones = plan(order, counts)
+    rule, zones = layout(order, counts)
     cents = {p["slug"]: centroid_of(rule[p["slug"]]) for p in order}
 
     # a heading that occurs in several documents is one point, sitting between
@@ -290,9 +413,19 @@ def place(sections, pieces):
     for s in sections:
         shared.setdefault(s["t"].lower(), set()).add(s["slug"])
 
-    # one generator per document, seeded by its name, so the scatter of one
-    # document's sections does not depend on which documents precede it
-    gens = {}
+    # a document's own sections, in reading order, take the spiral's points in
+    # turn; the headings it shares are placed between their owners, and the
+    # shared headings of one set of owners take a small spiral of their own
+    own_n = {}
+    for s in sections:
+        if len(shared[s["t"].lower()]) == 1:
+            own_n[s["slug"]] = own_n.get(s["slug"], 0) + 1
+    own_i, set_n, set_i = {}, {}, {}
+    for s in sections:
+        key = s["t"].lower()
+        if len(shared[key]) > 1:
+            gkey = ",".join(sorted(shared[key]))
+            set_n[gkey] = set_n.get(gkey, 0) + 1
     placed, done = [], set()
     for s in sections:
         key = s["t"].lower()
@@ -301,30 +434,20 @@ def place(sections, pieces):
         homes = [c for c in (cents.get(x) for x in shared[key]) if c]
         if not homes:
             continue
-        cx = sum(h[0] for h in homes) / len(homes)
-        cy = sum(h[1] for h in homes) / len(homes)
-        cz = sum(h[2] for h in homes) / len(homes)
-        centre = _norm((cx, cy, cz))
-
-        # the cap holds the document's own share of the sphere's area: a
-        # document of many sections spreads wide, one of few sits close
-        rad = rule[s["slug"]]["cap"] if s["slug"] in rule else CAP_MIN
         if len(shared[key]) > 1:
-            rad = min(rule[o]["cap"] for o in shared[key] if o in rule) * 0.45 if any(o in rule for o in shared[key]) else CAP_MIN
-
-        # a random direction in the tangent plane, then a random arc along it
-        gkey = ",".join(sorted(shared[key])) if len(shared[key]) > 1 else s["slug"]
-        rnd = gens.get(gkey)
-        if rnd is None:
-            rnd = gens[gkey] = _rand(zlib.crc32(gkey.encode("utf-8")))
-        a, b, c = next(rnd), next(rnd), next(rnd)
-        tang = _norm((a - 0.5, b - 0.5, c - 0.5))
-        dot = sum(tang[i] * centre[i] for i in range(3))
-        tang = _norm(tuple(tang[i] - dot * centre[i] for i in range(3)))
-        # uniform over the cap's area, not its radius
-        ang = math.acos(1.0 - next(rnd) * (1.0 - math.cos(rad)))
-        v = _norm(tuple(centre[i] * math.cos(ang) + tang[i] * math.sin(ang)
-                        for i in range(3)))
+            gkey = ",".join(sorted(shared[key]))
+            cx = sum(h[0] for h in homes) / len(homes)
+            cy = sum(h[1] for h in homes) / len(homes)
+            cz = sum(h[2] for h in homes) / len(homes)
+            centre = _unit((cx, cy, cz))
+            rad = min(rule[o]["r"] for o in shared[key] if o in rule) * 0.45 if any(o in rule for o in shared[key]) else DISC_MIN
+            j = set_i.get(gkey, 0)
+            set_i[gkey] = j + 1
+            v = spiral_at(centre, rad, zlib.crc32(gkey.encode("utf-8")) % 628 / 100.0, j, set_n[gkey])
+        else:
+            i = own_i.get(s["slug"], 0)
+            own_i[s["slug"]] = i + 1
+            v = mark_at(rule[s["slug"]], i, own_n[s["slug"]]) if s["slug"] in rule else cents[s["slug"]]
 
         done.add(key)
         # a heading several documents carry is one mark, and its weight is
@@ -350,9 +473,10 @@ def place(sections, pieces):
                 "c": p.get("c") or "", "surface": p["surface"],
                 "d": p.get("d", ""),
                 "p": [round(x, 4) for x in cents[p["slug"]]],
+                "r": round(rule[p["slug"]]["r"], 4),
                 "n": len([q for q in placed if q["s"] == p["slug"]])}
                for p in order]
-    return placed, regions
+    return placed, regions, zones
 
 
 def build(out_dir, pieces):
@@ -362,8 +486,8 @@ def build(out_dir, pieces):
     works with no JavaScript, a screen reader gets every section, and there is
     no separate asset that can drift out of step with the documents."""
     sections, wrote = harvest(out_dir, pieces)
-    points, regions = place(sections, pieces)
-    return {"points": points, "regions": regions}, wrote
+    points, regions, zones = place(sections, pieces)
+    return {"points": points, "regions": regions, "zones": zones}, wrote
 
 
 def edges(out_dir, pieces):
@@ -663,7 +787,7 @@ def labels(F):
             "body": [
                 "<b class=\"lw\" data-reg=\"{}\" tabindex=\"0\">{}</b> "
                 "holds {} sections, the most of any independent "
-                "work here, inside the drawn circle {}&deg; wide. Every "
+                "work here, inside the drawn circle, {}&deg; from its centre to its rim. Every "
                 "section is a mark and every mark opens its passage, not the "
                 "front of the piece: try <b>{}</b>, lit beside its name."
                 .format(F["flag"]["s"], _esc(F["flag"]["t"]), _n(F["flagN"]),
@@ -752,19 +876,24 @@ def labels(F):
                 "marks, and {} of them are independent work: writing chosen, "
                 "scoped and finished without a course asking for it."
                 .format(F["parDeg"], _n(F["nAbove"]), _n(F["nIndAbove"])),
-                "The line misses in both directions, and both are drawn. {} "
-                "marks above it are ringed, because they come from {} "
-                "documents that are not independent{}. "
-                "Another {} independent marks sit below it. The zone is "
-                "designed, not inherited: each origin owns the zone of "
-                "latitude whose area is its share of the sections, so the "
-                "independent work is the north zone by rule, and what "
-                "crosses the line is the scatter of sections inside each "
-                "document's cap, whose area is that document's own share."
-                .format(F["nExc"], F["excDocs"],
-                        (", {} of them from <span class=\"lw\" data-reg=\"{}\" tabindex=\"0\">{}</span>"
-                         .format(F["excTopN"], F["excTopS"], _esc(F["excTop"]))) if F.get("excTop") else "",
-                        F["indBelow"]),
+                (("The line misses in both directions, and both are drawn. {} "
+                  "marks above it are ringed, because they come from {} "
+                  "documents that are not independent{}. "
+                  "Another {} independent marks sit below it. ")
+                 .format(F["nExc"], F["excDocs"],
+                         (", {} of them from <span class=\"lw\" data-reg=\"{}\" tabindex=\"0\">{}</span>"
+                          .format(F["excTopN"], F["excTopS"], _esc(F["excTop"]))) if F.get("excTop") else "",
+                         F["indBelow"])
+                 if (F["nExc"] or F["indBelow"]) else
+                 "Nothing crosses it: no mark above the line belongs to a "
+                 "course or personal document, and no independent mark sits "
+                 "below it. ") +
+                "The zone is designed, not inherited: each origin owns the "
+                "zone of latitude whose area is its share of the sections, "
+                "every document's disc is held inside its zone, and the only "
+                "mark that could cross the line is a heading shared by "
+                "documents on both sides of it, placed between the documents "
+                "that carry it.",
             ],
         },
         {

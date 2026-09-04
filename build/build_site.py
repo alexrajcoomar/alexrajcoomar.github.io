@@ -1070,6 +1070,8 @@ def page_index():
     ex = exceptions()
     fams = google_font_families()
     ATLAS_N, ATLAS_PTS, ATLAS_SHARED = atlas_teaser_bits()
+    # the two parallels that bound the zones, as y, for the sphere to draw
+    ATLAS_ZONES = ",".join("%.3f" % ATLAS["zones"][z][1] for z in ("independent", "course") if z in ATLAS["zones"])
     F = atlas_facts()
     N_EDGES = len(ATLAS.get("edges", []))
     n_undrawn = len(ex["undrawn"])
@@ -1127,14 +1129,14 @@ def page_index():
   </section>
   <div class="descent-globe">
     <div class="stage-globe">
-      <div class="tease-globe hero-globe" id="atlasmini" data-pts="{ATLAS_PTS}" data-fill="0.44" aria-hidden="true"></div>
+      <div class="tease-globe hero-globe" id="atlasmini" data-pts="{ATLAS_PTS}" data-zones="{ATLAS_ZONES}" data-fill="0.44" aria-hidden="true"></div>
       <script type="application/json" id="atlasmini-docs">{atlas_home_links()}</script>
       <div class="globe-card" id="atlasmini-card" hidden><a class="gc-t" href="atlas.html"></a><span class="gc-d"></span></div>
       <p class="globe-cap"><a class="inlink" href="atlas.html">{ATLAS_N} sections, every one a link <span aria-hidden="true">&#8594;</span></a>
         <span class="globe-hint">Point at a mark: chords join its document to the documents its prose links, or that link it. <span class="gc-l">{N_EDGES}</span> such links are recorded.</span>
         <span class="globe-hint-touch">Tap a mark: chords join its document to the documents its prose links, or that link it, and its name opens it. <span class="gc-l">{N_EDGES}</span> such links are recorded.</span></p>
       <p class="facing" aria-live="off"></p>
-      <p class="globe-key">Where a mark sits is a rule the build checks: the sphere is divided equally among the sections, so each origin's zone of latitude has the area of its share of them, each document sits at the height its cumulative count gives it, and its sections fill a cap the size of its own share. As a featured row reaches the reading line the sphere turns to face that document.</p>
+      <p class="globe-key">Where a mark sits is a rule the build checks: each origin's zone of latitude has the area of its share of the sections, each document is a disc of two thirds of its share's area, settled clear of every other inside its zone, and its sections lie on a spiral inside the disc, the first at the centre and the last at the rim. As a featured row reaches the reading line the sphere turns to face that document.</p>
       <noscript><p class="note">The sphere needs a browser that runs scripts.
       The <a class="inlink" href="atlas.html">full index</a> does not.</p></noscript>
     </div>
@@ -2881,20 +2883,25 @@ ATLAS_BODY = r"""<section class="band atlas-band" id="atlas">
             <li class="akey-wide"><i class="ak ak-shr"></i>Headings carried by more than one document, standing off the surface by how many carry them; point at one and the fan to its documents is drawn</li>
             <li class="akey-wide"><i class="ak ak-vis"></i><span id="aseen">Passages</span> this browser has opened, ringed. The record stays in this browser</li>
             <li class="akey-wide"><i class="ak ak-lnk"></i>Point at any mark and chords join its document to the documents its text links, or that link it; each chord's tick sits nearer the linked one</li>
+            <li class="akey-wide"><i class="ak ak-dsc"></i>A document's disc, a hairline: two thirds of its share of the sphere, settled clear of every other disc; the document under the pointer, or faced by the home sphere, has its disc drawn in the chord colour</li>
+            <li class="akey-wide"><i class="ak ak-zon"></i>The two parallels that bound the origins' zones: independent work north of the first, coursework between them, personal interest south of the second</li>
           </ul>
           <p class="akey-note">A mark's area is apportioned from its document's measured word count by
           the share of the document's static text under that heading; it is not a per-section
           measurement. Heading level is no longer drawn on the sphere and is kept in the index
           beside it. A heading several documents carry is placed once, between them. Where a
-          document sits is a rule, and the rule divides the sphere equally among the sections:
-          each origin owns a zone of latitude whose area is its share of the sections (independent
-          work in the north, coursework across the middle, personal interest in the south); within
-          its zone a document sits at the height its cumulative section count gives it, largest
-          first, on a longitude that steps by the golden angle from one document to the next; and
-          its sections scatter inside a cap whose area is the document's own share, from a
-          generator seeded with the document's name. So every mark owns the same area of the
-          sphere, the marks cover the whole of it at one density, and a wide patch is a document
-          of many sections. The build recomputes every position from the section counts on every
+          document sits is a rule: each origin owns a zone of latitude whose area is its share
+          of the sections (independent work in the north, coursework across the middle, personal
+          interest in the south); within its zone each document starts at the height its
+          cumulative section count gives it, largest first, on a longitude that steps by the
+          golden angle from one document to the next, and is drawn as a disc of two thirds of its
+          share of the sphere; the discs are settled apart, a fixed number of steps with no
+          randomness, until no two touch, each held inside its zone. A document's own sections lie
+          on an equal-area spiral inside its disc, the first at the centre, each next one a golden
+          angle round and a ring further out, so a document reads as one cluster and its reading
+          order runs from the centre to the rim. A wide disc is a document of many sections, and
+          the third of the sphere that no disc holds is the space between documents. The build
+          recomputes every centre, every radius and every mark from the section counts on every
           run and refuses a sphere that disagrees (check 28).</p>
         </div>
         <p class="replay"><button type="button" id="preplay" class="linkbtn">Replay the six labels</button></p>
@@ -2927,7 +2934,7 @@ ATLAS_BODY = r"""<section class="band atlas-band" id="atlas">
   </div>
 
   <div class="shell">
-    <div class="atlas-list" id="atlaslist">
+    <div class="atlas-list" id="atlaslist" data-zones="{ATLAS_ZONES_A}">
 {blocks}
     </div>
   </div>
@@ -2940,7 +2947,7 @@ ATLAS_BODY = r"""<section class="band atlas-band" id="atlas">
 # element; the script reads those elements and draws them. Turn the script off
 # and the page is still the complete table of contents for the whole corpus,
 # which is also what a screen reader and a crawler get.
-ATLAS = {"points": [], "regions": []}
+ATLAS = {"points": [], "regions": [], "zones": {}}
 
 SURF_NAME = {"independent": "Independent", "course": "Coursework",
              "personal": "Personal interest"}
@@ -3001,13 +3008,13 @@ def page_atlas():
             esc(r["k"]), esc(r["c"] or SURF_NAME[r["surface"]]), esc(r["d"]), row) if x)
         blocks.append(
             '      <section class="areg" data-s="%s" data-k="%s" data-surface="%s"\n'
-            '        data-c="%s,%s,%s" data-t="%s" data-u="%s">\n'
+            '        data-c="%s,%s,%s" data-r="%s" data-t="%s" data-u="%s">\n'
             '        <h2 class="areg-h"><a href="%s">%s</a>\n'
             '          <span class="areg-n">%d %s</span></h2>\n'
             '        <p class="areg-m">%s</p>\n'
             '        <ol class="areg-l">\n%s\n        </ol>\n'
             '      </section>'
-            % (r["s"], r["k"], r["surface"], r["p"][0], r["p"][1], r["p"][2],
+            % (r["s"], r["k"], r["surface"], r["p"][0], r["p"][1], r["p"][2], r["r"],
                esc(r["t"]), r["u"], r["u"], esc(r["t"]), len(items), word,
                meta, lis))
 
@@ -3036,7 +3043,8 @@ def page_atlas():
     F["js"]["lk"] = [list(e) for e in ATLAS.get("edges", [])]
 
     nsec, ndoc = len(pts), len(ordered)
-    body = ATLAS_BODY.format(nsec=format(nsec, ","), ndoc=ndoc,
+    zones_a = ",".join("%.3f" % ATLAS["zones"][z][1] for z in ("independent", "course") if z in ATLAS["zones"])
+    body = ATLAS_BODY.format(nsec=format(nsec, ","), ndoc=ndoc, ATLAS_ZONES_A=zones_a,
                              plates="\n".join(plates), guide="\n".join(guide),
                              facts=json.dumps(F["js"], separators=(",", ":")).replace("</", "<\\/"),
                              lede=("{} sections from {} documents: {} "
@@ -3089,15 +3097,15 @@ def atlas_teaser_bits():
 def atlas_home_links():
     """The connective layer for the home sphere. The positions stay in
     data-pts, where check 11a reads them back against the placement; this
-    carries only what a chord needs: the documents (centroid, title, address,
-    kind, in placement order), which document each mark belongs to, run-length
+    carries only what a chord needs: the documents (centre, disc radius, title,
+    address, kind, in placement order), which document each mark belongs to, run-length
     over the payload order, and the links edges() harvested from prose, as
     index pairs with their direction. No headings and no second copy of the
     marks, so the home page still draws from one placement and one harvest."""
     regs = ATLAS["regions"]
     idx = {r["s"]: i for i, r in enumerate(regs)}
     docs = [{"t": r["t"], "u": r["u"], "k": r["k"],
-             "p": [round(x, 3) for x in r["p"]]} for r in regs]
+             "p": [round(x, 3) for x in r["p"]], "r": round(r["r"], 3)} for r in regs]
     own, run, last = [], 0, None
     for q in ATLAS["points"]:
         i = idx[q["s"]]
@@ -3875,28 +3883,31 @@ def check_site():
                             % (format(sum(ws), ","), format(TOTAL_WORDS, ","))))
 
     # 28. where a document sits is a rule, and the pages hold to it. The rule
-    # divides the sphere equally among the sections: each origin's zone of
-    # latitude has the area of its share of them, each document sits at the
-    # height its cumulative section count gives it within the zone (largest
-    # first), on a longitude that steps by the golden angle, and its sections
-    # lie inside a cap whose area is the document's own share. Every centroid
-    # the Atlas index and the home sphere carry is recomputed from the
-    # section counts and compared; every section mark is held inside its cap.
+    # gives each origin a zone of latitude with the area of its share of the
+    # sections, draws each document as a disc of two thirds of its share's
+    # area, settles the discs apart inside their zones until no two touch, and
+    # lays a document's own sections on an equal-area spiral inside its disc,
+    # the first at the centre. Every centre and radius the Atlas index and the
+    # home sphere carry is recomputed from the section counts and compared;
+    # every disc is held inside its zone and clear of every other; every own
+    # mark is held at its spiral position; a shared heading is counted, not
+    # held, because it sits between its owners.
     regs = ATLAS.get("regions") or []
     placed_slugs = {r["s"] for r in regs}
     counts28 = {}
     for pt28 in ATLAS.get("points") or []:
         for o28 in (pt28.get("o") or [pt28["s"]]):
             counts28[o28] = counts28.get(o28, 0) + 1
-    rule28, zones28 = atlas_mod.plan([p for p in P if p["slug"] in placed_slugs], counts28)
+    rule28, zones28 = atlas_mod.layout([p for p in P if p["slug"] in placed_slugs], counts28)
     want_c = {slug: atlas_mod.centroid_of(e) for slug, e in rule28.items()}
+    want_r = {slug: e["r"] for slug, e in rule28.items()}
     T["position"] = {"documents": len(want_c), "pages": 0, "zones": len(zones28), "read_back": 0,
-                     "marks": 0, "shared": 0, "outside": 0}
+                     "pairs": 0, "overlap": 0, "marks": 0, "shared": 0, "off": 0, "outside": 0}
     def _ang28(a, b):
         d = sum(x * y for x, y in zip(a, b)) / max(1e-9, math.sqrt(sum(x * x for x in a)) * math.sqrt(sum(x * x for x in b)))
         return math.acos(max(-1.0, min(1.0, d)))
-    def _hold_positions(f, got):
-        """got: slug -> (x, y, z) as the page carries them."""
+    def _hold_positions(f, got, radii):
+        """got: slug -> (x, y, z) and radii: slug -> disc radius, as the page carries them."""
         look("28", f)
         T["position"]["pages"] += 1
         T["position"]["read_back"] += len(got)
@@ -3905,44 +3916,70 @@ def check_site():
         for slug, xyz in got.items():
             w = want_c.get(slug)
             if w and max(abs(a - b) for a, b in zip(xyz, w)) > 2e-3:
-                problems.append(_p("28", "%s: %s sits at %s; its zone, cumulative sections and golden-angle longitude put it at %s"
+                problems.append(_p("28", "%s: %s sits at %s; its zone, its start and the settling put it at %s"
                                    % (f, slug, ",".join("%.3f" % v for v in xyz), ",".join("%.3f" % v for v in w))))
                 break
+        for slug, r in radii.items():
+            if slug in want_r and abs(r - want_r[slug]) > 2e-3:
+                problems.append(_p("28", "%s: %s is drawn as a disc of %.3f rad; two thirds of its share is %.3f"
+                                   % (f, slug, r, want_r[slug])))
+                break
         for surf, (ytop, ybot) in zones28.items():
-            zone = sorted((s2 for s2 in got if rule28.get(s2, {}).get("zone") == surf), key=lambda s2: (-counts28.get(s2, 0), s2))
-            prev = None
-            for s2 in zone:
-                y = got[s2][1]
-                if not (ybot - 2e-3 <= y <= ytop + 2e-3):
-                    problems.append(_p("28", "%s: %s is %s work and sits outside its zone" % (f, s2, surf)))
+            lo = math.acos(max(-1.0, min(1.0, ytop))); hi = math.acos(max(-1.0, min(1.0, ybot)))
+            for s2 in sorted(got):
+                if rule28.get(s2, {}).get("zone") != surf:
+                    continue
+                th = math.acos(max(-1.0, min(1.0, got[s2][1])))
+                r = radii.get(s2, want_r.get(s2, 0.0))
+                if (lo > 1e-9 and th < lo + r - 2e-3) or (hi < math.pi - 1e-9 and th > hi - r + 2e-3):
+                    problems.append(_p("28", "%s: %s is %s work and its disc crosses out of its zone" % (f, s2, surf)))
                     break
-                if prev is not None and y > prev[0] + 1e-6:
-                    problems.append(_p("28", "%s: %s has fewer sections than %s but sits north of it" % (f, s2, prev[1])))
-                    break
-                prev = (y, s2)
+        slugs = sorted(got)
+        shown = 0
+        for i28, a in enumerate(slugs):
+            for b in slugs[i28 + 1:]:
+                T["position"]["pairs"] += 1
+                if _ang28(got[a], got[b]) < radii.get(a, want_r.get(a, 0.0)) + radii.get(b, want_r.get(b, 0.0)) - 2e-3:
+                    T["position"]["overlap"] += 1
+                    if shown < 2:
+                        shown += 1
+                        problems.append(_p("28", "%s: the discs of %s and %s overlap" % (f, a, b)))
     if regs and os.path.exists(apath):
-        got = {}
-        for m in re.finditer(r'<section class="areg" data-s="([^"]+)"[^>]*?data-c="([^"]+)"', atext, re.S):
+        got, radii = {}, {}
+        for m in re.finditer(r'<section class="areg" data-s="([^"]+)"[^>]*?data-c="([^"]+)" data-r="([^"]+)"', atext, re.S):
             got[m.group(1)] = tuple(float(v) for v in m.group(2).split(","))
-        _hold_positions("atlas.html", got)
-        # every section mark inside its document's cap; a heading several
-        # documents carry is placed between them and is counted, not held
+            radii[m.group(1)] = float(m.group(3))
+        _hold_positions("atlas.html", got, radii)
+        # every own mark at its point on the spiral, and inside its disc. The
+        # spiral is recomputed by the placement's own formula, so a change to
+        # that formula would agree with itself; the disc is the invariant the
+        # formula does not share, and it is what caught the first
+        # falsification that doubled every ring. A heading several documents
+        # carry is placed between them and is counted, not held.
         shown28 = 0
         for m in re.finditer(r'<section class="areg" data-s="([^"]+)".*?</section>', atext, re.S):
-            slug = m.group(1); cent = want_c.get(slug); e = rule28.get(slug)
-            if not cent or not e:
+            slug = m.group(1); e = rule28.get(slug)
+            if not e:
                 continue
-            for mm in re.finditer(r'<li data-p="([^"]+)"([^>]*)>', m.group(0)):
-                if ' data-o="' in mm.group(2):
-                    T["position"]["shared"] += 1
-                    continue
+            lis = list(re.finditer(r'<li data-p="([^"]+)"([^>]*)>', m.group(0)))
+            own = [mm for mm in lis if ' data-o="' not in mm.group(2)]
+            T["position"]["shared"] += len(lis) - len(own)
+            for i28, mm in enumerate(own):
                 T["position"]["marks"] += 1
                 pt = tuple(float(v) for v in mm.group(1).split(","))
-                if _ang28(pt, cent) > e["cap"] + 0.01:
+                want = atlas_mod.mark_at(e, i28, len(own))
+                if max(abs(a - b) for a, b in zip(pt, want)) > 2e-3:
+                    T["position"]["off"] += 1
+                    if shown28 < 3:
+                        shown28 += 1
+                        problems.append(_p("28", "atlas.html: section %d of %d of %s sits at %s; its spiral puts it at %s"
+                                           % (i28 + 1, len(own), slug, ",".join("%.3f" % v for v in pt), ",".join("%.3f" % v for v in want))))
+                if _ang28(pt, want_c[slug]) > e["r"] + 0.01:
                     T["position"]["outside"] += 1
                     if shown28 < 3:
                         shown28 += 1
-                        problems.append(_p("28", "atlas.html: a mark of %s lies %.2f rad from its centroid, outside its cap of %.2f" % (slug, _ang28(pt, cent), e["cap"])))
+                        problems.append(_p("28", "atlas.html: a mark of %s lies %.2f rad from its centre, outside its disc of %.2f"
+                                           % (slug, _ang28(pt, want_c[slug]), e["r"])))
     if regs and os.path.exists(ipath):
         m = re.search(r'<script type="application/json" id="atlasmini-docs">(.*?)</script>', itext, re.S)
         if m:
@@ -3950,9 +3987,14 @@ def check_site():
                 docs = json.loads(m.group(1).replace("<\\/", "</"))["docs"]
                 url_slug = {p["url"]: p["slug"] for p in P}
                 got = {url_slug[d["u"]]: tuple(d["p"]) for d in docs if d["u"] in url_slug}
-                _hold_positions("index.html", got)
+                radii = {url_slug[d["u"]]: float(d.get("r", 0)) for d in docs if d["u"] in url_slug}
+                _hold_positions("index.html", got, radii)
             except (ValueError, KeyError) as e:
                 problems.append(_p("28", "index.html: the sphere's document payload is unreadable (%s)" % e))
+        mz = re.search(r'id="atlasmini"[^>]*data-zones="([^"]*)"', itext)
+        want_z = ",".join("%.3f" % zones28[z][1] for z in ("independent", "course") if z in zones28)
+        if mz and mz.group(1) != want_z:
+            problems.append(_p("28", "index.html: the sphere draws its zone parallels at %s; the shares put them at %s" % (mz.group(1), want_z)))
 
     # 11b. the converted pieces' owned blocks changed nothing outside themselves
     for p in P:
@@ -4778,7 +4820,7 @@ def main():
     # First, because it writes anchor ids into the pieces themselves and every
     # later pass reads those files. Giving a section a name is a content edit,
     # so it happens once and then never again: an id already present is kept.
-    ATLAS["points"], ATLAS["regions"] = (lambda d: (d["points"], d["regions"]))(
+    ATLAS["points"], ATLAS["regions"], ATLAS["zones"] = (lambda d: (d["points"], d["regions"], d["zones"]))(
         atlas_mod.build(OUT, P)[0])
     ATLAS["edges"] = atlas_mod.edges(OUT, P)
 
