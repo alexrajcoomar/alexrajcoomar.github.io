@@ -1,0 +1,19 @@
+{
+  "note": "The parts of a resume this repository cannot measure. Everything else on resume.html is generated: the corpus figures, the capability evidence and the selected work all come from the same measurements the rest of the site is built from, and none of it is typed here. A section with no entries is not rendered at all, and the build prints which ones are empty on every run, so an unfilled resume looks unfinished in the build log rather than on the page.",
+  "shape": {
+    "education": "institution, credential, from, to, note. 'note' is one line, optional.",
+    "experience": "employer, title, from, to, place, lines. 'lines' is a list of one-line statements, each one thing done and what came of it.",
+    "skills": "group, items. A group is a heading, items is a list of names. No levels: the site does not rate itself."
+  },
+  "education": [
+    {
+      "institution": "University of Waterloo",
+      "credential": "Bachelor of Accounting and Financial Management, Analytics stream",
+      "from": "2025",
+      "to": "",
+      "note": "School of Accounting and Finance."
+    }
+  ],
+  "experience": [],
+  "skills": []
+}

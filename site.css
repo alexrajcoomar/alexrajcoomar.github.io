@@ -2573,3 +2573,37 @@ dialog.prov:not([open])::backdrop{background-color:rgba(10,10,8,0)}
    step quieter, because it is the only part of this page that goes stale. */
 .nowhead{margin-top:2rem}
 .nowpane b{color:var(--ink-2)}
+
+/* --------------------------- resume ----------------------------------
+   A two-column ledger: when on the left, what on the right, the same
+   grammar the statement rows use. It is the print target as well, so the
+   rules that matter on paper are here rather than in a second document
+   that could disagree with the page. */
+.rcontact{display:flex;flex-wrap:wrap;gap:.3rem 1.2rem;margin:.9rem 0 0;font-size:.92rem}
+.rcontact a{color:var(--accent)}
+.rprint{margin:.7rem 0 0;font-size:.84rem;color:var(--ink-3);max-width:44rem;line-height:1.5}
+.rsec{padding-top:1.6rem}
+.rrow{display:grid;grid-template-columns:11rem minmax(0,1fr);gap:.2rem 1.6rem;
+  padding:.85rem 0;border-top:1px solid var(--rule)}
+.rrow:first-of-type{border-top:1px solid var(--rule-strong)}
+.rwhen{margin:0;font-size:var(--meta-size);letter-spacing:var(--meta-track);text-transform:uppercase;
+  font-weight:var(--meta-weight);color:var(--ink-3);font-variant-numeric:tabular-nums}
+.rwhat h3{margin:0 0 .15rem;font-size:1.02rem;letter-spacing:-.01em;font-weight:640}
+.rwhat h3 a{color:var(--ink)}
+.rwhat h3 a:hover{color:var(--accent)}
+.rwhere{margin:0 0 .3rem;font-size:.9rem;color:var(--ink-2)}
+.rnote,.rlist{margin:.25rem 0 0;font-size:.9rem;color:var(--ink-2);line-height:1.55}
+.rlist a{color:var(--ink);border-bottom:1px solid var(--rule)}
+.rlist a:hover{color:var(--accent);border-bottom-color:var(--accent)}
+.rlines{margin:.3rem 0 0;padding-left:1.1rem;font-size:.9rem;color:var(--ink-2);line-height:1.55}
+.rmeasure{display:flex;flex-wrap:wrap;gap:.15rem .9rem;margin:.2rem 0 0;
+  font-size:var(--meta-size);letter-spacing:var(--meta-track);text-transform:uppercase;
+  font-weight:var(--meta-weight);color:var(--ink-3);font-variant-numeric:tabular-nums}
+@media (max-width:640px){
+  .rrow{grid-template-columns:minmax(0,1fr);gap:.3rem}
+}
+@media print{
+  .rsec{padding-top:.8rem}
+  .rrow{break-inside:avoid;border-top:1px solid #999}
+  .rprint{display:none}
+}

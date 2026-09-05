@@ -19,6 +19,11 @@ CASES   = json.load(open(os.path.join(ROOT, "content", "cases.json"), encoding="
 # page says the portfolio demonstrates. Membership is a reading; every number
 # printed beside it is recomputed from the measurements on each build.
 CAPS    = json.load(open(os.path.join(ROOT, "content", "capabilities.json"), encoding="utf-8"))
+# the parts of a resume nothing here can measure: education, employment and
+# named skills. Everything else on resume.html is generated from the same
+# measurements the rest of the site uses, and a section with no entries is
+# not rendered at all.
+RESUME_D = json.load(open(os.path.join(ROOT, "content", "resume.json"), encoding="utf-8"))
 # the change ledger of the last content pass; written by build/ledger.py,
 # read here for one computed sentence on the colophon and for check 16
 try:
@@ -708,6 +713,131 @@ def cap_block(i, cap_id, title, prose):
             '      <details class="tv capdet"><summary>What evidences it</summary>\n'
             '      <p class="caplist">%s</p>%s</details></div>'
             % (i, len(CAP_BLOCKS), esc(title), prose, cells, lst, gap))
+
+
+def _res_dates(e):
+    f, t = (e.get("from") or "").strip(), (e.get("to") or "").strip()
+    if f and t:
+        return "%s to %s" % (f, t)
+    if f:
+        return "%s to present" % f
+    return t
+
+
+def resume_gaps():
+    """Which declared sections carry nothing. Printed by the build on every
+    run, so an unfilled resume is visible in the log rather than on the page."""
+    return [k for k in ("education", "experience", "skills") if not (RESUME_D.get(k) or [])]
+
+
+def resume_evidence():
+    """The four capabilities, largest first by the words behind them, with the
+    same totals the about page prints. Nothing new is measured here."""
+    rows = []
+    for cid, title, _pr in CAP_BLOCKS:
+        e = capability_evidence(cid)
+        if e["n"]:
+            rows.append((title, e))
+    rows.sort(key=lambda r: -r[1]["words"])
+    return rows
+
+
+def page_resume(summary=None):
+    """A resume native to this site: the identity and the availability it
+    already records, the education and employment declared in
+    content/resume.json, and then the part no other resume can carry, which is
+    the corpus itself, measured. Everything countable on this page is counted
+    by the build that writes it. It prints to one document, and that is the
+    PDF: nothing here is a second file that could disagree with the page."""
+    aff = S.get("affiliation") or []
+    # the register's own tallies, which exist only after the checks have run;
+    # this page is written inside the same fixpoint the colophon is, so the
+    # numbers it prints are the numbers that page prints
+    reg = summary or {}
+    ed = "".join(
+        '<div class="rrow"><p class="rwhen">%s</p><div class="rwhat"><h3>%s</h3>'
+        '<p class="rwhere">%s</p>%s</div></div>'
+        % (esc(_res_dates(e)), esc(e.get("credential") or ""), esc(e.get("institution") or ""),
+           ('<p class="rnote">%s</p>' % esc(e["note"])) if (e.get("note") or "").strip() else "")
+        for e in (RESUME_D.get("education") or []))
+    ex = "".join(
+        '<div class="rrow"><p class="rwhen">%s</p><div class="rwhat"><h3>%s</h3>'
+        '<p class="rwhere">%s</p>%s</div></div>'
+        % (esc(_res_dates(e)), esc(e.get("title") or ""),
+           ", ".join(x for x in (esc(e.get("employer") or ""), esc(e.get("place") or "")) if x),
+           ("<ul class=\"rlines\">%s</ul>" % "".join("<li>%s</li>" % esc(l) for l in (e.get("lines") or [])))
+           if (e.get("lines") or []) else "")
+        for e in (RESUME_D.get("experience") or []))
+    sk = "".join(
+        '<div class="rrow"><p class="rwhen">%s</p><div class="rwhat"><p class="rlist">%s</p></div></div>'
+        % (esc(g.get("group") or ""), esc(", ".join(g.get("items") or [])))
+        for g in (RESUME_D.get("skills") or []) if (g.get("items") or []))
+    evid = "".join(
+        '<div class="rrow"><p class="rwhen">%s</p><div class="rwhat"><p class="rmeasure">'
+        '<span>%d pieces</span><span>%s words</span><span>%d figures</span><span>%d tables</span>%s</p>'
+        '<p class="rlist">%s</p></div></div>'
+        % (esc(title), e["n"], format(e["words"], ","), e["figures"], e["tables"],
+           ("<span>%d %s</span>" % (e["tools"], "tool" if e["tools"] == 1 else "tools")) if e["tools"] else "",
+           ", ".join('<a href="%s">%s</a>' % (esc(q["url"]), esc(q["t"]))
+                     for q in sorted(e["items"], key=lambda x: -x["words"])[:4])
+           + (", and %d more on <a href=\"about.html\">about</a>" % (e["n"] - 4) if e["n"] > 4 else ""))
+        for title, e in resume_evidence())
+    feats = [p for p in P if p["featured"]][:6]
+    sel = "".join(
+        '<div class="rrow"><p class="rwhen">%s</p><div class="rwhat"><h3><a href="%s">%s</a></h3>'
+        '<p class="rwhere">%s</p><p class="rmeasure"><span>%s words</span><span>%d figures</span>'
+        '<span>%d tables</span></p></div></div>'
+        % (esc(p["d"]), esc(p["url"]), esc(p["t"]), esc(p["s"]),
+           format(p["words"], ","), p["figures"], p["tables"])
+        for p in feats)
+    w = coop_window()
+    avail = esc(COOP_TERM) + ((", %s days from this build" % format(w["days"], ",")) if w and w["days"] > 0 else "")
+
+    def sect(title, body, count=""):
+        return ('<section class="band shell rsec">\n'
+                '  <div class="sechead"><h2>%s</h2>%s</div>\n%s\n</section>'
+                % (esc(title), ('<span class="count">%s</span>' % esc(count)) if count else "", body))
+
+    blocks = []
+    if ed:
+        blocks.append(sect("Education", ed))
+    if ex:
+        blocks.append(sect("Experience", ex))
+    blocks.append(sect("Capability, and what evidences it", evid,
+                       "%d %s" % (len(resume_evidence()),
+                                  "claim" if len(resume_evidence()) == 1 else "claims")))
+    blocks.append(sect("Selected work", sel, "%d of %d" % (len(feats), len(P))))
+    if sk:
+        blocks.append(sect("Tools and methods", sk))
+    blocks.append(sect("The site itself, measured", (
+        '<div class="rrow"><p class="rwhen">The corpus</p><div class="rwhat"><p class="rlist">'
+        '%d pieces, %s words, %d figures, %d tables and %s checkpoint questions, every one counted from the '
+        'published files by the build rather than typed. %d of them were chosen, scoped and finished without a '
+        'course asking for them.</p></div></div>'
+        '<div class="rrow"><p class="rwhen">The instrument</p><div class="rwhat"><p class="rlist">'
+        'The site states %d things about itself and checks every one of them on every build; the register on '
+        '<a href="controls.html">controls</a> prints %d held, %d untested and %d failed. Each check is itself tested by a '
+        'falsification: a change made to a copy of the whole tree that the check must refuse. Every page is opened '
+        'in a browser and measured for external requests and for frames requested while idle.</p></div></div>'
+        % (len(P), format(TOTAL_WORDS, ","), TOTAL_FIGS, TOTAL_TBLS, format(CHECKPOINTS, ","), N_INDEP,
+           reg.get("rows", 0), reg.get("held", 0), reg.get("untested", 0), reg.get("failed", 0)))))
+
+    body = f"""<div class="hero tight shell">
+  <p class="eyebrow accent">Resume</p>
+  <h1 class="h1">{esc(NAME)}</h1>
+  <p class="lede">{esc(", ".join(x for x in ("Accounting and Financial Management, Analytics stream", aff[0] if aff else "") if x))}.
+  Standing {esc(STANDING)}. Available for co-op {avail}.</p>
+  <p class="rcontact"><a href="mailto:{esc(EMAIL)}">{esc(EMAIL)}</a> <a href="{SITE_URL}">{esc(HOST)}</a>
+  {" ".join(profile_links(resume=False))}</p>
+  <p class="rprint">Every number below is counted by the build that wrote this page. For a PDF, print this page:
+  it is laid out for paper and carries no navigation there.</p>
+</div>
+{chr(10).join(blocks)}
+"""
+    return head(f"Resume · {SHORT}",
+                f"Resume of {NAME}: Accounting and Financial Management, Analytics stream at Waterloo, with the "
+                f"portfolio evidence counted by the build rather than claimed.",
+                "resume.html") + body + foot()
 
 
 def page_selected():
@@ -1841,7 +1971,7 @@ def page_library():
                 f"All {len(P)} pieces by Alex Rajcoomar as one statement of work: measured words, figures and tables on every row, split by origin.",
                 "library.html") + body + foot()
 
-def profile_links(css="inlink"):
+def profile_links(css="inlink", resume=True):
     """The optional recruiter links, each rendered only where a value
     exists in pieces.json's site block."""
     out = []
@@ -1849,8 +1979,12 @@ def profile_links(css="inlink"):
         out.append(f'<a class="{css}" href="{esc(LINKEDIN)}">LinkedIn</a>')
     if GITHUB:
         out.append(f'<a class="{css}" href="{esc(GITHUB)}">GitHub</a>')
-    if RESUME:
-        out.append(f'<a class="{css}" href="{esc(RESUME)}">Resume</a>')
+    # an external resume when one is recorded, and otherwise the page this
+    # build writes, which is always current because it is generated. The
+    # resume's own contact line asks for it off: a link to the page you are
+    # reading is furniture, not a link.
+    if resume:
+        out.append(f'<a class="{css}" href="{esc(RESUME) if RESUME else "resume.html"}">Resume</a>')
     return out
 
 
@@ -5934,6 +6068,23 @@ def check_site():
                 t39["wrong"] += 1
                 problems.append(_p("39", "about.html: %s prints %d %s and its own pieces measure %d"
                                          % (cid39, said39[key39], key39, want39)))
+    # the resume prints the same four subtotals; held here so the two pages
+    # cannot disagree about what evidences a claim
+    _res39 = os.path.join(OUT, "resume.html")
+    if os.path.exists(_res39):
+        _rraw39 = open(_res39, encoding="utf-8", errors="ignore").read()
+        look("39", "resume.html")
+        for cid39, title39, _pr39 in CAP_BLOCKS:
+            e39 = capability_evidence(cid39)
+            if not e39["n"]:
+                continue
+            want39 = "<span>%s words</span>" % format(e39["words"], ",")
+            if want39 not in _rraw39:
+                t39["wrong"] += 1
+                problems.append(_p("39", "resume.html: does not print %s words for %s, which is what the "
+                                         "about page prints and what its pieces measure"
+                                         % (format(e39["words"], ","), cid39)))
+
     for cid39 in sorted(_map39):
         if cid39 not in {c for c, _t, _p2 in CAP_BLOCKS}:
             t39["wrong"] += 1
@@ -6418,7 +6569,8 @@ def main():
     all_pages = list(SHELL_PAGES) + [p["url"] for p in P] + [k + ".html" for k in exceptions()["transcripts"]]
     colpath = os.path.join(OUT, "colophon.html")
     ctlpath = os.path.join(OUT, "controls.html")
-    started_with = {pth: (open(pth, encoding="utf-8").read() if os.path.exists(pth) else None) for pth in (colpath, ctlpath)}
+    respath = os.path.join(OUT, "resume.html")
+    started_with = {pth: (open(pth, encoding="utf-8").read() if os.path.exists(pth) else None) for pth in (colpath, ctlpath, respath)}
     # the two pages are written only here, from the records: written first
     # without them and again with them, every build rewrote the pages
     if not os.path.exists(colpath):
@@ -6427,6 +6579,11 @@ def main():
     if not os.path.exists(ctlpath):
         open(ctlpath, "w", encoding="utf-8").write("<!DOCTYPE html><html><head><title>Controls</title></head><body><a class=\"skip\" href=\"#main\">Skip to content</a><main id=\"main\"></main></body></html>")
         changed.append("controls.html")
+    # the resume prints the register's tallies, so it is written here for the
+    # same reason the colophon is: written before the checks it would say zero
+    if not os.path.exists(respath):
+        open(respath, "w", encoding="utf-8").write(page_resume())
+        changed.append("resume.html")
     settled = False
     for _round in range(5):
         problems = check_site()
@@ -6438,8 +6595,10 @@ def main():
         instrument_html, counts = claims.render_instrument(ctx)
         new_ctl = page_controls(register_html, instrument_html, counts, summary)
         new_col = page_colophon(summary=summary)
+        new_res = page_resume(summary=summary)
         moved = False
-        for path, text, name in ((ctlpath, new_ctl, "controls.html"), (colpath, new_col, "colophon.html")):
+        for path, text, name in ((ctlpath, new_ctl, "controls.html"), (colpath, new_col, "colophon.html"),
+                                 (respath, new_res, "resume.html")):
             on_disk = open(path, encoding="utf-8").read() if os.path.exists(path) else ""
             if text != on_disk:
                 open(path, "w", encoding="utf-8").write(text)
@@ -6456,7 +6615,7 @@ def main():
         problems.append("controls.html: the register did not settle in five rounds")
     # the first round prints the previous scan's count and is rewritten by the
     # second, so a page counts as rewritten only if it ends up different
-    for pth, name in ((ctlpath, "controls.html"), (colpath, "colophon.html")):
+    for pth, name in ((ctlpath, "controls.html"), (colpath, "colophon.html"), (respath, "resume.html")):
         if open(pth, encoding="utf-8").read() != started_with[pth] and name not in changed:
             changed.append(name)
     check_site.register = summary
@@ -6476,6 +6635,10 @@ def main():
 
     print(f"{len(P)} pieces · {TOTAL_WORDS:,} words · {TOTAL_FIGS} figures · {TOTAL_TBLS} tables")
     print("rewrote: " + (", ".join(changed) if changed else "nothing, pages already current"))
+    _gaps = resume_gaps()
+    if _gaps:
+        print("resume: %s declared and unsupplied in content/resume.json; "
+              "the page renders neither" % ", ".join(_gaps))
     if figs_named:
         print(f"accessible names written on {figs_named} figures")
     if navs:

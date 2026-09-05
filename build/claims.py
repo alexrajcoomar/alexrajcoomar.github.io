@@ -34,7 +34,7 @@ DECL_PATH = os.path.join(ROOT, "content", "declared.json")
 # the audit never opens and the register never grades.
 SHELL = ["index.html", "research.html", "coursework.html", "tools.html",
          "selected.html", "library.html", "atlas.html", "about.html",
-         "colophon.html", "controls.html", "404.html"]
+         "resume.html", "colophon.html", "controls.html", "404.html"]
 # the pages the register measures that are neither generated nor pieces: the
 # editor, hand-maintained, measured on its own terms under the editor row
 AUX = ["admin.html"]
