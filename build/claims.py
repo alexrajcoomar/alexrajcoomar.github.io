@@ -101,8 +101,11 @@ def page_input_digest(out_dir, name, shell):
         raw = re.sub(r'<section[^>]*id="claims".*?</section>', "", raw, flags=re.S)
         raw = re.sub(r'<section[^>]*id="register".*?</section>', "", raw, flags=re.S)
         raw = re.sub(r'<section[^>]*id="instrument".*?</section>', "", raw, flags=re.S)
-        raw = re.sub(r'<p class="audit-line">.*?</p>', "", raw, flags=re.S)
-        raw = re.sub(r'<p class="register-line">.*?</p>', "", raw, flags=re.S)
+        # matched as a class token rather than as the whole attribute: the
+        # resume prints the register's tallies too, and a page that carries
+        # one of these lines beside a class of its own was going stale on
+        # every build for having printed its own result
+        raw = re.sub(r'<p class="[^"]*\b(?:audit-line|register-line)\b[^"]*">.*?</p>', "", raw, flags=re.S)
         raw = re.sub(r'\?v=[0-9a-f]{8}', "", raw)
         h.update(raw.encode("utf-8"))
         for dep in ("site.css", "site.js", "atlas.js", "figures.css"):
@@ -890,6 +893,12 @@ def known_numbers(ctx):
     take(json.dumps(neg.get("build_meta") or {})); take(json.dumps(neg.get("runtime_meta") or {}))
     for v in list(neg["build"].values()) + list(neg["runtime"].values()):
         take(len(v)); take(sum(1 for c in v if c.get("caught")))
+    # and the totals the ledger sentence states, which are the sum over the
+    # checks rather than any one check's count: "70 of 70 caught" printed a
+    # number nothing here had computed until it did
+    for side in ("build", "runtime"):
+        cases = [c for v in neg[side].values() for c in v]
+        take(len(cases)); take(sum(1 for c in cases if c.get("caught")))
     audit = ctx["audit"]["audit"] or {}
     take(json.dumps(audit.get("meta") or {}))
     take(json.dumps(_audit_age(audit)))
