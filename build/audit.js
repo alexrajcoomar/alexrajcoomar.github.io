@@ -431,6 +431,7 @@ async function measurePage(browser, base, name, shell) {
     {
       const ctx = await browser.newContext({ viewport: { width: 1280, height: 800 } });
       const page = await ctx.newPage();
+      await page.addInitScript(RAF_COUNTER);
       try { await page.goto(base + '/' + name, { waitUntil: 'networkidle', timeout: 60000 }); } catch (e) { /* measured anyway */ }
       const ins = { layers: 0, rest: -1, hover: -1, focus: -1, ms: -1, moved: -1, framesAfter: -1, reducedMs: -1 };
       const has = await page.evaluate(() => !!document.querySelector('.brand .mk-ins'));
