@@ -1351,6 +1351,54 @@ def hero_identity():
             + "\n      ".join(facts) + ("\n      " if facts else "")
             + f'<p class="links">{"".join(links)}</p>\n    </div>')
 
+# Three doorways, for the three reasons a stranger opens this site. Each one
+# points at a surface that already exists and says what is behind it in the
+# fewest words that are still true. Kept to one row: a reader who wants the
+# site as it was scrolls past a single line.
+DOORS = [
+    ("selected.html", "Hiring me"),
+    ("library.html",  "Reading the research"),
+    ("colophon.html", "How this is built"),
+]
+
+
+def start_here():
+    """One line under the corpus figures. The labels carry the whole of it:
+    a description under each one wrapped the row onto three broken lines at
+    every width the hero column actually takes, and each destination opens
+    with a lede that says the same thing better."""
+    items = "\n        ".join(
+        '<a href="%s">%s <span aria-hidden="true">&#8594;</span></a>' % (esc(u), esc(t))
+        for u, t in DOORS)
+    return ('<nav class="startrow" aria-label="Start here">\n'
+            '      <p class="startlab">Start here</p>\n'
+            '      <p class="startlinks">\n        %s\n      </p>\n    </nav>' % items)
+
+
+def now_line():
+    """Where the author is, from values the site already records: the standing
+    in content/pieces.json, the co-op term counted from this build's date, and
+    the day the corpus was last measured. The optional sentence renders only
+    when it has been written, so nothing here can read as a placeholder."""
+    bits = []
+    if STANDING:
+        bits.append("<div><b>Term</b><span>%s, %s</span></div>"
+                    % (esc(STANDING), esc(TODAY.strftime("%B %Y"))))
+    w = coop_window()
+    if w:
+        bits.append("<div><b>Next co-op</b><span>%s, %s day%s from this build</span></div>"
+                    % (esc(COOP_TERM), format(w["days"], ","), "" if w["days"] == 1 else "s"))
+    elif COOP_TERM:
+        bits.append("<div><b>Next co-op</b><span>%s</span></div>" % esc(COOP_TERM))
+    bits.append('<div><b>Last measured</b><span>%s, %s pieces and %s words, by the build that '
+                'wrote this page</span></div>'
+                % (esc(TODAY.isoformat()), len(P), format(TOTAL_WORDS, ",")))
+    nw = (S.get("now") or "").strip()
+    if nw:
+        bits.append("<div><b>Building</b><span>%s</span></div>" % esc(nw))
+    return '<div class="facts measure wide pane nowpane">%s</div>' % "".join(bits)
+
+
 def corpus_line():
     """The corpus in four figures, each the same variable the statement's
     total row prints, so the two cannot drift. A definition list, because
@@ -1436,6 +1484,7 @@ def page_index():
     <p class="display">{S["headline"]}</p>
     <p class="method">Every figure below is counted from the published files by the build, never typed. The notes define each column and state every exception.</p>
     {corpus_line()}
+    {start_here()}
   </section>
   <div class="descent-globe">
     <div class="stage-globe">
@@ -1884,6 +1933,8 @@ def page_about():
     <div><b>This site</b><span><a class="inlink" href="{SITE_URL}">{HOST}</a></span></div>{recruit_rows}
   </div>
   </div>
+  <div class="sechead nowhead"><h3 id="now">Now</h3><span class="count">This build</span></div>
+  {now_line()}
   </div>
 </section>
 
@@ -5095,6 +5146,30 @@ def check_site():
             if _norm32(card32) != want32:
                 T["author"]["off"] += 1
                 problems.append(_p("32", "index.html: the author's card reads %r; the build's own arithmetic says %r" % (_norm32(card32), want32)))
+
+        # the same two recorded values on the about page's Now block, which is
+        # the only part of that page that goes stale on its own. The day count
+        # is held to the arithmetic just done, not to the writer that printed
+        # it, and the measurement date is held to this build's date.
+        atx32 = os.path.join(OUT, "about.html")
+        if os.path.exists(atx32):
+            nraw32 = open(atx32, encoding="utf-8", errors="ignore").read()
+            nm32 = re.search(r'<div class="facts[^"]*nowpane">(.*?)</div>\s*</div>\s*</section>', nraw32, re.S)
+            nblk32 = _norm32(re.sub(r"<[^>]+>", " ", nm32.group(1))) if nm32 else None
+            if nblk32 is None:
+                problems.append(_p("32", "about.html: carries no Now block, and the page claims one"))
+            else:
+                T["author"]["cards"] += 1
+                if m32 and days32 > 0:
+                    want_days32 = "%s, %s days from this build" % (COOP_TERM, format(days32, ","))
+                    if want_days32 not in nblk32:
+                        T["author"]["off"] += 1
+                        problems.append(_p("32", "about.html: the Now block does not read %r, which is the "
+                                                 "co-op window this build computes" % want_days32))
+                if TODAY.isoformat() not in nblk32:
+                    T["author"]["off"] += 1
+                    problems.append(_p("32", "about.html: the Now block does not carry this build's date, %s"
+                                             % TODAY.isoformat()))
 
     # 27. every visual channel the two sphere scripts declare is named in the
     # Atlas key, and every key entry is a channel one of them draws; the home

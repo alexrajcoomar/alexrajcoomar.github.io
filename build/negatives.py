@@ -303,6 +303,13 @@ CASES = [
                       'out[r["kind"] or "gap"] += 1',
                       'out[r["kind"] or "rec"] += 1')),
 
+    C("32", "now-block-stale-by-a-day", "the Now block counts the co-op window from the day before this build",
+      lambda t: _edit(t, "build/build_site.py",
+                      'bits.append("<div><b>Next co-op</b><span>%s, %s day%s from this build</span></div>"\n'
+                      '                    % (esc(COOP_TERM), format(w["days"], ","), "" if w["days"] == 1 else "s"))',
+                      'bits.append("<div><b>Next co-op</b><span>%s, %s day%s from this build</span></div>"\n'
+                      '                    % (esc(COOP_TERM), format(w["days"] + 1, ","), "" if w["days"] == 1 else "s"))')),
+
     C("39", "capability-evidenced-by-nothing", "a capability the page claims is left with no work behind it",
       lambda t: _json(t, "content/capabilities.json",
                       lambda d: d["capabilities"]["canadian"].update({"pieces": []}))),

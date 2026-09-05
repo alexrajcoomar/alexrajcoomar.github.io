@@ -2552,3 +2552,24 @@ dialog.prov:not([open])::backdrop{background-color:rgba(10,10,8,0)}
 .capgap{margin:.6rem 0 0;font-size:.84rem;color:var(--ink-3);line-height:1.5}
 .capnote{margin:1.4rem 0 0;font-size:.88rem;color:var(--ink-3);max-width:44rem;line-height:1.55}
 .capnote code{color:var(--ink-2)}
+
+/* ------------------------- start here --------------------------------
+   Three doorways under the corpus line, one row, at the size of a metadata
+   line. A reader who wants the site as it was passes one line to reach the
+   statement; a reader who does not know where to start has somewhere to go
+   before the depth begins. */
+/* The hero column is 522px at 1440 and 434px at 1100, measured, so three
+   doorways with a description each never fit on one row there and broke into
+   three ragged lines. The labels carry it alone: a caption, then one line. */
+.startrow{margin:1.1rem 0 0;padding-top:.9rem;border-top:1px solid var(--rule)}
+.startlab{margin:0 0 .35rem;font-size:var(--meta-size);letter-spacing:var(--meta-track);
+  text-transform:uppercase;font-weight:var(--meta-weight);color:var(--ink-3)}
+.startlinks{display:flex;flex-wrap:wrap;gap:.35rem 1.5rem;margin:0}
+.startlinks a{font-size:.92rem;font-weight:640;color:var(--ink);white-space:nowrap;
+  border-bottom:1px solid var(--rule-strong);padding-bottom:.1rem}
+.startlinks a:hover{color:var(--accent);border-bottom-color:var(--accent)}
+
+/* The Now block reuses the facts grammar of the short version above it, one
+   step quieter, because it is the only part of this page that goes stale. */
+.nowhead{margin-top:2rem}
+.nowpane b{color:var(--ink-2)}
