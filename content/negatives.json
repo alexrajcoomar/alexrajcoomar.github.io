@@ -85,8 +85,8 @@
   "meta": {
    "tool": "build/audit.js --falsify",
    "date": "2026-09-05",
-   "commit": "ec309d4",
-   "code": "982c43c3b921"
+   "commit": "10b705a",
+   "code": "3fb2b3109b76"
   },
   "cases": [
    {
@@ -176,15 +176,15 @@
        "rows": 6,
        "faced": 6,
        "framesSettle": 1554,
-       "framesAfter": 2225,
+       "framesAfter": 2220,
        "framesAtTop": 660
       },
       "phone": {
        "rows": 6,
        "faced": 6,
-       "framesSettle": 2604,
-       "framesAfter": 3720,
-       "framesAtTop": 840
+       "framesSettle": 2352,
+       "framesAfter": 3360,
+       "framesAtTop": 780
       }
      }
     }
@@ -218,7 +218,7 @@
       "pulseEnded": true,
       "repeated": false,
       "switched": true,
-      "framesAfterSwitch": 60,
+      "framesAfterSwitch": 58,
       "focusRing": true
      }
     }
@@ -290,7 +290,7 @@
      "inspect": {
       "layers": 2,
       "rest": 0,
-      "hover": 0.666638,
+      "hover": 0.666649,
       "focus": 1,
       "ms": 900,
       "moved": 0,
@@ -330,7 +330,7 @@
       "forgotten": true,
       "guardHeld": false,
       "files": 0,
-      "filesExpected": 125,
+      "filesExpected": 126,
       "siteFields": 0,
       "scrollWidth": 320,
       "overflow": false
@@ -367,8 +367,8 @@
       "promptShown": true,
       "forgotten": true,
       "guardHeld": true,
-      "files": 125,
-      "filesExpected": 125,
+      "files": 126,
+      "filesExpected": 126,
       "siteFields": 13,
       "scrollWidth": 320,
       "overflow": false
@@ -405,8 +405,8 @@
       "promptShown": true,
       "forgotten": true,
       "guardHeld": true,
-      "files": 125,
-      "filesExpected": 125,
+      "files": 126,
+      "filesExpected": 126,
       "siteFields": 13,
       "scrollWidth": 320,
       "overflow": false
@@ -418,8 +418,8 @@
     "page": "sw.js",
     "what": "the new worker neither carries the saved copy across nor syncs it, so a publish empties it",
     "rec": {
-     "before": 183,
-     "of": 183,
+     "before": 184,
+     "of": 184,
      "after": 0,
      "refreshed": false,
      "editor": {
@@ -433,9 +433,9 @@
     "page": "sw.js",
     "what": "the worker stores the editor like any other page, so a visit leaves it in the cache",
     "rec": {
-     "before": 183,
-     "of": 183,
-     "after": 183,
+     "before": 184,
+     "of": 184,
+     "after": 184,
      "refreshed": true,
      "editor": {
       "stored": true,

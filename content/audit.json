@@ -4,7 +4,7 @@
   "tool": "build/audit.js",
   "browser": "Chromium 141.0.7390.37",
   "date": "2026-09-05",
-  "commit": "ec309d4",
+  "commit": "10b705a",
   "runs": [
    {
     "commit": "21aacf2",
@@ -45,6 +45,11 @@
     "commit": "6749022",
     "date": "2026-09-05",
     "audit": "kept"
+   },
+   {
+    "commit": "10b705a",
+    "date": "2026-09-05",
+    "audit": "ran"
    }
   ]
  },
@@ -99,7 +104,7 @@
    "motion": {
     "animations": 0
    },
-   "inputs": "45ee717f610d",
+   "inputs": "ea8deb164fb4",
    "measured": "2026-09-05"
   },
   "about.html": {
@@ -152,7 +157,7 @@
    "motion": {
     "animations": 0
    },
-   "inputs": "ec3af1fd5157",
+   "inputs": "ef72eeda255e",
    "measured": "2026-09-05"
   },
   "admin.html": {
@@ -193,13 +198,13 @@
     "promptShown": true,
     "forgotten": true,
     "guardHeld": true,
-    "files": 125,
-    "filesExpected": 125,
+    "files": 126,
+    "filesExpected": 126,
     "siteFields": 13,
     "scrollWidth": 320,
     "overflow": false
    },
-   "inputs": "63b824aaad76",
+   "inputs": "24aaef36c92c",
    "measured": "2026-09-05"
   },
   "afm241-cheat-sheet.html": {
@@ -552,8 +557,8 @@
    },
    "errors": 0,
    "chrome": {
-    "a": 14157,
-    "b": 14157
+    "a": 14212,
+    "b": 14212
    },
    "fit": {
     "scrollWidth": 320,
@@ -772,7 +777,7 @@
    "motion": {
     "animations": 0
    },
-   "inputs": "c84d088d7287",
+   "inputs": "03e8cd826a05",
    "measured": "2026-09-05"
   },
   "brittle-network.html": {
@@ -865,7 +870,7 @@
    "motion": {
     "animations": 0
    },
-   "inputs": "43d13202cb00",
+   "inputs": "41bd221b86a3",
    "measured": "2026-09-05"
   },
   "controls.html": {
@@ -878,8 +883,8 @@
    },
    "errors": 0,
    "chrome": {
-    "a": 5630,
-    "b": 5585
+    "a": 4364,
+    "b": 4319
    },
    "print": {
     "stickyLeft": 0,
@@ -892,7 +897,7 @@
     "overflow": false
    },
    "keyboard": {
-    "stops": 109,
+    "stops": 110,
     "noRing": 0
    },
    "theme": {
@@ -918,7 +923,7 @@
    "motion": {
     "animations": 0
    },
-   "inputs": "6911078873dd",
+   "inputs": "77f1da7a85ad",
    "measured": "2026-09-05"
   },
   "coursework.html": {
@@ -971,7 +976,7 @@
    "motion": {
     "animations": 0
    },
-   "inputs": "c3444afff4a3",
+   "inputs": "f879f560c500",
    "measured": "2026-09-05"
   },
   "crucible-cockpit.html": {
@@ -1404,8 +1409,8 @@
    },
    "errors": 0,
    "chrome": {
-    "a": 2340,
-    "b": 2295
+    "a": 2350,
+    "b": 2305
    },
    "print": {
     "stickyLeft": 0,
@@ -1446,7 +1451,7 @@
     }
    },
    "keyboard": {
-    "stops": 138,
+    "stops": 139,
     "noRing": 0
    },
    "theme": {
@@ -1472,7 +1477,7 @@
    "motion": {
     "animations": 0
    },
-   "inputs": "b528f606c97d",
+   "inputs": "1c0deda7f46d",
    "measured": "2026-09-05"
   },
   "kennedy-dossier.html": {
@@ -1545,8 +1550,8 @@
    },
    "errors": 0,
    "chrome": {
-    "a": 2057,
-    "b": 2012
+    "a": 2077,
+    "b": 2032
    },
    "print": {
     "stickyLeft": 0,
@@ -1559,7 +1564,7 @@
     "overflow": false
    },
    "keyboard": {
-    "stops": 100,
+    "stops": 101,
     "noRing": 0
    },
    "theme": {
@@ -1585,7 +1590,7 @@
    "motion": {
     "animations": 0
    },
-   "inputs": "4ab96a83e072",
+   "inputs": "7289fc40ab56",
    "measured": "2026-09-05"
   },
   "monroe-case-file.html": {
@@ -1778,7 +1783,7 @@
    "motion": {
     "animations": 0
    },
-   "inputs": "c775de8d641c",
+   "inputs": "e1910d6d9416",
    "measured": "2026-09-05"
   },
   "revenue-recognition.html": {
@@ -1799,6 +1804,59 @@
     "overflow": false
    },
    "inputs": "7902b8216d61",
+   "measured": "2026-09-05"
+  },
+  "selected.html": {
+   "ext": {
+    "requests": 5,
+    "external": 0
+   },
+   "idle": {
+    "frames": 0
+   },
+   "errors": 0,
+   "chrome": {
+    "a": 1771,
+    "b": 1726
+   },
+   "print": {
+    "stickyLeft": 0,
+    "hidden": 0,
+    "figures": 0,
+    "figuresBreakable": 0
+   },
+   "fit": {
+    "scrollWidth": 320,
+    "overflow": false
+   },
+   "keyboard": {
+    "stops": 77,
+    "noRing": 0
+   },
+   "theme": {
+    "options": 2,
+    "pressed": 1,
+    "pulsed": true,
+    "pulseEnded": true,
+    "repeated": false,
+    "switched": true,
+    "framesAfterSwitch": 0,
+    "focusRing": true
+   },
+   "inspect": {
+    "layers": 2,
+    "rest": 0,
+    "hover": 1,
+    "focus": 1,
+    "ms": 220,
+    "moved": 0,
+    "framesAfter": 0,
+    "reducedMs": 0
+   },
+   "motion": {
+    "animations": 0
+   },
+   "inputs": "66eceeed931c",
    "measured": "2026-09-05"
   },
   "skill-forge.html": {
@@ -1931,7 +1989,7 @@
    "motion": {
     "animations": 0
    },
-   "inputs": "f30270911718",
+   "inputs": "d2c404a9895f",
    "measured": "2026-09-05"
   },
   "transformers-study-guide.html": {
@@ -2016,9 +2074,9 @@
   }
  },
  "offline": {
-  "before": 183,
-  "of": 183,
-  "after": 183,
+  "before": 184,
+  "of": 184,
+  "after": 184,
   "refreshed": true,
   "editor": {
    "stored": false,
