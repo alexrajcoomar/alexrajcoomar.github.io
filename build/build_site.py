@@ -11,6 +11,10 @@ import datetime, hashlib, html, json, math, os, re, shutil, struct, subprocess, 
 ROOT    = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 CONTENT = json.load(open(os.path.join(ROOT, "content", "pieces.json"), encoding="utf-8"))
 METRICS = json.load(open(os.path.join(ROOT, "content", "metrics.json"), encoding="utf-8"))
+# the case map: for each featured piece, where in the record each of the eight
+# slots is answered. A reading of the pieces, kept out of this file so that
+# disagreeing with a placement is an edit to content rather than to the build.
+CASES   = json.load(open(os.path.join(ROOT, "content", "cases.json"), encoding="utf-8"))
 # the change ledger of the last content pass; written by build/ledger.py,
 # read here for one computed sentence on the colophon and for check 16
 try:
@@ -522,6 +526,191 @@ def piece_fingerprint(p):
     chosen: the radius is the word count, the rays are the tables, the nodes
     are the figures and the chords are the recorded links."""
     return fingerprint.svg(p["words"], p["figures"], p["tables"], link_degree(p["slug"]))
+
+
+# ------------------------------------------------------- selected work ----
+# Eight slots, in the order a reader needs them. The vocabulary is fixed here;
+# what fills a slot never is. A slot is answered by a heading the piece already
+# carries, by another document the corpus records a link to, or by a value this
+# build holds. A slot nothing answers prints as not carried, because a shape
+# with a hole in it tells a reader more than a hole that has been filled in.
+CASE_SLOTS = [
+    ("question",   "Question",   "What the piece set out to settle."),
+    ("context",    "Context",    "What was already on the table when it started."),
+    ("approach",   "Approach",   "The method, fixed before the result."),
+    ("evidence",   "Evidence",   "What the argument rests on, and how it is labelled."),
+    ("build",      "Build",      "What was made in order to answer it."),
+    ("finding",    "Finding",    "The result, in its narrow form."),
+    ("limitation", "Limitation", "What the piece will not carry."),
+    ("artifact",   "Artifact",   "The thing you can open."),
+]
+CASE_BY_SLUG = {p["slug"]: p for p in P}
+_CASE_H = re.compile(r"<(h[1-6])\b([^>]*)>(.*?)</\1>", re.S | re.I)
+
+
+def case_headings(url):
+    """Every heading in a piece that carries an id, as id to text. Read from
+    the file on every build rather than stored here, so a heading cannot go on
+    being quoted after the piece stopped saying it. Tags inside a heading
+    become a space, which is how build/invariance.py records the same text."""
+    path = os.path.join(OUT, url)
+    if not os.path.exists(path):
+        return {}
+    raw = re.sub(r"<(script|style|svg)\b[^>]*>.*?</\1>", " ",
+                 open(path, encoding="utf-8", errors="ignore").read(), flags=re.S | re.I)
+    out = {}
+    for m in _CASE_H.finditer(raw):
+        i = re.search(r'\bid="([^"]+)"', m.group(2))
+        if not i:
+            continue
+        txt = html.unescape(re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", m.group(3)))).strip()
+        if txt and i.group(1) not in out:
+            out[i.group(1)] = txt
+    return out
+
+
+def case_rows(slug):
+    """The eight slots for one featured piece, each resolved to where it is
+    answered. Nothing is invented for a slot the map leaves empty."""
+    p = CASE_BY_SLUG[slug]
+    spec = (CASES.get("cases") or {}).get(slug) or {}
+    heads = case_headings(p["url"])
+    rows = []
+    for key, label, meaning in CASE_SLOTS:
+        s = spec.get(key) or {}
+        r = {"key": key, "label": label, "meaning": meaning, "kind": None}
+        if "sec" in s and s["sec"] in heads:
+            r.update(kind="sec", id=s["sec"], text=heads[s["sec"]],
+                     href="%s#%s" % (p["url"], s["sec"]))
+        elif "doc" in s:
+            docs = [CASE_BY_SLUG[d] for d in s["doc"] if d in CASE_BY_SLUG]
+            if docs:
+                r.update(kind="doc", docs=docs)
+        elif s.get("rec") == "built_from" and p.get("built_from", "").strip() not in ("", NOT_DECLARED):
+            r.update(kind="rec", text=p["built_from"].strip(), label_as="built_from")
+        elif s.get("rec") == "piece":
+            r.update(kind="rec", text=p["demo"] or p["s"], href=p["url"])
+        rows.append(r)
+    return rows
+
+
+def case_coverage():
+    """How much of the shape the six pieces actually carry, by where each slot
+    is answered. The gap is the point of the number, so it is counted."""
+    out = {"pieces": 0, "slots": 0, "sec": 0, "doc": 0, "rec": 0, "gap": 0}
+    for slug in (CASES.get("cases") or {}):
+        if slug not in CASE_BY_SLUG:
+            continue
+        out["pieces"] += 1
+        for r in case_rows(slug):
+            out["slots"] += 1
+            out[r["kind"] or "gap"] += 1
+    return out
+
+
+def case_cell(r):
+    """One slot, rendered. A section quotes the piece's own heading and opens
+    it; a document names the documents the corpus records; a record prints the
+    value the build holds; a slot with nothing behind it says so."""
+    if r["kind"] == "sec":
+        return ('<a class="cslot" href="%s">%s</a>' % (esc(r["href"]), esc(r["text"]))
+                + ' <span class="cwhere">section</span>')
+    if r["kind"] == "doc":
+        links = ", ".join('<a class="cslot" href="%s">%s</a>' % (esc(d["url"]), esc(d["t"]))
+                          for d in r["docs"])
+        return links + ' <span class="cwhere">%s</span>' % (
+            "linked document" if len(r["docs"]) == 1 else "linked documents")
+    if r["kind"] == "rec":
+        if r.get("href"):
+            return ('<a class="cslot" href="%s">Open it</a> <span class="cnote">%s</span>'
+                    % (esc(r["href"]), esc(r["text"])))
+        # the same label the piece's own line carries, so the sentence a reader
+        # meets here is the sentence they meet on the document
+        if r.get("label_as") == "built_from":
+            # Two of the recorded lines open with a "Built on" clause of their
+            # own, and the label would double it. The label is dropped there
+            # rather than the sentence rewritten, because the sentence is the
+            # owner's and lives in content/pieces.json.
+            v = r["text"]
+            if v[:6].lower() == "built ":
+                return '<span class="cnote">%s</span>' % esc(v)
+            return '<span class="cnote"><b>Built from</b> %s</span>' % esc(v)
+        return '<span class="cnote">%s</span>' % esc(r["text"])
+    return '<span class="cgap">Not carried</span>'
+
+
+def case_entry(k, p):
+    """One case: the measured line, the piece's own blurb, and the eight
+    slots as a table whose row headers are the slot names."""
+    rows = case_rows(p["slug"])
+    held = sum(1 for r in rows if r["kind"])
+    trs = "\n".join(
+        '        <tr%s><th scope="row"><span class="cslotname">%s</span>'
+        '<span class="cmeaning">%s</span></th><td>%s</td></tr>'
+        % ("" if r["kind"] else ' class="cempty"', esc(r["label"]), esc(r["meaning"]), case_cell(r))
+        for r in rows)
+    mins = f'{p["mins"]} min' if p["mins"] else "instrument"
+    return f"""  <article class="case" id="case-{esc(p["slug"])}">
+    <div class="casehead">
+      <p class="ceyebrow"><span class="num tnum">{k:02d}</span> {kind_chip(p)} <span class="csurf">{esc(SURF_LABEL[p["surface"]])}</span> <span class="cdate">{esc(p["d"])}</span></p>
+      <h2 class="ctitle"><a href="{esc(p["url"])}">{esc(p["t"])}</a></h2>
+      <p class="csub">{esc(p["s"])}</p>
+      <div class="cfig" aria-hidden="true">{piece_fingerprint(p)}</div>
+    </div>
+    <p class="cmeasure"><span>{p["words"]:,} words</span><span>{p["figures"]} figures</span><span>{p["tables"]} tables</span><span>{link_degree(p["slug"])} recorded links</span><span>{esc(mins)}</span></p>
+    <p class="cblurb">{esc(p["blurb"])}</p>
+    <table class="ctable">
+      <caption class="csr">The eight slots for {esc(p["t"])}, {held} of {len(CASE_SLOTS)} carried</caption>
+      <tbody>
+{trs}
+      </tbody>
+    </table>
+    <p class="cread"><a class="cgo" href="{esc(p["url"])}">Read {esc(p["t"])} <span class="arrow" aria-hidden="true">&#8594;</span></a> <span class="cheld">{held} of {len(CASE_SLOTS)} slots carried</span></p>
+  </article>"""
+
+
+def page_selected():
+    """The six pieces recorded as featured, each read against the same eight
+    slots. Every slot that is filled points at something that already exists:
+    a heading the piece carries, a document the corpus records a link to, or a
+    value this build computed. Nothing here is a new sentence about the work."""
+    feats = [p for p in P if p["featured"]][:6]
+    cov = case_coverage()
+    entries = "\n".join(case_entry(i, p) for i, p in enumerate(feats, 1))
+    w = sum(p["words"] for p in feats)
+    f = sum(p["figures"] for p in feats)
+    t = sum(p["tables"] for p in feats)
+    body = f"""<div class="hero tight shell">
+  <p class="eyebrow accent">Selected work</p>
+  <h1 class="h1">The strongest pieces, put through one shape.</h1>
+  <p class="lede">The {len(feats)} pieces recorded as featured, {w:,} words, {f} figures and {t} tables between them,
+  each put through one shape: question, context, approach, evidence, build, finding, limitation, artifact.
+  A slot is filled only by something already on the site, and {cov["gap"]} of {cov["slots"]} are not filled at all.
+  The whole corpus is on <a href="library.html">Work</a>.</p>
+</div>
+<section class="shell stack-end">
+  <p class="caselead">{cov["slots"]} slots over {cov["pieces"]} pieces: {cov["sec"]} answered by a section,
+  {cov["doc"]} by a linked document, {cov["rec"]} by a record, {cov["gap"]} not carried.
+  <a href="#casenotes">How a slot is filled &#8595;</a></p>
+{entries}
+  <div class="casenote" id="casenotes">
+    <h2>Notes on the reading</h2>
+    <p><b>How to read a row.</b> A slot marked <i>section</i> quotes a heading the piece itself carries and opens
+    the piece at it. A slot marked <i>linked document</i> names another piece the corpus records a link to.
+    The rest print a value this build already holds: the line the piece declares it was built from, or
+    the artifact itself. A slot nothing answers says <i>not carried</i>, and is counted.</p>
+    <p><b>What is measured and what is not.</b> The counts, the links and the figure on each entry are measured.
+    Which heading answers which slot is a reading, declared in <code>content/cases.json</code>. The build checks
+    that every anchor exists, that every heading is quoted as the invariance record holds it, and that every
+    named document is a recorded link; it does not check that the reading is the right one. Disagree with a
+    placement and the file is the place to say so.</p>
+  </div>
+</section>
+"""
+    return head(f"Selected work · {SHORT}",
+                f"Six featured pieces by Alex Rajcoomar read against one shape: question, context, approach, "
+                f"evidence, build, finding, limitation, artifact, every slot pointing at the piece's own record.",
+                "selected.html") + body + foot()
 
 
 def shelf_row(k, p, extra="", fp=False):
@@ -1232,6 +1421,7 @@ def page_index():
         </tbody>
       </table>
     </div>
+    <p class="stmore"><a class="inlink" href="selected.html">The featured pieces, each read against the same eight questions <span aria-hidden="true">&#8594;</span></a></p>
   </section>
 </div>
 
@@ -1521,7 +1711,9 @@ def page_library():
   <h1 class="h1">The whole statement.</h1>
   <p class="lede">All {len(P)} pieces, split by what asked for them, every row carrying the piece's
   measured words, figures and tables and its own declared rule. The three origins add to the corpus
-  line, {TOTAL_WORDS:,} words, and the <a href="colophon.html">notes</a> define each column.</p>
+  line, {TOTAL_WORDS:,} words, and the <a href="colophon.html">notes</a> define each column.
+  For fewer of them in more depth, the featured pieces are read one shape at a time on
+  <a href="selected.html">selected work</a>.</p>
 </div>
 <section class="shell stack-end">
   <div class="tools-bar">
@@ -3856,9 +4048,11 @@ def jsonld_person():
             + "</script>")
 
 
-SHELL_PAGES = ("index.html", "research.html", "coursework.html", "tools.html",
-               "library.html", "atlas.html", "about.html", "colophon.html",
-               "controls.html", "404.html")
+# One list, in build/claims.py, because the register, the falsification wall
+# and build/audit.js all read it from there. Kept as a literal here it drifted:
+# a page added to this tuple and not to that list is generated, checked and
+# never measured in a browser, and nothing said so.
+SHELL_PAGES = tuple(claims.SHELL)
 
 # ------------------------------------------------------------- checks ----
 # The build guarantees what it generates. Everything it merely touches was
@@ -5430,6 +5624,131 @@ def check_site():
                 problems.append(_p("37", "%s: a table header declares scope=%s, which is not a scope"
                                          % (f, m37.group(1))))
 
+    # 38. the case map. content/cases.json says where each of the eight slots
+    # is answered for each featured piece, and every placement in it is a
+    # reading rather than a measurement. What can be held is held here: the
+    # piece is one the site lists and records as featured, the slot key is one
+    # of the eight, a named section exists both in the file and in the piece's
+    # invariance record, the heading printed beside it is the heading that
+    # record holds, a named document is a listed piece the corpus records a
+    # link to, and a named record is one this build actually carries. The
+    # coverage the page prints is recomputed here from the files rather than
+    # read back from the page, so a slot cannot be counted as carried by a
+    # page that does not carry it.
+    t38 = T["cases"] = {"pieces": 0, "slots": 0, "sec": 0, "doc": 0, "rec": 0,
+                        "gap": 0, "broken": 0, "quoted": 0, "misquoted": 0}
+    try:
+        _inv38 = json.load(open(invariance.BASE_PATH, encoding="utf-8")).get("pieces") or {}
+    except Exception:
+        _inv38 = {}
+    _slug38 = {q["slug"]: q for q in P}
+    _feat38 = {q["slug"] for q in P if q.get("featured")}
+    _keys38 = {k for k, _l, _m in CASE_SLOTS}
+    _edge38 = set()
+    for _a38, _b38 in (ATLAS.get("edges") or ()):
+        _edge38.add((_a38, _b38)); _edge38.add((_b38, _a38))
+    look("38", "selected.html")
+    for slug38, spec38 in sorted((CASES.get("cases") or {}).items()):
+        if slug38 not in _slug38:
+            t38["broken"] += 1
+            problems.append(_p("38", "content/cases.json: %s is not a listed piece" % slug38))
+            continue
+        if slug38 not in _feat38:
+            t38["broken"] += 1
+            problems.append(_p("38", "content/cases.json: %s carries a case but is not recorded as "
+                                     "featured, so nothing on the site shows it" % slug38))
+        t38["pieces"] += 1
+        p38 = _slug38[slug38]
+        heads38 = case_headings(p38["url"])
+        rec38 = (_inv38.get(slug38) or {}).get("sets") or {}
+        ids38 = set(rec38.get("ids") or ())
+        for k38 in spec38:
+            if k38 not in _keys38:
+                t38["broken"] += 1
+                problems.append(_p("38", "content/cases.json: %s names the slot %s, which is not one "
+                                         "of the eight" % (slug38, k38)))
+        for key38, _l38, _m38 in CASE_SLOTS:
+            t38["slots"] += 1
+            s38 = spec38.get(key38) or {}
+            if not s38:
+                t38["gap"] += 1
+                continue
+            if "sec" in s38:
+                a38 = s38["sec"]
+                if a38 not in heads38:
+                    t38["broken"] += 1
+                    problems.append(_p("38", "content/cases.json: %s names #%s for %s, and %s carries no "
+                                             "heading with that id" % (slug38, a38, key38, p38["url"])))
+                    continue
+                if ids38 and a38 not in ids38:
+                    t38["broken"] += 1
+                    problems.append(_p("38", "content/cases.json: #%s is not an anchor the invariance "
+                                             "record holds for %s" % (a38, slug38)))
+                    continue
+                t38["sec"] += 1
+            elif "doc" in s38:
+                ok38 = True
+                for d38 in s38["doc"]:
+                    if d38 not in _slug38:
+                        ok38 = False
+                        problems.append(_p("38", "content/cases.json: %s names %s for %s, which is not a "
+                                                 "listed piece" % (slug38, d38, key38)))
+                    elif (slug38, d38) not in _edge38:
+                        ok38 = False
+                        problems.append(_p("38", "content/cases.json: %s names %s for %s, and the corpus "
+                                                 "records no link between them" % (slug38, d38, key38)))
+                if ok38:
+                    t38["doc"] += 1
+                else:
+                    t38["broken"] += 1
+            elif "rec" in s38:
+                v38 = s38["rec"]
+                if v38 == "built_from" and p38.get("built_from"):
+                    t38["rec"] += 1
+                elif v38 == "piece":
+                    t38["rec"] += 1
+                else:
+                    t38["broken"] += 1
+                    problems.append(_p("38", "content/cases.json: %s asks %s for the record %r, which "
+                                             "this build does not hold" % (slug38, key38, v38)))
+            else:
+                t38["broken"] += 1
+                problems.append(_p("38", "content/cases.json: %s gives %s no source at all"
+                                         % (slug38, key38)))
+    # what the page actually printed, read back from the file rather than from
+    # the generator that wrote it. An anchor that resolves is not the same
+    # claim as a heading quoted correctly, and only the page can answer the
+    # second one: a build that quotes a piece loosely still passes every test
+    # that reads the piece instead of the page.
+    _sel38 = os.path.join(OUT, "selected.html")
+    if os.path.exists(_sel38):
+        _raw38 = open(_sel38, encoding="utf-8", errors="ignore").read()
+        _url38 = {q["url"]: q["slug"] for q in P}
+        for _h38, _i38, _t38 in re.findall(
+                r'<a class="cslot" href="([^"#]+)#([^"]+)">([^<]*)</a>', _raw38):
+            t38["quoted"] += 1
+            _sl38 = _url38.get(_h38)
+            _rc38 = ((_inv38.get(_sl38) or {}).get("sets") or {}) if _sl38 else {}
+            _hs38 = {invariance.norm_sentence(x) for x in (_rc38.get("headings") or ())}
+            _said = invariance.norm_sentence(html.unescape(_t38))
+            if _sl38 is None or _i38 not in set(_rc38.get("ids") or ()):
+                t38["misquoted"] += 1
+                problems.append(_p("38", "selected.html: quotes #%s of %s, which no invariance record "
+                                         "holds" % (_i38, _h38)))
+            elif _hs38 and _said not in _hs38:
+                t38["misquoted"] += 1
+                problems.append(_p("38", "selected.html: prints %r at #%s of %s, and the invariance record "
+                                         "holds no such heading there" % (_said[:60], _i38, _h38)))
+        if t38["quoted"] != t38["sec"]:
+            problems.append(_p("38", "selected.html: prints %d quoted headings where the case map "
+                                     "resolves %d" % (t38["quoted"], t38["sec"])))
+
+    _said38 = case_coverage()
+    for k38 in ("pieces", "slots", "sec", "doc", "rec", "gap"):
+        if _said38.get(k38) != t38[k38]:
+            problems.append(_p("38", "selected.html: the page counts %d %s and the files hold %d"
+                                     % (_said38.get(k38, 0), k38, t38[k38])))
+
     # 33. the editor. admin.html is hand-maintained and the build never
     # writes it. Held here: the file is byte-identical to the bytes this run
     # started from; it is a whole document (the doctype at one end, </html> at
@@ -5686,6 +6005,7 @@ def _known_numbers():
         elif isinstance(x, str):
             for m in _NUM.findall(x): vals.add(_num(m))
             for m in _SMALL.findall(x): vals.add(_num(m))
+    add(case_coverage()); add(len(CASE_SLOTS))
     add([len(P), TOTAL_WORDS, TOTAL_FIGS, TOTAL_TBLS, CHECKPOINTS, DOC_MIN, WPM,
          FONT_BYTES, FONT_CODEPOINTS, N_TOOLS, N_PWA, N_INDEP, N_COURSE, N_PERSONAL,
          len(COURSES), UNIT, len(SHELL_PAGES), 404])
@@ -5767,6 +6087,22 @@ def _typed_numerals(extra_known=None):
             else:
                 out.append("lifted caption for %s quotes %s, which the piece does not state"
                            % (href, m))
+    # the case map quotes each piece's own headings, so a numeral inside one is
+    # the piece's, not this build's; the quote is held to the piece all the same
+    for slug in (CASES.get("cases") or {}):
+        if slug not in CASE_BY_SLUG:
+            continue
+        href = CASE_BY_SLUG[slug]["url"]
+        stated = _piece_numbers(href)
+        for r in case_rows(slug):
+            if r["kind"] != "sec":
+                continue
+            for m in _NUM.findall(r["text"]) + _SMALL.findall(r["text"]):
+                if _num(m) in stated:
+                    quoted.add(_num(m))
+                else:
+                    out.append("the case map quotes %s from a heading of %s, which the piece "
+                               "does not state" % (m, href))
     checked = 0
     for f in SHELL_PAGES:
         path = os.path.join(OUT, f)
@@ -5860,6 +6196,7 @@ def main():
     pages = {"index.html": page_index(), "research.html": page_research(),
              "atlas.html": page_atlas(),
              "coursework.html": page_coursework(), "tools.html": page_tools(),
+             "selected.html": page_selected(),
              "library.html": page_library(), "about.html": page_about(),
              "404.html": page_404(),
              "sitemap.xml": page_sitemap(), "robots.txt": page_robots(),

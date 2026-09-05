@@ -2441,3 +2441,96 @@ dialog.prov:not([open])::backdrop{background-color:rgba(10,10,8,0)}
 @media (prefers-reduced-motion:reduce){
   dialog.prov,dialog.prov::backdrop,.prov-panel{transition:none}
 }
+
+/* ------------------------- selected work ------------------------------
+   A showcase surface, not a system page: more air between entries and a
+   larger title than the shelves carry, inside the same hairline grammar.
+   Each entry is one measured line, the piece's own blurb, and eight slots
+   as a table whose row headers are the slot names. A slot with nothing
+   behind it keeps its row and says so, because the shape of what is
+   missing is the part a reader cannot get from the corpus itself. */
+.casenote{border-top:1px solid var(--rule-strong);padding:1.4rem 0 0;margin:2.4rem 0 0;max-width:44rem}
+.casenote h2{margin:0 0 .7rem;font-size:1.05rem;letter-spacing:-.01em}
+.caselead{margin:0 0 2rem;font-size:var(--meta-size);letter-spacing:var(--meta-track);
+  text-transform:uppercase;font-weight:var(--meta-weight);color:var(--ink-3);
+  font-variant-numeric:tabular-nums}
+.caselead a{color:var(--accent)}
+.casenote p{margin:0 0 .6rem;font-size:.9rem;color:var(--ink-2);line-height:1.55}
+.casenote p:last-child{margin-bottom:0}
+.casenote b{color:var(--ink);font-weight:640}
+.casenote i{font-style:normal;color:var(--ink);border-bottom:1px solid var(--rule-strong)}
+.casenote code{font-size:.86em;color:var(--ink)}
+.ccount{font-variant-numeric:tabular-nums;color:var(--ink-3) !important}
+
+.case{border-top:1px solid var(--rule-strong);padding:1.6rem 0 2.2rem;margin:0}
+.case:last-child{border-bottom:1px solid var(--rule-strong)}
+.casehead{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:.2rem 1rem;align-items:start}
+.ceyebrow{grid-column:1;margin:0 0 .35rem;display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;
+  font-size:var(--meta-size);letter-spacing:var(--meta-track);text-transform:uppercase;
+  font-weight:var(--meta-weight);color:var(--ink-3)}
+.ceyebrow .num{color:var(--ink-3);font-variant-numeric:tabular-nums}
+.ctitle{grid-column:1;margin:0 0 .3rem;font-size:clamp(1.35rem,2.6vw,1.9rem);
+  letter-spacing:-.02em;line-height:1.1}
+.ctitle a{color:var(--ink)}
+.ctitle a:hover{color:var(--accent)}
+.csub{grid-column:1;margin:0;font-size:1rem;color:var(--ink-2);max-width:44rem;line-height:1.5}
+.cfig{grid-column:2;grid-row:1 / span 3;align-self:start;justify-self:end;color:var(--ink-3);
+  transition:color 180ms cubic-bezier(.2,.6,.2,1)}
+.case:hover .cfig,.case:focus-within .cfig{color:var(--ink)}
+.cmeasure{display:flex;flex-wrap:wrap;gap:.2rem 1.1rem;margin:.9rem 0 .8rem;
+  font-size:var(--meta-size);letter-spacing:var(--meta-track);text-transform:uppercase;
+  font-weight:var(--meta-weight);color:var(--ink-3);font-variant-numeric:tabular-nums}
+.cblurb{margin:0 0 1.2rem;font-size:.95rem;color:var(--ink-2);max-width:46rem;line-height:1.55}
+
+/* Auto layout, not fixed: under table-layout:fixed Chrome ignored both
+   column widths, an inline !important included, and split the table in
+   half, so every answer began 560px across a 1120px table. The two
+   percentages hold the columns on their own. */
+.ctable{width:100%;border-collapse:collapse;margin:0 0 1rem}
+.csr{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;
+  clip-path:inset(50%);white-space:nowrap;border:0}
+.ctable th,.ctable td{text-align:left;vertical-align:top;padding:.5rem .8rem .5rem 0;
+  border-top:1px solid var(--rule);font-weight:400}
+.ctable tr:first-child th,.ctable tr:first-child td{border-top:1px solid var(--rule-strong)}
+.ctable th{width:30%;padding-right:1.2rem}
+.ctable td{width:70%}
+.cslotname{display:block;font-size:var(--meta-size);letter-spacing:var(--meta-track);
+  text-transform:uppercase;font-weight:var(--meta-weight);color:var(--ink)}
+.cmeaning{display:block;font-size:.8rem;color:var(--ink-3);line-height:1.4;margin-top:.15rem}
+.ctable td{font-size:.94rem;color:var(--ink-2);line-height:1.5}
+.cslot{color:var(--ink);border-bottom:1px solid var(--rule-strong)}
+.cslot:hover{color:var(--accent);border-bottom-color:var(--accent)}
+.cwhere{font-size:var(--meta-size);letter-spacing:var(--meta-track);text-transform:uppercase;
+  font-weight:var(--meta-weight);color:var(--ink-3);white-space:nowrap}
+.cnote{color:var(--ink-2)}
+.cgap{font-size:var(--meta-size);letter-spacing:var(--meta-track);text-transform:uppercase;
+  font-weight:var(--meta-weight);color:var(--ink-3)}
+.cempty td,.cempty th .cslotname{color:var(--ink-3)}
+.cread{margin:0;display:flex;flex-wrap:wrap;gap:.5rem 1.2rem;align-items:baseline}
+.cgo{font-size:.9rem;font-weight:660;color:var(--accent);display:inline-flex;gap:.4rem;align-items:center}
+.cgo .arrow{transition:transform var(--t-fast) var(--ease-move)}
+.cgo:hover .arrow{transform:translateX(3px)}
+.cheld{font-size:var(--meta-size);letter-spacing:var(--meta-track);text-transform:uppercase;
+  font-weight:var(--meta-weight);color:var(--ink-3);font-variant-numeric:tabular-nums}
+
+/* A phone has no room for a 12.5rem label column beside a sentence, so the
+   table becomes two stacked blocks per row and the slot name reads as the
+   heading of the answer under it. */
+@media (max-width:640px){
+  .casehead{grid-template-columns:minmax(0,1fr)}
+  .cfig{grid-column:1;grid-row:auto;justify-self:start;margin-top:.7rem}
+  .ctable,.ctable tbody,.ctable tr,.ctable th,.ctable td{display:block;width:auto}
+  .ctable th{padding:.7rem 0 .1rem;border-top:1px solid var(--rule)}
+  .ctable td{padding:0 0 .6rem;border-top:0}
+  .ctable tr:first-child td{border-top:0}
+  .cmeaning{max-width:32rem}
+}
+@media (prefers-reduced-motion:reduce){
+  .cfig,.cgo .arrow{transition:none}
+}
+@media print{
+  .case{break-inside:avoid;border-top:1px solid #999}
+  .cfig{display:none}
+}
+.stmore{margin:1rem 0 0;font-size:.9rem}
+.stmore .inlink{font-weight:640}

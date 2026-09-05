@@ -94,6 +94,14 @@ def _in_block(tree, rel, start, end, pattern, repl):
     open(p, "w", encoding="utf-8").write(s[:i] + block + s[j:])
 
 
+def _set_case(slug, slot, value):
+    """Move one slot of the case map, so the build meets a placement that
+    resolves to nothing."""
+    def fn(d):
+        d["cases"][slug][slot] = value
+    return fn
+
+
 def _set_piece(field, value, slug=None, index=None):
     def fn(d):
         ps = d["pieces"]
@@ -276,6 +284,24 @@ CASES = [
     C("37", "header-without-scope", "a generated table header no longer says which cells it heads",
       lambda t: _edit(t, "build/build_site.py", '''<thead><tr><th scope="col">Piece</th>''' + "'",
                       '''<thead><tr><th>Piece</th>''' + "'")),
+
+    C("38", "anchor-that-is-not-there", "a case slot points at a heading the piece does not carry",
+      lambda t: _json(t, "content/cases.json",
+                      _set_case("predictive-history", "finding", {"sec": "the-finding-nobody-wrote"}))),
+    C("38", "heading-quoted-loosely", "the page prints a heading the piece's own record does not hold",
+      lambda t: _edit(t, "build/build_site.py",
+                      'r.update(kind="sec", id=s["sec"], text=heads[s["sec"]],',
+                      'r.update(kind="sec", id=s["sec"], text=heads[s["sec"]].replace("The", "A"),')),
+    C("38", "document-that-is-not-linked", "a slot names a document the corpus records no link to",
+      lambda t: _json(t, "content/cases.json",
+                      _set_case("crucible-cockpit", "finding", {"doc": ["not-significant"]}))),
+    C("38", "case-for-a-piece-nothing-features", "a case is written for a piece the site does not feature",
+      lambda t: _json(t, "content/cases.json",
+                      lambda d: d["cases"].update({"not-significant": {"artifact": {"rec": "piece"}}}))),
+    C("38", "coverage-counted-generously", "the page counts a slot as carried that the files leave empty",
+      lambda t: _edit(t, "build/build_site.py",
+                      'out[r["kind"] or "gap"] += 1',
+                      'out[r["kind"] or "rec"] += 1')),
 ]
 
 
