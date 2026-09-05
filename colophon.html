@@ -22,7 +22,7 @@
 <link rel="manifest" href="site.webmanifest">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="preload" href="InterVariable-sub.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="site.css?v=96c83777">
+<link rel="stylesheet" href="site.css?v=894a4d68">
 <link rel="stylesheet" href="figures.css?v=2e8b6e1e">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' fill='%2316150f'/><g fill='none' stroke='%23faf9f6' stroke-linecap='round' stroke-linejoin='round'><path d='M12 56 L32 6 L52 56' stroke-width='4.95'/><path d='M20 38 H44' stroke-width='4.95'/><path d='M32 36 L51 56' stroke-width='4.95'/></g></svg>">
 <script>
@@ -43,7 +43,7 @@ document.documentElement.className+=' js';})();
 <a class="skip" href="#main">Skip to content</a>
 <header class="top">
   <div class="bar">
-    <a class="brand" href="index.html"><svg class="mk mk-brand" viewBox="0 0 64 64" width="24" height="24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 56 L32 6 L52 56" stroke-width="3.3"/><path d="M20 38 H44" stroke-width="3.3"/><path d="M32 18 H42 C51 18 51 35 42 36 H32" stroke-width="3.3"/><path d="M32 36 L51 56" stroke-width="3.3"/></svg>Alex Rajcoomar <span class="sub">portfolio</span></a>
+    <a class="brand" href="index.html"><svg class="mk mk-brand" viewBox="0 0 64 64" width="24" height="24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><g class="mk-nom"><path d="M12 56 L32 6 L52 56" stroke-width="3.3"/><path d="M20 38 H44" stroke-width="3.3"/><path d="M32 18 H42 C51 18 51 35 42 36 H32" stroke-width="3.3"/><path d="M32 36 L51 56" stroke-width="3.3"/></g><g class="mk-ins"><circle cx="32" cy="32" r="28" stroke-width="2.7" opacity="0.35"/><path d="M32 4 V60" stroke-width="2.7"/><path d="M28 6 H36" stroke-width="2.7"/><path d="M16 56 H20" stroke-width="2.7"/><path d="M44 56 H48" stroke-width="2.7"/></g></svg>Alex Rajcoomar <span class="sub">portfolio</span></a>
     <nav class="main" aria-label="Sections">
       <a href="index.html">Home</a>
       <a href="library.html">Work</a>
@@ -200,7 +200,7 @@ document.documentElement.className+=' js';})();
   <div class="prose measure">
     <p>Every sentence the generated pages say about this site is a row in a register, beside the check
     that tests it, the last result with its denominator, and what happened when the claim was
-    deliberately made false. This build: 40 claims, 40 held, 0 untested, 0 not yet measured, 0 asserted with no check, 0 failed. The register, and the same records drawn one
+    deliberately made false. This build: 44 claims, 0 held, 36 untested, 8 not yet measured, 0 asserted with no check, 0 failed. The register, and the same records drawn one
     glyph each, are on the <a href="controls.html#register">controls page</a>.</p>
   </div>
 </section>
@@ -245,34 +245,85 @@ document.documentElement.className+=' js';})();
 
 <section class="band colo ground" id="marks">
   <div class="shell">
-  <div class="sechead"><h2>The three marks</h2><span class="count">31 elements in 3 files</span></div>
+  <div class="sechead"><h2>The marks, the glyphs and the seal</h2>
+    <span class="count">93 elements in 10 files</span></div>
   <div class="prose measure">
     <p>The identity is drawn rather than typed: a monogram whose A and R stand on one vertical datum, in the
     header of every generated page, on the bar at the top of every standalone piece, and in the tab icon.
-    The other two stand where they mean something. The delta heads the tests of controls because its own
-    sequence is that page's: evidence, a change, a verified datum, a ledger record. The polar datum heads
-    the Atlas and stands beside the author's name because it is this site's own sphere abstracted, and the
-    filled node at its north pole is the author's mark among the 1,662 on that sphere.</p>
+    In the header it holds two layers. At rest it draws the 4 strokes of the letters;
+    point at it or reach it with a keyboard and it draws the 5 construction elements those
+    letters were measured from, which are the circle the A sits in, the datum both letters stand on, and the
+    ticks at the apex and the two feet. The other two marks stand where they mean something. The delta heads the
+    tests of controls because its own sequence is that page's: evidence, a change, a verified datum, a ledger
+    record. The polar datum heads the Atlas and stands beside the author's name because it is this site's own
+    sphere abstracted, and the filled node at its north pole is the author's mark among the
+    1,662 on that sphere.</p>
     <p>A stroke renders at its width times the size it is drawn, over the 64 unit grid the marks are
     authored on, so a line thinner than one device pixel cannot hold an edge. Each surface therefore draws
     only what it can hold and multiplies every stroke it keeps by one factor. The thinnest line any surface
     draws measures 1.01 device pixels. Nothing is resized by the stylesheet, because a mark scaled after
     the fact would be a mark whose arithmetic was done for another size.</p>
+    <p>The seal is the same discipline closed into a medallion: the monogram at its centre, a type
+    band on a real arc, and a calibration band of 24 stations exactly 15 degrees apart,
+    20 of them fine ticks, 3 cardinal rules, and the north station left to the observer
+    rather than drawn as a tick. The sheet intends divisions every 15 degrees for the polar datum and that
+    file carries them every 45; this one carries them every 15. Of its 40 elements the site draws 39: the innermost ring is
+    0.5 units and could not hold an edge at any size this
+    site uses, so it is dropped rather than drawn as a smear.</p>
   </div>
   <div class="tw"><table class="ctab">
-    <caption>What each surface draws, from which mark, how much of it, and how thin its finest line ends up.</caption>
+    <caption>What each surface draws, from which mark, how much of it, and how thin its finest line ends up.
+    The figure on a row has no file to draw a share of, so its count is what the whole statement's figures draw between them.</caption>
     <thead><tr><th scope="col">Surface</th><th scope="col">Mark</th><th scope="col">Elements</th>
     <th scope="col">Stroke factor</th><th scope="col">Drawn at</th><th scope="col">Thinnest line</th></tr></thead>
-    <tbody><tr><th scope="row">The header</th><td>monogram</td><td class="tnum">4 of 9</td><td class="tnum">2.2</td><td class="tnum">24</td><td class="tnum">1.24</td></tr><tr><th scope="row">The bar at the top of every piece</th><td>monogram</td><td class="tnum">4 of 9</td><td class="tnum">2.4</td><td class="tnum">19</td><td class="tnum">1.07</td></tr><tr><th scope="row">The tab icon</th><td>monogram</td><td class="tnum">3 of 9</td><td class="tnum">3.3</td><td class="tnum">16</td><td class="tnum">1.24</td></tr><tr><th scope="row">The tests of controls</th><td>delta</td><td class="tnum">8 of 8</td><td class="tnum">1.5</td><td class="tnum">44</td><td class="tnum">1.03</td></tr><tr><th scope="row">The Atlas</th><td>datum</td><td class="tnum">14 of 14</td><td class="tnum">1.8</td><td class="tnum">48</td><td class="tnum">1.01</td></tr><tr><th scope="row">Beside the author&#x27;s name</th><td>datum</td><td class="tnum">4 of 14</td><td class="tnum">3</td><td class="tnum">26</td><td class="tnum">1.22</td></tr></tbody>
+    <tbody><tr><th scope="row">The header, at rest</th><td>monogram</td><td class="tnum">4 of 9</td><td class="tnum">2.2</td><td class="tnum">24</td><td class="tnum">1.24</td></tr><tr><th scope="row">The bar at the top of every piece</th><td>monogram</td><td class="tnum">4 of 9</td><td class="tnum">2.4</td><td class="tnum">19</td><td class="tnum">1.07</td></tr><tr><th scope="row">The tab icon</th><td>monogram</td><td class="tnum">3 of 9</td><td class="tnum">3.3</td><td class="tnum">16</td><td class="tnum">1.24</td></tr><tr><th scope="row">The tests of controls</th><td>delta</td><td class="tnum">8 of 8</td><td class="tnum">1.5</td><td class="tnum">44</td><td class="tnum">1.03</td></tr><tr><th scope="row">The Atlas</th><td>datum</td><td class="tnum">14 of 14</td><td class="tnum">1.8</td><td class="tnum">48</td><td class="tnum">1.01</td></tr><tr><th scope="row">Beside the author&#x27;s name</th><td>datum</td><td class="tnum">4 of 14</td><td class="tnum">3</td><td class="tnum">26</td><td class="tnum">1.22</td></tr><tr><th scope="row">The header, under a pointer</th><td>monogram</td><td class="tnum">5 of 9</td><td class="tnum">3.6</td><td class="tnum">24</td><td class="tnum">1.01</td></tr><tr><th scope="row">The seal, above the facts</th><td>seal</td><td class="tnum">39 of 40</td><td class="tnum">1.5</td><td class="tnum">128</td><td class="tnum">1.05</td></tr><tr><th scope="row">The figure on every statement row</th><td>fingerprint</td><td class="tnum">451 across 65 figures</td><td class="tnum">2.9</td><td class="tnum">56</td><td class="tnum">1.01</td></tr></tbody>
+  </table></div>
+  <div class="prose measure">
+    <p>Six further glyphs carry the state of a claim rather than the identity of the site. They are authored on
+    a 24 unit grid at stroke 1.25, which renders at
+    1.04 and 1.25 device pixels at the two sizes this site
+    draws them, so unlike the brand marks they need no factor at all. They head the columns of the whole
+    statement, and they say what a column is before a reader has read a single number in it.</p>
+  </div>
+  <div class="tw"><table class="ctab">
+    <caption>The six verification glyphs, what each one asserts, and what its authored stroke renders as.</caption>
+    <thead><tr><th scope="col">Glyph</th><th scope="col">What it asserts</th><th scope="col">Elements</th>
+    <th scope="col">Stroke</th><th scope="col">Renders at</th></tr></thead>
+    <tbody><tr><th scope="row"><span class="glcell"><svg class="gl gl-source" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M2.5 7H8M2.5 12H8M2.5 17H8"/><path d="M8 7L13.25 12M8 17L13.25 12M8 12H13.25"/><circle cx="16.5" cy="12" r="3.25"/></svg>Source</span></th><td>Three intake streams converge on one node. Nothing enters the record unlabelled.</td><td class="tnum">3</td><td class="tnum">1.25</td><td class="tnum">1.04 and 1.25</td></tr><tr><th scope="row"><span class="glcell"><svg class="gl gl-evidence" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 4.5V20H19.5"/><path d="M13 6.5V15.5M10.8 6.5H15.2M10.8 15.5H15.2"/><circle cx="13" cy="11" r="1.6" fill="currentColor" stroke="none"/></svg>Evidence</span></th><td>A plotted observation carrying its own interval. The point is never shown without it.</td><td class="tnum">3</td><td class="tnum">1.25</td><td class="tnum">1.04 and 1.25</td></tr><tr><th scope="row"><span class="glcell"><svg class="gl gl-method" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M2 12H6.5"/><rect x="6.5" y="6" width="11" height="12"/><path d="M6.5 18L17.5 6"/><path d="M17.5 12H22"/></svg>Method</span></th><td>Input, a declared transfer, output. The diagonal is the stated rule, not a decoration.</td><td class="tnum">4</td><td class="tnum">1.25</td><td class="tnum">1.04 and 1.25</td></tr><tr><th scope="row"><span class="glcell"><svg class="gl gl-tested" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4.5 4H19.5M4.5 20H19.5"/><path d="M12 4V10.4M12 13.6V20"/><path d="M7.5 12.6L16.5 11.4"/></svg>Tested</span></th><td>A specimen loaded between two platens until a failure plane opens. The claim was attacked, not asserted.</td><td class="tnum">3</td><td class="tnum">1.25</td><td class="tnum">1.04 and 1.25</td></tr><tr><th scope="row"><span class="glcell"><svg class="gl gl-linked" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="5.5" cy="17.5" r="2.2"/><circle cx="18.5" cy="6.5" r="2.2"/><path d="M7.18 16.08A16 16 0 0 1 16.05 8.57"/><path d="M14.657 11.585L16.05 8.57L12.973 9.303"/></svg>Linked</span></th><td>One passage cites another. The chord carries direction, so a reader can walk the claim back to its source.</td><td class="tnum">4</td><td class="tnum">1.25</td><td class="tnum">1.04 and 1.25</td></tr><tr><th scope="row"><span class="glcell"><svg class="gl gl-verified" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 8H21"/><path d="M7 8V11.5M12 8V11.5M17 8V11.5"/><path d="M4 19H20"/><path d="M8 19V15.5M12 19V15.5M16 19V15.5"/><circle cx="12" cy="13.5" r="1.6" fill="currentColor" stroke="none"/></svg>Verified</span></th><td>Two scales at different pitch, five against four. Exactly one pair of graduations coincides, and that coincidence is the reading.</td><td class="tnum">5</td><td class="tnum">1.25</td><td class="tnum">1.04 and 1.25</td></tr></tbody>
+  </table></div>
+  <div class="prose measure">
+    <p>Every row of the whole statement also carries a figure of its own document, built from four values this
+    build measured: the outer radius from the word count, one calibration ray per table, one node per figure,
+    and one chord per recorded link between that document and another on this site. There is no random source
+    anywhere in it, so the same document draws the same figure on every build, and a figure that changes means
+    one of those four values changed.</p>
+    <p>A layer is drawn only where its value is, and one of them is thin on the ground: of the 65 figures,
+    50 carry rays and 19 carry nodes, 29 belong to a document with a recorded link, and
+    5 draw a chord. A chord joins two of the ring's nodes, so a document with fewer than two figures has
+    nowhere to put one however many links it records. That is the arithmetic the figure was specified with, kept as
+    specified rather than widened to make the layer show up more often.</p>
+  </div>
+  <div class="tw"><table class="ctab">
+    <caption>How a document becomes a figure. W is its words, F its figures, T its tables and C its recorded links.</caption>
+    <thead><tr><th scope="col">Feature</th><th scope="col">Rule</th></tr></thead>
+    <tbody><tr><th scope="row">Outer radius</th><td>R = 12 + 16t, t = (log10 W minus 3) / (log10 50000 minus 3)</td></tr><tr><th scope="row">Calibration rays</th><td>one per table, at 360 / T</td></tr><tr><th scope="row">Node ring</th><td>0.62 R</td></tr><tr><th scope="row">Figure nodes</th><td>one per figure, at 360 / F</td></tr><tr><th scope="row">Chord stride</th><td>round(0.382 F), plus one if that would be a diameter</td></tr><tr><th scope="row">Link chords</th><td>origin round(i F / C), target origin plus stride</td></tr></tbody>
   </table></div>
   <div class="prose measure">
     <p>The marks arrived with a sheet of stated geometry. 16 of its values are readings this build takes
     from the files themselves, and 13 of those readings bear the sheet out. The rest do not, so the site
     draws the files: the sheet gives the monogram's bowl a radius the path does not describe, sets the delta's
     two ledger rules closer together than they sit, and asks the polar datum for finer angular divisions than
-    it carries. Check 34 recomputes all of this on every build, from the files, without asking the module
-    that drew them.</p>
+    it carries. Below, 15 dimensions of the monogram and the polar datum, each one read off a vertex or
+    an arc boundary of the shipped path data rather than copied from the sheet. Check 34 recomputes what the pages
+    draw on every build without asking the module that drew it, and check 35 walks these 15 readings a second
+    time, with its own reader, and refuses the build if the two walks disagree.</p>
   </div>
+  <div class="tw"><table class="ctab">
+    <caption>Fifteen dimensions, the coordinates each is read from, and what kind of feature carries it.</caption>
+    <thead><tr><th scope="col">Callout</th><th scope="col">Mark</th><th scope="col">Coordinates</th>
+    <th scope="col">Read from</th><th scope="col">Check</th></tr></thead>
+    <tbody><tr><th scope="row" class="tnum">56</th><td>monogram</td><td class="tnum">32, 4 and 32, 60</td><td>central datum, M32 4 V60</td><td>path vertex</td></tr><tr><th scope="row" class="tnum">R28</th><td>monogram</td><td class="tnum">32, 32 and 60, 32</td><td>construction circle centre to its rightmost boundary</td><td>circle centre</td></tr><tr><th scope="row" class="tnum">APEX y6</th><td>monogram</td><td class="tnum">32, 6</td><td>A apex, M12 56 L32 6 L52 56</td><td>path vertex</td></tr><tr><th scope="row" class="tnum">BASE y56</th><td>monogram</td><td class="tnum">12, 56</td><td>A left foot, M12 56 L32 6 L52 56</td><td>path vertex</td></tr><tr><th scope="row" class="tnum">40</th><td>monogram</td><td class="tnum">12, 56 and 52, 56</td><td>A left foot to A right foot</td><td>path vertex</td></tr><tr><th scope="row" class="tnum">24</th><td>monogram</td><td class="tnum">20, 38 and 44, 38</td><td>crossbar, M20 38 H44</td><td>path vertex</td></tr><tr><th scope="row" class="tnum">18</th><td>monogram</td><td class="tnum">42, 18 and 42, 36</td><td>R bowl entry and exit, M32 18 H42 C51 18 51 35 42 36 H32</td><td>path vertex</td></tr><tr><th scope="row" class="tnum">4</th><td>monogram</td><td class="tnum">16, 56 and 20, 56</td><td>left verification tick, M16 56 H20</td><td>path vertex</td></tr><tr><th scope="row" class="tnum">dia 56</th><td>datum</td><td class="tnum">4, 32 and 60, 32</td><td>outer ring, r 28 about 32, 32</td><td>arc r28</td></tr><tr><th scope="row" class="tnum">dia 44</th><td>datum</td><td class="tnum">10, 32 and 54, 32</td><td>second ring, r 22 about 32, 32</td><td>arc r22</td></tr><tr><th scope="row" class="tnum">dia 32</th><td>datum</td><td class="tnum">16, 32 and 48, 32</td><td>third ring, r 16 about 32, 32</td><td>arc r16</td></tr><tr><th scope="row" class="tnum">28</th><td>datum</td><td class="tnum">32, 4 and 32, 32</td><td>north pole centre to field centre</td><td>arc r28</td></tr><tr><th scope="row" class="tnum">60</th><td>datum</td><td class="tnum">32, 2 and 32, 62</td><td>vertical longitude axis, M32 2 V62</td><td>path vertex</td></tr><tr><th scope="row" class="tnum">dia 5</th><td>datum</td><td class="tnum">34.5, 4</td><td>north pole observer, r 2.5 about 32, 4</td><td>arc r2.5</td></tr><tr><th scope="row" class="tnum">dia 3</th><td>datum</td><td class="tnum">33.5, 32</td><td>author datum, r 1.5 about 32, 32</td><td>arc r1.5</td></tr></tbody>
+  </table></div>
   </div>
 </section>
 

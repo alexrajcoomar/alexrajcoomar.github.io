@@ -151,6 +151,7 @@ import atlas as atlas_mod
 import invariance
 import claims
 import marks as marks_mod
+import fingerprint
 # the last content pass's own account of what it got wrong and left undone,
 # written by hand during the pass; printed on the colophon, not filed away
 try:
@@ -486,7 +487,44 @@ def stmt_head_cells():
             '<th scope="col" class="n fig"><a href="colophon.html#def-figures">Figures<span class="tb tbh"><span class="dot">&middot; </span>tables</span><span class="nref">1</span></a></th>'
             '<th scope="col" class="n tab"><a href="colophon.html#def-tables">Tables<span class="nref">1</span></a></th></tr></thead>')
 
-def shelf_row(k, p, extra=""):
+def link_degree(slug):
+    """How many documents this one is joined to by a link its prose makes, or
+    that another document's prose makes to it. The same edges the sphere draws
+    as chords, counted per document."""
+    n = 0
+    for a, b in ATLAS.get("edges") or ():
+        if a == slug or b == slug:
+            n += 1
+    return n
+
+
+def fingerprint_coverage():
+    """How much of the figure the statement actually draws. Each layer is only
+    there when its value is, and one of them is rarely there: a chord joins two
+    of the ring's nodes, so a document with fewer than two figures has nowhere
+    to put one however many links it records."""
+    out = {"pieces": len(P), "links": 0, "chords": 0, "rays": 0, "nodes": 0, "elements": 0}
+    for q in P:
+        d = fingerprint.derive(q["words"], q["figures"], q["tables"], link_degree(q["slug"]))
+        out["links"] += 1 if d["C"] else 0
+        out["chords"] += 1 if (d["C"] and d["F"] >= 2) else 0
+        out["rays"] += 1 if d["T"] else 0
+        out["nodes"] += 1 if d["F"] else 0
+        # boundary, the ray path, the ring, the chord path, a node each, and
+        # the observer and the author's datum
+        out["elements"] += (1 + (1 if d["T"] else 0) + (1 if d["F"] else 0)
+                            + (1 if (d["C"] and d["F"] >= 2) else 0) + d["F"] + 2)
+    return out
+
+
+def piece_fingerprint(p):
+    """The row's own four measured values as one figure. Nothing here is
+    chosen: the radius is the word count, the rays are the tables, the nodes
+    are the figures and the chords are the recorded links."""
+    return fingerprint.svg(p["words"], p["figures"], p["tables"], link_degree(p["slug"]))
+
+
+def shelf_row(k, p, extra="", fp=False):
     """A full statement row for a shelf or the library: the title, the
     owner's one-line subtitle, the declared rule from the demo field verbatim
     or the computed absence, the three figures, and whatever the shelf lifts
@@ -498,6 +536,7 @@ def shelf_row(k, p, extra=""):
     rule = (f'<p class="rule">{esc(p["demo"])}</p>' if p.get("demo")
             else '<p class="rule none">No declared rule on file.</p>')
     mins = f'<span class="s-min">{piece_mins(p)} min</span>' if piece_mins(p) else ""
+    fig = f'<div class="sr-f" data-fp="{p["slug"]}">{piece_fingerprint(p)}</div>' if fp else ""
     return f"""      <li data-kind="{p['k'].lower()}" data-course="{esc(p['c'])}" data-surface="{p['surface']}" data-search="{esc(hay)}" data-words="{p['words']}" data-figs="{p['figures']}" data-title="{esc(p['t'].lower())}">
         <div class="srow">
           <div class="sr-t">
@@ -509,20 +548,48 @@ def shelf_row(k, p, extra=""):
             {extra}
           </div>
           <div class="sr-n"><span class="tnum">{md(p['words'], 'words', p['slug'])}</span><span class="tnum">{md(p['figures'], 'figures', p['slug'], str(p['figures']))}</span><span class="tnum">{md(p['tables'], 'tables', p['slug'], str(p['tables']))}</span></div>
+          {fig}
         </div>
       </li>"""
 
-def shelf_list_head():
-    return ('      <li class="sr-head" aria-hidden="true"><div class="srow"><div class="sr-t">Piece</div>'
-            '<div class="sr-n"><span>Words</span><span>Figures</span><span>Tables</span></div></div></li>')
+# The four columns of the statement and the glyph that says what each one is.
+# The piece is the source, the words are the observation, the figures are the
+# transformations the argument declares, and the tables are where it was put
+# under load. The glyphs are the package's own, drawn at the size their
+# authored stroke still holds an edge.
+STMT_COLS = (("Piece", "source"), ("Words", "evidence"),
+             ("Figures", "method"), ("Tables", "tested"))
 
-def shelf_subtotal(label, items, href=None):
+
+def _col(label, glyph):
+    return ('<span class="stcol">%s<span class="stlab">%s</span></span>'
+            % (marks_mod.glyph_svg(glyph, "head"), label))
+
+
+def shelf_list_head(fp=False):
+    cells = "".join(f"<span>{_col(l, g)}</span>" for l, g in STMT_COLS[1:])
+    tail = ('<div class="sr-f">%s</div>' % _col("Figure", "linked")) if fp else ""
+    return ('      <li class="sr-head" aria-hidden="true"><div class="srow"><div class="sr-t">'
+            + _col(*STMT_COLS[0]) + '</div>'
+            f'<div class="sr-n">{cells}</div>{tail}</div></li>')
+
+def shelf_subtotal(label, items, href=None, fp=False):
     w = sum(p["words"] for p in items); f = sum(p["figures"] for p in items); t = sum(p["tables"] for p in items)
     lab = f'<a href="{href}">{esc(label)}</a>' if href else esc(label)
+    # the verified glyph on the subtotal: two scales at different pitch, and
+    # the reading is where they coincide. These three figures have to coincide
+    # with the corpus line, and check 12 fails the build when they do not.
+    tail = (f'<div class="sr-f">{marks_mod.glyph_svg("verified", "head")}</div>') if fp else ""
     return (f'      <li class="sr-sub"><div class="srow"><div class="sr-t">{lab}</div>'
-            f'<div class="sr-n"><span class="tnum">{n(w)}</span><span class="tnum">{f}</span><span class="tnum">{t}</span></div></div></li>')
+            f'<div class="sr-n"><span class="tnum">{n(w)}</span><span class="tnum">{f}</span>'
+            f'<span class="tnum">{t}</span></div>{tail}</div></li>')
 
 # figures lifted out of pieces, shown beside the piece they belong to
+# Which of the six verification glyphs each lifted figure carries. The
+# boundary drawing states a rule and applies it, so it is a method; the
+# vintage drawing carries two measured valuations side by side without
+# reconciling them, so it is evidence.
+LIFT_GLYPH = {"whose-losses-count": "method", "the-trillion-dollar-vintage": "evidence"}
 LIFTS = {
     "whose-losses-count": ("fs-wlc", "Blue is inside the number, red is outside",
         "Seven literatures making the same boundary decision, drawn on one vertical rule. Whatever falls to the right of it is real and appears on no ledger. Open outlines are results not distinguishable from zero, drawn at full size rather than shrunk away."),
@@ -762,15 +829,20 @@ def figure_restated(fid, href):
     return restated_block(STRIP[fid].get("svg", ""), href)
 
 
-def lifted(fid, rule, title, note, href):
+def lifted(fid, rule, title, note, href, glyph=None):
     CAPTIONS.append((rule + " " + note, href))
     """A figure lifted out of its own document together with the CSS rules its
-    classes depend on, shown at the size it was drawn for."""
+    classes depend on, shown at the size it was drawn for. The glyph on the
+    rule line says what kind of claim the drawing is making, which is the one
+    thing the drawing itself cannot say."""
     d = STRIP[fid]
+    gl = (f'<span class="glrule">{marks_mod.glyph_svg(glyph)}'
+          f'<span class="gllab">{esc(marks_mod.GLYPHS[glyph][1])}</span></span>') if glyph else ""
     return f"""    <figure class="spec" id="{fid}">
       <div class="frame">{strip_svg(fid)}</div>
       <figcaption>
         <div class="who">
+          {gl}
           <p class="rule">{esc(rule)}</p>
           <h3>{esc(title)}</h3>
         </div>
@@ -1113,7 +1185,8 @@ def page_index():
 
     # two figures lifted from their pieces, each with the rule the shelf gives it
     figs_html = "\n".join(
-        lifted(LIFTS[slug][0], LIFTS[slug][1], _by_slug_all[slug]["t"], LIFTS[slug][2], _by_slug_all[slug]["url"])
+        lifted(LIFTS[slug][0], LIFTS[slug][1], _by_slug_all[slug]["t"], LIFTS[slug][2],
+               _by_slug_all[slug]["url"], LIFT_GLYPH.get(slug))
         for slug in ("the-trillion-dollar-vintage", "whose-losses-count") if slug in LIFTS and slug in _by_slug_all)
     tools = [p for p in P if p["k"] == "Tool"]
     # One row per tool, the way the statement lists a piece: a thirty-second
@@ -1180,8 +1253,9 @@ def page_index():
     </div>
     <aside class="rail-app" aria-label="How to read the figure">
       <h3>How to read it</h3>
-      <p><b>One square is {figs.UNIT} words.</b> The square never rescales, so a long piece is
-      long on the page.</p>
+      <p class="scaleread">{marks_mod.glyph_svg("tested")}<span><b>One square is {figs.UNIT} words.</b>
+      The square never rescales, so a long piece is long on the page. The unit is a choice, declared once:
+      the drawing is held to it rather than fitted to whatever would make the shelf look even.</span></p>
       <div class="cf-read" id="corpusread" aria-live="polite">
         <div class="cf-rest">Point at a row, or tab into the drawing, to read the document it belongs to.</div>
         <div class="cf-out" hidden>
@@ -1428,16 +1502,16 @@ def page_library():
         items = [p for p in P if p["surface"] == key]
         if not items: continue
         w = sum(p["words"] for p in items)
-        rows = [shelf_list_head()]
+        rows = [shelf_list_head(fp=True)]
         for p in items:
             k += 1
-            rows.append(shelf_row(k, p))
-        rows.append(shelf_subtotal(f"{SURF_LABEL[key]}, {len(items)} pieces", items))
+            rows.append(shelf_row(k, p, fp=True))
+        rows.append(shelf_subtotal(f"{SURF_LABEL[key]}, {len(items)} pieces", items, fp=True))
         blocks.append(f"""  <section class="lgroup" data-group="{key}" id="{key}">
     <div class="grouphead"><h2>{SURF_LABEL[key]}</h2>
       <p class="gnote">{esc(notes[key])}</p>
       <span class="gcount">{len(items)} pieces &middot; {w:,} words</span></div>
-    <ol class="index stmt-list">
+    <ol class="index stmt-list stmt-fig">
 {chr(10).join(rows)}
     </ol>
   </section>""")
@@ -1530,6 +1604,14 @@ def page_about():
 <section class="band ground">
   <div class="shell">
   <div class="sechead"><h2>The short version</h2><span class="count">Facts</span></div>
+  <div class="sealrow">
+    <figure class="sealbox">
+      {marks_mod.seal_svg()}
+      <figcaption>Alex Rajcoomar &middot; Waterloo AFM Analytics. A calibration band of
+      {marks_mod.seal_facts()["stations"]} stations {marks_mod.seal_facts()["step"]:g} degrees apart,
+      the north one left to the observer. Nothing on it was awarded: it is a datum, not a credential,
+      and every fact beside it is checkable from this site.</figcaption>
+    </figure>
   <div class="facts measure wide pane">
     <div><b>Programme</b><span>Accounting and Financial Management, Analytics stream, University of Waterloo.</span></div>
     <div><b>Co-op</b><span>Preparing Canadian corporate and personal tax returns.</span></div>
@@ -1537,6 +1619,7 @@ def page_about():
     <div><b>Standing interests</b><span>The science of learning, judgment under uncertainty, and capital cycles. Outside coursework, AI in medicine and commercial spaceflight.</span></div>
     <div><b>Contact</b><span><a class="inlink" href="mailto:{EMAIL}">{EMAIL}</a></span></div>
     <div><b>This site</b><span><a class="inlink" href="{SITE_URL}">{HOST}</a></span></div>{recruit_rows}
+  </div>
   </div>
   </div>
 </section>
@@ -1706,58 +1789,158 @@ def defs_html():
     return "\n".join(out)
 
 def marks_block():
-    """The colophon's account of the three marks: what each one stands for,
-    the rule that decides what a surface may draw, and what the sheet that came
-    with them claims against what the files carry. Every number here is read
-    from content/marks by build/marks.py on this build."""
+    """The colophon's account of the marks: the three brand marks and what each
+    stands for, the six verification glyphs and what each one asserts, the seal,
+    the rule that decides what a surface may draw, the dimensions the drawings
+    are read at, and what the sheet that came with them claims against what the
+    files carry. Every number here is read from content/marks on this build."""
     F = marks_mod.facts()
     A = marks_mod.audit()
+    G = marks_mod.glyph_facts()
+    SL = marks_mod.seal_facts()
+    FP = fingerprint.facts()
+    FC = fingerprint_coverage()
+    CO = marks_mod.callouts()
     V = F["variants"]
     # a mark whose file is missing has no reading; check 34 refuses the build
     # over that, and this page says so rather than falling over first
     thin = min([v["thinnest_px"] for v in V.values() if v["thinnest_px"]] or [0])
+    ins = V["brand"].get("inspect") or {}
+
+    def srow(lbl, mark, cell, scale, px, tpx):
+        return ('<tr><th scope="row">{}</th><td>{}</td><td class="tnum">{}</td>'
+                '<td class="tnum">{:g}</td><td class="tnum">{:g}</td>'
+                '<td class="tnum">{}</td></tr>').format(
+                    esc(lbl), esc(mark), esc(cell), scale, px,
+                    ("%.2f" % tpx) if tpx else "not drawn")
+
+    def share(drawn, of):
+        return "%d of %d" % (drawn, of)
+
     rows = "".join(
-        "<tr><th scope=\"row\">{}</th><td>{}</td><td class=\"tnum\">{} of {}</td>"
-        "<td class=\"tnum\">{:g}</td><td class=\"tnum\">{:g}</td><td class=\"tnum\">{}</td></tr>".format(
-            esc(lbl), esc(V[k]["mark"]), V[k]["drawn"], V[k]["of"], V[k]["scale"], V[k]["px"],
-            ("%.2f" % V[k]["thinnest_px"]) if V[k]["thinnest_px"] else "not drawn")
-        for k, lbl in (("brand", "The header"),
+        srow(lbl, V[k]["mark"], share(V[k]["drawn"], V[k]["of"]), V[k]["scale"], V[k]["px"],
+             V[k]["thinnest_px"])
+        for k, lbl in (("brand", "The header, at rest"),
                        ("bar", "The bar at the top of every piece"),
                        ("favicon", "The tab icon"),
                        ("controls", "The tests of controls"),
                        ("atlas", "The Atlas"),
                        ("author", "Beside the author's name")))
+    if ins:
+        rows += srow("The header, under a pointer", V["brand"]["mark"],
+                     share(ins["drawn"], V["brand"]["of"]), ins["scale"], V["brand"]["px"],
+                     ins["thinnest_px"])
+    if not SL.get("missing"):
+        rows += srow("The seal, above the facts", "seal", share(SL["drawn"], SL["elements"]),
+                     SL["scale"], SL["px"], SL["thinnest_px"])
+    # the figure is generated rather than reduced from a file, so its cell
+    # counts what the statement's figures draw between them
+    rows += srow("The figure on every statement row", "fingerprint",
+                 "%s across %d figures" % (format(FC["elements"], ","), FC["pieces"]),
+                 FP["places"]["row"]["scale"], FP["places"]["row"]["px"],
+                 FP["places"]["row"]["thinnest_px"])
+
+    grows = "".join(
+        '<tr><th scope="row"><span class="glcell">{}{}</span></th><td>{}</td>'
+        '<td class="tnum">{}</td><td class="tnum">{:g}</td><td class="tnum">{}</td></tr>'.format(
+            marks_mod.glyph_svg(k, "head"), esc(g["label"]), esc(g["means"]),
+            g["elements"], g["stroke"],
+            " and ".join("%.2f" % v for v in sorted(G["rendered"].values())))
+        for k, g in G["glyphs"].items())
+
+    crows = "".join(
+        '<tr><th scope="row" class="tnum">{}</th><td>{}</td><td class="tnum">{}</td>'
+        '<td>{}</td><td>{}</td></tr>'.format(
+            esc(c["label"]), esc(c["mark"]), esc(c["coords"]), esc(c["from"]), esc(c["check"]))
+        for c in CO)
+
+    frows = "".join('<tr><th scope="row">{}</th><td>{}</td></tr>'.format(esc(a), esc(b))
+                    for a, b in fingerprint.RULES)
+    seal_p = ("" if SL.get("missing") else
+              f"""<p>The seal is the same discipline closed into a medallion: the monogram at its centre, a type
+    band on a real arc, and a calibration band of {SL['stations']} stations exactly {SL['step']:g} degrees apart,
+    {SL['ticks']} of them fine ticks, {SL['cardinals']} cardinal rules, and the north station left to the observer
+    rather than drawn as a tick. The sheet intends divisions every {SL['step']:g} degrees for the polar datum and that
+    file carries them every 45; this one carries them every {SL['step']:g}. Of its {SL['elements']} elements the site draws {SL['drawn']}: the innermost ring is
+    {marks_mod.SEAL_DROP:g} units and could not hold an edge at any size this
+    site uses, so it is dropped rather than drawn as a smear.</p>""")
+
     return f"""
 <section class="band colo ground" id="marks">
   <div class="shell">
-  <div class="sechead"><h2>The three marks</h2><span class="count">{F['elements']} elements in {len(F['marks'])} files</span></div>
+  <div class="sechead"><h2>The marks, the glyphs and the seal</h2>
+    <span class="count">{F['elements'] + G['elements'] + SL.get('elements', 0)} elements in {len(F['marks']) + G['n'] + (0 if SL.get('missing') else 1)} files</span></div>
   <div class="prose measure">
     <p>The identity is drawn rather than typed: a monogram whose A and R stand on one vertical datum, in the
     header of every generated page, on the bar at the top of every standalone piece, and in the tab icon.
-    The other two stand where they mean something. The delta heads the tests of controls because its own
-    sequence is that page's: evidence, a change, a verified datum, a ledger record. The polar datum heads
-    the Atlas and stands beside the author's name because it is this site's own sphere abstracted, and the
-    filled node at its north pole is the author's mark among the {format(len(ATLAS['points']), ',')} on that sphere.</p>
+    In the header it holds two layers. At rest it draws the {V['brand']['drawn']} strokes of the letters;
+    point at it or reach it with a keyboard and it draws the {ins.get('drawn', 0)} construction elements those
+    letters were measured from, which are the circle the A sits in, the datum both letters stand on, and the
+    ticks at the apex and the two feet. The other two marks stand where they mean something. The delta heads the
+    tests of controls because its own sequence is that page's: evidence, a change, a verified datum, a ledger
+    record. The polar datum heads the Atlas and stands beside the author's name because it is this site's own
+    sphere abstracted, and the filled node at its north pole is the author's mark among the
+    {format(len(ATLAS['points']), ',')} on that sphere.</p>
     <p>A stroke renders at its width times the size it is drawn, over the {F['grid']} unit grid the marks are
     authored on, so a line thinner than one device pixel cannot hold an edge. Each surface therefore draws
     only what it can hold and multiplies every stroke it keeps by one factor. The thinnest line any surface
     draws measures {thin:.2f} device pixels. Nothing is resized by the stylesheet, because a mark scaled after
     the fact would be a mark whose arithmetic was done for another size.</p>
+    {seal_p}
   </div>
   <div class="tw"><table class="ctab">
-    <caption>What each surface draws, from which mark, how much of it, and how thin its finest line ends up.</caption>
+    <caption>What each surface draws, from which mark, how much of it, and how thin its finest line ends up.
+    The figure on a row has no file to draw a share of, so its count is what the whole statement's figures draw between them.</caption>
     <thead><tr><th scope="col">Surface</th><th scope="col">Mark</th><th scope="col">Elements</th>
     <th scope="col">Stroke factor</th><th scope="col">Drawn at</th><th scope="col">Thinnest line</th></tr></thead>
     <tbody>{rows}</tbody>
+  </table></div>
+  <div class="prose measure">
+    <p>Six further glyphs carry the state of a claim rather than the identity of the site. They are authored on
+    a {G['grid']} unit grid at stroke {G['stroke']:g}, which renders at
+    {" and ".join("%.2f" % v for v in sorted(G['rendered'].values()))} device pixels at the two sizes this site
+    draws them, so unlike the brand marks they need no factor at all. They head the columns of the whole
+    statement, and they say what a column is before a reader has read a single number in it.</p>
+  </div>
+  <div class="tw"><table class="ctab">
+    <caption>The six verification glyphs, what each one asserts, and what its authored stroke renders as.</caption>
+    <thead><tr><th scope="col">Glyph</th><th scope="col">What it asserts</th><th scope="col">Elements</th>
+    <th scope="col">Stroke</th><th scope="col">Renders at</th></tr></thead>
+    <tbody>{grows}</tbody>
+  </table></div>
+  <div class="prose measure">
+    <p>Every row of the whole statement also carries a figure of its own document, built from four values this
+    build measured: the outer radius from the word count, one calibration ray per table, one node per figure,
+    and one chord per recorded link between that document and another on this site. There is no random source
+    anywhere in it, so the same document draws the same figure on every build, and a figure that changes means
+    one of those four values changed.</p>
+    <p>A layer is drawn only where its value is, and one of them is thin on the ground: of the {FC['pieces']} figures,
+    {FC['rays']} carry rays and {FC['nodes']} carry nodes, {FC['links']} belong to a document with a recorded link, and
+    {FC['chords']} draw a chord. A chord joins two of the ring\'s nodes, so a document with fewer than two figures has
+    nowhere to put one however many links it records. That is the arithmetic the figure was specified with, kept as
+    specified rather than widened to make the layer show up more often.</p>
+  </div>
+  <div class="tw"><table class="ctab">
+    <caption>How a document becomes a figure. W is its words, F its figures, T its tables and C its recorded links.</caption>
+    <thead><tr><th scope="col">Feature</th><th scope="col">Rule</th></tr></thead>
+    <tbody>{frows}</tbody>
   </table></div>
   <div class="prose measure">
     <p>The marks arrived with a sheet of stated geometry. {A['n']} of its values are readings this build takes
     from the files themselves, and {A['carried']} of those readings bear the sheet out. The rest do not, so the site
     draws the files: the sheet gives the monogram's bowl a radius the path does not describe, sets the delta's
     two ledger rules closer together than they sit, and asks the polar datum for finer angular divisions than
-    it carries. Check 34 recomputes all of this on every build, from the files, without asking the module
-    that drew them.</p>
+    it carries. Below, {len(CO)} dimensions of the monogram and the polar datum, each one read off a vertex or
+    an arc boundary of the shipped path data rather than copied from the sheet. Check 34 recomputes what the pages
+    draw on every build without asking the module that drew it, and check 35 walks these {len(CO)} readings a second
+    time, with its own reader, and refuses the build if the two walks disagree.</p>
   </div>
+  <div class="tw"><table class="ctab">
+    <caption>Fifteen dimensions, the coordinates each is read from, and what kind of feature carries it.</caption>
+    <thead><tr><th scope="col">Callout</th><th scope="col">Mark</th><th scope="col">Coordinates</th>
+    <th scope="col">Read from</th><th scope="col">Check</th></tr></thead>
+    <tbody>{crows}</tbody>
+  </table></div>
   </div>
 </section>
 """
@@ -4804,27 +4987,46 @@ def check_site():
                 t34["unknown"] += 1
                 problems.append(_p("34", "the %s mark draws %s, which %s does not carry"
                                          % (key, want, marks_mod.FILES[spec["mark"]])))
-        parts, widths = [], []
-        for eid, tag, a in els:
-            if spec["keep"] is not None and eid not in spec["keep"]:
-                continue
-            a = dict(a)
-            if "stroke-width" in a:
-                w = float(a["stroke-width"]) * spec["scale"]
-                widths.append(w)
-                a["stroke-width"] = ("%.4f" % w).rstrip("0").rstrip(".")
-            parts.append("<%s %s/>" % (tag, " ".join('%s="%s"' % (k, a[k]) for k in
-                         ("cx", "cy", "r", "d", "stroke-width", "opacity", "fill", "stroke") if k in a)))
-        t34["drawn"] += len(parts)
-        want34[key] = "".join(parts)
-        if widths:
-            thin = min(widths) * spec["px"] / 64.0
-            t34["detail"].append({"key": key, "drawn": len(parts), "of": len(els),
-                                  "scale": spec["scale"], "px": spec["px"], "thin": round(thin, 2)})
-            if thin < 1.0:
-                t34["thin"] += 1
-                problems.append(_p("34", "the %s mark's thinnest stroke draws %.3f device pixels at %dpx, "
-                                         "under the one pixel an edge needs" % (key, thin, spec["px"])))
+        def _layer(keep, scale, label):
+            """One layer of a surface: the elements it keeps, every stroke on
+            them multiplied by its factor, and the check that the finest of
+            them still holds an edge at the size the surface draws."""
+            parts, widths = [], []
+            for eid, tag, a in els:
+                if keep is not None and eid not in keep:
+                    continue
+                a = dict(a)
+                if "stroke-width" in a:
+                    w = float(a["stroke-width"]) * scale
+                    widths.append(w)
+                    a["stroke-width"] = ("%.4f" % w).rstrip("0").rstrip(".")
+                parts.append("<%s %s/>" % (tag, " ".join('%s="%s"' % (k, a[k]) for k in
+                             ("cx", "cy", "r", "d", "stroke-width", "opacity", "fill", "stroke") if k in a)))
+            t34["drawn"] += len(parts)
+            if widths:
+                thin = min(widths) * spec["px"] / 64.0
+                t34["detail"].append({"key": label, "drawn": len(parts), "of": len(els),
+                                      "scale": scale, "px": spec["px"], "thin": round(thin, 2)})
+                if thin < 1.0:
+                    t34["thin"] += 1
+                    problems.append(_p("34", "the %s mark's thinnest stroke draws %.3f device pixels at %dpx, "
+                                             "under the one pixel an edge needs" % (label, thin, spec["px"])))
+            return "".join(parts)
+
+        body34 = _layer(spec["keep"], spec["scale"], key)
+        ins34 = spec.get("inspect")
+        if ins34:
+            # a surface may carry a second layer, which a reader reveals; it is
+            # held to the same two rules, drawn from the same file
+            for want in ins34["keep"]:
+                if want not in ids:
+                    t34["unknown"] += 1
+                    problems.append(_p("34", "the %s mark's inspection layer draws %s, which %s does not carry"
+                                             % (key, want, marks_mod.FILES[spec["mark"]])))
+            body34 = ('<g class="mk-nom">%s</g><g class="mk-ins">%s</g>'
+                      % (body34, _layer(ins34["keep"], ins34["scale"], key + " inspected")))
+            t34["surfaces"] += 1
+        want34[key] = body34
     for name in sorted(marks_mod.FILES.values()):
         sp = os.path.join(OUT, "content", "marks", name)
         if os.path.exists(sp):
@@ -4864,6 +5066,369 @@ def check_site():
     aud34 = marks_mod.audit(os.path.join(OUT, "content", "marks"))
     t34["invariants"], t34["carried"] = aud34["n"], aud34["carried"]
     t34["grid"] = marks_mod.grid(os.path.join(OUT, "content", "marks"))
+
+
+    # 35. the glyphs, the seal and the figure on every statement row. Three
+    # further families of drawn geometry, each recomputed here from the files
+    # and the measurements rather than from the modules that emitted them.
+    # The rules are the ones check 34 holds the brand marks to, plus one more
+    # for the figures: a figure has to be the geometry its own document's four
+    # measured values produce, so a row cannot carry a picture of some other
+    # document, or a picture of nothing.
+    t35 = T["instruments"] = {"glyphs": 0, "glyph_elements": 0, "drawn": 0, "seal": 0,
+                              "figures": 0, "of": 0, "mismatched": 0, "thin": 0,
+                              "pages": 0, "callouts": 0, "detail": []}
+    MD = os.path.join(OUT, "content", "marks")
+
+    def _els35(path, tags):
+        """This check's own reader: every drawn element of one file, in order,
+        with its attributes, keyed by tag."""
+        if not os.path.exists(path):
+            return None
+        raw = open(path, encoding="utf-8").read()
+        seen, out = {}, []
+        for m in re.finditer(r"<(%s)\b([^>]*?)/>" % "|".join(tags), raw, re.S):
+            a = dict(re.findall(r'([a-zA-Z-]+)\s*=\s*"([^"]*)"', m.group(2)))
+            if "d" in a:
+                a["d"] = re.sub(r"\s+", " ", a["d"]).strip()
+            seen[m.group(1)] = seen.get(m.group(1), 0) + 1
+            out.append((m.group(1), a))
+        return out
+
+    ORDER35 = ("cx", "cy", "r", "x", "y", "width", "height", "d", "stroke-width", "fill", "stroke")
+    want35 = {}
+    for gk, (gfile, glabel, _means) in marks_mod.GLYPHS.items():
+        gp = os.path.join(MD, marks_mod.GLYPH_DIR, gfile)
+        els = _els35(gp, ("circle", "path", "rect"))
+        if els is None:
+            problems.append(_p("35", "content/marks/%s/%s: missing, so the %s glyph cannot be drawn"
+                                     % (marks_mod.GLYPH_DIR, gfile, gk))); continue
+        raw = open(gp, encoding="utf-8").read()
+        vb = re.search(r'viewBox="0 0 (\d+) (\d+)"', raw)
+        sw = re.search(r'stroke-width="([\d.]+)"', raw)
+        if not vb or int(vb.group(1)) != marks_mod.glyph_grid(gk, MD):
+            problems.append(_p("35", "content/marks/%s: does not declare the grid the build draws it on" % gfile))
+            continue
+        t35["glyphs"] += 1
+        t35["glyph_elements"] += len(els)
+        want35["gl-" + gk] = "".join(
+            "<%s %s/>" % (tag, " ".join('%s="%s"' % (k, a[k]) for k in ORDER35 if k in a))
+            for tag, a in els)
+        for size, px in marks_mod.GLYPH_SIZES.items():
+            thin = float(sw.group(1)) * px / int(vb.group(1))
+            t35["detail"].append({"key": "%s at %s" % (gk, size), "px": px, "thin": round(thin, 2)})
+            if thin < 1.0:
+                t35["thin"] += 1
+                problems.append(_p("35", "the %s glyph draws %.3f device pixels at %dpx, under the one "
+                                         "pixel an edge needs" % (gk, thin, px)))
+
+    # the seal: the file, with exactly three changes and no others
+    sealp = os.path.join(MD, marks_mod.SEAL_FILE)
+    if not os.path.exists(sealp):
+        problems.append(_p("35", "content/marks/%s: missing, so the seal cannot be drawn" % marks_mod.SEAL_FILE))
+    else:
+        raw = open(sealp, encoding="utf-8").read()
+        inner = raw[raw.index(">", raw.index("<svg")) + 1: raw.rindex("</svg>")]
+        inner = re.sub(r"<!--.*?-->", "", inner, flags=re.S)
+        dropped = len(re.findall(r'<[a-z]+\b[^>]*stroke-width="%s"[^>]*/>' % re.escape(str(marks_mod.SEAL_DROP)), inner))
+        inner = re.sub(r'<[a-z]+\b[^>]*stroke-width="%s"[^>]*/>' % re.escape(str(marks_mod.SEAL_DROP)), "", inner)
+        widths = [float(w) * marks_mod.SEAL_SCALE for w in re.findall(r'stroke-width="([\d.]+)"', inner)]
+        inner = re.sub(r'stroke-width="([\d.]+)"',
+                       lambda m: 'stroke-width="%s"' % ("%.4f" % (float(m.group(1)) * marks_mod.SEAL_SCALE)
+                                                        ).rstrip("0").rstrip("."), inner)
+        inner = inner.replace("seal-arc-seal", marks_mod.SEAL_ARC_ID)
+        want35["sl-seal"] = re.sub(r">\s+<", "><", re.sub(r"\s+", " ", inner)).strip()
+        t35["seal"] = 1
+        if dropped != 1:
+            problems.append(_p("35", "the seal drops %d element(s) at stroke %s; the rule drops exactly the one "
+                                     "its finest stroke cannot hold" % (dropped, marks_mod.SEAL_DROP)))
+        grid35 = int(re.search(r'viewBox="0 0 (\d+)', raw).group(1))
+        thin = min(widths) * marks_mod.SEAL_PX / grid35 if widths else 0
+        t35["detail"].append({"key": "seal", "px": marks_mod.SEAL_PX, "thin": round(thin, 2)})
+        if thin < 1.0:
+            t35["thin"] += 1
+            problems.append(_p("35", "the seal's thinnest stroke draws %.3f device pixels at %dpx, under the "
+                                     "one pixel an edge needs" % (thin, marks_mod.SEAL_PX)))
+
+    # the fifteen dimensions, walked a second time. The ledger states a reading
+    # off a vertex or an arc boundary; this walks the same two files with its
+    # own reader and its own path walker, and the two have to agree.
+    def _walk35(d):
+        """The points a path passes through. A cubic names two control points
+        before its endpoint, and a control point is not a place on a drawing."""
+        toks = re.findall(r"[MmLlHhVvCcZz]|-?\d+(?:\.\d+)?", d)
+        pts, i, x, y, cmd = [], 0, 0.0, 0.0, None
+        while i < len(toks):
+            t = toks[i]
+            if re.match(r"[A-Za-z]", t):
+                cmd = t; i += 1
+                if cmd in "Zz":
+                    continue
+            if cmd in "MmLl":
+                nx, ny = float(toks[i]), float(toks[i + 1])
+                x, y = (nx, ny) if cmd in "ML" else (x + nx, y + ny); i += 2
+            elif cmd in "HhVv":
+                v = float(toks[i]); i += 1
+                if cmd == "H": x = v
+                elif cmd == "h": x += v
+                elif cmd == "V": y = v
+                else: y += v
+            elif cmd in "Cc":
+                vs = [float(toks[i + k]) for k in range(6)]
+                x, y = (vs[4], vs[5]) if cmd == "C" else (x + vs[4], y + vs[5]); i += 6
+            else:
+                i += 1; continue
+            pts.append((x, y))
+        return pts
+
+    dims35 = {}
+    for mk35, fn35 in (("monogram", "01_vernier_monogram_AR.svg"), ("datum", "03_polar_datum.svg")):
+        els35 = _els35(os.path.join(MD, fn35), ("circle", "path"))
+        if els35 is None:
+            problems.append(_p("35", "content/marks/%s: missing, so the callout ledger answers to nothing" % fn35))
+            continue
+        paths = [a for tag, a in els35 if tag == "path"]
+        circs = [a for tag, a in els35 if tag == "circle"]
+        if mk35 == "monogram":
+            datum = _walk35(paths[0]["d"])
+            A = _walk35(paths[1]["d"]); bar = _walk35(paths[2]["d"])
+            bowl = _walk35(paths[3]["d"]); tick = _walk35(paths[6]["d"])
+            feet = sorted(p for p in A if p[1] == max(q[1] for q in A))
+            top35, bot35 = min(p[1] for p in bowl), max(p[1] for p in bowl)
+            dims35["monogram"] = sorted([
+                round(datum[1][1] - datum[0][1], 3), round(float(circs[0]["r"]), 3),
+                round(min(p[1] for p in A), 3), round(feet[0][1], 3),
+                round(feet[-1][0] - feet[0][0], 3), round(bar[-1][0] - bar[0][0], 3),
+                round(bot35 - top35, 3), round(tick[-1][0] - tick[0][0], 3)])
+        else:
+            axis = _walk35(paths[0]["d"])
+            rings = [float(c["r"]) for c in circs[:4]]
+            pole, author = circs[4], circs[5]
+            dims35["datum"] = sorted([
+                round(2 * rings[0], 3), round(2 * rings[1], 3), round(2 * rings[2], 3),
+                round(float(circs[0]["cy"]) - float(pole["cy"]), 3),
+                round(axis[-1][1] - axis[0][1], 3),
+                round(2 * float(pole["r"]), 3), round(2 * float(author["r"]), 3)])
+    said35 = {}
+    for c35 in marks_mod.callouts(MD):
+        said35.setdefault(c35["mark"], []).append(round(float(c35["value"]), 3))
+    t35["callouts"] = sum(len(v) for v in said35.values())
+    for mk35 in sorted(set(dims35) | set(said35)):
+        if sorted(said35.get(mk35, [])) != dims35.get(mk35, []):
+            t35["mismatched"] += 1
+            problems.append(_p("35", "the %s callouts read %s on a second walk of the same file; the ledger prints %s"
+                                     % (mk35, dims35.get(mk35), sorted(said35.get(mk35, [])))))
+
+    # the figure on a row: this check's own arithmetic, from the four values
+    def _fp35(w, f, t, c):
+        """The generator's rules, restated here. A radius from the words, a ray
+        per table, a ring at 0.62 of the radius, a chord per recorded link and
+        a node per figure, with the observer on the boundary and the author's
+        datum at the centre."""
+        W = max(1, min(200000, int(round(w)) or 1))
+        F = max(0, min(80, int(round(f)))); T2 = max(0, min(80, int(round(t))))
+        C = max(0, min(60, int(round(c))))
+        hi = math.log10(50000)
+        tt = min(1.0, max(0.0, (math.log10(W) - 3.0) / (hi - 3.0)))
+        r3 = lambda n: round(n * 1000) / 1000
+        R = r3(12.0 + 16.0 * tt); ring = r3(R * 0.62)
+        stride = 0
+        if F >= 2:
+            k = max(1, int(round(F * 0.382)))
+            stride = k + 1 if 2 * k == F else k
+        sc = fingerprint.PLACES["row"]["scale"]
+        wd = lambda x: ("%.4f" % (x * sc)).rstrip("0").rstrip(".")
+        pt = lambda rr, deg: (r3(32 + rr * math.sin(math.radians(deg))),
+                              r3(32 - rr * math.cos(math.radians(deg))))
+        out = ['<circle cx="32" cy="32" r="%g" stroke-width="%s"/>' % (R, wd(1.0))]
+        if T2:
+            seg = "".join("M%g %gL%g %g" % (pt(R - 4, i * 360.0 / T2) + pt(R, i * 360.0 / T2))
+                          for i in range(T2))
+            out.append('<path d="%s" stroke-width="%s"/>' % (seg, wd(0.75)))
+        if F:
+            out.append('<circle cx="32" cy="32" r="%g" stroke-width="%s"/>' % (ring, wd(0.4)))
+        if C and F >= 2:
+            seg = ""
+            for i in range(C):
+                a = int(round(i * F / C)) % F
+                b = (a + stride) % F
+                seg += "M%g %gL%g %g" % (pt(ring, a * 360.0 / F) + pt(ring, b * 360.0 / F))
+            out.append('<path d="%s" stroke-width="%s"/>' % (seg, wd(0.5)))
+        if F:
+            out.append('<g fill="currentColor" stroke="none">%s</g>' % "".join(
+                '<circle cx="%g" cy="%g" r="1.1"/>' % pt(ring, i * 360.0 / F) for i in range(F)))
+        out.append('<circle cx="32" cy="%g" r="1.6" fill="currentColor" stroke="none"/>' % r3(32 - R))
+        out.append('<circle cx="32" cy="32" r="1" fill="currentColor" stroke="none"/>')
+        return "".join(out), min(0.4, 0.5, 0.75, 1.0) * sc * fingerprint.PLACES["row"]["px"] / 64.0
+
+    deg35 = {}
+    for a35, b35 in ATLAS.get("edges") or ():
+        deg35[a35] = deg35.get(a35, 0) + 1
+        deg35[b35] = deg35.get(b35, 0) + 1
+    by35 = {p["slug"]: p for p in P}
+
+    # every glyph, seal and figure on every page is that geometry, and nothing else
+    for f in html_files:
+        text35 = open(os.path.join(OUT, f), encoding="utf-8", errors="ignore").read()
+        found = re.findall(r'<svg class="(?:gl gl-([a-z]+)|sl (sl-seal))"[^>]*>(.*?)</svg>', text35, re.S)
+        figs35 = re.findall(r'<div class="sr-f" data-fp="([^"]+)">(<svg class="fp".*?</svg>)</div>', text35, re.S)
+        if not found and not figs35:
+            continue
+        look("35", f)
+        t35["pages"] += 1
+        for gk, sk, drawn in found:
+            key = ("gl-" + gk) if gk else sk
+            t35["drawn"] += 1
+            if key not in want35:
+                t35["mismatched"] += 1
+                problems.append(_p("35", "%s: draws an instrument named %s, which the build defines no geometry for"
+                                         % (f, key)))
+            elif drawn != want35[key]:
+                t35["mismatched"] += 1
+                problems.append(_p("35", "%s: the %s drawn is not the geometry content/marks holds" % (f, key)))
+        for slug35, svg35 in figs35:
+            t35["figures"] += 1
+            pc = by35.get(slug35)
+            if pc is None:
+                t35["mismatched"] += 1
+                problems.append(_p("35", "%s: carries a figure for %s, which is not a listed piece" % (f, slug35)))
+                continue
+            body35, thin35 = _fp35(pc["words"], pc["figures"], pc["tables"], deg35.get(slug35, 0))
+            inner35 = re.sub(r"^<svg[^>]*>|</svg>$", "", svg35)
+            if inner35 != body35:
+                t35["mismatched"] += 1
+                problems.append(_p("35", "%s: the figure on %s is not the geometry its %s words, %d figures, "
+                                         "%d tables and %d recorded links produce"
+                                         % (f, slug35, format(pc["words"], ","), pc["figures"], pc["tables"],
+                                            deg35.get(slug35, 0))))
+            if thin35 < 1.0:
+                t35["thin"] += 1
+                problems.append(_p("35", "a figure's thinnest stroke draws %.3f device pixels at %dpx, under the "
+                                         "one pixel an edge needs" % (thin35, fingerprint.PLACES["row"]["px"])))
+    t35["of"] = len(P)
+    if t35["figures"] and t35["figures"] != len(P):
+        problems.append(_p("35", "the whole statement carries %d figures for %d pieces"
+                                 % (t35["figures"], len(P))))
+    # the stylesheet may not resize an instrument either
+    for m in re.finditer(r"\.(gl|sl|fp)(-[a-z]+)?\s*\{([^}]*)\}", css34):
+        for prop, val in re.findall(r"\b(width|height)\s*:\s*([^;}]+)", m.group(3)):
+            problems.append(_p("35", "site.css: a rule on the instruments sets %s to %s; each one is drawn at "
+                                     "the size its stroke rule was computed for and is never resized"
+                                     % (prop, val.strip())))
+
+    # 36. contrast, from the tokens themselves. Every colour the site puts text
+    # in has to clear 4.5:1 on every surface a page can stand it on, in both
+    # themes, and the two lights may not take it under that: each is composited
+    # over the paper at its full strength and the whole set is measured again.
+    # The floor for a control's border is 3:1 (WCAG 2.2 SC 1.4.11), because on
+    # a control the border is the only thing telling a reader it is there.
+    t36 = T["contrast"] = {"tokens": 0, "pairs": 0, "themes": 0, "floor": 4.5,
+                           "worst": None, "worst_at": "", "under": 0, "mirrored": 0}
+    TEXT36 = ("ink", "ink-2", "ink-3", "accent", "accent-2", "link", "tool", "ref")
+    SURF36 = ("paper", "panel", "panel-2")
+    EDGE36 = 3.0
+
+    def _tok36(block):
+        return dict(re.findall(r"--([a-z0-9-]+):\s*(#[0-9a-fA-F]{6})", block))
+
+    def _lamp36(block):
+        return dict(re.findall(r"--(lamp-[a-z]+):\s*rgba\(([^)]*)\)", block))
+
+    def _rgb36(h):
+        h = h.lstrip("#")
+        return tuple(int(h[i:i + 2], 16) / 255.0 for i in (0, 2, 4))
+
+    def _lum36(c):
+        f = lambda v: v / 12.92 if v <= 0.03928 else ((v + 0.055) / 1.055) ** 2.4
+        r, g, b = (f(v) for v in c)
+        return 0.2126 * r + 0.7152 * g + 0.0722 * b
+
+    def _cr36(a, b):
+        la, lb = _lum36(a), _lum36(b)
+        hi, lo = max(la, lb), min(la, lb)
+        return (hi + 0.05) / (lo + 0.05)
+
+    mlight = re.search(r":root\{(.*?)\n\}", css34, re.S)
+    mdark = re.search(r':root\[data-theme="dark"\]\{(.*?)\n\}', css34, re.S)
+    # the dark ground is declared twice on purpose: once for a browser that
+    # asks for it and once for a reader who pressed the button. Only the second
+    # is measured below, so the two have to say the same thing, or a reader
+    # whose system is dark gets a palette nothing checked.
+    mmedia = re.search(r"@media \(prefers-color-scheme: dark\)\{\s*"
+                       r':root:where\(:not\(\[data-theme="light"\]\)\)\{(.*?)\n  \}', css34, re.S)
+    if not mmedia:
+        problems.append(_p("36", "site.css: the dark palette for a browser that asks for it is not readable "
+                                 "as a token block, so it cannot be held to the one the button sets"))
+    elif mdark:
+        a36, b36 = _tok36(mmedia.group(1)), _tok36(mdark.group(1))
+        a36.update(_lamp36(mmedia.group(1))); b36.update(_lamp36(mdark.group(1)))
+        t36["mirrored"] = len(b36)
+        for k36 in sorted(set(a36) | set(b36)):
+            if a36.get(k36) != b36.get(k36):
+                t36["under"] += 1
+                problems.append(_p("36", "site.css: the two dark palettes disagree on %s, %s where the browser "
+                                         "asks for dark and %s where the button sets it"
+                                         % (k36, a36.get(k36, "not defined"), b36.get(k36, "not defined"))))
+    if not (mlight and mdark):
+        problems.append(_p("36", "site.css: the light and dark palettes are not both readable as token blocks"))
+    else:
+        for tname, blk in (("Archival light", mlight.group(1)), ("Obsidian", mdark.group(1))):
+            toks, lamps = _tok36(blk), _lamp36(blk)
+            t36["themes"] += 1
+            missing = [k for k in TEXT36 + SURF36 + ("edge",) if k not in toks]
+            if missing:
+                problems.append(_p("36", "site.css: the %s palette defines no %s" % (tname, ", ".join(missing))))
+                continue
+            grounds = [(sname, _rgb36(toks[sname])) for sname in SURF36]
+            for lname, spec in sorted(lamps.items()):
+                parts = [x.strip() for x in spec.split(",")]
+                lr, lg, lb, la = [float(x) for x in parts[:3]] + [float(parts[3])]
+                paper = _rgb36(toks["paper"])
+                grounds.append(("paper under the %s" % lname.replace("lamp-", "").replace("cool", "cool light").replace("warm", "warm light"),
+                                tuple((lr / 255.0, lg / 255.0, lb / 255.0)[i] * la + paper[i] * (1 - la)
+                                      for i in range(3))))
+            for tk in TEXT36:
+                t36["tokens"] += 1
+                for sname, ground in grounds:
+                    c = _cr36(_rgb36(toks[tk]), ground)
+                    t36["pairs"] += 1
+                    if t36["worst"] is None or c < t36["worst"]:
+                        t36["worst"] = round(c, 2)
+                        t36["worst_at"] = "%s on %s in %s" % (tk, sname, tname)
+                    if c < 4.5:
+                        t36["under"] += 1
+                        problems.append(_p("36", "site.css: %s on %s in %s is %.2f:1, under the 4.5:1 a "
+                                                 "reader needs to read it" % (tk, sname, tname, c)))
+            for sname in ("paper", "panel"):
+                c = _cr36(_rgb36(toks["edge"]), _rgb36(toks[sname]))
+                t36["pairs"] += 1
+                if c < EDGE36:
+                    t36["under"] += 1
+                    problems.append(_p("36", "site.css: the border of a control is %.2f:1 on the %s in %s, "
+                                             "under the 3:1 that tells a reader the control is there"
+                                             % (c, sname, tname)))
+
+    # 37. a table header says which cells it heads. Every th the build writes
+    # carries a scope, because a header cell with none leaves a screen reader
+    # to guess from the shape of the table.
+    t37 = T["scope"] = {"th": 0, "pages": 0, "bare": 0, "wrong": 0}
+    for f in list(SHELL_PAGES):
+        fp37 = os.path.join(OUT, f)
+        if not os.path.exists(fp37):
+            continue
+        look("37", f)
+        t37["pages"] += 1
+        for tag in re.findall(r"<th\b[^>]*>", open(fp37, encoding="utf-8", errors="ignore").read()):
+            t37["th"] += 1
+            m37 = re.search(r'\bscope="([^"]*)"', tag)
+            if not m37:
+                t37["bare"] += 1
+                problems.append(_p("37", "%s: a table header carries no scope, so nothing says which cells "
+                                         "it heads" % f))
+            elif m37.group(1) not in ("col", "row", "colgroup", "rowgroup"):
+                t37["wrong"] += 1
+                problems.append(_p("37", "%s: a table header declares scope=%s, which is not a scope"
+                                         % (f, m37.group(1))))
 
     # 33. the editor. admin.html is hand-maintained and the build never
     # writes it. Held here: the file is byte-identical to the bytes this run
@@ -5152,6 +5717,17 @@ def _known_numbers():
     add([len(ex["fonts"]), len(ex["undrawn"]), ex["undrawn_words"], len(ex["transcripts"]),
          len(ex["tools"]), ex["kinds"]["md"], ex["kinds"]["doc"],
          TRANSCRIPT_WORDS, TOTAL_WORDS + TRANSCRIPT_WORDS, len(P) + len(ex["transcripts"])])
+    # the marks: every value the colophon's four ledgers print is read from
+    # content/marks or computed by the generator on this build
+    add(marks_mod.facts()); add(marks_mod.glyph_facts()); add(marks_mod.seal_facts())
+    add(marks_mod.callout_numbers()); add(fingerprint.facts()); add(fingerprint_coverage())
+    _gf, _sf = marks_mod.glyph_facts(), marks_mod.seal_facts()
+    add([len(marks_mod.callouts()), len(marks_mod.GLYPHS), marks_mod.SEAL_DROP,
+         # the count line adds the three families together
+         marks_mod.facts()["elements"] + _gf["elements"] + _sf.get("elements", 0),
+         len(marks_mod.FILES) + _gf["n"] + (0 if _sf.get("missing") else 1)])
+    for r in marks_mod.audit()["rows"]:
+        add([r["claimed"], r["read"]])
     # the lifted figures, and the tools the drawing reaches
     add([len(STRIP), len(LIFTS)])
     add([len(x) for x in tools_drawn()])

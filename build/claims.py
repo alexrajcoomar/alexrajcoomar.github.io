@@ -189,6 +189,15 @@ def page_ok(key, rec, declared_overflow=()):
     if key == "theme":
         return (r.get("options") == 2 and r.get("pressed") == 1 and bool(r.get("pulsed")) and bool(r.get("pulseEnded"))
                 and not r.get("repeated", True) and bool(r.get("switched")) and r.get("framesAfterSwitch", 1) == 0 and bool(r.get("focusRing")))
+    if key == "inspect":
+        # two layers; nothing showing at rest; full under a pointer and under a
+        # keyboard focus; a transition inside the 260 ms cap and none at all for
+        # a reader who asked for no motion; the box unmoved; nothing scheduled
+        # after it settles
+        return (r.get("layers") == 2 and r.get("rest") == 0 and r.get("hover") == 1
+                and r.get("focus") == 1 and 0 < r.get("ms", 0) <= 260
+                and r.get("reducedMs", -1) == 0 and r.get("moved", 1) == 0
+                and r.get("framesAfter", 1) == 0)
     if key == "admin":
         return (r.get("errors", 1) == 0 and r.get("failed", 1) == 0 and r.get("external", 1) == 0 and r.get("idleFrames", 1) == 0
                 and r.get("tabs", 0) > 0 and r.get("switched", -1) == r.get("tabs") and r.get("threwUnconnected", 1) == 0
@@ -206,7 +215,7 @@ def runtime_pages(key, shell, allp, aux=()):
     """The pages one runtime claim is made about: said once, here, and read
     by the register's rows, the wall and check 29."""
     shell = list(shell)
-    if key in ("keyboard", "print", "motion", "theme"):
+    if key in ("keyboard", "print", "motion", "theme", "inspect"):
         return shell
     if key == "chrome":
         return [p for p in allp if p not in shell]
@@ -282,6 +291,22 @@ def agg(key, recs, names, declared_overflow=()):
                 f"and repeated on a second visit on {rep}; the switch changed the theme on {sw}, with {fr} frames requested in the second after settling; "
                 f"a focus ring on the offer from the keyboard on {ring}",
                 two == len(rs) and pulsed == len(rs) and rep == 0 and sw == len(rs) and fr == 0 and ring == len(rs))
+    if key == "inspect":
+        two = sum(1 for r in rs if r.get("layers") == 2)
+        rest = sum(1 for r in rs if r.get("rest") == 0)
+        hov = sum(1 for r in rs if r.get("hover") == 1)
+        foc = sum(1 for r in rs if r.get("focus") == 1)
+        cap = sum(1 for r in rs if 0 < r.get("ms", 0) <= 260)
+        red = sum(1 for r in rs if r.get("reducedMs", -1) == 0)
+        mv = sum(1 for r in rs if r.get("moved", 1) != 0)
+        fr = sum(max(0, r.get("framesAfter", 0)) for r in rs)
+        ms = sorted({r.get("ms", -1) for r in rs})
+        return (f"on {len(rs)} pages the header mark carries two layers on {two}, draws nothing of the construction at rest on {rest}, "
+                f"draws all of it under a pointer on {hov} and under a keyboard focus on {foc}; the transition measures "
+                + ", ".join("%d ms" % m for m in ms) + f" and is inside the 260 ms cap on {cap}, and is removed entirely under reduced motion on {red}; "
+                f"the brand's box moved on {mv}, and {fr} frames were requested in the second after it settled",
+                two == len(rs) and rest == len(rs) and hov == len(rs) and foc == len(rs)
+                and cap == len(rs) and red == len(rs) and mv == 0 and fr == 0)
     if key == "admin":
         r = rs[0] if rs else {}
         ok = page_ok("admin", {"admin": r})
@@ -514,6 +539,10 @@ def build(ctx):
        "corona", runtime_pages("corona", shell, allp, aux), ["index.html"])
     rt("The theme selector is an offer, not an icon: two named states, Obsidian and Archival light, one pressed; a single soft pulse on the first visit from a browser and none after; a switch that settles with no frame requested; a focus ring on the offer from the keyboard.",
        "theme", runtime_pages("theme", shell, allp, aux), ["index.html"])
+    rt("The header mark holds two states: the letters at rest, and the construction they were measured from under a pointer or a keyboard focus. "
+       "The change is opacity alone, inside a 260ms cap, removed entirely for a reader who asked for no motion, and it moves the brand's box by no pixel "
+       "and requests no frame once it has settled.",
+       "inspect", runtime_pages("inspect", shell, allp, aux), ["colophon.html"])
     rt("The editor, admin.html, loads with no console error, no uncaught exception and no failed request, asks nothing of another origin until it is connected, "
        "requests no frame while idle, and its controls respond: the tabs and the search before a connection exists, the theme button, the connection form "
        "keeping the repository in this browser and the token in this tab only, and, connected through a stub of GitHub that refuses every write, "
@@ -566,6 +595,44 @@ def build(ctx):
             ["colophon.html", "controls.html"],
             note="The sheet that came with the marks is not a source here: where a stated value and the drawn path "
                  "disagree, the path is what the site draws and what this check reads.")
+
+    t = T.get("instruments", {})
+    checked("The six verification glyphs, the seal and the figure on every statement row are the geometry their "
+            "files and their measurements produce and nothing else: each glyph is its file's elements, the seal is "
+            "its file with the one stroke no size can hold dropped and the rest lifted by one factor, every figure "
+            "is what its own document's words, figures, tables and recorded links draw, every dimension the callout "
+            "ledger prints is what a second walk of the same path data reads, and the stylesheet resizes none of them.", ["35"],
+            f"{t.get('glyphs', 0)} glyphs of {t.get('glyph_elements', 0)} elements and {t.get('seal', 0)} seal, "
+            f"{t.get('drawn', 0)} drawn across {t.get('pages', 0)} pages; "
+            f"{t.get('figures', 0)} figures for {t.get('of', 0)} pieces, each rebuilt here from the four measured values; "
+            f"{t.get('callouts', 0)} dimension callouts walked a second time from the same two files; "
+            f"{t.get('mismatched', 0)} that are not the geometry they claim, {t.get('thin', 0)} strokes under a device pixel",
+            ["colophon.html", "library.html", "about.html"],
+            note="This check keeps its own reader and its own arithmetic, so an emitter that invents an element or "
+                 "draws one document's figure on another document's row is caught by something that never asked it.")
+
+    t = T.get("contrast", {})
+    checked("Every colour the site sets text in clears the 4.5:1 a reader needs, on every surface a page stands it "
+            "on, in both themes, and the two lights behind the hero do not take it under: each light is composited "
+            "over the paper at full strength and the whole palette is measured again. The dark ground is declared "
+            "twice, once for a browser that asks for it and once for the button, and the two say the same thing. "
+            "The border of a control clears 3:1.",
+            ["36"],
+            f"{t.get('tokens', 0)} text colours across {t.get('themes', 0)} themes, {t.get('pairs', 0)} colour and "
+            f"ground pairs measured, {t.get('under', 0)} under the floor; the narrowest is "
+            f"{t.get('worst_at', 'nothing measured')} at {t.get('worst', 0)}:1 against a floor of {t.get('floor', 0)}:1; "
+            f"{t.get('mirrored', 0)} tokens of the dark ground declared in both places and agreeing in both",
+            ["colophon.html", "controls.html"],
+            note="Computed from the tokens in site.css on this build, not from a comment beside them: a palette edit "
+                 "that lowers a ratio fails the build rather than the audit.")
+
+    t = T.get("scope", {})
+    checked("Every table header the build writes says which cells it heads.", ["37"],
+            f"{t.get('th', 0)} header cells on {t.get('pages', 0)} generated pages, {t.get('bare', 0)} with no scope, "
+            f"{t.get('wrong', 0)} with a scope that is not one",
+            ["colophon.html"],
+            note="The generated pages only. The tables inside the 65 pieces are the pieces' own markup and are not "
+                 "rewritten here, so this claim does not reach them.")
 
     t = T.get("editor", {})
     checked("The editor, admin.html, exists and the build never writes it: every stylesheet, script and local asset it references resolves to a file, "
@@ -657,7 +724,7 @@ def render(rows, summary, audit_meta, neg_state=None):
 # --------------------------------------------------------- the instrument --
 GLYPH = {"held": "#", "failed": "x", "stale": "?", "declared": "~", "none": ""}
 GLYPH_CLASS = {"held": "g-h", "failed": "g-x", "stale": "g-q", "declared": "g-d", "none": "g-n"}
-RUNTIME_COLS = [("ext", "E"), ("idle", "I"), ("keyboard", "K"), ("print", "P"), ("motion", "M"), ("fit", "F"), ("chrome", "C"), ("descent", "D"), ("theme", "T"), ("corona", "H"), ("admin", "A")]
+RUNTIME_COLS = [("ext", "E"), ("idle", "I"), ("keyboard", "K"), ("print", "P"), ("motion", "M"), ("fit", "F"), ("chrome", "C"), ("descent", "D"), ("theme", "T"), ("corona", "H"), ("inspect", "V"), ("admin", "A")]
 
 
 def _sort_key(cid):
