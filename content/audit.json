@@ -4,7 +4,7 @@
   "tool": "build/audit.js",
   "browser": "Chromium 141.0.7390.37",
   "date": "2026-09-05",
-  "commit": "5695406",
+  "commit": "1ced695",
   "runs": [
    {
     "commit": "21aacf2",
@@ -63,6 +63,11 @@
    },
    {
     "commit": "5695406",
+    "date": "2026-09-05",
+    "audit": "ran"
+   },
+   {
+    "commit": "1ced695",
     "date": "2026-09-05",
     "audit": "ran"
    }
@@ -132,8 +137,8 @@
    },
    "errors": 0,
    "chrome": {
-    "a": 1036,
-    "b": 991
+    "a": 1052,
+    "b": 1007
    },
    "print": {
     "stickyLeft": 0,
@@ -172,7 +177,7 @@
    "motion": {
     "animations": 0
    },
-   "inputs": "8594c6d542aa",
+   "inputs": "2f71e2c8633a",
    "measured": "2026-09-05"
   },
   "admin.html": {
@@ -572,8 +577,8 @@
    },
    "errors": 0,
    "chrome": {
-    "a": 14068,
-    "b": 14068
+    "a": 14138,
+    "b": 14138
    },
    "fit": {
     "scrollWidth": 320,
@@ -898,8 +903,8 @@
    },
    "errors": 0,
    "chrome": {
-    "a": 6511,
-    "b": 6466
+    "a": 6419,
+    "b": 6374
    },
    "print": {
     "stickyLeft": 0,
@@ -1813,8 +1818,8 @@
    },
    "errors": 0,
    "chrome": {
-    "a": 449,
-    "b": 404
+    "a": 750,
+    "b": 705
    },
    "print": {
     "stickyLeft": 0,
@@ -1827,7 +1832,7 @@
     "overflow": false
    },
    "keyboard": {
-    "stops": 56,
+    "stops": 61,
     "noRing": 0
    },
    "theme": {
@@ -1853,7 +1858,7 @@
    "motion": {
     "animations": 0
    },
-   "inputs": "b87054420235",
+   "inputs": "03d79599cf8f",
    "measured": "2026-09-05"
   },
   "revenue-recognition.html": {
