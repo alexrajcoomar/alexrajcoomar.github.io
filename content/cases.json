@@ -1,0 +1,57 @@
+{
+  "note": "The case map. Each featured piece is read against eight slots, and each slot names where in the record that slot is answered: 'sec' is a heading anchor inside the piece itself, 'doc' is another listed piece the corpus records a link to, 'rec' is a value this build already holds. A slot with no entry is not carried, and the page says so rather than filling it. This map is a reading of the pieces, not a measurement of them: the build checks only that every anchor exists in the piece's invariance record, that every heading is quoted as that record holds it, and that every named document is a recorded link. Disagree with a placement by editing this file.",
+  "cases": {
+    "flagged-in-hindsight": {
+      "question":   {"sec": "what-the-screen-said-before-anyone-knew"},
+      "context":    {"sec": "only-completed-findings"},
+      "approach":   {"sec": "the-specification-used-and-its-one-weakness"},
+      "evidence":   {"sec": "every-number-here-carries-its-provenance"},
+      "build":      {"sec": "how-every-figure-was-obtained"},
+      "finding":    {"sec": "five-cases-five-different-reasons-the-toolkit-sa"},
+      "limitation": {"sec": "two-cases-were-dropped-and-the-reasons-matter"},
+      "artifact":   {"rec": "piece"}
+    },
+    "the-trillion-dollar-vintage": {
+      "question":   {"sec": "the-question"},
+      "context":    {"sec": "a-trillion-dollars-mid-air"},
+      "approach":   {"sec": "rules-of-evidence"},
+      "evidence":   {"sec": "the-machinery"},
+      "build":      {"rec": "built_from"},
+      "finding":    {"sec": "the-three-answers"},
+      "limitation": {"sec": "the-fork-two-instruments-2-3-apart"},
+      "artifact":   {"rec": "piece"}
+    },
+    "predictive-history": {
+      "question":   {"sec": "a-prophet-with-a-scoreboard"},
+      "context":    {"sec": "fifteen-systems-and-what-moves-between-them"},
+      "approach":   {"sec": "how-the-method-annotates-the-map"},
+      "evidence":   {"sec": "what-the-evidence-actually-rests-on"},
+      "build":      {"sec": "the-ledger-as-an-instrument"},
+      "finding":    {"sec": "the-finding-in-its-narrow-form"},
+      "limitation": {"sec": "two-gaps-still-open-stated-rather-than-skipped"},
+      "artifact":   {"rec": "piece"}
+    },
+    "brittle-network": {
+      "question":   {"sec": "scope-premise-audit-and-the-epistemic-contract"},
+      "context":    {"sec": "the-historiographical-arc"},
+      "approach":   {"sec": "formal-specification"},
+      "evidence":   {"sec": "evidence-tiers"},
+      "build":      {"sec": "data-infrastructure"},
+      "limitation": {"sec": "prove-or-disprove-is-not-an-available-inferentia"},
+      "artifact":   {"rec": "piece"}
+    },
+    "crucible-cockpit": {
+      "question":   {"sec": "a-forecast-is-a-pile-of-claims-audit-the-pile"},
+      "approach":   {"sec": "three-runs-one-engine"},
+      "evidence":   {"sec": "the-vocabulary-once"},
+      "build":      {"rec": "built_from"},
+      "finding":    {"doc": ["crucible-run-0", "crucible-run-b", "crucible-run-c"]},
+      "artifact":   {"rec": "piece"}
+    },
+    "ifrs15-judgment-trainer": {
+      "evidence":   {"doc": ["ifrs15-verification-memo"]},
+      "build":      {"rec": "built_from"},
+      "artifact":   {"rec": "piece"}
+    }
+  }
+}

@@ -1,0 +1,72 @@
+{
+  "note": "The capability map. Each block on the about page names a set of pieces that evidence it, and the build recomputes the words, figures and tables of that set on every run rather than storing them. A piece may evidence more than one capability, so the sets are not a partition of the corpus and their subtotals do not add to it. Which pieces evidence which capability is a reading, not a measurement: the membership is declared here so a reader can disagree with it, and the build checks only that every slug is a listed piece and that no capability is left empty. There are no levels and no self-ratings anywhere in this file, because neither could be checked.",
+  "capabilities": {
+    "evidence": {
+      "gap": "",
+      "pieces": [
+        "flagged-in-hindsight",
+        "crucible-cockpit",
+        "crucible-run-0",
+        "crucible-run-b",
+        "crucible-run-c",
+        "epistemic-quality-directive",
+        "ifrs15-verification-memo",
+        "five-shall-paragraphs",
+        "zakaria-putin-audited",
+        "predictive-history",
+        "predictive-history-archive",
+        "the-trillion-dollar-vintage",
+        "whose-losses-count",
+        "not-significant",
+        "global-spending-and-wealth"
+      ]
+    },
+    "reporting": {
+      "gap": "",
+      "pieces": [
+        "revenue-recognition",
+        "ifrs15-judgment-trainer",
+        "ifrs15-verification-memo",
+        "afm291-ch1-theory-and-analytics",
+        "afm291-ch2-conceptual-frameworks",
+        "afm291-ch3-accrual-accounting",
+        "afm291-ch4-revenue-recognition",
+        "afm291-ch6-inventories",
+        "afm291-ch9-intangibles-and-goodwill",
+        "afm291-ch10-fair-value",
+        "afm291-w7-financial-assets",
+        "afm291-w8-financial-assets",
+        "afm291-w9-ppe",
+        "afm291-journal-entries",
+        "afm291-inventory-gap-map",
+        "afm291-reconciliation",
+        "crucible-run-c"
+      ]
+    },
+    "canadian": {
+      "gap": "The co-op tax work named in this block produced client returns, not artefacts, so nothing here evidences it. What is listed is the assurance and comparative-law work only.",
+      "pieces": [
+        "us-canada-legal-architecture",
+        "business-law-primer",
+        "law-arena",
+        "five-shall-paragraphs",
+        "flagged-in-hindsight",
+        "crucible-run-0",
+        "crucible-run-b"
+      ]
+    },
+    "building": {
+      "gap": "",
+      "pieces": [
+        "ifrs15-judgment-trainer",
+        "daily-learning-cockpit",
+        "law-arena",
+        "skill-forge",
+        "afm291-study-system",
+        "practice-arena",
+        "econ102-exam-trainer",
+        "crucible-cockpit"
+      ]
+    }
+  }
+}

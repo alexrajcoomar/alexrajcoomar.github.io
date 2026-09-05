@@ -1,0 +1,103 @@
+{
+  "note": "The parts of a resume this repository cannot measure: education, employment, class work and named tools. Everything else on resume.html is generated from the same measurements the rest of the site is built from, and none of it is typed here. A section with no entries is not rendered at all, and the build prints which ones are empty on every run. Every numeral in this file is declared here rather than computed, and check 13 holds the page's numerals to this file for exactly the entries below.",
+  "shape": {
+    "education": "institution, credential, from, to, note, awards, coursework (a label to a list), activities.",
+    "experience": "employer, place, title, from, to, lines. Each line is one thing done and what came of it.",
+    "projects": "title, when, note, lines. Class work and competitions, kept apart from paid work.",
+    "skills": "group, items. A group is a heading, items a list of names. No levels: the site does not rate itself.",
+    "service": "group, items. The same shape, kept out of skills because volunteering is not a competency."
+  },
+  "education": [
+    {
+      "institution": "University of Waterloo, School of Accounting and Finance",
+      "credential": "Bachelor of Accounting and Financial Management (Honours, Co-op), Analytics stream",
+      "from": "Sep 2024",
+      "to": "Apr 2029 (expected)",
+      "note": "",
+      "awards": [
+        "Merit Scholarship",
+        "Arts Undergraduate Student Opportunity Award"
+      ],
+      "coursework": [
+        {
+          "label": "Completed",
+          "items": [
+            "Introduction to Tax",
+            "Introduction to Assurance",
+            "Introduction to Performance Analytics",
+            "Analytic Methods for Business 1 to 3",
+            "Impact of Technology on Business",
+            "Introduction to Computer Science"
+          ]
+        },
+        {
+          "label": "In progress, Fall 2026",
+          "items": [
+            "Intermediate Financial Accounting 1",
+            "Personal Financial Planning and Taxation",
+            "Accounting Information Systems",
+            "Cost Management Systems"
+          ]
+        }
+      ],
+      "activities": [
+        "UWNRG Nanorobotics Group, Business Associate (Winter 2025)",
+        "DECA Finance, provincial competitor (2022 to 2024)"
+      ]
+    }
+  ],
+  "experience": [
+    {
+      "employer": "Taxwide Inc.",
+      "place": "Mississauga, ON",
+      "title": "Tax Associate (Co-op)",
+      "from": "Jan 2026",
+      "to": "Apr 2026",
+      "lines": [
+        "Prepared and reconciled T1 personal returns for 200+ client files in DT Max through the 2026 filing season, assembling employment, investment and self-employment income from client documentation that arrived incomplete.",
+        "Reconciled each return to its source slips before it went out for signature, resolving balance-owing discrepancies, spousal net income dependencies and filing inconsistencies against CRA administrative positions.",
+        "Ran client intake and correspondence at peak-season volume, including representative authorization requests and written explanations of balances owing, and kept the file record organised through the season."
+      ]
+    }
+  ],
+  "projects": [
+    {
+      "title": "Pet Valu Strategic Growth Case",
+      "when": "2025",
+      "note": "Team of four",
+      "lines": [
+        "Built three-year pro forma models for two capital deployment strategies behind a $575M expansion decision, stress-testing ROA, debt to EBITDA and net profit margin under aggressive and conservative growth assumptions.",
+        "Recommended conservative expansion to a simulated CEO and CFO panel on a sustained 16% ROA against a decline from 17% to 10% under the aggressive case, benchmarked against PetSmart and Petco."
+      ]
+    },
+    {
+      "title": "UW CISA Interactive Business Dashboard Competition",
+      "when": "2024",
+      "note": "Team of four",
+      "lines": [
+        "Analysed multi-variable performance datasets in R and Excel and presented the competitive gaps the data exposed as a short set of specific operating recommendations."
+      ]
+    }
+  ],
+  "skills": [
+    {
+      "group": "Technical",
+      "items": ["DT Max", "Excel (advanced)", "R", "Python", "Tableau"]
+    },
+    {
+      "group": "Accounting and finance",
+      "items": [
+        "T1 personal tax preparation",
+        "Financial statement analysis",
+        "Financial modelling and DCF valuation",
+        "IFRS and ASPE (introductory)"
+      ]
+    }
+  ],
+  "service": [
+    {
+      "group": "Volunteering",
+      "items": ["Habitat for Humanity ReStore (Jul to Sep 2023)"]
+    }
+  ]
+}

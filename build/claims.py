@@ -28,8 +28,13 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 AUDIT_PATH = os.path.join(ROOT, "content", "audit.json")
 NEG_PATH = os.path.join(ROOT, "content", "negatives.json")
 DECL_PATH = os.path.join(ROOT, "content", "declared.json")
-SHELL = ["index.html", "research.html", "coursework.html", "tools.html", "library.html",
-         "atlas.html", "about.html", "colophon.html", "controls.html", "404.html"]
+# The pages the build generates. build/build_site.py takes SHELL_PAGES from
+# this list rather than keeping its own: the two drifted apart the moment a
+# page was added to one of them, and a page missing from this copy is a page
+# the audit never opens and the register never grades.
+SHELL = ["index.html", "research.html", "coursework.html", "tools.html",
+         "selected.html", "library.html", "atlas.html", "about.html",
+         "resume.html", "colophon.html", "controls.html", "404.html"]
 # the pages the register measures that are neither generated nor pieces: the
 # editor, hand-maintained, measured on its own terms under the editor row
 AUX = ["admin.html"]
@@ -96,8 +101,11 @@ def page_input_digest(out_dir, name, shell):
         raw = re.sub(r'<section[^>]*id="claims".*?</section>', "", raw, flags=re.S)
         raw = re.sub(r'<section[^>]*id="register".*?</section>', "", raw, flags=re.S)
         raw = re.sub(r'<section[^>]*id="instrument".*?</section>', "", raw, flags=re.S)
-        raw = re.sub(r'<p class="audit-line">.*?</p>', "", raw, flags=re.S)
-        raw = re.sub(r'<p class="register-line">.*?</p>', "", raw, flags=re.S)
+        # matched as a class token rather than as the whole attribute: the
+        # resume prints the register's tallies too, and a page that carries
+        # one of these lines beside a class of its own was going stale on
+        # every build for having printed its own result
+        raw = re.sub(r'<p class="[^"]*\b(?:audit-line|register-line)\b[^"]*">.*?</p>', "", raw, flags=re.S)
         raw = re.sub(r'\?v=[0-9a-f]{8}', "", raw)
         h.update(raw.encode("utf-8"))
         for dep in ("site.css", "site.js", "atlas.js", "figures.css"):
@@ -458,7 +466,7 @@ def build(ctx):
             f"{t.get('documents', 0)} documents in {t.get('zones', 0)} zones; {t.get('read_back', 0)} centres and radii read back from {t.get('pages', 0)} pages against the rule, 0 out of place; {t.get('overlap', 0)} of {n(t.get('pairs', 0))} disc pairs overlap; {n(t.get('marks', 0))} marks held at their spiral positions and inside their discs, {t.get('off', 0)} off, {t.get('outside', 0)} outside; {t.get('shared', 0)} shared marks placed between their owners",
             ["atlas.html", "index.html"])
     t = T.get("author", {})
-    checked("The author is an entry in the section register, placed by the rule every document follows: one mark in an origin of his own, in a zone of latitude with the area of its share, linking to the passage that names him; his card is the recorded standing, the recorded co-op term counted from the build's date, and the featured pieces' subtotal, and the pages carry the build's own arithmetic.", ["32"],
+    checked("The author is an entry in the section register, placed by the rule every document follows: one mark in an origin of his own, in a zone of latitude with the area of its share, linking to the passage that names him; his card is the recorded standing, the recorded co-op term counted from the build's date, and the featured pieces' subtotal, and the pages carry the build's own arithmetic. The Now block on the about page is held to the same two values.", ["32"],
             f"{t.get('marks', 0)} mark of {n(t.get('total', 0))}, zone {t.get('zone') or 'none'} of {t.get('share', 0.0):.3%} of the sphere, linked to {t.get('link') or 'nothing'}; the card read back from {t.get('cards', 0)} pages, {t.get('off', 0)} off: {t.get('card') or ''}",
             ["atlas.html", "index.html", "about.html"])
     t = T.get("channels", {})
@@ -633,6 +641,33 @@ def build(ctx):
             ["colophon.html"],
             note="The generated pages only. The tables inside the 65 pieces are the pieces' own markup and are not "
                  "rewritten here, so this claim does not reach them.")
+
+    t = T.get("cases", {})
+    checked("Every slot the selected-work page fills points at something already on the site: a heading the piece "
+            "itself carries, quoted as the invariance record holds it; another listed piece the corpus records a "
+            "link to; or a value this build computed. A slot nothing answers is printed as not carried and counted.",
+            ["38"],
+            f"{t.get('slots', 0)} slots over {t.get('pieces', 0)} pieces: {t.get('sec', 0)} a section, "
+            f"{t.get('doc', 0)} a linked document, {t.get('rec', 0)} a record, {t.get('gap', 0)} not carried; "
+            f"{t.get('quoted', 0)} headings quoted, {t.get('misquoted', 0)} that the record does not hold, "
+            f"{t.get('broken', 0)} placements that resolve to nothing",
+            ["selected.html", "colophon.html"],
+            note="Which heading answers which slot is a reading of the piece and is declared in content/cases.json. "
+                 "The check holds that every placement resolves and that every quotation is exact. It does not hold "
+                 "that the reading is the right one, and nothing here claims it does.")
+
+    t = T.get("capabilities", {})
+    checked("Every capability the about page claims names the work that evidences it, every piece it names is one "
+            "the site lists and links, and every total printed beside a claim is the sum of that claim's own "
+            "pieces, recomputed on the build rather than typed.",
+            ["39"],
+            f"{t.get('caps', 0)} capabilities, {t.get('named', 0)} pieces named, {t.get('unknown', 0)} not listed, "
+            f"{t.get('empty', 0)} with nothing behind them, {t.get('unlinked', 0)} named but not linked, "
+            f"{t.get('wrong', 0)} totals that do not match their pieces",
+            ["about.html", "colophon.html"],
+            note="Which pieces evidence which capability is a reading and is declared in content/capabilities.json. "
+                 "The sets overlap, so their subtotals do not add to the corpus. The check holds the arithmetic and "
+                 "the membership's existence, not the judgment.")
 
     t = T.get("editor", {})
     checked("The editor, admin.html, exists and the build never writes it: every stylesheet, script and local asset it references resolves to a file, "
@@ -858,6 +893,12 @@ def known_numbers(ctx):
     take(json.dumps(neg.get("build_meta") or {})); take(json.dumps(neg.get("runtime_meta") or {}))
     for v in list(neg["build"].values()) + list(neg["runtime"].values()):
         take(len(v)); take(sum(1 for c in v if c.get("caught")))
+    # and the totals the ledger sentence states, which are the sum over the
+    # checks rather than any one check's count: "70 of 70 caught" printed a
+    # number nothing here had computed until it did
+    for side in ("build", "runtime"):
+        cases = [c for v in neg[side].values() for c in v]
+        take(len(cases)); take(sum(1 for c in cases if c.get("caught")))
     audit = ctx["audit"]["audit"] or {}
     take(json.dumps(audit.get("meta") or {}))
     take(json.dumps(_audit_age(audit)))

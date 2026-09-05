@@ -11,6 +11,19 @@ import datetime, hashlib, html, json, math, os, re, shutil, struct, subprocess, 
 ROOT    = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 CONTENT = json.load(open(os.path.join(ROOT, "content", "pieces.json"), encoding="utf-8"))
 METRICS = json.load(open(os.path.join(ROOT, "content", "metrics.json"), encoding="utf-8"))
+# the case map: for each featured piece, where in the record each of the eight
+# slots is answered. A reading of the pieces, kept out of this file so that
+# disagreeing with a placement is an edit to content rather than to the build.
+CASES   = json.load(open(os.path.join(ROOT, "content", "cases.json"), encoding="utf-8"))
+# the capability map: which pieces evidence each of the four things the about
+# page says the portfolio demonstrates. Membership is a reading; every number
+# printed beside it is recomputed from the measurements on each build.
+CAPS    = json.load(open(os.path.join(ROOT, "content", "capabilities.json"), encoding="utf-8"))
+# the parts of a resume nothing here can measure: education, employment and
+# named skills. Everything else on resume.html is generated from the same
+# measurements the rest of the site uses, and a section with no entries is
+# not rendered at all.
+RESUME_D = json.load(open(os.path.join(ROOT, "content", "resume.json"), encoding="utf-8"))
 # the change ledger of the last content pass; written by build/ledger.py,
 # read here for one computed sentence on the colophon and for check 16
 try:
@@ -522,6 +535,390 @@ def piece_fingerprint(p):
     chosen: the radius is the word count, the rays are the tables, the nodes
     are the figures and the chords are the recorded links."""
     return fingerprint.svg(p["words"], p["figures"], p["tables"], link_degree(p["slug"]))
+
+
+# ------------------------------------------------------- selected work ----
+# Eight slots, in the order a reader needs them. The vocabulary is fixed here;
+# what fills a slot never is. A slot is answered by a heading the piece already
+# carries, by another document the corpus records a link to, or by a value this
+# build holds. A slot nothing answers prints as not carried, because a shape
+# with a hole in it tells a reader more than a hole that has been filled in.
+CASE_SLOTS = [
+    ("question",   "Question",   "What the piece set out to settle."),
+    ("context",    "Context",    "What was already on the table when it started."),
+    ("approach",   "Approach",   "The method, fixed before the result."),
+    ("evidence",   "Evidence",   "What the argument rests on, and how it is labelled."),
+    ("build",      "Build",      "What was made in order to answer it."),
+    ("finding",    "Finding",    "The result, in its narrow form."),
+    ("limitation", "Limitation", "What the piece will not carry."),
+    ("artifact",   "Artifact",   "The thing you can open."),
+]
+CASE_BY_SLUG = {p["slug"]: p for p in P}
+_CASE_H = re.compile(r"<(h[1-6])\b([^>]*)>(.*?)</\1>", re.S | re.I)
+
+
+def case_headings(url):
+    """Every heading in a piece that carries an id, as id to text. Read from
+    the file on every build rather than stored here, so a heading cannot go on
+    being quoted after the piece stopped saying it. Tags inside a heading
+    become a space, which is how build/invariance.py records the same text."""
+    path = os.path.join(OUT, url)
+    if not os.path.exists(path):
+        return {}
+    raw = re.sub(r"<(script|style|svg)\b[^>]*>.*?</\1>", " ",
+                 open(path, encoding="utf-8", errors="ignore").read(), flags=re.S | re.I)
+    out = {}
+    for m in _CASE_H.finditer(raw):
+        i = re.search(r'\bid="([^"]+)"', m.group(2))
+        if not i:
+            continue
+        txt = html.unescape(re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", m.group(3)))).strip()
+        if txt and i.group(1) not in out:
+            out[i.group(1)] = txt
+    return out
+
+
+def case_rows(slug):
+    """The eight slots for one featured piece, each resolved to where it is
+    answered. Nothing is invented for a slot the map leaves empty."""
+    p = CASE_BY_SLUG[slug]
+    spec = (CASES.get("cases") or {}).get(slug) or {}
+    heads = case_headings(p["url"])
+    rows = []
+    for key, label, meaning in CASE_SLOTS:
+        s = spec.get(key) or {}
+        r = {"key": key, "label": label, "meaning": meaning, "kind": None}
+        if "sec" in s and s["sec"] in heads:
+            r.update(kind="sec", id=s["sec"], text=heads[s["sec"]],
+                     href="%s#%s" % (p["url"], s["sec"]))
+        elif "doc" in s:
+            docs = [CASE_BY_SLUG[d] for d in s["doc"] if d in CASE_BY_SLUG]
+            if docs:
+                r.update(kind="doc", docs=docs)
+        elif s.get("rec") == "built_from" and p.get("built_from", "").strip() not in ("", NOT_DECLARED):
+            r.update(kind="rec", text=p["built_from"].strip(), label_as="built_from")
+        elif s.get("rec") == "piece":
+            r.update(kind="rec", text=p["demo"] or p["s"], href=p["url"])
+        rows.append(r)
+    return rows
+
+
+def case_coverage():
+    """How much of the shape the six pieces actually carry, by where each slot
+    is answered. The gap is the point of the number, so it is counted."""
+    out = {"pieces": 0, "slots": 0, "sec": 0, "doc": 0, "rec": 0, "gap": 0}
+    for slug in (CASES.get("cases") or {}):
+        if slug not in CASE_BY_SLUG:
+            continue
+        out["pieces"] += 1
+        for r in case_rows(slug):
+            out["slots"] += 1
+            out[r["kind"] or "gap"] += 1
+    return out
+
+
+def case_cell(r):
+    """One slot, rendered. A section quotes the piece's own heading and opens
+    it; a document names the documents the corpus records; a record prints the
+    value the build holds; a slot with nothing behind it says so."""
+    if r["kind"] == "sec":
+        return ('<a class="cslot" href="%s">%s</a>' % (esc(r["href"]), esc(r["text"]))
+                + ' <span class="cwhere">section</span>')
+    if r["kind"] == "doc":
+        links = ", ".join('<a class="cslot" href="%s">%s</a>' % (esc(d["url"]), esc(d["t"]))
+                          for d in r["docs"])
+        return links + ' <span class="cwhere">%s</span>' % (
+            "linked document" if len(r["docs"]) == 1 else "linked documents")
+    if r["kind"] == "rec":
+        if r.get("href"):
+            return ('<a class="cslot" href="%s">Open it</a> <span class="cnote">%s</span>'
+                    % (esc(r["href"]), esc(r["text"])))
+        # the same label the piece's own line carries, so the sentence a reader
+        # meets here is the sentence they meet on the document
+        if r.get("label_as") == "built_from":
+            # Two of the recorded lines open with a "Built on" clause of their
+            # own, and the label would double it. The label is dropped there
+            # rather than the sentence rewritten, because the sentence is the
+            # owner's and lives in content/pieces.json.
+            v = r["text"]
+            if v[:6].lower() == "built ":
+                return '<span class="cnote">%s</span>' % esc(v)
+            return '<span class="cnote"><b>Built from</b> %s</span>' % esc(v)
+        return '<span class="cnote">%s</span>' % esc(r["text"])
+    return '<span class="cgap">Not carried</span>'
+
+
+def case_entry(k, p):
+    """One case: the measured line, the piece's own blurb, and the eight
+    slots as a table whose row headers are the slot names."""
+    rows = case_rows(p["slug"])
+    held = sum(1 for r in rows if r["kind"])
+    trs = "\n".join(
+        '        <tr%s><th scope="row"><span class="cslotname">%s</span>'
+        '<span class="cmeaning">%s</span></th><td>%s</td></tr>'
+        % ("" if r["kind"] else ' class="cempty"', esc(r["label"]), esc(r["meaning"]), case_cell(r))
+        for r in rows)
+    mins = f'{p["mins"]} min' if p["mins"] else "instrument"
+    return f"""  <article class="case" id="case-{esc(p["slug"])}">
+    <div class="casehead">
+      <p class="ceyebrow"><span class="num tnum">{k:02d}</span> {kind_chip(p)} <span class="csurf">{esc(SURF_LABEL[p["surface"]])}</span> <span class="cdate">{esc(p["d"])}</span></p>
+      <h2 class="ctitle"><a href="{esc(p["url"])}">{esc(p["t"])}</a></h2>
+      <p class="csub">{esc(p["s"])}</p>
+      <div class="cfig" aria-hidden="true">{piece_fingerprint(p)}</div>
+    </div>
+    <p class="cmeasure"><span>{p["words"]:,} words</span><span>{p["figures"]} figures</span><span>{p["tables"]} tables</span><span>{link_degree(p["slug"])} recorded links</span><span>{esc(mins)}</span></p>
+    <p class="cblurb">{esc(p["blurb"])}</p>
+    <table class="ctable">
+      <caption class="csr">The eight slots for {esc(p["t"])}, {held} of {len(CASE_SLOTS)} carried</caption>
+      <tbody>
+{trs}
+      </tbody>
+    </table>
+    <p class="cread"><a class="cgo" href="{esc(p["url"])}">Read {esc(p["t"])} <span class="arrow" aria-hidden="true">&#8594;</span></a> <span class="cheld">{held} of {len(CASE_SLOTS)} slots carried</span></p>
+  </article>"""
+
+
+def capability_evidence(cap_id):
+    """The pieces declared as evidence for one capability, and their totals.
+    Which pieces evidence what is a reading and is declared in
+    content/capabilities.json; every number here is recomputed from the
+    measurements on this build. A piece may evidence more than one capability,
+    so these sets are not a partition and their subtotals do not add to the
+    corpus."""
+    spec = (CAPS.get("capabilities") or {}).get(cap_id) or {}
+    items = [CASE_BY_SLUG[x] for x in (spec.get("pieces") or []) if x in CASE_BY_SLUG]
+    return {"id": cap_id, "items": items, "n": len(items),
+            "gap": (spec.get("gap") or "").strip(),
+            "words": sum(q["words"] for q in items),
+            "figures": sum(q["figures"] for q in items),
+            "tables": sum(q["tables"] for q in items),
+            "tools": sum(1 for q in items if q["k"] == "Tool")}
+
+
+def cap_block(i, cap_id, title, prose):
+    """One capability: the owner's own paragraph, then what evidences it. The
+    list is folded away, so the page a reader meets is the page that was here
+    before and the evidence is one disclosure below it."""
+    e = capability_evidence(cap_id)
+    cells = "".join(["<span>%d pieces</span>" % e["n"],
+                     "<span>%s words</span>" % format(e["words"], ","),
+                     "<span>%d figures</span>" % e["figures"],
+                     "<span>%d tables</span>" % e["tables"]]
+                    + (["<span>%d %s</span>" % (e["tools"], "tool" if e["tools"] == 1 else "tools")]
+                       if e["tools"] else []))
+    lst = ", ".join('<a href="%s">%s</a>' % (esc(q["url"]), esc(q["t"])) for q in e["items"])
+    gap = '<p class="capgap">%s</p>' % esc(e["gap"]) if e["gap"] else ""
+    return ('    <div><p class="plate-n"><b>%02d</b> <span>/ %02d</span></p><h3>%s</h3>%s\n'
+            '      <p class="capev">%s</p>\n'
+            '      <details class="tv capdet"><summary>What evidences it</summary>\n'
+            '      <p class="caplist">%s</p>%s</details></div>'
+            % (i, len(CAP_BLOCKS), esc(title), prose, cells, lst, gap))
+
+
+def _res_dates(e):
+    f, t = (e.get("from") or "").strip(), (e.get("to") or "").strip()
+    if f and t:
+        return "%s to %s" % (f, t)
+    if f:
+        return "%s to present" % f
+    return t
+
+
+def _res_line(label, items):
+    """One labelled list under an entry: the label, then the names, as one
+    line. Nothing at all when the list is empty, so an entry never carries a
+    heading with no content under it."""
+    items = [str(x).strip() for x in (items or []) if str(x).strip()]
+    if not items:
+        return ""
+    # a semicolon when the entries carry commas of their own: joined by comma,
+    # "UWNRG Nanorobotics Group, Business Associate (Winter 2025)" and the
+    # entry after it read as four things rather than two
+    sep = "; " if any("," in x for x in items) else ", "
+    return ('<p class="rsub"><b>%s</b> %s</p>' % (esc(label), esc(sep.join(items))))
+
+
+def resume_gaps():
+    """Which declared sections carry nothing. Printed by the build on every
+    run, so an unfilled resume is visible in the log rather than on the page."""
+    return [k for k in ("education", "experience", "projects", "skills", "service")
+            if not (RESUME_D.get(k) or [])]
+
+
+def resume_evidence():
+    """The four capabilities, largest first by the words behind them, with the
+    same totals the about page prints. Nothing new is measured here."""
+    rows = []
+    for cid, title, _pr in CAP_BLOCKS:
+        e = capability_evidence(cid)
+        if e["n"]:
+            rows.append((title, e))
+    rows.sort(key=lambda r: -r[1]["words"])
+    return rows
+
+
+def page_resume(summary=None):
+    """A resume native to this site: the identity and the availability it
+    already records, the education and employment declared in
+    content/resume.json, and then the part no other resume can carry, which is
+    the corpus itself, measured. Everything countable on this page is counted
+    by the build that writes it. It prints to one document, and that is the
+    PDF: nothing here is a second file that could disagree with the page."""
+    aff = S.get("affiliation") or []
+    # the register's own tallies, which exist only after the checks have run;
+    # this page is written inside the same fixpoint the colophon is, so the
+    # numbers it prints are the numbers that page prints
+    reg = summary or {}
+    ed = "".join(
+        '<div class="rrow"><p class="rwhen">%s</p><div class="rwhat"><h3>%s</h3>'
+        '<p class="rwhere">%s</p>%s%s%s%s</div></div>'
+        % (esc(_res_dates(e)), esc(e.get("credential") or ""), esc(e.get("institution") or ""),
+           ('<p class="rnote">%s</p>' % esc(e["note"])) if (e.get("note") or "").strip() else "",
+           _res_line("Awards", e.get("awards")),
+           "".join(_res_line(c.get("label") or "", c.get("items"))
+                   for c in (e.get("coursework") or [])),
+           _res_line("Activities", e.get("activities")))
+        for e in (RESUME_D.get("education") or []))
+    ex = "".join(
+        '<div class="rrow"><p class="rwhen">%s</p><div class="rwhat"><h3>%s</h3>'
+        '<p class="rwhere">%s</p>%s</div></div>'
+        % (esc(_res_dates(e)), esc(e.get("title") or ""),
+           ", ".join(x for x in (esc(e.get("employer") or ""), esc(e.get("place") or "")) if x),
+           ("<ul class=\"rlines\">%s</ul>" % "".join("<li>%s</li>" % esc(l) for l in (e.get("lines") or [])))
+           if (e.get("lines") or []) else "")
+        for e in (RESUME_D.get("experience") or []))
+    pj = "".join(
+        '<div class="rrow"><p class="rwhen">%s</p><div class="rwhat"><h3>%s</h3>%s%s</div></div>'
+        % (esc(e.get("when") or ""), esc(e.get("title") or ""),
+           ('<p class="rwhere">%s</p>' % esc(e["note"])) if (e.get("note") or "").strip() else "",
+           ("<ul class=\"rlines\">%s</ul>" % "".join("<li>%s</li>" % esc(l) for l in (e.get("lines") or [])))
+           if (e.get("lines") or []) else "")
+        for e in (RESUME_D.get("projects") or []))
+    sv = "".join(
+        '<div class="rrow"><p class="rwhen">%s</p><div class="rwhat"><p class="rlist">%s</p></div></div>'
+        % (esc(g.get("group") or ""), esc(", ".join(g.get("items") or [])))
+        for g in (RESUME_D.get("service") or []) if (g.get("items") or []))
+    sk = "".join(
+        '<div class="rrow"><p class="rwhen">%s</p><div class="rwhat"><p class="rlist">%s</p></div></div>'
+        % (esc(g.get("group") or ""), esc(", ".join(g.get("items") or [])))
+        for g in (RESUME_D.get("skills") or []) if (g.get("items") or []))
+    evid = "".join(
+        '<div class="rrow"><p class="rwhen">%s</p><div class="rwhat"><p class="rmeasure">'
+        '<span>%d pieces</span><span>%s words</span><span>%d figures</span><span>%d tables</span>%s</p>'
+        '<p class="rlist">%s</p></div></div>'
+        % (esc(title), e["n"], format(e["words"], ","), e["figures"], e["tables"],
+           ("<span>%d %s</span>" % (e["tools"], "tool" if e["tools"] == 1 else "tools")) if e["tools"] else "",
+           ", ".join('<a href="%s">%s</a>' % (esc(q["url"]), esc(q["t"]))
+                     for q in sorted(e["items"], key=lambda x: -x["words"])[:4])
+           + (", and %d more on <a href=\"about.html\">about</a>" % (e["n"] - 4) if e["n"] > 4 else ""))
+        for title, e in resume_evidence())
+    feats = [p for p in P if p["featured"]][:6]
+    sel = "".join(
+        '<div class="rrow"><p class="rwhen">%s</p><div class="rwhat"><h3><a href="%s">%s</a></h3>'
+        '<p class="rwhere">%s</p><p class="rmeasure"><span>%s words</span><span>%d figures</span>'
+        '<span>%d tables</span></p></div></div>'
+        % (esc(p["d"]), esc(p["url"]), esc(p["t"]), esc(p["s"]),
+           format(p["words"], ","), p["figures"], p["tables"])
+        for p in feats)
+    w = coop_window()
+    avail = esc(COOP_TERM) + ((", %s days from this build" % format(w["days"], ",")) if w and w["days"] > 0 else "")
+
+    def sect(title, body, count=""):
+        return ('<section class="band shell rsec">\n'
+                '  <div class="sechead"><h2>%s</h2>%s</div>\n%s\n</section>'
+                % (esc(title), ('<span class="count">%s</span>' % esc(count)) if count else "", body))
+
+    blocks = []
+    if ed:
+        blocks.append(sect("Education", ed))
+    if ex:
+        blocks.append(sect("Experience", ex))
+    if pj:
+        _np = len(RESUME_D.get("projects") or [])
+        blocks.append(sect("Class projects and competitions", pj,
+                           "%d %s" % (_np, "entry" if _np == 1 else "entries")))
+    blocks.append(sect("Capability, and what evidences it", evid,
+                       "%d %s" % (len(resume_evidence()),
+                                  "claim" if len(resume_evidence()) == 1 else "claims")))
+    blocks.append(sect("Selected work", sel, "%d of %d" % (len(feats), len(P))))
+    if sk:
+        blocks.append(sect("Tools and methods", sk))
+    if sv:
+        blocks.append(sect("Volunteering", sv))
+    blocks.append(sect("The site itself, measured", (
+        '<div class="rrow"><p class="rwhen">The corpus</p><div class="rwhat"><p class="rlist">'
+        '%d pieces, %s words, %d figures, %d tables and %s checkpoint questions, every one counted from the '
+        'published files by the build rather than typed. %d of them were chosen, scoped and finished without a '
+        'course asking for them.</p></div></div>'
+        '<div class="rrow"><p class="rwhen">The instrument</p><div class="rwhat">'
+        '<p class="rlist register-line">'
+        'The site states %d things about itself and checks every one of them on every build; the register on '
+        '<a href="controls.html">controls</a> prints %d held, %d untested and %d failed. Each check is itself tested by a '
+        'falsification: a change made to a copy of the whole tree that the check must refuse. Every page is opened '
+        'in a browser and measured for external requests and for frames requested while idle.</p></div></div>'
+        % (len(P), format(TOTAL_WORDS, ","), TOTAL_FIGS, TOTAL_TBLS, format(CHECKPOINTS, ","), N_INDEP,
+           reg.get("rows", 0), reg.get("held", 0), reg.get("untested", 0), reg.get("failed", 0)))))
+
+    body = f"""<div class="hero tight shell">
+  <p class="eyebrow accent">Resume</p>
+  <h1 class="h1">{esc(NAME)}</h1>
+  <p class="lede">{esc(", ".join(x for x in ("Accounting and Financial Management, Analytics stream", aff[0] if aff else "") if x))}.
+  Standing {esc(STANDING)}. Available for co-op {avail}.</p>
+  <p class="rcontact"><a href="mailto:{esc(EMAIL)}">{esc(EMAIL)}</a> <a href="{SITE_URL}">{esc(HOST)}</a>
+  {" ".join(profile_links(resume=False))}</p>
+  <p class="rprint">Every number below is counted by the build that wrote this page. For a PDF, print this page:
+  it is laid out for paper and carries no navigation there.</p>
+</div>
+{chr(10).join(blocks)}
+"""
+    return head(f"Resume · {SHORT}",
+                f"Resume of {NAME}: Accounting and Financial Management, Analytics stream at Waterloo, with the "
+                f"portfolio evidence counted by the build rather than claimed.",
+                "resume.html") + body + foot()
+
+
+def page_selected():
+    """The six pieces recorded as featured, each read against the same eight
+    slots. Every slot that is filled points at something that already exists:
+    a heading the piece carries, a document the corpus records a link to, or a
+    value this build computed. Nothing here is a new sentence about the work."""
+    feats = [p for p in P if p["featured"]][:6]
+    cov = case_coverage()
+    entries = "\n".join(case_entry(i, p) for i, p in enumerate(feats, 1))
+    w = sum(p["words"] for p in feats)
+    f = sum(p["figures"] for p in feats)
+    t = sum(p["tables"] for p in feats)
+    body = f"""<div class="hero tight shell">
+  <p class="eyebrow accent">Selected work</p>
+  <h1 class="h1">The strongest pieces, put through one shape.</h1>
+  <p class="lede">The {len(feats)} pieces recorded as featured, {w:,} words, {f} figures and {t} tables between them,
+  each put through one shape: question, context, approach, evidence, build, finding, limitation, artifact.
+  A slot is filled only by something already on the site, and {cov["gap"]} of {cov["slots"]} are not filled at all.
+  The whole corpus is on <a href="library.html">Work</a>.</p>
+</div>
+<section class="shell stack-end">
+  <p class="caselead">{cov["slots"]} slots over {cov["pieces"]} pieces: {cov["sec"]} answered by a section,
+  {cov["doc"]} by a linked document, {cov["rec"]} by a record, {cov["gap"]} not carried.
+  <a href="#casenotes">How a slot is filled &#8595;</a></p>
+{entries}
+  <div class="casenote" id="casenotes">
+    <h2>Notes on the reading</h2>
+    <p><b>How to read a row.</b> A slot marked <i>section</i> quotes a heading the piece itself carries and opens
+    the piece at it. A slot marked <i>linked document</i> names another piece the corpus records a link to.
+    The rest print a value this build already holds: the line the piece declares it was built from, or
+    the artifact itself. A slot nothing answers says <i>not carried</i>, and is counted.</p>
+    <p><b>What is measured and what is not.</b> The counts, the links and the figure on each entry are measured.
+    Which heading answers which slot is a reading, declared in <code>content/cases.json</code>. The build checks
+    that every anchor exists, that every heading is quoted as the invariance record holds it, and that every
+    named document is a recorded link; it does not check that the reading is the right one. Disagree with a
+    placement and the file is the place to say so.</p>
+  </div>
+</section>
+"""
+    return head(f"Selected work · {SHORT}",
+                f"Six featured pieces by Alex Rajcoomar read against one shape: question, context, approach, "
+                f"evidence, build, finding, limitation, artifact, every slot pointing at the piece's own record.",
+                "selected.html") + body + foot()
 
 
 def shelf_row(k, p, extra="", fp=False):
@@ -1121,6 +1518,54 @@ def hero_identity():
             + "\n      ".join(facts) + ("\n      " if facts else "")
             + f'<p class="links">{"".join(links)}</p>\n    </div>')
 
+# Three doorways, for the three reasons a stranger opens this site. Each one
+# points at a surface that already exists and says what is behind it in the
+# fewest words that are still true. Kept to one row: a reader who wants the
+# site as it was scrolls past a single line.
+DOORS = [
+    ("selected.html", "Hiring me"),
+    ("library.html",  "Reading the research"),
+    ("colophon.html", "How this is built"),
+]
+
+
+def start_here():
+    """One line under the corpus figures. The labels carry the whole of it:
+    a description under each one wrapped the row onto three broken lines at
+    every width the hero column actually takes, and each destination opens
+    with a lede that says the same thing better."""
+    items = "\n        ".join(
+        '<a href="%s">%s <span aria-hidden="true">&#8594;</span></a>' % (esc(u), esc(t))
+        for u, t in DOORS)
+    return ('<nav class="startrow" aria-label="Start here">\n'
+            '      <p class="startlab">Start here</p>\n'
+            '      <p class="startlinks">\n        %s\n      </p>\n    </nav>' % items)
+
+
+def now_line():
+    """Where the author is, from values the site already records: the standing
+    in content/pieces.json, the co-op term counted from this build's date, and
+    the day the corpus was last measured. The optional sentence renders only
+    when it has been written, so nothing here can read as a placeholder."""
+    bits = []
+    if STANDING:
+        bits.append("<div><b>Term</b><span>%s, %s</span></div>"
+                    % (esc(STANDING), esc(TODAY.strftime("%B %Y"))))
+    w = coop_window()
+    if w:
+        bits.append("<div><b>Next co-op</b><span>%s, %s day%s from this build</span></div>"
+                    % (esc(COOP_TERM), format(w["days"], ","), "" if w["days"] == 1 else "s"))
+    elif COOP_TERM:
+        bits.append("<div><b>Next co-op</b><span>%s</span></div>" % esc(COOP_TERM))
+    bits.append('<div><b>Last measured</b><span>%s, %s pieces and %s words, by the build that '
+                'wrote this page</span></div>'
+                % (esc(TODAY.isoformat()), len(P), format(TOTAL_WORDS, ",")))
+    nw = (S.get("now") or "").strip()
+    if nw:
+        bits.append("<div><b>Building</b><span>%s</span></div>" % esc(nw))
+    return '<div class="facts measure wide pane nowpane">%s</div>' % "".join(bits)
+
+
 def corpus_line():
     """The corpus in four figures, each the same variable the statement's
     total row prints, so the two cannot drift. A definition list, because
@@ -1206,6 +1651,7 @@ def page_index():
     <p class="display">{S["headline"]}</p>
     <p class="method">Every figure below is counted from the published files by the build, never typed. The notes define each column and state every exception.</p>
     {corpus_line()}
+    {start_here()}
   </section>
   <div class="descent-globe">
     <div class="stage-globe">
@@ -1232,6 +1678,7 @@ def page_index():
         </tbody>
       </table>
     </div>
+    <p class="stmore"><a class="inlink" href="selected.html">The featured pieces, each read against the same eight questions <span aria-hidden="true">&#8594;</span></a></p>
   </section>
 </div>
 
@@ -1521,7 +1968,9 @@ def page_library():
   <h1 class="h1">The whole statement.</h1>
   <p class="lede">All {len(P)} pieces, split by what asked for them, every row carrying the piece's
   measured words, figures and tables and its own declared rule. The three origins add to the corpus
-  line, {TOTAL_WORDS:,} words, and the <a href="colophon.html">notes</a> define each column.</p>
+  line, {TOTAL_WORDS:,} words, and the <a href="colophon.html">notes</a> define each column.
+  For fewer of them in more depth, the featured pieces are read one shape at a time on
+  <a href="selected.html">selected work</a>.</p>
 </div>
 <section class="shell stack-end">
   <div class="tools-bar">
@@ -1559,7 +2008,7 @@ def page_library():
                 f"All {len(P)} pieces by Alex Rajcoomar as one statement of work: measured words, figures and tables on every row, split by origin.",
                 "library.html") + body + foot()
 
-def profile_links(css="inlink"):
+def profile_links(css="inlink", resume=True):
     """The optional recruiter links, each rendered only where a value
     exists in pieces.json's site block."""
     out = []
@@ -1567,12 +2016,46 @@ def profile_links(css="inlink"):
         out.append(f'<a class="{css}" href="{esc(LINKEDIN)}">LinkedIn</a>')
     if GITHUB:
         out.append(f'<a class="{css}" href="{esc(GITHUB)}">GitHub</a>')
-    if RESUME:
-        out.append(f'<a class="{css}" href="{esc(RESUME)}">Resume</a>')
+    # an external resume when one is recorded, and otherwise the page this
+    # build writes, which is always current because it is generated. The
+    # resume's own contact line asks for it off: a link to the page you are
+    # reading is furniture, not a link.
+    if resume:
+        out.append(f'<a class="{css}" href="{esc(RESUME) if RESUME else "resume.html"}">Resume</a>')
     return out
 
 
+# The four things the portfolio demonstrates. The paragraphs are the owner's,
+# moved here unchanged so the blocks can be generated with their evidence
+# attached; content/capabilities.json says which pieces evidence which.
+CAP_BLOCKS = [
+    ("evidence", "Evidence discipline",
+     "<p>Every figure carries the provenance tag it was published under. "
+     "Derived numbers are labelled as derived. Two sources that disagree are reported separately instead of "
+     "averaged. One essay reaches a negative result and reports it as one, and the largest piece corrects its "
+     "own arithmetic in public where a later attribution changed the base.</p>"),
+    ("reporting", "Financial reporting",
+     "<p>Intermediate financial accounting under IFRS, worked to the entry "
+     "rather than the summary: revenue recognition through the five-step model, a journal entry reference "
+     "built for retrieval under time pressure, and a coverage audit that records what is still missing.</p>"),
+    ("canadian", "Canadian tax and law, kept Canadian",
+     "<p>Co-op work preparing Canadian corporate and personal "
+     "returns, and a primer that holds the Canadian and American legal positions apart at every point they "
+     "diverge instead of blending them.</p>"),
+    ("building", "Building the thing", None),
+]
+
+
 def page_about():
+    # the fourth paragraph counts this build's own pages, tools and figures, so
+    # it is written here rather than in the constant beside the other three
+    built = ("<p>Hand-written HTML, CSS and JavaScript across %d pages and %d interactive tools, "
+             "%d of them installable. %d figures, all built by hand as static SVG so they render with "
+             "JavaScript off. No framework, no build step on the reader's side, accessible in light and "
+             "dark, and it prints.</p>" % (len(P), N_TOOLS, N_PWA, TOTAL_FIGS))
+    caps_html = "\n".join(
+        cap_block(i, cid, title, prose if prose is not None else built)
+        for i, (cid, title, prose) in enumerate(CAP_BLOCKS, 1))
     gt = figs.group_totals()
     afm = [p for p in P if p["c"] == "AFM 291"]
     # Optional recruiter rows: absent values render nothing at all, so the
@@ -1621,6 +2104,8 @@ def page_about():
     <div><b>This site</b><span><a class="inlink" href="{SITE_URL}">{HOST}</a></span></div>{recruit_rows}
   </div>
   </div>
+  <div class="sechead nowhead"><h3 id="now">Now</h3><span class="count">This build</span></div>
+  {now_line()}
   </div>
 </section>
 
@@ -1632,21 +2117,13 @@ def page_about():
     <span class="count">Four things</span>
   </div>
   <div class="caps">
-    <div><p class="plate-n"><b>01</b> <span>/ 04</span></p><h3>Evidence discipline</h3><p>Every figure carries the provenance tag it was published under.
-    Derived numbers are labelled as derived. Two sources that disagree are reported separately instead of
-    averaged. One essay reaches a negative result and reports it as one, and the largest piece corrects its
-    own arithmetic in public where a later attribution changed the base.</p></div>
-    <div><p class="plate-n"><b>02</b> <span>/ 04</span></p><h3>Financial reporting</h3><p>Intermediate financial accounting under IFRS, worked to the entry
-    rather than the summary: revenue recognition through the five-step model, a journal entry reference
-    built for retrieval under time pressure, and a coverage audit that records what is still missing.</p></div>
-    <div><p class="plate-n"><b>03</b> <span>/ 04</span></p><h3>Canadian tax and law, kept Canadian</h3><p>Co-op work preparing Canadian corporate and personal
-    returns, and a primer that holds the Canadian and American legal positions apart at every point they
-    diverge instead of blending them.</p></div>
-    <div><p class="plate-n"><b>04</b> <span>/ 04</span></p><h3>Building the thing</h3><p>Hand-written HTML, CSS and JavaScript across {len(P)} pages and
-    {N_TOOLS} interactive tools, {N_PWA} of them installable. {TOTAL_FIGS} figures, all built by hand as
-    static SVG so they render with JavaScript off. No framework, no build step on the reader's side,
-    accessible in light and dark, and it prints.</p></div>
+{caps_html}
   </div>
+  <p class="capnote">The paragraphs are the claim. Under each one is the work that evidences it, named
+  and counted: the pieces are declared in <code>content/capabilities.json</code> and the words, figures
+  and tables are recomputed from the measurements on every build. A piece can evidence more than one,
+  so the four sets overlap and their subtotals do not add to the {TOTAL_WORDS:,} on the corpus line.
+  There are no levels here and no self-ratings, because neither could be checked.</p>
 </section>
 
 <section class="band ground">
@@ -3856,9 +4333,11 @@ def jsonld_person():
             + "</script>")
 
 
-SHELL_PAGES = ("index.html", "research.html", "coursework.html", "tools.html",
-               "library.html", "atlas.html", "about.html", "colophon.html",
-               "controls.html", "404.html")
+# One list, in build/claims.py, because the register, the falsification wall
+# and build/audit.js all read it from there. Kept as a literal here it drifted:
+# a page added to this tuple and not to that list is generated, checked and
+# never measured in a browser, and nothing said so.
+SHELL_PAGES = tuple(claims.SHELL)
 
 # ------------------------------------------------------------- checks ----
 # The build guarantees what it generates. Everything it merely touches was
@@ -4839,6 +5318,30 @@ def check_site():
                 T["author"]["off"] += 1
                 problems.append(_p("32", "index.html: the author's card reads %r; the build's own arithmetic says %r" % (_norm32(card32), want32)))
 
+        # the same two recorded values on the about page's Now block, which is
+        # the only part of that page that goes stale on its own. The day count
+        # is held to the arithmetic just done, not to the writer that printed
+        # it, and the measurement date is held to this build's date.
+        atx32 = os.path.join(OUT, "about.html")
+        if os.path.exists(atx32):
+            nraw32 = open(atx32, encoding="utf-8", errors="ignore").read()
+            nm32 = re.search(r'<div class="facts[^"]*nowpane">(.*?)</div>\s*</div>\s*</section>', nraw32, re.S)
+            nblk32 = _norm32(re.sub(r"<[^>]+>", " ", nm32.group(1))) if nm32 else None
+            if nblk32 is None:
+                problems.append(_p("32", "about.html: carries no Now block, and the page claims one"))
+            else:
+                T["author"]["cards"] += 1
+                if m32 and days32 > 0:
+                    want_days32 = "%s, %s days from this build" % (COOP_TERM, format(days32, ","))
+                    if want_days32 not in nblk32:
+                        T["author"]["off"] += 1
+                        problems.append(_p("32", "about.html: the Now block does not read %r, which is the "
+                                                 "co-op window this build computes" % want_days32))
+                if TODAY.isoformat() not in nblk32:
+                    T["author"]["off"] += 1
+                    problems.append(_p("32", "about.html: the Now block does not carry this build's date, %s"
+                                             % TODAY.isoformat()))
+
     # 27. every visual channel the two sphere scripts declare is named in the
     # Atlas key, and every key entry is a channel one of them draws; the home
     # sphere's key is the Atlas key, one link from its caption.
@@ -5430,6 +5933,201 @@ def check_site():
                 problems.append(_p("37", "%s: a table header declares scope=%s, which is not a scope"
                                          % (f, m37.group(1))))
 
+    # 38. the case map. content/cases.json says where each of the eight slots
+    # is answered for each featured piece, and every placement in it is a
+    # reading rather than a measurement. What can be held is held here: the
+    # piece is one the site lists and records as featured, the slot key is one
+    # of the eight, a named section exists both in the file and in the piece's
+    # invariance record, the heading printed beside it is the heading that
+    # record holds, a named document is a listed piece the corpus records a
+    # link to, and a named record is one this build actually carries. The
+    # coverage the page prints is recomputed here from the files rather than
+    # read back from the page, so a slot cannot be counted as carried by a
+    # page that does not carry it.
+    t38 = T["cases"] = {"pieces": 0, "slots": 0, "sec": 0, "doc": 0, "rec": 0,
+                        "gap": 0, "broken": 0, "quoted": 0, "misquoted": 0}
+    try:
+        _inv38 = json.load(open(invariance.BASE_PATH, encoding="utf-8")).get("pieces") or {}
+    except Exception:
+        _inv38 = {}
+    _slug38 = {q["slug"]: q for q in P}
+    _feat38 = {q["slug"] for q in P if q.get("featured")}
+    _keys38 = {k for k, _l, _m in CASE_SLOTS}
+    _edge38 = set()
+    for _a38, _b38 in (ATLAS.get("edges") or ()):
+        _edge38.add((_a38, _b38)); _edge38.add((_b38, _a38))
+    look("38", "selected.html")
+    for slug38, spec38 in sorted((CASES.get("cases") or {}).items()):
+        if slug38 not in _slug38:
+            t38["broken"] += 1
+            problems.append(_p("38", "content/cases.json: %s is not a listed piece" % slug38))
+            continue
+        if slug38 not in _feat38:
+            t38["broken"] += 1
+            problems.append(_p("38", "content/cases.json: %s carries a case but is not recorded as "
+                                     "featured, so nothing on the site shows it" % slug38))
+        t38["pieces"] += 1
+        p38 = _slug38[slug38]
+        heads38 = case_headings(p38["url"])
+        rec38 = (_inv38.get(slug38) or {}).get("sets") or {}
+        ids38 = set(rec38.get("ids") or ())
+        for k38 in spec38:
+            if k38 not in _keys38:
+                t38["broken"] += 1
+                problems.append(_p("38", "content/cases.json: %s names the slot %s, which is not one "
+                                         "of the eight" % (slug38, k38)))
+        for key38, _l38, _m38 in CASE_SLOTS:
+            t38["slots"] += 1
+            s38 = spec38.get(key38) or {}
+            if not s38:
+                t38["gap"] += 1
+                continue
+            if "sec" in s38:
+                a38 = s38["sec"]
+                if a38 not in heads38:
+                    t38["broken"] += 1
+                    problems.append(_p("38", "content/cases.json: %s names #%s for %s, and %s carries no "
+                                             "heading with that id" % (slug38, a38, key38, p38["url"])))
+                    continue
+                if ids38 and a38 not in ids38:
+                    t38["broken"] += 1
+                    problems.append(_p("38", "content/cases.json: #%s is not an anchor the invariance "
+                                             "record holds for %s" % (a38, slug38)))
+                    continue
+                t38["sec"] += 1
+            elif "doc" in s38:
+                ok38 = True
+                for d38 in s38["doc"]:
+                    if d38 not in _slug38:
+                        ok38 = False
+                        problems.append(_p("38", "content/cases.json: %s names %s for %s, which is not a "
+                                                 "listed piece" % (slug38, d38, key38)))
+                    elif (slug38, d38) not in _edge38:
+                        ok38 = False
+                        problems.append(_p("38", "content/cases.json: %s names %s for %s, and the corpus "
+                                                 "records no link between them" % (slug38, d38, key38)))
+                if ok38:
+                    t38["doc"] += 1
+                else:
+                    t38["broken"] += 1
+            elif "rec" in s38:
+                v38 = s38["rec"]
+                if v38 == "built_from" and p38.get("built_from"):
+                    t38["rec"] += 1
+                elif v38 == "piece":
+                    t38["rec"] += 1
+                else:
+                    t38["broken"] += 1
+                    problems.append(_p("38", "content/cases.json: %s asks %s for the record %r, which "
+                                             "this build does not hold" % (slug38, key38, v38)))
+            else:
+                t38["broken"] += 1
+                problems.append(_p("38", "content/cases.json: %s gives %s no source at all"
+                                         % (slug38, key38)))
+    # what the page actually printed, read back from the file rather than from
+    # the generator that wrote it. An anchor that resolves is not the same
+    # claim as a heading quoted correctly, and only the page can answer the
+    # second one: a build that quotes a piece loosely still passes every test
+    # that reads the piece instead of the page.
+    _sel38 = os.path.join(OUT, "selected.html")
+    if os.path.exists(_sel38):
+        _raw38 = open(_sel38, encoding="utf-8", errors="ignore").read()
+        _url38 = {q["url"]: q["slug"] for q in P}
+        for _h38, _i38, _t38 in re.findall(
+                r'<a class="cslot" href="([^"#]+)#([^"]+)">([^<]*)</a>', _raw38):
+            t38["quoted"] += 1
+            _sl38 = _url38.get(_h38)
+            _rc38 = ((_inv38.get(_sl38) or {}).get("sets") or {}) if _sl38 else {}
+            _hs38 = {invariance.norm_sentence(x) for x in (_rc38.get("headings") or ())}
+            _said = invariance.norm_sentence(html.unescape(_t38))
+            if _sl38 is None or _i38 not in set(_rc38.get("ids") or ()):
+                t38["misquoted"] += 1
+                problems.append(_p("38", "selected.html: quotes #%s of %s, which no invariance record "
+                                         "holds" % (_i38, _h38)))
+            elif _hs38 and _said not in _hs38:
+                t38["misquoted"] += 1
+                problems.append(_p("38", "selected.html: prints %r at #%s of %s, and the invariance record "
+                                         "holds no such heading there" % (_said[:60], _i38, _h38)))
+        if t38["quoted"] != t38["sec"]:
+            problems.append(_p("38", "selected.html: prints %d quoted headings where the case map "
+                                     "resolves %d" % (t38["quoted"], t38["sec"])))
+
+    _said38 = case_coverage()
+    for k38 in ("pieces", "slots", "sec", "doc", "rec", "gap"):
+        if _said38.get(k38) != t38[k38]:
+            problems.append(_p("38", "selected.html: the page counts %d %s and the files hold %d"
+                                     % (_said38.get(k38, 0), k38, t38[k38])))
+
+    # 39. the capability map. content/capabilities.json says which pieces
+    # evidence each of the four things the about page claims, and that
+    # membership is a reading. What is held: every named piece is one the site
+    # lists, no capability is left with nothing behind it, every capability the
+    # page draws has a map entry and every entry has a block, every piece named
+    # is linked on the page, and every total printed beside a block is the sum
+    # of that block's own pieces, recomputed here from content/metrics.json
+    # rather than read back off the page.
+    t39 = T["capabilities"] = {"caps": 0, "named": 0, "unknown": 0, "empty": 0,
+                               "unlinked": 0, "wrong": 0}
+    _map39 = (CAPS.get("capabilities") or {})
+    _slug39 = {q["slug"]: q for q in P}
+    _about39 = os.path.join(OUT, "about.html")
+    _raw39 = open(_about39, encoding="utf-8", errors="ignore").read() if os.path.exists(_about39) else ""
+    look("39", "about.html")
+    for cid39, title39, _pr39 in CAP_BLOCKS:
+        t39["caps"] += 1
+        spec39 = _map39.get(cid39)
+        if spec39 is None:
+            t39["empty"] += 1
+            problems.append(_p("39", "content/capabilities.json: nothing evidences %s, which the about "
+                                     "page claims" % cid39))
+            continue
+        names39 = spec39.get("pieces") or []
+        if not names39:
+            t39["empty"] += 1
+            problems.append(_p("39", "content/capabilities.json: %s names no piece at all" % cid39))
+        w39 = f39 = b39 = 0
+        for sl39 in names39:
+            t39["named"] += 1
+            q39 = _slug39.get(sl39)
+            if q39 is None:
+                t39["unknown"] += 1
+                problems.append(_p("39", "content/capabilities.json: %s names %s, which is not a listed "
+                                         "piece" % (cid39, sl39)))
+                continue
+            w39 += q39["words"]; f39 += q39["figures"]; b39 += q39["tables"]
+            if _raw39 and ('href="%s"' % q39["url"]) not in _raw39:
+                t39["unlinked"] += 1
+                problems.append(_p("39", "about.html: %s is named as evidence for %s and the page links "
+                                         "no such piece" % (sl39, cid39)))
+        said39 = capability_evidence(cid39)
+        for key39, want39 in (("words", w39), ("figures", f39), ("tables", b39)):
+            if said39[key39] != want39:
+                t39["wrong"] += 1
+                problems.append(_p("39", "about.html: %s prints %d %s and its own pieces measure %d"
+                                         % (cid39, said39[key39], key39, want39)))
+    # the resume prints the same four subtotals; held here so the two pages
+    # cannot disagree about what evidences a claim
+    _res39 = os.path.join(OUT, "resume.html")
+    if os.path.exists(_res39):
+        _rraw39 = open(_res39, encoding="utf-8", errors="ignore").read()
+        look("39", "resume.html")
+        for cid39, title39, _pr39 in CAP_BLOCKS:
+            e39 = capability_evidence(cid39)
+            if not e39["n"]:
+                continue
+            want39 = "<span>%s words</span>" % format(e39["words"], ",")
+            if want39 not in _rraw39:
+                t39["wrong"] += 1
+                problems.append(_p("39", "resume.html: does not print %s words for %s, which is what the "
+                                         "about page prints and what its pieces measure"
+                                         % (format(e39["words"], ","), cid39)))
+
+    for cid39 in sorted(_map39):
+        if cid39 not in {c for c, _t, _p2 in CAP_BLOCKS}:
+            t39["wrong"] += 1
+            problems.append(_p("39", "content/capabilities.json: %s evidences nothing the about page "
+                                     "claims" % cid39))
+
     # 33. the editor. admin.html is hand-maintained and the build never
     # writes it. Held here: the file is byte-identical to the bytes this run
     # started from; it is a whole document (the doctype at one end, </html> at
@@ -5686,6 +6384,9 @@ def _known_numbers():
         elif isinstance(x, str):
             for m in _NUM.findall(x): vals.add(_num(m))
             for m in _SMALL.findall(x): vals.add(_num(m))
+    add(case_coverage()); add(len(CASE_SLOTS))
+    for _cid, _t, _pr in CAP_BLOCKS:
+        add(capability_evidence(_cid))
     add([len(P), TOTAL_WORDS, TOTAL_FIGS, TOTAL_TBLS, CHECKPOINTS, DOC_MIN, WPM,
          FONT_BYTES, FONT_CODEPOINTS, N_TOOLS, N_PWA, N_INDEP, N_COURSE, N_PERSONAL,
          len(COURSES), UNIT, len(SHELL_PAGES), 404])
@@ -5767,6 +6468,45 @@ def _typed_numerals(extra_known=None):
             else:
                 out.append("lifted caption for %s quotes %s, which the piece does not state"
                            % (href, m))
+    # the resume states figures nothing here can measure: a client count, a
+    # deal size, a return on assets. They are the author's, declared in
+    # content/resume.json, and are held to that file the way a lifted caption
+    # is held to its piece. Only the strings the page actually renders are
+    # taken, so a numeral loose in the file's own notes is not a licence.
+    _rd = RESUME_D
+    _res_text = []
+    for _e in (_rd.get("education") or []):
+        _res_text += [_e.get("credential") or "", _e.get("institution") or "", _e.get("note") or "",
+                      _res_dates(_e)] + list(_e.get("awards") or []) + list(_e.get("activities") or [])
+        for _c in (_e.get("coursework") or []):
+            _res_text += [_c.get("label") or ""] + list(_c.get("items") or [])
+    for _e in (_rd.get("experience") or []):
+        _res_text += [_e.get("employer") or "", _e.get("place") or "", _e.get("title") or "",
+                      _res_dates(_e)] + list(_e.get("lines") or [])
+    for _e in (_rd.get("projects") or []):
+        _res_text += [_e.get("title") or "", _e.get("when") or "", _e.get("note") or ""] + list(_e.get("lines") or [])
+    for _g in (_rd.get("skills") or []) + (_rd.get("service") or []):
+        _res_text += [_g.get("group") or ""] + list(_g.get("items") or [])
+    for _t in _res_text:
+        for m in _NUM.findall(str(_t)) + _SMALL.findall(str(_t)):
+            quoted.add(_num(m))
+
+    # the case map quotes each piece's own headings, so a numeral inside one is
+    # the piece's, not this build's; the quote is held to the piece all the same
+    for slug in (CASES.get("cases") or {}):
+        if slug not in CASE_BY_SLUG:
+            continue
+        href = CASE_BY_SLUG[slug]["url"]
+        stated = _piece_numbers(href)
+        for r in case_rows(slug):
+            if r["kind"] != "sec":
+                continue
+            for m in _NUM.findall(r["text"]) + _SMALL.findall(r["text"]):
+                if _num(m) in stated:
+                    quoted.add(_num(m))
+                else:
+                    out.append("the case map quotes %s from a heading of %s, which the piece "
+                               "does not state" % (m, href))
     checked = 0
     for f in SHELL_PAGES:
         path = os.path.join(OUT, f)
@@ -5860,6 +6600,7 @@ def main():
     pages = {"index.html": page_index(), "research.html": page_research(),
              "atlas.html": page_atlas(),
              "coursework.html": page_coursework(), "tools.html": page_tools(),
+             "selected.html": page_selected(),
              "library.html": page_library(), "about.html": page_about(),
              "404.html": page_404(),
              "sitemap.xml": page_sitemap(), "robots.txt": page_robots(),
@@ -5888,7 +6629,8 @@ def main():
     all_pages = list(SHELL_PAGES) + [p["url"] for p in P] + [k + ".html" for k in exceptions()["transcripts"]]
     colpath = os.path.join(OUT, "colophon.html")
     ctlpath = os.path.join(OUT, "controls.html")
-    started_with = {pth: (open(pth, encoding="utf-8").read() if os.path.exists(pth) else None) for pth in (colpath, ctlpath)}
+    respath = os.path.join(OUT, "resume.html")
+    started_with = {pth: (open(pth, encoding="utf-8").read() if os.path.exists(pth) else None) for pth in (colpath, ctlpath, respath)}
     # the two pages are written only here, from the records: written first
     # without them and again with them, every build rewrote the pages
     if not os.path.exists(colpath):
@@ -5897,6 +6639,11 @@ def main():
     if not os.path.exists(ctlpath):
         open(ctlpath, "w", encoding="utf-8").write("<!DOCTYPE html><html><head><title>Controls</title></head><body><a class=\"skip\" href=\"#main\">Skip to content</a><main id=\"main\"></main></body></html>")
         changed.append("controls.html")
+    # the resume prints the register's tallies, so it is written here for the
+    # same reason the colophon is: written before the checks it would say zero
+    if not os.path.exists(respath):
+        open(respath, "w", encoding="utf-8").write(page_resume())
+        changed.append("resume.html")
     settled = False
     for _round in range(5):
         problems = check_site()
@@ -5908,8 +6655,10 @@ def main():
         instrument_html, counts = claims.render_instrument(ctx)
         new_ctl = page_controls(register_html, instrument_html, counts, summary)
         new_col = page_colophon(summary=summary)
+        new_res = page_resume(summary=summary)
         moved = False
-        for path, text, name in ((ctlpath, new_ctl, "controls.html"), (colpath, new_col, "colophon.html")):
+        for path, text, name in ((ctlpath, new_ctl, "controls.html"), (colpath, new_col, "colophon.html"),
+                                 (respath, new_res, "resume.html")):
             on_disk = open(path, encoding="utf-8").read() if os.path.exists(path) else ""
             if text != on_disk:
                 open(path, "w", encoding="utf-8").write(text)
@@ -5926,7 +6675,7 @@ def main():
         problems.append("controls.html: the register did not settle in five rounds")
     # the first round prints the previous scan's count and is rewritten by the
     # second, so a page counts as rewritten only if it ends up different
-    for pth, name in ((ctlpath, "controls.html"), (colpath, "colophon.html")):
+    for pth, name in ((ctlpath, "controls.html"), (colpath, "colophon.html"), (respath, "resume.html")):
         if open(pth, encoding="utf-8").read() != started_with[pth] and name not in changed:
             changed.append(name)
     check_site.register = summary
@@ -5946,6 +6695,10 @@ def main():
 
     print(f"{len(P)} pieces · {TOTAL_WORDS:,} words · {TOTAL_FIGS} figures · {TOTAL_TBLS} tables")
     print("rewrote: " + (", ".join(changed) if changed else "nothing, pages already current"))
+    _gaps = resume_gaps()
+    if _gaps:
+        print("resume: %s declared and unsupplied in content/resume.json; "
+              "the page renders neither" % ", ".join(_gaps))
     if figs_named:
         print(f"accessible names written on {figs_named} figures")
     if navs:

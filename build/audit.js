@@ -315,7 +315,7 @@ async function measurePage(browser, base, name, shell) {
       await page.addStyleTag({ content: 'html{scroll-behavior:auto!important}' });
       await page.waitForTimeout(600);
       const rows = await page.$$eval('#statement table.st tr.item', trs => trs.map(tr => tr.querySelector('th a').textContent.trim()));
-      let faced = 0, framesAfter = 0, framesSettle = 0, corMatched = 0;
+      let faced = 0, framesAfter = 0, framesSettle = 0, corMatched = 0, aimed = 0;
       const aim = async title => page.evaluate(t => {
         const wrap = document.querySelector('.descent-globe'); const wb = wrap ? wrap.getBoundingClientRect() : null;
         const tr = [...document.querySelectorAll('#statement table.st tr.item')].find(x => x.querySelector('th a').textContent.trim() === t);
@@ -327,13 +327,23 @@ async function measurePage(browser, base, name, shell) {
         window.scrollTo(0, Math.max(0, target));
       }, title);
       for (const title of rows) {
-        // aim until the target holds still: on a phone the block pins and
-        // steps back as the page scrolls, which moves the reading line
-        for (let k = 0; k < 4; k++) {
+        // Aim until the target holds still: on a phone the block pins and
+        // steps back as the page scrolls, which moves the reading line, so
+        // each aim moves the line as well as the page and the two converge
+        // rather than arriving. The bound was four, which is not a property
+        // of the page: adding 58px above the statement pushed the first row's
+        // fixed point from four passes to six, and the measurement that
+        // followed was of a page still scrolling. It read 168 frames after
+        // the scroll had supposedly stopped and one row unfaced, and both
+        // were the instrument rather than the site: at a stop the aim
+        // actually reaches, the spring settles to no frames at all. Ten
+        // passes, and a row the aim never settles is counted so that a
+        // measurement of a moving page is visible as one.
+        for (let k = 0; k < 10; k++) {
           const before = await page.evaluate(() => scrollY);
           await aim(title); await page.waitForTimeout(400);
           const after = await page.evaluate(() => scrollY);
-          if (Math.abs(after - before) < 3) break;
+          if (Math.abs(after - before) < 3) { aimed++; break; }
         }
         const facing = await page.evaluate(() => { const h = document.getElementById('atlasmini'); return h ? h.getAttribute('data-facing') : null; });
         if (facing === title) faced++;
@@ -352,7 +362,7 @@ async function measurePage(browser, base, name, shell) {
       await page.evaluate(() => window.scrollTo(0, 0)); await page.waitForTimeout(700);
       const framesAtTop = await page.evaluate(async () => { window.__rafReset(); await new Promise(r => setTimeout(r, 1000)); return window.__pageRaf(); }).catch(() => 99);
       const corTop = await page.evaluate(() => { const h = document.getElementById('atlasmini'); return h ? h.getAttribute('data-corona') : null; }).catch(() => null);
-      rec.descent[shape.key] = { rows: rows.length, faced, framesSettle, framesAfter, framesAtTop };
+      rec.descent[shape.key] = { rows: rows.length, aimed, faced, framesSettle, framesAfter, framesAtTop };
       rec.corona = rec.corona || {};
       rec.corona[shape.key] = { rows: rows.length, matched: corMatched, atTop: corTop };
       await ctx.close();
