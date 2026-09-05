@@ -9,15 +9,25 @@
    Only pages whose bytes changed are opened. The fingerprints are written
    next to the metrics so the next run knows what to skip. */
 const { chromium } = require('playwright');
+const { execFileSync } = require('child_process');
 const crypto = require('crypto');
 const fs = require('fs');
 const http = require('http');
 const path = require('path');
 
 const ROOT = path.dirname(__dirname);
-const SHELL = new Set(['index.html', 'library.html', 'about.html', '404.html', 'controls.html',
-                       'research.html', 'coursework.html', 'tools.html',
-                       'reader.html', 'colophon.html', 'admin.html', 'atlas.html']);
+/* The generated pages, taken from build/claims.py rather than listed again
+   here. Listed here they drifted: selected.html and resume.html were added to
+   the build and to the register and not to this set, so this pass measured
+   them into content/metrics.json, where anything measured and not a listed
+   piece is a transcript, and the build then demanded an invariance record for
+   two pages it writes itself. reader.html and admin.html are hand-maintained
+   and are named by claims.py as the pages it holds beside the generated set. */
+const SHELL = (() => {
+  const dig = JSON.parse(execFileSync('python3', [path.join(ROOT, 'build', 'claims.py'), '--digests'],
+                                      { encoding: 'utf8' }));
+  return new Set([...dig.shell, ...(dig.aux || []), 'reader.html']);
+})();
 const TYPES = { '.html': 'text/html; charset=utf-8', '.css': 'text/css', '.js': 'text/javascript',
                 '.json': 'application/json', '.webmanifest': 'application/manifest+json',
                 '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg',

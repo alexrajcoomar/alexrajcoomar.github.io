@@ -922,7 +922,10 @@ def _cli(argv):
     slugs = {p["slug"] for p in content["pieces"]}
     transcripts = sorted(k + ".html" for k in metrics if k not in slugs and os.path.exists(os.path.join(ROOT, k + ".html")))
     pages = [f for f in SHELL + AUX + listed + transcripts if os.path.exists(os.path.join(ROOT, f))]
-    dig = {"shell": SHELL, "pages": {f: page_input_digest(ROOT, f, f in SHELL) for f in pages},
+    # aux goes out with the shell so that build/measure.js and build/audit.js
+    # take both lists from here rather than keeping their own
+    dig = {"shell": SHELL, "aux": AUX,
+           "pages": {f: page_input_digest(ROOT, f, f in SHELL) for f in pages},
            "sw": sw_input_digest(ROOT), "runtime_code": runtime_code_digest(ROOT)}
     if "--digests" in argv:
         print(json.dumps(dig, indent=1))
