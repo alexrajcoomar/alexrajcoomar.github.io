@@ -2534,3 +2534,21 @@ dialog.prov:not([open])::backdrop{background-color:rgba(10,10,8,0)}
 }
 .stmore{margin:1rem 0 0;font-size:.9rem}
 .stmore .inlink{font-weight:640}
+
+/* --------------------- capability evidence ---------------------------
+   The paragraph is the claim and stays exactly as it was. Under it sits a
+   measured line and a disclosure: closed by default, so the page a reader
+   meets is the page that was here before, and the work behind the claim is
+   one press away rather than another wall of links. */
+.capev{display:flex;flex-wrap:wrap;gap:.15rem .9rem;margin:.7rem 0 .5rem;
+  font-size:var(--meta-size);letter-spacing:var(--meta-track);text-transform:uppercase;
+  font-weight:var(--meta-weight);color:var(--ink-3);font-variant-numeric:tabular-nums}
+.capdet{border-top:0;padding-top:0}
+.capdet > summary{font-size:var(--meta-size);letter-spacing:var(--meta-track);
+  text-transform:uppercase;font-weight:var(--meta-weight)}
+.caplist{margin:.5rem 0 0;font-size:.86rem;color:var(--ink-2);line-height:1.6}
+.caplist a{color:var(--ink);border-bottom:1px solid var(--rule)}
+.caplist a:hover{color:var(--accent);border-bottom-color:var(--accent)}
+.capgap{margin:.6rem 0 0;font-size:.84rem;color:var(--ink-3);line-height:1.5}
+.capnote{margin:1.4rem 0 0;font-size:.88rem;color:var(--ink-3);max-width:44rem;line-height:1.55}
+.capnote code{color:var(--ink-2)}

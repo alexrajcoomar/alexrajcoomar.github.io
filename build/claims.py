@@ -653,6 +653,19 @@ def build(ctx):
                  "The check holds that every placement resolves and that every quotation is exact. It does not hold "
                  "that the reading is the right one, and nothing here claims it does.")
 
+    t = T.get("capabilities", {})
+    checked("Every capability the about page claims names the work that evidences it, every piece it names is one "
+            "the site lists and links, and every total printed beside a claim is the sum of that claim's own "
+            "pieces, recomputed on the build rather than typed.",
+            ["39"],
+            f"{t.get('caps', 0)} capabilities, {t.get('named', 0)} pieces named, {t.get('unknown', 0)} not listed, "
+            f"{t.get('empty', 0)} with nothing behind them, {t.get('unlinked', 0)} named but not linked, "
+            f"{t.get('wrong', 0)} totals that do not match their pieces",
+            ["about.html", "colophon.html"],
+            note="Which pieces evidence which capability is a reading and is declared in content/capabilities.json. "
+                 "The sets overlap, so their subtotals do not add to the corpus. The check holds the arithmetic and "
+                 "the membership's existence, not the judgment.")
+
     t = T.get("editor", {})
     checked("The editor, admin.html, exists and the build never writes it: every stylesheet, script and local asset it references resolves to a file, "
             "every custom property its styles read is defined by the stylesheet it loads, every element id its script names is in its markup, "

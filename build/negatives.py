@@ -302,6 +302,17 @@ CASES = [
       lambda t: _edit(t, "build/build_site.py",
                       'out[r["kind"] or "gap"] += 1',
                       'out[r["kind"] or "rec"] += 1')),
+
+    C("39", "capability-evidenced-by-nothing", "a capability the page claims is left with no work behind it",
+      lambda t: _json(t, "content/capabilities.json",
+                      lambda d: d["capabilities"]["canadian"].update({"pieces": []}))),
+    C("39", "capability-names-an-unlisted-piece", "a capability names a piece the site does not list",
+      lambda t: _json(t, "content/capabilities.json",
+                      lambda d: d["capabilities"]["reporting"]["pieces"].append("a-piece-nobody-wrote"))),
+    C("39", "capability-total-that-is-not-the-sum", "the words printed beside a claim are not the words of its pieces",
+      lambda t: _edit(t, "build/build_site.py",
+                      '"words": sum(q["words"] for q in items),',
+                      '"words": sum(q["words"] for q in items) + 1000,')),
 ]
 
 

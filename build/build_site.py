@@ -15,6 +15,10 @@ METRICS = json.load(open(os.path.join(ROOT, "content", "metrics.json"), encoding
 # slots is answered. A reading of the pieces, kept out of this file so that
 # disagreeing with a placement is an edit to content rather than to the build.
 CASES   = json.load(open(os.path.join(ROOT, "content", "cases.json"), encoding="utf-8"))
+# the capability map: which pieces evidence each of the four things the about
+# page says the portfolio demonstrates. Membership is a reading; every number
+# printed beside it is recomputed from the measurements on each build.
+CAPS    = json.load(open(os.path.join(ROOT, "content", "capabilities.json"), encoding="utf-8"))
 # the change ledger of the last content pass; written by build/ledger.py,
 # read here for one computed sentence on the colophon and for check 16
 try:
@@ -667,6 +671,43 @@ def case_entry(k, p):
     </table>
     <p class="cread"><a class="cgo" href="{esc(p["url"])}">Read {esc(p["t"])} <span class="arrow" aria-hidden="true">&#8594;</span></a> <span class="cheld">{held} of {len(CASE_SLOTS)} slots carried</span></p>
   </article>"""
+
+
+def capability_evidence(cap_id):
+    """The pieces declared as evidence for one capability, and their totals.
+    Which pieces evidence what is a reading and is declared in
+    content/capabilities.json; every number here is recomputed from the
+    measurements on this build. A piece may evidence more than one capability,
+    so these sets are not a partition and their subtotals do not add to the
+    corpus."""
+    spec = (CAPS.get("capabilities") or {}).get(cap_id) or {}
+    items = [CASE_BY_SLUG[x] for x in (spec.get("pieces") or []) if x in CASE_BY_SLUG]
+    return {"id": cap_id, "items": items, "n": len(items),
+            "gap": (spec.get("gap") or "").strip(),
+            "words": sum(q["words"] for q in items),
+            "figures": sum(q["figures"] for q in items),
+            "tables": sum(q["tables"] for q in items),
+            "tools": sum(1 for q in items if q["k"] == "Tool")}
+
+
+def cap_block(i, cap_id, title, prose):
+    """One capability: the owner's own paragraph, then what evidences it. The
+    list is folded away, so the page a reader meets is the page that was here
+    before and the evidence is one disclosure below it."""
+    e = capability_evidence(cap_id)
+    cells = "".join(["<span>%d pieces</span>" % e["n"],
+                     "<span>%s words</span>" % format(e["words"], ","),
+                     "<span>%d figures</span>" % e["figures"],
+                     "<span>%d tables</span>" % e["tables"]]
+                    + (["<span>%d %s</span>" % (e["tools"], "tool" if e["tools"] == 1 else "tools")]
+                       if e["tools"] else []))
+    lst = ", ".join('<a href="%s">%s</a>' % (esc(q["url"]), esc(q["t"])) for q in e["items"])
+    gap = '<p class="capgap">%s</p>' % esc(e["gap"]) if e["gap"] else ""
+    return ('    <div><p class="plate-n"><b>%02d</b> <span>/ %02d</span></p><h3>%s</h3>%s\n'
+            '      <p class="capev">%s</p>\n'
+            '      <details class="tv capdet"><summary>What evidences it</summary>\n'
+            '      <p class="caplist">%s</p>%s</details></div>'
+            % (i, len(CAP_BLOCKS), esc(title), prose, cells, lst, gap))
 
 
 def page_selected():
@@ -1764,7 +1805,37 @@ def profile_links(css="inlink"):
     return out
 
 
+# The four things the portfolio demonstrates. The paragraphs are the owner's,
+# moved here unchanged so the blocks can be generated with their evidence
+# attached; content/capabilities.json says which pieces evidence which.
+CAP_BLOCKS = [
+    ("evidence", "Evidence discipline",
+     "<p>Every figure carries the provenance tag it was published under. "
+     "Derived numbers are labelled as derived. Two sources that disagree are reported separately instead of "
+     "averaged. One essay reaches a negative result and reports it as one, and the largest piece corrects its "
+     "own arithmetic in public where a later attribution changed the base.</p>"),
+    ("reporting", "Financial reporting",
+     "<p>Intermediate financial accounting under IFRS, worked to the entry "
+     "rather than the summary: revenue recognition through the five-step model, a journal entry reference "
+     "built for retrieval under time pressure, and a coverage audit that records what is still missing.</p>"),
+    ("canadian", "Canadian tax and law, kept Canadian",
+     "<p>Co-op work preparing Canadian corporate and personal "
+     "returns, and a primer that holds the Canadian and American legal positions apart at every point they "
+     "diverge instead of blending them.</p>"),
+    ("building", "Building the thing", None),
+]
+
+
 def page_about():
+    # the fourth paragraph counts this build's own pages, tools and figures, so
+    # it is written here rather than in the constant beside the other three
+    built = ("<p>Hand-written HTML, CSS and JavaScript across %d pages and %d interactive tools, "
+             "%d of them installable. %d figures, all built by hand as static SVG so they render with "
+             "JavaScript off. No framework, no build step on the reader's side, accessible in light and "
+             "dark, and it prints.</p>" % (len(P), N_TOOLS, N_PWA, TOTAL_FIGS))
+    caps_html = "\n".join(
+        cap_block(i, cid, title, prose if prose is not None else built)
+        for i, (cid, title, prose) in enumerate(CAP_BLOCKS, 1))
     gt = figs.group_totals()
     afm = [p for p in P if p["c"] == "AFM 291"]
     # Optional recruiter rows: absent values render nothing at all, so the
@@ -1824,21 +1895,13 @@ def page_about():
     <span class="count">Four things</span>
   </div>
   <div class="caps">
-    <div><p class="plate-n"><b>01</b> <span>/ 04</span></p><h3>Evidence discipline</h3><p>Every figure carries the provenance tag it was published under.
-    Derived numbers are labelled as derived. Two sources that disagree are reported separately instead of
-    averaged. One essay reaches a negative result and reports it as one, and the largest piece corrects its
-    own arithmetic in public where a later attribution changed the base.</p></div>
-    <div><p class="plate-n"><b>02</b> <span>/ 04</span></p><h3>Financial reporting</h3><p>Intermediate financial accounting under IFRS, worked to the entry
-    rather than the summary: revenue recognition through the five-step model, a journal entry reference
-    built for retrieval under time pressure, and a coverage audit that records what is still missing.</p></div>
-    <div><p class="plate-n"><b>03</b> <span>/ 04</span></p><h3>Canadian tax and law, kept Canadian</h3><p>Co-op work preparing Canadian corporate and personal
-    returns, and a primer that holds the Canadian and American legal positions apart at every point they
-    diverge instead of blending them.</p></div>
-    <div><p class="plate-n"><b>04</b> <span>/ 04</span></p><h3>Building the thing</h3><p>Hand-written HTML, CSS and JavaScript across {len(P)} pages and
-    {N_TOOLS} interactive tools, {N_PWA} of them installable. {TOTAL_FIGS} figures, all built by hand as
-    static SVG so they render with JavaScript off. No framework, no build step on the reader's side,
-    accessible in light and dark, and it prints.</p></div>
+{caps_html}
   </div>
+  <p class="capnote">The paragraphs are the claim. Under each one is the work that evidences it, named
+  and counted: the pieces are declared in <code>content/capabilities.json</code> and the words, figures
+  and tables are recomputed from the measurements on every build. A piece can evidence more than one,
+  so the four sets overlap and their subtotals do not add to the {TOTAL_WORDS:,} on the corpus line.
+  There are no levels here and no self-ratings, because neither could be checked.</p>
 </section>
 
 <section class="band ground">
@@ -5749,6 +5812,59 @@ def check_site():
             problems.append(_p("38", "selected.html: the page counts %d %s and the files hold %d"
                                      % (_said38.get(k38, 0), k38, t38[k38])))
 
+    # 39. the capability map. content/capabilities.json says which pieces
+    # evidence each of the four things the about page claims, and that
+    # membership is a reading. What is held: every named piece is one the site
+    # lists, no capability is left with nothing behind it, every capability the
+    # page draws has a map entry and every entry has a block, every piece named
+    # is linked on the page, and every total printed beside a block is the sum
+    # of that block's own pieces, recomputed here from content/metrics.json
+    # rather than read back off the page.
+    t39 = T["capabilities"] = {"caps": 0, "named": 0, "unknown": 0, "empty": 0,
+                               "unlinked": 0, "wrong": 0}
+    _map39 = (CAPS.get("capabilities") or {})
+    _slug39 = {q["slug"]: q for q in P}
+    _about39 = os.path.join(OUT, "about.html")
+    _raw39 = open(_about39, encoding="utf-8", errors="ignore").read() if os.path.exists(_about39) else ""
+    look("39", "about.html")
+    for cid39, title39, _pr39 in CAP_BLOCKS:
+        t39["caps"] += 1
+        spec39 = _map39.get(cid39)
+        if spec39 is None:
+            t39["empty"] += 1
+            problems.append(_p("39", "content/capabilities.json: nothing evidences %s, which the about "
+                                     "page claims" % cid39))
+            continue
+        names39 = spec39.get("pieces") or []
+        if not names39:
+            t39["empty"] += 1
+            problems.append(_p("39", "content/capabilities.json: %s names no piece at all" % cid39))
+        w39 = f39 = b39 = 0
+        for sl39 in names39:
+            t39["named"] += 1
+            q39 = _slug39.get(sl39)
+            if q39 is None:
+                t39["unknown"] += 1
+                problems.append(_p("39", "content/capabilities.json: %s names %s, which is not a listed "
+                                         "piece" % (cid39, sl39)))
+                continue
+            w39 += q39["words"]; f39 += q39["figures"]; b39 += q39["tables"]
+            if _raw39 and ('href="%s"' % q39["url"]) not in _raw39:
+                t39["unlinked"] += 1
+                problems.append(_p("39", "about.html: %s is named as evidence for %s and the page links "
+                                         "no such piece" % (sl39, cid39)))
+        said39 = capability_evidence(cid39)
+        for key39, want39 in (("words", w39), ("figures", f39), ("tables", b39)):
+            if said39[key39] != want39:
+                t39["wrong"] += 1
+                problems.append(_p("39", "about.html: %s prints %d %s and its own pieces measure %d"
+                                         % (cid39, said39[key39], key39, want39)))
+    for cid39 in sorted(_map39):
+        if cid39 not in {c for c, _t, _p2 in CAP_BLOCKS}:
+            t39["wrong"] += 1
+            problems.append(_p("39", "content/capabilities.json: %s evidences nothing the about page "
+                                     "claims" % cid39))
+
     # 33. the editor. admin.html is hand-maintained and the build never
     # writes it. Held here: the file is byte-identical to the bytes this run
     # started from; it is a whole document (the doctype at one end, </html> at
@@ -6006,6 +6122,8 @@ def _known_numbers():
             for m in _NUM.findall(x): vals.add(_num(m))
             for m in _SMALL.findall(x): vals.add(_num(m))
     add(case_coverage()); add(len(CASE_SLOTS))
+    for _cid, _t, _pr in CAP_BLOCKS:
+        add(capability_evidence(_cid))
     add([len(P), TOTAL_WORDS, TOTAL_FIGS, TOTAL_TBLS, CHECKPOINTS, DOC_MIN, WPM,
          FONT_BYTES, FONT_CODEPOINTS, N_TOOLS, N_PWA, N_INDEP, N_COURSE, N_PERSONAL,
          len(COURSES), UNIT, len(SHELL_PAGES), 404])
