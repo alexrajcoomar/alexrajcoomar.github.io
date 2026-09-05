@@ -425,6 +425,50 @@ async function measurePage(browser, base, name, shell) {
       rec.theme = theme;
       await ctx.close();
     }
+    /* The header mark: the letters at rest, the construction under a pointer
+       or a keyboard focus, and the page still at rest the frame after it
+       settles. Opacity only, so the brand's box may not move by a pixel. */
+    {
+      const ctx = await browser.newContext({ viewport: { width: 1280, height: 800 } });
+      const page = await ctx.newPage();
+      await page.addInitScript(RAF_COUNTER);
+      try { await page.goto(base + '/' + name, { waitUntil: 'networkidle', timeout: 60000 }); } catch (e) { /* measured anyway */ }
+      const ins = { layers: 0, rest: -1, hover: -1, focus: -1, ms: -1, moved: -1, framesAfter: -1, reducedMs: -1 };
+      const has = await page.evaluate(() => !!document.querySelector('.brand .mk-ins'));
+      if (has) {
+        const read = () => page.evaluate(() => {
+          const el = document.querySelector('.brand .mk-ins');
+          const b = document.querySelector('.brand').getBoundingClientRect();
+          return { o: parseFloat(getComputedStyle(el).opacity),
+                   ms: (parseFloat(getComputedStyle(el).transitionDuration) || 0) * 1000,
+                   box: [Math.round(b.width), Math.round(b.height)] };
+        });
+        ins.layers = await page.evaluate(() => document.querySelectorAll('.brand .mk-nom, .brand .mk-ins').length);
+        const a = await read();
+        ins.rest = a.o; ins.ms = Math.round(a.ms);
+        await page.hover('.brand'); await page.waitForTimeout(600);
+        const b = await read();
+        ins.hover = b.o;
+        ins.moved = (a.box[0] === b.box[0] && a.box[1] === b.box[1]) ? 0 : 1;
+        ins.framesAfter = await page.evaluate(async () => { window.__rafReset(); await new Promise(r => setTimeout(r, 1000)); return window.__pageRaf(); }).catch(() => 99);
+        await page.mouse.move(0, 0); await page.waitForTimeout(400);
+        for (let i = 0; i < 6; i++) {
+          await page.keyboard.press('Tab'); await page.waitForTimeout(80);
+          const on = await page.evaluate(() => document.activeElement && document.activeElement.classList.contains('brand'));
+          if (on) { await page.waitForTimeout(500); ins.focus = (await read()).o; break; }
+        }
+      }
+      await ctx.close();
+      const rc = await browser.newContext({ viewport: { width: 1280, height: 800 }, reducedMotion: 'reduce' });
+      const rp = await rc.newPage();
+      try { await rp.goto(base + '/' + name, { waitUntil: 'networkidle', timeout: 60000 }); } catch (e) { /* measured anyway */ }
+      ins.reducedMs = await rp.evaluate(() => {
+        const el = document.querySelector('.brand .mk-ins');
+        return el ? Math.round((parseFloat(getComputedStyle(el).transitionDuration) || 0) * 1000) : -1;
+      }).catch(() => -1);
+      await rc.close();
+      rec.inspect = ins;
+    }
     // reduced motion: nothing animating after load
     {
       const ctx = await browser.newContext({ viewport: { width: 1280, height: 800 }, reducedMotion: 'reduce' });
@@ -545,6 +589,10 @@ const FALSIFICATIONS = [
     apply: h => h.replace('<script src="site.js', '<script>(function(){var s=document.getElementById("atlasmini-docs");if(!s)return;var d=JSON.parse(s.textContent);d.docs.forEach(function(x){if(x.u==="flagged-in-hindsight.html"||x.u==="brittle-network.html")x.o="course";});s.textContent=JSON.stringify(d);})()</script><script src="site.js') },
   { key: 'descent', page: 'index.html', what: "the sphere's document payload names the wrong document for the first two featured rows",
     apply: h => h.replace('"u":"flagged-in-hindsight.html"', '"u":"__swap__"').replace('"u":"crucible-cockpit.html"', '"u":"flagged-in-hindsight.html"').replace('"u":"__swap__"', '"u":"crucible-cockpit.html"') },
+  { key: 'inspect', page: 'about.html', what: 'the construction layer is drawn at rest, so the mark has one state and not two',
+    apply: h => h.replace('</head>', '<style>.mk-ins{opacity:1!important}</style></head>') },
+  { key: 'inspect', page: 'about.html', what: 'the transition runs past the 260ms cap and keeps running for a reader who asked for no motion',
+    apply: h => h.replace('</head>', '<style>.mk-ins{transition:opacity 900ms linear!important}@media (prefers-reduced-motion:reduce){.mk-ins{transition:opacity 900ms linear!important}}</style></head>') },
   { key: 'admin', page: 'admin.html', what: "a syntax error in the editor's script",
     apply: h => h.replace('"use strict";', '"use strict"; this is not javascript;') },
   { key: 'admin', page: 'admin.html', what: 'the editor links a stylesheet that does not exist',

@@ -66,6 +66,15 @@
   --tool:         #0f6b58;   /*  5.9:1 on paper */
   --ref:          #8a5410;   /*  5.4:1 on paper */
   --selection:    #cfe0f6;
+  /* --- the two lights ------------------------------------------------
+     One cool wash behind the sphere, where the instrument sits, and one
+     warmer reading light behind the column of type. They are gradients on
+     two elements that already exist, not layers added to carry them, and
+     they touch no text colour. Check 36 composites both of them over the
+     paper at full strength and holds every ink token to 4.5:1 there, so
+     "no effect on contrast" is measured rather than asserted. */
+  --lamp-cool:    rgba(20,80,155,.05);
+  --lamp-warm:    rgba(190,168,120,.16);
 
   --shell:        76rem;
   --measure:      38rem;
@@ -145,6 +154,8 @@
     --tool:        #4fc4a6;
     --ref:         #dbab5d;
     --selection:   #223b5c;
+    --lamp-cool:   rgba(74,102,196,.14);
+    --lamp-warm:   rgba(219,171,93,.05);
   }
 }
 :root[data-theme="dark"]{
@@ -167,6 +178,8 @@
   --tool:        #4fc4a6;
   --ref:         #dbab5d;
   --selection:   #223b5c;
+  --lamp-cool:   rgba(74,102,196,.14);
+  --lamp-warm:   rgba(219,171,93,.05);
 }
 
 /* ------------------------------ base ------------------------------ */
@@ -291,6 +304,62 @@ header.top .bar{
 .atlas-mark .mk{color:var(--ink-2)}
 .namerow .h1{display:flex;align-items:center;gap:.75rem}
 .namerow .h1 .mk{color:var(--ink-2)}
+/* The header mark holds two layers. At rest it is the letters; point at it or
+   reach it with a keyboard and it draws the construction they were measured
+   from, which is the claim the mark makes about itself. Opacity only: nothing
+   moves, nothing reflows, no frame is scheduled after the transition ends, and
+   a reader who asked for no motion gets the state with no transition at all. */
+.mk-ins{opacity:0;transition:opacity 220ms cubic-bezier(.2,.6,.2,1)}
+.brand:hover .mk-ins,.brand:focus-visible .mk-ins{opacity:1}
+@media (prefers-reduced-motion:reduce){.mk-ins{transition:none}}
+@media print{.mk-ins{display:none}}
+/* neither light survives onto paper: a gradient prints as a grey field */
+@media print{:root,:root[data-theme="dark"]{--lamp-cool:transparent;--lamp-warm:transparent}}
+
+/* The six verification glyphs. Authored on a 24 unit grid at stroke 1.25,
+   which renders over one device pixel at both sizes this site draws them, so
+   unlike the brand marks they carry no factor and are never resized here. */
+.gl{flex:none;display:block;color:var(--ink-3)}
+.stcol{display:inline-flex;flex-direction:column;gap:.28rem}
+.sr-head .sr-n .stcol{align-items:flex-end}
+.stlab{display:block}
+.glcell{display:inline-flex;align-items:center;gap:.6rem;white-space:nowrap}
+.glcell .gl{color:var(--ink-2)}
+/* On a lifted figure the glyph says what kind of claim the drawing makes,
+   which is the one thing the drawing cannot say about itself. */
+.glrule{display:flex;align-items:center;gap:.5rem;margin:0 0 .35rem}
+.gllab{font-size:.68rem;text-transform:uppercase;letter-spacing:.09em;font-weight:600;color:var(--ink-3)}
+.scaleread{display:flex;align-items:flex-start;gap:.7rem}
+.scaleread .gl{margin-top:.15rem}
+
+/* The figure on every statement row: the row's own four measured values,
+   drawn. Held at 56px because that is the size its finest stroke was scaled
+   for; a row that is pointed at brings it up to the ink of the title. */
+.sr-f{grid-column:3;align-self:center;justify-self:end}
+.fp{flex:none;display:block;color:var(--ink-3);transition:color 180ms cubic-bezier(.2,.6,.2,1)}
+.stmt-list > li:hover .fp,.stmt-list > li:focus-within .fp{color:var(--ink)}
+@media (prefers-reduced-motion:reduce){.fp{transition:none}}
+.stmt-list .sr-head .sr-f,.stmt-list .sr-sub .sr-f{justify-self:end;align-self:center}
+
+/* The seal. Its own grid is 128 units and it is drawn at 128px, so every
+   coordinate the colophon prints is one device pixel on the page. */
+.sl{flex:none;display:block}
+.sealrow{display:grid;grid-template-columns:auto minmax(0,1fr);gap:1.6rem 2.4rem;align-items:start}
+.sealbox{margin:0;display:flex;flex-direction:column;gap:.7rem;max-width:15rem}
+.sealbox figcaption{font-size:.82rem;line-height:1.5;color:var(--ink-2)}
+@media (max-width:52rem){
+  .sealrow{grid-template-columns:minmax(0,1fr)}
+  .sealbox{max-width:none}
+}
+
+/* A graduation under each corpus figure: a calibration mark, not a reading.
+   The long tick is the datum the scale starts from. */
+.corpusline dt{position:relative;padding-top:.55rem}
+.corpusline dt::before{
+  content:"";position:absolute;top:0;left:0;right:0;height:5px;
+  background:repeating-linear-gradient(90deg,var(--rule-strong) 0 1px,transparent 1px 6px)
+}
+.corpusline dt::after{content:"";position:absolute;top:0;left:0;width:1px;height:9px;background:var(--edge)}
 .brand span.sub{color:var(--ink-3);font-weight:500;font-size:.86rem;letter-spacing:0}
 nav.main{display:flex;align-items:center;gap:.15rem;order:2;min-width:0}
 .hbtns{display:flex;align-items:center;order:3;flex:none}
@@ -1946,12 +2015,15 @@ a.nref{position:relative;display:inline;padding:.75rem .45rem;margin:0 -.35rem 0
 .stmt-list .sr-n span{min-width:2.6rem}
 .stmt-list .sr-n span:first-child{min-width:4.4rem}
 .stmt-list .sr-head .srow{padding:.3rem 0 .4rem}
-.stmt-list .sr-head .sr-t,.stmt-list .sr-head .sr-n span{font-size:.68rem;text-transform:uppercase;letter-spacing:.08em;font-weight:560;color:var(--ink-3)}
+.stmt-list .sr-head .sr-t,.stmt-list .sr-head .sr-n span,.stmt-list .sr-head .sr-f{font-size:.68rem;text-transform:uppercase;letter-spacing:.08em;font-weight:560;color:var(--ink-3)}
 .stmt-list > li.sr-head{border-bottom:1px solid var(--ink)}
 .stmt-list .sr-sub .srow{padding:.6rem 0 .5rem;font-weight:600}
 .stmt-list > li.sr-sub{border-top:1px solid var(--edge);border-bottom:3px double var(--ink)}
 .stmt-list .sr-sub a{color:inherit;text-decoration:none}
 .stmt-list .spec,.stmt-list .specimen{margin-top:1rem}
+/* Only the whole statement carries the per document figure, so only it takes
+   the third column. The other shelves are excerpts of it and stay as they were. */
+.stmt-fig .srow{grid-template-columns:minmax(0,1fr) auto auto}
 /* The specimen figure carries a min-width floor so its type never shrinks
    below the size it was drawn at, the same floor the lifted figures carry.
    The lifted figures scroll inside .frame; the specimen's .fig had no scroll
@@ -1966,6 +2038,13 @@ a.nref{position:relative;display:inline;padding:.75rem .45rem;margin:0 -.35rem 0
   .stmt-list .sr-n span:nth-child(2)::after{content:" figures";color:var(--ink-3);font-size:.78rem}
   .stmt-list .sr-n span:nth-child(3)::after{content:" tables";color:var(--ink-3);font-size:.78rem}
   .stmt-list .sr-head{display:none}
+  /* on a phone the row stacks, but the figure stays on the line of the
+     numbers it was drawn from rather than taking a line of its own: 65 rows
+     of that would be four thousand pixels of scroll for nothing */
+  .stmt-fig .srow{grid-template-columns:minmax(0,1fr) auto}
+  .stmt-fig .sr-t{grid-column:1/-1}
+  .stmt-fig .sr-n{grid-column:1}
+  .stmt-fig .sr-f{grid-column:2;grid-row:2;align-self:end;justify-self:end}
 }
 /* the nav: five entries, and on a phone they wrap under the brand rather
    than clipping off the right edge, which is what the old strip did */
@@ -1984,7 +2063,9 @@ a.nref{position:relative;display:inline;padding:.75rem .45rem;margin:0 -.35rem 0
    document's real position. Nothing here moves unless the reader scrolls.
    ================================================================== */
 .descent{display:grid;grid-template-columns:minmax(0,1fr);column-gap:0}
-.descent > .stage{padding-block:clamp(1.25rem,3vw,2.5rem) clamp(1.25rem,3vw,2rem);display:grid;gap:1.1rem 0;align-items:start}
+.descent > .stage{padding-block:clamp(1.25rem,3vw,2.5rem) clamp(1.25rem,3vw,2rem);display:grid;gap:1.1rem 0;align-items:start;
+  /* the reading light: off centre and low, the way a window falls on a desk */
+  background:radial-gradient(78% 62% at 18% 34%,var(--lamp-warm) 0,transparent 72%)}
 .descent > .stage .eyeb{justify-self:start;margin:0}
 .descent > .stage .display{margin:.5rem 0 0;font-size:clamp(2.3rem,4.6vw,3.9rem)}
 .descent > .stage .method{margin:0;font-size:.95rem;line-height:1.55;color:var(--ink-2);max-width:34rem}
@@ -1998,7 +2079,11 @@ a.nref{position:relative;display:inline;padding:.75rem .45rem;margin:0 -.35rem 0
 .descent-globe{position:sticky;top:var(--pin-top,var(--stick));z-index:3;align-self:start;
   background:var(--paper);padding-block:.25rem .5rem;
   -webkit-print-color-adjust:exact;print-color-adjust:exact}
-.descent-globe .stage-globe{position:relative}
+/* the corona behind the instrument. On the inner wrapper rather than the
+   sticky block, because that block's background is set to transparent at
+   desktop widths and would take the gradient with it. */
+.descent-globe .stage-globe{position:relative;
+  background:radial-gradient(56% 42% at 50% 33%,var(--lamp-cool) 0,transparent 74%)}
 /* min-height:0, or the canvas's last pixel height holds the box open after
    the sphere steps back and the square becomes a tall rectangle */
 .descent-globe .tease-globe.hero-globe{aspect-ratio:1/1;max-height:none;min-height:0;overflow:hidden;width:100%;max-width:min(100%,42rem);

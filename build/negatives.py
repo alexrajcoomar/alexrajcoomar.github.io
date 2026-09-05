@@ -35,7 +35,8 @@ BS = "build/build_site.py"
 # the code a build-level falsification exercises: the checks, the modules
 # they call, this file, and the workflow the deploy gate reads
 BUILD_CODE = ["build/build_site.py", "build/claims.py", "build/atlas.py", "build/invariance.py",
-              "build/ledger.py", "build/marks.py", "build/negatives.py", ".github/workflows/build.yml"]
+              "build/ledger.py", "build/marks.py", "build/fingerprint.py", "build/negatives.py",
+              ".github/workflows/build.yml"]
 PIECE_SMALL = "positive-vs-normative.html"          # a short listed piece, not a record
 PIECE_CONVERTED = "afm291-ch1-theory-and-analytics.html"   # a converted document with a body
 
@@ -236,13 +237,45 @@ CASES = [
     # the marks: geometry the files do not carry, a stroke too thin to hold an
     # edge at the size it is drawn, and a source file that is not there
     C("34", "mark-element-invented", "the pages draw a line the mark's file does not carry",
-      lambda t: _edit(t, "build/marks.py", '    return "".join(parts)\n',
-                      '    return "".join(parts) + \'<path d="M2 2 L62 62" stroke-width="1"/>\'\n')),
+      lambda t: _edit(t, "build/marks.py", '    return "".join(parts)\n\nMONO_PRIMARY',
+                      '    return "".join(parts) + \'<path d="M2 2 L62 62" stroke-width="1"/>\'\n\nMONO_PRIMARY')),
     C("34", "mark-stroke-unscaled", "the tab icon is drawn at the authored stroke, which cannot hold an edge at that size",
       lambda t: _edit(t, "build/marks.py", '"keep": ("A#1", "A#2", "R leg#1"), "scale": 3.3, "px": 16',
                       '"keep": ("A#1", "A#2", "R leg#1"), "scale": 1.0, "px": 16')),
     C("34", "mark-source-missing", "a mark's source file is gone, so what the pages draw answers to nothing",
       lambda t: os.remove(os.path.join(t, "content", "marks", "02_forensic_audit_delta.svg"))),
+    C("34", "inspection-unscaled", "the header's construction layer is drawn at the letters' factor, which cannot hold an edge at 24px",
+      lambda t: _edit(t, "build/marks.py", '"inspect": {"keep": MONO_CONSTRUCTION, "scale": 3.6}',
+                      '"inspect": {"keep": MONO_CONSTRUCTION, "scale": 2.2}')),
+
+    C("35", "glyph-element-invented", "a glyph is drawn with a line its file does not carry",
+      lambda t: _edit(t, "build/marks.py", '    return "".join(parts)\n\n\ndef glyph_svg',
+                      '    return "".join(parts) + \'<path d="M1 1 L23 23"/>\'\n\n\ndef glyph_svg')),
+    C("35", "glyph-drawn-too-small", "a glyph is drawn at a size its authored stroke cannot hold",
+      lambda t: _edit(t, "build/marks.py", 'GLYPH_SIZES = {"head": 20, "band": 24}',
+                      'GLYPH_SIZES = {"head": 18, "band": 24}')),
+    C("35", "glyph-source-missing", "a glyph's source file is gone, so the column head answers to nothing",
+      lambda t: os.remove(os.path.join(t, "content", "marks", "glyphs", "04_tested.svg"))),
+    C("35", "seal-keeps-the-ring-it-cannot-hold", "the seal draws the ring whose stroke is under a device pixel at every size",
+      lambda t: _edit(t, "build/marks.py", "SEAL_DROP = 0.5", "SEAL_DROP = 0.0")),
+    C("35", "figure-of-another-document", "every statement row draws the first piece's figure instead of its own",
+      lambda t: _edit(t, "build/build_site.py",
+                      'return fingerprint.svg(p["words"], p["figures"], p["tables"], link_degree(p["slug"]))',
+                      'return fingerprint.svg(P[0]["words"], P[0]["figures"], P[0]["tables"], link_degree(P[0]["slug"]))')),
+    C("35", "figure-resized-by-the-stylesheet", "the stylesheet draws the figure at a size its stroke rule was not computed for",
+      lambda t: _edit(t, "site.css", ".fp{flex:none;display:block;", ".fp{width:40px;flex:none;display:block;")),
+
+    C("36", "ink-under-the-floor", "the faintest ink in Obsidian is set to a value that measures under 4.5:1 on the paper it stands on",
+      lambda t: _edit(t, "site.css", "--ink-3:       #8f929a;", "--ink-3:       #7a7a74;", 2)),
+    C("36", "light-strong-enough-to-matter", "the reading light behind the hero is turned up until it takes the text under the floor",
+      lambda t: _edit(t, "site.css", "--lamp-warm:   rgba(219,171,93,.05);", "--lamp-warm:   rgba(219,171,93,.5);", 2)),
+
+    C("36", "dark-palettes-disagree", "the dark ground the browser asks for and the dark ground the button sets stop agreeing",
+      lambda t: _edit(t, "site.css", "    --panel-2:     #1c1d22;", "    --panel-2:     #2a2b33;")),
+
+    C("37", "header-without-scope", "a generated table header no longer says which cells it heads",
+      lambda t: _edit(t, "build/build_site.py", '''<thead><tr><th scope="col">Piece</th>''' + "'",
+                      '''<thead><tr><th>Piece</th>''' + "'")),
 ]
 
 

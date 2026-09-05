@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+  <!-- Outer boundary and calibration band -->
+  <circle cx="64" cy="64" r="62" stroke-width="1.4"/>
+  <circle cx="64" cy="64" r="57" stroke-width="0.7"/>
+  <path d="M78.882 8.459L79.917 4.596" stroke-width="0.7"/>
+  <path d="M92.75 14.204L94.75 10.739" stroke-width="0.7"/>
+  <path d="M104.659 23.341L107.487 20.513" stroke-width="0.7"/>
+  <path d="M113.796 35.25L117.261 33.25" stroke-width="0.7"/>
+  <path d="M119.541 49.118L123.404 48.083" stroke-width="0.7"/>
+  <path d="M119.541 78.882L123.404 79.917" stroke-width="0.7"/>
+  <path d="M113.796 92.75L117.261 94.75" stroke-width="0.7"/>
+  <path d="M104.659 104.659L107.487 107.487" stroke-width="0.7"/>
+  <path d="M92.75 113.796L94.75 117.261" stroke-width="0.7"/>
+  <path d="M78.882 119.541L79.917 123.404" stroke-width="0.7"/>
+  <path d="M49.118 119.541L48.083 123.404" stroke-width="0.7"/>
+  <path d="M35.25 113.796L33.25 117.261" stroke-width="0.7"/>
+  <path d="M23.341 104.659L20.513 107.487" stroke-width="0.7"/>
+  <path d="M14.204 92.75L10.739 94.75" stroke-width="0.7"/>
+  <path d="M8.459 78.882L4.596 79.917" stroke-width="0.7"/>
+  <path d="M8.459 49.118L4.596 48.083" stroke-width="0.7"/>
+  <path d="M14.204 35.25L10.739 33.25" stroke-width="0.7"/>
+  <path d="M23.341 23.341L20.513 20.513" stroke-width="0.7"/>
+  <path d="M35.25 14.204L33.25 10.739" stroke-width="0.7"/>
+  <path d="M49.118 8.459L48.083 4.596" stroke-width="0.7"/>
+  <path d="M119.5 64L126 64" stroke-width="1.4"/>
+  <path d="M64 119.5L64 126" stroke-width="1.4"/>
+  <path d="M8.5 64L2 64" stroke-width="1.4"/>
+  <!-- North Pole observer, seated on the rim datum -->
+  <circle cx="64" cy="4.5" r="2.4" fill="currentColor" stroke="none"/>
+  <!-- Type band -->
+  <circle cx="64" cy="64" r="44" stroke-width="0.7"/>
+  <circle cx="64" cy="64" r="41" stroke-width="0.5"/>
+  <path id="seal-arc-seal" fill="none" stroke="none"
+        d="M64 64 m0 48.5 a48.5 48.5 0 1 1 0 -97 a48.5 48.5 0 1 1 0 97"/>
+  <text font-size="6.5" font-family="&quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif" font-weight="500"
+        fill="currentColor" stroke="none">
+    <textPath href="#seal-arc-seal" startOffset="50%" text-anchor="middle"
+              textLength="262" lengthAdjust="spacing">ALEX RAJCOOMAR &#183; WATERLOO AFM ANALYTICS</textPath>
+  </text>
+  <!-- South datum, closing the type run -->
+  <path d="M70.263 108.562L71.237 115.494" stroke-width="0.7"/>
+  <path d="M64 109L64 119" stroke-width="1.4"/>
+  <path d="M57.737 108.562L56.763 115.494" stroke-width="0.7"/>
+  <!-- AR Vernier Monogram. Construction circle omitted: the seal rings serve that role. -->
+  <g transform="translate(64 64) scale(1.15) translate(-32 -31)">
+    <path d="M32 4 V60" stroke-width="0.75"/>
+    <path d="M12 56 L32 6 L52 56" stroke-width="1.5"/>
+    <path d="M20 38 H44" stroke-width="1.5"/>
+    <path d="M32 18 H42 C51 18 51 35 42 36 H32" stroke-width="1.5"/>
+    <path d="M32 36 L51 56" stroke-width="1.5"/>
+    <path d="M28 6 H36" stroke-width="0.75"/>
+    <path d="M16 56 H20" stroke-width="0.75"/>
+    <path d="M44 56 H48" stroke-width="0.75"/>
+  </g>
+</svg>
