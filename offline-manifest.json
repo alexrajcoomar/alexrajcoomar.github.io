@@ -1,6 +1,6 @@
 {
- "version": "55b1a9f76ab3",
- "bytes": 19311081,
+ "version": "65b481af808b",
+ "bytes": 19317931,
  "files": [
   "InterVariable-sub.woff2",
   "about.html",
@@ -190,7 +190,7 @@
  ],
  "digests": {
   "InterVariable-sub.woff2": "731de0caecd3",
-  "about.html": "3e46f1d4abcf",
+  "about.html": "e08e333c7611",
   "afm241-cheat-sheet.html": "51dd4e1eab3a",
   "afm241-study-reference.html": "1c9a630f0e5d",
   "afm274-capital-structure.html": "d988e906ea03",
@@ -234,8 +234,8 @@
   "brittle-network.html": "992f5490b642",
   "business-law-primer.html": "ff05560ded0c",
   "case-method.css": "9bc2c3a6e5e4",
-  "colophon.html": "56e4cb97badd",
-  "controls.html": "3ae39ea15aff",
+  "colophon.html": "4683690d2998",
+  "controls.html": "a4cc6fc0db1b",
   "coursework.html": "b40f8e42b8cb",
   "crucible-cockpit.html": "af5e59e3ec43",
   "crucible-run-0-transcript.html": "15a91ee58ba1",
@@ -352,7 +352,7 @@
   "predictive-history.html": "97558c6c14dc",
   "price-of-divergence.html": "f41b2561d26f",
   "research.html": "4bd64ed757d2",
-  "resume.html": "1e4217f8a564",
+  "resume.html": "e3ed58cebf2f",
   "revenue-recognition.html": "b9d8bbc0d727",
   "selected.html": "b0b69b7717d0",
   "site-192.png": "dbad8f0bc626",

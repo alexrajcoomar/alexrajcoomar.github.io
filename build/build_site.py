@@ -724,10 +724,25 @@ def _res_dates(e):
     return t
 
 
+def _res_line(label, items):
+    """One labelled list under an entry: the label, then the names, as one
+    line. Nothing at all when the list is empty, so an entry never carries a
+    heading with no content under it."""
+    items = [str(x).strip() for x in (items or []) if str(x).strip()]
+    if not items:
+        return ""
+    # a semicolon when the entries carry commas of their own: joined by comma,
+    # "UWNRG Nanorobotics Group, Business Associate (Winter 2025)" and the
+    # entry after it read as four things rather than two
+    sep = "; " if any("," in x for x in items) else ", "
+    return ('<p class="rsub"><b>%s</b> %s</p>' % (esc(label), esc(sep.join(items))))
+
+
 def resume_gaps():
     """Which declared sections carry nothing. Printed by the build on every
     run, so an unfilled resume is visible in the log rather than on the page."""
-    return [k for k in ("education", "experience", "skills") if not (RESUME_D.get(k) or [])]
+    return [k for k in ("education", "experience", "projects", "skills", "service")
+            if not (RESUME_D.get(k) or [])]
 
 
 def resume_evidence():
@@ -756,9 +771,13 @@ def page_resume(summary=None):
     reg = summary or {}
     ed = "".join(
         '<div class="rrow"><p class="rwhen">%s</p><div class="rwhat"><h3>%s</h3>'
-        '<p class="rwhere">%s</p>%s</div></div>'
+        '<p class="rwhere">%s</p>%s%s%s%s</div></div>'
         % (esc(_res_dates(e)), esc(e.get("credential") or ""), esc(e.get("institution") or ""),
-           ('<p class="rnote">%s</p>' % esc(e["note"])) if (e.get("note") or "").strip() else "")
+           ('<p class="rnote">%s</p>' % esc(e["note"])) if (e.get("note") or "").strip() else "",
+           _res_line("Awards", e.get("awards")),
+           "".join(_res_line(c.get("label") or "", c.get("items"))
+                   for c in (e.get("coursework") or [])),
+           _res_line("Activities", e.get("activities")))
         for e in (RESUME_D.get("education") or []))
     ex = "".join(
         '<div class="rrow"><p class="rwhen">%s</p><div class="rwhat"><h3>%s</h3>'
@@ -768,6 +787,17 @@ def page_resume(summary=None):
            ("<ul class=\"rlines\">%s</ul>" % "".join("<li>%s</li>" % esc(l) for l in (e.get("lines") or [])))
            if (e.get("lines") or []) else "")
         for e in (RESUME_D.get("experience") or []))
+    pj = "".join(
+        '<div class="rrow"><p class="rwhen">%s</p><div class="rwhat"><h3>%s</h3>%s%s</div></div>'
+        % (esc(e.get("when") or ""), esc(e.get("title") or ""),
+           ('<p class="rwhere">%s</p>' % esc(e["note"])) if (e.get("note") or "").strip() else "",
+           ("<ul class=\"rlines\">%s</ul>" % "".join("<li>%s</li>" % esc(l) for l in (e.get("lines") or [])))
+           if (e.get("lines") or []) else "")
+        for e in (RESUME_D.get("projects") or []))
+    sv = "".join(
+        '<div class="rrow"><p class="rwhen">%s</p><div class="rwhat"><p class="rlist">%s</p></div></div>'
+        % (esc(g.get("group") or ""), esc(", ".join(g.get("items") or [])))
+        for g in (RESUME_D.get("service") or []) if (g.get("items") or []))
     sk = "".join(
         '<div class="rrow"><p class="rwhen">%s</p><div class="rwhat"><p class="rlist">%s</p></div></div>'
         % (esc(g.get("group") or ""), esc(", ".join(g.get("items") or [])))
@@ -803,12 +833,18 @@ def page_resume(summary=None):
         blocks.append(sect("Education", ed))
     if ex:
         blocks.append(sect("Experience", ex))
+    if pj:
+        _np = len(RESUME_D.get("projects") or [])
+        blocks.append(sect("Class projects and competitions", pj,
+                           "%d %s" % (_np, "entry" if _np == 1 else "entries")))
     blocks.append(sect("Capability, and what evidences it", evid,
                        "%d %s" % (len(resume_evidence()),
                                   "claim" if len(resume_evidence()) == 1 else "claims")))
     blocks.append(sect("Selected work", sel, "%d of %d" % (len(feats), len(P))))
     if sk:
         blocks.append(sect("Tools and methods", sk))
+    if sv:
+        blocks.append(sect("Volunteering", sv))
     blocks.append(sect("The site itself, measured", (
         '<div class="rrow"><p class="rwhen">The corpus</p><div class="rwhat"><p class="rlist">'
         '%d pieces, %s words, %d figures, %d tables and %s checkpoint questions, every one counted from the '
@@ -6432,6 +6468,29 @@ def _typed_numerals(extra_known=None):
             else:
                 out.append("lifted caption for %s quotes %s, which the piece does not state"
                            % (href, m))
+    # the resume states figures nothing here can measure: a client count, a
+    # deal size, a return on assets. They are the author's, declared in
+    # content/resume.json, and are held to that file the way a lifted caption
+    # is held to its piece. Only the strings the page actually renders are
+    # taken, so a numeral loose in the file's own notes is not a licence.
+    _rd = RESUME_D
+    _res_text = []
+    for _e in (_rd.get("education") or []):
+        _res_text += [_e.get("credential") or "", _e.get("institution") or "", _e.get("note") or "",
+                      _res_dates(_e)] + list(_e.get("awards") or []) + list(_e.get("activities") or [])
+        for _c in (_e.get("coursework") or []):
+            _res_text += [_c.get("label") or ""] + list(_c.get("items") or [])
+    for _e in (_rd.get("experience") or []):
+        _res_text += [_e.get("employer") or "", _e.get("place") or "", _e.get("title") or "",
+                      _res_dates(_e)] + list(_e.get("lines") or [])
+    for _e in (_rd.get("projects") or []):
+        _res_text += [_e.get("title") or "", _e.get("when") or "", _e.get("note") or ""] + list(_e.get("lines") or [])
+    for _g in (_rd.get("skills") or []) + (_rd.get("service") or []):
+        _res_text += [_g.get("group") or ""] + list(_g.get("items") or [])
+    for _t in _res_text:
+        for m in _NUM.findall(str(_t)) + _SMALL.findall(str(_t)):
+            quoted.add(_num(m))
+
     # the case map quotes each piece's own headings, so a numeral inside one is
     # the piece's, not this build's; the quote is held to the piece all the same
     for slug in (CASES.get("cases") or {}):
