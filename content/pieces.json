@@ -1292,6 +1292,26 @@
    "blurb": "The twenty core café words with their pronunciation, the polite request formulas from je voudrais to je prends, article mechanics, negation, six transfer traps, two dialogues with their pragmatics, and drills whose answer key stays collapsed until you have tried them.",
    "demo": "",
    "built_from": "Not declared on file."
+  },
+  {
+   "slug": "canadian-dcf-cca",
+   "t": "The tax base nobody discloses",
+   "s": "A Dollarama valuation built on capital cost allowance",
+   "k": "Reference",
+   "surface": "independent",
+   "c": "",
+   "d": "September 2026",
+   "tags": [
+    "Valuation",
+    "CCA",
+    "SEDAR+"
+   ],
+   "blurb": "No Canadian issuer publishes the undepreciated capital cost of its property, so a valuation that wants the real tax shield has to reconstruct it. This one backs Dollarama's tax base out of a deferred tax balance, proves the alternative reading implies a negative base the Income Tax Act forbids, runs the allowance under the rates and first year rules actually in force, and then reports that the tax work moves the answer by about two dollars a share against a fork worth twenty five.",
+   "demo": "The tax computation is tested rather than asserted: the reconstructed base is run forward over the year and asked to reproduce the current tax expense the issuer disclosed, and it lands 5.5 per cent short, which the page reports as a miss rather than tuning an input to close it. The valuation range is two anchors with no midpoint, because the disclosure that would justify a midpoint does not exist.",
+   "featured": false,
+   "pwa": false,
+   "url": "canadian-dcf-cca.html",
+   "built_from": "the audited annual consolidated financial statements of Dollarama Inc. for the 52 weeks ended 1 February 2026, obtained from SEDAR+ and verified figure by figure against the pages cited, together with the Income Tax Regulations as consolidated on the Justice Laws website on 6 September 2026; the schedule and both anchors are computed by build/valuation.py and this page is written by build/valuation_page.py, so no figure on it was typed by hand."
   }
  ]
 }

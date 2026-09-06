@@ -16,6 +16,13 @@ import json, os, sys
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PATH = os.path.join(ROOT, "content", "valuation-inputs.json")
 META = ("statement", "note", "page", "accession")
+# A note number is not required: the harvest brief tells the harvester to leave
+# "note" null for a figure read off the face of a statement rather than out of a
+# note, so demanding one would fail a correct file. A page is not required either
+# when the leaf declares itself as not coming from the filing, which is how the
+# share price is recorded. Statement and accession are always required, because
+# without them a figure has no provenance at all.
+REQUIRED_META = ("statement", "accession")
 
 
 def _leaf(o):
@@ -51,7 +58,10 @@ def main():
         has = leaf.get("current") is not None
         if has:
             filled += 1
-            missing = [m for m in META if not leaf.get(m)]
+            need = list(REQUIRED_META)
+            if str(leaf.get("statement") or "").strip().lower() != "not from the filing":
+                need.append("page")
+            missing = [m for m in need if not leaf.get(m)]
             if missing:
                 problems.append("%s: has a value but no %s" % (path, ", ".join(missing)))
         else:

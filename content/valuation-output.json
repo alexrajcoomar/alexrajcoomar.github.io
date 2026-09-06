@@ -1,0 +1,1117 @@
+{
+ "note": "Every figure here is computed by build/valuation.py from content/valuation-inputs.json. Nothing is typed in. Re-run the module and the page's numbers are reproduced or the build fails.",
+ "law_source": "Income Tax Regulations, C.R.C. c. 945, as consolidated on the Justice Laws website and read on 6 September 2026",
+ "assumed": {
+  "risk_free_rate": {
+   "value": 3.4,
+   "unit": "percent",
+   "what": "Government of Canada 10 year benchmark bond yield",
+   "source": "OECD long term government bond yield for Canada, monthly average for January 2026, retrieved through the Federal Reserve Bank of St. Louis series IRLTLT01CAM156N on 6 September 2026",
+   "caveat": "A monthly average, not the closing yield on 30 January 2026. The daily series was not reachable."
+  },
+  "equity_risk_premium": {
+   "value": 5.5,
+   "unit": "percent",
+   "what": "Equity risk premium over the Canadian risk free rate",
+   "source": "Declared by the analyst. Not derived from the filing.",
+   "caveat": "The single least defensible number in the model."
+  },
+  "beta": {
+   "value": 0.75,
+   "unit": "multiple",
+   "what": "Equity beta",
+   "source": "Declared by the analyst. Not derived from the filing.",
+   "caveat": "A defensive discount retailer is conventionally assigned a beta below one. No regression was run and no data vendor figure was used."
+  },
+  "forecast_years": {
+   "value": 5,
+   "unit": "years",
+   "what": "Explicit forecast horizon before the terminal value",
+   "source": "Declared by the analyst.",
+   "caveat": ""
+  },
+  "class13_write_off_years": {
+   "value": 8,
+   "unit": "years",
+   "what": "Straight line period for Class 13 leasehold improvements",
+   "source": "Derived, then rounded. Right of use assets of 2,109,445 at 2 February 2025 against right of use depreciation of 268,843 for that year implies an average remaining lease term of 7.8 years, and IFRS 16 measures that term on the same basis Class 13 uses, being the lease term plus renewals reasonably certain to be exercised.",
+   "caveat": "The filing does not disclose lease terms. Sensitivity at 5 and 10 years is reported."
+  }
+ },
+ "base_year": {
+  "fiscal_year": "Fiscal year ended February 1, 2026 (fiscal 2026)",
+  "weeks": 52,
+  "prior_weeks": 53,
+  "canada_sales": 6800927,
+  "canada_ebit_excluding_equity_earnings": 1740642,
+  "canada_depreciation_and_amortisation": 407286,
+  "canada_ebitda": 2147928,
+  "ebitda_margin": 31.5829,
+  "consolidated_lease_payment": 390333,
+  "australian_lease_share": 4.6126,
+  "canada_lease_payment": 372329,
+  "lease_intensity": 5.4747,
+  "net_working_capital": 654052,
+  "net_working_capital_prior": 545372,
+  "nwc_intensity": 9.0143,
+  "capex": 248747,
+  "capex_intensity": 3.4283,
+  "maintenance_intensity": 1.4868,
+  "canada_book_depreciation_owned": 101119,
+  "organic_sales_growth_per_week": 8.086,
+  "face_sales_growth": 13.1388
+ },
+ "tax_base": {
+  "current": {
+   "deferred_tax_liability_property": 739329,
+   "statutory_rate": 26.5,
+   "temporary_difference": 2789921,
+   "owned_net_book_value": 1258499,
+   "right_of_use_net_book_value": 2397209,
+   "reading_owned_only_ucc": -1531422,
+   "reading_with_right_of_use_ucc": 865787,
+   "owned_property_temporary_difference": 392712
+  },
+  "prior": {
+   "deferred_tax_liability_property": 658473,
+   "statutory_rate": 26.5,
+   "temporary_difference": 2484804,
+   "owned_net_book_value": 1046390,
+   "right_of_use_net_book_value": 2109445,
+   "reading_owned_only_ucc": -1438414,
+   "reading_with_right_of_use_ucc": 671031,
+   "owned_property_temporary_difference": 375359
+  }
+ },
+ "classes": [
+  {
+   "name": "Land",
+   "cost_closing": 218358,
+   "australian_carve_out": 0,
+   "canadian_cost": 218358,
+   "canadian_net_book_value": 218358,
+   "book_depreciation": 0,
+   "cca_class": null,
+   "cca_rate": null,
+   "method": "none",
+   "first_year_rule": "none",
+   "opening_ucc": 0,
+   "share_of_temporary_difference": 0,
+   "addition_share": 0.0
+  },
+  {
+   "name": "Buildings and roofs",
+   "cost_closing": 95638,
+   "australian_carve_out": 0,
+   "canadian_cost": 95638,
+   "canadian_net_book_value": 77531,
+   "book_depreciation": 2236,
+   "cca_class": "1",
+   "cca_rate": 0.04,
+   "method": "declining",
+   "first_year_rule": "general",
+   "share_of_temporary_difference": 32013,
+   "opening_ucc": 45518,
+   "addition_share": 0.0014052173196895138
+  },
+  {
+   "name": "Store and warehouse equipment",
+   "cost_closing": 936224,
+   "australian_carve_out": 34237,
+   "canadian_cost": 901987,
+   "canadian_net_book_value": 383534,
+   "book_depreciation": 54801,
+   "cca_class": "8",
+   "cca_rate": 0.2,
+   "method": "declining",
+   "first_year_rule": "general",
+   "share_of_temporary_difference": 158361,
+   "opening_ucc": 225173,
+   "addition_share": 0.32843480409314585
+  },
+  {
+   "name": "Computer equipment",
+   "cost_closing": 138468,
+   "australian_carve_out": 3354,
+   "canadian_cost": 135114,
+   "canadian_net_book_value": 45684,
+   "book_depreciation": 13142,
+   "cca_class": "50",
+   "cca_rate": 0.55,
+   "method": "declining",
+   "first_year_rule": "class50",
+   "share_of_temporary_difference": 18863,
+   "opening_ucc": 26821,
+   "addition_share": 0.14741398834647615
+  },
+  {
+   "name": "Vehicles",
+   "cost_closing": 8548,
+   "australian_carve_out": 2,
+   "canadian_cost": 8546,
+   "canadian_net_book_value": 6029,
+   "book_depreciation": 1326,
+   "cca_class": "10",
+   "cca_rate": 0.3,
+   "method": "declining",
+   "first_year_rule": "general",
+   "share_of_temporary_difference": 2489,
+   "opening_ucc": 3539,
+   "addition_share": 0.018973007473903108
+  },
+  {
+   "name": "Leasehold improvements",
+   "cost_closing": 819708,
+   "australian_carve_out": 33979,
+   "canadian_cost": 785729,
+   "canadian_net_book_value": 438329,
+   "book_depreciation": 29614,
+   "cca_class": "13",
+   "cca_rate": null,
+   "method": "straight",
+   "first_year_rule": "class13",
+   "share_of_temporary_difference": 180986,
+   "opening_ucc": 257343,
+   "addition_share": 0.5037729827667854
+  },
+  {
+   "name": "Work in progress",
+   "cost_closing": 54385,
+   "australian_carve_out": 0,
+   "canadian_cost": 54385,
+   "canadian_net_book_value": 54385,
+   "book_depreciation": 0,
+   "cca_class": null,
+   "cca_rate": null,
+   "method": "none",
+   "first_year_rule": "none",
+   "opening_ucc": 0,
+   "share_of_temporary_difference": 0,
+   "addition_share": 0.0
+  }
+ ],
+ "opening_ucc_total": 558395,
+ "depreciable_net_book_value": 951107,
+ "cost_of_capital": {
+  "tranches": [
+   {
+    "coupon": 3.85,
+    "maturity": "2030-12-16",
+    "face": 600000,
+    "fair_value": 607116,
+    "years_to_maturity": 4.91,
+    "implied_yield": 3.5867
+   },
+   {
+    "coupon": 5.165,
+    "maturity": "2030-04-26",
+    "face": 450000,
+    "fair_value": 478751,
+    "years_to_maturity": 4.25,
+    "implied_yield": 3.4285
+   },
+   {
+    "coupon": 2.443,
+    "maturity": "2029-07-09",
+    "face": 375000,
+    "fair_value": 365606,
+    "years_to_maturity": 3.5,
+    "implied_yield": 3.3343
+   },
+   {
+    "coupon": 5.533,
+    "maturity": "2028-09-26",
+    "face": 500000,
+    "fair_value": 528830,
+    "years_to_maturity": 2.66,
+    "implied_yield": 3.4759
+   },
+   {
+    "coupon": 1.505,
+    "maturity": "2027-09-20",
+    "face": 300000,
+    "fair_value": 294495,
+    "years_to_maturity": 1.66,
+    "implied_yield": 2.4564
+   },
+   {
+    "coupon": 1.871,
+    "maturity": "2026-07-08",
+    "face": 375000,
+    "fair_value": 374048,
+    "years_to_maturity": 0.5,
+    "implied_yield": 2.1303
+   }
+  ],
+  "cost_of_debt": 3.1698,
+  "weighted_average_coupon": 3.6423,
+  "cost_of_equity": 7.525,
+  "market_capitalisation": 50082542,
+  "borrowings": 2625121,
+  "weight_equity": 95.0195,
+  "weight_debt": 4.9805,
+  "tax_rate": 26.5,
+  "wacc": 7.2663,
+  "shares_outstanding": 272929382,
+  "share_price": 183.5
+ },
+ "anchors": [
+  {
+   "anchor": "Expansion reading",
+   "lines": [
+    {
+     "book_net_book_value": 1037810,
+     "tax_base_closing": 633925,
+     "fiscal_year": 2027,
+     "sales": 7281673,
+     "ebitda": 2299761,
+     "lease_payments": 398648,
+     "cca": 174105,
+     "book_depreciation": 108267,
+     "taxable_income": 1727008,
+     "cash_tax": 457657,
+     "capex": 249636,
+     "change_in_working_capital": 43336,
+     "free_cash_flow": 1150485,
+     "tax_shield_on_cca": 46138,
+     "tax_shield_on_book_depreciation": 28691
+    },
+    {
+     "book_net_book_value": 1129761,
+     "tax_base_closing": 737578,
+     "fiscal_year": 2028,
+     "sales": 7722332,
+     "ebitda": 2438934,
+     "lease_payments": 422773,
+     "cca": 161090,
+     "book_depreciation": 114818,
+     "taxable_income": 1855072,
+     "cash_tax": 491594,
+     "capex": 264743,
+     "change_in_working_capital": 39722,
+     "free_cash_flow": 1220103,
+     "tax_shield_on_cca": 42689,
+     "tax_shield_on_book_depreciation": 30427
+    },
+    {
+     "book_net_book_value": 1226340,
+     "tax_base_closing": 820183,
+     "fiscal_year": 2029,
+     "sales": 8111106,
+     "ebitda": 2561720,
+     "lease_payments": 444057,
+     "cca": 195466,
+     "book_depreciation": 120599,
+     "taxable_income": 1922197,
+     "cash_tax": 509382,
+     "capex": 278071,
+     "change_in_working_capital": 35045,
+     "free_cash_flow": 1295165,
+     "tax_shield_on_cca": 51798,
+     "tax_shield_on_book_depreciation": 31959
+    },
+    {
+     "book_net_book_value": 1326800,
+     "tax_base_closing": 884952,
+     "fiscal_year": 2030,
+     "sales": 8436946,
+     "ebitda": 2664630,
+     "lease_payments": 461895,
+     "cca": 224472,
+     "book_depreciation": 125444,
+     "taxable_income": 1978262,
+     "cash_tax": 524240,
+     "capex": 289241,
+     "change_in_working_capital": 29372,
+     "free_cash_flow": 1359881,
+     "tax_shield_on_cca": 59485,
+     "tax_shield_on_book_depreciation": 33243
+    },
+    {
+     "book_net_book_value": 1430273,
+     "tax_base_closing": 953308,
+     "fiscal_year": 2031,
+     "sales": 8690054,
+     "ebitda": 2744569,
+     "lease_payments": 475752,
+     "cca": 229563,
+     "book_depreciation": 129207,
+     "taxable_income": 2039253,
+     "cash_tax": 540402,
+     "capex": 297919,
+     "change_in_working_capital": 22816,
+     "free_cash_flow": 1407680,
+     "tax_shield_on_cca": 60834,
+     "tax_shield_on_book_depreciation": 34240
+    }
+   ],
+   "schedule": [
+    {
+     "fiscal_year": 2027,
+     "calendar_year": 2026,
+     "classes": [
+      {
+       "name": "Buildings and roofs",
+       "cca_class": "1",
+       "rate": 0.04,
+       "method": "declining",
+       "additions": 351,
+       "cca": 1842,
+       "closing_ucc": 44027,
+       "first_year_factor": 1.5
+      },
+      {
+       "name": "Store and warehouse equipment",
+       "cca_class": "8",
+       "rate": 0.2,
+       "method": "declining",
+       "additions": 81989,
+       "cca": 69631,
+       "closing_ucc": 237531,
+       "first_year_factor": 1.5
+      },
+      {
+       "name": "Computer equipment",
+       "cca_class": "50",
+       "rate": 0.55,
+       "method": "declining",
+       "additions": 36800,
+       "cca": 51551,
+       "closing_ucc": 12069,
+       "first_year_factor": 1.8182
+      },
+      {
+       "name": "Vehicles",
+       "cca_class": "10",
+       "rate": 0.3,
+       "method": "declining",
+       "additions": 4736,
+       "cca": 3193,
+       "closing_ucc": 5083,
+       "first_year_factor": 1.5
+      },
+      {
+       "name": "Leasehold improvements",
+       "cca_class": "13",
+       "rate": null,
+       "method": "straight",
+       "additions": 125760,
+       "cca": 47888,
+       "closing_ucc": 335215,
+       "first_year_factor": 1.0
+      }
+     ],
+     "total_cca": 174105,
+     "closing_ucc_total": 633925
+    },
+    {
+     "fiscal_year": 2028,
+     "calendar_year": 2027,
+     "classes": [
+      {
+       "name": "Buildings and roofs",
+       "cca_class": "1",
+       "rate": 0.04,
+       "method": "declining",
+       "additions": 372,
+       "cca": 1783,
+       "closing_ucc": 42616,
+       "first_year_factor": 1.5
+      },
+      {
+       "name": "Store and warehouse equipment",
+       "cca_class": "8",
+       "rate": 0.2,
+       "method": "declining",
+       "additions": 86951,
+       "cca": 73591,
+       "closing_ucc": 250890,
+       "first_year_factor": 1.5
+      },
+      {
+       "name": "Computer equipment",
+       "cca_class": "50",
+       "rate": 0.55,
+       "method": "declining",
+       "additions": 39027,
+       "cca": 17371,
+       "closing_ucc": 33726,
+       "first_year_factor": 0.5
+      },
+      {
+       "name": "Vehicles",
+       "cca_class": "10",
+       "rate": 0.3,
+       "method": "declining",
+       "additions": 5023,
+       "cca": 3785,
+       "closing_ucc": 6320,
+       "first_year_factor": 1.5
+      },
+      {
+       "name": "Leasehold improvements",
+       "cca_class": "13",
+       "rate": null,
+       "method": "straight",
+       "additions": 133370,
+       "cca": 64559,
+       "closing_ucc": 404026,
+       "first_year_factor": 1.0
+      }
+     ],
+     "total_cca": 161090,
+     "closing_ucc_total": 737578
+    },
+    {
+     "fiscal_year": 2029,
+     "calendar_year": 2028,
+     "classes": [
+      {
+       "name": "Buildings and roofs",
+       "cca_class": "1",
+       "rate": 0.04,
+       "method": "declining",
+       "additions": 391,
+       "cca": 1728,
+       "closing_ucc": 41279,
+       "first_year_factor": 1.5
+      },
+      {
+       "name": "Store and warehouse equipment",
+       "cca_class": "8",
+       "rate": 0.2,
+       "method": "declining",
+       "additions": 91328,
+       "cca": 77576,
+       "closing_ucc": 264642,
+       "first_year_factor": 1.5
+      },
+      {
+       "name": "Computer equipment",
+       "cca_class": "50",
+       "rate": 0.55,
+       "method": "declining",
+       "additions": 40992,
+       "cca": 29822,
+       "closing_ucc": 44895,
+       "first_year_factor": 0.5
+      },
+      {
+       "name": "Vehicles",
+       "cca_class": "10",
+       "rate": 0.3,
+       "method": "declining",
+       "additions": 5276,
+       "cca": 4270,
+       "closing_ucc": 7326,
+       "first_year_factor": 1.5
+      },
+      {
+       "name": "Leasehold improvements",
+       "cca_class": "13",
+       "rate": null,
+       "method": "straight",
+       "additions": 140085,
+       "cca": 82070,
+       "closing_ucc": 462041,
+       "first_year_factor": 1.0
+      }
+     ],
+     "total_cca": 195466,
+     "closing_ucc_total": 820183
+    },
+    {
+     "fiscal_year": 2030,
+     "calendar_year": 2029,
+     "classes": [
+      {
+       "name": "Buildings and roofs",
+       "cca_class": "1",
+       "rate": 0.04,
+       "method": "declining",
+       "additions": 406,
+       "cca": 1676,
+       "closing_ucc": 40010,
+       "first_year_factor": 1.5
+      },
+      {
+       "name": "Store and warehouse equipment",
+       "cca_class": "8",
+       "rate": 0.2,
+       "method": "declining",
+       "additions": 94997,
+       "cca": 81427,
+       "closing_ucc": 278211,
+       "first_year_factor": 1.5
+      },
+      {
+       "name": "Computer equipment",
+       "cca_class": "50",
+       "rate": 0.55,
+       "method": "declining",
+       "additions": 42638,
+       "cca": 36418,
+       "closing_ucc": 51116,
+       "first_year_factor": 0.5
+      },
+      {
+       "name": "Vehicles",
+       "cca_class": "10",
+       "rate": 0.3,
+       "method": "declining",
+       "additions": 5488,
+       "cca": 4667,
+       "closing_ucc": 8146,
+       "first_year_factor": 1.5
+      },
+      {
+       "name": "Leasehold improvements",
+       "cca_class": "13",
+       "rate": null,
+       "method": "straight",
+       "additions": 145712,
+       "cca": 100284,
+       "closing_ucc": 507469,
+       "first_year_factor": 1.0
+      }
+     ],
+     "total_cca": 224472,
+     "closing_ucc_total": 884952
+    },
+    {
+     "fiscal_year": 2031,
+     "calendar_year": 2030,
+     "classes": [
+      {
+       "name": "Buildings and roofs",
+       "cca_class": "1",
+       "rate": 0.04,
+       "method": "declining",
+       "additions": 419,
+       "cca": 1609,
+       "closing_ucc": 38820,
+       "first_year_factor": 0.5
+      },
+      {
+       "name": "Store and warehouse equipment",
+       "cca_class": "8",
+       "rate": 0.2,
+       "method": "declining",
+       "additions": 97847,
+       "cca": 65427,
+       "closing_ucc": 310631,
+       "first_year_factor": 0.5
+      },
+      {
+       "name": "Computer equipment",
+       "cca_class": "50",
+       "rate": 0.55,
+       "method": "declining",
+       "additions": 43917,
+       "cca": 40191,
+       "closing_ucc": 54842,
+       "first_year_factor": 0.5
+      },
+      {
+       "name": "Vehicles",
+       "cca_class": "10",
+       "rate": 0.3,
+       "method": "declining",
+       "additions": 5652,
+       "cca": 3292,
+       "closing_ucc": 10507,
+       "first_year_factor": 0.5
+      },
+      {
+       "name": "Leasehold improvements",
+       "cca_class": "13",
+       "rate": null,
+       "method": "straight",
+       "additions": 150083,
+       "cca": 119044,
+       "closing_ucc": 538509,
+       "first_year_factor": 1.0
+      }
+     ],
+     "total_cca": 229563,
+     "closing_ucc_total": 953308
+    }
+   ],
+   "terminal": {
+    "fiscal_year": 2032,
+    "sales": 8950756,
+    "ebitda": 2826906,
+    "capex": 181405,
+    "allowance": 164435,
+    "cash_tax": 575698,
+    "free_cash_flow": 1556278,
+    "growth": 3.0,
+    "capex_intensity": 2.0267,
+    "settled_allowance_over_capex": 90.6457,
+    "converged_over_years": 30,
+    "value": 36478806
+   },
+   "present_value_of_forecast": 5200786,
+   "present_value_of_terminal": 25687691,
+   "terminal_share_of_enterprise_value": 83.1627,
+   "enterprise_value": 30888477,
+   "wacc": 7.2663,
+   "note": "The fiscal 2026 programme is buying new stores. Once it stops, capital spending falls to what replaces the existing base plus what the terminal growth rate itself requires, and the growth it bought is real.",
+   "non_operating_assets": 1930293,
+   "borrowings": 2625121,
+   "equity_value": 30193649,
+   "value_per_share": 110.63,
+   "equity_value_on_book_depreciation": 29974966,
+   "value_per_share_on_book_depreciation": 109.83,
+   "enterprise_value_on_book_depreciation": 30669794,
+   "cca_versus_book_per_share": 0.8,
+   "present_value_of_cca_shield": 209853,
+   "present_value_of_book_shield": 128307
+  },
+  {
+   "anchor": "Maintenance reading",
+   "lines": [
+    {
+     "book_net_book_value": 1037648,
+     "tax_base_closing": 633607,
+     "fiscal_year": 2027,
+     "sales": 7268071,
+     "ebitda": 2295465,
+     "lease_payments": 397903,
+     "cca": 173957,
+     "book_depreciation": 108064,
+     "taxable_income": 1723605,
+     "cash_tax": 456755,
+     "capex": 249169,
+     "change_in_working_capital": 42110,
+     "free_cash_flow": 1149528,
+     "tax_shield_on_cca": 46099,
+     "tax_shield_on_book_depreciation": 28637
+    },
+    {
+     "book_net_book_value": 1129081,
+     "tax_base_closing": 736135,
+     "fiscal_year": 2028,
+     "sales": 7678835,
+     "ebitda": 2425196,
+     "lease_payments": 420391,
+     "cca": 160723,
+     "book_depreciation": 114172,
+     "taxable_income": 1844082,
+     "cash_tax": 488682,
+     "capex": 263251,
+     "change_in_working_capital": 37027,
+     "free_cash_flow": 1215845,
+     "tax_shield_on_cca": 42592,
+     "tax_shield_on_book_depreciation": 30256
+    },
+    {
+     "book_net_book_value": 1224568,
+     "tax_base_closing": 816559,
+     "fiscal_year": 2029,
+     "sales": 8019346,
+     "ebitda": 2532740,
+     "lease_payments": 439033,
+     "cca": 194501,
+     "book_depreciation": 119235,
+     "taxable_income": 1899206,
+     "cash_tax": 503289,
+     "capex": 274925,
+     "change_in_working_capital": 30695,
+     "free_cash_flow": 1284798,
+     "tax_shield_on_cca": 51543,
+     "tax_shield_on_book_depreciation": 31597
+    },
+    {
+     "book_net_book_value": 1323127,
+     "tax_base_closing": 877783,
+     "fiscal_year": 2030,
+     "sales": 8277345,
+     "ebitda": 2614223,
+     "lease_payments": 453158,
+     "cca": 222546,
+     "book_depreciation": 123071,
+     "taxable_income": 1938519,
+     "cash_tax": 513708,
+     "capex": 283770,
+     "change_in_working_capital": 23257,
+     "free_cash_flow": 1340331,
+     "tax_shield_on_cca": 58975,
+     "tax_shield_on_book_depreciation": 32614
+    },
+    {
+     "book_net_book_value": 1423657,
+     "tax_base_closing": 940383,
+     "fiscal_year": 2031,
+     "sales": 8442892,
+     "ebitda": 2666508,
+     "lease_payments": 462221,
+     "cca": 226845,
+     "book_depreciation": 125532,
+     "taxable_income": 1977442,
+     "cash_tax": 524022,
+     "capex": 289445,
+     "change_in_working_capital": 14923,
+     "free_cash_flow": 1375897,
+     "tax_shield_on_cca": 60114,
+     "tax_shield_on_book_depreciation": 33266
+    }
+   ],
+   "schedule": [
+    {
+     "fiscal_year": 2027,
+     "calendar_year": 2026,
+     "classes": [
+      {
+       "name": "Buildings and roofs",
+       "cca_class": "1",
+       "rate": 0.04,
+       "method": "declining",
+       "additions": 350,
+       "cca": 1842,
+       "closing_ucc": 44027,
+       "first_year_factor": 1.5
+      },
+      {
+       "name": "Store and warehouse equipment",
+       "cca_class": "8",
+       "rate": 0.2,
+       "method": "declining",
+       "additions": 81836,
+       "cca": 69585,
+       "closing_ucc": 237423,
+       "first_year_factor": 1.5
+      },
+      {
+       "name": "Computer equipment",
+       "cca_class": "50",
+       "rate": 0.55,
+       "method": "declining",
+       "additions": 36731,
+       "cca": 51483,
+       "closing_ucc": 12069,
+       "first_year_factor": 1.8182
+      },
+      {
+       "name": "Vehicles",
+       "cca_class": "10",
+       "rate": 0.3,
+       "method": "declining",
+       "additions": 4727,
+       "cca": 3189,
+       "closing_ucc": 5078,
+       "first_year_factor": 1.5
+      },
+      {
+       "name": "Leasehold improvements",
+       "cca_class": "13",
+       "rate": null,
+       "method": "straight",
+       "additions": 125525,
+       "cca": 47858,
+       "closing_ucc": 335009,
+       "first_year_factor": 1.0
+      }
+     ],
+     "total_cca": 173957,
+     "closing_ucc_total": 633607
+    },
+    {
+     "fiscal_year": 2028,
+     "calendar_year": 2027,
+     "classes": [
+      {
+       "name": "Buildings and roofs",
+       "cca_class": "1",
+       "rate": 0.04,
+       "method": "declining",
+       "additions": 370,
+       "cca": 1783,
+       "closing_ucc": 42614,
+       "first_year_factor": 1.5
+      },
+      {
+       "name": "Store and warehouse equipment",
+       "cca_class": "8",
+       "rate": 0.2,
+       "method": "declining",
+       "additions": 86461,
+       "cca": 73423,
+       "closing_ucc": 250461,
+       "first_year_factor": 1.5
+      },
+      {
+       "name": "Computer equipment",
+       "cca_class": "50",
+       "rate": 0.55,
+       "method": "declining",
+       "additions": 38807,
+       "cca": 17310,
+       "closing_ucc": 33566,
+       "first_year_factor": 0.5
+      },
+      {
+       "name": "Vehicles",
+       "cca_class": "10",
+       "rate": 0.3,
+       "method": "declining",
+       "additions": 4995,
+       "cca": 3771,
+       "closing_ucc": 6301,
+       "first_year_factor": 1.5
+      },
+      {
+       "name": "Leasehold improvements",
+       "cca_class": "13",
+       "rate": null,
+       "method": "straight",
+       "additions": 132619,
+       "cca": 64436,
+       "closing_ucc": 403193,
+       "first_year_factor": 1.0
+      }
+     ],
+     "total_cca": 160723,
+     "closing_ucc_total": 736135
+    },
+    {
+     "fiscal_year": 2029,
+     "calendar_year": 2028,
+     "classes": [
+      {
+       "name": "Buildings and roofs",
+       "cca_class": "1",
+       "rate": 0.04,
+       "method": "declining",
+       "additions": 386,
+       "cca": 1728,
+       "closing_ucc": 41272,
+       "first_year_factor": 1.5
+      },
+      {
+       "name": "Store and warehouse equipment",
+       "cca_class": "8",
+       "rate": 0.2,
+       "method": "declining",
+       "additions": 90295,
+       "cca": 77181,
+       "closing_ucc": 263576,
+       "first_year_factor": 1.5
+      },
+      {
+       "name": "Computer equipment",
+       "cca_class": "50",
+       "rate": 0.55,
+       "method": "declining",
+       "additions": 40528,
+       "cca": 29607,
+       "closing_ucc": 44487,
+       "first_year_factor": 0.5
+      },
+      {
+       "name": "Vehicles",
+       "cca_class": "10",
+       "rate": 0.3,
+       "method": "declining",
+       "additions": 5216,
+       "cca": 4238,
+       "closing_ucc": 7280,
+       "first_year_factor": 1.5
+      },
+      {
+       "name": "Leasehold improvements",
+       "cca_class": "13",
+       "rate": null,
+       "method": "straight",
+       "additions": 138500,
+       "cca": 81748,
+       "closing_ucc": 459944,
+       "first_year_factor": 1.0
+      }
+     ],
+     "total_cca": 194501,
+     "closing_ucc_total": 816559
+    },
+    {
+     "fiscal_year": 2030,
+     "calendar_year": 2029,
+     "classes": [
+      {
+       "name": "Buildings and roofs",
+       "cca_class": "1",
+       "rate": 0.04,
+       "method": "declining",
+       "additions": 399,
+       "cca": 1675,
+       "closing_ucc": 39996,
+       "first_year_factor": 1.5
+      },
+      {
+       "name": "Store and warehouse equipment",
+       "cca_class": "8",
+       "rate": 0.2,
+       "method": "declining",
+       "additions": 93200,
+       "cca": 80675,
+       "closing_ucc": 276100,
+       "first_year_factor": 1.5
+      },
+      {
+       "name": "Computer equipment",
+       "cca_class": "50",
+       "rate": 0.55,
+       "method": "declining",
+       "additions": 41832,
+       "cca": 35972,
+       "closing_ucc": 50347,
+       "first_year_factor": 0.5
+      },
+      {
+       "name": "Vehicles",
+       "cca_class": "10",
+       "rate": 0.3,
+       "method": "declining",
+       "additions": 5384,
+       "cca": 4607,
+       "closing_ucc": 8057,
+       "first_year_factor": 1.5
+      },
+      {
+       "name": "Leasehold improvements",
+       "cca_class": "13",
+       "rate": null,
+       "method": "straight",
+       "additions": 142956,
+       "cca": 99618,
+       "closing_ucc": 503282,
+       "first_year_factor": 1.0
+      }
+     ],
+     "total_cca": 222546,
+     "closing_ucc_total": 877783
+    },
+    {
+     "fiscal_year": 2031,
+     "calendar_year": 2030,
+     "classes": [
+      {
+       "name": "Buildings and roofs",
+       "cca_class": "1",
+       "rate": 0.04,
+       "method": "declining",
+       "additions": 407,
+       "cca": 1608,
+       "closing_ucc": 38795,
+       "first_year_factor": 0.5
+      },
+      {
+       "name": "Store and warehouse equipment",
+       "cca_class": "8",
+       "rate": 0.2,
+       "method": "declining",
+       "additions": 95064,
+       "cca": 64726,
+       "closing_ucc": 306438,
+       "first_year_factor": 0.5
+      },
+      {
+       "name": "Computer equipment",
+       "cca_class": "50",
+       "rate": 0.55,
+       "method": "declining",
+       "additions": 42668,
+       "cca": 39425,
+       "closing_ucc": 53591,
+       "first_year_factor": 0.5
+      },
+      {
+       "name": "Vehicles",
+       "cca_class": "10",
+       "rate": 0.3,
+       "method": "declining",
+       "additions": 5492,
+       "cca": 3241,
+       "closing_ucc": 10308,
+       "first_year_factor": 0.5
+      },
+      {
+       "name": "Leasehold improvements",
+       "cca_class": "13",
+       "rate": null,
+       "method": "straight",
+       "additions": 145815,
+       "cca": 117845,
+       "closing_ucc": 531252,
+       "first_year_factor": 1.0
+      }
+     ],
+     "total_cca": 226845,
+     "closing_ucc_total": 940383
+    }
+   ],
+   "terminal": {
+    "fiscal_year": 2032,
+    "sales": 8611750,
+    "ebitda": 2719838,
+    "capex": 295234,
+    "allowance": 276149,
+    "cash_tax": 522639,
+    "free_cash_flow": 1415278,
+    "growth": 2.0,
+    "capex_intensity": 3.4283,
+    "settled_allowance_over_capex": 93.5356,
+    "converged_over_years": 30,
+    "value": 26874478
+   },
+   "present_value_of_forecast": 5150645,
+   "present_value_of_terminal": 18924504,
+   "terminal_share_of_enterprise_value": 78.606,
+   "enterprise_value": 24075149,
+   "wacc": 7.2663,
+   "note": "The fiscal 2026 programme is what it costs to keep the existing stores trading. There is no separable growth capital, so the spending never falls and the growth it can support is lower.",
+   "non_operating_assets": 1930293,
+   "borrowings": 2625121,
+   "equity_value": 23380321,
+   "value_per_share": 85.66,
+   "equity_value_on_book_depreciation": 22773531,
+   "value_per_share_on_book_depreciation": 83.44,
+   "enterprise_value_on_book_depreciation": 23468359,
+   "cca_versus_book_per_share": 2.22,
+   "present_value_of_cca_shield": 208633,
+   "present_value_of_book_shield": 126654
+  }
+ ],
+ "validation": {
+  "what": "The reconstructed opening tax base is run over fiscal 2026 and asked to reproduce the current tax expense the issuer disclosed.",
+  "prior_year_opening_ucc": 452759,
+  "additions": 194276,
+  "modelled_cca": 136286,
+  "modelled_taxable_income": 1555863,
+  "modelled_current_tax": 412304,
+  "disclosed_current_tax_expense": 463583,
+  "less_pillar_two_top_up": 27229,
+  "disclosed_current_tax_on_the_canadian_base": 436354,
+  "difference": -24050,
+  "difference_percent": -5.5117
+ },
+ "reverse": [
+  {
+   "anchor": "Expansion reading",
+   "market_equity_value": 50082542,
+   "implied_wacc": 5.6128,
+   "declared_wacc": 7.2663,
+   "implied_cost_of_equity": 5.7849,
+   "implied_terminal_growth_at_declared_wacc": 4.7185,
+   "declared_terminal_growth": 3.0
+  },
+  {
+   "anchor": "Maintenance reading",
+   "market_equity_value": 50082542,
+   "implied_wacc": 4.5107,
+   "declared_wacc": 7.2663,
+   "implied_cost_of_equity": 4.625,
+   "implied_terminal_growth_at_declared_wacc": 4.8671,
+   "declared_terminal_growth": 2.0
+  }
+ ]
+}
