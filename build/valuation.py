@@ -17,11 +17,12 @@ reports the difference.
 Run:  python3 build/valuation.py
 Out:  content/valuation-output.json, and a readable summary on stdout.
 """
-import json, os, sys
+import json, math, os, sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 IN_PATH = os.path.join(ROOT, "content", "valuation-inputs.json")
 OUT_PATH = os.path.join(ROOT, "content", "valuation-output.json")
+MARKET_PATH = os.path.join(ROOT, "content", "market-data.json")
 
 # ---------------------------------------------------------------- the law ----
 # Rates and first-year rules read from the Income Tax Regulations as
@@ -101,13 +102,15 @@ ASSUMED = {
         "source": "Declared by the analyst. Not derived from the filing.",
         "caveat": "The single least defensible number in the model.",
     },
+    # beta is no longer declared. It is regressed in market_beta() from the
+    # weekly series cached in content/market-data.json, and the entry below is
+    # filled in by main() so the output still lists it among the inputs that do
+    # not come from the filing.
     "beta": {
-        "value": 0.75, "unit": "multiple",
-        "what": "Equity beta",
-        "source": "Declared by the analyst. Not derived from the filing.",
-        "caveat": ("A defensive discount retailer is conventionally assigned a "
-                   "beta below one. No regression was run and no data vendor "
-                   "figure was used."),
+        "value": None, "unit": "multiple",
+        "what": "Equity beta, five years of weekly returns against the S&P/TSX Composite",
+        "source": "Regressed here from content/market-data.json.",
+        "caveat": "",
     },
     "forecast_years": {
         "value": 5, "unit": "years",
@@ -139,6 +142,49 @@ def pct(x):
 
 def load():
     return json.load(open(IN_PATH, encoding="utf-8"))
+
+
+def market_beta():
+    """Regress five years of weekly returns on the S&P/TSX Composite.
+
+    An earlier draft of this model declared a beta of 0.75 on the reasoning
+    that a defensive retailer is conventionally assigned something below one.
+    That was an assertion, and it turns out to be wrong: the regression puts
+    the figure near four tenths, and 0.75 falls outside the interval the data
+    supports. The number is computed here so it can be checked rather than
+    believed.
+
+    The r squared is reported alongside it and it is small. That is not a
+    defect in the regression, it is the finding: the index explains very little
+    of this stock's week to week movement, so a capital asset pricing model
+    built on this beta is a weak instrument whatever value it returns. The
+    piece says so rather than quoting the coefficient on its own.
+    """
+    m = json.load(open(MARKET_PATH, encoding="utf-8"))
+    a = dict(m["series"]["DOL.TO"]["closes"])
+    b = dict(m["series"]["GSPTSE"]["closes"])
+    ks = sorted(set(a) & set(b))
+    ra = [math.log(a[ks[i]] / a[ks[i - 1]]) for i in range(1, len(ks))]
+    rb = [math.log(b[ks[i]] / b[ks[i - 1]]) for i in range(1, len(ks))]
+    n = len(ra)
+    ma, mb = sum(ra) / n, sum(rb) / n
+    cov = sum((ra[i] - ma) * (rb[i] - mb) for i in range(n)) / (n - 1)
+    var = sum((x - mb) ** 2 for x in rb) / (n - 1)
+    beta = cov / var
+    sa = math.sqrt(sum((x - ma) ** 2 for x in ra) / (n - 1))
+    corr = cov / (sa * math.sqrt(var))
+    resid = [ra[i] - (ma + beta * (rb[i] - mb)) for i in range(n)]
+    se = math.sqrt((sum(x * x for x in resid) / (n - 2)) / ((n - 1) * var))
+    return {
+        "beta": beta, "observations": n,
+        "from": ks[0], "to": ks[-1],
+        "r_squared": corr * corr,
+        "standard_error": se,
+        "low": beta - 1.96 * se, "high": beta + 1.96 * se,
+        "annualised_volatility_stock": sa * math.sqrt(52) * 100,
+        "annualised_volatility_index": math.sqrt(var) * math.sqrt(52) * 100,
+        "source": m["source"], "retrieved": m["retrieved"],
+    }
 
 
 def canadian_base(d):
@@ -377,7 +423,12 @@ def forecast(name, base, years, growth_path, capex_intensity, terminal_growth,
         ebitda = s * base["ebitda_margin"]
         lease = s * base["lease_intensity"]
         cca = sched[i]["total_cca"]
-        book = base["book_depreciation"] * (s / base["sales"])
+        # the book charge is struck on the book base, at the rate the base year
+        # implies, so that a heavier capital programme raises book depreciation
+        # exactly as it raises the allowance. Scaling the base year charge by
+        # sales instead would let the counterfactual ignore the very lever the
+        # reader is moving.
+        book = base["book_depreciation_rate"] * book_base
         shield_base = book if use_book_depreciation else cca
         taxable = ebitda - lease - shield_base
         cash_tax = tax * taxable
@@ -425,7 +476,12 @@ def forecast(name, base, years, growth_path, capex_intensity, terminal_growth,
     # then applied to the terminal year's own spending
     settled = long_sched[-1]["total_cca"] / float(long_adds[-1])
     cca_term = capex * settled
-    book_term = base["book_depreciation"] * (s / base["sales"])
+    bb = book_base
+    for k in range(CONVERGE):
+        bb = bb + long_adds[len(years) + k] * base["depreciable_addition_share"] \
+             - base["book_depreciation_rate"] * bb
+    settled_book = base["book_depreciation_rate"] * bb / float(long_adds[-1])
+    book_term = capex * settled_book
     shield_base = book_term if use_book_depreciation else cca_term
     taxable = ebitda - lease - shield_base
     cash_tax = tax * taxable
@@ -511,10 +567,12 @@ def main():
         "sales": ca_sales,
         "ebitda_margin": ca_ebitda / float(ca_sales),
         "lease_intensity": ca_lease_paid / float(ca_sales),
-        "nwc_intensity": nwc / float(d["income_statement"]["revenue"]["current"]),
+        "nwc_intensity": nwc / float(ca_sales),
         "book_depreciation": ca_book_dep,
         "depreciable_net_book_value": sum(r["canadian_net_book_value"]
                                           for r in rows if r["method"] != "none"),
+        "book_depreciation_rate": ca_book_dep / float(sum(
+            r["canadian_net_book_value"] for r in rows if r["method"] != "none")),
         "depreciable_addition_share": dep_add / float(
             sum(note_adds[r["name"]] for r in rows)),
     }
@@ -528,6 +586,16 @@ def main():
 
     # ---- the discount rate ----------------------------------------------
     tranches, kd = cost_of_debt(d)
+    mb = market_beta()
+    ASSUMED["beta"]["value"] = round(mb["beta"], 4)
+    ASSUMED["beta"]["source"] = (
+        "Regressed from %d weekly returns, %s to %s, against the S&P/TSX Composite. "
+        "Underlying series: %s" % (mb["observations"], mb["from"], mb["to"], mb["source"]))
+    ASSUMED["beta"]["caveat"] = (
+        "The regression explains %.1f per cent of the variance and the 95 per cent "
+        "interval runs from %.2f to %.2f, so the coefficient is estimated with very "
+        "little precision. An earlier draft asserted 0.75, which lies outside that "
+        "interval." % (mb["r_squared"] * 100, mb["low"], mb["high"]))
     ke = (ASSUMED["risk_free_rate"]["value"]
           + ASSUMED["beta"]["value"] * ASSUMED["equity_risk_premium"]["value"]) / 100.0
     shares = S["shares_outstanding_period_end"]["current"]
@@ -542,7 +610,7 @@ def main():
     n = ASSUMED["forecast_years"]["value"]
     c13 = ASSUMED["class13_write_off_years"]["value"]
     years = [(2027 + i, 2026 + i) for i in range(n)]
-    capex_intensity = capex / float(d["income_statement"]["revenue"]["current"])
+    capex_intensity = capex / float(ca_sales)
     maintenance_intensity = ca_book_dep / float(ca_sales)
     # Growing forever on replacement spending alone is not coherent, so the
     # terminal programme in the expansion reading is replacement plus the
@@ -561,19 +629,35 @@ def main():
                     + (seg["total_assets"]["australia"]
                        - seg["total_liabilities"]["australia"]))
 
+    # Both anchors are points on one curve, so the reader's slider and the
+    # published figures cannot disagree. The lever is g, the share of the
+    # fiscal 2026 capital programme that is buying growth rather than replacing
+    # what wears out. Terminal capital spending is then what is left of the
+    # programme as replacement, plus the capital that terminal growth itself
+    # requires at the capital intensity the business actually runs.
+    #
+    #   g = 0     every dollar of the programme is maintenance
+    #   g = g_exp the programme replaces exactly what note 9 depreciates
+    #   g = 1     the whole programme is growth and stops when growth stops
+    g_exp = 1.0 - maintenance_intensity / capex_intensity
+
+    def terminal_capex(g, tg):
+        return (1.0 - g) * capex_intensity + tg * capital_intensity
+
     SPECS = [
-        ("Expansion reading", 0.030, maintenance_intensity + 0.030 * capital_intensity,
+        ("Expansion reading", 0.030, g_exp,
          "The fiscal 2026 programme is buying new stores. Once it stops, capital "
          "spending falls to what replaces the existing base plus what the terminal "
          "growth rate itself requires, and the growth it bought is real."),
-        ("Maintenance reading", 0.020, capex_intensity,
+        ("Maintenance reading", 0.020, 0.0,
          "The fiscal 2026 programme is what it costs to keep the existing stores "
          "trading. There is no separable growth capital, so the spending never "
          "falls and the growth it can support is lower."),
     ]
 
     anchors = []
-    for name, term_g, term_capex, note in SPECS:
+    for name, term_g, g, note in SPECS:
+        term_capex = terminal_capex(g, term_g)
         a = forecast(name, base, years, fade(organic, term_g), capex_intensity,
                      term_g, term_capex, [dict(r) for r in rows], c13, tax, wacc)
         b = forecast(name, base, years, fade(organic, term_g), capex_intensity,
@@ -582,6 +666,7 @@ def main():
         eq = a["enterprise_value"] + non_op_total - borrowings
         eq_book = b["enterprise_value"] + non_op_total - borrowings
         a["note"] = note
+        a["growth_capex_share"] = pct(g * 100)
         a["non_operating_assets"] = money(non_op_total)
         a["borrowings"] = borrowings
         a["equity_value"] = money(eq)
@@ -650,13 +735,15 @@ def main():
     # The model disagrees with the price. Rather than tune an input until it
     # agrees, the disagreement is quantified both ways.
     def equity_at(w, anchor_spec):
-        nm, tg, tc, _ = anchor_spec
+        nm, tg, gg, _ = anchor_spec
+        tc = terminal_capex(gg, tg)
         a = forecast(nm, base, years, fade(organic, tg), capex_intensity, tg, tc,
                      [dict(r) for r in rows], c13, tax, w)
         return a["enterprise_value"] + non_op_total - borrowings
 
     def growth_at(g, anchor_spec):
-        nm, _, tc, _ = anchor_spec
+        nm, _, gg, _ = anchor_spec
+        tc = terminal_capex(gg, g)
         a = forecast(nm, base, years, fade(organic, g), capex_intensity, g, tc,
                      [dict(r) for r in rows], c13, tax, wacc)
         return a["enterprise_value"] + non_op_total - borrowings
@@ -687,6 +774,78 @@ def main():
             "declared_terminal_growth": pct(spec[1] * 100),
         })
 
+    # ---- what the reader's slider shows -----------------------------------
+    # Precomputed here rather than recomputed in the browser. The page's
+    # controls are a lookup into this lattice, so the figure a reader lands on
+    # is the figure this module produced and the two can never disagree.
+    LATTICE_STEP = 1
+    lattice = {"step_percent": LATTICE_STEP, "growth_capex_share": [], "rows": [],
+               "what": ("Value per share against the share of the fiscal 2026 capital "
+                        "programme that is growth rather than replacement, at each of the "
+                        "two terminal growth rates, with the tax shield computed both ways.")}
+    for i in range(0, 101, LATTICE_STEP):
+        g = i / 100.0
+        row = {"g": i}
+        for tg, key in ((0.030, "high"), (0.020, "low")):
+            tc = terminal_capex(g, tg)
+            for book, suffix in ((False, ""), (True, "_book")):
+                f = forecast("lattice", base, years, fade(organic, tg), capex_intensity,
+                             tg, tc, [dict(r) for r in rows], c13, tax, wacc,
+                             use_book_depreciation=book)
+                eq = f["enterprise_value"] + non_op_total - borrowings
+                row[key + suffix] = round(eq * 1000.0 / shares, 2)
+        lattice["growth_capex_share"].append(i)
+        lattice["rows"].append(row)
+
+    # ---- how much the allocation across classes is worth --------------------
+    # The temporary difference is split across classes in proportion to net book
+    # value, which is a convenience with no evidence behind it. The aggregate is
+    # fixed by the deferred tax balance, so the split moves timing and not
+    # totals. These two extremes bracket every allocation that is possible:
+    # push the whole difference onto the fastest pools, or onto the slowest.
+    def allocate_by_priority(order):
+        rs = [dict(r) for r in rows]
+        left = temp_diff
+        for name in order:
+            for r in rs:
+                if r["name"] == name:
+                    take = min(left, r["canadian_net_book_value"])
+                    r["opening_ucc"] = r["canadian_net_book_value"] - take
+                    r["share_of_temporary_difference"] = take
+                    left -= take
+        for r in rs:
+            if r["method"] == "none":
+                r["opening_ucc"] = 0.0
+        return rs
+
+    FAST = ["Computer equipment", "Vehicles", "Store and warehouse equipment",
+            "Leasehold improvements", "Buildings and roofs"]
+    alloc = {}
+    for label, rs in (("pro rata to net book value", [dict(r) for r in rows]),
+                      ("the fastest pools first", allocate_by_priority(FAST)),
+                      ("the slowest pools first", allocate_by_priority(FAST[::-1]))):
+        tg, g = SPECS[0][1], SPECS[0][2]
+        f = forecast("alloc", base, years, fade(organic, tg), capex_intensity, tg,
+                     terminal_capex(g, tg), rs, c13, tax, wacc)
+        eq = f["enterprise_value"] + non_op_total - borrowings
+        alloc[label] = {
+            "value_per_share": round(eq * 1000.0 / shares, 2),
+            "opening_ucc_by_class": {r["name"]: money(r["opening_ucc"])
+                                     for r in rs if r["method"] != "none"},
+            "present_value_of_shield": money(sum(
+                l["tax_shield_on_cca"] / (1.0 + wacc) ** (i + 1)
+                for i, l in enumerate(f["lines"]))),
+        }
+    vals = [v["value_per_share"] for v in alloc.values()]
+    allocation_sensitivity = {
+        "what": ("The whole temporary difference pushed onto the fastest classes, then "
+                 "onto the slowest, against the published allocation in proportion to "
+                 "net book value. Every possible allocation lies between the two."),
+        "cases": alloc,
+        "spread_per_share": round(max(vals) - min(vals), 2),
+        "published": alloc["pro rata to net book value"]["value_per_share"],
+    }
+
     out = {
         "note": ("Every figure here is computed by build/valuation.py from "
                  "content/valuation-inputs.json. Nothing is typed in. Re-run the "
@@ -711,6 +870,8 @@ def main():
             "capex": capex, "capex_intensity": pct(capex_intensity * 100),
             "maintenance_intensity": pct(maintenance_intensity * 100),
             "canada_book_depreciation_owned": money(ca_book_dep),
+            "book_depreciation_rate": pct(base["book_depreciation_rate"] * 100),
+            "capital_intensity": pct(capital_intensity * 100),
             "organic_sales_growth_per_week": pct(organic * 100),
             "face_sales_growth": pct(100.0 * (d["income_statement"]["revenue"]["current"]
                                               / float(r0) - 1.0)),
@@ -735,10 +896,21 @@ def main():
             "tax_rate": pct(tax * 100),
             "wacc": pct(wacc * 100),
             "shares_outstanding": shares, "share_price": price,
+            "beta_regression": {k: (pct(v) if isinstance(v, float) else v)
+                                for k, v in mb.items()},
+            "cost_of_equity_at_beta_low": pct(
+                (ASSUMED["risk_free_rate"]["value"]
+                 + mb["low"] * ASSUMED["equity_risk_premium"]["value"])),
+            "cost_of_equity_at_beta_high": pct(
+                (ASSUMED["risk_free_rate"]["value"]
+                 + mb["high"] * ASSUMED["equity_risk_premium"]["value"])),
         },
         "anchors": anchors,
         "validation": validation,
         "reverse": reverse,
+        "lattice": lattice,
+        "allocation_sensitivity": allocation_sensitivity,
+        "expansion_growth_capex_share": pct(SPECS[0][2] * 100),
     }
     json.dump(out, open(OUT_PATH, "w", encoding="utf-8"), indent=1, ensure_ascii=False)
 
@@ -791,6 +963,12 @@ def main():
               % (r["anchor"], r["implied_wacc"], r["declared_wacc"],
                  r["implied_terminal_growth_at_declared_wacc"],
                  r["declared_terminal_growth"]))
+    print()
+    print("allocation of the temporary difference across classes moves value by $%.2f per share"
+          % allocation_sensitivity["spread_per_share"])
+    print("  %s" % "; ".join("%s $%.2f" % (k, v["value_per_share"]) for k, v in alloc.items()))
+    print("beta %.4f regressed on %d weekly returns, r squared %.3f, 95%% interval %.2f to %.2f"
+          % (mb["beta"], mb["observations"], mb["r_squared"], mb["low"], mb["high"]))
     print()
     print("The fork is left open. The two anchors are not averaged.")
     return 0

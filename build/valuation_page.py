@@ -160,6 +160,49 @@ tr.tot td{border-top:1px solid var(--rule-2);font-weight:600}
 td.num,th.num{font-family:ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums}
 .cite{font-size:.74rem;color:var(--ink-3);white-space:normal}
 
+/* ---------------- stakes callout and KPI cards ---------------- */
+.stakes{border:1px solid var(--accent);border-left-width:3px;background:var(--sunk);
+  padding:1.2rem 1.4rem;margin:0 0 2rem}
+.stakes h2{margin:0 0 .6rem;font-size:1.06rem;max-width:none}
+.stakes p{margin:0 0 .7rem;font-size:.95rem}
+.stakes p:last-child{margin-bottom:0}
+.stakes .lead{font-weight:600;color:var(--ink)}
+.kpis{display:grid;grid-template-columns:1fr;gap:.9rem;margin:0 0 2.6rem}
+@media (min-width:44rem){.kpis{grid-template-columns:repeat(3,1fr)}}
+.kpi{border:1px solid var(--rule-2);background:var(--panel);padding:1rem 1.1rem}
+.kpi b{display:block;font-family:ui-monospace,Menlo,monospace;font-size:.6rem;
+  letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);font-weight:600;margin-bottom:.5rem}
+.kpi .v{font-family:ui-monospace,"SF Mono",Menlo,monospace;font-variant-numeric:tabular-nums;
+  font-size:1.5rem;font-weight:600;letter-spacing:-.02em;line-height:1.1;display:block}
+.kpi .u{font-size:.76rem;color:var(--ink-3);display:block;margin-top:.3rem;line-height:1.45}
+.takeaway{color:var(--ink-2);font-size:.95rem;margin:.1rem 0 1.3rem;max-width:38rem;
+  border-left:2px solid var(--rule-2);padding-left:.8rem}
+
+/* ---------------- the levers ---------------- */
+.lever{border:1px solid var(--rule-2);background:var(--panel);padding:1.3rem 1.4rem;margin:2rem 0}
+.lever > h3{margin:0 0 .3rem;font-size:1rem}
+.lever .hint{font-size:.84rem;color:var(--ink-3);margin:0 0 1.1rem}
+.lever fieldset{border:0;padding:0;margin:0 0 1.2rem}
+.lever legend{font-family:ui-monospace,Menlo,monospace;font-size:.6rem;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--ink-3);font-weight:600;padding:0;margin-bottom:.5rem}
+.lever .radios{display:flex;flex-wrap:wrap;gap:.4rem .9rem}
+.lever .radios label{display:inline-flex;align-items:center;gap:.4rem;font-size:.88rem;cursor:pointer}
+.lever input[type=range]{width:100%;margin:.5rem 0 .2rem;accent-color:var(--accent)}
+.lever label.slab{font-family:ui-monospace,Menlo,monospace;font-size:.6rem;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--ink-3);font-weight:600;display:block}
+.scale{display:flex;justify-content:space-between;font-family:ui-monospace,Menlo,monospace;
+  font-size:.68rem;color:var(--ink-3);margin-bottom:1.1rem}
+.readout{display:grid;grid-template-columns:1fr;gap:.9rem;border-top:1px solid var(--rule);padding-top:1rem}
+@media (min-width:38rem){.readout{grid-template-columns:1fr 1fr 1fr}}
+.readout div b{display:block;font-family:ui-monospace,Menlo,monospace;font-size:.6rem;
+  letter-spacing:.13em;text-transform:uppercase;color:var(--ink-3);font-weight:600;margin-bottom:.35rem}
+.readout .n{font-family:ui-monospace,"SF Mono",Menlo,monospace;font-variant-numeric:tabular-nums;
+  font-size:1.32rem;font-weight:600;letter-spacing:-.015em}
+.readout .s{font-size:.76rem;color:var(--ink-3);display:block;margin-top:.22rem}
+.noscript-note{font-size:.82rem;color:var(--ink-3);border-top:1px solid var(--rule);
+  margin-top:1rem;padding-top:.7rem}
+:root.js .noscript-note{display:none}
+
 /* ---------------- apparatus ---------------- */
 .src{border-left:2px solid var(--accent);padding:.15rem 0 .15rem .9rem;margin:1.4rem 0;
   font-size:.85rem;color:var(--ink-2)}
@@ -169,7 +212,8 @@ td.num,th.num{font-family:ui-monospace,Menlo,monospace;font-variant-numeric:tabu
   font-size:.85rem;color:var(--ink-2)}
 .limit b{font-family:ui-monospace,Menlo,monospace;font-size:.64rem;letter-spacing:.13em;
   text-transform:uppercase;color:var(--warn);display:block;margin-bottom:.25rem;font-weight:600}
-details{border-top:1px solid var(--rule);padding:.7rem 0}
+details{border:1px solid var(--rule);padding:.7rem .9rem;margin:1.4rem 0;background:var(--panel)}
+details + details{margin-top:-1px}
 summary{cursor:pointer;font-size:.86rem;color:var(--ink-2);font-family:ui-monospace,Menlo,monospace;
   letter-spacing:.03em}
 summary::marker{color:var(--ink-3)}
@@ -310,6 +354,170 @@ def fig_shield():
     return "\n".join(g), shields, books, key
 
 
+# ====================================================== figure: waterfall ====
+def fig_waterfall():
+    """The reconstruction, drawn as the bridge it is.
+
+    Two book balances go up, one temporary difference comes down, and what is
+    left standing is the tax base. Drawing it makes the contested step visible:
+    the middle column is the whole of note 16(b) divided by a rate, and it is
+    larger than the owned property it is being taken out of, which is the whole
+    reason the right of use column has to be in the bridge at all.
+    """
+    nbv = T["owned_net_book_value"]
+    rou = T["right_of_use_net_book_value"]
+    td = T["temporary_difference"]
+    base = T["reading_with_right_of_use_ucc"]
+    steps = [
+        ("Owned property", "net book value", nbv, "up", "var(--book)"),
+        ("Right of use assets", "no tax cost to lessee", rou, "up", "var(--s5)"),
+        ("Temporary difference", "from note 16(b)", -td, "down", "var(--s3)"),
+        ("Tax base", "undepreciated cost", base, "total", "var(--accent)"),
+    ]
+    W, Hh, ml, mr, mt, mb = 760, 330, 34, 34, 64, 88
+    top = (nbv + rou) * 1.12
+    plot = Hh - mt - mb
+
+    def Y(v):
+        return mt + plot * (1 - v / top)
+
+    n = len(steps)
+    slot = (W - ml - mr) / float(n)
+    bw = slot * 0.5
+    g = ['<svg viewBox="0 0 %d %d" role="img" width="%d" aria-labelledby="f0t f0d">'
+         % (W, Hh, W),
+         '<title id="f0t">The tax base reconstructed from the deferred tax note</title>',
+         '<desc id="f0d">A bridge of four columns. Owned net book value and right of use '
+         'assets stack upward, the temporary difference implied by the deferred tax '
+         'liability is taken back down, and what remains is the undepreciated capital '
+         'cost the schedule runs on.</desc>']
+    g.append('<line x1="%d" y1="%.1f" x2="%d" y2="%.1f" stroke="var(--rule-2)"/>'
+             % (ml, Y(0), W - mr, Y(0)))
+    g.append('<text x="%d" y="%d" font-size="10.5" fill="var(--ink-3)" '
+             'letter-spacing="1.4">CAD THOUSANDS, CANADIAN AND CONSOLIDATED PROPERTY</text>'
+             % (ml, 18))
+    run = 0.0
+    for i, (lab, sub, v, kind, col) in enumerate(steps):
+        cx = ml + slot * (i + 0.5)
+        if kind == "total":
+            lo, hi = 0.0, v
+        elif v >= 0:
+            lo, hi = run, run + v
+            run += v
+        else:
+            lo, hi = run + v, run
+            run += v
+        y0, y1 = Y(hi), Y(lo)
+        g.append('<rect x="%.1f" y="%.1f" width="%.1f" height="%.1f" fill="%s" '
+                 'opacity="%s"/>' % (cx - bw / 2, y0, bw, max(2.0, y1 - y0), col,
+                                     ".92" if kind != "total" else "1"))
+        g.append('<text x="%.1f" y="%.1f" font-size="12.5" text-anchor="middle" '
+                 'fill="var(--ink)" font-weight="600">%s%s</text>'
+                 % (cx, y0 - 9, "less " if kind == "down" else "", dn(abs(v))))
+        g.append('<text x="%.1f" y="%.1f" font-size="11.5" text-anchor="middle" '
+                 'fill="var(--ink)">%s</text>' % (cx, Y(0) + 20, esc(lab)))
+        g.append('<text x="%.1f" y="%.1f" font-size="10" text-anchor="middle" '
+                 'fill="var(--ink-3)">%s</text>' % (cx, Y(0) + 34, esc(sub)))
+        if i < n - 1:
+            nxt = ml + slot * (i + 1.5)
+            yy = Y(run) if kind != "total" else Y(0)
+            g.append('<line x1="%.1f" y1="%.1f" x2="%.1f" y2="%.1f" stroke="var(--rule-2)" '
+                     'stroke-width="1" stroke-dasharray="3 3"/>'
+                     % (cx + bw / 2, yy, nxt - bw / 2, yy))
+    g.append('<text x="%.1f" y="%d" font-size="11" fill="var(--ink-3)" '
+             'text-anchor="middle">the reading that survives, because taking the '
+             'difference out of owned property alone puts the base below nil</text>'
+             % (W / 2.0, Hh - 12))
+    g.append("</svg>")
+    return "\n".join(g)
+
+
+# ============================================== the reader's two levers ======
+LEVER_HTML = """<div class="lever">
+<h3 id="levers">Move the two things that matter</h3>
+<p class="hint">Both controls read a table this repository computed, one entry for every
+whole percentage point. Nothing is modelled in your browser, nothing is fetched, and
+nothing animates.</p>
+
+<fieldset>
+<legend>Tax shield basis</legend>
+<div class="radios">
+<label><input type="radio" name="shield" value="cca" checked> Capital cost allowance, from the statute</label>
+<label><input type="radio" name="shield" value="book"> Book depreciation, the conventional proxy</label>
+</div>
+</fieldset>
+
+<label class="slab" for="gcap">Growth share of the {capex} capital programme</label>
+<input type="range" id="gcap" min="0" max="100" step="1" value="{gexp}" aria-describedby="gcapout">
+<div class="scale"><span>0 per cent, all replacement</span><span>100 per cent, all growth</span></div>
+
+<div class="readout" id="gcapout" aria-live="polite">
+<div><b>At <span id="gv">{gexp}</span> per cent growth capital</b>
+<span class="n" id="hi">${ihi}</span>
+<span class="s">terminal growth of {tg0} per cent</span></div>
+<div><b>Same share, slower terminal</b>
+<span class="n" id="lo">${ilo}</span>
+<span class="s">terminal growth of {tg1} per cent</span></div>
+<div><b>Against the traded price</b>
+<span class="n" id="gap">${igap}</span>
+<span class="s" id="gaps">{igaps} {px}, on the faster terminal</span></div>
+</div>
+<p class="noscript-note">With scripts off these controls do nothing and the page loses
+nothing: every figure they reach is also in the tables and the prose below.</p>
+</div>
+
+<script>
+/* A lookup, not a model. Four numbers per whole percentage point of the capital
+   programme: value per share at the faster terminal growth and at the slower one,
+   each with the tax shield struck from capital cost allowance and again from book
+   depreciation. Written by build/valuation_page.py out of the same run of
+   build/valuation.py that produced every other figure on this page, so a reader
+   cannot be shown a number this repository did not compute. */
+(function(){{
+  var T=[{table}], PX={px};
+  var r=document.getElementById('gcap'), gv=document.getElementById('gv'),
+      hi=document.getElementById('hi'), lo=document.getElementById('lo'),
+      gap=document.getElementById('gap'), gaps=document.getElementById('gaps');
+  if(!r||!T.length) return;
+  function money(x){{ return (x<0?'-$':'$')+Math.abs(x).toFixed(2); }}
+  function draw(){{
+    var i=parseInt(r.value,10); if(i<0)i=0; if(i>T.length-1)i=T.length-1;
+    var row=T[i], book=document.querySelector('input[name=shield]:checked').value==='book';
+    var a=book?row[2]:row[0], b=book?row[3]:row[1];
+    gv.textContent=r.value;
+    hi.textContent=money(a); lo.textContent=money(b);
+    var d=a-PX;
+    gap.textContent=money(d);
+    gaps.textContent=(d>=0?'above ':'below ')+PX.toFixed(2)+', on the faster terminal';
+  }}
+  r.addEventListener('input',draw);
+  var rad=document.getElementsByName('shield');
+  for(var i=0;i<rad.length;i++) rad[i].addEventListener('change',draw);
+  document.documentElement.className+=' js';
+  draw();
+}})();
+</script>"""
+
+
+def levers():
+    """The switcher and the slider, filled from the model's own lattice."""
+    rows = D["lattice"]["rows"]
+    gexp = int(round(D["expansion_growth_capex_share"]))
+    # the readout is filled with the values at the default position, so a reader
+    # with scripts off sees real figures rather than three zeroes
+    start = next(r for r in rows if r["g"] == gexp)
+    d0 = start["high"] - C["share_price"]
+    return LEVER_HTML.format(
+        capex=n(B["capex"]),
+        gexp=gexp,
+        ihi=p(start["high"], 2), ilo=p(start["low"], 2),
+        igap=("%s%.2f" % ("-" if d0 < 0 else "", abs(d0))),
+        igaps=("above" if d0 >= 0 else "below"),
+        tg0=p(A0["terminal"]["growth"], 1), tg1=p(A1["terminal"]["growth"], 1),
+        px=("%.2f" % C["share_price"]),
+        table=",".join("[%s,%s,%s,%s]" % (r["high"], r["low"], r["high_book"], r["low_book"])
+                       for r in rows))
+
 # ========================================================== figure three ====
 def fig_fork():
     """The fork, drawn as a fork. Two anchors, no midpoint, and the market
@@ -364,6 +572,7 @@ def fig_fork():
 
 # ================================================================= prose ====
 def build():
+    f0 = fig_waterfall()
     f1, yrs, tax_s, bk_s = fig_bases()
     f2, shields, books, key2 = fig_shield()
     f3 = fig_fork()
@@ -443,14 +652,14 @@ def build():
              + " per cent",
              "Canadian sales per week against the prior year, which had 53 weeks"),
         ])
-    return f1, f2, f3, key2, dict(cls_rows=cls_rows, exc_rows=exc_rows, sched_rows=sched_rows,
+    return f0, f1, f2, f3, key2, dict(cls_rows=cls_rows, exc_rows=exc_rows, sched_rows=sched_rows,
                             sched_head=sched_head, tr_rows=tr_rows, base_rows=base_rows,
                             shields=shields, books=books, yrs=yrs,
                             tax_s=tax_s, bk_s=bk_s, taxr=taxr)
 
 
 def page():
-    f1, f2, f3, key2, X = build()
+    f0, f1, f2, f3, key2, X = build()
     S = X
     fy = I["issuer"]["fiscal_year_label"]
     doc = I["filing"]["document_title"]
@@ -510,7 +719,36 @@ the answer, and a model that presented it as the swing factor would be lying abo
 its own sensitivity.</p>
 </div>
 
+<div class="stakes">
+<h2>What actually moves the answer</h2>
+<p class="lead">Getting the statutory tax computation exactly right is worth ${gap0} to
+${gap1} per share. Deciding whether the capital programme is growth or replacement is
+worth ${forkwidth}.</p>
+<p>That ratio is roughly one to thirty, and it is the reason this piece is organised the
+way it is. The capital cost allowance schedule is the part that can be computed from a
+statute and checked against a disclosed figure, so it is done properly and it is done
+first. It is not the part that decides the valuation. A reader who takes one thing from
+this page should take the ordering, not the schedule: precision in the part you can
+verify does not buy you accuracy in the part you cannot.</p>
+<p>The terminal value carries {tvshare} per cent of enterprise value on the expansion
+reading. Everything before it is a rounding error by comparison, this piece's own
+subject included.</p>
+</div>
+
+<div class="kpis">
+<div class="kpi"><b>Tax base reconstructed</b><span class="v">{ucc}</span>
+<span class="u">Thousands of Canadian dollars, backed out of the deferred tax note against
+a book base of {bothbase}. The owned property residual is {owntd}.</span></div>
+<div class="kpi"><b>Tax shield, done properly</b><span class="v">${gap0} to ${gap1}</span>
+<span class="u">Per share, the difference between the statutory allowance and the book
+depreciation a conventional model would have used.</span></div>
+<div class="kpi"><b>Capital programme split</b><span class="v">${forkwidth}</span>
+<span class="u">Per share, between the two readings of one undisclosed line. Thirty
+times the tax effect.</span></div>
+</div>
+
 <h2><span class="rule-no">01</span>The hypothesis</h2>
+<p class="takeaway">Canadian tax law does not use book depreciation, so a model that substitutes one for the other is answering a different question.</p>
 <p class="measure kicker">If the tax base is far below the book base, then a model
 using book depreciation understates the shield.</p>
 <p>A discounted cash flow needs cash taxes, and cash taxes need a tax deduction for
@@ -531,6 +769,7 @@ honestly how much of the answer rests on that reconstruction. That is the whole
 exercise here.</p>
 
 <h2><span class="rule-no">02</span>What the filing does say</h2>
+<p class="takeaway">The tax base is not disclosed anywhere, so it has to be backed out of the deferred tax note, and only one reading of that note is arithmetically possible.</p>
 <p>Note 16(b) reports a deferred income tax liability on property, plant and
 equipment of {dtl}, against a combined federal and provincial statutory rate of
 {statrate} per cent that the same note reconciles from. A deferred tax liability is a
@@ -555,13 +794,33 @@ asset without a line of its own. Property is the only place it can be. Stripping
 right of use balance back out leaves a temporary difference on owned property of
 {owntd}, and that is the number the schedule is built on.</p>
 
-<div class="src"><b>Where this comes from</b>Note 16(b), deferred income tax, PDF page
-46 of the audited annual consolidated financial statements. Note 8, leases, PDF page
-31. Note 9, property, plant and equipment, PDF page 32. Every figure is transcribed in
-<code>content/valuation-inputs.json</code> with the statement, note and page it was
-read from.</div>
+<figure>
+<div class="figbox">{f0}</div>
+<figcaption><b>Figure 1</b>The reconstruction as a bridge. Owned net book value of {nbv}
+and right of use assets of {rou} give a book base of {bothbase}; the temporary difference
+of {td} implied by note 16(b) comes back out; what is left is a tax base of {ucc}. Taking
+the same difference out of owned property alone would leave negative {negucc}, which is
+the reading the Income Tax Act forbids.</figcaption>
+</figure>
+
+<details>
+<summary>Where every figure in this section comes from</summary>
+<p class="cite">Note 16(b), deferred income tax, PDF page 46 of the audited annual
+consolidated financial statements. Note 8, leases, PDF page 31. Note 9, property, plant
+and equipment, PDF page 32. Note 21, segment information, PDF page 60. Note 13, debt,
+PDF page 38. Every figure is transcribed in <code>content/valuation-inputs.json</code>
+with the statement, the note number and the PDF page it was read from, and the printed
+page number in the document's own footer is the PDF page less seven.</p>
+<p class="cite">The document is the standalone audited annual consolidated financial
+statements filed 24 March 2026, principal jurisdiction Quebec, auditor
+PricewaterhouseCoopers LLP, report dated 23 March 2026. SEDAR+ displays no accession
+number for it anywhere in the search grid or the document record, so the permanent
+document URL that SEDAR+ generates is recorded in its place and copied to every figure
+rather than inventing an accession format.</p>
+</details>
 
 <h2><span class="rule-no">03</span>Two bases, drawn against each other</h2>
+<p class="takeaway">Land and work in progress leave both bases, and what remains carries a tax base worth {uccpct} per cent of its book value.</p>
 <p>Land is excluded from both bases, since it is neither depreciated nor depreciable
 property, and work in progress is excluded from both for the same reason on each side:
 nothing has begun to be written off for accounting, and no allowance is claimable
@@ -573,7 +832,7 @@ is larger than a book model shows.</p>
 
 <figure>
 <div class="figbox">{f1}</div>
-<figcaption><b>Figure 1</b>The tax base against the book base, both rolled forward on
+<figcaption><b>Figure 2</b>The tax base against the book base, both rolled forward on
 the same capital spending. The tax base opens at {t0} against a book base of {b0} and
 closes at {t1} against {b1}. The gap widens from {gap0y} to {gap5y}
 rather than closing, because the allowance runs ahead of depreciation on every
@@ -581,6 +840,7 @@ addition the business makes.</figcaption>
 </figure>
 
 <h2><span class="rule-no">04</span>The classes, and the authority for each</h2>
+<p class="takeaway">Each of the issuer's own asset categories is mapped to a class in Schedule II, with the provision it rests on printed beside it.</p>
 <p>Mapping a note's asset categories onto classes in Schedule II of the Income Tax
 Regulations is the part of this that is judgment rather than arithmetic, and it is set
 out in full so it can be disagreed with. The categories are the issuer's own column
@@ -599,6 +859,7 @@ across them is in proportion to net book value.</p>
 </tbody></table></div>
 
 <h2><span class="rule-no">05</span>The first year rules, which a book model cannot see</h2>
+<p class="takeaway">The rate is not the whole story: three first year rules run on three different clocks and produce cliffs no depreciation schedule can have.</p>
 <p>The rate is only part of what a class does in the year an asset arrives. Subsection
 1100(2) of the Income Tax Regulations adjusts the pool before the rate is applied, and
 the adjustment is not one rule but several running on different clocks. Ordinary
@@ -628,19 +889,28 @@ useful lives sees a smooth curve where the statute has a staircase.</p>
 <figure>
 <div class="figbox">{f2}</div>
 {key2}
-<figcaption><b>Figure 2</b>The tax shield each year at the {taxr} per cent statutory
+<figcaption><b>Figure 3</b>The tax shield each year at the {taxr} per cent statutory
 rate, stacked by class, against the dashed line a book depreciation model would have
 claimed. The shield opens at {sh0} against {bk0} and closes at {sh4} against {bk4}.
 Over the five forecast years the allowance produces {pvcca} of shield in present
 value against {pvbook} on book depreciation, which is {shieldpct} per cent more.</figcaption>
 </figure>
 
+<details>
+<summary>The allowance year by year, class by class</summary>
 <div class="tw"><table>
 <thead><tr><th>Year</th>{sched_head}<th class="num">Total allowance</th>
 <th class="num">Shield at {taxr} per cent</th><th class="num">Book shield</th></tr></thead>
 <tbody>{sched_rows}</tbody></table></div>
+<p class="cite">Class 13 is the leasehold interest and is the only column here on a
+straight line: the opening pool is written off over the derived {c13yrs} year term and
+each year's additions over a fresh term of the same length, so its claim is the sum of
+the tranches still running. Every other column is a declining balance at its prescribed
+rate, adjusted in the year of addition by the first year factor set out above.</p>
+</details>
 
 <h2><span class="rule-no">06</span>The test</h2>
+<p class="takeaway">The reconstruction is run forward over a year it was not fitted to and asked to reproduce a figure the issuer disclosed. It misses by {vdiffpct} per cent.</p>
 <p>A reconstruction backed out of a disclosed balance is worth nothing until it
 predicts something it was not fitted to. This one was fitted to the closing balance
 sheet, so the test is to run it from the opening one. Taking the prior year's deferred
@@ -663,6 +933,7 @@ amount up to it. Nothing here is tuned to close that gap, because tuning it woul
 destroy the only test the piece has.</p>
 
 <h2><span class="rule-no">07</span>The cost of capital, as far as it can be derived</h2>
+<p class="takeaway">The cost of debt is solved from disclosed fair values and the beta is regressed from five years of weekly returns. Only the equity risk premium is still asserted.</p>
 <p>The notes disclose the coupon, the maturity and the fair value of every tranche
 outstanding, and disclose an effective interest rate for none of them. The harvest left
 those fields empty rather than substituting coupons for them, so the cost of debt is
@@ -672,6 +943,8 @@ is below the {coupon} per cent weighted average coupon for an arithmetic reason 
 than an interpretive one: the notes trade above par in aggregate, {fv} of fair value
 against {face} of face, and a bond above par yields less than it pays.</p>
 
+<details>
+<summary>Every tranche, its fair value and the yield that prices it</summary>
 <div class="tw"><table>
 <thead><tr><th>Tranche</th><th class="num">Face</th><th class="num">Fair value</th>
 <th class="num">Years</th><th class="num">Implied yield</th></tr></thead>
@@ -679,6 +952,11 @@ against {face} of face, and a bond above par yields less than it pays.</p>
 <tr class="tot"><td>Weighted by fair value</td><td class="num">{face}</td>
 <td class="num">{fv}</td><td class="num"></td><td class="num">{kd}</td></tr>
 </tbody></table></div>
+<p class="cite">All seven are senior unsecured obligations guaranteed by Dollarama L.P.
+and Dollarama GP Inc. The seventh matured during the year and is carried at nil. Each
+yield is the rate that discounts that tranche's remaining coupons and principal to the
+fair value note 13 discloses for it.</p>
+</details>
 
 <p>Capital structure is taken at market: {mcap} of equity against {borrow} of
 borrowings, which is {we} per cent equity. Lease liabilities are deliberately not
@@ -688,18 +966,35 @@ full cash lease payment as a deduction. Treating leases as debt would require ad
 lease discount rate the filing does not disclose, and would then require the payment
 to be split between principal and interest, a split the issuer explicitly does not
 make. Treating them as an operating cost keeps the cash flow and the tax computation on
-the same footing and needs nothing that is not disclosed. The cost of equity is the one
-input that cannot be derived from the filing at all, and it is declared rather than
-dressed up: a risk free rate of {rf} per cent, an equity risk premium of {erp} per
-cent and a beta of {beta}, giving {ke} per cent, and a weighted average cost of capital
-of {wacc} per cent.</p>
+the same footing and needs nothing that is not disclosed. The cost of equity is where the
+filing runs out. A risk free rate of {rf} per cent comes from the Government of Canada
+ten year yield, and a beta of {beta} is regressed here from {betaobs} weekly returns
+against the S&amp;P/TSX Composite over the five years to {betato}, on the series cached
+in <code>content/market-data.json</code> so it can be recomputed. That leaves the equity
+risk premium of {erp} per cent as the one number in the whole chain with no source at
+all, and together they give a cost of equity of {ke} per cent and a weighted average
+cost of capital of {wacc} per cent.</p>
 
-<div class="limit"><b>The weakest number in the model</b>The beta and the equity risk
-premium are asserted, not measured. No regression was run and no vendor figure was
-used. Section 09 therefore reports what discount rate the traded price implies, so a
-reader who rejects these two inputs still has something to work with.</div>
+<div class="limit"><b>A correction, and why it is on the page</b>An earlier draft of
+this model asserted a beta of {betaold} on the reasoning that a defensive retailer is
+conventionally assigned something below one. The regression puts it at {beta}, and
+{betaold} lies outside the 95 per cent interval of {betalo} to {betahi}. The asserted
+figure was wrong, it was wrong in the direction that made the company look cheap, and
+correcting it moved the expansion reading by most of the distance to the traded price.
+That is what an unsourced input is worth.</div>
+
+<p>The coefficient should not be quoted on its own, because the regression that
+produced it explains {betar2} per cent of the variance. Dollarama's weekly returns move
+at {betavol} per cent annualised against {betaindexvol} per cent for the index, and
+almost none of that movement is the index. A capital asset pricing model built on this
+beta is a weak instrument whatever number it returns: at the bottom of the interval the
+cost of equity is {kelo} per cent and at the top it is {kehi} per cent, a spread wider
+than the entire tax question this piece is about. Section 09 therefore turns the model
+around and reports what discount rate the market is already using, which needs no beta
+at all.</p>
 
 <h2><span class="rule-no">08</span>Why the range is not averaged</h2>
+<p class="takeaway">The two anchors are two readings of a line the issuer does not split, so the space between them is left empty rather than averaged.</p>
 <p>The two anchors are not a bull case and a bear case, and they are not two
 sentiments about the same facts. They are two readings of a disclosure the issuer does
 not make. Capital spending of {capex} thousand appears as a single line in the investing
@@ -718,33 +1013,40 @@ drawn as a gap.</p>
 
 <figure>
 <div class="figbox">{f3}</div>
-<figcaption><b>Figure 3</b>The fork, left open. The expansion reading gives ${a0ps} per
+<figcaption><b>Figure 4</b>The fork, left open. The expansion reading gives ${a0ps} per
 share and the maintenance reading ${a1ps}, against a traded price of ${px}. No midpoint
 is drawn between them because none is supported.</figcaption>
 </figure>
 
+{levers}
+
 <h2><span class="rule-no">09</span>What the price requires</h2>
-<p>Both anchors sit below the traded price, and the useful response to that is not to
-adjust an input until they do not. It is to invert the model and report what the price
-demands. Holding everything else, the expansion reading reaches ${px} only at a
-weighted average cost of capital of {iw0} per cent, implying a cost of equity of
-{ike0} per cent, or at the derived {wacc} per cent only with terminal growth of {ig0}
-per cent. The maintenance reading needs {iw1} per cent or terminal growth of {ig1} per
-cent. Terminal growth near five per cent in perpetuity is a claim about the Canadian
-economy and not about Dollarama, and a cost of equity below five per cent is a claim
-about the equity risk premium. Whether either is reasonable is a judgment this piece
-does not make. What it can say is that the disagreement between this model and the
-market lives in the discount rate and the terminal assumption, and does not live in
-the tax computation, which moves the answer by ${gap0} and ${gap1} per share.</p>
-<p>That is the finding, and it cuts against the piece's own subject. The capital cost
-allowance work is correct, checkable and worth doing, and it is worth roughly two
-dollars a share on a stock trading near ${pxr}. The terminal value is {tvshare} per cent
-of enterprise value on the expansion reading. Any honest account of where the answer
-comes from has to lead with that ratio rather than with the tax schedule, and a
-valuation that advertised the tax insight without it would be selling the rigorous part
-to distract from the load bearing part.</p>
+<p class="takeaway">Both anchors are compared to the traded price by inverting the model rather than by tuning an input until it agrees.</p>
+<p>The traded price of ${px} falls between the two anchors, and that is a
+weaker result than it looks. It does not mean the model agrees with the market. It
+means the fork is wide enough to contain the market, which is a statement about the
+width of the fork. Inverting the model says it more precisely: the expansion reading
+reaches ${px} at a weighted average cost of capital of {iw0} per cent against the
+{wacc} per cent derived here, a difference of five hundredths of a point, or at the
+derived rate with terminal growth of {ig0} per cent against the {tg0} per cent
+assumed. The maintenance reading needs {iw1} per cent, or terminal growth of {ig1}
+per cent against the {tg1} per cent assumed. So on one reading of the capital
+programme the market and this model are within rounding of each other, and on the
+other they are more than a point of discount rate apart, and the filing does not say
+which reading is right.</p>
+<p>That is the finding, and it cuts against the piece's own subject. The
+capital cost allowance work is correct, checkable and worth doing, and it is worth
+${gap0} to ${gap1} a share on a stock trading near ${pxr}. The terminal value is
+{tvshare} per cent of enterprise value on the expansion reading, and at a discount
+rate of {wacc} per cent against terminal growth of {tg0} per cent the spread that
+capitalises it is barely two and a half points, so the terminal value is
+hypersensitive by construction. Any honest account of where the answer comes from has
+to lead with those two facts rather than with the tax schedule. A valuation that
+advertised the tax insight without them would be selling the rigorous part to
+distract from the load bearing part.</p>
 
 <h2><span class="rule-no">10</span>The base year, and what was done to it</h2>
+<p class="takeaway">Fiscal 2026 is a 52 week year against a 53 week comparative and consolidates Australia for the first time, so the base year needs work before it can be forecast.</p>
 <p>Fiscal {fyshort} is not comparable to its own comparative without work. It ran
 {weeks} weeks against {pweeks} in the prior year, and it consolidates an Australian
 segment from 22 July 2025 that the prior year does not contain. Face sales growth of
@@ -769,6 +1071,7 @@ assets instead.</p>
 <th>Source</th></tr></thead><tbody>{base_rows}</tbody></table></div>
 
 <h2><span class="rule-no">11</span>What would make this wrong</h2>
+<p class="takeaway">Every joint in the model that could be wrong, and how much each one is worth.</p>
 <p>The reconstruction of the tax base is the load bearing assumption and it is
 indirect. It rests on reading one line of a components table as containing the right
 of use assets, and although the alternative reading is arithmetically impossible, a
@@ -776,11 +1079,16 @@ third possibility exists that neither this piece nor the disclosure can rule out
 that the line nets something else against the property difference. If the base is
 wrong the whole schedule is wrong, and the test in section 06 constrains the error to
 roughly {vdiffpct} per cent of one year's tax rather than eliminating it.</p>
-<p>The allocation of the temporary difference across classes in proportion to net book
-value is a convenience with no evidence behind it. The true split depends on the
-vintage of each pool, and two years of a note cannot recover it. The effect is on
-timing within the schedule rather than on its total, since the aggregate base is fixed
-by the deferred tax balance, but timing is what a discount rate prices.</p>
+<p>The allocation of the temporary difference across classes in proportion to
+net book value is a convenience with no evidence behind it, and it is worth measuring
+rather than worrying about. Pushing the whole difference onto the fastest pools gives
+${allocfast} per share and pushing it onto the slowest gives ${allocslow}, against
+${allocpub} published. Every allocation that is possible lies between those two, so the
+convenience is worth {allocspread} per share. The aggregate base is fixed by the
+deferred tax balance, the split moves only timing, and at a discount rate of {wacc} per
+cent the timing is nearly worthless. This was named as the weakest joint in the model
+in an earlier draft. It is the weakest joint and it costs almost nothing, which is a
+different and more useful thing to know.</p>
 <p>The Class 13 period of {c13yrs} years is derived from the right of use balance
 against right of use depreciation, which is a proxy for the average remaining lease
 term and not a disclosure of it. The lease payment split between Canada and Australia
@@ -837,6 +1145,20 @@ independently verified figure by figure against the pages cited.</p>
         wacc=p(C["wacc"], 2), kd=p(C["cost_of_debt"], 3),
         coupon=p(C["weighted_average_coupon"], 3), ke=p(C["cost_of_equity"], 3),
         rf=p(D["assumed"]["risk_free_rate"]["value"], 2),
+        betaobs=C["beta_regression"]["observations"],
+        betato=esc(C["beta_regression"]["to"]),
+        betalo=p(C["beta_regression"]["low"], 2),
+        betahi=p(C["beta_regression"]["high"], 2),
+        betar2=p(C["beta_regression"]["r_squared"] * 100, 1),
+        betavol=p(C["beta_regression"]["annualised_volatility_stock"], 1),
+        betaindexvol=p(C["beta_regression"]["annualised_volatility_index"], 1),
+        betaold=p(0.75, 2),
+        kelo=p(C["cost_of_equity_at_beta_low"], 2),
+        kehi=p(C["cost_of_equity_at_beta_high"], 2),
+        allocpub=p(D["allocation_sensitivity"]["published"], 2),
+        allocfast=p(D["allocation_sensitivity"]["cases"]["the fastest pools first"]["value_per_share"], 2),
+        allocslow=p(D["allocation_sensitivity"]["cases"]["the slowest pools first"]["value_per_share"], 2),
+        allocspread=("$" + p(D["allocation_sensitivity"]["spread_per_share"], 2)),
         erp=p(D["assumed"]["equity_risk_premium"]["value"], 2),
         beta=p(D["assumed"]["beta"]["value"], 2),
         mcap=n(C["market_capitalisation"]), borrow=n(C["borrowings"]),
@@ -882,7 +1204,7 @@ independently verified figure by figure against the pages cited.</p>
         c13yrs=D["assumed"]["class13_write_off_years"]["value"],
         facegrowth=p(B["face_sales_growth"], 1),
         organic=p(B["organic_sales_growth_per_week"], 2),
-        f1=f1, f2=f2, f3=f3, key2=key2,
+        f0=f0, f1=f1, f2=f2, f3=f3, key2=key2, levers=levers(),
         cls_rows=S["cls_rows"], exc_rows=S["exc_rows"],
         sched_rows=S["sched_rows"], sched_head=S["sched_head"],
         tr_rows=S["tr_rows"], base_rows=S["base_rows"],

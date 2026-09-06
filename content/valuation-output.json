@@ -17,11 +17,11 @@
    "caveat": "The single least defensible number in the model."
   },
   "beta": {
-   "value": 0.75,
+   "value": 0.4229,
    "unit": "multiple",
-   "what": "Equity beta",
-   "source": "Declared by the analyst. Not derived from the filing.",
-   "caveat": "A defensive discount retailer is conventionally assigned a beta below one. No regression was run and no data vendor figure was used."
+   "what": "Equity beta, five years of weekly returns against the S&P/TSX Composite",
+   "source": "Regressed from 261 weekly returns, 2021-01-25 to 2026-01-26, against the S&P/TSX Composite. Underlying series: Yahoo Finance chart API, weekly adjusted closes, retrieved 6 September 2026. Adjusted closes are used so that dividends and any split are reflected in the return series.",
+   "caveat": "The regression explains 7.6 per cent of the variance and the 95 per cent interval runs from 0.24 to 0.60, so the coefficient is estimated with very little precision. An earlier draft asserted 0.75, which lies outside that interval."
   },
   "forecast_years": {
    "value": 5,
@@ -53,11 +53,13 @@
   "lease_intensity": 5.4747,
   "net_working_capital": 654052,
   "net_working_capital_prior": 545372,
-  "nwc_intensity": 9.0143,
+  "nwc_intensity": 9.6171,
   "capex": 248747,
-  "capex_intensity": 3.4283,
+  "capex_intensity": 3.6575,
   "maintenance_intensity": 1.4868,
   "canada_book_depreciation_owned": 101119,
+  "book_depreciation_rate": 10.6317,
+  "capital_intensity": 17.9953,
   "organic_sales_growth_per_week": 8.086,
   "face_sales_growth": 13.1388
  },
@@ -245,104 +247,120 @@
   ],
   "cost_of_debt": 3.1698,
   "weighted_average_coupon": 3.6423,
-  "cost_of_equity": 7.525,
+  "cost_of_equity": 5.726,
   "market_capitalisation": 50082542,
   "borrowings": 2625121,
   "weight_equity": 95.0195,
   "weight_debt": 4.9805,
   "tax_rate": 26.5,
-  "wacc": 7.2663,
+  "wacc": 5.5568,
   "shares_outstanding": 272929382,
-  "share_price": 183.5
+  "share_price": 183.5,
+  "beta_regression": {
+   "beta": 0.4229,
+   "observations": 261,
+   "from": "2021-01-25",
+   "to": "2026-01-26",
+   "r_squared": 0.0758,
+   "standard_error": 0.0917,
+   "low": 0.2431,
+   "high": 0.6027,
+   "annualised_volatility_stock": 19.4626,
+   "annualised_volatility_index": 12.6724,
+   "source": "Yahoo Finance chart API, weekly adjusted closes, retrieved 6 September 2026. Adjusted closes are used so that dividends and any split are reflected in the return series.",
+   "retrieved": "2026-09-06"
+  },
+  "cost_of_equity_at_beta_low": 4.7369,
+  "cost_of_equity_at_beta_high": 6.7149
  },
  "anchors": [
   {
    "anchor": "Expansion reading",
    "lines": [
     {
-     "book_net_book_value": 1037810,
-     "tax_base_closing": 633925,
+     "book_net_book_value": 1057997,
+     "tax_base_closing": 645319,
      "fiscal_year": 2027,
      "sales": 7281673,
      "ebitda": 2299761,
      "lease_payments": 398648,
-     "cca": 174105,
-     "book_depreciation": 108267,
-     "taxable_income": 1727008,
-     "cash_tax": 457657,
-     "capex": 249636,
-     "change_in_working_capital": 43336,
-     "free_cash_flow": 1150485,
-     "tax_shield_on_cca": 46138,
-     "tax_shield_on_book_depreciation": 28691
+     "cca": 179407,
+     "book_depreciation": 101119,
+     "taxable_income": 1721706,
+     "cash_tax": 456252,
+     "capex": 266330,
+     "change_in_working_capital": 46234,
+     "free_cash_flow": 1132297,
+     "tax_shield_on_cca": 47543,
+     "tax_shield_on_book_depreciation": 26796
     },
     {
-     "book_net_book_value": 1129761,
-     "tax_base_closing": 737578,
+     "book_net_book_value": 1166111,
+     "tax_base_closing": 761075,
      "fiscal_year": 2028,
      "sales": 7722332,
      "ebitda": 2438934,
      "lease_payments": 422773,
-     "cca": 161090,
-     "book_depreciation": 114818,
-     "taxable_income": 1855072,
-     "cash_tax": 491594,
-     "capex": 264743,
-     "change_in_working_capital": 39722,
-     "free_cash_flow": 1220103,
-     "tax_shield_on_cca": 42689,
-     "tax_shield_on_book_depreciation": 30427
+     "cca": 166691,
+     "book_depreciation": 112483,
+     "taxable_income": 1849471,
+     "cash_tax": 490110,
+     "capex": 282448,
+     "change_in_working_capital": 42379,
+     "free_cash_flow": 1201225,
+     "tax_shield_on_cca": 44173,
+     "tax_shield_on_book_depreciation": 29808
     },
     {
-     "book_net_book_value": 1226340,
-     "tax_base_closing": 820183,
+     "book_net_book_value": 1273837,
+     "tax_base_closing": 853630,
      "fiscal_year": 2029,
      "sales": 8111106,
      "ebitda": 2561720,
      "lease_payments": 444057,
-     "cca": 195466,
-     "book_depreciation": 120599,
-     "taxable_income": 1922197,
-     "cash_tax": 509382,
-     "capex": 278071,
-     "change_in_working_capital": 35045,
-     "free_cash_flow": 1295165,
-     "tax_shield_on_cca": 51798,
-     "tax_shield_on_book_depreciation": 31959
+     "cca": 204113,
+     "book_depreciation": 123977,
+     "taxable_income": 1913550,
+     "cash_tax": 507091,
+     "capex": 296667,
+     "change_in_working_capital": 37389,
+     "free_cash_flow": 1276516,
+     "tax_shield_on_cca": 54090,
+     "tax_shield_on_book_depreciation": 32854
     },
     {
-     "book_net_book_value": 1326800,
-     "tax_base_closing": 884952,
+     "book_net_book_value": 1379417,
+     "tax_base_closing": 926646,
      "fiscal_year": 2030,
      "sales": 8436946,
      "ebitda": 2664630,
      "lease_payments": 461895,
-     "cca": 224472,
-     "book_depreciation": 125444,
-     "taxable_income": 1978262,
-     "cash_tax": 524240,
-     "capex": 289241,
-     "change_in_working_capital": 29372,
-     "free_cash_flow": 1359881,
-     "tax_shield_on_cca": 59485,
-     "tax_shield_on_book_depreciation": 33243
+     "cca": 235569,
+     "book_depreciation": 135430,
+     "taxable_income": 1967165,
+     "cash_tax": 521299,
+     "capex": 308585,
+     "change_in_working_capital": 31336,
+     "free_cash_flow": 1341514,
+     "tax_shield_on_cca": 62426,
+     "tax_shield_on_book_depreciation": 35889
     },
     {
-     "book_net_book_value": 1430273,
-     "tax_base_closing": 953308,
+     "book_net_book_value": 1481003,
+     "tax_base_closing": 1003120,
      "fiscal_year": 2031,
      "sales": 8690054,
      "ebitda": 2744569,
      "lease_payments": 475752,
-     "cca": 229563,
-     "book_depreciation": 129207,
-     "taxable_income": 2039253,
-     "cash_tax": 540402,
-     "capex": 297919,
-     "change_in_working_capital": 22816,
-     "free_cash_flow": 1407680,
-     "tax_shield_on_cca": 60834,
-     "tax_shield_on_book_depreciation": 34240
+     "cca": 241369,
+     "book_depreciation": 146655,
+     "taxable_income": 2027447,
+     "cash_tax": 537274,
+     "capex": 317843,
+     "change_in_working_capital": 24342,
+     "free_cash_flow": 1389358,
+     "tax_shield_on_cca": 63963,
+     "tax_shield_on_book_depreciation": 38864
     }
    ],
    "schedule": [
@@ -355,9 +373,9 @@
        "cca_class": "1",
        "rate": 0.04,
        "method": "declining",
-       "additions": 351,
-       "cca": 1842,
-       "closing_ucc": 44027,
+       "additions": 374,
+       "cca": 1843,
+       "closing_ucc": 44050,
        "first_year_factor": 1.5
       },
       {
@@ -365,9 +383,9 @@
        "cca_class": "8",
        "rate": 0.2,
        "method": "declining",
-       "additions": 81989,
-       "cca": 69631,
-       "closing_ucc": 237531,
+       "additions": 87472,
+       "cca": 71276,
+       "closing_ucc": 241369,
        "first_year_factor": 1.5
       },
       {
@@ -375,8 +393,8 @@
        "cca_class": "50",
        "rate": 0.55,
        "method": "declining",
-       "additions": 36800,
-       "cca": 51551,
+       "additions": 39261,
+       "cca": 54012,
        "closing_ucc": 12069,
        "first_year_factor": 1.8182
       },
@@ -385,9 +403,9 @@
        "cca_class": "10",
        "rate": 0.3,
        "method": "declining",
-       "additions": 4736,
-       "cca": 3193,
-       "closing_ucc": 5083,
+       "additions": 5053,
+       "cca": 3336,
+       "closing_ucc": 5257,
        "first_year_factor": 1.5
       },
       {
@@ -395,14 +413,14 @@
        "cca_class": "13",
        "rate": null,
        "method": "straight",
-       "additions": 125760,
-       "cca": 47888,
-       "closing_ucc": 335215,
+       "additions": 134170,
+       "cca": 48939,
+       "closing_ucc": 342574,
        "first_year_factor": 1.0
       }
      ],
-     "total_cca": 174105,
-     "closing_ucc_total": 633925
+     "total_cca": 179407,
+     "closing_ucc_total": 645319
     },
     {
      "fiscal_year": 2028,
@@ -413,9 +431,9 @@
        "cca_class": "1",
        "rate": 0.04,
        "method": "declining",
-       "additions": 372,
-       "cca": 1783,
-       "closing_ucc": 42616,
+       "additions": 397,
+       "cca": 1786,
+       "closing_ucc": 42661,
        "first_year_factor": 1.5
       },
       {
@@ -423,9 +441,9 @@
        "cca_class": "8",
        "rate": 0.2,
        "method": "declining",
-       "additions": 86951,
-       "cca": 73591,
-       "closing_ucc": 250890,
+       "additions": 92766,
+       "cca": 76103,
+       "closing_ucc": 258031,
        "first_year_factor": 1.5
       },
       {
@@ -433,9 +451,9 @@
        "cca_class": "50",
        "rate": 0.55,
        "method": "declining",
-       "additions": 39027,
-       "cca": 17371,
-       "closing_ucc": 33726,
+       "additions": 41637,
+       "cca": 18088,
+       "closing_ucc": 35618,
        "first_year_factor": 0.5
       },
       {
@@ -443,9 +461,9 @@
        "cca_class": "10",
        "rate": 0.3,
        "method": "declining",
-       "additions": 5023,
-       "cca": 3785,
-       "closing_ucc": 6320,
+       "additions": 5359,
+       "cca": 3989,
+       "closing_ucc": 6627,
        "first_year_factor": 1.5
       },
       {
@@ -453,14 +471,14 @@
        "cca_class": "13",
        "rate": null,
        "method": "straight",
-       "additions": 133370,
-       "cca": 64559,
-       "closing_ucc": 404026,
+       "additions": 142290,
+       "cca": 66725,
+       "closing_ucc": 418138,
        "first_year_factor": 1.0
       }
      ],
-     "total_cca": 161090,
-     "closing_ucc_total": 737578
+     "total_cca": 166691,
+     "closing_ucc_total": 761075
     },
     {
      "fiscal_year": 2029,
@@ -471,9 +489,9 @@
        "cca_class": "1",
        "rate": 0.04,
        "method": "declining",
-       "additions": 391,
-       "cca": 1728,
-       "closing_ucc": 41279,
+       "additions": 417,
+       "cca": 1731,
+       "closing_ucc": 41346,
        "first_year_factor": 1.5
       },
       {
@@ -481,9 +499,9 @@
        "cca_class": "8",
        "rate": 0.2,
        "method": "declining",
-       "additions": 91328,
-       "cca": 77576,
-       "closing_ucc": 264642,
+       "additions": 97436,
+       "cca": 80837,
+       "closing_ucc": 274630,
        "first_year_factor": 1.5
       },
       {
@@ -491,9 +509,9 @@
        "cca_class": "50",
        "rate": 0.55,
        "method": "declining",
-       "additions": 40992,
-       "cca": 29822,
-       "closing_ucc": 44895,
+       "additions": 43733,
+       "cca": 31616,
+       "closing_ucc": 47734,
        "first_year_factor": 0.5
       },
       {
@@ -501,9 +519,9 @@
        "cca_class": "10",
        "rate": 0.3,
        "method": "declining",
-       "additions": 5276,
-       "cca": 4270,
-       "closing_ucc": 7326,
+       "additions": 5629,
+       "cca": 4521,
+       "closing_ucc": 7735,
        "first_year_factor": 1.5
       },
       {
@@ -511,14 +529,14 @@
        "cca_class": "13",
        "rate": null,
        "method": "straight",
-       "additions": 140085,
-       "cca": 82070,
-       "closing_ucc": 462041,
+       "additions": 149453,
+       "cca": 85407,
+       "closing_ucc": 482184,
        "first_year_factor": 1.0
       }
      ],
-     "total_cca": 195466,
-     "closing_ucc_total": 820183
+     "total_cca": 204113,
+     "closing_ucc_total": 853630
     },
     {
      "fiscal_year": 2030,
@@ -529,9 +547,9 @@
        "cca_class": "1",
        "rate": 0.04,
        "method": "declining",
-       "additions": 406,
-       "cca": 1676,
-       "closing_ucc": 40010,
+       "additions": 434,
+       "cca": 1680,
+       "closing_ucc": 40100,
        "first_year_factor": 1.5
       },
       {
@@ -539,9 +557,9 @@
        "cca_class": "8",
        "rate": 0.2,
        "method": "declining",
-       "additions": 94997,
-       "cca": 81427,
-       "closing_ucc": 278211,
+       "additions": 101350,
+       "cca": 85331,
+       "closing_ucc": 290649,
        "first_year_factor": 1.5
       },
       {
@@ -549,9 +567,9 @@
        "cca_class": "50",
        "rate": 0.55,
        "method": "declining",
-       "additions": 42638,
-       "cca": 36418,
-       "closing_ucc": 51116,
+       "additions": 45490,
+       "cca": 38764,
+       "closing_ucc": 54461,
        "first_year_factor": 0.5
       },
       {
@@ -559,9 +577,9 @@
        "cca_class": "10",
        "rate": 0.3,
        "method": "declining",
-       "additions": 5488,
-       "cca": 4667,
-       "closing_ucc": 8146,
+       "additions": 5855,
+       "cca": 4955,
+       "closing_ucc": 8634,
        "first_year_factor": 1.5
       },
       {
@@ -569,14 +587,14 @@
        "cca_class": "13",
        "rate": null,
        "method": "straight",
-       "additions": 145712,
-       "cca": 100284,
-       "closing_ucc": 507469,
+       "additions": 155457,
+       "cca": 104839,
+       "closing_ucc": 532802,
        "first_year_factor": 1.0
       }
      ],
-     "total_cca": 224472,
-     "closing_ucc_total": 884952
+     "total_cca": 235569,
+     "closing_ucc_total": 926646
     },
     {
      "fiscal_year": 2031,
@@ -587,9 +605,9 @@
        "cca_class": "1",
        "rate": 0.04,
        "method": "declining",
-       "additions": 419,
-       "cca": 1609,
-       "closing_ucc": 38820,
+       "additions": 447,
+       "cca": 1613,
+       "closing_ucc": 38934,
        "first_year_factor": 0.5
       },
       {
@@ -597,9 +615,9 @@
        "cca_class": "8",
        "rate": 0.2,
        "method": "declining",
-       "additions": 97847,
-       "cca": 65427,
-       "closing_ucc": 310631,
+       "additions": 104391,
+       "cca": 68569,
+       "closing_ucc": 326471,
        "first_year_factor": 0.5
       },
       {
@@ -607,9 +625,9 @@
        "cca_class": "50",
        "rate": 0.55,
        "method": "declining",
-       "additions": 43917,
-       "cca": 40191,
-       "closing_ucc": 54842,
+       "additions": 46854,
+       "cca": 42838,
+       "closing_ucc": 58477,
        "first_year_factor": 0.5
       },
       {
@@ -617,9 +635,9 @@
        "cca_class": "10",
        "rate": 0.3,
        "method": "declining",
-       "additions": 5652,
-       "cca": 3292,
-       "closing_ucc": 10507,
+       "additions": 6030,
+       "cca": 3495,
+       "closing_ucc": 11170,
        "first_year_factor": 0.5
       },
       {
@@ -627,14 +645,14 @@
        "cca_class": "13",
        "rate": null,
        "method": "straight",
-       "additions": 150083,
-       "cca": 119044,
-       "closing_ucc": 538509,
+       "additions": 160121,
+       "cca": 124854,
+       "closing_ucc": 568069,
        "first_year_factor": 1.0
       }
      ],
-     "total_cca": 229563,
-     "closing_ucc_total": 953308
+     "total_cca": 241369,
+     "closing_ucc_total": 1003120
     }
    ],
    "terminal": {
@@ -642,119 +660,120 @@
     "sales": 8950756,
     "ebitda": 2826906,
     "capex": 181405,
-    "allowance": 164435,
-    "cash_tax": 575698,
-    "free_cash_flow": 1556278,
+    "allowance": 164438,
+    "cash_tax": 575697,
+    "free_cash_flow": 1554707,
     "growth": 3.0,
     "capex_intensity": 2.0267,
-    "settled_allowance_over_capex": 90.6457,
+    "settled_allowance_over_capex": 90.6471,
     "converged_over_years": 30,
-    "value": 36478806
+    "value": 60806641
    },
-   "present_value_of_forecast": 5200786,
-   "present_value_of_terminal": 25687691,
-   "terminal_share_of_enterprise_value": 83.1627,
-   "enterprise_value": 30888477,
-   "wacc": 7.2663,
+   "present_value_of_forecast": 5376868,
+   "present_value_of_terminal": 46400199,
+   "terminal_share_of_enterprise_value": 89.6153,
+   "enterprise_value": 51777067,
+   "wacc": 5.5568,
    "note": "The fiscal 2026 programme is buying new stores. Once it stops, capital spending falls to what replaces the existing base plus what the terminal growth rate itself requires, and the growth it bought is real.",
+   "growth_capex_share": 59.3488,
    "non_operating_assets": 1930293,
    "borrowings": 2625121,
-   "equity_value": 30193649,
-   "value_per_share": 110.63,
-   "equity_value_on_book_depreciation": 29974966,
-   "value_per_share_on_book_depreciation": 109.83,
-   "enterprise_value_on_book_depreciation": 30669794,
-   "cca_versus_book_per_share": 0.8,
-   "present_value_of_cca_shield": 209853,
-   "present_value_of_book_shield": 128307
+   "equity_value": 51082239,
+   "value_per_share": 187.16,
+   "equity_value_on_book_depreciation": 50596144,
+   "value_per_share_on_book_depreciation": 185.38,
+   "enterprise_value_on_book_depreciation": 51290972,
+   "cca_versus_book_per_share": 1.78,
+   "present_value_of_cca_shield": 229766,
+   "present_value_of_book_shield": 138636
   },
   {
    "anchor": "Maintenance reading",
    "lines": [
     {
-     "book_net_book_value": 1037648,
-     "tax_base_closing": 633607,
+     "book_net_book_value": 1057609,
+     "tax_base_closing": 644979,
      "fiscal_year": 2027,
      "sales": 7268071,
      "ebitda": 2295465,
      "lease_payments": 397903,
-     "cca": 173957,
-     "book_depreciation": 108064,
-     "taxable_income": 1723605,
-     "cash_tax": 456755,
-     "capex": 249169,
-     "change_in_working_capital": 42110,
-     "free_cash_flow": 1149528,
-     "tax_shield_on_cca": 46099,
-     "tax_shield_on_book_depreciation": 28637
+     "cca": 179249,
+     "book_depreciation": 101119,
+     "taxable_income": 1718313,
+     "cash_tax": 455353,
+     "capex": 265833,
+     "change_in_working_capital": 44926,
+     "free_cash_flow": 1131451,
+     "tax_shield_on_cca": 47501,
+     "tax_shield_on_book_depreciation": 26796
     },
     {
-     "book_net_book_value": 1129081,
-     "tax_base_closing": 736135,
+     "book_net_book_value": 1164522,
+     "tax_base_closing": 759536,
      "fiscal_year": 2028,
      "sales": 7678835,
      "ebitda": 2425196,
      "lease_payments": 420391,
-     "cca": 160723,
-     "book_depreciation": 114172,
-     "taxable_income": 1844082,
-     "cash_tax": 488682,
-     "capex": 263251,
-     "change_in_working_capital": 37027,
-     "free_cash_flow": 1215845,
-     "tax_shield_on_cca": 42592,
-     "tax_shield_on_book_depreciation": 30256
+     "cca": 166301,
+     "book_depreciation": 112442,
+     "taxable_income": 1838504,
+     "cash_tax": 487204,
+     "capex": 280857,
+     "change_in_working_capital": 39504,
+     "free_cash_flow": 1197241,
+     "tax_shield_on_cca": 44070,
+     "tax_shield_on_book_depreciation": 29797
     },
     {
-     "book_net_book_value": 1224568,
-     "tax_base_closing": 816559,
+     "book_net_book_value": 1269795,
+     "tax_base_closing": 849764,
      "fiscal_year": 2029,
      "sales": 8019346,
      "ebitda": 2532740,
      "lease_payments": 439033,
-     "cca": 194501,
-     "book_depreciation": 119235,
-     "taxable_income": 1899206,
-     "cash_tax": 503289,
-     "capex": 274925,
-     "change_in_working_capital": 30695,
-     "free_cash_flow": 1284798,
-     "tax_shield_on_cca": 51543,
-     "tax_shield_on_book_depreciation": 31597
+     "cca": 203083,
+     "book_depreciation": 123808,
+     "taxable_income": 1890624,
+     "cash_tax": 501015,
+     "capex": 293311,
+     "change_in_working_capital": 32747,
+     "free_cash_flow": 1266633,
+     "tax_shield_on_cca": 53817,
+     "tax_shield_on_book_depreciation": 32809
     },
     {
-     "book_net_book_value": 1323127,
-     "tax_base_closing": 877783,
+     "book_net_book_value": 1371246,
+     "tax_base_closing": 918997,
      "fiscal_year": 2030,
      "sales": 8277345,
      "ebitda": 2614223,
      "lease_payments": 453158,
-     "cca": 222546,
-     "book_depreciation": 123071,
-     "taxable_income": 1938519,
-     "cash_tax": 513708,
-     "capex": 283770,
-     "change_in_working_capital": 23257,
-     "free_cash_flow": 1340331,
-     "tax_shield_on_cca": 58975,
-     "tax_shield_on_book_depreciation": 32614
+     "cca": 233514,
+     "book_depreciation": 135001,
+     "taxable_income": 1927551,
+     "cash_tax": 510801,
+     "capex": 302748,
+     "change_in_working_capital": 24812,
+     "free_cash_flow": 1322705,
+     "tax_shield_on_cca": 61881,
+     "tax_shield_on_book_depreciation": 35775
     },
     {
-     "book_net_book_value": 1423657,
-     "tax_base_closing": 940383,
+     "book_net_book_value": 1466640,
+     "tax_base_closing": 989330,
      "fiscal_year": 2031,
      "sales": 8442892,
      "ebitda": 2666508,
      "lease_payments": 462221,
-     "cca": 226845,
-     "book_depreciation": 125532,
-     "taxable_income": 1977442,
-     "cash_tax": 524022,
-     "capex": 289445,
-     "change_in_working_capital": 14923,
-     "free_cash_flow": 1375897,
-     "tax_shield_on_cca": 60114,
-     "tax_shield_on_book_depreciation": 33266
+     "cca": 238470,
+     "book_depreciation": 145787,
+     "taxable_income": 1965817,
+     "cash_tax": 520941,
+     "capex": 308803,
+     "change_in_working_capital": 15921,
+     "free_cash_flow": 1358622,
+     "tax_shield_on_cca": 63195,
+     "tax_shield_on_book_depreciation": 38633
     }
    ],
    "schedule": [
@@ -767,9 +786,9 @@
        "cca_class": "1",
        "rate": 0.04,
        "method": "declining",
-       "additions": 350,
-       "cca": 1842,
-       "closing_ucc": 44027,
+       "additions": 374,
+       "cca": 1843,
+       "closing_ucc": 44049,
        "first_year_factor": 1.5
       },
       {
@@ -777,9 +796,9 @@
        "cca_class": "8",
        "rate": 0.2,
        "method": "declining",
-       "additions": 81836,
-       "cca": 69585,
-       "closing_ucc": 237423,
+       "additions": 87309,
+       "cca": 71227,
+       "closing_ucc": 241254,
        "first_year_factor": 1.5
       },
       {
@@ -787,8 +806,8 @@
        "cca_class": "50",
        "rate": 0.55,
        "method": "declining",
-       "additions": 36731,
-       "cca": 51483,
+       "additions": 39188,
+       "cca": 53939,
        "closing_ucc": 12069,
        "first_year_factor": 1.8182
       },
@@ -797,9 +816,9 @@
        "cca_class": "10",
        "rate": 0.3,
        "method": "declining",
-       "additions": 4727,
-       "cca": 3189,
-       "closing_ucc": 5078,
+       "additions": 5044,
+       "cca": 3331,
+       "closing_ucc": 5252,
        "first_year_factor": 1.5
       },
       {
@@ -807,14 +826,14 @@
        "cca_class": "13",
        "rate": null,
        "method": "straight",
-       "additions": 125525,
-       "cca": 47858,
-       "closing_ucc": 335009,
+       "additions": 133919,
+       "cca": 48908,
+       "closing_ucc": 342355,
        "first_year_factor": 1.0
       }
      ],
-     "total_cca": 173957,
-     "closing_ucc_total": 633607
+     "total_cca": 179249,
+     "closing_ucc_total": 644979
     },
     {
      "fiscal_year": 2028,
@@ -825,9 +844,9 @@
        "cca_class": "1",
        "rate": 0.04,
        "method": "declining",
-       "additions": 370,
-       "cca": 1783,
-       "closing_ucc": 42614,
+       "additions": 395,
+       "cca": 1786,
+       "closing_ucc": 42658,
        "first_year_factor": 1.5
       },
       {
@@ -835,9 +854,9 @@
        "cca_class": "8",
        "rate": 0.2,
        "method": "declining",
-       "additions": 86461,
-       "cca": 73423,
-       "closing_ucc": 250461,
+       "additions": 92243,
+       "cca": 75924,
+       "closing_ucc": 257574,
        "first_year_factor": 1.5
       },
       {
@@ -845,9 +864,9 @@
        "cca_class": "50",
        "rate": 0.55,
        "method": "declining",
-       "additions": 38807,
-       "cca": 17310,
-       "closing_ucc": 33566,
+       "additions": 41402,
+       "cca": 18024,
+       "closing_ucc": 35448,
        "first_year_factor": 0.5
       },
       {
@@ -855,9 +874,9 @@
        "cca_class": "10",
        "rate": 0.3,
        "method": "declining",
-       "additions": 4995,
-       "cca": 3771,
-       "closing_ucc": 6301,
+       "additions": 5329,
+       "cca": 3973,
+       "closing_ucc": 6607,
        "first_year_factor": 1.5
       },
       {
@@ -865,14 +884,14 @@
        "cca_class": "13",
        "rate": null,
        "method": "straight",
-       "additions": 132619,
-       "cca": 64436,
-       "closing_ucc": 403193,
+       "additions": 141488,
+       "cca": 66594,
+       "closing_ucc": 417249,
        "first_year_factor": 1.0
       }
      ],
-     "total_cca": 160723,
-     "closing_ucc_total": 736135
+     "total_cca": 166301,
+     "closing_ucc_total": 759536
     },
     {
      "fiscal_year": 2029,
@@ -883,9 +902,9 @@
        "cca_class": "1",
        "rate": 0.04,
        "method": "declining",
-       "additions": 386,
-       "cca": 1728,
-       "closing_ucc": 41272,
+       "additions": 412,
+       "cca": 1731,
+       "closing_ucc": 41339,
        "first_year_factor": 1.5
       },
       {
@@ -893,9 +912,9 @@
        "cca_class": "8",
        "rate": 0.2,
        "method": "declining",
-       "additions": 90295,
-       "cca": 77181,
-       "closing_ucc": 263576,
+       "additions": 96334,
+       "cca": 80415,
+       "closing_ucc": 273493,
        "first_year_factor": 1.5
       },
       {
@@ -903,9 +922,9 @@
        "cca_class": "50",
        "rate": 0.55,
        "method": "declining",
-       "additions": 40528,
-       "cca": 29607,
-       "closing_ucc": 44487,
+       "additions": 43238,
+       "cca": 31387,
+       "closing_ucc": 47299,
        "first_year_factor": 0.5
       },
       {
@@ -913,9 +932,9 @@
        "cca_class": "10",
        "rate": 0.3,
        "method": "declining",
-       "additions": 5216,
-       "cca": 4238,
-       "closing_ucc": 7280,
+       "additions": 5565,
+       "cca": 4486,
+       "closing_ucc": 7686,
        "first_year_factor": 1.5
       },
       {
@@ -923,14 +942,14 @@
        "cca_class": "13",
        "rate": null,
        "method": "straight",
-       "additions": 138500,
-       "cca": 81748,
-       "closing_ucc": 459944,
+       "additions": 147762,
+       "cca": 85064,
+       "closing_ucc": 479947,
        "first_year_factor": 1.0
       }
      ],
-     "total_cca": 194501,
-     "closing_ucc_total": 816559
+     "total_cca": 203083,
+     "closing_ucc_total": 849764
     },
     {
      "fiscal_year": 2030,
@@ -941,9 +960,9 @@
        "cca_class": "1",
        "rate": 0.04,
        "method": "declining",
-       "additions": 399,
-       "cca": 1675,
-       "closing_ucc": 39996,
+       "additions": 425,
+       "cca": 1679,
+       "closing_ucc": 40085,
        "first_year_factor": 1.5
       },
       {
@@ -951,9 +970,9 @@
        "cca_class": "8",
        "rate": 0.2,
        "method": "declining",
-       "additions": 93200,
-       "cca": 80675,
-       "closing_ucc": 276100,
+       "additions": 99433,
+       "cca": 84528,
+       "closing_ucc": 288397,
        "first_year_factor": 1.5
       },
       {
@@ -961,9 +980,9 @@
        "cca_class": "50",
        "rate": 0.55,
        "method": "declining",
-       "additions": 41832,
-       "cca": 35972,
-       "closing_ucc": 50347,
+       "additions": 44629,
+       "cca": 38288,
+       "closing_ucc": 53641,
        "first_year_factor": 0.5
       },
       {
@@ -971,9 +990,9 @@
        "cca_class": "10",
        "rate": 0.3,
        "method": "declining",
-       "additions": 5384,
-       "cca": 4607,
-       "closing_ucc": 8057,
+       "additions": 5744,
+       "cca": 4890,
+       "closing_ucc": 8539,
        "first_year_factor": 1.5
       },
       {
@@ -981,14 +1000,14 @@
        "cca_class": "13",
        "rate": null,
        "method": "straight",
-       "additions": 142956,
-       "cca": 99618,
-       "closing_ucc": 503282,
+       "additions": 152516,
+       "cca": 104129,
+       "closing_ucc": 528335,
        "first_year_factor": 1.0
       }
      ],
-     "total_cca": 222546,
-     "closing_ucc_total": 877783
+     "total_cca": 233514,
+     "closing_ucc_total": 918997
     },
     {
      "fiscal_year": 2031,
@@ -999,9 +1018,9 @@
        "cca_class": "1",
        "rate": 0.04,
        "method": "declining",
-       "additions": 407,
-       "cca": 1608,
-       "closing_ucc": 38795,
+       "additions": 434,
+       "cca": 1612,
+       "closing_ucc": 38907,
        "first_year_factor": 0.5
       },
       {
@@ -1009,9 +1028,9 @@
        "cca_class": "8",
        "rate": 0.2,
        "method": "declining",
-       "additions": 95064,
-       "cca": 64726,
-       "closing_ucc": 306438,
+       "additions": 101422,
+       "cca": 67822,
+       "closing_ucc": 321997,
        "first_year_factor": 0.5
       },
       {
@@ -1019,9 +1038,9 @@
        "cca_class": "50",
        "rate": 0.55,
        "method": "declining",
-       "additions": 42668,
-       "cca": 39425,
-       "closing_ucc": 53591,
+       "additions": 45522,
+       "cca": 42021,
+       "closing_ucc": 57142,
        "first_year_factor": 0.5
       },
       {
@@ -1029,9 +1048,9 @@
        "cca_class": "10",
        "rate": 0.3,
        "method": "declining",
-       "additions": 5492,
-       "cca": 3241,
-       "closing_ucc": 10308,
+       "additions": 5859,
+       "cca": 3441,
+       "closing_ucc": 10957,
        "first_year_factor": 0.5
       },
       {
@@ -1039,46 +1058,47 @@
        "cca_class": "13",
        "rate": null,
        "method": "straight",
-       "additions": 145815,
-       "cca": 117845,
-       "closing_ucc": 531252,
+       "additions": 155566,
+       "cca": 123574,
+       "closing_ucc": 560327,
        "first_year_factor": 1.0
       }
      ],
-     "total_cca": 226845,
-     "closing_ucc_total": 940383
+     "total_cca": 238470,
+     "closing_ucc_total": 989330
     }
    ],
    "terminal": {
     "fiscal_year": 2032,
     "sales": 8611750,
     "ebitda": 2719838,
-    "capex": 295234,
-    "allowance": 276149,
-    "cash_tax": 522639,
-    "free_cash_flow": 1415278,
+    "capex": 345973,
+    "allowance": 323556,
+    "cash_tax": 510076,
+    "free_cash_flow": 1376084,
     "growth": 2.0,
-    "capex_intensity": 3.4283,
-    "settled_allowance_over_capex": 93.5356,
+    "capex_intensity": 4.0175,
+    "settled_allowance_over_capex": 93.5206,
     "converged_over_years": 30,
-    "value": 26874478
+    "value": 38688771
    },
-   "present_value_of_forecast": 5150645,
-   "present_value_of_terminal": 18924504,
-   "terminal_share_of_enterprise_value": 78.606,
-   "enterprise_value": 24075149,
-   "wacc": 7.2663,
+   "present_value_of_forecast": 5325484,
+   "present_value_of_terminal": 29522543,
+   "terminal_share_of_enterprise_value": 84.718,
+   "enterprise_value": 34848026,
+   "wacc": 5.5568,
    "note": "The fiscal 2026 programme is what it costs to keep the existing stores trading. There is no separable growth capital, so the spending never falls and the growth it can support is lower.",
+   "growth_capex_share": 0.0,
    "non_operating_assets": 1930293,
    "borrowings": 2625121,
-   "equity_value": 23380321,
-   "value_per_share": 85.66,
-   "equity_value_on_book_depreciation": 22773531,
-   "value_per_share_on_book_depreciation": 83.44,
-   "enterprise_value_on_book_depreciation": 23468359,
-   "cca_versus_book_per_share": 2.22,
-   "present_value_of_cca_shield": 208633,
-   "present_value_of_book_shield": 126654
+   "equity_value": 34153198,
+   "value_per_share": 125.14,
+   "equity_value_on_book_depreciation": 33534630,
+   "value_per_share_on_book_depreciation": 122.87,
+   "enterprise_value_on_book_depreciation": 34229458,
+   "cca_versus_book_per_share": 2.27,
+   "present_value_of_cca_shield": 228377,
+   "present_value_of_book_shield": 138319
   }
  ],
  "validation": {
@@ -1098,20 +1118,877 @@
   {
    "anchor": "Expansion reading",
    "market_equity_value": 50082542,
-   "implied_wacc": 5.6128,
-   "declared_wacc": 7.2663,
-   "implied_cost_of_equity": 5.7849,
-   "implied_terminal_growth_at_declared_wacc": 4.7185,
+   "implied_wacc": 5.6065,
+   "declared_wacc": 5.5568,
+   "implied_cost_of_equity": 5.7783,
+   "implied_terminal_growth_at_declared_wacc": 2.9472,
    "declared_terminal_growth": 3.0
   },
   {
    "anchor": "Maintenance reading",
    "market_equity_value": 50082542,
-   "implied_wacc": 4.5107,
-   "declared_wacc": 7.2663,
-   "implied_cost_of_equity": 4.625,
-   "implied_terminal_growth_at_declared_wacc": 4.8671,
+   "implied_wacc": 4.4451,
+   "declared_wacc": 5.5568,
+   "implied_cost_of_equity": 4.556,
+   "implied_terminal_growth_at_declared_wacc": 3.182,
    "declared_terminal_growth": 2.0
   }
- ]
+ ],
+ "lattice": {
+  "step_percent": 1,
+  "growth_capex_share": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8,
+   9,
+   10,
+   11,
+   12,
+   13,
+   14,
+   15,
+   16,
+   17,
+   18,
+   19,
+   20,
+   21,
+   22,
+   23,
+   24,
+   25,
+   26,
+   27,
+   28,
+   29,
+   30,
+   31,
+   32,
+   33,
+   34,
+   35,
+   36,
+   37,
+   38,
+   39,
+   40,
+   41,
+   42,
+   43,
+   44,
+   45,
+   46,
+   47,
+   48,
+   49,
+   50,
+   51,
+   52,
+   53,
+   54,
+   55,
+   56,
+   57,
+   58,
+   59,
+   60,
+   61,
+   62,
+   63,
+   64,
+   65,
+   66,
+   67,
+   68,
+   69,
+   70,
+   71,
+   72,
+   73,
+   74,
+   75,
+   76,
+   77,
+   78,
+   79,
+   80,
+   81,
+   82,
+   83,
+   84,
+   85,
+   86,
+   87,
+   88,
+   89,
+   90,
+   91,
+   92,
+   93,
+   94,
+   95,
+   96,
+   97,
+   98,
+   99,
+   100
+  ],
+  "rows": [
+   {
+    "g": 0,
+    "high": 171.01,
+    "high_book": 167.62,
+    "low": 125.14,
+    "low_book": 122.87
+   },
+   {
+    "g": 1,
+    "high": 171.28,
+    "high_book": 167.92,
+    "low": 125.32,
+    "low_book": 123.07
+   },
+   {
+    "g": 2,
+    "high": 171.56,
+    "high_book": 168.22,
+    "low": 125.51,
+    "low_book": 123.28
+   },
+   {
+    "g": 3,
+    "high": 171.83,
+    "high_book": 168.52,
+    "low": 125.69,
+    "low_book": 123.48
+   },
+   {
+    "g": 4,
+    "high": 172.1,
+    "high_book": 168.82,
+    "low": 125.88,
+    "low_book": 123.69
+   },
+   {
+    "g": 5,
+    "high": 172.37,
+    "high_book": 169.11,
+    "low": 126.07,
+    "low_book": 123.89
+   },
+   {
+    "g": 6,
+    "high": 172.65,
+    "high_book": 169.41,
+    "low": 126.25,
+    "low_book": 124.1
+   },
+   {
+    "g": 7,
+    "high": 172.92,
+    "high_book": 169.71,
+    "low": 126.44,
+    "low_book": 124.3
+   },
+   {
+    "g": 8,
+    "high": 173.19,
+    "high_book": 170.01,
+    "low": 126.63,
+    "low_book": 124.5
+   },
+   {
+    "g": 9,
+    "high": 173.46,
+    "high_book": 170.31,
+    "low": 126.81,
+    "low_book": 124.71
+   },
+   {
+    "g": 10,
+    "high": 173.73,
+    "high_book": 170.61,
+    "low": 127.0,
+    "low_book": 124.91
+   },
+   {
+    "g": 11,
+    "high": 174.01,
+    "high_book": 170.91,
+    "low": 127.18,
+    "low_book": 125.12
+   },
+   {
+    "g": 12,
+    "high": 174.28,
+    "high_book": 171.21,
+    "low": 127.37,
+    "low_book": 125.32
+   },
+   {
+    "g": 13,
+    "high": 174.55,
+    "high_book": 171.51,
+    "low": 127.56,
+    "low_book": 125.53
+   },
+   {
+    "g": 14,
+    "high": 174.82,
+    "high_book": 171.81,
+    "low": 127.74,
+    "low_book": 125.73
+   },
+   {
+    "g": 15,
+    "high": 175.09,
+    "high_book": 172.11,
+    "low": 127.93,
+    "low_book": 125.94
+   },
+   {
+    "g": 16,
+    "high": 175.37,
+    "high_book": 172.41,
+    "low": 128.12,
+    "low_book": 126.14
+   },
+   {
+    "g": 17,
+    "high": 175.64,
+    "high_book": 172.71,
+    "low": 128.3,
+    "low_book": 126.34
+   },
+   {
+    "g": 18,
+    "high": 175.91,
+    "high_book": 173.01,
+    "low": 128.49,
+    "low_book": 126.55
+   },
+   {
+    "g": 19,
+    "high": 176.18,
+    "high_book": 173.3,
+    "low": 128.68,
+    "low_book": 126.75
+   },
+   {
+    "g": 20,
+    "high": 176.46,
+    "high_book": 173.6,
+    "low": 128.86,
+    "low_book": 126.96
+   },
+   {
+    "g": 21,
+    "high": 176.73,
+    "high_book": 173.9,
+    "low": 129.05,
+    "low_book": 127.16
+   },
+   {
+    "g": 22,
+    "high": 177.0,
+    "high_book": 174.2,
+    "low": 129.23,
+    "low_book": 127.37
+   },
+   {
+    "g": 23,
+    "high": 177.27,
+    "high_book": 174.5,
+    "low": 129.42,
+    "low_book": 127.57
+   },
+   {
+    "g": 24,
+    "high": 177.54,
+    "high_book": 174.8,
+    "low": 129.61,
+    "low_book": 127.78
+   },
+   {
+    "g": 25,
+    "high": 177.82,
+    "high_book": 175.1,
+    "low": 129.79,
+    "low_book": 127.98
+   },
+   {
+    "g": 26,
+    "high": 178.09,
+    "high_book": 175.4,
+    "low": 129.98,
+    "low_book": 128.18
+   },
+   {
+    "g": 27,
+    "high": 178.36,
+    "high_book": 175.7,
+    "low": 130.17,
+    "low_book": 128.39
+   },
+   {
+    "g": 28,
+    "high": 178.63,
+    "high_book": 176.0,
+    "low": 130.35,
+    "low_book": 128.59
+   },
+   {
+    "g": 29,
+    "high": 178.9,
+    "high_book": 176.3,
+    "low": 130.54,
+    "low_book": 128.8
+   },
+   {
+    "g": 30,
+    "high": 179.18,
+    "high_book": 176.6,
+    "low": 130.72,
+    "low_book": 129.0
+   },
+   {
+    "g": 31,
+    "high": 179.45,
+    "high_book": 176.9,
+    "low": 130.91,
+    "low_book": 129.21
+   },
+   {
+    "g": 32,
+    "high": 179.72,
+    "high_book": 177.2,
+    "low": 131.1,
+    "low_book": 129.41
+   },
+   {
+    "g": 33,
+    "high": 179.99,
+    "high_book": 177.5,
+    "low": 131.28,
+    "low_book": 129.62
+   },
+   {
+    "g": 34,
+    "high": 180.26,
+    "high_book": 177.79,
+    "low": 131.47,
+    "low_book": 129.82
+   },
+   {
+    "g": 35,
+    "high": 180.54,
+    "high_book": 178.09,
+    "low": 131.66,
+    "low_book": 130.02
+   },
+   {
+    "g": 36,
+    "high": 180.81,
+    "high_book": 178.39,
+    "low": 131.84,
+    "low_book": 130.23
+   },
+   {
+    "g": 37,
+    "high": 181.08,
+    "high_book": 178.69,
+    "low": 132.03,
+    "low_book": 130.43
+   },
+   {
+    "g": 38,
+    "high": 181.35,
+    "high_book": 178.99,
+    "low": 132.21,
+    "low_book": 130.64
+   },
+   {
+    "g": 39,
+    "high": 181.63,
+    "high_book": 179.29,
+    "low": 132.4,
+    "low_book": 130.84
+   },
+   {
+    "g": 40,
+    "high": 181.9,
+    "high_book": 179.59,
+    "low": 132.59,
+    "low_book": 131.05
+   },
+   {
+    "g": 41,
+    "high": 182.17,
+    "high_book": 179.89,
+    "low": 132.77,
+    "low_book": 131.25
+   },
+   {
+    "g": 42,
+    "high": 182.44,
+    "high_book": 180.19,
+    "low": 132.96,
+    "low_book": 131.46
+   },
+   {
+    "g": 43,
+    "high": 182.71,
+    "high_book": 180.49,
+    "low": 133.15,
+    "low_book": 131.66
+   },
+   {
+    "g": 44,
+    "high": 182.99,
+    "high_book": 180.79,
+    "low": 133.33,
+    "low_book": 131.86
+   },
+   {
+    "g": 45,
+    "high": 183.26,
+    "high_book": 181.09,
+    "low": 133.52,
+    "low_book": 132.07
+   },
+   {
+    "g": 46,
+    "high": 183.53,
+    "high_book": 181.39,
+    "low": 133.71,
+    "low_book": 132.27
+   },
+   {
+    "g": 47,
+    "high": 183.8,
+    "high_book": 181.69,
+    "low": 133.89,
+    "low_book": 132.48
+   },
+   {
+    "g": 48,
+    "high": 184.07,
+    "high_book": 181.99,
+    "low": 134.08,
+    "low_book": 132.68
+   },
+   {
+    "g": 49,
+    "high": 184.35,
+    "high_book": 182.28,
+    "low": 134.26,
+    "low_book": 132.89
+   },
+   {
+    "g": 50,
+    "high": 184.62,
+    "high_book": 182.58,
+    "low": 134.45,
+    "low_book": 133.09
+   },
+   {
+    "g": 51,
+    "high": 184.89,
+    "high_book": 182.88,
+    "low": 134.64,
+    "low_book": 133.3
+   },
+   {
+    "g": 52,
+    "high": 185.16,
+    "high_book": 183.18,
+    "low": 134.82,
+    "low_book": 133.5
+   },
+   {
+    "g": 53,
+    "high": 185.44,
+    "high_book": 183.48,
+    "low": 135.01,
+    "low_book": 133.7
+   },
+   {
+    "g": 54,
+    "high": 185.71,
+    "high_book": 183.78,
+    "low": 135.2,
+    "low_book": 133.91
+   },
+   {
+    "g": 55,
+    "high": 185.98,
+    "high_book": 184.08,
+    "low": 135.38,
+    "low_book": 134.11
+   },
+   {
+    "g": 56,
+    "high": 186.25,
+    "high_book": 184.38,
+    "low": 135.57,
+    "low_book": 134.32
+   },
+   {
+    "g": 57,
+    "high": 186.52,
+    "high_book": 184.68,
+    "low": 135.75,
+    "low_book": 134.52
+   },
+   {
+    "g": 58,
+    "high": 186.8,
+    "high_book": 184.98,
+    "low": 135.94,
+    "low_book": 134.73
+   },
+   {
+    "g": 59,
+    "high": 187.07,
+    "high_book": 185.28,
+    "low": 136.13,
+    "low_book": 134.93
+   },
+   {
+    "g": 60,
+    "high": 187.34,
+    "high_book": 185.58,
+    "low": 136.31,
+    "low_book": 135.14
+   },
+   {
+    "g": 61,
+    "high": 187.61,
+    "high_book": 185.88,
+    "low": 136.5,
+    "low_book": 135.34
+   },
+   {
+    "g": 62,
+    "high": 187.88,
+    "high_book": 186.18,
+    "low": 136.69,
+    "low_book": 135.54
+   },
+   {
+    "g": 63,
+    "high": 188.16,
+    "high_book": 186.47,
+    "low": 136.87,
+    "low_book": 135.75
+   },
+   {
+    "g": 64,
+    "high": 188.43,
+    "high_book": 186.77,
+    "low": 137.06,
+    "low_book": 135.95
+   },
+   {
+    "g": 65,
+    "high": 188.7,
+    "high_book": 187.07,
+    "low": 137.24,
+    "low_book": 136.16
+   },
+   {
+    "g": 66,
+    "high": 188.97,
+    "high_book": 187.37,
+    "low": 137.43,
+    "low_book": 136.36
+   },
+   {
+    "g": 67,
+    "high": 189.24,
+    "high_book": 187.67,
+    "low": 137.62,
+    "low_book": 136.57
+   },
+   {
+    "g": 68,
+    "high": 189.52,
+    "high_book": 187.97,
+    "low": 137.8,
+    "low_book": 136.77
+   },
+   {
+    "g": 69,
+    "high": 189.79,
+    "high_book": 188.27,
+    "low": 137.99,
+    "low_book": 136.98
+   },
+   {
+    "g": 70,
+    "high": 190.06,
+    "high_book": 188.57,
+    "low": 138.18,
+    "low_book": 137.18
+   },
+   {
+    "g": 71,
+    "high": 190.33,
+    "high_book": 188.87,
+    "low": 138.36,
+    "low_book": 137.38
+   },
+   {
+    "g": 72,
+    "high": 190.61,
+    "high_book": 189.17,
+    "low": 138.55,
+    "low_book": 137.59
+   },
+   {
+    "g": 73,
+    "high": 190.88,
+    "high_book": 189.47,
+    "low": 138.74,
+    "low_book": 137.79
+   },
+   {
+    "g": 74,
+    "high": 191.15,
+    "high_book": 189.77,
+    "low": 138.92,
+    "low_book": 138.0
+   },
+   {
+    "g": 75,
+    "high": 191.42,
+    "high_book": 190.07,
+    "low": 139.11,
+    "low_book": 138.2
+   },
+   {
+    "g": 76,
+    "high": 191.69,
+    "high_book": 190.37,
+    "low": 139.29,
+    "low_book": 138.41
+   },
+   {
+    "g": 77,
+    "high": 191.97,
+    "high_book": 190.67,
+    "low": 139.48,
+    "low_book": 138.61
+   },
+   {
+    "g": 78,
+    "high": 192.24,
+    "high_book": 190.96,
+    "low": 139.67,
+    "low_book": 138.82
+   },
+   {
+    "g": 79,
+    "high": 192.51,
+    "high_book": 191.26,
+    "low": 139.85,
+    "low_book": 139.02
+   },
+   {
+    "g": 80,
+    "high": 192.78,
+    "high_book": 191.56,
+    "low": 140.04,
+    "low_book": 139.22
+   },
+   {
+    "g": 81,
+    "high": 193.05,
+    "high_book": 191.86,
+    "low": 140.23,
+    "low_book": 139.43
+   },
+   {
+    "g": 82,
+    "high": 193.33,
+    "high_book": 192.16,
+    "low": 140.41,
+    "low_book": 139.63
+   },
+   {
+    "g": 83,
+    "high": 193.6,
+    "high_book": 192.46,
+    "low": 140.6,
+    "low_book": 139.84
+   },
+   {
+    "g": 84,
+    "high": 193.87,
+    "high_book": 192.76,
+    "low": 140.78,
+    "low_book": 140.04
+   },
+   {
+    "g": 85,
+    "high": 194.14,
+    "high_book": 193.06,
+    "low": 140.97,
+    "low_book": 140.25
+   },
+   {
+    "g": 86,
+    "high": 194.42,
+    "high_book": 193.36,
+    "low": 141.16,
+    "low_book": 140.45
+   },
+   {
+    "g": 87,
+    "high": 194.69,
+    "high_book": 193.66,
+    "low": 141.34,
+    "low_book": 140.65
+   },
+   {
+    "g": 88,
+    "high": 194.96,
+    "high_book": 193.96,
+    "low": 141.53,
+    "low_book": 140.86
+   },
+   {
+    "g": 89,
+    "high": 195.23,
+    "high_book": 194.26,
+    "low": 141.72,
+    "low_book": 141.06
+   },
+   {
+    "g": 90,
+    "high": 195.5,
+    "high_book": 194.56,
+    "low": 141.9,
+    "low_book": 141.27
+   },
+   {
+    "g": 91,
+    "high": 195.78,
+    "high_book": 194.86,
+    "low": 142.09,
+    "low_book": 141.47
+   },
+   {
+    "g": 92,
+    "high": 196.05,
+    "high_book": 195.15,
+    "low": 142.27,
+    "low_book": 141.68
+   },
+   {
+    "g": 93,
+    "high": 196.32,
+    "high_book": 195.45,
+    "low": 142.46,
+    "low_book": 141.88
+   },
+   {
+    "g": 94,
+    "high": 196.59,
+    "high_book": 195.75,
+    "low": 142.65,
+    "low_book": 142.09
+   },
+   {
+    "g": 95,
+    "high": 196.86,
+    "high_book": 196.05,
+    "low": 142.83,
+    "low_book": 142.29
+   },
+   {
+    "g": 96,
+    "high": 197.14,
+    "high_book": 196.35,
+    "low": 143.02,
+    "low_book": 142.49
+   },
+   {
+    "g": 97,
+    "high": 197.41,
+    "high_book": 196.65,
+    "low": 143.21,
+    "low_book": 142.7
+   },
+   {
+    "g": 98,
+    "high": 197.68,
+    "high_book": 196.95,
+    "low": 143.39,
+    "low_book": 142.9
+   },
+   {
+    "g": 99,
+    "high": 197.95,
+    "high_book": 197.25,
+    "low": 143.58,
+    "low_book": 143.11
+   },
+   {
+    "g": 100,
+    "high": 198.22,
+    "high_book": 197.55,
+    "low": 143.77,
+    "low_book": 143.31
+   }
+  ],
+  "what": "Value per share against the share of the fiscal 2026 capital programme that is growth rather than replacement, at each of the two terminal growth rates, with the tax shield computed both ways."
+ },
+ "allocation_sensitivity": {
+  "what": "The whole temporary difference pushed onto the fastest classes, then onto the slowest, against the published allocation in proportion to net book value. Every possible allocation lies between the two.",
+  "cases": {
+   "pro rata to net book value": {
+    "value_per_share": 187.16,
+    "opening_ucc_by_class": {
+     "Buildings and roofs": 45518,
+     "Store and warehouse equipment": 225173,
+     "Computer equipment": 26821,
+     "Vehicles": 3539,
+     "Leasehold improvements": 257343
+    },
+    "present_value_of_shield": 229766
+   },
+   "the fastest pools first": {
+    "value_per_share": 187.14,
+    "opening_ucc_by_class": {
+     "Buildings and roofs": 77531,
+     "Store and warehouse equipment": 42535,
+     "Computer equipment": 0,
+     "Vehicles": 0,
+     "Leasehold improvements": 438329
+    },
+    "present_value_of_shield": 221208
+   },
+   "the slowest pools first": {
+    "value_per_share": 187.19,
+    "opening_ucc_by_class": {
+     "Buildings and roofs": 0,
+     "Store and warehouse equipment": 383534,
+     "Computer equipment": 45684,
+     "Vehicles": 6029,
+     "Leasehold improvements": 123148
+    },
+    "present_value_of_shield": 238495
+   }
+  },
+  "spread_per_share": 0.05,
+  "published": 187.16
+ },
+ "expansion_growth_capex_share": 59.3488
 }
