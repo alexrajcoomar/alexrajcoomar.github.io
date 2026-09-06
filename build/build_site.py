@@ -1479,7 +1479,13 @@ def exceptions():
             kinds["md"] += 1
     undrawn = [p for p in P if not p["is_doc"]]
     listed = {p["slug"] for p in P}
-    transcripts = sorted(k for k in METRICS if k not in listed)
+    # a page this build writes is never a transcript, whatever content/
+    # metrics.json holds for it. build/measure.js measured two generated pages
+    # into that file once, and every rule downstream then treated them as
+    # unlisted content and asked for an invariance record for a page the build
+    # rewrites on every run.
+    generated = {f[:-5] for f in SHELL_PAGES if f.endswith(".html")}
+    transcripts = sorted(k for k in METRICS if k not in listed and k not in generated)
     return {"fonts": fonts, "undrawn": undrawn,
             "undrawn_words": sum(p["words"] for p in undrawn),
             "transcripts": transcripts, "kinds": kinds,
