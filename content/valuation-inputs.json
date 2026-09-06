@@ -1,0 +1,556 @@
+{
+ "note": "The figures this repository cannot compute: everything taken from the issuer's filed financial statements. Every value here is transcribed from a primary source and carries the statement, note, page and SEDAR+ accession it came from. Nothing in the valuation piece may state a source figure that is not in this file, and build/valuation.py derives every other number from these. A null is an honest absence: it means the filing did not disclose it, and the comment says so. Never fill a null with an estimate.",
+ "status": "template, unfilled",
+ "schema_version": 1,
+ "issuer": {
+  "name": null,
+  "ticker": null,
+  "exchange": "TSX",
+  "sedar_profile_url": null,
+  "fiscal_year_label": null,
+  "fiscal_year_end_date": null,
+  "prior_fiscal_year_end_date": null,
+  "weeks_in_fiscal_year": null,
+  "presentation_currency": null,
+  "statement_units": null,
+  "ifrs_or_aspe": "IFRS",
+  "comment": "A 52 or 53 week retail year is not 12 months. Record the week count."
+ },
+ "filing": {
+  "document_type": null,
+  "document_title": null,
+  "filed_date": null,
+  "period_end": null,
+  "sedar_accession": null,
+  "sedar_document_url": null,
+  "pdf_page_count": null,
+  "auditor": null,
+  "comment": "The audited annual consolidated financial statements, not the MD&A and not a press release."
+ },
+ "balance_sheet": {
+  "cash_and_cash_equivalents": {
+   "current": null,
+   "prior": null,
+   "unit": "CAD thousands",
+   "statement": null,
+   "note": null,
+   "page": null,
+   "accession": null,
+   "comment": ""
+  },
+  "short_term_investments": {
+   "current": null,
+   "prior": null,
+   "unit": "CAD thousands",
+   "statement": null,
+   "note": null,
+   "page": null,
+   "accession": null,
+   "comment": ""
+  },
+  "bank_indebtedness": {
+   "current": null,
+   "prior": null,
+   "unit": "CAD thousands",
+   "statement": null,
+   "note": null,
+   "page": null,
+   "accession": null,
+   "comment": ""
+  },
+  "current_portion_of_long_term_debt": {
+   "current": null,
+   "prior": null,
+   "unit": "CAD thousands",
+   "statement": null,
+   "note": null,
+   "page": null,
+   "accession": null,
+   "comment": ""
+  },
+  "long_term_debt_non_current": {
+   "current": null,
+   "prior": null,
+   "unit": "CAD thousands",
+   "statement": null,
+   "note": null,
+   "page": null,
+   "accession": null,
+   "comment": ""
+  },
+  "current_portion_of_lease_liabilities": {
+   "current": null,
+   "prior": null,
+   "unit": "CAD thousands",
+   "statement": null,
+   "note": null,
+   "page": null,
+   "accession": null,
+   "comment": "IFRS 16. Keep apart from borrowings."
+  },
+  "lease_liabilities_non_current": {
+   "current": null,
+   "prior": null,
+   "unit": "CAD thousands",
+   "statement": null,
+   "note": null,
+   "page": null,
+   "accession": null,
+   "comment": "IFRS 16. Keep apart from borrowings."
+  },
+  "total_current_assets": {
+   "current": null,
+   "prior": null,
+   "unit": "CAD thousands",
+   "statement": null,
+   "note": null,
+   "page": null,
+   "accession": null,
+   "comment": ""
+  },
+  "total_current_liabilities": {
+   "current": null,
+   "prior": null,
+   "unit": "CAD thousands",
+   "statement": null,
+   "note": null,
+   "page": null,
+   "accession": null,
+   "comment": ""
+  },
+  "total_assets": {
+   "current": null,
+   "prior": null,
+   "unit": "CAD thousands",
+   "statement": null,
+   "note": null,
+   "page": null,
+   "accession": null,
+   "comment": ""
+  },
+  "total_equity": {
+   "current": null,
+   "prior": null,
+   "unit": "CAD thousands",
+   "statement": null,
+   "note": null,
+   "page": null,
+   "accession": null,
+   "comment": ""
+  }
+ },
+ "income_statement": {
+  "revenue": {
+   "current": null,
+   "prior": null,
+   "unit": "CAD thousands",
+   "statement": null,
+   "note": null,
+   "page": null,
+   "accession": null,
+   "comment": ""
+  },
+  "cost_of_sales": {
+   "current": null,
+   "prior": null,
+   "unit": "CAD thousands",
+   "statement": null,
+   "note": null,
+   "page": null,
+   "accession": null,
+   "comment": ""
+  },
+  "gross_profit": {
+   "current": null,
+   "prior": null,
+   "unit": "CAD thousands",
+   "statement": null,
+   "note": null,
+   "page": null,
+   "accession": null,
+   "comment": ""
+  },
+  "sg_and_a": {
+   "current": null,
+   "prior": null,
+   "unit": "CAD thousands",
+   "statement": null,
+   "note": null,
+   "page": null,
+   "accession": null,
+   "comment": ""
+  },
+  "depreciation_and_amortisation_book": {
+   "current": null,
+   "prior": null,
+   "unit": "CAD thousands",
+   "statement": null,
+   "note": null,
+   "page": null,
+   "accession": null,
+   "comment": "Book charge. Recorded for the contrast with CCA, never used as a CCA proxy."
+  },
+  "operating_income_ebit": {
+   "current": null,
+   "prior": null,
+   "unit": "CAD thousands",
+   "statement": null,
+   "note": null,
+   "page": null,
+   "accession": null,
+   "comment": ""
+  },
+  "net_finance_costs": {
+   "current": null,
+   "prior": null,
+   "unit": "CAD thousands",
+   "statement": null,
+   "note": null,
+   "page": null,
+   "accession": null,
+   "comment": ""
+  },
+  "interest_on_lease_liabilities": {
+   "current": null,
+   "prior": null,
+   "unit": "CAD thousands",
+   "statement": null,
+   "note": null,
+   "page": null,
+   "accession": null,
+   "comment": ""
+  },
+  "earnings_before_income_taxes": {
+   "current": null,
+   "prior": null,
+   "unit": "CAD thousands",
+   "statement": null,
+   "note": null,
+   "page": null,
+   "accession": null,
+   "comment": ""
+  },
+  "income_tax_expense_total": {
+   "current": null,
+   "prior": null,
+   "unit": "CAD thousands",
+   "statement": null,
+   "note": null,
+   "page": null,
+   "accession": null,
+   "comment": ""
+  },
+  "income_tax_current": {
+   "current": null,
+   "prior": null,
+   "unit": "CAD thousands",
+   "statement": null,
+   "note": null,
+   "page": null,
+   "accession": null,
+   "comment": ""
+  },
+  "income_tax_deferred": {
+   "current": null,
+   "prior": null,
+   "unit": "CAD thousands",
+   "statement": null,
+   "note": null,
+   "page": null,
+   "accession": null,
+   "comment": ""
+  },
+  "net_earnings": {
+   "current": null,
+   "prior": null,
+   "unit": "CAD thousands",
+   "statement": null,
+   "note": null,
+   "page": null,
+   "accession": null,
+   "comment": ""
+  }
+ },
+ "tax_note": {
+  "statutory_rate_federal": {
+   "current": null,
+   "prior": null,
+   "unit": "percent",
+   "statement": null,
+   "note": null,
+   "page": null,
+   "accession": null,
+   "comment": ""
+  },
+  "statutory_rate_provincial_blended": {
+   "current": null,
+   "prior": null,
+   "unit": "percent",
+   "statement": null,
+   "note": null,
+   "page": null,
+   "accession": null,
+   "comment": ""
+  },
+  "statutory_rate_combined": {
+   "current": null,
+   "prior": null,
+   "unit": "percent",
+   "statement": null,
+   "note": null,
+   "page": null,
+   "accession": null,
+   "comment": "The rate the reconciliation starts from."
+  },
+  "effective_rate": {
+   "current": null,
+   "prior": null,
+   "unit": "percent",
+   "statement": null,
+   "note": null,
+   "page": null,
+   "accession": null,
+   "comment": ""
+  },
+  "deferred_tax_liability_ppe": {
+   "current": null,
+   "prior": null,
+   "unit": "CAD thousands",
+   "statement": null,
+   "note": null,
+   "page": null,
+   "accession": null,
+   "comment": "The PP&E temporary difference: the closest published trace of the tax base against the book base."
+  }
+ },
+ "cash_flow": {
+  "cash_from_operating_activities": {
+   "current": null,
+   "prior": null,
+   "unit": "CAD thousands",
+   "statement": null,
+   "note": null,
+   "page": null,
+   "accession": null,
+   "comment": ""
+  },
+  "additions_to_property_plant_and_equipment": {
+   "current": null,
+   "prior": null,
+   "unit": "CAD thousands",
+   "statement": null,
+   "note": null,
+   "page": null,
+   "accession": null,
+   "comment": "Capex as the cash flow statement reports it."
+  },
+  "additions_to_intangible_assets": {
+   "current": null,
+   "prior": null,
+   "unit": "CAD thousands",
+   "statement": null,
+   "note": null,
+   "page": null,
+   "accession": null,
+   "comment": ""
+  },
+  "proceeds_on_disposal_of_ppe": {
+   "current": null,
+   "prior": null,
+   "unit": "CAD thousands",
+   "statement": null,
+   "note": null,
+   "page": null,
+   "accession": null,
+   "comment": ""
+  },
+  "payments_of_lease_liabilities_principal": {
+   "current": null,
+   "prior": null,
+   "unit": "CAD thousands",
+   "statement": null,
+   "note": null,
+   "page": null,
+   "accession": null,
+   "comment": ""
+  },
+  "dividends_paid": {
+   "current": null,
+   "prior": null,
+   "unit": "CAD thousands",
+   "statement": null,
+   "note": null,
+   "page": null,
+   "accession": null,
+   "comment": ""
+  },
+  "shares_repurchased": {
+   "current": null,
+   "prior": null,
+   "unit": "CAD thousands",
+   "statement": null,
+   "note": null,
+   "page": null,
+   "accession": null,
+   "comment": ""
+  },
+  "changes_in_non_cash_working_capital": {
+   "current": null,
+   "prior": null,
+   "unit": "CAD thousands",
+   "statement": null,
+   "note": null,
+   "page": null,
+   "accession": null,
+   "comment": ""
+  }
+ },
+ "share_capital": {
+  "shares_outstanding_period_end": {
+   "current": null,
+   "prior": null,
+   "unit": "shares",
+   "statement": null,
+   "note": null,
+   "page": null,
+   "accession": null,
+   "comment": ""
+  },
+  "weighted_average_shares_basic": {
+   "current": null,
+   "prior": null,
+   "unit": "shares",
+   "statement": null,
+   "note": null,
+   "page": null,
+   "accession": null,
+   "comment": ""
+  },
+  "weighted_average_shares_diluted": {
+   "current": null,
+   "prior": null,
+   "unit": "shares",
+   "statement": null,
+   "note": null,
+   "page": null,
+   "accession": null,
+   "comment": ""
+  },
+  "share_price_at_fiscal_year_end": {
+   "current": null,
+   "prior": null,
+   "unit": "CAD per share",
+   "statement": null,
+   "note": null,
+   "page": null,
+   "accession": null,
+   "comment": "Closing price on the last trading day of the fiscal year. Record the date and the source separately from the filing."
+  },
+  "share_price_source": {
+   "current": null,
+   "prior": null,
+   "unit": "text",
+   "statement": null,
+   "note": null,
+   "page": null,
+   "accession": null,
+   "comment": ""
+  }
+ },
+ "leases_note": {
+  "right_of_use_assets_net_book_value": {
+   "current": null,
+   "prior": null,
+   "unit": "CAD thousands",
+   "statement": null,
+   "note": null,
+   "page": null,
+   "accession": null,
+   "comment": "Must be kept out of the CCA base. A leased asset is not depreciable capital property to the lessee under the ITA."
+  },
+  "total_lease_liability": {
+   "current": null,
+   "prior": null,
+   "unit": "CAD thousands",
+   "statement": null,
+   "note": null,
+   "page": null,
+   "accession": null,
+   "comment": ""
+  }
+ },
+ "ppe_note": {
+  "comment": "One entry per asset category exactly as the note names it. Owned property only. Right of use assets go in leases_note, not here.",
+  "statement": null,
+  "note": null,
+  "page": null,
+  "accession": null,
+  "categories": [
+   {
+    "name": null,
+    "cost_opening": null,
+    "additions": null,
+    "disposals": null,
+    "transfers": null,
+    "cost_closing": null,
+    "accumulated_depreciation_opening": null,
+    "depreciation_charge": null,
+    "accumulated_depreciation_on_disposals": null,
+    "accumulated_depreciation_closing": null,
+    "net_book_value_closing": null,
+    "useful_life_disclosed": null,
+    "comment": "Copy the category name verbatim from the note."
+   }
+  ],
+  "total_net_book_value_closing": null,
+  "construction_in_progress_included": null
+ },
+ "debt_note": {
+  "comment": "One entry per instrument. Borrowings only; lease liabilities are not debt for this purpose and are recorded in leases_note.",
+  "statement": null,
+  "note": null,
+  "page": null,
+  "accession": null,
+  "tranches": [
+   {
+    "description": null,
+    "principal_face_amount": null,
+    "carrying_amount": null,
+    "coupon_rate": null,
+    "effective_interest_rate": null,
+    "issue_date": null,
+    "maturity_date": null,
+    "currency": null,
+    "secured": null,
+    "fixed_or_floating": null,
+    "comment": ""
+   }
+  ],
+  "credit_facility": {
+   "limit": null,
+   "drawn_at_period_end": null,
+   "rate_basis": null,
+   "maturity_date": null,
+   "comment": ""
+  },
+  "total_carrying_amount": null,
+  "fair_value_of_debt_disclosed": null
+ },
+ "cca_mapping": {
+  "comment": "NOT from the filing. The mapping of each PP&E category to a CCA class is the analyst's judgment and is filled in Phase 3, each row citing the ITA provision or CRA source it rests on. Leave empty during the harvest.",
+  "rows": [],
+  "first_year_rule_applied": null,
+  "first_year_rule_source": null,
+  "opening_ucc_source": null,
+  "opening_ucc_is_disclosed": null
+ },
+ "harvest_log": {
+  "harvested_by": null,
+  "harvested_on": null,
+  "tool": null,
+  "fields_filled": null,
+  "fields_left_null": null,
+  "not_disclosed": [],
+  "discrepancies": []
+ }
+}
