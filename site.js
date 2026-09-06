@@ -375,27 +375,73 @@
       total += r.length;
       return { g: g, rows: r };
     });
+    /* The standing readout in the hero. The filters already walk every row,
+       so the shares are summed on the pass that is happening anyway rather
+       than on a pass of their own; nothing is scheduled and nothing runs once
+       the pointer stops, so the page still requests no frame while idle. The
+       totals rendered by the build are the resting state and the denominator,
+       which is what a reader with scripts off keeps. */
+    var denomEl = document.querySelector(".denom");
+    var TOT = {}, cell = {}, ofCell = {};
+    if (denomEl) {
+      ["n", "w", "f", "t"].forEach(function (k) {
+        cell[k] = denomEl.querySelector('[data-d="' + k + '"]');
+        ofCell[k] = denomEl.querySelector('[data-of="' + k + '"]');
+        TOT[k] = cell[k] ? +String(cell[k].textContent).replace(/[^0-9]/g, "") : 0;
+      });
+    }
+    var denomNote = denomEl && denomEl.querySelector(".denom-n");
+    function num(li, a) { return +(li.getAttribute(a) || 0) || 0; }
+    function readout(vis, whole) {
+      var sum = { n: vis.length, w: 0, f: 0, t: 0 };
+      vis.forEach(function (li) {
+        sum.w += num(li, "data-words");
+        sum.f += num(li, "data-figs");
+        sum.t += num(li, "data-tabs");
+      });
+      if (!denomEl) return sum;
+      ["n", "w", "f", "t"].forEach(function (k) {
+        if (cell[k]) cell[k].textContent = sum[k].toLocaleString("en-CA");
+        if (ofCell[k]) ofCell[k].textContent = whole ? "" : " of " + TOT[k].toLocaleString("en-CA");
+      });
+      if (denomNote) {
+        denomNote.textContent = whole
+          ? denomNote.getAttribute("data-rest")
+          : (TOT.w ? (sum.w / TOT.w * 100).toFixed(1) + "% of the measured words" : "");
+      }
+      return sum;
+    }
+
     function run() {
-      var term = (qq && qq.value || "").trim().toLowerCase(), shown = 0;
+      var term = (qq && qq.value || "").trim().toLowerCase(), shown = 0, vis = [];
       sets.forEach(function (s) {
-        var vis = 0;
+        var seen = 0;
         s.rows.forEach(function (li) {
           var ok = (f === "all" || li.getAttribute("data-kind") === f) &&
                    (fs === "all" || li.getAttribute("data-surface") === fs) &&
                    (!term || (li.getAttribute("data-search") || "").indexOf(term) > -1);
-          li.hidden = !ok; if (ok) vis++;
+          li.hidden = !ok; if (ok) { seen++; vis.push(li); }
         });
-        s.g.hidden = vis === 0; shown += vis;
+        s.g.hidden = seen === 0; shown += seen;
         var whole = f === "all" && fs === "all" && !term;
         [].forEach.call(s.g.querySelectorAll(".sr-head,.sr-sub"), function (el) { el.hidden = !whole; });
       });
+      var everything = f === "all" && fs === "all" && !term;
+      var sum = readout(vis, everything);
       if (noteEl) {
+        /* one live region for the whole control, so a filter is announced
+           once and carries its own denominator rather than twice. The words
+           clause is added only where the hero renders the totals to be a
+           denominator; without it the line reads as it always did. */
+        var whole = TOT.w ? ", " + TOT.w.toLocaleString("en-CA") + " words." : ".";
+        var part = TOT.w ? ", " + sum.w.toLocaleString("en-CA") + " of " +
+                           TOT.w.toLocaleString("en-CA") + " words." : ".";
         noteEl.textContent = shown === total
-          ? "Showing all " + total + " pieces."
+          ? "Showing all " + total + " pieces" + whole
           : shown === 0
             ? "Nothing matches" + (term ? ' "' + qq.value.trim() + '"' : " that filter") + "."
             : "Showing " + shown + " of " + total + " pieces" +
-              (term ? ' matching "' + qq.value.trim() + '".' : ".");
+              (term ? ' matching "' + qq.value.trim() + '"' : "") + part;
       }
       if (none) none.hidden = shown !== 0;
     }

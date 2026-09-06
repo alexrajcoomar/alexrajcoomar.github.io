@@ -63,6 +63,13 @@
      Vintage, green is the tools and the investment share, amber is a
      heading carried by several documents. 7.1:1 on paper. */
   --link:         #5a36c9;
+  /* A third hue, and it means one thing too: two capabilities evidenced by
+     the same piece. It is not the violet above, because that is reserved
+     for a link one document's prose makes to another and a shared piece is
+     not a citation; and it is not the accent, because the accent is already
+     the independent work and every link on the site. Cobalt, 8.0:1 on paper
+     and 7.4:1 on the panel, so it clears the same floor the accent does. */
+  --cobalt:       #0047ab;
   --tool:         #0f6b58;   /*  5.9:1 on paper */
   --ref:          #8a5410;   /*  5.4:1 on paper */
   --selection:    #cfe0f6;
@@ -151,6 +158,7 @@
     --alt-ink:     #16150f;
     --alt-accent:  #14509b;
     --link:#bfa2ff;   /* 9.0:1 on paper, 7.9 on panel-2 */
+    --cobalt:      #7fb0e8;   /* 8.5:1 on paper, 8.0 on panel */
     --tool:        #4fc4a6;
     --ref:         #dbab5d;
     --selection:   #223b5c;
@@ -175,6 +183,7 @@
   --alt-ink:     #16150f;
   --alt-accent:  #14509b;
     --link:#bfa2ff;   /* 9.0:1 on paper, 7.9 on panel-2 */
+  --cobalt:      #7fb0e8;   /* 8.5:1 on paper, 8.0 on panel */
   --tool:        #4fc4a6;
   --ref:         #dbab5d;
   --selection:   #223b5c;
@@ -448,6 +457,115 @@ a.open,.openlink{
 }
 a.open:hover,.openlink:hover{text-decoration:underline}
 .stack-end{padding-bottom:4rem}
+
+/* ---- the hero readout on the library ---------------------------------
+   The page states a total and then hands the reader a filter, and the one
+   number that says where they now are was a small grey line under the
+   controls. The readout stands in the hero beside the lede: the whole
+   statement at rest, and the selected share with its denominator once a
+   chip or the search box narrows the shelf. The build renders the resting
+   figures, so with scripts off the readout is still true. */
+.herowrap{display:grid;gap:var(--gap);align-items:end}
+@media (min-width:64rem){ .herowrap{grid-template-columns:minmax(0,1fr) 17rem} }
+.herolead{min-width:0}
+.denom{border-top:1px solid var(--ink);padding-top:.6rem}
+.denom-h{
+  margin:0 0 .35rem;font-size:var(--meta-size);letter-spacing:var(--meta-track);
+  text-transform:uppercase;font-weight:var(--meta-weight);color:var(--ink-3)
+}
+.denom-l{margin:0;display:grid;gap:0}
+.denom-l > div{
+  display:grid;grid-template-columns:minmax(0,1fr) auto;gap:.6rem;align-items:baseline;
+  padding:.3rem 0;border-bottom:1px solid var(--rule)
+}
+.denom-l > div:last-child{border-bottom:0}
+.denom-l dt{font-size:.82rem;color:var(--ink-2)}
+.denom-l dd{
+  margin:0;font-variant-numeric:tabular-nums;font-size:.88rem;
+  text-align:right;white-space:nowrap
+}
+.denom-l dd b{color:var(--ink);font-weight:660}
+.denom-l dd span{color:var(--ink-3);font-size:.8rem}
+.denom-n{
+  margin:.45rem 0 0;font-size:.78rem;color:var(--ink-3);
+  font-variant-numeric:tabular-nums;min-height:1.2em
+}
+
+/* ---- the shape as a field, on selected work --------------------------
+   Six pieces across, eight slots down, forty-eight cells. The page states
+   the completion in one line of prose and then makes a reader walk six
+   tables to see where the gaps are; the field puts them in the hero. The
+   mark in a cell differs in shape as well as in fill, so the grid does not
+   depend on colour, and every cell carries its own sentence for a screen
+   reader. */
+.slotwrap{border-top:1px solid var(--ink);padding-top:.6rem}
+.slots-h{
+  margin:0 0 .55rem;font-size:var(--meta-size);letter-spacing:var(--meta-track);
+  text-transform:uppercase;font-weight:var(--meta-weight);color:var(--ink-3)
+}
+.slotscroll{overflow-x:auto}
+.slots{border-collapse:collapse;font-size:.7rem;width:100%}
+.slots th,.slots td{padding:0;border:0}
+.slots thead td{width:auto}
+.slots thead th{
+  font-weight:var(--meta-weight);color:var(--ink-3);font-size:.64rem;
+  letter-spacing:.04em;text-align:center;padding-bottom:.25rem;
+  font-variant-numeric:tabular-nums
+}
+.slots thead th abbr{text-decoration:none;border-bottom:1px dotted var(--edge);cursor:help}
+.slots tbody th{
+  text-align:left;font-weight:500;color:var(--ink-2);white-space:nowrap;
+  padding:.1rem .5rem .1rem 0;font-size:.7rem
+}
+.slots tbody td{text-align:center;padding:.1rem}
+/* the four states: filled, half-filled, outlined, open */
+.slots .sk{display:inline-block;width:11px;height:11px;vertical-align:-1px}
+.sk-sec .sk{background:var(--accent);border:1px solid var(--accent)}
+.sk-doc .sk{
+  background:linear-gradient(135deg,var(--accent) 0 50%,transparent 50% 100%);
+  border:1px solid var(--accent)
+}
+.sk-rec .sk{background:none;border:1px solid var(--accent)}
+.sk-gap .sk{background:none;border:1px dashed var(--ink-3);opacity:.75}
+.slotkey{
+  list-style:none;margin:.6rem 0 0;padding:0;display:grid;gap:.15rem;
+  font-size:.7rem;color:var(--ink-3)
+}
+.slotkey li{display:flex;align-items:center;gap:.4rem}
+.slotkey b{margin-left:auto;color:var(--ink);font-weight:640;font-variant-numeric:tabular-nums}
+
+/* ---- the capability sets, and where they overlap ---------------------
+   The about page says in prose that the four sets overlap and that their
+   subtotals therefore do not add to the corpus line. This draws that
+   sentence. A chord is cobalt, which here means two capabilities resting
+   on the same piece; it is deliberately not the violet reserved for a link
+   one document's prose makes to another, because a shared piece is not a
+   citation. Every value is restated in the table under the drawing. */
+.ovwrap{border-top:1px solid var(--ink);padding-top:.9rem;min-width:0}
+.ovwrap h3{
+  margin:0 0 .5rem;font-size:var(--meta-size);letter-spacing:var(--meta-track);
+  text-transform:uppercase;font-weight:var(--meta-weight);color:var(--ink-3)
+}
+.ovfig{display:block;width:100%;height:auto;max-width:17rem;margin:0 auto}
+.ovfig .ov-c{fill:none;stroke:var(--cobalt);stroke-linecap:round;opacity:.85}
+.ovfig .ov-n{fill:var(--panel);stroke:var(--ink-2);stroke-width:1.2}
+.ovfig .ov-t{
+  fill:var(--ink);font-size:11px;font-weight:660;font-variant-numeric:tabular-nums
+}
+.ovkey{list-style:none;margin:.7rem 0 0;padding:0;display:grid;gap:.3rem;font-size:.8rem}
+.ovkey li{display:grid;grid-template-columns:auto minmax(0,1fr);gap:.45rem;color:var(--ink-2)}
+.ovkey b{
+  color:var(--ink);font-weight:660;font-variant-numeric:tabular-nums;font-size:.75rem;
+  padding-top:.08rem
+}
+.ovkey .ovn{
+  grid-column:2;color:var(--ink-3);font-size:.72rem;font-variant-numeric:tabular-nums
+}
+.ovnote{margin:.7rem 0 0;font-size:.8rem;line-height:1.5;color:var(--ink-2)}
+.ovtw{margin-top:1.6rem}
+.ovtab{font-size:.8rem}
+.ovtab th[scope="row"]{white-space:nowrap;font-variant-numeric:tabular-nums;font-weight:640}
+.ovtab .tnum{text-align:right;font-variant-numeric:tabular-nums}
 .spaced{margin-top:1rem}
 .facts.wide{max-width:46rem}
 .fnote{max-width:26rem;color:var(--ink-2)}
@@ -927,6 +1045,53 @@ footer.site .fine b{font-weight:600;color:var(--ink-2)}
 .colo dl{margin:0}
 .colo dt{font-weight:640;margin-top:1.15rem}
 .colo dd{margin:.2rem 0 0;color:var(--ink-2)}
+
+/* ---- the definitions: a rule you can scan, edges you can open ----------
+   The list had been nine paragraphs of statute in one column. The rule
+   that decides the ordinary case now stands on its own and the exclusions
+   and thresholds fold underneath it. The fold is a details element, not a
+   script: the text is in the page with scripts off, it prints, and the
+   site's own word count already includes collapsed text, so folding a
+   definition cannot change what any page measures. */
+.defx{margin:.35rem 0 0}
+.defx > summary{
+  display:inline-flex;align-items:center;gap:.3rem;width:auto;cursor:pointer;
+  font-size:var(--meta-size);letter-spacing:var(--meta-track);text-transform:uppercase;
+  font-weight:var(--meta-weight);color:var(--ink-3);list-style:none;
+  padding:.1rem 0;border-bottom:1px dotted var(--edge)
+}
+.defx > summary::-webkit-details-marker{display:none}
+.defx > summary::before{
+  content:"+";font-weight:700;font-size:.9rem;line-height:1;color:var(--accent)
+}
+.defx[open] > summary::before{content:"\2212"}
+.defx > summary:hover{color:var(--ink)}
+.defx > summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.defxb{margin:.4rem 0 0;padding-left:.85rem;border-left:1px solid var(--rule)}
+
+/* ---- the definitions band: the list, and the chain beside it ----------
+   The rail takes the width .corpus already uses for its key, so the page
+   adopts a column it had rather than inventing a second one. */
+.defwrap{display:grid;gap:var(--gap);align-items:start}
+@media (min-width:64rem){ .defwrap{grid-template-columns:minmax(0,1fr) 17rem} }
+.defrail{border-top:1px solid var(--ink);padding-top:.9rem}
+.defrail h3{
+  margin:0 0 .8rem;font-size:var(--meta-size);letter-spacing:var(--meta-track);
+  text-transform:uppercase;font-weight:var(--meta-weight);color:var(--ink-3)
+}
+.railnote{margin:.8rem 0 0;font-size:.82rem;line-height:1.5;color:var(--ink-2)}
+.railnote code{font-size:.85em}
+/* the chain itself: boxes, hairlines and two type sizes, no fill but the
+   panel the page already uses */
+.mchain{display:block;width:100%;height:auto;max-width:17rem}
+.mchain .mc-b{fill:var(--panel);stroke:var(--rule-strong);stroke-width:1}
+.mchain .mc-d{stroke-dasharray:3 2}
+.mchain .mc-t{
+  fill:var(--ink);font-size:11px;font-weight:640;letter-spacing:-.01em
+}
+.mchain .mc-s{fill:var(--ink-3);font-size:9.5px;font-variant-numeric:tabular-nums}
+.mchain .mc-l{stroke:var(--ink-3);stroke-width:1}
+.mchain .mc-h{fill:var(--ink-3)}
 .colo code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.85em;
   background:var(--panel);padding:.05rem .3rem}
 
@@ -2251,9 +2416,17 @@ section.band.ground .pane{background:var(--panel-2);border-color:var(--rule-stro
 .notes{border-top:0;margin-top:0;padding-top:clamp(2.5rem,5vw,4rem)}
 .notes .sechead.hm{margin-bottom:1.25rem}
 .notes .sechead.hm h2{font-size:clamp(1.45rem,3vw,2.05rem);letter-spacing:-.028em;text-transform:none;color:var(--ink);font-weight:640;margin:0}
-.notes .material{margin-top:2.5rem;padding-top:1.5rem;border-top:1px solid var(--rule)}
+/* The notes run in two columns from 64rem. The closing note used to drop
+   back to the 38rem measure, so the page ended by narrowing to half its
+   width for one paragraph. It now closes on the grid it held. */
+.notes .material{margin-top:2.5rem;padding-top:1.5rem;border-top:1px solid var(--rule);max-width:none}
 .notes .material h3{font-size:1.05rem;margin:0 0 .5rem}
 .notes .material p{margin:0}
+@media (min-width:64rem){
+  .notes .material{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem 3rem;align-items:start}
+  .notes .material h3{margin:0}
+  .notes .material p{max-width:none}
+}
 @media print{
   .stage-grid{min-height:0}
   .pane,section.band.ground{background:#fff}
@@ -2583,8 +2756,18 @@ dialog.prov:not([open])::backdrop{background-color:rgba(10,10,8,0)}
 .rcontact a{color:var(--accent)}
 .rprint{margin:.7rem 0 0;font-size:.84rem;color:var(--ink-3);max-width:44rem;line-height:1.5}
 .rsec{padding-top:1.6rem}
+/* The text column used to be minmax(0,1fr), which at 1440 ran it to 918px:
+   1.51 times the site's own --measure and 1.30 times the cap on .rprint
+   three rules above. It is now held to the measure, and the width that
+   recovers becomes a figures column, so the page reads as the ledger it is
+   rather than as one long line. A row with nothing measurable leaves the
+   column empty rather than printing a zero. */
 .rrow{display:grid;grid-template-columns:11rem minmax(0,1fr);gap:.2rem 1.6rem;
   padding:.85rem 0;border-top:1px solid var(--rule)}
+@media (min-width:64rem){
+  .rrow{grid-template-columns:11rem minmax(0,var(--measure)) minmax(0,1fr)}
+  .rrow > .rmeasure{grid-column:3;grid-row:1;justify-content:flex-end;text-align:right;margin:0}
+}
 .rrow:first-of-type{border-top:1px solid var(--rule-strong)}
 .rwhen{margin:0;font-size:var(--meta-size);letter-spacing:var(--meta-track);text-transform:uppercase;
   font-weight:var(--meta-weight);color:var(--ink-3);font-variant-numeric:tabular-nums}
@@ -2602,6 +2785,34 @@ dialog.prov:not([open])::backdrop{background-color:rgba(10,10,8,0)}
 @media (max-width:640px){
   .rrow{grid-template-columns:minmax(0,1fr);gap:.3rem}
 }
+
+/* ---- availability, on a dated axis ------------------------------------
+   The lede carries the one number a co-op recruiter reads first and sets it
+   as the last clause of a sentence. The axis puts the degree, the terms
+   already worked and the window that is open on one scale. Ink only: a
+   filled block has been worked, an outlined block is open, so the reading
+   never rests on colour. Nothing here moves and nothing listens. */
+.rtwrap{border-top:1px solid var(--ink);padding-top:.6rem}
+.rt-h{
+  margin:0 0 .4rem;font-size:var(--meta-size);letter-spacing:var(--meta-track);
+  text-transform:uppercase;font-weight:var(--meta-weight);color:var(--ink-3)
+}
+.rtl{display:block;width:100%;height:auto;max-width:17rem}
+.rtl .rt-base{stroke:var(--rule-strong);stroke-width:1.5}
+.rtl .rt-tick{stroke:var(--rule-strong);stroke-width:1}
+.rtl .rt-y{fill:var(--ink-3);font-size:9px;letter-spacing:0;font-variant-numeric:tabular-nums}
+.rtl .rt-done{fill:var(--ink-2);stroke:var(--ink-2);stroke-width:1}
+.rtl .rt-open{fill:none;stroke:var(--ink);stroke-width:1.4;stroke-dasharray:3 2}
+.rtl .rt-now{stroke:var(--ink);stroke-width:1}
+.rtl .rt-nowh{fill:var(--ink)}
+.rtspan{margin:.4rem 0 0;font-size:.76rem;color:var(--ink-3);font-variant-numeric:tabular-nums}
+.rtkey{list-style:none;margin:.5rem 0 0;padding:0;display:grid;gap:.2rem;font-size:.76rem;color:var(--ink-2)}
+.rtkey li{display:flex;align-items:center;gap:.45rem}
+.rtkey b{margin-left:auto;color:var(--ink);font-weight:640;font-variant-numeric:tabular-nums}
+.rtkey .rt-s{display:inline-block;width:11px;height:9px;flex:0 0 auto}
+.rt-k-done .rt-s{background:var(--ink-2);border:1px solid var(--ink-2)}
+.rt-k-open .rt-s{background:none;border:1px dashed var(--ink)}
+@media print{ .rtwrap{break-inside:avoid} }
 @media print{
   .rsec{padding-top:.8rem}
   .rrow{break-inside:avoid;border-top:1px solid #999}

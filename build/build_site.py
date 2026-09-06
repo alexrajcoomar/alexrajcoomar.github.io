@@ -72,33 +72,49 @@ FONT_CODEPOINTS = len([c for c in open(
 # prints them as a list, and every counted number on a generated page carries
 # the id of the definition it was counted under, so a reader can open the
 # definition from the number rather than hunt for it.
+# Each definition is a rule and its edge cases, kept apart rather than run
+# together. The rule is the sentence that decides the ordinary case and is
+# always visible; the edges are the exclusions and thresholds that decide the
+# awkward ones, and the colophon folds them into a disclosure so the list can
+# be read at a glance without losing a word of what it excludes. A number's
+# own dialog still shows both, because a definition a reader opened from a
+# figure has to be the whole definition.
 DEFS = [
     ("pieces", "Pieces",
-     "An entry in content/pieces.json with a file behind it. The three run transcripts are measured "
-     "and held to the same record but are not entries, so they are not pieces and not in the corpus line."),
+     "An entry in content/pieces.json with a file behind it.",
+     "The three run transcripts are measured and held to the same record but are not entries, "
+     "so they are not pieces and not in the corpus line."),
     ("words", "Words",
      "The text of the rendered document after its own scripts have run, with script, style and "
-     "noscript removed and collapsed answers included, whether or not a reader has opened them. "
+     "noscript removed and collapsed answers included, whether or not a reader has opened them.",
      "The site's own chrome around a piece is not counted: the header, the return bar, the footer, "
      "the contents rail, the search dialog and the line that says what the piece was built from. "
      "A word is a whitespace-separated token containing at least one letter or digit. Question banks "
      "inside the interactive tools are held in code, so they are not counted anywhere."),
     ("mins", "Reading time",
-     f"Derived, not counted: words divided by {WPM} words per minute, rounded, minimum one minute. "
+     f"Derived, not counted: words divided by {WPM} words per minute, rounded, minimum one minute.",
      f"A page that renders under {DOC_MIN:,} words is treated as an instrument rather than a document "
      "and carries no reading time."),
     ("figures", "Figures",
      "A top-level svg element in the rendered page, not nested inside another one, covering at least "
-     "6,000 square units, which excludes inline glyphs and icons. Counted after render, so it includes "
-     "charts a script draws on load; charts built purely from HTML and CSS are not counted, so the "
-     "number is a floor rather than a ceiling."),
+     "6,000 square units, which excludes inline glyphs and icons.",
+     "Counted after render, so it includes charts a script draws on load; charts built purely from "
+     "HTML and CSS are not counted, so the number is a floor rather than a ceiling."),
     ("tables", "Tables",
-     "A table element in the rendered document after its scripts have run, wherever it stands."),
+     "A table element in the rendered document after its scripts have run, wherever it stands.",
+     ""),
     ("checkpoints", "Checkpoint questions",
      "A details element in the rendered document: a question or a worked answer folded away for the "
-     "reader to try first."),
+     "reader to try first.",
+     ""),
 ]
 DEF_BY_ID = {d[0]: d for d in DEFS}
+
+def def_full(d):
+    """A definition as one string: the rule, then its edge cases. What the
+    dialog behind a counted number shows, and what the definition was before
+    the rule and the edges were separated."""
+    return (d[2] + " " + d[3]).strip() if d[3] else d[2]
 
 def md(value, kind, of=None, text=None):
     """A counted number as a data element: the raw value, the id of the
@@ -349,7 +365,7 @@ def _defs_json():
     mpath = os.path.join(ROOT, "content", "metrics.json")
     digest = hashlib.sha1(open(mpath, "rb").read()).hexdigest()[:12] if os.path.exists(mpath) else ""
     return json.dumps({
-        "defs": {d[0]: {"t": d[1], "d": d[2]} for d in DEFS},
+        "defs": {d[0]: {"t": d[1], "d": def_full(d)} for d in DEFS},
         "meas": {"tool": "build/measure.js", "record": "content/metrics.json", "digest": digest,
                  "pieces": len(P), "transcripts": len([k for k in METRICS if k not in {p["slug"] for p in P}])},
         "pieces": {p["slug"]: {"u": p["url"], "t": p["t"], "w": p["words"], "f": p["figures"], "b": p["tables"]} for p in P},
@@ -695,6 +711,120 @@ def capability_evidence(cap_id):
             "tools": sum(1 for q in items if q["k"] == "Tool")}
 
 
+def capability_overlap():
+    """The four capability sets read as sets. The page already says in prose
+    that a piece can evidence more than one and that the subtotals therefore
+    do not add to the corpus line; this is that sentence counted. Every value
+    is computed from content/capabilities.json on this build, the remainder
+    included: a set diagram that hides what it does not cover would be the
+    thing this site exists to argue against."""
+    sets = {}
+    for cid, _t, _p in CAP_BLOCKS:
+        spec = (CAPS.get("capabilities") or {}).get(cid) or {}
+        sets[cid] = {s for s in (spec.get("pieces") or []) if s in CASE_BY_SLUG}
+    everything = set().union(*sets.values()) if sets else set()
+    mult = {}
+    for slug in everything:
+        mult[slug] = sum(1 for s in sets.values() if slug in s)
+    pairs = []
+    ids = [c for c, _t, _p in CAP_BLOCKS]
+    for a in range(len(ids)):
+        for b in range(a + 1, len(ids)):
+            shared = sets[ids[a]] & sets[ids[b]]
+            if shared:
+                pairs.append({"a": ids[a], "b": ids[b], "n": len(shared),
+                              "pieces": sorted(shared)})
+    return {"sets": sets, "ids": ids,
+            "citations": sum(len(s) for s in sets.values()),
+            "distinct": len(everything),
+            "shared": sum(1 for v in mult.values() if v > 1),
+            "most": max(mult.values()) if mult else 0,
+            "uncited": len(P) - len(everything),
+            "pairs": pairs}
+
+
+def overlap_figure():
+    """The overlap drawn: one node per capability, sized by the pieces that
+    evidence it, and one chord per pair that shares a piece, weighted by how
+    many. The chords are cobalt, which on this site means two capabilities
+    resting on the same piece; the violet reserved for a link one document's
+    prose makes to another is not spent here, because a shared piece is not a
+    citation. Static at rest, and every value is restated in the table under
+    it, so nothing depends on the drawing or on its colour."""
+    ov = capability_overlap()
+    titles = {cid: t for cid, t, _p in CAP_BLOCKS}
+    cx, cy, r = 136.0, 116.0, 74.0
+    # four nodes on the cardinal points, in the order the page numbers them
+    pos, i = {}, 0
+    for cid in ov["ids"]:
+        a = -math.pi / 2 + i * (2 * math.pi / max(1, len(ov["ids"])))
+        pos[cid] = (cx + r * math.cos(a), cy + r * math.sin(a))
+        i += 1
+    parts = []
+    # the chords first, so a node sits over its own edges
+    for pr in ov["pairs"]:
+        x1, y1 = pos[pr["a"]]; x2, y2 = pos[pr["b"]]
+        # bowed toward the centre, so two chords never lie on one line
+        mx, my = (x1 + x2) / 2, (y1 + y2) / 2
+        qx, qy = mx + (cx - mx) * 0.42, my + (cy - my) * 0.42
+        parts.append(f'<path class="ov-c" d="M{x1:.1f} {y1:.1f} Q{qx:.1f} {qy:.1f} {x2:.1f} {y2:.1f}" '
+                     f'stroke-width="{1 + pr["n"] * 0.9:.2f}"/>')
+    for k, cid in enumerate(ov["ids"], 1):
+        x, y = pos[cid]
+        rad = 11 + len(ov["sets"][cid]) * 0.55
+        parts.append(f'<circle class="ov-n" cx="{x:.1f}" cy="{y:.1f}" r="{rad:.1f}"/>'
+                     f'<text class="ov-t" x="{x:.1f}" y="{y + 3.8:.1f}" text-anchor="middle">{k:02d}</text>')
+    label = ("The four capabilities as sets: "
+             + "; ".join(f'{k:02d} {titles[c]}, {len(ov["sets"][c])} pieces'
+                         for k, c in enumerate(ov["ids"], 1))
+             + ". Pairs sharing a piece: "
+             + "; ".join(f'{ov["ids"].index(p["a"]) + 1:02d} with '
+                         f'{ov["ids"].index(p["b"]) + 1:02d}, {p["n"]}' for p in ov["pairs"])
+             + f'. {ov["citations"]} citations over {ov["distinct"]} distinct pieces.')
+    return (f'<svg class="ovfig" viewBox="0 0 272 232" role="img" aria-label="{esc(label)}">'
+            + "".join(parts) + "</svg>")
+
+
+def overlap_block():
+    """The drawing and its key, in the rail beside the rationale."""
+    ov = capability_overlap()
+    titles = {cid: t for cid, t, _p in CAP_BLOCKS}
+    key = "".join(
+        '<li><b>%02d</b> %s <span class="ovn">%d pieces</span></li>'
+        % (k, esc(titles[c]), len(ov["sets"][c])) for k, c in enumerate(ov["ids"], 1))
+    return f"""  <aside class="ovwrap" aria-labelledby="ov-h">
+    <h3 id="ov-h">The four sets, and where they overlap</h3>
+    {overlap_figure()}
+    <ol class="ovkey">{key}</ol>
+    <p class="ovnote">{ov["citations"]} citations over {ov["distinct"]} distinct pieces:
+    {ov["shared"]} pieces evidence two of the four and none evidences more than
+    {ov["most"]}. The remaining {ov["uncited"]} of {len(P)} pieces evidence none of them and are
+    drawn nowhere here, which is why the four subtotals do not add to the corpus line.</p>
+  </aside>"""
+
+
+def overlap_table():
+    """What the drawing says, restated in full width under it. The rail is
+    272px, which is room for a figure and not for six piece titles, so the
+    table that holds the figure to the record gets the whole column."""
+    ov = capability_overlap()
+    rows = "".join(
+        '<tr><th scope="row">%02d with %02d</th><td>%s</td><td class="tnum">%d</td></tr>'
+        % (ov["ids"].index(p["a"]) + 1, ov["ids"].index(p["b"]) + 1,
+           ", ".join('<a href="%s">%s</a>' % (esc(CASE_BY_SLUG[s]["url"]), esc(CASE_BY_SLUG[s]["t"]))
+                     for s in p["pieces"]), p["n"])
+        for p in ov["pairs"])
+    return f"""  <div class="tw ovtw">
+    <table class="ctab ovtab">
+      <caption>Every pair of capabilities that shares a piece, and the pieces it shares.
+      Read from <code>content/capabilities.json</code> and recomputed on this build.</caption>
+      <thead><tr><th scope="col">Pair</th><th scope="col">Shared pieces</th>
+      <th scope="col">Shared</th></tr></thead>
+      <tbody>{rows}</tbody>
+    </table>
+  </div>"""
+
+
 def cap_block(i, cap_id, title, prose):
     """One capability: the owner's own paragraph, then what evidences it. The
     list is folded away, so the page a reader meets is the page that was here
@@ -803,20 +933,21 @@ def page_resume(summary=None):
         % (esc(g.get("group") or ""), esc(", ".join(g.get("items") or [])))
         for g in (RESUME_D.get("skills") or []) if (g.get("items") or []))
     evid = "".join(
-        '<div class="rrow"><p class="rwhen">%s</p><div class="rwhat"><p class="rmeasure">'
-        '<span>%d pieces</span><span>%s words</span><span>%d figures</span><span>%d tables</span>%s</p>'
-        '<p class="rlist">%s</p></div></div>'
-        % (esc(title), e["n"], format(e["words"], ","), e["figures"], e["tables"],
-           ("<span>%d %s</span>" % (e["tools"], "tool" if e["tools"] == 1 else "tools")) if e["tools"] else "",
+        '<div class="rrow"><p class="rwhen">%s</p><div class="rwhat">'
+        '<p class="rlist">%s</p></div><p class="rmeasure">'
+        '<span>%d pieces</span><span>%s words</span><span>%d figures</span><span>%d tables</span>%s</p></div>'
+        % (esc(title),
            ", ".join('<a href="%s">%s</a>' % (esc(q["url"]), esc(q["t"]))
                      for q in sorted(e["items"], key=lambda x: -x["words"])[:4])
-           + (", and %d more on <a href=\"about.html\">about</a>" % (e["n"] - 4) if e["n"] > 4 else ""))
+           + (", and %d more on <a href=\"about.html\">about</a>" % (e["n"] - 4) if e["n"] > 4 else ""),
+           e["n"], format(e["words"], ","), e["figures"], e["tables"],
+           ("<span>%d %s</span>" % (e["tools"], "tool" if e["tools"] == 1 else "tools")) if e["tools"] else "")
         for title, e in resume_evidence())
     feats = [p for p in P if p["featured"]][:6]
     sel = "".join(
         '<div class="rrow"><p class="rwhen">%s</p><div class="rwhat"><h3><a href="%s">%s</a></h3>'
-        '<p class="rwhere">%s</p><p class="rmeasure"><span>%s words</span><span>%d figures</span>'
-        '<span>%d tables</span></p></div></div>'
+        '<p class="rwhere">%s</p></div><p class="rmeasure"><span>%s words</span>'
+        '<span>%d figures</span><span>%d tables</span></p></div>'
         % (esc(p["d"]), esc(p["url"]), esc(p["t"]), esc(p["s"]),
            format(p["words"], ","), p["figures"], p["tables"])
         for p in feats)
@@ -860,6 +991,8 @@ def page_resume(summary=None):
            reg.get("rows", 0), reg.get("held", 0), reg.get("untested", 0), reg.get("failed", 0)))))
 
     body = f"""<div class="hero tight shell">
+  <div class="herowrap">
+  <div class="herolead">
   <p class="eyebrow accent">Resume</p>
   <h1 class="h1">{esc(NAME)}</h1>
   <p class="lede">{esc(", ".join(x for x in ("Accounting and Financial Management, Analytics stream", aff[0] if aff else "") if x))}.
@@ -868,6 +1001,9 @@ def page_resume(summary=None):
   {" ".join(profile_links(resume=False))}</p>
   <p class="rprint">Every number below is counted by the build that wrote this page. For a PDF, print this page:
   it is laid out for paper and carries no navigation there.</p>
+  </div>
+{resume_timeline_block()}
+  </div>
 </div>
 {chr(10).join(blocks)}
 """
@@ -875,6 +1011,59 @@ def page_resume(summary=None):
                 f"Resume of {NAME}: Accounting and Financial Management, Analytics stream at Waterloo, with the "
                 f"portfolio evidence counted by the build rather than claimed.",
                 "resume.html") + body + foot()
+
+
+# What each kind of fill is called where a reader meets it, and the mark that
+# says so without spending colour on the meaning. The shapes differ from one
+# another, so the grid reads the same to anyone.
+SLOT_KINDS = (("sec", "section", "sk-sec"),
+              ("doc", "linked document", "sk-doc"),
+              ("rec", "record", "sk-rec"),
+              ("gap", "not carried", "sk-gap"))
+SLOT_KIND_LABEL = {k: lab for k, lab, _c in SLOT_KINDS}
+SLOT_KIND_CLASS = {k: c for k, _l, c in SLOT_KINDS}
+
+
+def slot_grid(feats):
+    """The shape as a field: one column per featured piece, one row per slot,
+    one cell per slot. The eight that are not carried are left open, because
+    the gaps are what the grid is for. It is a table rather than a drawing, so
+    the figure and its restatement are the same object and a screen reader
+    walks it by piece and by slot."""
+    cov = case_coverage()
+    rows = {p["slug"]: {r["key"]: (r["kind"] or "gap") for r in case_rows(p["slug"])}
+            for p in feats}
+    heads = "".join(
+        f'<th scope="col"><abbr title="{esc(p["t"])}">{i:02d}</abbr></th>'
+        for i, p in enumerate(feats, 1))
+    body = []
+    for key, label, _meaning in CASE_SLOTS:
+        cells = []
+        for p in feats:
+            kind = rows.get(p["slug"], {}).get(key, "gap")
+            cells.append(
+                f'<td class="{SLOT_KIND_CLASS[kind]}">'
+                f'<span class="sk" aria-hidden="true"></span>'
+                f'<span class="sr">{esc(p["t"])}, {esc(label)}: {SLOT_KIND_LABEL[kind]}</span></td>')
+        body.append(f'<tr><th scope="row">{esc(label)}</th>{"".join(cells)}</tr>')
+    key_items = "".join(
+        f'<li class="{c}"><span class="sk" aria-hidden="true"></span>{esc(lab)}'
+        f' <b>{cov[k]}</b></li>' for k, lab, c in SLOT_KINDS)
+    return f"""  <aside class="slotwrap" aria-labelledby="slots-h">
+    <h2 id="slots-h" class="slots-h">The shape, filled</h2>
+    <div class="slotscroll">
+    <table class="slots">
+      <caption class="sr">Six featured pieces by eight slots: {cov["slots"]} slots,
+      {cov["sec"]} answered by a section, {cov["doc"]} by a linked document,
+      {cov["rec"]} by a record, {cov["gap"]} not carried.</caption>
+      <thead><tr><td></td>{heads}</tr></thead>
+      <tbody>
+{chr(10).join("        " + r for r in body)}
+      </tbody>
+    </table>
+    </div>
+    <ul class="slotkey">{key_items}</ul>
+  </aside>"""
 
 
 def page_selected():
@@ -889,12 +1078,17 @@ def page_selected():
     f = sum(p["figures"] for p in feats)
     t = sum(p["tables"] for p in feats)
     body = f"""<div class="hero tight shell">
+  <div class="herowrap">
+  <div class="herolead">
   <p class="eyebrow accent">Selected work</p>
   <h1 class="h1">The strongest pieces, put through one shape.</h1>
   <p class="lede">The {len(feats)} pieces recorded as featured, {w:,} words, {f} figures and {t} tables between them,
   each put through one shape: question, context, approach, evidence, build, finding, limitation, artifact.
   A slot is filled only by something already on the site, and {cov["gap"]} of {cov["slots"]} are not filled at all.
   The whole corpus is on <a href="library.html">Work</a>.</p>
+  </div>
+{slot_grid(feats)}
+  </div>
 </div>
 <section class="shell stack-end">
   <p class="caselead">{cov["slots"]} slots over {cov["pieces"]} pieces: {cov["sec"]} answered by a section,
@@ -934,7 +1128,7 @@ def shelf_row(k, p, extra="", fp=False):
             else '<p class="rule none">No declared rule on file.</p>')
     mins = f'<span class="s-min">{piece_mins(p)} min</span>' if piece_mins(p) else ""
     fig = f'<div class="sr-f" data-fp="{p["slug"]}">{piece_fingerprint(p)}</div>' if fp else ""
-    return f"""      <li data-kind="{p['k'].lower()}" data-course="{esc(p['c'])}" data-surface="{p['surface']}" data-search="{esc(hay)}" data-words="{p['words']}" data-figs="{p['figures']}" data-title="{esc(p['t'].lower())}">
+    return f"""      <li data-kind="{p['k'].lower()}" data-course="{esc(p['c'])}" data-surface="{p['surface']}" data-search="{esc(hay)}" data-words="{p['words']}" data-figs="{p['figures']}" data-tabs="{p['tables']}" data-title="{esc(p['t'].lower())}">
         <div class="srow">
           <div class="sr-t">
             <span class="num tnum">{k:02d}</span>
@@ -1089,7 +1283,7 @@ def row(n, p):
                     SURF_LABEL[p["surface"]]]).lower()
     # words, figures and title travel with the row so the library can be
     # reordered client-side without a second copy of the manifest
-    return f"""      <li data-kind="{p['k'].lower()}" data-course="{esc(p['c'])}" data-surface="{p['surface']}" data-search="{esc(hay)}" data-words="{p['words']}" data-figs="{p['figures']}" data-title="{esc(p['t'].lower())}">
+    return f"""      <li data-kind="{p['k'].lower()}" data-course="{esc(p['c'])}" data-surface="{p['surface']}" data-search="{esc(hay)}" data-words="{p['words']}" data-figs="{p['figures']}" data-tabs="{p['tables']}" data-title="{esc(p['t'].lower())}">
         <a class="row" href="{p['url']}">
           <span class="num tnum">{n:02d}</span>
           <span>
@@ -1754,7 +1948,7 @@ def page_index():
     <li id="n5"><b>The index.</b> {F["headN"]:,} section headings and {F["toolN"]} whole tools from the {len(P)} documents, and the author's own anchor: {F["total"]:,} marks placed on one sphere, every mark a link. <a href="atlas.html">The Atlas.</a></li>
     <li id="n6"><b>The drawing.</b> The statement drawn to scale above, one square {figs.UNIT} words, solid for independent work, an open outline for coursework, lighter for personal. The square never rescales, so a long piece is long on the page.</li>
   </ol>
-  <div class="prose measure material">
+  <div class="prose material">
     <h3>A note on the material</h3>
     <p>These are my own artefacts, written by me for my own use. They are not course materials,
     not official solutions, and not a substitute for the standards themselves. Where a figure or a
@@ -1969,7 +2163,23 @@ def page_library():
     </ol>
   </section>""")
 
+    # The hero's standing readout. At rest it is the whole statement, which is
+    # what a reader with scripts off keeps; the filters recompute it from the
+    # rows they are already walking, so a narrowed shelf always shows its own
+    # share of the corpus rather than leaving the reader to guess it.
+    denom = f"""  <aside class="denom" aria-labelledby="denom-h">
+    <h2 id="denom-h" class="denom-h">Showing</h2>
+    <dl class="denom-l">
+      <div><dt>Pieces</dt><dd><b data-d="n">{len(P)}</b><span data-of="n"></span></dd></div>
+      <div><dt>Words</dt><dd><b data-d="w">{TOTAL_WORDS:,}</b><span data-of="w"></span></dd></div>
+      <div><dt>Figures</dt><dd><b data-d="f">{TOTAL_FIGS}</b><span data-of="f"></span></dd></div>
+      <div><dt>Tables</dt><dd><b data-d="t">{TOTAL_TBLS}</b><span data-of="t"></span></dd></div>
+    </dl>
+    <p class="denom-n" data-rest="The whole statement.">The whole statement.</p>
+  </aside>"""
     body = f"""<div class="hero tight shell">
+  <div class="herowrap">
+  <div class="herolead">
   <p class="eyebrow accent">Work</p>
   <h1 class="h1">The whole statement.</h1>
   <p class="lede">All {len(P)} pieces, split by what asked for them, every row carrying the piece's
@@ -1977,6 +2187,9 @@ def page_library():
   line, {TOTAL_WORDS:,} words, and the <a href="colophon.html">notes</a> define each column.
   For fewer of them in more depth, the featured pieces are read one shape at a time on
   <a href="selected.html">selected work</a>.</p>
+  </div>
+{denom}
+  </div>
 </div>
 <section class="shell stack-end">
   <div class="tools-bar">
@@ -2005,7 +2218,7 @@ def page_library():
       </select>
     </div>
   </div>
-  <p class="resultnote" id="resultnote" role="status">Showing all {len(P)} pieces.</p>
+  <p class="resultnote" id="resultnote" role="status">Showing all {len(P)} pieces, {TOTAL_WORDS:,} words.</p>
 {chr(10).join(blocks)}
   <p class="resultnote" id="noresults" hidden>Nothing matches that. Try a shorter word, or a course code.</p>
 </section>
@@ -2135,6 +2348,7 @@ def page_about():
 <section class="band ground">
   <div class="shell">
   <div class="sechead"><h2>Why the site exists</h2><span class="count">Rationale</span></div>
+  <div class="defwrap">
   <div class="prose measure">
     <p>Most of what I build starts as a problem I have: a course that will not stay in my head, a claim
     I do not believe, a process I keep repeating by hand. The output is usually an interactive
@@ -2165,6 +2379,9 @@ def page_about():
     <p class="plate-nav"><a class="pbtn pbtn-go" href="colophon.html">How this site is built, and how it counts <span aria-hidden="true">&#8594;</span></a>
     <a class="pbtn" href="library.html">The full library <span aria-hidden="true">&#8594;</span></a></p>
   </div>
+{overlap_block()}
+  </div>
+{overlap_table()}
   </div>
 </section>
 """
@@ -2260,16 +2477,130 @@ def limits_block():
 </section>
 """
 
-DENSITY_DD = '      <dt>Density</dt>\n      <dd>Figures plus tables per thousand words. Under 1.0 is <b>Prose</b>, 1.0 to 3.0 is\n      <b>Mixed</b>, 3.0 and above is <b>Dense</b>. Documents under 400 words carry no label, because the\n      ratio is unstable at that length. It is a rough signal of what the page will feel like, not a\n      quality measure: a dense page is not a better page.</dd>'
+def _extra_defs():
+    """The three terms the colophon defines that no counted number carries:
+    the density band, the limits of the counting, and the origin split. Held
+    in the same rule-then-edges shape as DEFS so the whole list renders one
+    way, and carried here rather than in DEFS because a number cannot be
+    counted under them. The text is HTML rather than escaped, because two of
+    the three name their values in bold."""
+    tool_words = [p["words"] for p in P if p["k"] == "Tool"]
+    return [
+        (None, "Density",
+         "Figures plus tables per thousand words. Under 1.0 is <b>Prose</b>, 1.0 to 3.0 is "
+         "<b>Mixed</b>, 3.0 and above is <b>Dense</b>.",
+         "Documents under 400 words carry no label, because the ratio is unstable at that length. "
+         "It is a rough signal of what the page will feel like, not a quality measure: a dense page "
+         "is not a better page."),
+        (None, "Where the counts stop",
+         f"The interactive tools read as {min(tool_words)} to {max(tool_words)} words and are "
+         "genuinely much larger than that: their question banks are held in code.",
+         f"The {WPM} words per minute behind the reading time is a middle estimate for careful "
+         "reading of technical prose; a skim is faster and a first pass through a figure-heavy "
+         "section is slower. The instrument threshold is applied to what a page renders, not to "
+         f"what I would like it to be, and it is why the {N_TOOLS} interactive tools carry no "
+         "reading time at any length."),
+        (None, "Independent, coursework, personal",
+         "<b>Independent</b> means I chose the question, scoped it and finished it without a course "
+         "asking for it. <b>Coursework</b> means it was built while taking the course, for the "
+         "assessment that was coming. <b>Personal</b> means read and written for its own sake, with "
+         "no claim on either.",
+         "The split is mine and I have made it conservatively: anything built alongside a course is "
+         "filed as coursework even where the question was my own."),
+    ]
+
+
+def colo_defs():
+    """Every term the colophon defines, in one list: the six a counted number
+    can be measured under, then the three it cannot."""
+    return [(d[0], d[1], esc(d[2]), esc(d[3])) for d in DEFS] + _extra_defs()
+
 
 def defs_html():
-    """The definitions list, from DEFS, each term carrying the id a counted
-    number refers to."""
+    """The definitions list: one visible rule per term, with the edge cases
+    folded into a native disclosure under it. The fold is markup, not script,
+    so the whole definition is in the page with scripts off, in print and to a
+    reader who never opens it, and the site's own word count already includes
+    collapsed text for exactly that reason."""
     out = []
-    for did, term, text in DEFS:
-        out.append(f'      <dt id="def-{did}">{esc(term)}</dt>\n      <dd>{esc(text)}</dd>')
-    out.append(DENSITY_DD)
+    for did, term, rule, edges in colo_defs():
+        anchor = f' id="def-{did}"' if did else ""
+        fold = ("" if not edges else
+                f'\n        <details class="defx"><summary>Edge cases</summary>'
+                f'<div class="defxb">{edges}</div></details>')
+        out.append(f'      <dt{anchor}>{esc(term)}</dt>\n      <dd>{rule}{fold}</dd>')
     return "\n".join(out)
+
+# What build/measure.js writes for every document it opens. Read from the
+# record rather than listed here, so a fifth measurement would show up in the
+# chain the first time it was recorded instead of the first time someone
+# remembered to add it.
+def measured_keys():
+    for rec in METRICS.values():
+        if isinstance(rec, dict) and rec:
+            return sorted(rec.keys())
+    return []
+
+# The two figures the build works out from the counted ones. Named here
+# because they are arithmetic in this file, not entries in the record.
+DERIVED_KEYS = ("reading time", "density")
+
+
+def measure_chain():
+    """The pipeline behind every counted number, drawn: the declared entry,
+    the published file, the browser that opens it, the split between what is
+    counted and what is worked out from the counts, the record, and the pages.
+    Every node names a real file or a real script, and the two counts on the
+    branch are read from the record on this build. Static: the drawing holds
+    no state and carries no listener."""
+    n_pieces, n_docs = len(P), len(METRICS)
+    n_counted, n_derived = len(measured_keys()), len(DERIVED_KEYS)
+
+    def box(y, h, title, sub, cls="mc-b"):
+        return (f'<rect class="{cls}" x="14" y="{y}" width="244" height="{h}"/>'
+                f'<text class="mc-t" x="26" y="{y + 16}">{title}</text>'
+                f'<text class="mc-s" x="26" y="{y + 30}">{sub}</text>')
+
+    def arrow(y1, y2, x=136):
+        return (f'<line class="mc-l" x1="{x}" y1="{y1}" x2="{x}" y2="{y2 - 6}"/>'
+                f'<path class="mc-h" d="M{x - 3.5} {y2 - 6} L{x} {y2} L{x + 3.5} {y2 - 6} Z"/>')
+
+    parts = [
+        box(4, 38, "content/pieces.json", f"{n_pieces} declared entries"),
+        arrow(42, 56),
+        box(56, 38, "the file as published", f"{n_docs} documents measured"),
+        arrow(94, 108),
+        box(108, 38, "build/measure.js", "opened in headless Chromium"),
+        arrow(146, 160),
+        # the one branch: what the browser counts, and what this file works out
+        f'<line class="mc-l" x1="136" y1="160" x2="136" y2="168"/>'
+        f'<line class="mc-l" x1="72" y1="168" x2="200" y2="168"/>'
+        f'<line class="mc-l" x1="72" y1="168" x2="72" y2="174"/>'
+        f'<path class="mc-h" d="M68.5 174 L72 180 L75.5 174 Z"/>'
+        f'<line class="mc-l" x1="200" y1="168" x2="200" y2="174"/>'
+        f'<path class="mc-h" d="M196.5 174 L200 180 L203.5 174 Z"/>',
+        f'<rect class="mc-b" x="14" y="180" width="116" height="40"/>'
+        f'<text class="mc-t" x="24" y="196">counted</text>'
+        f'<text class="mc-s" x="24" y="210">{n_counted} per document</text>',
+        f'<rect class="mc-b mc-d" x="142" y="180" width="116" height="40"/>'
+        f'<text class="mc-t" x="152" y="196">derived</text>'
+        f'<text class="mc-s" x="152" y="210">{n_derived} from those</text>',
+        f'<line class="mc-l" x1="72" y1="220" x2="72" y2="230"/>'
+        f'<line class="mc-l" x1="200" y1="220" x2="200" y2="230"/>'
+        f'<line class="mc-l" x1="72" y1="230" x2="200" y2="230"/>',
+        arrow(230, 246),
+        box(246, 38, "content/metrics.json", "the record every total reads"),
+        arrow(284, 298),
+        box(298, 38, "every counted number", "on every page of this site"),
+    ]
+    label = (f"The measurement chain: {n_pieces} declared entries in content/pieces.json, "
+             f"{n_docs} documents measured as published, opened by build/measure.js in headless "
+             f"Chromium, which counts {n_counted} quantities per document and derives "
+             f"{n_derived} more from them, written to content/metrics.json, which every counted "
+             "number on the site is read from.")
+    return (f'<svg class="mchain" viewBox="0 0 272 340" role="img" aria-label="{esc(label)}">'
+            + "".join(parts) + "</svg>")
+
 
 def marks_block():
     """The colophon's account of the marks: the three brand marks and what each
@@ -2451,25 +2782,23 @@ def page_colophon(summary=None):
 </div>
 
 <section class="band shell colo">
-  <div class="sechead"><h2>The measurements</h2><span class="count">Definitions</span></div>
+  <div class="sechead"><h2>The measurements</h2><span class="count">{len(colo_defs())} definitions</span></div>
+  <div class="defwrap">
   <div class="prose measure">
     <dl id="definitions">
 {defs_html()}
-      <dt>Where the counts stop</dt>
-      <dd>The interactive tools read as {min(p['words'] for p in P if p['k']=='Tool')} to {max(p['words'] for p in P if p['k']=='Tool')}
-      words and are genuinely much larger than that: their question banks are held in code. The
-      {WPM} words per minute behind the reading time is a middle estimate for careful reading of
-      technical prose; a skim is faster and a first pass through a figure-heavy section is slower. The
-      instrument threshold is applied to what a page renders, not to what I would like it to be, and it
-      is why the {N_TOOLS} interactive tools carry no reading time at any length.</dd>
-
-      <dt>Independent, coursework, personal</dt>
-      <dd><b>Independent</b> means I chose the question, scoped it and finished it without a course
-      asking for it. <b>Coursework</b> means it was built while taking the course, for the assessment
-      that was coming. <b>Personal</b> means read and written for its own sake, with no claim on either.
-      The split is mine and I have made it conservatively: anything built alongside a course is filed
-      as coursework even where the question was my own.</dd>
     </dl>
+  </div>
+  <aside class="defrail" aria-labelledby="chain-h">
+    <h3 id="chain-h">Where the numbers come from</h3>
+    {measure_chain()}
+    <p class="railnote">Nothing on this page is typed. {len(P)} entries are declared in
+    <code>content/pieces.json</code>; {len(METRICS)} documents are opened as published by
+    <code>build/measure.js</code> in headless Chromium, which counts
+    {len(measured_keys())} quantities in each and writes them to <code>content/metrics.json</code>.
+    The other {len(DERIVED_KEYS)} are worked out from those counts by the build. A number that
+    disagrees with the record is a build that fails.</p>
+  </aside>
   </div>
 </section>
 
@@ -3722,6 +4051,112 @@ def coop_window():
     start = datetime.date(y, a, 1)
     end = (datetime.date(y + (b // 12), (b % 12) + 1, 1) - datetime.timedelta(days=1))
     return {"start": start, "end": end, "days": (start - TODAY).days}
+
+
+_RES_MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+               "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+
+
+def _res_month(s):
+    """A resume date like "Sep 2024" or "Apr 2029 (expected)" as the first of
+    that month. None when the field is not written that way, and then nothing
+    that depends on it is drawn."""
+    m = re.match(r"^\s*([A-Z][a-z]{2})[a-z]*\s+(\d{4})", str(s or ""))
+    if not m or m.group(1) not in _RES_MONTHS:
+        return None
+    return datetime.date(int(m.group(2)), _RES_MONTHS.index(m.group(1)) + 1, 1)
+
+
+def _month_end(d):
+    return datetime.date(d.year + (d.month // 12), (d.month % 12) + 1, 1) - datetime.timedelta(days=1)
+
+
+def resume_timeline():
+    """The degree, the terms already worked, and the window that is open,
+    on one dated axis. The lede already carries the number a co-op recruiter
+    reads first and sets it as the last clause of a sentence; this puts it on
+    a scale. Every date is declared in content/resume.json or in the site
+    record, and the countdown is the same one the lede prints, worked out
+    from this build's date. Drawn in ink alone: a block that is filled has
+    been worked and a block that is outlined is open, so the reading does not
+    depend on colour. Static, with no listener and no script."""
+    eds = [e for e in (RESUME_D.get("education") or []) if _res_month(e.get("from"))]
+    if not eds:
+        return ""
+    start = min(_res_month(e["from"]) for e in eds)
+    ends = [_res_month(e.get("to")) for e in eds if _res_month(e.get("to"))]
+    if not ends:
+        return ""
+    end = _month_end(max(ends))
+    win = coop_window()
+    span = (end - start).days
+    if span <= 0:
+        return ""
+    x0, x1 = 10.0, 262.0
+    def at(d):
+        return x0 + (x1 - x0) * max(0.0, min(1.0, (d - start).days / span))
+
+    parts = [f'<line class="rt-base" x1="{x0}" y1="46" x2="{x1}" y2="46"/>']
+    # one tick per academic year for the scale, but only the two ends are
+    # labelled: a numeral a figure draws has to be restated in the page's
+    # text (check 31), and the span's ends are the two the page states.
+    for y in range(start.year, end.year + 1):
+        d = datetime.date(y, 9, 1)
+        if not (start <= d <= end):
+            continue
+        x = at(d)
+        parts.append(f'<line class="rt-tick" x1="{x:.1f}" y1="46" x2="{x:.1f}" y2="51"/>')
+    parts.append(f'<text class="rt-y" x="{x0:.1f}" y="62" text-anchor="start">{start.year}</text>'
+                 f'<text class="rt-y" x="{x1:.1f}" y="62" text-anchor="end">{end.year}</text>')
+    # terms already worked, from the declared employment
+    worked = 0
+    for e in (RESUME_D.get("experience") or []):
+        a, b = _res_month(e.get("from")), _res_month(e.get("to"))
+        if not a or not b:
+            continue
+        worked += 1
+        xa, xb = at(a), at(_month_end(b))
+        parts.append(f'<rect class="rt-done" x="{xa:.1f}" y="34" width="{max(3.0, xb - xa):.1f}" height="12"/>')
+    # the window that is open
+    if win and start <= win["start"] <= end:
+        xa, xb = at(win["start"]), at(win["end"])
+        parts.append(f'<rect class="rt-open" x="{xa:.1f}" y="34" width="{max(3.0, xb - xa):.1f}" height="12"/>')
+    # where this build stands on the axis
+    if start <= TODAY <= end:
+        x = at(TODAY)
+        parts.append(f'<line class="rt-now" x1="{x:.1f}" y1="24" x2="{x:.1f}" y2="46"/>'
+                     f'<path class="rt-nowh" d="M{x - 3:.1f} 24 L{x + 3:.1f} 24 L{x:.1f} 29 Z"/>')
+    label = (f"Degree from {start.strftime('%B %Y')} to {end.strftime('%B %Y')}. "
+             f"{worked} co-op term{'' if worked == 1 else 's'} already worked. "
+             + (f"The {esc(COOP_TERM)} window is open, {win['days']} days from this build."
+                if win and win["days"] > 0 else ""))
+    return (f'<svg class="rtl" viewBox="0 0 272 70" role="img" aria-label="{esc(label)}">'
+            + "".join(parts) + "</svg>")
+
+
+def resume_timeline_block():
+    win = coop_window()
+    svg = resume_timeline()
+    if not svg:
+        return ""
+    worked = sum(1 for e in (RESUME_D.get("experience") or [])
+                 if _res_month(e.get("from")) and _res_month(e.get("to")))
+    open_line = (f'<li class="rt-k-open"><span class="rt-s" aria-hidden="true"></span>'
+                 f'{esc(COOP_TERM)} <b>{format(win["days"], ",")} days</b></li>'
+                 if win and win["days"] > 0 else "")
+    eds = [e for e in (RESUME_D.get("education") or []) if _res_month(e.get("from"))]
+    a = min(_res_month(e["from"]) for e in eds)
+    b = _month_end(max(_res_month(e["to"]) for e in eds if _res_month(e.get("to"))))
+    return f"""  <aside class="rtwrap" aria-labelledby="rt-h">
+    <h2 id="rt-h" class="rt-h">Availability</h2>
+    {svg}
+    <p class="rtspan">The degree, {a.strftime("%b %Y")} to {b.strftime("%b %Y")}.</p>
+    <ul class="rtkey">
+      <li class="rt-k-done"><span class="rt-s" aria-hidden="true"></span>Worked
+      <b>{worked} term{"" if worked == 1 else "s"}</b></li>
+{open_line}
+    </ul>
+  </aside>"""
 
 
 def featured_subtotal():
@@ -6393,6 +6828,14 @@ def _known_numbers():
     add(case_coverage()); add(len(CASE_SLOTS))
     for _cid, _t, _pr in CAP_BLOCKS:
         add(capability_evidence(_cid))
+    # the four capability sets read as sets: the citations, the distinct
+    # pieces under them, how many carry two, and what none of them reaches
+    _ov = capability_overlap()
+    add([_ov["citations"], _ov["distinct"], _ov["shared"], _ov["most"], _ov["uncited"]])
+    add([len(v) for v in _ov["sets"].values()])
+    add([pr["n"] for pr in _ov["pairs"]])
+    # the definitions the colophon lists, and the chain drawn beside them
+    add([len(colo_defs()), len(DEFS), len(measured_keys()), len(DERIVED_KEYS), len(METRICS)])
     add([len(P), TOTAL_WORDS, TOTAL_FIGS, TOTAL_TBLS, CHECKPOINTS, DOC_MIN, WPM,
          FONT_BYTES, FONT_CODEPOINTS, N_TOOLS, N_PWA, N_INDEP, N_COURSE, N_PERSONAL,
          len(COURSES), UNIT, len(SHELL_PAGES), 404])
