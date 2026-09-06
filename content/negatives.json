@@ -882,8 +882,8 @@
   "meta": {
    "tool": "build/audit.js --falsify",
    "date": "2026-09-06",
-   "commit": "7b3fecd",
-   "code": "41a32e2df422"
+   "commit": "5bd9997",
+   "code": "8f58c396c430"
   },
   "cases": [
    {
@@ -913,8 +913,8 @@
     "what": "a stylesheet removes the focus ring from every element",
     "rec": {
      "keyboard": {
-      "stops": 37,
-      "noRing": 37
+      "stops": 38,
+      "noRing": 38
      }
     }
    },
@@ -981,9 +981,9 @@
        "rows": 6,
        "aimed": 6,
        "faced": 6,
-       "framesSettle": 16464,
-       "framesAfter": 23520,
-       "framesAtTop": 4140
+       "framesSettle": 16785,
+       "framesAfter": 23880,
+       "framesAtTop": 4200
       }
      }
     }
@@ -1091,7 +1091,7 @@
      "inspect": {
       "layers": 2,
       "rest": 0,
-      "hover": 0.666581,
+      "hover": 0.666642,
       "focus": 1,
       "ms": 900,
       "moved": 0,
@@ -1131,7 +1131,7 @@
       "forgotten": true,
       "guardHeld": false,
       "files": 0,
-      "filesExpected": 127,
+      "filesExpected": 128,
       "siteFields": 0,
       "scrollWidth": 320,
       "overflow": false
@@ -1168,8 +1168,8 @@
       "promptShown": true,
       "forgotten": true,
       "guardHeld": true,
-      "files": 127,
-      "filesExpected": 127,
+      "files": 131,
+      "filesExpected": 131,
       "siteFields": 13,
       "scrollWidth": 320,
       "overflow": false
@@ -1206,8 +1206,8 @@
       "promptShown": true,
       "forgotten": true,
       "guardHeld": true,
-      "files": 127,
-      "filesExpected": 127,
+      "files": 131,
+      "filesExpected": 131,
       "siteFields": 13,
       "scrollWidth": 320,
       "overflow": false
@@ -1219,8 +1219,8 @@
     "page": "sw.js",
     "what": "the new worker neither carries the saved copy across nor syncs it, so a publish empties it",
     "rec": {
-     "before": 185,
-     "of": 185,
+     "before": 188,
+     "of": 188,
      "after": 0,
      "refreshed": false,
      "editor": {
@@ -1234,9 +1234,9 @@
     "page": "sw.js",
     "what": "the worker stores the editor like any other page, so a visit leaves it in the cache",
     "rec": {
-     "before": 185,
-     "of": 185,
-     "after": 185,
+     "before": 188,
+     "of": 188,
+     "after": 189,
      "refreshed": true,
      "editor": {
       "stored": true,
