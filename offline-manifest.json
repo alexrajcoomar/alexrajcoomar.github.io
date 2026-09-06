@@ -1,6 +1,6 @@
 {
- "version": "e6368da60516",
- "bytes": 19347595,
+ "version": "e3bc825be46b",
+ "bytes": 19347542,
  "files": [
   "InterVariable-sub.woff2",
   "about.html",
@@ -234,8 +234,8 @@
   "brittle-network.html": "992f5490b642",
   "business-law-primer.html": "ff05560ded0c",
   "case-method.css": "9bc2c3a6e5e4",
-  "colophon.html": "5e57b5683cf0",
-  "controls.html": "51cc334dabc1",
+  "colophon.html": "9c99236f86e2",
+  "controls.html": "c737651ac410",
   "coursework.html": "bff0fb5dd1c5",
   "crucible-cockpit.html": "af5e59e3ec43",
   "crucible-run-0-transcript.html": "15a91ee58ba1",
@@ -352,7 +352,7 @@
   "predictive-history.html": "97558c6c14dc",
   "price-of-divergence.html": "f41b2561d26f",
   "research.html": "f0f343c1800c",
-  "resume.html": "5298efe19c37",
+  "resume.html": "f1a6060cdf91",
   "revenue-recognition.html": "b9d8bbc0d727",
   "selected.html": "360eae4eb6a7",
   "site-192.png": "dbad8f0bc626",

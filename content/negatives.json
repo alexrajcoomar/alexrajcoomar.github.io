@@ -67,7 +67,7 @@
     ],
     "caught": true,
     "line": "check 4: site.webmanifest: names icon site-192-gone.png, which does not exist",
-    "seconds": 60.0
+    "seconds": 60
    },
    {
     "id": "5-figure-scope-missing",
@@ -104,7 +104,7 @@
     ],
     "caught": true,
     "line": "check 7: 404.html: </div> inside <head> ends the head early; everything after it is parsed into the body",
-    "seconds": 60.0
+    "seconds": 60
    },
    {
     "id": "8-atlas-anchor-dead",
@@ -196,7 +196,7 @@
     ],
     "caught": true,
     "line": "check 12: origin totals: words add to 483853, the corpus line says 483854",
-    "seconds": 60.0
+    "seconds": 60
    },
    {
     "id": "13-typed-numeral",
@@ -352,7 +352,7 @@
     ],
     "caught": true,
     "line": "check 24: .github/workflows/build.yml: the gate lacks, in order, idempotence",
-    "seconds": 60.0
+    "seconds": 60
    },
    {
     "id": "24-deploy-ungated",
@@ -376,7 +376,7 @@
     ],
     "caught": true,
     "line": "check 25: 404.html: spells color the American way",
-    "seconds": 60.0
+    "seconds": 60
    },
    {
     "id": "26-number-without-record",
@@ -523,7 +523,7 @@
     ],
     "caught": true,
     "line": "check 33: admin.html: reads --accent, which no stylesheet it loads defines",
-    "seconds": 60.0
+    "seconds": 60
    },
    {
     "id": "33-editor-overwritten",
@@ -535,7 +535,7 @@
     ],
     "caught": true,
     "line": "check 33: admin.html: carries no noindex",
-    "seconds": 60.0
+    "seconds": 60
    },
    {
     "id": "33-token-undefined",
@@ -619,7 +619,7 @@
     ],
     "caught": true,
     "line": "check 34: the favicon mark's thinnest stroke draws 0.375 device pixels at 16px, under the one pixel an edge needs",
-    "seconds": 60.0
+    "seconds": 60
    },
    {
     "id": "34-mark-source-missing",
@@ -850,7 +850,7 @@
     ],
     "caught": true,
     "line": "check 39: content/capabilities.json: canadian names no piece at all",
-    "seconds": 60.0
+    "seconds": 60
    },
    {
     "id": "39-capability-names-an-unlisted-piece",
@@ -882,8 +882,8 @@
   "meta": {
    "tool": "build/audit.js --falsify",
    "date": "2026-09-06",
-   "commit": "7b3fecd",
-   "code": "41a32e2df422"
+   "commit": "557a5fa",
+   "code": "c9bb6a8fb826"
   },
   "cases": [
    {
@@ -913,8 +913,8 @@
     "what": "a stylesheet removes the focus ring from every element",
     "rec": {
      "keyboard": {
-      "stops": 37,
-      "noRing": 37
+      "stops": 46,
+      "noRing": 46
      }
     }
    },
@@ -974,7 +974,7 @@
        "aimed": 6,
        "faced": 6,
        "framesSettle": 1554,
-       "framesAfter": 2220,
+       "framesAfter": 2210,
        "framesAtTop": 660
       },
       "phone": {
@@ -1017,7 +1017,7 @@
       "pulseEnded": true,
       "repeated": false,
       "switched": true,
-      "framesAfterSwitch": 60,
+      "framesAfterSwitch": 61,
       "focusRing": true
      }
     }
@@ -1091,7 +1091,7 @@
      "inspect": {
       "layers": 2,
       "rest": 0,
-      "hover": 0.666581,
+      "hover": 0.666639,
       "focus": 1,
       "ms": 900,
       "moved": 0,
