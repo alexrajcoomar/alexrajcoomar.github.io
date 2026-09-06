@@ -437,7 +437,9 @@ LEVER_HTML = """<div class="lever">
 <h3 id="levers">Move the two things that matter</h3>
 <p class="hint">Both controls read a table this repository computed, one entry for every
 whole percentage point. Nothing is modelled in your browser, nothing is fetched, and
-nothing animates.</p>
+nothing animates. The expansion reading sits at {gexact} per cent, between two of those
+steps, which is why the slider at {gexp} reads a few cents below the {a0ps} in the card
+above rather than matching it exactly.</p>
 
 <fieldset>
 <legend>Tax shield basis</legend>
@@ -510,6 +512,8 @@ def levers():
     return LEVER_HTML.format(
         capex=n(B["capex"]),
         gexp=gexp,
+        gexact=p(D["expansion_growth_capex_share"], 1),
+        a0ps=("$" + p(A0["value_per_share"], 2)),
         ihi=p(start["high"], 2), ilo=p(start["low"], 2),
         igap=("%s%.2f" % ("-" if d0 < 0 else "", abs(d0))),
         igaps=("above" if d0 >= 0 else "below"),
