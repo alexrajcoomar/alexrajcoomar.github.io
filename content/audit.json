@@ -4,7 +4,7 @@
   "tool": "build/audit.js",
   "browser": "Chromium 141.0.7390.37",
   "date": "2026-09-06",
-  "commit": "5bd9997",
+  "commit": "3be0dc7",
   "runs": [
    {
     "commit": "21aacf2",
@@ -80,6 +80,11 @@
     "commit": "cfd8b47",
     "date": "2026-09-06",
     "audit": "kept"
+   },
+   {
+    "commit": "3be0dc7",
+    "date": "2026-09-06",
+    "audit": "ran"
    }
   ]
  },
@@ -134,7 +139,7 @@
    "motion": {
     "animations": 0
    },
-   "inputs": "1050de79a646",
+   "inputs": "50148baf5985",
    "measured": "2026-09-06"
   },
   "about.html": {
@@ -187,7 +192,7 @@
    "motion": {
     "animations": 0
    },
-   "inputs": "a3ee9066cff9",
+   "inputs": "ad9438657d32",
    "measured": "2026-09-06"
   },
   "admin.html": {
@@ -807,7 +812,7 @@
    "motion": {
     "animations": 0
    },
-   "inputs": "8fa67cbdf1da",
+   "inputs": "8f1fba6542c3",
    "measured": "2026-09-06"
   },
   "brittle-network.html": {
@@ -900,7 +905,7 @@
    "motion": {
     "animations": 0
    },
-   "inputs": "d45088356820",
+   "inputs": "8c0ea74137bc",
    "measured": "2026-09-06"
   },
   "controls.html": {
@@ -913,8 +918,8 @@
    },
    "errors": 0,
    "chrome": {
-    "a": 6150,
-    "b": 6105
+    "a": 6031,
+    "b": 5986
    },
    "print": {
     "stickyLeft": 0,
@@ -953,7 +958,7 @@
    "motion": {
     "animations": 0
    },
-   "inputs": "cea17c62d5f2",
+   "inputs": "824dcb485fe7",
    "measured": "2026-09-06"
   },
   "coursework.html": {
@@ -1006,7 +1011,7 @@
    "motion": {
     "animations": 0
    },
-   "inputs": "3be58ad5e759",
+   "inputs": "70a2bf875250",
    "measured": "2026-09-06"
   },
   "crucible-cockpit.html": {
@@ -1509,7 +1514,7 @@
    "motion": {
     "animations": 0
    },
-   "inputs": "482e8d03f765",
+   "inputs": "d5cefcd41fc0",
    "measured": "2026-09-06"
   },
   "kennedy-dossier.html": {
@@ -1622,7 +1627,7 @@
    "motion": {
     "animations": 0
    },
-   "inputs": "ff13e1b53cdb",
+   "inputs": "c04eb7c1b54a",
    "measured": "2026-09-06"
   },
   "monroe-case-file.html": {
@@ -1815,7 +1820,7 @@
    "motion": {
     "animations": 0
    },
-   "inputs": "ac97c1114756",
+   "inputs": "00ec31c3b717",
    "measured": "2026-09-06"
   },
   "resume.html": {
@@ -1868,7 +1873,7 @@
    "motion": {
     "animations": 0
    },
-   "inputs": "66c28cc019c4",
+   "inputs": "e0265fe782f3",
    "measured": "2026-09-06"
   },
   "revenue-recognition.html": {
@@ -1941,7 +1946,7 @@
    "motion": {
     "animations": 0
    },
-   "inputs": "d9cee6f13cb8",
+   "inputs": "4faa7d94e48f",
    "measured": "2026-09-06"
   },
   "skill-forge.html": {
@@ -2074,7 +2079,7 @@
    "motion": {
     "animations": 0
    },
-   "inputs": "d463ead7a899",
+   "inputs": "5bab1b83a128",
    "measured": "2026-09-06"
   },
   "transformers-study-guide.html": {
