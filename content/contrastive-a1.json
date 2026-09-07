@@ -1,0 +1,362 @@
+{
+ "note": "The alignment behind spanish-a1-cafe.html. Every pair names a concept both A1 café units carry, the form each language uses for it, and how transfer between them behaves. The classification is a reading, not a measurement: it is declared here so a reader can disagree with it, and build/contrastive.py checks only that both sides are filled, that the class is one of the three declared, and that every row cites the section of the unit it came from. Nothing here comes from outside the two units. Where a fact would need a third source it is left out, and the page says it is left out.",
+ "sources": {
+  "fr": {
+   "unit": "Unité 1 : Au Café",
+   "url": "french-a1-cafe.html",
+   "variety": "standard French of France",
+   "level": "CEFR A1"
+  },
+  "es": {
+   "unit": "Unidad 1: En el Café",
+   "url": "spanish-a1-cafe.html",
+   "variety": "Latin American Spanish, Mexico and Colombia as reference varieties",
+   "level": "CEFR A1"
+  }
+ },
+ "classes": {
+  "transfers": "The pattern carries over. Knowing one gives you the other.",
+  "misleads": "Both languages have the feature and handle it differently. Knowing one points you at the wrong answer.",
+  "independent": "There is no resemblance to carry over. It has to be learned twice."
+ },
+ "pairs": [
+  {
+   "concept": "hello, good morning",
+   "fr": "bonjour",
+   "fr_note": "interjection",
+   "es": "buenos días",
+   "es_note": "fórmula de cortesía",
+   "why": "Both units open every dialogue with the greeting before the request, and neither treats it as optional.",
+   "src_fr": "2; Sociolinguistic Protocol",
+   "src_es": "2; Diálogo 1",
+   "class": "transfers"
+  },
+  {
+   "concept": "please",
+   "fr": "s'il vous plaît",
+   "fr_note": "carries the addressee: vous formal, te informal",
+   "es": "por favor",
+   "es_note": "invariant",
+   "why": "The French form carries the formal or informal choice inside it. Por favor does not change at all, so a French-first learner looks for a split that Spanish does not have.",
+   "src_fr": "2; Tu vs Vous",
+   "src_es": "2",
+   "class": "misleads"
+  },
+  {
+   "concept": "thank you",
+   "fr": "merci beaucoup",
+   "fr_note": "",
+   "es": "muchas gracias",
+   "es_note": "",
+   "why": "Intensifier plus thanks in both, in the same order.",
+   "src_fr": "2",
+   "src_es": "2; Diálogo 1",
+   "class": "transfers"
+  },
+  {
+   "concept": "goodbye",
+   "fr": "au revoir",
+   "fr_note": "",
+   "es": "hasta luego",
+   "es_note": "",
+   "why": "Nothing in one form suggests the other. Both are closing formulas and both have to be memorised on their own.",
+   "src_fr": "2",
+   "src_es": "Diálogo 1, support glossary",
+   "class": "independent"
+  },
+  {
+   "concept": "a coffee",
+   "fr": "un café",
+   "fr_note": "masculine; an espresso by default in France",
+   "es": "el café",
+   "es_note": "masculine; a filter or americano cup in Latin America, an espresso in Spain",
+   "why": "The gender transfers and the word is the same. What arrives in the cup does not, and both units warn about it in opposite directions.",
+   "src_fr": "2; Café Vocabulary in France",
+   "src_es": "2; regional vocabulary",
+   "class": "misleads"
+  },
+  {
+   "concept": "a tea",
+   "fr": "un thé",
+   "fr_note": "masculine",
+   "es": "el té",
+   "es_note": "masculine; the written accent is obligatory",
+   "why": "Masculine in both, and the same borrowed word. The Spanish accent is the only thing to add.",
+   "src_fr": "2",
+   "src_es": "2; answer key A1",
+   "class": "transfers"
+  },
+  {
+   "concept": "an orange juice",
+   "fr": "un jus d'orange",
+   "fr_note": "masculine, one word everywhere",
+   "es": "el jugo de naranja",
+   "es_note": "masculine; el zumo in Spain",
+   "why": "Gender and structure transfer. The lexical choice does not: Spanish splits the word by region where French does not, so one Spanish word will be wrong in half the Spanish-speaking world.",
+   "src_fr": "2",
+   "src_es": "2; regional vocabulary",
+   "class": "misleads"
+  },
+  {
+   "concept": "water",
+   "fr": "de l'eau",
+   "fr_note": "feminine noun; the partitive article is compulsory",
+   "es": "el agua",
+   "es_note": "feminine noun; takes el and un in the singular, las aguas in the plural",
+   "why": "Both languages make water irregular and they put the irregularity in different places. French puts it in the article system, Spanish in the gender agreement, and neither predicts the other.",
+   "src_fr": "2; 3.3B",
+   "src_es": "2, note on el agua",
+   "class": "misleads"
+  },
+  {
+   "concept": "sugar",
+   "fr": "du sucre",
+   "fr_note": "masculine; partitive article compulsory",
+   "es": "azúcar",
+   "es_note": "bare noun after con or sin",
+   "why": "French cannot say sugar without choosing an article. Spanish takes it bare after the preposition. This is the partitive gap in its smallest form.",
+   "src_fr": "2; 3.3B",
+   "src_es": "2; 3.4 Trap 3",
+   "class": "misleads"
+  },
+  {
+   "concept": "a sandwich",
+   "fr": "un sandwich",
+   "fr_note": "masculine, borrowed",
+   "es": "el sándwich",
+   "es_note": "masculine, borrowed; written accent, plural sándwiches",
+   "why": "Borrowed into both and masculine in both. Spanish adds an accent and takes es in the plural because the word ends in a consonant.",
+   "src_fr": "2",
+   "src_es": "2; 3.3 plurals",
+   "class": "transfers"
+  },
+  {
+   "concept": "the menu",
+   "fr": "la carte",
+   "fr_note": "feminine",
+   "es": "la carta",
+   "es_note": "feminine",
+   "why": "The cleanest pair in the set: cognate, feminine in both, same everyday use. Nothing to unlearn.",
+   "src_fr": "2",
+   "src_es": "Diálogo 2 glossary; regional vocabulary",
+   "class": "transfers"
+  },
+  {
+   "concept": "the bill",
+   "fr": "l'addition",
+   "fr_note": "feminine",
+   "es": "la cuenta",
+   "es_note": "feminine",
+   "why": "Both feminine, but the words share nothing. The matching gender is a coincidence a learner cannot rely on, and the vocabulary has to be learned twice.",
+   "src_fr": "2",
+   "src_es": "2",
+   "class": "independent"
+  },
+  {
+   "concept": "the tip",
+   "fr": "le pourboire",
+   "fr_note": "masculine",
+   "es": "la propina",
+   "es_note": "feminine",
+   "why": "The gender flips. This is the one item in the aligned set where carrying the French article straight across gives the wrong Spanish article.",
+   "src_fr": "Service and Tipping",
+   "src_es": "2",
+   "class": "misleads"
+  },
+  {
+   "concept": "the waiter",
+   "fr": "le serveur",
+   "fr_note": "one word across France",
+   "es": "el mesero, la mesera",
+   "es_note": "mesero in Mexico and Colombia; mozo, garzón or camarero elsewhere",
+   "why": "Both mark the server's gender on the noun, which transfers. The assumption that one word covers the whole language does not: the Spanish unit lists four regional words where the French unit needs one.",
+   "src_fr": "Dialogue 1",
+   "src_es": "2; regional vocabulary",
+   "class": "misleads"
+  },
+  {
+   "concept": "I would like",
+   "fr": "je voudrais",
+   "fr_note": "conditional of vouloir, taught as a fixed block",
+   "es": "quisiera",
+   "es_note": "past subjunctive of querer, taught as a fixed block",
+   "why": "The same move in both languages: politeness carried by a non-present form of the verb for wanting, and both units tell the learner to memorise it whole rather than parse the tense.",
+   "src_fr": "3.1; 3.2",
+   "src_es": "3.1; 3.2",
+   "class": "transfers"
+  },
+  {
+   "concept": "I want",
+   "fr": "je veux",
+   "fr_note": "the French unit says avoid it for ordering, keep it for the negative",
+   "es": "quiero",
+   "es_note": "the Spanish unit says it is perfectly normal with por favor",
+   "why": "The same verb, the same meaning, and opposite advice. A French-first learner avoids the most ordinary Spanish ordering verb; a Spanish-first learner sounds blunt to a French server.",
+   "src_fr": "3.1",
+   "src_es": "3.1",
+   "class": "misleads"
+  },
+  {
+   "concept": "to have, of food and drink",
+   "fr": "prendre",
+   "fr_note": "literally to take",
+   "es": "tomar",
+   "es_note": "literally to take",
+   "why": "Both languages use the verb for taking, and both units warn against translating the English have or drink literally. The metaphor is shared.",
+   "src_fr": "2; 3.2",
+   "src_es": "2; 3.2",
+   "class": "transfers"
+  },
+  {
+   "concept": "do you have ... ?",
+   "fr": "vous avez ... ?",
+   "fr_note": "second person plural",
+   "es": "¿Tiene ... ?",
+   "es_note": "third person singular, usted",
+   "why": "Both are the polite way to ask a stranger for stock, and they sit in different persons of the verb. French politeness is a plural you, Spanish politeness a third person singular, so the conjugation slot does not transfer.",
+   "src_fr": "2; 3.1",
+   "src_es": "2; 3.1",
+   "class": "misleads"
+  },
+  {
+   "concept": "how much is it?",
+   "fr": "c'est combien ?",
+   "fr_note": "copula plus quantity word",
+   "es": "¿Cuánto es?",
+   "es_note": "copula plus quantity word",
+   "why": "Structurally the same sentence in both: it is how much. Spanish adds ¿Cuánto cuesta? for a named item.",
+   "src_fr": "2; 3.1",
+   "src_es": "2; 3.4 Trap 3",
+   "class": "transfers"
+  },
+  {
+   "concept": "for here or to take away",
+   "fr": "sur place ou à emporter",
+   "fr_note": "place phrase, then preposition plus infinitive",
+   "es": "¿Para aquí o para llevar?",
+   "es_note": "preposition plus place, then preposition plus infinitive",
+   "why": "Near calques. Both build the takeaway half from a preposition and the verb for carrying.",
+   "src_fr": "2; Dialogue 1",
+   "src_es": "optional exposure, Mexico",
+   "class": "transfers"
+  },
+  {
+   "concept": "to take away",
+   "fr": "à emporter",
+   "fr_note": "",
+   "es": "para llevar",
+   "es_note": "",
+   "why": "Preposition plus the verb for carrying in both, in the same slot after the item.",
+   "src_fr": "2",
+   "src_es": "2",
+   "class": "transfers"
+  },
+  {
+   "concept": "with sugar, without sugar",
+   "fr": "avec du sucre; je ne prends pas de sucre",
+   "fr_note": "refusing needs the full negation, and the article collapses to de",
+   "es": "con azúcar; sin azúcar",
+   "es_note": "a matched pair of prepositions, no verb needed",
+   "why": "The largest asymmetry in the pair. Spanish refuses with one word. French has to wrap the verb in ne and pas and then change the article, so a Spanish-first learner reaches for a French sin that does not exist.",
+   "src_fr": "3.3B; 3.4",
+   "src_es": "2; 3.1",
+   "class": "misleads"
+  }
+ ],
+ "structures": [
+  {
+   "id": "articles",
+   "title": "French makes you choose an article Spanish does not have",
+   "fr": "Three sets, and the unit says French makes you choose: indefinite un, une, des for countable items; partitive du, de la, de l' for an unmeasured amount; definite le, la, les for a specific thing. Water and sugar take the partitive.",
+   "es": "Two sets: indefinite un, una, unos, unas and definite el, la, los, las. There is no partitive at all, and the unit's article section is about gender and number agreement instead.",
+   "cost": "A Spanish-first learner under-produces the French partitive and says a bare noun. A French-first learner over-produces de in Spanish, where nothing licenses it.",
+   "src_fr": "3.3 A, B and C",
+   "src_es": "3.3"
+  },
+  {
+   "id": "person",
+   "title": "Politeness sits in a different person of the verb",
+   "fr": "Formal you is vous, the second person plural. The polite question is vous avez, and the politeness formula itself is s'il vous plaît.",
+   "es": "Formal you is usted, which takes the third person singular. The polite question is ¿Tiene?, the same form as he or she has.",
+   "cost": "A learner who has drilled one conjugation slot for politeness reaches for the wrong slot in the other language, and the error lands on every polite sentence rather than on one word.",
+   "src_fr": "Tu vs Vous; 3.1",
+   "src_es": "3.2; sociolinguistic notes"
+  },
+  {
+   "id": "refusal",
+   "title": "Refusing something is one word in Spanish and a grammar rule in French",
+   "fr": "Je ne prends pas de sucre. The verb is wrapped in ne and pas, and after the negation un, une, des, du, de la and de l' all collapse into de.",
+   "es": "Sin azúcar. A preposition, and the noun stays bare.",
+   "cost": "This is the cheapest sentence in Spanish and one of the first real grammar rules in French. A learner going from Spanish to French produces a bare noun and is understood but visibly wrong.",
+   "src_fr": "3.4",
+   "src_es": "2; 3.1"
+  },
+  {
+   "id": "ladder",
+   "title": "The politeness ladders are different heights and disagree about I want",
+   "fr": "Four formulas: je voudrais, je vais prendre, je prends, je veux. The unit places je veux outside ordering and keeps it for the negative.",
+   "es": "Five formulas: the bare noun with por favor, quiero, quisiera, ¿Me da?, and para mí. The unit says quiero is perfectly normal with por favor, and calls ¿Me da? extremely frequent in Mexico and Colombia.",
+   "cost": "The direct want verb is excluded from ordering in one unit and endorsed in the other. Transfer in either direction produces either needless stiffness or genuine bluntness.",
+   "src_fr": "3.1",
+   "src_es": "3.1"
+  },
+  {
+   "id": "water",
+   "title": "Both languages make water irregular, in different places",
+   "fr": "L'eau is feminine and takes the partitive de l' when you order it, because the unit treats water as an unmeasured amount rather than a countable unit.",
+   "es": "Agua is feminine but takes el and un in the singular purely for pronunciation, and the plural las aguas shows the true gender. Any adjective stays feminine: el agua fría.",
+   "cost": "Neither irregularity predicts the other. The only safe move is to learn each as a whole phrase, which is what both units already tell the learner to do with articles.",
+   "src_fr": "2; 3.3B",
+   "src_es": "2, note on el agua"
+  }
+ ],
+ "spanish_only": [
+  {
+   "es": "disculpe",
+   "en": "excuse me, to usted",
+   "why": "The Spanish unit opens a request to a seated server with it. The French unit uses bonjour plus the request instead."
+  },
+  {
+   "es": "el café con leche",
+   "en": "coffee with milk",
+   "why": "Core vocabulary in the Spanish unit. The French unit's nearest item, un café crème, appears only in its enrichment table."
+  },
+  {
+   "es": "la empanada",
+   "en": "a savoury pastry",
+   "why": "The Spanish unit's food item, as the croissant and the tarte are the French unit's."
+  },
+  {
+   "es": "grande, pequeño",
+   "en": "large, small",
+   "why": "Spanish teaches size adjectives inside the unit because they agree with the noun. The French unit leaves size out of its twenty."
+  },
+  {
+   "es": "tener",
+   "en": "to have, to stock",
+   "why": "Spanish needs a separate verb for the availability question. French uses avoir, which it already teaches as a support verb."
+  },
+  {
+   "es": "¿La propina está incluida?",
+   "en": "is the tip included?",
+   "why": "The one question the Spanish unit says works in every Spanish-speaking country, because tipping is not one system. France settles it with service compris."
+  }
+ ],
+ "french_only": [
+  {
+   "fr": "monsieur, madame",
+   "en": "sir, ma'am",
+   "why": "The French unit teaches them as core, because adding one to bonjour raises the register. The Spanish unit carries no equivalent in its twenty."
+  },
+  {
+   "fr": "un croissant",
+   "en": "a croissant",
+   "why": "The French unit's food item."
+  },
+  {
+   "fr": "une tarte",
+   "en": "a tart",
+   "why": "The French unit's second food item, and its example of a feminine countable noun."
+  }
+ ]
+}

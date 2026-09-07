@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="en-CA">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Unidad 1: En el Café, the Spanish A1 café unit read against the French one</title>
+<style>
+:root{
+  color-scheme: light;
+  --plane:#fbfbf9; --panel:#ffffff; --sunk:#f4f4f0;
+  --ink:#080808; --ink-2:#3d3c39; --ink-3:#6b6963;
+  --rule:#dcdbd3; --rule-2:#c2c0b6; --hair:rgba(8,8,8,.09);
+  --accent:#14509b; --accent-2:#0047ab;
+  --ok:#1f6b3a; --ok-w:#e6f0e9;
+  --warn:#a8391f; --warn-w:#f6ebe7;
+  --none:#8a8880; --none-w:#eeedea; --none-ink:#63615c;
+  --grid:#e7e6df;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme: dark;
+    --plane:#080808; --panel:#111110; --sunk:#161615;
+    --ink:#f3f3ef; --ink-2:#c0bfb8; --ink-3:#8b8983;
+    --rule:#2a2a27; --rule-2:#3a3a36; --hair:rgba(243,243,239,.10);
+    --accent:#7fb0e8; --accent-2:#9cc4f0;
+    --ok:#5fb37f; --ok-w:#16241b;
+    --warn:#e08163; --warn-w:#2a1a15;
+    --none:#6e6c66; --none-w:#1c1c1a; --none-ink:#9a988f;
+    --grid:#1e1e1c;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme: dark;
+  --plane:#080808; --panel:#111110; --sunk:#161615;
+  --ink:#f3f3ef; --ink-2:#c0bfb8; --ink-3:#8b8983;
+  --rule:#2a2a27; --rule-2:#3a3a36; --hair:rgba(243,243,239,.10);
+  --accent:#7fb0e8; --accent-2:#9cc4f0;
+  --ok:#5fb37f; --ok-w:#16241b;
+  --warn:#e08163; --warn-w:#2a1a15;
+  --none:#6e6c66; --none-w:#1c1c1a; --none-ink:#9a988f;
+  --grid:#1e1e1c;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  background:var(--plane); color:var(--ink);
+  font-family:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+  font-size:17px; line-height:1.62; -webkit-font-smoothing:antialiased;
+}
+.mono,code,th,.lab,.num{
+  font-family:ui-monospace,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace;
+  font-variant-numeric:tabular-nums;
+}
+.wrap{max-width:60rem;margin:0 auto;padding:3rem 1.5rem 6rem}
+.measure{max-width:36rem}
+p{margin:0 0 1.15em}
+a{color:var(--accent);text-underline-offset:.18em}
+a:focus-visible,summary:focus-visible,button:focus-visible{
+  outline:2px solid var(--accent);outline-offset:3px;border-radius:2px}
+
+.eyebrow{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--ink-3);margin:0 0 1.1rem;display:flex;flex-wrap:wrap;gap:.4rem 1.1rem}
+h1{font-size:clamp(1.9rem,4.2vw,2.9rem);line-height:1.14;letter-spacing:-.018em;
+  margin:0 0 .7rem;font-weight:600;max-width:20ch}
+.dek{font-size:1.14rem;color:var(--ink-2);margin:0 0 1.6rem;max-width:44rem}
+.byline{border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);
+  padding:.8rem 0;margin:0 0 2.6rem;display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(11rem,1fr));gap:1rem 2rem}
+.byline div{font-size:.82rem;color:var(--ink-3)}
+.byline b{display:block;font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  font-size:.66rem;letter-spacing:.13em;text-transform:uppercase;color:var(--ink-3);
+  margin-bottom:.2rem;font-weight:400}
+.byline span{color:var(--ink)}
+
+.verdict{background:var(--panel);border:1px solid var(--rule);border-radius:4px;
+  padding:1.4rem 1.5rem;margin:0 0 1.4rem}
+.verdict h2{font-size:.7rem;letter-spacing:.15em;text-transform:uppercase;
+  font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;color:var(--ink-3);
+  margin:0 0 .9rem;font-weight:400}
+.big{display:grid;grid-template-columns:repeat(auto-fit,minmax(9rem,1fr));gap:1.2rem;margin:0 0 1rem}
+.big div{border-left:3px solid var(--rule-2);padding-left:.8rem}
+.big .n{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  font-size:1.7rem;line-height:1.1;letter-spacing:-.02em;display:block}
+.big .l{font-size:.78rem;color:var(--ink-3);display:block;margin-top:.25rem}
+.big .t{border-left-color:var(--ok)} .big .t .n{color:var(--ok)}
+.big .m{border-left-color:var(--warn)} .big .m .n{color:var(--warn)}
+.big .i{border-left-color:var(--none)} .big .i .n{color:var(--none)}
+
+.callout{border-left:3px solid var(--accent);background:var(--sunk);
+  padding:1rem 1.2rem;margin:0 0 2.4rem;font-size:.95rem}
+.callout p:last-child{margin-bottom:0}
+
+h2.sec{font-size:1.28rem;margin:2.8rem 0 .3rem;letter-spacing:-.01em;font-weight:600;
+  padding-top:1.4rem;border-top:1px solid var(--rule)}
+h2.sec .num{color:var(--ink-3);font-size:.8rem;margin-right:.6rem}
+.take{color:var(--ink-2);font-size:.98rem;margin:0 0 1.3rem;max-width:40rem;font-style:italic}
+h3{font-size:1.02rem;margin:1.8rem 0 .5rem;font-weight:600}
+
+table{border-collapse:collapse;width:100%;margin:0 0 1.4rem;font-size:.9rem}
+caption{text-align:left;color:var(--ink-3);font-size:.8rem;margin-bottom:.5rem}
+th,td{border-bottom:1px solid var(--rule);padding:.5rem .6rem;text-align:left;vertical-align:top}
+th{font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);font-weight:400;
+  border-bottom:1px solid var(--rule-2)}
+tbody tr:hover{background:var(--sunk)}
+.tag{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;font-size:.66rem;
+  letter-spacing:.06em;text-transform:uppercase;padding:.12rem .4rem;border-radius:2px;
+  white-space:nowrap}
+.tag.transfers{background:var(--ok-w);color:var(--ok)}
+.tag.misleads{background:var(--warn-w);color:var(--warn)}
+.tag.independent{background:var(--none-w);color:var(--none-ink)}
+.form{font-style:normal}
+.gl{color:var(--ink-3);font-size:.84rem;display:block}
+
+figure{margin:1.6rem 0 2rem}
+.figbox{overflow-x:auto;border:1px solid var(--rule);border-radius:4px;background:var(--panel);
+  padding:.6rem}
+[data-scroll]{overflow-x:auto;margin:0 0 1.4rem}
+[data-scroll] table{margin-bottom:0;min-width:30rem}
+.fig{display:block;width:100%;min-width:34rem;height:auto}
+.fig .fk{font-family:ui-monospace,monospace;font-size:11px;letter-spacing:.12em;fill:var(--ink-3)}
+.fig .fk2{font-family:ui-monospace,monospace;font-size:11px;fill:var(--ink-2)}
+.fig .fl{font-size:13px;fill:var(--ink)}
+.fig .fs{font-size:12px;fill:var(--ink-3)}
+.fig .fa{font-family:ui-monospace,monospace;font-size:13px;fill:var(--ink)}
+.fig .fx{font-size:11px;fill:var(--ink-3);font-style:italic}
+.fig .fg{font-family:ui-monospace,monospace;font-size:13px;fill:var(--none)}
+.fig .ax{stroke:var(--rule-2);stroke-width:1}
+.fig .axf{fill:var(--rule-2)}
+.fig .rw.even{fill:transparent} .fig .rw.odd{fill:var(--sunk)}
+.fig .bar.transfers{fill:var(--ok)} .fig .sw.transfers{fill:var(--ok)}
+.fig .bar.misleads{fill:var(--warn)} .fig .sw.misleads{fill:var(--warn)}
+.fig .bar.independent{fill:var(--none)} .fig .sw.independent{fill:var(--none)}
+.fig .cell{fill:var(--sunk);stroke:var(--rule);stroke-width:1}
+.fig .gap{fill:none;stroke:var(--rule-2);stroke-width:1;stroke-dasharray:4 3}
+figcaption{font-size:.84rem;color:var(--ink-3);margin-top:.6rem;max-width:44rem}
+
+.struct{border:1px solid var(--rule);border-radius:4px;background:var(--panel);
+  padding:1.1rem 1.2rem;margin:0 0 1.1rem}
+.struct h3{margin:0 0 .7rem}
+.struct .two{display:grid;grid-template-columns:1fr 1fr;gap:1rem 1.6rem;margin-bottom:.8rem}
+.struct .two > div{border-left:2px solid var(--rule-2);padding-left:.7rem}
+.struct .two b{font-family:ui-monospace,monospace;font-size:.66rem;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--ink-3);font-weight:400;display:block;margin-bottom:.25rem}
+.struct .two p{font-size:.88rem;margin:0}
+.struct .cost{font-size:.9rem;margin:0;padding-top:.7rem;border-top:1px solid var(--rule)}
+.struct .cost b{color:var(--warn)}
+.src{font-family:ui-monospace,monospace;font-size:.7rem;color:var(--ink-3);margin:.5rem 0 0}
+
+.drill{border:1px solid var(--rule-2);border-radius:4px;background:var(--panel);
+  padding:1.2rem 1.3rem;margin:0 0 1.2rem}
+.dhead{display:flex;justify-content:space-between;gap:1rem;font-family:ui-monospace,monospace;
+  font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);margin:0 0 .9rem}
+.dq{font-size:1.05rem;margin:0 0 .9rem}
+.dq b{font-style:italic}
+.dbtns{display:flex;flex-wrap:wrap;gap:.5rem;margin:0 0 .9rem}
+.dbtn{font:inherit;font-size:.86rem;padding:.4rem .9rem;border:1px solid var(--rule-2);
+  border-radius:3px;background:var(--sunk);color:var(--ink);cursor:pointer}
+.dbtn:hover{border-color:var(--accent)}
+.dbtn.ghost{background:transparent;font-size:.8rem}
+.dbtn[disabled]{opacity:.45;cursor:default}
+.dver{min-height:1.4em;font-size:.9rem;margin:0 0 .8rem}
+.dver.ok{color:var(--ok)} .dver.no{color:var(--warn)}
+.dforms{display:grid;grid-template-columns:auto 1fr;gap:.3rem 1rem;margin:0 0 .7rem;
+  padding:.8rem 0;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)}
+.dforms dt{font-family:ui-monospace,monospace;font-size:.66rem;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--ink-3);padding-top:.15rem}
+.dforms dd{margin:0;font-size:1rem}
+.dwhy{font-size:.88rem;color:var(--ink-2);margin:0 0 .8rem}
+.drill[data-shown="no"] .dforms dt,.drill[data-shown="no"] .dforms dd,
+.drill[data-shown="no"] .dwhy{visibility:hidden}
+.dnav{margin:0;display:flex;gap:.5rem}
+
+details{border:1px solid var(--rule);border-radius:4px;background:var(--panel);
+  padding:.7rem .9rem;margin:0 0 .9rem}
+summary{cursor:pointer;font-size:.9rem;color:var(--ink-2)}
+details[open] summary{margin-bottom:.8rem;border-bottom:1px solid var(--rule);padding-bottom:.5rem}
+
+.lim{border-left:3px solid var(--warn);background:var(--sunk);padding:1rem 1.2rem;font-size:.94rem}
+.lim p:last-child{margin-bottom:0}
+.foot{margin-top:3rem;padding-top:1.2rem;border-top:1px solid var(--rule);
+  font-size:.82rem;color:var(--ink-3)}
+
+@media (max-width:38rem){
+  .wrap{padding:2rem 1rem 4rem}
+  .struct .two{grid-template-columns:1fr}
+  .fig{min-width:30rem}
+}
+@media print{
+  .drill{display:none}
+  body{font-size:11pt}
+}
+</style>
+<!--__meta-->
+<meta name="color-scheme" content="light dark">
+<meta name="description" content="Two A1 café units on the same twenty words, laid side by side to find out how much of the first language survives the trip to the second. Of the twenty-two…">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' fill='%2316150f'/><g fill='none' stroke='%23faf9f6' stroke-linecap='round' stroke-linejoin='round'><path d='M12 56 L32 6 L52 56' stroke-width='4.95'/><path d='M20 38 H44' stroke-width='4.95'/><path d='M32 36 L51 56' stroke-width='4.95'/></g></svg>">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="site.webmanifest">
+<link rel="canonical" href="https://alexrajcoomar.github.io/spanish-a1-cafe.html">
+<meta property="og:title" content="Unidad 1: En el Café · The same café in Spanish, read against the French unit">
+<meta property="og:description" content="Two A1 café units on the same twenty words, laid side by side to find out how much of the first language survives the trip to the second. Of the twenty-two…">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://alexrajcoomar.github.io/spanish-a1-cafe.html">
+<meta property="og:site_name" content="Alex Rajcoomar · portfolio">
+<meta property="og:image" content="https://alexrajcoomar.github.io/og-card.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Unidad 1: En el Café · Alex Rajcoomar">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://alexrajcoomar.github.io/og-card.png">
+<script>
+(function(){
+  var d=document.documentElement;
+  try{var t=localStorage.getItem('theme'); if(t) d.setAttribute('data-theme',t);}catch(e){}
+  new MutationObserver(function(){
+    try{
+      var v=d.getAttribute('data-theme');
+      if(v) localStorage.setItem('theme',v); else localStorage.removeItem('theme');
+    }catch(e){}
+  }).observe(d,{attributes:true,attributeFilter:['data-theme']});
+})();
+</script>
+<!--/__meta-->
+</head>
+<body>
+<!--__rb-->
+<!-- injected by the site build: a way back into the site from a standalone
+     piece. A static bar at the top, so it is visible on arrival, and a pill
+     that appears once you have scrolled past it, so there is always a way out.
+     Self-contained, because these pages do not load the site stylesheet. -->
+<style id="__rb-style">
+#__rb{
+  box-sizing:border-box;display:flex;flex-wrap:wrap;align-items:center;gap:.6rem 1.25rem;
+  padding:.6rem clamp(1rem,4vw,2rem);border-bottom:1px solid #ddd9cf;background:#faf9f6;
+  font:500 13px/1.35 InterVar,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  color:#55524a;
+}
+#__rb a{color:#14509b;text-decoration:none;display:inline-flex;align-items:center;gap:.4rem}
+#__rb a:hover{text-decoration:underline}
+#__rb .__rb-home{font-weight:640;color:#16150f}
+#__rb .__rb-home i{font-style:normal;font-weight:400;color:#66635a}
+#__rb .__rb-right{margin-left:auto;display:flex;gap:1.1rem;flex-wrap:wrap}
+/* the piece's own row of the statement: origin, words, figures, tables, the
+   same figures the home page prints for it, from the same measurement */
+#__rb .__rb-row{color:#66635a;font-variant-numeric:tabular-nums;white-space:nowrap}
+#__rb .__rb-row b{font-weight:600;color:#55524a}
+@media (max-width:44rem){#__rb .__rb-row{flex-basis:100%;order:3;white-space:normal}}
+/* what the piece was built from, in the owner's words, from pieces.json */
+#__rb .__rb-from{flex-basis:100%;order:5;font-weight:400;color:#66635a;line-height:1.4;max-width:70ch}
+#__rb .__rb-from b{font-weight:600;color:#55524a}
+#__rb .__mark{
+  flex:none;align-self:center;color:inherit;
+  /* pinned: six pieces give every svg a width of 100 per cent, and this
+     mark's stroke factor was computed for the size named here. Check 34
+     holds the two to each other. */
+  width:19px;height:19px;
+}
+/* Dark has to answer to two things: the reader's system setting, and the
+   theme button on the page, which sets data-theme on <html>. Keyed to the
+   media query alone, the bar stayed paper-white across the top of an essay
+   the reader had just switched to dark, and read as a rendering fault. The
+   media query is scoped so an explicit light choice wins, and the attribute
+   selector is repeated so an explicit dark choice wins on a light system. */
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) #__rb{background:#0d0e11;border-bottom-color:#26282d;color:#b9bbc1}
+  :root:not([data-theme="light"]) #__rb .__rb-home{color:#f3f3f0}
+  :root:not([data-theme="light"]) #__rb .__rb-home i{color:#8f929a}
+  :root:not([data-theme="light"]) #__rb .__rb-row{color:#8f929a}
+  :root:not([data-theme="light"]) #__rb .__rb-row b{color:#b9bbc1}
+  :root:not([data-theme="light"]) #__rb .__rb-from{color:#8f929a}
+  :root:not([data-theme="light"]) #__rb .__rb-from b{color:#b9bbc1}
+  :root:not([data-theme="light"]) #__rb a{color:#8fb6ee}
+  :root:not([data-theme="light"]) #__rb .__mark{background:#f3f3f0;color:#0d0e11}
+}
+:root[data-theme="dark"] #__rb{background:#0d0e11;border-bottom-color:#26282d;color:#b9bbc1}
+:root[data-theme="dark"] #__rb .__rb-home{color:#f3f3f0}
+:root[data-theme="dark"] #__rb .__rb-home i{color:#8f929a}
+:root[data-theme="dark"] #__rb .__rb-row{color:#8f929a}
+:root[data-theme="dark"] #__rb .__rb-row b{color:#b9bbc1}
+:root[data-theme="dark"] #__rb .__rb-from{color:#8f929a}
+:root[data-theme="dark"] #__rb .__rb-from b{color:#b9bbc1}
+:root[data-theme="dark"] #__rb a{color:#8fb6ee}
+:root[data-theme="dark"] #__rb .__mark{background:#f3f3f0;color:#0d0e11}
+@media print{#__rb{display:none !important}}
+</style>
+<nav id="__rb" aria-label="Portfolio">
+  <a class="__rb-home" href="index.html"><svg class="__mark mk-bar" viewBox="0 0 64 64" width="19" height="19" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 56 L32 6 L52 56" stroke-width="3.6"/><path d="M20 38 H44" stroke-width="3.6"/><path d="M32 18 H42 C51 18 51 35 42 36 H32" stroke-width="3.6"/><path d="M32 36 L51 56" stroke-width="3.6"/></svg>Alex Rajcoomar <i>portfolio</i></a>
+  <span class="__rb-row">Personal &middot; <b>3,000</b> words &middot; <b>2</b> figures &middot; <b>3</b> tables</span>
+  <span class="__rb-right"><a href="library.html">Library</a><a href="atlas.html">Atlas</a><a href="library.html">All work</a></span>
+  <span class="__rb-from"><b>Built from</b> the two A1 café units on this site, Unité 1 : Au Café and this one, and nothing else. Where a claim would have needed a third source it was left out and the page says so. The alignment lives in content/contrastive-a1.json and the page is written from it by build/contrastive.py, so no count on the page is typed by hand.</span>
+</nav>
+<script>
+/* the trail: which passages this browser has opened. The atlas reads it and
+   rings them; the record lives in localStorage and never leaves the machine. */
+(function(){
+  if(window.__trailed) return; window.__trailed=1;
+  if('serviceWorker' in navigator && location.protocol.indexOf('http')===0){
+    addEventListener('load',function(){setTimeout(function(){
+      navigator.serviceWorker.register('sw.js').catch(function(){});},6000);});
+  }
+  try{
+    var k='atlas.trail';
+    var u=location.pathname.split('/').pop()||'index.html';
+    var t2=JSON.parse(localStorage.getItem(k)||'{}');
+    function put(key){
+      if(t2[key]||Object.keys(t2).length<500){
+        t2[key]=(t2[key]||0)+1;
+        try{localStorage.setItem(k,JSON.stringify(t2));}catch(e){}
+      }
+    }
+    put(u+location.hash);
+    addEventListener('hashchange',function(){ put(u+location.hash); });
+  }catch(e){}
+})();
+</script>
+<!--/__rb-->
+
+<main class="wrap" id="main">
+<p class="eyebrow"><span>Personal</span><span>Spanish</span><span>Unit 1</span><span>CEFR A1</span></p>
+<h1>Unidad 1: En el Café</h1>
+<p class="dek">The Spanish A1 café unit, read against the French one already on this site.
+Where the two languages agree, one unit does the work of two. Where they disagree, knowing
+French is worse than knowing nothing, because it supplies a confident wrong answer.</p>
+
+<div class="byline">
+  <div><b>Level</b><span>CEFR A1, both units</span></div>
+  <div><b>Varieties</b><span>Latin American Spanish, Mexico and Colombia as reference varieties; standard French of France</span></div>
+  <div><b>Method</b><span>Concept alignment across two units</span></div>
+  <div><b>Sources</b><span>These two units only</span></div>
+</div>
+
+<div class="verdict">
+  <h2 id="finding">The finding</h2>
+  <div class="big">
+    <div class="t"><span class="n">10</span><span class="l">transfer safely</span></div>
+    <div class="m"><span class="n">10</span><span class="l">mislead you</span></div>
+    <div class="i"><span class="n">2</span><span class="l">must be learned twice</span></div>
+  </div>
+  <p class="measure" style="margin-bottom:0">Of the 22 concepts both units teach,
+  10 carry over from French to Spanish unchanged. The other 12 do not, which is
+  55 per cent of the shared ground. A second Romance language is not half price.</p>
+</div>
+
+<div class="callout">
+  <p><b>If you have already done the French unit,</b> the fastest way through this one is to
+  read section 03, drill the 10 misleading pairs until they are automatic, and skim the
+  rest. The 10 that transfer need no work from you. That is the whole argument for
+  reading two units against each other rather than one after the other.</p>
+</div>
+
+<h2 class="sec" id="s-01"><span class="num">01</span>What this is, and what it is not</h2>
+<p class="take">A comparison of two A1 café units, not a Spanish course and not a claim about
+the two languages in general.</p>
+<p>The French unit, <a href="french-a1-cafe.html">Unité 1 : Au Café</a>, and this one cover the same ground: the
+twenty or so words you need to order in a café, the polite request formulas, the article
+system, two dialogues and a set of drills. Because the domain, the level and the language of
+instruction are identical, the two units can be laid side by side and the differences are
+about the languages rather than about how the material happened to be written.</p>
+<p>Everything on this page comes from those two units and nothing else. Where a claim would
+need a third source, it is not made. That rules out a good deal a comparative grammar would
+say, and it keeps every row on this page checkable against a document you can open.</p>
+
+<h2 class="sec" id="s-02"><span class="num">02</span>The alignment at a glance</h2>
+<p class="take">Twenty-two concepts, each drawn as one row, coloured by whether the French
+form predicts the Spanish one.</p>
+<figure>
+  <div class="figbox"><svg viewBox="0 0 720 722" role="img" aria-labelledby="f1t f1d" class="fig">
+<title id="f1t">The twenty-two shared concepts, by how transfer behaves</title>
+<desc id="f1d">Each row is one concept both units teach. The bar between the French form on the left and the Spanish form on the right is green where the pattern transfers, amber where it misleads, and grey where there is nothing to carry over. The counts are restated in the paragraph below.</desc>
+<text x="14" y="26" class="fk">FRANÇAIS</text>
+<text x="468" y="26" class="fk">ESPAÑOL</text>
+<rect x="14" y="46" width="16" height="9" rx="1" class="sw transfers"/>
+<text x="36" y="55" class="fk2">transfers, 10</text>
+<rect x="252" y="46" width="16" height="9" rx="1" class="sw misleads"/>
+<text x="274" y="55" class="fk2">misleads, 10</text>
+<rect x="470" y="46" width="16" height="9" rx="1" class="sw independent"/>
+<text x="492" y="55" class="fk2">learn twice, 2</text>
+<line x1="14" y1="76" x2="706" y2="76" class="ax"/>
+<rect x="14" y="77" width="692" height="22" class="rw even"/>
+<text x="20" y="92" class="fl">bonjour</text>
+<rect x="266" y="83" width="188" height="6" rx="3" class="bar transfers"/>
+<text x="468" y="92" class="fl">buenos días</text>
+<rect x="14" y="103" width="692" height="22" class="rw odd"/>
+<text x="20" y="118" class="fl">s&#x27;il vous plaît</text>
+<rect x="266" y="109" width="188" height="6" rx="3" class="bar misleads"/>
+<text x="468" y="118" class="fl">por favor</text>
+<rect x="14" y="129" width="692" height="22" class="rw even"/>
+<text x="20" y="144" class="fl">merci beaucoup</text>
+<rect x="266" y="135" width="188" height="6" rx="3" class="bar transfers"/>
+<text x="468" y="144" class="fl">muchas gracias</text>
+<rect x="14" y="155" width="692" height="22" class="rw odd"/>
+<text x="20" y="170" class="fl">au revoir</text>
+<rect x="266" y="161" width="188" height="6" rx="3" class="bar independent"/>
+<text x="468" y="170" class="fl">hasta luego</text>
+<rect x="14" y="181" width="692" height="22" class="rw even"/>
+<text x="20" y="196" class="fl">un café</text>
+<rect x="266" y="187" width="188" height="6" rx="3" class="bar misleads"/>
+<text x="468" y="196" class="fl">el café</text>
+<rect x="14" y="207" width="692" height="22" class="rw odd"/>
+<text x="20" y="222" class="fl">un thé</text>
+<rect x="266" y="213" width="188" height="6" rx="3" class="bar transfers"/>
+<text x="468" y="222" class="fl">el té</text>
+<rect x="14" y="233" width="692" height="22" class="rw even"/>
+<text x="20" y="248" class="fl">un jus d&#x27;orange</text>
+<rect x="266" y="239" width="188" height="6" rx="3" class="bar misleads"/>
+<text x="468" y="248" class="fl">el jugo de naranja</text>
+<rect x="14" y="259" width="692" height="22" class="rw odd"/>
+<text x="20" y="274" class="fl">de l&#x27;eau</text>
+<rect x="266" y="265" width="188" height="6" rx="3" class="bar misleads"/>
+<text x="468" y="274" class="fl">el agua</text>
+<rect x="14" y="285" width="692" height="22" class="rw even"/>
+<text x="20" y="300" class="fl">du sucre</text>
+<rect x="266" y="291" width="188" height="6" rx="3" class="bar misleads"/>
+<text x="468" y="300" class="fl">azúcar</text>
+<rect x="14" y="311" width="692" height="22" class="rw odd"/>
+<text x="20" y="326" class="fl">un sandwich</text>
+<rect x="266" y="317" width="188" height="6" rx="3" class="bar transfers"/>
+<text x="468" y="326" class="fl">el sándwich</text>
+<rect x="14" y="337" width="692" height="22" class="rw even"/>
+<text x="20" y="352" class="fl">la carte</text>
+<rect x="266" y="343" width="188" height="6" rx="3" class="bar transfers"/>
+<text x="468" y="352" class="fl">la carta</text>
+<rect x="14" y="363" width="692" height="22" class="rw odd"/>
+<text x="20" y="378" class="fl">l&#x27;addition</text>
+<rect x="266" y="369" width="188" height="6" rx="3" class="bar independent"/>
+<text x="468" y="378" class="fl">la cuenta</text>
+<rect x="14" y="389" width="692" height="22" class="rw even"/>
+<text x="20" y="404" class="fl">le pourboire</text>
+<rect x="266" y="395" width="188" height="6" rx="3" class="bar misleads"/>
+<text x="468" y="404" class="fl">la propina</text>
+<rect x="14" y="415" width="692" height="22" class="rw odd"/>
+<text x="20" y="430" class="fl">le serveur</text>
+<rect x="266" y="421" width="188" height="6" rx="3" class="bar misleads"/>
+<text x="468" y="430" class="fl">el mesero, la mesera</text>
+<rect x="14" y="441" width="692" height="22" class="rw even"/>
+<text x="20" y="456" class="fl">je voudrais</text>
+<rect x="266" y="447" width="188" height="6" rx="3" class="bar transfers"/>
+<text x="468" y="456" class="fl">quisiera</text>
+<rect x="14" y="467" width="692" height="22" class="rw odd"/>
+<text x="20" y="482" class="fl">je veux</text>
+<rect x="266" y="473" width="188" height="6" rx="3" class="bar misleads"/>
+<text x="468" y="482" class="fl">quiero</text>
+<rect x="14" y="493" width="692" height="22" class="rw even"/>
+<text x="20" y="508" class="fl">prendre</text>
+<rect x="266" y="499" width="188" height="6" rx="3" class="bar transfers"/>
+<text x="468" y="508" class="fl">tomar</text>
+<rect x="14" y="519" width="692" height="22" class="rw odd"/>
+<text x="20" y="534" class="fl">vous avez ... ?</text>
+<rect x="266" y="525" width="188" height="6" rx="3" class="bar misleads"/>
+<text x="468" y="534" class="fl">¿Tiene ... ?</text>
+<rect x="14" y="545" width="692" height="22" class="rw even"/>
+<text x="20" y="560" class="fl">c&#x27;est combien ?</text>
+<rect x="266" y="551" width="188" height="6" rx="3" class="bar transfers"/>
+<text x="468" y="560" class="fl">¿Cuánto es?</text>
+<rect x="14" y="571" width="692" height="22" class="rw odd"/>
+<text x="20" y="586" class="fl">sur place ou à emporter</text>
+<rect x="266" y="577" width="188" height="6" rx="3" class="bar transfers"/>
+<text x="468" y="586" class="fl">¿Para aquí o para llevar?</text>
+<rect x="14" y="597" width="692" height="22" class="rw even"/>
+<text x="20" y="612" class="fl">à emporter</text>
+<rect x="266" y="603" width="188" height="6" rx="3" class="bar transfers"/>
+<text x="468" y="612" class="fl">para llevar</text>
+<rect x="14" y="623" width="692" height="22" class="rw odd"/>
+<text x="20" y="638" class="fl">avec du sucre; je ne prends pas de</text>
+<rect x="266" y="629" width="188" height="6" rx="3" class="bar misleads"/>
+<text x="468" y="638" class="fl">con azúcar; sin azúcar</text>
+</svg></div>
+  <figcaption>Every concept both units carry, with the French form on the left and the Spanish
+  on the right. Green where the pattern transfers (10 rows), amber where it misleads
+  (10 rows), grey where there is nothing to carry over (2 rows).</figcaption>
+</figure>
+
+<h2 class="sec" id="s-03"><span class="num">03</span>The alignment, pair by pair</h2>
+<p class="take">The same 22 rows in full, each with the reason and the section of each unit
+it was read from.</p>
+<div data-scroll><table>
+  <caption>The 22 concepts both units teach. The class is a reading, declared in
+  <code>content/contrastive-a1.json</code>, and the build checks that every row cites both
+  units rather than that the reading is correct.</caption>
+  <thead><tr><th>Concept</th><th>Français</th><th>Español</th><th>Transfer</th></tr></thead>
+  <tbody>
+<tr><td>hello, good morning</td><td><span class="form">bonjour</span><span class="gl">interjection</span></td><td><span class="form">buenos días</span><span class="gl">fórmula de cortesía</span></td><td><span class="tag transfers">Transfers</span></td></tr>
+<tr class="wr"><td></td><td colspan="3" class="gl">Both units open every dialogue with the greeting before the request, and neither treats it as optional. <span class="src">2; Sociolinguistic Protocol against 2; Diálogo 1</span></td></tr>
+<tr><td>please</td><td><span class="form">s&#x27;il vous plaît</span><span class="gl">carries the addressee: vous formal, te informal</span></td><td><span class="form">por favor</span><span class="gl">invariant</span></td><td><span class="tag misleads">Misleads</span></td></tr>
+<tr class="wr"><td></td><td colspan="3" class="gl">The French form carries the formal or informal choice inside it. Por favor does not change at all, so a French-first learner looks for a split that Spanish does not have. <span class="src">2; Tu vs Vous against 2</span></td></tr>
+<tr><td>thank you</td><td><span class="form">merci beaucoup</span></td><td><span class="form">muchas gracias</span></td><td><span class="tag transfers">Transfers</span></td></tr>
+<tr class="wr"><td></td><td colspan="3" class="gl">Intensifier plus thanks in both, in the same order. <span class="src">2 against 2; Diálogo 1</span></td></tr>
+<tr><td>goodbye</td><td><span class="form">au revoir</span></td><td><span class="form">hasta luego</span></td><td><span class="tag independent">Learn twice</span></td></tr>
+<tr class="wr"><td></td><td colspan="3" class="gl">Nothing in one form suggests the other. Both are closing formulas and both have to be memorised on their own. <span class="src">2 against Diálogo 1, support glossary</span></td></tr>
+<tr><td>a coffee</td><td><span class="form">un café</span><span class="gl">masculine; an espresso by default in France</span></td><td><span class="form">el café</span><span class="gl">masculine; a filter or americano cup in Latin America, an espresso in Spain</span></td><td><span class="tag misleads">Misleads</span></td></tr>
+<tr class="wr"><td></td><td colspan="3" class="gl">The gender transfers and the word is the same. What arrives in the cup does not, and both units warn about it in opposite directions. <span class="src">2; Café Vocabulary in France against 2; regional vocabulary</span></td></tr>
+<tr><td>a tea</td><td><span class="form">un thé</span><span class="gl">masculine</span></td><td><span class="form">el té</span><span class="gl">masculine; the written accent is obligatory</span></td><td><span class="tag transfers">Transfers</span></td></tr>
+<tr class="wr"><td></td><td colspan="3" class="gl">Masculine in both, and the same borrowed word. The Spanish accent is the only thing to add. <span class="src">2 against 2; answer key A1</span></td></tr>
+<tr><td>an orange juice</td><td><span class="form">un jus d&#x27;orange</span><span class="gl">masculine, one word everywhere</span></td><td><span class="form">el jugo de naranja</span><span class="gl">masculine; el zumo in Spain</span></td><td><span class="tag misleads">Misleads</span></td></tr>
+<tr class="wr"><td></td><td colspan="3" class="gl">Gender and structure transfer. The lexical choice does not: Spanish splits the word by region where French does not, so one Spanish word will be wrong in half the Spanish-speaking world. <span class="src">2 against 2; regional vocabulary</span></td></tr>
+<tr><td>water</td><td><span class="form">de l&#x27;eau</span><span class="gl">feminine noun; the partitive article is compulsory</span></td><td><span class="form">el agua</span><span class="gl">feminine noun; takes el and un in the singular, las aguas in the plural</span></td><td><span class="tag misleads">Misleads</span></td></tr>
+<tr class="wr"><td></td><td colspan="3" class="gl">Both languages make water irregular and they put the irregularity in different places. French puts it in the article system, Spanish in the gender agreement, and neither predicts the other. <span class="src">2; 3.3B against 2, note on el agua</span></td></tr>
+<tr><td>sugar</td><td><span class="form">du sucre</span><span class="gl">masculine; partitive article compulsory</span></td><td><span class="form">azúcar</span><span class="gl">bare noun after con or sin</span></td><td><span class="tag misleads">Misleads</span></td></tr>
+<tr class="wr"><td></td><td colspan="3" class="gl">French cannot say sugar without choosing an article. Spanish takes it bare after the preposition. This is the partitive gap in its smallest form. <span class="src">2; 3.3B against 2; 3.4 Trap 3</span></td></tr>
+<tr><td>a sandwich</td><td><span class="form">un sandwich</span><span class="gl">masculine, borrowed</span></td><td><span class="form">el sándwich</span><span class="gl">masculine, borrowed; written accent, plural sándwiches</span></td><td><span class="tag transfers">Transfers</span></td></tr>
+<tr class="wr"><td></td><td colspan="3" class="gl">Borrowed into both and masculine in both. Spanish adds an accent and takes es in the plural because the word ends in a consonant. <span class="src">2 against 2; 3.3 plurals</span></td></tr>
+<tr><td>the menu</td><td><span class="form">la carte</span><span class="gl">feminine</span></td><td><span class="form">la carta</span><span class="gl">feminine</span></td><td><span class="tag transfers">Transfers</span></td></tr>
+<tr class="wr"><td></td><td colspan="3" class="gl">The cleanest pair in the set: cognate, feminine in both, same everyday use. Nothing to unlearn. <span class="src">2 against Diálogo 2 glossary; regional vocabulary</span></td></tr>
+<tr><td>the bill</td><td><span class="form">l&#x27;addition</span><span class="gl">feminine</span></td><td><span class="form">la cuenta</span><span class="gl">feminine</span></td><td><span class="tag independent">Learn twice</span></td></tr>
+<tr class="wr"><td></td><td colspan="3" class="gl">Both feminine, but the words share nothing. The matching gender is a coincidence a learner cannot rely on, and the vocabulary has to be learned twice. <span class="src">2 against 2</span></td></tr>
+<tr><td>the tip</td><td><span class="form">le pourboire</span><span class="gl">masculine</span></td><td><span class="form">la propina</span><span class="gl">feminine</span></td><td><span class="tag misleads">Misleads</span></td></tr>
+<tr class="wr"><td></td><td colspan="3" class="gl">The gender flips. This is the one item in the aligned set where carrying the French article straight across gives the wrong Spanish article. <span class="src">Service and Tipping against 2</span></td></tr>
+<tr><td>the waiter</td><td><span class="form">le serveur</span><span class="gl">one word across France</span></td><td><span class="form">el mesero, la mesera</span><span class="gl">mesero in Mexico and Colombia; mozo, garzón or camarero elsewhere</span></td><td><span class="tag misleads">Misleads</span></td></tr>
+<tr class="wr"><td></td><td colspan="3" class="gl">Both mark the server&#x27;s gender on the noun, which transfers. The assumption that one word covers the whole language does not: the Spanish unit lists four regional words where the French unit needs one. <span class="src">Dialogue 1 against 2; regional vocabulary</span></td></tr>
+<tr><td>I would like</td><td><span class="form">je voudrais</span><span class="gl">conditional of vouloir, taught as a fixed block</span></td><td><span class="form">quisiera</span><span class="gl">past subjunctive of querer, taught as a fixed block</span></td><td><span class="tag transfers">Transfers</span></td></tr>
+<tr class="wr"><td></td><td colspan="3" class="gl">The same move in both languages: politeness carried by a non-present form of the verb for wanting, and both units tell the learner to memorise it whole rather than parse the tense. <span class="src">3.1; 3.2 against 3.1; 3.2</span></td></tr>
+<tr><td>I want</td><td><span class="form">je veux</span><span class="gl">the French unit says avoid it for ordering, keep it for the negative</span></td><td><span class="form">quiero</span><span class="gl">the Spanish unit says it is perfectly normal with por favor</span></td><td><span class="tag misleads">Misleads</span></td></tr>
+<tr class="wr"><td></td><td colspan="3" class="gl">The same verb, the same meaning, and opposite advice. A French-first learner avoids the most ordinary Spanish ordering verb; a Spanish-first learner sounds blunt to a French server. <span class="src">3.1 against 3.1</span></td></tr>
+<tr><td>to have, of food and drink</td><td><span class="form">prendre</span><span class="gl">literally to take</span></td><td><span class="form">tomar</span><span class="gl">literally to take</span></td><td><span class="tag transfers">Transfers</span></td></tr>
+<tr class="wr"><td></td><td colspan="3" class="gl">Both languages use the verb for taking, and both units warn against translating the English have or drink literally. The metaphor is shared. <span class="src">2; 3.2 against 2; 3.2</span></td></tr>
+<tr><td>do you have ... ?</td><td><span class="form">vous avez ... ?</span><span class="gl">second person plural</span></td><td><span class="form">¿Tiene ... ?</span><span class="gl">third person singular, usted</span></td><td><span class="tag misleads">Misleads</span></td></tr>
+<tr class="wr"><td></td><td colspan="3" class="gl">Both are the polite way to ask a stranger for stock, and they sit in different persons of the verb. French politeness is a plural you, Spanish politeness a third person singular, so the conjugation slot does not transfer. <span class="src">2; 3.1 against 2; 3.1</span></td></tr>
+<tr><td>how much is it?</td><td><span class="form">c&#x27;est combien ?</span><span class="gl">copula plus quantity word</span></td><td><span class="form">¿Cuánto es?</span><span class="gl">copula plus quantity word</span></td><td><span class="tag transfers">Transfers</span></td></tr>
+<tr class="wr"><td></td><td colspan="3" class="gl">Structurally the same sentence in both: it is how much. Spanish adds ¿Cuánto cuesta? for a named item. <span class="src">2; 3.1 against 2; 3.4 Trap 3</span></td></tr>
+<tr><td>for here or to take away</td><td><span class="form">sur place ou à emporter</span><span class="gl">place phrase, then preposition plus infinitive</span></td><td><span class="form">¿Para aquí o para llevar?</span><span class="gl">preposition plus place, then preposition plus infinitive</span></td><td><span class="tag transfers">Transfers</span></td></tr>
+<tr class="wr"><td></td><td colspan="3" class="gl">Near calques. Both build the takeaway half from a preposition and the verb for carrying. <span class="src">2; Dialogue 1 against optional exposure, Mexico</span></td></tr>
+<tr><td>to take away</td><td><span class="form">à emporter</span></td><td><span class="form">para llevar</span></td><td><span class="tag transfers">Transfers</span></td></tr>
+<tr class="wr"><td></td><td colspan="3" class="gl">Preposition plus the verb for carrying in both, in the same slot after the item. <span class="src">2 against 2</span></td></tr>
+<tr><td>with sugar, without sugar</td><td><span class="form">avec du sucre; je ne prends pas de sucre</span><span class="gl">refusing needs the full negation, and the article collapses to de</span></td><td><span class="form">con azúcar; sin azúcar</span><span class="gl">a matched pair of prepositions, no verb needed</span></td><td><span class="tag misleads">Misleads</span></td></tr>
+<tr class="wr"><td></td><td colspan="3" class="gl">The largest asymmetry in the pair. Spanish refuses with one word. French has to wrap the verb in ne and pas and then change the article, so a Spanish-first learner reaches for a French sin that does not exist. <span class="src">3.3B; 3.4 against 2; 3.1</span></td></tr>
+  </tbody>
+</table></div>
+
+<h2 class="sec" id="s-04"><span class="num">04</span>Five differences that are structural</h2>
+<p class="take">Vocabulary you can look up. These five change what a sentence has to contain,
+so they cost you on every sentence rather than on one word.</p>
+<div class="struct">
+  <h3 id="s-articles">French makes you choose an article Spanish does not have</h3>
+  <div class="two">
+    <div><b>Français</b><p>Three sets, and the unit says French makes you choose: indefinite un, une, des for countable items; partitive du, de la, de l&#x27; for an unmeasured amount; definite le, la, les for a specific thing. Water and sugar take the partitive.</p></div>
+    <div><b>Español</b><p>Two sets: indefinite un, una, unos, unas and definite el, la, los, las. There is no partitive at all, and the unit&#x27;s article section is about gender and number agreement instead.</p></div>
+  </div>
+  <p class="cost"><b>What it costs you.</b> A Spanish-first learner under-produces the French partitive and says a bare noun. A French-first learner over-produces de in Spanish, where nothing licenses it.</p>
+  <p class="src">3.3 A, B and C against 3.3</p>
+</div>
+<div class="struct">
+  <h3 id="s-person">Politeness sits in a different person of the verb</h3>
+  <div class="two">
+    <div><b>Français</b><p>Formal you is vous, the second person plural. The polite question is vous avez, and the politeness formula itself is s&#x27;il vous plaît.</p></div>
+    <div><b>Español</b><p>Formal you is usted, which takes the third person singular. The polite question is ¿Tiene?, the same form as he or she has.</p></div>
+  </div>
+  <p class="cost"><b>What it costs you.</b> A learner who has drilled one conjugation slot for politeness reaches for the wrong slot in the other language, and the error lands on every polite sentence rather than on one word.</p>
+  <p class="src">Tu vs Vous; 3.1 against 3.2; sociolinguistic notes</p>
+</div>
+<div class="struct">
+  <h3 id="s-refusal">Refusing something is one word in Spanish and a grammar rule in French</h3>
+  <div class="two">
+    <div><b>Français</b><p>Je ne prends pas de sucre. The verb is wrapped in ne and pas, and after the negation un, une, des, du, de la and de l&#x27; all collapse into de.</p></div>
+    <div><b>Español</b><p>Sin azúcar. A preposition, and the noun stays bare.</p></div>
+  </div>
+  <p class="cost"><b>What it costs you.</b> This is the cheapest sentence in Spanish and one of the first real grammar rules in French. A learner going from Spanish to French produces a bare noun and is understood but visibly wrong.</p>
+  <p class="src">3.4 against 2; 3.1</p>
+</div>
+<div class="struct">
+  <h3 id="s-ladder">The politeness ladders are different heights and disagree about I want</h3>
+  <div class="two">
+    <div><b>Français</b><p>Four formulas: je voudrais, je vais prendre, je prends, je veux. The unit places je veux outside ordering and keeps it for the negative.</p></div>
+    <div><b>Español</b><p>Five formulas: the bare noun with por favor, quiero, quisiera, ¿Me da?, and para mí. The unit says quiero is perfectly normal with por favor, and calls ¿Me da? extremely frequent in Mexico and Colombia.</p></div>
+  </div>
+  <p class="cost"><b>What it costs you.</b> The direct want verb is excluded from ordering in one unit and endorsed in the other. Transfer in either direction produces either needless stiffness or genuine bluntness.</p>
+  <p class="src">3.1 against 3.1</p>
+</div>
+<div class="struct">
+  <h3 id="s-water">Both languages make water irregular, in different places</h3>
+  <div class="two">
+    <div><b>Français</b><p>L&#x27;eau is feminine and takes the partitive de l&#x27; when you order it, because the unit treats water as an unmeasured amount rather than a countable unit.</p></div>
+    <div><b>Español</b><p>Agua is feminine but takes el and un in the singular purely for pronunciation, and the plural las aguas shows the true gender. Any adjective stays feminine: el agua fría.</p></div>
+  </div>
+  <p class="cost"><b>What it costs you.</b> Neither irregularity predicts the other. The only safe move is to learn each as a whole phrase, which is what both units already tell the learner to do with articles.</p>
+  <p class="src">2; 3.3B against 2, note on el agua</p>
+</div>
+
+<h2 class="sec" id="s-05"><span class="num">05</span>The article decision, drawn</h2>
+<p class="take">French asks three questions before it lets you say a noun. Spanish asks two.</p>
+<figure>
+  <div class="figbox"><svg viewBox="0 0 720 320" role="img" aria-labelledby="f2t f2d" class="fig">
+<title id="f2t">Choosing an article, in each language</title>
+<desc id="f2d">French asks three questions and Spanish asks two. The middle French branch, the partitive, has no Spanish counterpart, which is the gap the text below describes.</desc>
+<text x="14" y="26" class="fk">FRANÇAIS</text>
+<rect x="14" y="38" width="330" height="1" class="axf"/>
+<rect x="14" y="48" width="330" height="66" rx="3" class="cell b0"/>
+<text x="28" y="66" class="fs">one whole countable thing</text>
+<text x="28" y="88" class="fa">un, une, des</text>
+<text x="28" y="106" class="fx">un café, une tarte</text>
+<rect x="14" y="132" width="330" height="66" rx="3" class="cell b1"/>
+<text x="28" y="150" class="fs">an unmeasured amount</text>
+<text x="28" y="172" class="fa">du, de la, de l&#x27;</text>
+<text x="28" y="190" class="fx">du sucre, de l&#x27;eau</text>
+<rect x="14" y="216" width="330" height="66" rx="3" class="cell b2"/>
+<text x="28" y="234" class="fs">that specific thing</text>
+<text x="28" y="256" class="fa">le, la, les</text>
+<text x="28" y="274" class="fx">l&#x27;addition, la carte</text>
+<text x="376" y="26" class="fk">ESPAÑOL</text>
+<rect x="376" y="38" width="330" height="1" class="axf"/>
+<rect x="376" y="48" width="330" height="66" rx="3" class="cell b0"/>
+<text x="390" y="66" class="fs">one whole countable thing</text>
+<text x="390" y="88" class="fa">un, una, unos, unas</text>
+<text x="390" y="106" class="fx">un café, una empanada</text>
+<rect x="376" y="132" width="330" height="66" rx="3" class="gap"/>
+<text x="390" y="160" class="fg">no partitive</text>
+<text x="390" y="180" class="fs">Spanish does not ask this question</text>
+<rect x="376" y="216" width="330" height="66" rx="3" class="cell b2"/>
+<text x="390" y="234" class="fs">that specific thing</text>
+<text x="390" y="256" class="fa">el, la, los, las</text>
+<text x="390" y="274" class="fx">la cuenta, el agua</text>
+</svg></div>
+  <figcaption>The article systems at the same scale. The dashed box is the branch Spanish does
+  not have: there is no partitive, so the question French forces you to answer about every
+  uncountable noun simply does not arise.</figcaption>
+</figure>
+<p>This is the single largest divergence in the pair, and it runs in both directions. Coming
+from Spanish, you will say <span class="form">je voudrais sucre</span> and leave out an article
+French requires. Coming from French, you will reach for a Spanish partitive that does not
+exist and produce something like <span class="form">de azúcar</span> where the language wants
+the bare noun after <span class="form">con</span> or <span class="form">sin</span>.</p>
+
+<h2 class="sec" id="s-06"><span class="num">06</span>Test yourself on the transfer, not the vocabulary</h2>
+<p class="take">The vocabulary you can drill anywhere. What only two units together can drill
+is whether the first language is helping or lying to you.</p>
+<p>The card below names a concept and asks what the French form predicts about the Spanish
+one. The forms and the reason stay dimmed until you commit to an answer, because recognising
+a correct answer in a list is not the same as retrieving it.</p>
+<div class="drill" id="dcard" data-shown="yes">
+      <p class="dhead"><span class="dpos" id="dpos">1 of 22</span>
+        <span class="dsc">Score <b id="dscore">0 of 0</b></span></p>
+      <p class="dq">If you know the French, what does <b id="dconcept">hello, good morning</b> do in Spanish?</p>
+      <div class="dbtns" id="dbtns" role="group" aria-label="Answer"><button type="button" data-k="transfers" class="dbtn">Transfers</button><button type="button" data-k="misleads" class="dbtn">Misleads</button><button type="button" data-k="independent" class="dbtn">Learn twice</button></div>
+      <p class="dver" id="dver" role="status" aria-live="polite"></p>
+      <dl class="dforms">
+        <dt>Français</dt><dd id="dfr">bonjour</dd>
+        <dt>Español</dt><dd id="des">buenos días</dd>
+      </dl>
+      <p class="dwhy" id="dwhy">Both units open every dialogue with the greeting before the request, and neither treats it as optional.</p>
+      <p class="dnav">
+        <button type="button" id="dnext" class="dbtn ghost" disabled>Next</button>
+        <button type="button" id="dreset" class="dbtn ghost">Start again</button>
+      </p>
+    </div>
+<p class="gl">With scripts off this card shows the first pair and the full table in section 03
+carries all 22, so nothing here is only available to a browser that runs JavaScript.</p>
+
+<h2 class="sec" id="s-07"><span class="num">07</span>What each unit has that the other does not</h2>
+<p class="take">The two units are not translations of each other, and the gaps are informative
+in their own right.</p>
+<div data-scroll><table><caption>In the Spanish unit&#x27;s core, with no counterpart in the French twenty</caption><thead><tr><th>Form</th><th>English</th><th>Why it is here and not there</th></tr></thead><tbody><tr><td><span class="form">disculpe</span></td><td>excuse me, to usted</td><td class="gl">The Spanish unit opens a request to a seated server with it. The French unit uses bonjour plus the request instead.</td></tr>
+<tr><td><span class="form">el café con leche</span></td><td>coffee with milk</td><td class="gl">Core vocabulary in the Spanish unit. The French unit&#x27;s nearest item, un café crème, appears only in its enrichment table.</td></tr>
+<tr><td><span class="form">la empanada</span></td><td>a savoury pastry</td><td class="gl">The Spanish unit&#x27;s food item, as the croissant and the tarte are the French unit&#x27;s.</td></tr>
+<tr><td><span class="form">grande, pequeño</span></td><td>large, small</td><td class="gl">Spanish teaches size adjectives inside the unit because they agree with the noun. The French unit leaves size out of its twenty.</td></tr>
+<tr><td><span class="form">tener</span></td><td>to have, to stock</td><td class="gl">Spanish needs a separate verb for the availability question. French uses avoir, which it already teaches as a support verb.</td></tr>
+<tr><td><span class="form">¿La propina está incluida?</span></td><td>is the tip included?</td><td class="gl">The one question the Spanish unit says works in every Spanish-speaking country, because tipping is not one system. France settles it with service compris.</td></tr></tbody></table></div>
+<div data-scroll><table><caption>In the French unit&#x27;s core, with no counterpart in the Spanish twenty</caption><thead><tr><th>Form</th><th>English</th><th>Why it is here and not there</th></tr></thead><tbody><tr><td><span class="form">monsieur, madame</span></td><td>sir, ma&#x27;am</td><td class="gl">The French unit teaches them as core, because adding one to bonjour raises the register. The Spanish unit carries no equivalent in its twenty.</td></tr>
+<tr><td><span class="form">un croissant</span></td><td>a croissant</td><td class="gl">The French unit&#x27;s food item.</td></tr>
+<tr><td><span class="form">une tarte</span></td><td>a tart</td><td class="gl">The French unit&#x27;s second food item, and its example of a feminine countable noun.</td></tr></tbody></table></div>
+
+<h2 class="sec" id="s-08"><span class="num">08</span>What would make this wrong</h2>
+<p class="take">The honest limits, stated rather than buried.</p>
+<div class="lim">
+  <p><b>The classification is a reading.</b> Whether a pair transfers or misleads is my
+  judgement about what a learner will do, not a measured fact about the languages. Someone who
+  already speaks a third Romance language would classify several rows differently. The file is
+  the place to disagree.</p>
+  <p><b>The sample is two units, not two languages.</b> Twenty-two shared concepts in one
+  domain at one level cannot support a claim about French and Spanish generally. The
+  proportion that misleads would move with the domain, and almost certainly with the level.</p>
+  <p><b>There is no learner in the data.</b> The piece predicts where transfer will fail. It
+  does not observe anyone failing. A real test would be error rates from someone learning the
+  second language after the first, and I have not run one.</p>
+  <p><b>Both units were written by the same hand, and so was this.</b> If the French unit is
+  wrong about French, this page inherits the error and presents it as a contrast. The two
+  units are the only sources, which keeps the page checkable and also keeps its ceiling low.</p>
+  <p><b>Latin American Spanish against Metropolitan French.</b> Neither unit covers its whole
+  language. Several rows would change against Peninsular Spanish, and the units say so where
+  they know it.</p>
+</div>
+
+<p class="foot">Written from <code>content/contrastive-a1.json</code> by
+<code>build/contrastive.py</code>. Every count on this page is computed from that file on each
+build, so the page cannot claim a tally the data does not carry. The companion unit is
+<a href="french-a1-cafe.html">Unité 1 : Au Café</a>.</p>
+</main>
+
+<script>
+(function(){
+  var D=[{"c": "hello, good morning", "f": "bonjour", "e": "buenos días", "k": "transfers", "w": "Both units open every dialogue with the greeting before the request, and neither treats it as optional."}, {"c": "please", "f": "s'il vous plaît", "e": "por favor", "k": "misleads", "w": "The French form carries the formal or informal choice inside it. Por favor does not change at all, so a French-first learner looks for a split that Spanish does not have."}, {"c": "thank you", "f": "merci beaucoup", "e": "muchas gracias", "k": "transfers", "w": "Intensifier plus thanks in both, in the same order."}, {"c": "goodbye", "f": "au revoir", "e": "hasta luego", "k": "independent", "w": "Nothing in one form suggests the other. Both are closing formulas and both have to be memorised on their own."}, {"c": "a coffee", "f": "un café", "e": "el café", "k": "misleads", "w": "The gender transfers and the word is the same. What arrives in the cup does not, and both units warn about it in opposite directions."}, {"c": "a tea", "f": "un thé", "e": "el té", "k": "transfers", "w": "Masculine in both, and the same borrowed word. The Spanish accent is the only thing to add."}, {"c": "an orange juice", "f": "un jus d'orange", "e": "el jugo de naranja", "k": "misleads", "w": "Gender and structure transfer. The lexical choice does not: Spanish splits the word by region where French does not, so one Spanish word will be wrong in half the Spanish-speaking world."}, {"c": "water", "f": "de l'eau", "e": "el agua", "k": "misleads", "w": "Both languages make water irregular and they put the irregularity in different places. French puts it in the article system, Spanish in the gender agreement, and neither predicts the other."}, {"c": "sugar", "f": "du sucre", "e": "azúcar", "k": "misleads", "w": "French cannot say sugar without choosing an article. Spanish takes it bare after the preposition. This is the partitive gap in its smallest form."}, {"c": "a sandwich", "f": "un sandwich", "e": "el sándwich", "k": "transfers", "w": "Borrowed into both and masculine in both. Spanish adds an accent and takes es in the plural because the word ends in a consonant."}, {"c": "the menu", "f": "la carte", "e": "la carta", "k": "transfers", "w": "The cleanest pair in the set: cognate, feminine in both, same everyday use. Nothing to unlearn."}, {"c": "the bill", "f": "l'addition", "e": "la cuenta", "k": "independent", "w": "Both feminine, but the words share nothing. The matching gender is a coincidence a learner cannot rely on, and the vocabulary has to be learned twice."}, {"c": "the tip", "f": "le pourboire", "e": "la propina", "k": "misleads", "w": "The gender flips. This is the one item in the aligned set where carrying the French article straight across gives the wrong Spanish article."}, {"c": "the waiter", "f": "le serveur", "e": "el mesero, la mesera", "k": "misleads", "w": "Both mark the server's gender on the noun, which transfers. The assumption that one word covers the whole language does not: the Spanish unit lists four regional words where the French unit needs one."}, {"c": "I would like", "f": "je voudrais", "e": "quisiera", "k": "transfers", "w": "The same move in both languages: politeness carried by a non-present form of the verb for wanting, and both units tell the learner to memorise it whole rather than parse the tense."}, {"c": "I want", "f": "je veux", "e": "quiero", "k": "misleads", "w": "The same verb, the same meaning, and opposite advice. A French-first learner avoids the most ordinary Spanish ordering verb; a Spanish-first learner sounds blunt to a French server."}, {"c": "to have, of food and drink", "f": "prendre", "e": "tomar", "k": "transfers", "w": "Both languages use the verb for taking, and both units warn against translating the English have or drink literally. The metaphor is shared."}, {"c": "do you have ... ?", "f": "vous avez ... ?", "e": "¿Tiene ... ?", "k": "misleads", "w": "Both are the polite way to ask a stranger for stock, and they sit in different persons of the verb. French politeness is a plural you, Spanish politeness a third person singular, so the conjugation slot does not transfer."}, {"c": "how much is it?", "f": "c'est combien ?", "e": "¿Cuánto es?", "k": "transfers", "w": "Structurally the same sentence in both: it is how much. Spanish adds ¿Cuánto cuesta? for a named item."}, {"c": "for here or to take away", "f": "sur place ou à emporter", "e": "¿Para aquí o para llevar?", "k": "transfers", "w": "Near calques. Both build the takeaway half from a preposition and the verb for carrying."}, {"c": "to take away", "f": "à emporter", "e": "para llevar", "k": "transfers", "w": "Preposition plus the verb for carrying in both, in the same slot after the item."}, {"c": "with sugar, without sugar", "f": "avec du sucre; je ne prends pas de sucre", "e": "con azúcar; sin azúcar", "k": "misleads", "w": "The largest asymmetry in the pair. Spanish refuses with one word. French has to wrap the verb in ne and pas and then change the article, so a Spanish-first learner reaches for a French sin that does not exist."}], i=0, score=0, done=0, answered=false;
+  var el=function(id){return document.getElementById(id);};
+  var card=el('dcard'), fr=el('dfr'), es=el('des'), why=el('dwhy'), verdict=el('dver');
+  var pos=el('dpos'), sc=el('dscore'), btns=el('dbtns'), next=el('dnext');
+  if(!card){return;}
+  function paint(){
+    var it=D[i];
+    el('dconcept').textContent=it.c;
+    fr.textContent=it.f; es.textContent=it.e; why.textContent=it.w;
+    verdict.textContent=''; verdict.className='dver';
+    card.setAttribute('data-shown','no');
+    pos.textContent=(i+1)+' of '+D.length;
+    sc.textContent=score+' of '+done;
+    answered=false;
+    next.disabled=true;
+  }
+  function answer(k){
+    if(answered){return;}
+    answered=true; done++;
+    var it=D[i], right=(k===it.k);
+    if(right){score++;}
+    verdict.textContent=(right?'Correct, ':'Not quite, ')+LBL[it.k]+'.';
+    verdict.className='dver '+(right?'ok':'no');
+    card.setAttribute('data-shown','yes');
+    sc.textContent=score+' of '+done;
+    next.disabled=false;
+  }
+  var LBL={transfers:'it transfers',misleads:'it misleads',independent:'it has to be learned twice'};
+  btns.addEventListener('click',function(e){
+    var b=e.target.closest('button[data-k]');
+    if(b){answer(b.getAttribute('data-k'));}
+  });
+  next.addEventListener('click',function(){
+    i=(i+1)%D.length; paint();
+  });
+  el('dreset').addEventListener('click',function(){
+    i=0; score=0; done=0; paint();
+  });
+  paint();
+})();
+</script>
+
+<!--__rbp-->
+<!-- The pill styles itself: this block used to live only with the top bar,
+     so the seven tool pages, which carry the pill alone, rendered it as an
+     unstyled link at the very end of the document. Whatever carries the
+     pill now carries its style. -->
+<style id="__rbp-style">
+#__rb-pill{
+  position:fixed;left:14px;bottom:14px;z-index:2147483000;
+  display:inline-flex;align-items:center;gap:.45rem;padding:.58rem .9rem;
+  background:rgba(22,21,15,.93);color:#faf9f6;text-decoration:none;border-radius:99px;
+  font:600 12.5px/1 InterVar,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  border:1px solid rgba(255,255,255,.16);box-shadow:0 6px 22px rgba(0,0,0,.28);
+  opacity:0;transform:translateY(6px);pointer-events:none;
+  transition:opacity .2s ease,transform .2s ease;
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+}
+#__rb-pill.__on{opacity:1;transform:none;pointer-events:auto}
+#__rb-pill:hover{background:#16150f;color:#fff}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) #__rb-pill{background:rgba(243,243,240,.95);color:#0d0e11;border-color:rgba(0,0,0,.2)}
+  :root:not([data-theme="light"]) #__rb-pill:hover{background:#fff;color:#000}
+}
+:root[data-theme="dark"] #__rb-pill{background:rgba(243,243,240,.95);color:#0d0e11;border-color:rgba(0,0,0,.2)}
+:root[data-theme="dark"] #__rb-pill:hover{background:#fff;color:#000}
+@media (prefers-reduced-motion:reduce){#__rb-pill{transition:none}}
+@media print{#__rb-pill{display:none !important}}
+/* a tool carries no bar, so what it was built from stands at the foot of the document */
+#__rb-from{margin:1.25rem 1rem;font:400 13px/1.45 InterVar,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;color:#66635a;max-width:70ch}
+#__rb-from b{font-weight:600;color:#55524a}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) #__rb-from{color:#8f929a}
+  :root:not([data-theme="light"]) #__rb-from b{color:#b9bbc1}
+}
+:root[data-theme="dark"] #__rb-from{color:#8f929a}
+:root[data-theme="dark"] #__rb-from b{color:#b9bbc1}
+</style>
+<!-- With scripts off nothing ever adds the __on class, and the only way
+     back from a tool page vanished. The pill needs its script for the
+     scroll threshold, not for existing. -->
+<noscript><style>#__rb-pill{opacity:1 !important;transform:none !important;pointer-events:auto !important}</style></noscript>
+<a id="__rb-pill" href="library.html">&#8592; Library</a>
+
+<script>
+(function(){
+  var p=document.getElementById('__rb-pill'); if(!p) return;
+  /* On a page with the top bar the pill waits until the bar has scrolled
+     out of reach. On a page without one (the tools carry no bar, because a
+     bar inside a full-screen application sits in the wrong place) the pill
+     is the only way back, so it is there from the first paint: a tool
+     screen shorter than the threshold used to strand the reader entirely. */
+  var TH=document.getElementById('__rb')?160:-1;
+  var t=false;
+  function run(){ t=false;
+    p.classList.toggle('__on',(window.scrollY||document.documentElement.scrollTop)>TH); }
+  function q(){ if(!t){ t=true; requestAnimationFrame(run); } }
+  addEventListener('scroll',q,{passive:true}); run();
+})();
+/* the trail, for the pages that carry only the pill (the tools) */
+(function(){
+  if(window.__trailed) return; window.__trailed=1;
+  if('serviceWorker' in navigator && location.protocol.indexOf('http')===0){
+    addEventListener('load',function(){setTimeout(function(){
+      navigator.serviceWorker.register('sw.js').catch(function(){});},6000);});
+  }
+  try{
+    var k='atlas.trail';
+    var u=location.pathname.split('/').pop()||'index.html';
+    var t2=JSON.parse(localStorage.getItem(k)||'{}');
+    function put(key){
+      if(t2[key]||Object.keys(t2).length<500){
+        t2[key]=(t2[key]||0)+1;
+        try{localStorage.setItem(k,JSON.stringify(t2));}catch(e){}
+      }
+    }
+    put(u+location.hash);
+    addEventListener('hashchange',function(){ put(u+location.hash); });
+  }catch(e){}
+})();
+</script>
+<!--/__rbp-->
+</body>
+</html>
