@@ -247,12 +247,11 @@ highest-conviction ones get written while you are fresh.
 
 ## 8. Before you send anything
 
-- **Update the site's declared resume data.** `content/resume.json` still holds
-  "Excel (advanced)", "IFRS and ASPE (introductory)" and "Tableau". The first two
-  are self-ratings, which the site elsewhere states as a rule that it does not
-  carry, and the third is evidenced nowhere in the repository. A recruiter who
-  follows your link from a resume that dropped them and finds them still on
-  `resume.html` has found exactly the drift you built the site to preclude.
+- **The site's declared resume data is now in step with these files.** The two
+  self-ratings are gone from `content/resume.json` and `resume.html` was
+  rebuilt, so a recruiter following your link from any of the three resumes
+  finds the same skills line, the same Tableau grounding and the same corpus
+  counts. Keep it that way: if you edit a resume, edit the JSON and rebuild.
 - **Decide on the LinkedIn vanity URL.** Your current public URL is
   `linkedin.com/in/leesharam-rajcoomar-868144317`. All four documents use it as
   given. If you claim `leesharam-rajcoomar` under Edit public profile and URL, it

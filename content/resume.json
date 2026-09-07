@@ -24,7 +24,7 @@
           "items": [
             "Introduction to Tax",
             "Introduction to Assurance",
-            "Introduction to Performance Analytics",
+            "Introduction to Performance Analytics (Tableau)",
             "Analytic Methods for Business 1 to 3",
             "Impact of Technology on Business",
             "Introduction to Computer Science"
@@ -75,14 +75,14 @@
       "when": "2024",
       "note": "Team of four",
       "lines": [
-        "Analysed multi-variable performance datasets in R and Excel and presented the competitive gaps the data exposed as a short set of specific operating recommendations."
+        "Built the competition dashboard in Tableau and Excel from multi-variable performance datasets analysed in R, and presented the competitive gaps the data exposed as a short set of specific operating recommendations."
       ]
     }
   ],
   "skills": [
     {
       "group": "Technical",
-      "items": ["DT Max", "Excel (advanced)", "R", "Python", "Tableau"]
+      "items": ["DT Max", "Excel", "Tableau", "Python", "R"]
     },
     {
       "group": "Accounting and finance",
@@ -90,7 +90,7 @@
         "T1 personal tax preparation",
         "Financial statement analysis",
         "Financial modelling and DCF valuation",
-        "IFRS and ASPE (introductory)"
+        "IFRS as adopted in Canada (Part I) and ASPE (Part II)"
       ]
     }
   ],

@@ -107,6 +107,15 @@ stays on the resume as a competition result and is described as one.
 1. "61 pieces (23 independent) ... 181 figures". Now 67, 25 and 188.
 2. "Excel (advanced)", "IFRS and ASPE (introductory)". Self-ratings, and the site
    states as a design rule that it carries no levels and no self-ratings.
-3. "Tableau". Appears nowhere in the repository. Nothing evidences it.
-4. "R". Evidenced only by the CISA competition line, not by anything published.
-   Keep it attached to that line rather than listed as a portfolio skill.
+   Corrected: the first is now "Excel", the second "IFRS as adopted in Canada
+   (Part I) and ASPE (Part II)", which is a designation rather than a level.
+3. "Tableau". Not evidenced in this repository, which is the only thing this
+   file can check. Alex supplied the grounding it was missing: Introduction to
+   Performance Analytics is the School of Accounting and Finance's data
+   visualisation course and is taught in Tableau, and the UW CISA competition
+   dashboard was built in it. Tableau stays, and both resumes and the site now
+   name where it came from rather than asserting it bare. Recorded here because
+   the evidence is a transcript and a competition, not a file in this tree, and
+   a reader of this file should know which kind of evidence they are getting.
+4. "R". Evidenced by the CISA competition line, not by anything published here.
+   Kept, attached to that line.
