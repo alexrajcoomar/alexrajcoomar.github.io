@@ -560,7 +560,7 @@
     ],
     "caught": true,
     "line": "check 33: admin.html: its script asks for #save-setup, which its markup does not carry",
-    "seconds": 62.0
+    "seconds": 62
    },
    {
     "id": "33-script-broken",
@@ -680,7 +680,7 @@
     ],
     "caught": true,
     "line": "check 35: content/marks/glyphs/04_tested.svg: missing, so the tested glyph cannot be drawn",
-    "seconds": 61.0
+    "seconds": 61
    },
    {
     "id": "35-seal-keeps-the-ring-it-cannot-hold",
@@ -881,8 +881,8 @@
  "runtime": {
   "meta": {
    "tool": "build/audit.js --falsify",
-   "date": "2026-09-06",
-   "commit": "557a5fa",
+   "date": "2026-09-07",
+   "commit": "e0b8a21",
    "code": "c9bb6a8fb826"
   },
   "cases": [
@@ -973,17 +973,17 @@
        "rows": 6,
        "aimed": 6,
        "faced": 6,
-       "framesSettle": 1554,
-       "framesAfter": 2210,
+       "framesSettle": 1558,
+       "framesAfter": 2220,
        "framesAtTop": 660
       },
       "phone": {
        "rows": 6,
        "aimed": 6,
        "faced": 6,
-       "framesSettle": 16464,
-       "framesAfter": 23520,
-       "framesAtTop": 4140
+       "framesSettle": 13188,
+       "framesAfter": 18840,
+       "framesAtTop": 3360
       }
      }
     }
@@ -1017,7 +1017,7 @@
       "pulseEnded": true,
       "repeated": false,
       "switched": true,
-      "framesAfterSwitch": 61,
+      "framesAfterSwitch": 60,
       "focusRing": true
      }
     }
@@ -1091,7 +1091,7 @@
      "inspect": {
       "layers": 2,
       "rest": 0,
-      "hover": 0.666639,
+      "hover": 0.666598,
       "focus": 1,
       "ms": 900,
       "moved": 0,
@@ -1122,7 +1122,7 @@
       "tokenInSession": false,
       "tokenInLocal": false,
       "rows": 0,
-      "pieces": 65,
+      "pieces": 67,
       "searched": 0,
       "searchExpected": 25,
       "editorOpened": false,
@@ -1131,7 +1131,7 @@
       "forgotten": true,
       "guardHeld": false,
       "files": 0,
-      "filesExpected": 127,
+      "filesExpected": 129,
       "siteFields": 0,
       "scrollWidth": 320,
       "overflow": false
@@ -1159,8 +1159,8 @@
       "cfgSaved": true,
       "tokenInSession": true,
       "tokenInLocal": false,
-      "rows": 65,
-      "pieces": 65,
+      "rows": 67,
+      "pieces": 67,
       "searched": 25,
       "searchExpected": 25,
       "editorOpened": true,
@@ -1168,8 +1168,8 @@
       "promptShown": true,
       "forgotten": true,
       "guardHeld": true,
-      "files": 127,
-      "filesExpected": 127,
+      "files": 129,
+      "filesExpected": 129,
       "siteFields": 13,
       "scrollWidth": 320,
       "overflow": false
@@ -1197,8 +1197,8 @@
       "cfgSaved": true,
       "tokenInSession": true,
       "tokenInLocal": true,
-      "rows": 65,
-      "pieces": 65,
+      "rows": 67,
+      "pieces": 67,
       "searched": 25,
       "searchExpected": 25,
       "editorOpened": true,
@@ -1206,8 +1206,8 @@
       "promptShown": true,
       "forgotten": true,
       "guardHeld": true,
-      "files": 127,
-      "filesExpected": 127,
+      "files": 129,
+      "filesExpected": 129,
       "siteFields": 13,
       "scrollWidth": 320,
       "overflow": false
@@ -1219,8 +1219,8 @@
     "page": "sw.js",
     "what": "the new worker neither carries the saved copy across nor syncs it, so a publish empties it",
     "rec": {
-     "before": 185,
-     "of": 185,
+     "before": 187,
+     "of": 187,
      "after": 0,
      "refreshed": false,
      "editor": {
@@ -1234,9 +1234,9 @@
     "page": "sw.js",
     "what": "the worker stores the editor like any other page, so a visit leaves it in the cache",
     "rec": {
-     "before": 185,
-     "of": 185,
-     "after": 185,
+     "before": 187,
+     "of": 187,
+     "after": 187,
      "refreshed": true,
      "editor": {
       "stored": true,

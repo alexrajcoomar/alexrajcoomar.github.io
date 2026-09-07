@@ -1,6 +1,6 @@
 {
- "version": "bbe961fafbb5",
- "bytes": 19536119,
+ "version": "0a2d4f4959fc",
+ "bytes": 19535939,
  "files": [
   "InterVariable-sub.woff2",
   "about.html",
@@ -238,7 +238,7 @@
   "canadian-dcf-cca.html": "5ee7ab29bacc",
   "case-method.css": "9bc2c3a6e5e4",
   "colophon.html": "58552b18c07c",
-  "controls.html": "9f2dc78d7740",
+  "controls.html": "3924d978ca17",
   "coursework.html": "8d77bec6718b",
   "crucible-cockpit.html": "af5e59e3ec43",
   "crucible-run-0-transcript.html": "15a91ee58ba1",
@@ -368,7 +368,7 @@
   "skill-forge-512.png": "3af0ff770799",
   "skill-forge.html": "a7cd83bfb67b",
   "skill-forge.webmanifest": "0f45e7d39c4d",
-  "spanish-a1-cafe.html": "2ac956918690",
+  "spanish-a1-cafe.html": "59e1989083ae",
   "the-calibrated-mind.html": "34b276cec156",
   "the-delayed-test.html": "80f7c79cb658",
   "the-trillion-dollar-vintage.html": "9d861c9a380d",

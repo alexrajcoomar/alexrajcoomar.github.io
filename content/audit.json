@@ -2,9 +2,9 @@
  "note": "Written by build/audit.js: what a headless browser measured on each page, with the fingerprint of the inputs it measured. The register on the controls page prints these results; a page whose inputs moved since is not yet measured for that build. meta.runs is appended by build/claims.py --record-run on every publish.",
  "meta": {
   "tool": "build/audit.js",
-  "browser": "Chromium 141.0.7390.37",
+  "browser": "Chromium 153.0.8010.12",
   "date": "2026-09-07",
-  "commit": "7962506",
+  "commit": "e0b8a21",
   "runs": [
    {
     "commit": "21aacf2",
@@ -100,6 +100,11 @@
     "commit": "26414c8",
     "date": "2026-09-07",
     "audit": "kept"
+   },
+   {
+    "commit": "e0b8a21",
+    "date": "2026-09-07",
+    "audit": "ran"
    }
   ]
  },
@@ -2021,7 +2026,7 @@
     "scrollWidth": 320,
     "overflow": false
    },
-   "inputs": "9e161844cad3",
+   "inputs": "59e1989083ae",
    "measured": "2026-09-07"
   },
   "the-calibrated-mind.html": {
