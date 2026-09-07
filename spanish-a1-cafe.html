@@ -13,7 +13,7 @@
   --accent:#14509b; --accent-2:#0047ab;
   --ok:#1f6b3a; --ok-w:#e6f0e9;
   --warn:#a8391f; --warn-w:#f6ebe7;
-  --none:#8a8880; --none-w:#eeedea;
+  --none:#8a8880; --none-w:#eeedea; --none-ink:#63615c;
   --grid:#e7e6df;
 }
 @media (prefers-color-scheme: dark){
@@ -25,7 +25,7 @@
     --accent:#7fb0e8; --accent-2:#9cc4f0;
     --ok:#5fb37f; --ok-w:#16241b;
     --warn:#e08163; --warn-w:#2a1a15;
-    --none:#6e6c66; --none-w:#1c1c1a;
+    --none:#6e6c66; --none-w:#1c1c1a; --none-ink:#9a988f;
     --grid:#1e1e1c;
   }
 }
@@ -37,7 +37,7 @@
   --accent:#7fb0e8; --accent-2:#9cc4f0;
   --ok:#5fb37f; --ok-w:#16241b;
   --warn:#e08163; --warn-w:#2a1a15;
-  --none:#6e6c66; --none-w:#1c1c1a;
+  --none:#6e6c66; --none-w:#1c1c1a; --none-ink:#9a988f;
   --grid:#1e1e1c;
 }
 *{box-sizing:border-box}
@@ -108,13 +108,15 @@ tbody tr:hover{background:var(--sunk)}
   white-space:nowrap}
 .tag.transfers{background:var(--ok-w);color:var(--ok)}
 .tag.misleads{background:var(--warn-w);color:var(--warn)}
-.tag.independent{background:var(--none-w);color:var(--none)}
+.tag.independent{background:var(--none-w);color:var(--none-ink)}
 .form{font-style:normal}
 .gl{color:var(--ink-3);font-size:.84rem;display:block}
 
 figure{margin:1.6rem 0 2rem}
 .figbox{overflow-x:auto;border:1px solid var(--rule);border-radius:4px;background:var(--panel);
   padding:.6rem}
+[data-scroll]{overflow-x:auto;margin:0 0 1.4rem}
+[data-scroll] table{margin-bottom:0;min-width:30rem}
 .fig{display:block;width:100%;min-width:34rem;height:auto}
 .fig .fk{font-family:ui-monospace,monospace;font-size:11px;letter-spacing:.12em;fill:var(--ink-3)}
 .fig .fk2{font-family:ui-monospace,monospace;font-size:11px;fill:var(--ink-2)}
@@ -165,7 +167,8 @@ figcaption{font-size:.84rem;color:var(--ink-3);margin-top:.6rem;max-width:44rem}
   text-transform:uppercase;color:var(--ink-3);padding-top:.15rem}
 .dforms dd{margin:0;font-size:1rem}
 .dwhy{font-size:.88rem;color:var(--ink-2);margin:0 0 .8rem}
-.drill[data-shown="no"] .dforms,.drill[data-shown="no"] .dwhy{opacity:.18}
+.drill[data-shown="no"] .dforms dt,.drill[data-shown="no"] .dforms dd,
+.drill[data-shown="no"] .dwhy{visibility:hidden}
 .dnav{margin:0;display:flex;gap:.5rem}
 
 details{border:1px solid var(--rule);border-radius:4px;background:var(--panel);
@@ -283,7 +286,7 @@ details[open] summary{margin-bottom:.8rem;border-bottom:1px solid var(--rule);pa
 </style>
 <nav id="__rb" aria-label="Portfolio">
   <a class="__rb-home" href="index.html"><svg class="__mark mk-bar" viewBox="0 0 64 64" width="19" height="19" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 56 L32 6 L52 56" stroke-width="3.6"/><path d="M20 38 H44" stroke-width="3.6"/><path d="M32 18 H42 C51 18 51 35 42 36 H32" stroke-width="3.6"/><path d="M32 36 L51 56" stroke-width="3.6"/></svg>Alex Rajcoomar <i>portfolio</i></a>
-  <span class="__rb-row">Personal &middot; <b>0</b> words &middot; <b>0</b> figures &middot; <b>0</b> tables</span>
+  <span class="__rb-row">Personal &middot; <b>3,000</b> words &middot; <b>2</b> figures &middot; <b>3</b> tables</span>
   <span class="__rb-right"><a href="library.html">Library</a><a href="atlas.html">Atlas</a><a href="library.html">All work</a></span>
   <span class="__rb-from"><b>Built from</b> the two A1 café units on this site, Unité 1 : Au Café and this one, and nothing else. Where a claim would have needed a third source it was left out and the page says so. The alignment lives in content/contrastive-a1.json and the page is written from it by build/contrastive.py, so no count on the page is typed by hand.</span>
 </nav>
@@ -471,7 +474,7 @@ form predicts the Spanish one.</p>
 <h2 class="sec" id="s-03"><span class="num">03</span>The alignment, pair by pair</h2>
 <p class="take">The same 22 rows in full, each with the reason and the section of each unit
 it was read from.</p>
-<table>
+<div data-scroll><table>
   <caption>The 22 concepts both units teach. The class is a reading, declared in
   <code>content/contrastive-a1.json</code>, and the build checks that every row cites both
   units rather than that the reading is correct.</caption>
@@ -522,7 +525,7 @@ it was read from.</p>
 <tr><td>with sugar, without sugar</td><td><span class="form">avec du sucre; je ne prends pas de sucre</span><span class="gl">refusing needs the full negation, and the article collapses to de</span></td><td><span class="form">con azúcar; sin azúcar</span><span class="gl">a matched pair of prepositions, no verb needed</span></td><td><span class="tag misleads">Misleads</span></td></tr>
 <tr class="wr"><td></td><td colspan="3" class="gl">The largest asymmetry in the pair. Spanish refuses with one word. French has to wrap the verb in ne and pas and then change the article, so a Spanish-first learner reaches for a French sin that does not exist. <span class="src">3.3B; 3.4 against 2; 3.1</span></td></tr>
   </tbody>
-</table>
+</table></div>
 
 <h2 class="sec" id="s-04"><span class="num">04</span>Five differences that are structural</h2>
 <p class="take">Vocabulary you can look up. These five change what a sentence has to contain,
@@ -623,7 +626,7 @@ is whether the first language is helping or lying to you.</p>
 <p>The card below names a concept and asks what the French form predicts about the Spanish
 one. The forms and the reason stay dimmed until you commit to an answer, because recognising
 a correct answer in a list is not the same as retrieving it.</p>
-<div class="drill" id="dcard" data-shown="no">
+<div class="drill" id="dcard" data-shown="yes">
       <p class="dhead"><span class="dpos" id="dpos">1 of 22</span>
         <span class="dsc">Score <b id="dscore">0 of 0</b></span></p>
       <p class="dq">If you know the French, what does <b id="dconcept">hello, good morning</b> do in Spanish?</p>
@@ -645,15 +648,15 @@ carries all 22, so nothing here is only available to a browser that runs JavaScr
 <h2 class="sec" id="s-07"><span class="num">07</span>What each unit has that the other does not</h2>
 <p class="take">The two units are not translations of each other, and the gaps are informative
 in their own right.</p>
-<table><caption>In the Spanish unit&#x27;s core, with no counterpart in the French twenty</caption><thead><tr><th>Form</th><th>English</th><th>Why it is here and not there</th></tr></thead><tbody><tr><td><span class="form">disculpe</span></td><td>excuse me, to usted</td><td class="gl">The Spanish unit opens a request to a seated server with it. The French unit uses bonjour plus the request instead.</td></tr>
+<div data-scroll><table><caption>In the Spanish unit&#x27;s core, with no counterpart in the French twenty</caption><thead><tr><th>Form</th><th>English</th><th>Why it is here and not there</th></tr></thead><tbody><tr><td><span class="form">disculpe</span></td><td>excuse me, to usted</td><td class="gl">The Spanish unit opens a request to a seated server with it. The French unit uses bonjour plus the request instead.</td></tr>
 <tr><td><span class="form">el café con leche</span></td><td>coffee with milk</td><td class="gl">Core vocabulary in the Spanish unit. The French unit&#x27;s nearest item, un café crème, appears only in its enrichment table.</td></tr>
 <tr><td><span class="form">la empanada</span></td><td>a savoury pastry</td><td class="gl">The Spanish unit&#x27;s food item, as the croissant and the tarte are the French unit&#x27;s.</td></tr>
 <tr><td><span class="form">grande, pequeño</span></td><td>large, small</td><td class="gl">Spanish teaches size adjectives inside the unit because they agree with the noun. The French unit leaves size out of its twenty.</td></tr>
 <tr><td><span class="form">tener</span></td><td>to have, to stock</td><td class="gl">Spanish needs a separate verb for the availability question. French uses avoir, which it already teaches as a support verb.</td></tr>
-<tr><td><span class="form">¿La propina está incluida?</span></td><td>is the tip included?</td><td class="gl">The one question the Spanish unit says works in every Spanish-speaking country, because tipping is not one system. France settles it with service compris.</td></tr></tbody></table>
-<table><caption>In the French unit&#x27;s core, with no counterpart in the Spanish twenty</caption><thead><tr><th>Form</th><th>English</th><th>Why it is here and not there</th></tr></thead><tbody><tr><td><span class="form">monsieur, madame</span></td><td>sir, ma&#x27;am</td><td class="gl">The French unit teaches them as core, because adding one to bonjour raises the register. The Spanish unit carries no equivalent in its twenty.</td></tr>
+<tr><td><span class="form">¿La propina está incluida?</span></td><td>is the tip included?</td><td class="gl">The one question the Spanish unit says works in every Spanish-speaking country, because tipping is not one system. France settles it with service compris.</td></tr></tbody></table></div>
+<div data-scroll><table><caption>In the French unit&#x27;s core, with no counterpart in the Spanish twenty</caption><thead><tr><th>Form</th><th>English</th><th>Why it is here and not there</th></tr></thead><tbody><tr><td><span class="form">monsieur, madame</span></td><td>sir, ma&#x27;am</td><td class="gl">The French unit teaches them as core, because adding one to bonjour raises the register. The Spanish unit carries no equivalent in its twenty.</td></tr>
 <tr><td><span class="form">un croissant</span></td><td>a croissant</td><td class="gl">The French unit&#x27;s food item.</td></tr>
-<tr><td><span class="form">une tarte</span></td><td>a tart</td><td class="gl">The French unit&#x27;s second food item, and its example of a feminine countable noun.</td></tr></tbody></table>
+<tr><td><span class="form">une tarte</span></td><td>a tart</td><td class="gl">The French unit&#x27;s second food item, and its example of a feminine countable noun.</td></tr></tbody></table></div>
 
 <h2 class="sec" id="s-08"><span class="num">08</span>What would make this wrong</h2>
 <p class="take">The honest limits, stated rather than buried.</p>
@@ -705,13 +708,13 @@ build, so the page cannot claim a tally the data does not carry. The companion u
     answered=true; done++;
     var it=D[i], right=(k===it.k);
     if(right){score++;}
-    verdict.textContent=right?('Correct. '+LBL[it.k]+'.'):('Not quite. It '+LBL[it.k].toLowerCase()+'.');
+    verdict.textContent=(right?'Correct, ':'Not quite, ')+LBL[it.k]+'.';
     verdict.className='dver '+(right?'ok':'no');
     card.setAttribute('data-shown','yes');
     sc.textContent=score+' of '+done;
     next.disabled=false;
   }
-  var LBL={transfers:'It transfers',misleads:'It misleads',independent:'It has to be learned twice'};
+  var LBL={transfers:'it transfers',misleads:'it misleads',independent:'it has to be learned twice'};
   btns.addEventListener('click',function(e){
     var b=e.target.closest('button[data-k]');
     if(b){answer(b.getAttribute('data-k'));}

@@ -204,13 +204,13 @@ DRILL_JS = """
     answered=true; done++;
     var it=D[i], right=(k===it.k);
     if(right){score++;}
-    verdict.textContent=right?('Correct. '+LBL[it.k]+'.'):('Not quite. It '+LBL[it.k].toLowerCase()+'.');
+    verdict.textContent=(right?'Correct, ':'Not quite, ')+LBL[it.k]+'.';
     verdict.className='dver '+(right?'ok':'no');
     card.setAttribute('data-shown','yes');
     sc.textContent=score+' of '+done;
     next.disabled=false;
   }
-  var LBL={transfers:'It transfers',misleads:'It misleads',independent:'It has to be learned twice'};
+  var LBL={transfers:'it transfers',misleads:'it misleads',independent:'it has to be learned twice'};
   btns.addEventListener('click',function(e){
     var b=e.target.closest('button[data-k]');
     if(b){answer(b.getAttribute('data-k'));}
@@ -231,7 +231,7 @@ def drill_html():
     btns = "".join(
         '<button type="button" data-k="%s" class="dbtn">%s</button>' % (k, esc(CLS_LABEL[k]))
         for k in ("transfers", "misleads", "independent"))
-    return """<div class="drill" id="dcard" data-shown="no">
+    return """<div class="drill" id="dcard" data-shown="yes">
       <p class="dhead"><span class="dpos" id="dpos">1 of %s</span>
         <span class="dsc">Score <b id="dscore">0 of 0</b></span></p>
       <p class="dq">If you know the French, what does <b id="dconcept">%s</b> do in Spanish?</p>
@@ -261,7 +261,7 @@ CSS = """
   --accent:#14509b; --accent-2:#0047ab;
   --ok:#1f6b3a; --ok-w:#e6f0e9;
   --warn:#a8391f; --warn-w:#f6ebe7;
-  --none:#8a8880; --none-w:#eeedea;
+  --none:#8a8880; --none-w:#eeedea; --none-ink:#63615c;
   --grid:#e7e6df;
 }
 @media (prefers-color-scheme: dark){
@@ -273,7 +273,7 @@ CSS = """
     --accent:#7fb0e8; --accent-2:#9cc4f0;
     --ok:#5fb37f; --ok-w:#16241b;
     --warn:#e08163; --warn-w:#2a1a15;
-    --none:#6e6c66; --none-w:#1c1c1a;
+    --none:#6e6c66; --none-w:#1c1c1a; --none-ink:#9a988f;
     --grid:#1e1e1c;
   }
 }
@@ -285,7 +285,7 @@ CSS = """
   --accent:#7fb0e8; --accent-2:#9cc4f0;
   --ok:#5fb37f; --ok-w:#16241b;
   --warn:#e08163; --warn-w:#2a1a15;
-  --none:#6e6c66; --none-w:#1c1c1a;
+  --none:#6e6c66; --none-w:#1c1c1a; --none-ink:#9a988f;
   --grid:#1e1e1c;
 }
 *{box-sizing:border-box}
@@ -356,13 +356,15 @@ tbody tr:hover{background:var(--sunk)}
   white-space:nowrap}
 .tag.transfers{background:var(--ok-w);color:var(--ok)}
 .tag.misleads{background:var(--warn-w);color:var(--warn)}
-.tag.independent{background:var(--none-w);color:var(--none)}
+.tag.independent{background:var(--none-w);color:var(--none-ink)}
 .form{font-style:normal}
 .gl{color:var(--ink-3);font-size:.84rem;display:block}
 
 figure{margin:1.6rem 0 2rem}
 .figbox{overflow-x:auto;border:1px solid var(--rule);border-radius:4px;background:var(--panel);
   padding:.6rem}
+[data-scroll]{overflow-x:auto;margin:0 0 1.4rem}
+[data-scroll] table{margin-bottom:0;min-width:30rem}
 .fig{display:block;width:100%;min-width:34rem;height:auto}
 .fig .fk{font-family:ui-monospace,monospace;font-size:11px;letter-spacing:.12em;fill:var(--ink-3)}
 .fig .fk2{font-family:ui-monospace,monospace;font-size:11px;fill:var(--ink-2)}
@@ -413,7 +415,8 @@ figcaption{font-size:.84rem;color:var(--ink-3);margin-top:.6rem;max-width:44rem}
   text-transform:uppercase;color:var(--ink-3);padding-top:.15rem}
 .dforms dd{margin:0;font-size:1rem}
 .dwhy{font-size:.88rem;color:var(--ink-2);margin:0 0 .8rem}
-.drill[data-shown="no"] .dforms,.drill[data-shown="no"] .dwhy{opacity:.18}
+.drill[data-shown="no"] .dforms dt,.drill[data-shown="no"] .dforms dd,
+.drill[data-shown="no"] .dwhy{visibility:hidden}
 .dnav{margin:0;display:flex;gap:.5rem}
 
 details{border:1px solid var(--rule);border-radius:4px;background:var(--panel);
@@ -479,8 +482,9 @@ def only_rows(rows, key, head):
     body = "\n".join(
         '<tr><td><span class="form">%s</span></td><td>%s</td><td class="gl">%s</td></tr>'
         % (esc(r[key]), esc(r["en"]), esc(r["why"])) for r in rows)
-    return ('<table><caption>%s</caption><thead><tr><th>Form</th><th>English</th>'
-            '<th>Why it is here and not there</th></tr></thead><tbody>%s</tbody></table>'
+    return ('<div data-scroll><table><caption>%s</caption><thead><tr><th>Form</th>'
+            '<th>English</th><th>Why it is here and not there</th></tr></thead>'
+            '<tbody>%s</tbody></table></div>'
             % (esc(head), body))
 
 
@@ -544,7 +548,7 @@ form predicts the Spanish one.</p>
 <h2 class="sec" id="s-03"><span class="num">03</span>The alignment, pair by pair</h2>
 <p class="take">The same %(np)s rows in full, each with the reason and the section of each unit
 it was read from.</p>
-<table>
+<div data-scroll><table>
   <caption>The %(np)s concepts both units teach. The class is a reading, declared in
   <code>content/contrastive-a1.json</code>, and the build checks that every row cites both
   units rather than that the reading is correct.</caption>
@@ -552,7 +556,7 @@ it was read from.</p>
   <tbody>
 %(rows)s
   </tbody>
-</table>
+</table></div>
 
 <h2 class="sec" id="s-04"><span class="num">04</span>Five differences that are structural</h2>
 <p class="take">Vocabulary you can look up. These five change what a sentence has to contain,
