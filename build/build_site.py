@@ -572,11 +572,24 @@ CASE_SLOTS = [
 CASE_BY_SLUG = {p["slug"]: p for p in P}
 
 
+# The home page's statement band is a shelf of fixed depth. The number is
+# not decoration: the sphere swings to face each row as it reaches the
+# reading line, and the register holds that the spring settles within 700ms
+# of the last scroll and then asks for no frame. A seventh row was measured
+# at one frame past that bound on the return to the top, at 1440 and at 390,
+# where six rows measure nought on the same machine. The camera is not being
+# retuned to fit a longer band and the bound is not being widened to fit the
+# camera, so the band keeps its depth and the rest of the featured set is one
+# link away on the selected page.
+HOME_ROWS = 6
+
+
 def featured_pieces():
     """The pieces recorded as featured, in the order content/pieces.json
     lists them. The count is not fixed here: it is whatever the file
-    declares, so the home page, the selected page and the resume cannot
-    print different numbers of the same set."""
+    declares, so the selected page and the resume cannot print different
+    numbers of the same set. The home band takes the first HOME_ROWS of
+    them and says so."""
     return [q for q in P if q["featured"]]
 _CASE_H = re.compile(r"<(h[1-6])\b([^>]*)>(.*?)</\1>", re.S | re.I)
 
@@ -1797,7 +1810,7 @@ def sect_head(num, title, note="", count="", hid=None):
             + '  </div>')
 
 def page_index():
-    feats  = featured_pieces()
+    feats  = featured_pieces()[:HOME_ROWS]
     gt = figs.group_totals()
     ex = exceptions()
     fams = google_font_families()

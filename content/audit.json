@@ -4,7 +4,7 @@
   "tool": "build/audit.js",
   "browser": "Chromium 141.0.7390.37",
   "date": "2026-09-07",
-  "commit": "1f364ef",
+  "commit": "85bd41f",
   "runs": [
    {
     "commit": "21aacf2",
@@ -249,7 +249,7 @@
     "scrollWidth": 320,
     "overflow": false
    },
-   "inputs": "519d82895e88",
+   "inputs": "c5c9e76f7acd",
    "measured": "2026-09-07"
   },
   "afm241-cheat-sheet.html": {
@@ -1474,8 +1474,8 @@
    },
    "errors": 0,
    "chrome": {
-    "a": 2391,
-    "b": 2346
+    "a": 2377,
+    "b": 2332
    },
    "print": {
     "stickyLeft": 0,
@@ -1489,36 +1489,36 @@
    },
    "descent": {
     "wide": {
-     "rows": 7,
-     "aimed": 7,
-     "faced": 7,
+     "rows": 6,
+     "aimed": 6,
+     "faced": 6,
      "framesSettle": 0,
      "framesAfter": 0,
-     "framesAtTop": 1
+     "framesAtTop": 0
     },
     "phone": {
-     "rows": 7,
-     "aimed": 7,
-     "faced": 7,
+     "rows": 6,
+     "aimed": 6,
+     "faced": 6,
      "framesSettle": 0,
      "framesAfter": 0,
-     "framesAtTop": 1
+     "framesAtTop": 0
     }
    },
    "corona": {
     "wide": {
-     "rows": 7,
-     "matched": 7,
+     "rows": 6,
+     "matched": 6,
      "atTop": "none"
     },
     "phone": {
-     "rows": 7,
-     "matched": 7,
+     "rows": 6,
+     "matched": 6,
      "atTop": "none"
     }
    },
    "keyboard": {
-    "stops": 145,
+    "stops": 144,
     "noRing": 0
    },
    "theme": {
@@ -1544,7 +1544,7 @@
    "motion": {
     "animations": 0
    },
-   "inputs": "ebb1290c7a28",
+   "inputs": "e284d07fc2ab",
    "measured": "2026-09-07"
   },
   "kennedy-dossier.html": {
