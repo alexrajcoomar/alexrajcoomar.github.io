@@ -44,8 +44,9 @@
       ]
     },
     "canadian": {
-      "gap": "The co-op tax work named in this block produced client returns, not artefacts, so nothing here evidences it. What is listed is the assurance and comparative-law work only.",
+      "gap": "The co-op returns themselves stay with the clients, so that engagement is still unevidenced here. Standing in its place is the Dollarama valuation, the only artefact in this set that carries a corporate valuation, a statutory capital cost allowance shield and a SEDAR+ filing read at first hand.",
       "pieces": [
+        "canadian-dcf-cca",
         "us-canada-legal-architecture",
         "business-law-primer",
         "law-arena",

@@ -570,6 +570,14 @@ CASE_SLOTS = [
     ("artifact",   "Artifact",   "The thing you can open."),
 ]
 CASE_BY_SLUG = {p["slug"]: p for p in P}
+
+
+def featured_pieces():
+    """The pieces recorded as featured, in the order content/pieces.json
+    lists them. The count is not fixed here: it is whatever the file
+    declares, so the home page, the selected page and the resume cannot
+    print different numbers of the same set."""
+    return [q for q in P if q["featured"]]
 _CASE_H = re.compile(r"<(h[1-6])\b([^>]*)>(.*?)</\1>", re.S | re.I)
 
 
@@ -620,7 +628,7 @@ def case_rows(slug):
 
 
 def case_coverage():
-    """How much of the shape the six pieces actually carry, by where each slot
+    """How much of the shape the featured pieces actually carry, by where each slot
     is answered. The gap is the point of the number, so it is counted."""
     out = {"pieces": 0, "slots": 0, "sec": 0, "doc": 0, "rec": 0, "gap": 0}
     for slug in (CASES.get("cases") or {}):
@@ -943,7 +951,7 @@ def page_resume(summary=None):
            e["n"], format(e["words"], ","), e["figures"], e["tables"],
            ("<span>%d %s</span>" % (e["tools"], "tool" if e["tools"] == 1 else "tools")) if e["tools"] else "")
         for title, e in resume_evidence())
-    feats = [p for p in P if p["featured"]][:6]
+    feats = featured_pieces()
     sel = "".join(
         '<div class="rrow"><p class="rwhen">%s</p><div class="rwhat"><h3><a href="%s">%s</a></h3>'
         '<p class="rwhere">%s</p></div><p class="rmeasure"><span>%s words</span>'
@@ -1053,7 +1061,7 @@ def slot_grid(feats):
     <h2 id="slots-h" class="slots-h">The shape, filled</h2>
     <div class="slotscroll">
     <table class="slots">
-      <caption class="sr">Six featured pieces by eight slots: {cov["slots"]} slots,
+      <caption class="sr">{len(feats)} featured pieces by eight slots: {cov["slots"]} slots,
       {cov["sec"]} answered by a section, {cov["doc"]} by a linked document,
       {cov["rec"]} by a record, {cov["gap"]} not carried.</caption>
       <thead><tr><td></td>{heads}</tr></thead>
@@ -1067,11 +1075,11 @@ def slot_grid(feats):
 
 
 def page_selected():
-    """The six pieces recorded as featured, each read against the same eight
+    """The pieces recorded as featured, each read against the same eight
     slots. Every slot that is filled points at something that already exists:
     a heading the piece carries, a document the corpus records a link to, or a
     value this build computed. Nothing here is a new sentence about the work."""
-    feats = [p for p in P if p["featured"]][:6]
+    feats = featured_pieces()
     cov = case_coverage()
     entries = "\n".join(case_entry(i, p) for i, p in enumerate(feats, 1))
     w = sum(p["words"] for p in feats)
@@ -1110,7 +1118,7 @@ def page_selected():
 </section>
 """
     return head(f"Selected work · {SHORT}",
-                f"Six featured pieces by Alex Rajcoomar read against one shape: question, context, approach, "
+                f"{len(feats)} featured pieces by Alex Rajcoomar read against one shape: question, context, approach, "
                 f"evidence, build, finding, limitation, artifact, every slot pointing at the piece's own record.",
                 "selected.html") + body + foot()
 
@@ -1789,7 +1797,7 @@ def sect_head(num, title, note="", count="", hid=None):
             + '  </div>')
 
 def page_index():
-    feats  = [p for p in P if p["featured"]][:6]
+    feats  = featured_pieces()
     gt = figs.group_totals()
     ex = exceptions()
     fams = google_font_families()
@@ -1868,7 +1876,7 @@ def page_index():
     </div>
   </div>
   <section class="band statement" id="statement" aria-labelledby="stmt-h">
-    {sect_head(1, "Statement of work", "Six featured pieces, then every origin, then the whole. As a row reaches the reading line the sphere turns to face that document.", f'<a class="inlink" href="#notes">Notes 1 to 6 &#8595;</a>', "stmt-h")}
+    {sect_head(1, "Statement of work", f"{len(feats)} featured pieces, then every origin, then the whole. As a row reaches the reading line the sphere turns to face that document.", f'<a class="inlink" href="#notes">Notes 1 to 6 &#8595;</a>', "stmt-h")}
     <div class="pane">
       <table class="st">
         {stmt_head_cells()}
@@ -2260,7 +2268,10 @@ CAP_BLOCKS = [
     ("canadian", "Canadian tax and law, kept Canadian",
      "<p>Co-op work preparing Canadian corporate and personal "
      "returns, and a primer that holds the Canadian and American legal positions apart at every point they "
-     "diverge instead of blending them.</p>"),
+     "diverge instead of blending them. The valuation takes the same discipline to a public issuer: capital "
+     "cost allowance computed from the Income Tax Regulations in force rather than proxied by book "
+     "depreciation, on statements obtained from SEDAR+ and checked figure by figure against the pages "
+     "cited, with the non-Canadian segment carved out because the deduction is Canadian.</p>"),
     ("building", "Building the thing", None),
 ]
 

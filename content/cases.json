@@ -52,6 +52,16 @@
       "evidence":   {"doc": ["ifrs15-verification-memo"]},
       "build":      {"rec": "built_from"},
       "artifact":   {"rec": "piece"}
+    },
+    "canadian-dcf-cca": {
+      "question":   {"sec": "s-01-the-hypothesis"},
+      "context":    {"sec": "s-02-what-the-filing-does-say"},
+      "approach":   {"sec": "s-03-two-bases-drawn-against-each-other"},
+      "evidence":   {"sec": "s-10-the-base-year-and-what-was-done-to-it"},
+      "build":      {"rec": "built_from"},
+      "finding":    {"sec": "what-actually-moves-the-answer"},
+      "limitation": {"sec": "s-11-what-would-make-this-wrong"},
+      "artifact":   {"rec": "piece"}
     }
   }
 }
