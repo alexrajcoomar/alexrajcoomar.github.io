@@ -3,8 +3,8 @@
  "meta": {
   "tool": "build/audit.js",
   "browser": "Chromium 141.0.7390.37",
-  "date": "2026-09-06",
-  "commit": "3be0dc7",
+  "date": "2026-09-07",
+  "commit": "85bd41f",
   "runs": [
    {
     "commit": "21aacf2",
@@ -149,8 +149,8 @@
    "motion": {
     "animations": 0
    },
-   "inputs": "50148baf5985",
-   "measured": "2026-09-06"
+   "inputs": "f6db5194003e",
+   "measured": "2026-09-07"
   },
   "about.html": {
    "ext": {
@@ -162,8 +162,8 @@
    },
    "errors": 0,
    "chrome": {
-    "a": 1201,
-    "b": 1156
+    "a": 1278,
+    "b": 1233
    },
    "print": {
     "stickyLeft": 0,
@@ -202,8 +202,8 @@
    "motion": {
     "animations": 0
    },
-   "inputs": "ad9438657d32",
-   "measured": "2026-09-06"
+   "inputs": "33dcc05bdb08",
+   "measured": "2026-09-07"
   },
   "admin.html": {
    "ext": {
@@ -234,8 +234,8 @@
     "cfgSaved": true,
     "tokenInSession": true,
     "tokenInLocal": false,
-    "rows": 65,
-    "pieces": 65,
+    "rows": 66,
+    "pieces": 66,
     "searched": 25,
     "searchExpected": 25,
     "editorOpened": true,
@@ -243,14 +243,14 @@
     "promptShown": true,
     "forgotten": true,
     "guardHeld": true,
-    "files": 127,
-    "filesExpected": 127,
+    "files": 128,
+    "filesExpected": 128,
     "siteFields": 13,
     "scrollWidth": 320,
     "overflow": false
    },
    "inputs": "c5c9e76f7acd",
-   "measured": "2026-09-06"
+   "measured": "2026-09-07"
   },
   "afm241-cheat-sheet.html": {
    "ext": {
@@ -349,8 +349,8 @@
     "scrollWidth": 320,
     "overflow": false
    },
-   "inputs": "41ed381e4906",
-   "measured": "2026-09-05"
+   "inputs": "d76ed01d2a83",
+   "measured": "2026-09-07"
   },
   "afm291-ch10-fair-value.html": {
    "ext": {
@@ -369,8 +369,8 @@
     "scrollWidth": 320,
     "overflow": false
    },
-   "inputs": "3e31ebc60b27",
-   "measured": "2026-09-05"
+   "inputs": "695af062dc9d",
+   "measured": "2026-09-07"
   },
   "afm291-ch2-conceptual-frameworks.html": {
    "ext": {
@@ -389,8 +389,8 @@
     "scrollWidth": 320,
     "overflow": false
    },
-   "inputs": "5e5908ba4a60",
-   "measured": "2026-09-05"
+   "inputs": "0586ec15f385",
+   "measured": "2026-09-07"
   },
   "afm291-ch3-accrual-accounting.html": {
    "ext": {
@@ -409,8 +409,8 @@
     "scrollWidth": 320,
     "overflow": false
    },
-   "inputs": "0e42aa00f350",
-   "measured": "2026-09-05"
+   "inputs": "241221a88e08",
+   "measured": "2026-09-07"
   },
   "afm291-ch4-revenue-recognition.html": {
    "ext": {
@@ -429,8 +429,8 @@
     "scrollWidth": 320,
     "overflow": false
    },
-   "inputs": "617332f7e484",
-   "measured": "2026-09-05"
+   "inputs": "baf0910069c4",
+   "measured": "2026-09-07"
   },
   "afm291-ch6-inventories.html": {
    "ext": {
@@ -449,8 +449,8 @@
     "scrollWidth": 320,
     "overflow": false
    },
-   "inputs": "c59740ab370e",
-   "measured": "2026-09-05"
+   "inputs": "55a753cf3918",
+   "measured": "2026-09-07"
   },
   "afm291-ch9-intangibles-and-goodwill.html": {
    "ext": {
@@ -469,8 +469,8 @@
     "scrollWidth": 320,
     "overflow": false
    },
-   "inputs": "5fe9f5b245e9",
-   "measured": "2026-09-05"
+   "inputs": "98d2b2635902",
+   "measured": "2026-09-07"
   },
   "afm291-field-manual.html": {
    "ext": {
@@ -549,8 +549,8 @@
     "scrollWidth": 320,
     "overflow": false
    },
-   "inputs": "a3ddb1c4ab58",
-   "measured": "2026-09-05"
+   "inputs": "facb7caa084c",
+   "measured": "2026-09-07"
   },
   "afm291-reconciliation.html": {
    "ext": {
@@ -569,8 +569,8 @@
     "scrollWidth": 320,
     "overflow": false
    },
-   "inputs": "a52d73312c91",
-   "measured": "2026-09-05"
+   "inputs": "49cd98f0b6a3",
+   "measured": "2026-09-07"
   },
   "afm291-study-plan.html": {
    "ext": {
@@ -589,8 +589,8 @@
     "scrollWidth": 320,
     "overflow": false
    },
-   "inputs": "34daf50e4311",
-   "measured": "2026-09-05"
+   "inputs": "04677125ce0f",
+   "measured": "2026-09-07"
   },
   "afm291-study-system.html": {
    "ext": {
@@ -629,8 +629,8 @@
     "scrollWidth": 320,
     "overflow": false
    },
-   "inputs": "aaacd6650ae9",
-   "measured": "2026-09-05"
+   "inputs": "82e5ffd49c6e",
+   "measured": "2026-09-07"
   },
   "afm291-w7-financial-assets.html": {
    "ext": {
@@ -649,8 +649,8 @@
     "scrollWidth": 320,
     "overflow": false
    },
-   "inputs": "1132471630f1",
-   "measured": "2026-09-05"
+   "inputs": "23dd11d59873",
+   "measured": "2026-09-07"
   },
   "afm291-w8-cases.html": {
    "ext": {
@@ -669,8 +669,8 @@
     "scrollWidth": 320,
     "overflow": false
    },
-   "inputs": "0a727db96622",
-   "measured": "2026-09-05"
+   "inputs": "16d304814b8e",
+   "measured": "2026-09-07"
   },
   "afm291-w8-financial-assets.html": {
    "ext": {
@@ -689,8 +689,8 @@
     "scrollWidth": 320,
     "overflow": false
    },
-   "inputs": "be508ceb4efe",
-   "measured": "2026-09-05"
+   "inputs": "21b957491f8a",
+   "measured": "2026-09-07"
   },
   "afm291-w9-cases.html": {
    "ext": {
@@ -709,8 +709,8 @@
     "scrollWidth": 320,
     "overflow": false
    },
-   "inputs": "7e350ed65546",
-   "measured": "2026-09-05"
+   "inputs": "1b5690a00545",
+   "measured": "2026-09-07"
   },
   "afm291-w9-ppe.html": {
    "ext": {
@@ -729,8 +729,8 @@
     "scrollWidth": 320,
     "overflow": false
    },
-   "inputs": "fafa3046e1f7",
-   "measured": "2026-09-05"
+   "inputs": "0c4ed7186d22",
+   "measured": "2026-09-07"
   },
   "afm291-workbook.html": {
    "ext": {
@@ -769,8 +769,8 @@
     "scrollWidth": 320,
     "overflow": false
    },
-   "inputs": "6a0c6bef0ce3",
-   "measured": "2026-09-05"
+   "inputs": "d82e52a41bdb",
+   "measured": "2026-09-07"
   },
   "atlas.html": {
    "ext": {
@@ -782,8 +782,8 @@
    },
    "errors": 0,
    "chrome": {
-    "a": 14231,
-    "b": 14186
+    "a": 14355,
+    "b": 14310
    },
    "print": {
     "stickyLeft": 0,
@@ -822,8 +822,8 @@
    "motion": {
     "animations": 0
    },
-   "inputs": "8f1fba6542c3",
-   "measured": "2026-09-06"
+   "inputs": "9f9874dba993",
+   "measured": "2026-09-07"
   },
   "brittle-network.html": {
    "ext": {
@@ -864,6 +864,26 @@
    },
    "inputs": "957d36934868",
    "measured": "2026-09-05"
+  },
+  "canadian-dcf-cca.html": {
+   "ext": {
+    "requests": 3,
+    "external": 0
+   },
+   "idle": {
+    "frames": 0
+   },
+   "errors": 0,
+   "chrome": {
+    "a": 5632,
+    "b": 5632
+   },
+   "fit": {
+    "scrollWidth": 320,
+    "overflow": false
+   },
+   "inputs": "baeb1fdb821a",
+   "measured": "2026-09-07"
   },
   "colophon.html": {
    "ext": {
@@ -915,8 +935,8 @@
    "motion": {
     "animations": 0
    },
-   "inputs": "8c0ea74137bc",
-   "measured": "2026-09-06"
+   "inputs": "d3d33c967da0",
+   "measured": "2026-09-07"
   },
   "controls.html": {
    "ext": {
@@ -928,8 +948,8 @@
    },
    "errors": 0,
    "chrome": {
-    "a": 6031,
-    "b": 5986
+    "a": 5918,
+    "b": 5873
    },
    "print": {
     "stickyLeft": 0,
@@ -942,7 +962,7 @@
     "overflow": false
    },
    "keyboard": {
-    "stops": 111,
+    "stops": 112,
     "noRing": 0
    },
    "theme": {
@@ -968,8 +988,8 @@
    "motion": {
     "animations": 0
    },
-   "inputs": "824dcb485fe7",
-   "measured": "2026-09-06"
+   "inputs": "1f0ffdfe671a",
+   "measured": "2026-09-07"
   },
   "coursework.html": {
    "ext": {
@@ -1021,8 +1041,8 @@
    "motion": {
     "animations": 0
    },
-   "inputs": "70a2bf875250",
-   "measured": "2026-09-06"
+   "inputs": "ad07cbaebcd3",
+   "measured": "2026-09-07"
   },
   "crucible-cockpit.html": {
    "ext": {
@@ -1241,8 +1261,8 @@
     "scrollWidth": 320,
     "overflow": false
    },
-   "inputs": "79cbe0413e10",
-   "measured": "2026-09-05"
+   "inputs": "010ce71ca644",
+   "measured": "2026-09-07"
   },
   "exam-day-final-load.html": {
    "ext": {
@@ -1321,8 +1341,8 @@
     "scrollWidth": 320,
     "overflow": false
    },
-   "inputs": "332faf87ff2a",
-   "measured": "2026-09-05"
+   "inputs": "cb46bd621af2",
+   "measured": "2026-09-07"
   },
   "global-spending-and-wealth.html": {
    "ext": {
@@ -1381,8 +1401,8 @@
     "scrollWidth": 320,
     "overflow": false
    },
-   "inputs": "5d6638019bed",
-   "measured": "2026-09-05"
+   "inputs": "4560499e9345",
+   "measured": "2026-09-07"
   },
   "hype-cycle.html": {
    "ext": {
@@ -1454,8 +1474,8 @@
    },
    "errors": 0,
    "chrome": {
-    "a": 2361,
-    "b": 2316
+    "a": 2377,
+    "b": 2332
    },
    "print": {
     "stickyLeft": 0,
@@ -1498,7 +1518,7 @@
     }
    },
    "keyboard": {
-    "stops": 143,
+    "stops": 144,
     "noRing": 0
    },
    "theme": {
@@ -1524,8 +1544,8 @@
    "motion": {
     "animations": 0
    },
-   "inputs": "d5cefcd41fc0",
-   "measured": "2026-09-06"
+   "inputs": "e284d07fc2ab",
+   "measured": "2026-09-07"
   },
   "kennedy-dossier.html": {
    "ext": {
@@ -1584,8 +1604,8 @@
     "scrollWidth": 320,
     "overflow": false
    },
-   "inputs": "55835c76c4e2",
-   "measured": "2026-09-05"
+   "inputs": "2deca30156ab",
+   "measured": "2026-09-07"
   },
   "library.html": {
    "ext": {
@@ -1597,8 +1617,8 @@
    },
    "errors": 0,
    "chrome": {
-    "a": 2087,
-    "b": 2042
+    "a": 2208,
+    "b": 2163
    },
    "print": {
     "stickyLeft": 0,
@@ -1611,7 +1631,7 @@
     "overflow": false
    },
    "keyboard": {
-    "stops": 101,
+    "stops": 102,
     "noRing": 0
    },
    "theme": {
@@ -1637,8 +1657,8 @@
    "motion": {
     "animations": 0
    },
-   "inputs": "c04eb7c1b54a",
-   "measured": "2026-09-06"
+   "inputs": "b8d405f5fd5b",
+   "measured": "2026-09-07"
   },
   "monroe-case-file.html": {
    "ext": {
@@ -1790,8 +1810,8 @@
    },
    "errors": 0,
    "chrome": {
-    "a": 2204,
-    "b": 2159
+    "a": 2325,
+    "b": 2280
    },
    "print": {
     "stickyLeft": 0,
@@ -1804,7 +1824,7 @@
     "overflow": false
    },
    "keyboard": {
-    "stops": 75,
+    "stops": 76,
     "noRing": 0
    },
    "theme": {
@@ -1830,8 +1850,8 @@
    "motion": {
     "animations": 0
    },
-   "inputs": "00ec31c3b717",
-   "measured": "2026-09-06"
+   "inputs": "077809bde112",
+   "measured": "2026-09-07"
   },
   "resume.html": {
    "ext": {
@@ -1843,8 +1863,8 @@
    },
    "errors": 0,
    "chrome": {
-    "a": 768,
-    "b": 723
+    "a": 783,
+    "b": 738
    },
    "print": {
     "stickyLeft": 0,
@@ -1857,7 +1877,7 @@
     "overflow": false
    },
    "keyboard": {
-    "stops": 61,
+    "stops": 62,
     "noRing": 0
    },
    "theme": {
@@ -1883,8 +1903,8 @@
    "motion": {
     "animations": 0
    },
-   "inputs": "e0265fe782f3",
-   "measured": "2026-09-06"
+   "inputs": "800b91c97e15",
+   "measured": "2026-09-07"
   },
   "revenue-recognition.html": {
    "ext": {
@@ -1916,8 +1936,8 @@
    },
    "errors": 0,
    "chrome": {
-    "a": 2009,
-    "b": 1964
+    "a": 2496,
+    "b": 2451
    },
    "print": {
     "stickyLeft": 0,
@@ -1930,7 +1950,7 @@
     "overflow": false
    },
    "keyboard": {
-    "stops": 77,
+    "stops": 86,
     "noRing": 0
    },
    "theme": {
@@ -1956,8 +1976,8 @@
    "motion": {
     "animations": 0
    },
-   "inputs": "4faa7d94e48f",
-   "measured": "2026-09-06"
+   "inputs": "04a1fd8faf05",
+   "measured": "2026-09-07"
   },
   "skill-forge.html": {
    "ext": {
@@ -1996,8 +2016,8 @@
     "scrollWidth": 320,
     "overflow": false
    },
-   "inputs": "1196324c734c",
-   "measured": "2026-09-05"
+   "inputs": "01e68ae6e792",
+   "measured": "2026-09-07"
   },
   "the-delayed-test.html": {
    "ext": {
@@ -2016,8 +2036,8 @@
     "scrollWidth": 320,
     "overflow": false
    },
-   "inputs": "817c929cebcb",
-   "measured": "2026-09-05"
+   "inputs": "36e6c3f20d44",
+   "measured": "2026-09-07"
   },
   "the-trillion-dollar-vintage.html": {
    "ext": {
@@ -2089,8 +2109,8 @@
    "motion": {
     "animations": 0
    },
-   "inputs": "5bab1b83a128",
-   "measured": "2026-09-06"
+   "inputs": "0f09b4cfcb28",
+   "measured": "2026-09-07"
   },
   "transformers-study-guide.html": {
    "ext": {
@@ -2129,8 +2149,8 @@
     "scrollWidth": 320,
     "overflow": false
    },
-   "inputs": "2f988294fbb0",
-   "measured": "2026-09-05"
+   "inputs": "2e74bf900bc3",
+   "measured": "2026-09-07"
   },
   "whose-losses-count.html": {
    "ext": {

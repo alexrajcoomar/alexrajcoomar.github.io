@@ -10,8 +10,8 @@
   "copy": 50,
   "styling": 8,
   "untouched": 3,
-  "new": 4,
-  "pieces": 65
+  "new": 5,
+  "pieces": 66
  },
  "pieces": {
   "flagged-in-hindsight": {
@@ -1686,6 +1686,14 @@
     "Table headers: in 3 tables whose header row opens with an empty cell, 10 row-label cells became th scope=\"row\" (tag only; the text is unchanged) so every data cell has a header; a rule keeps them looking as they did.",
     "Em dashes, this phase: 16 replaced by rule (colon 13, colon in a heading 1, comma 2); 3 kept (a nil placeholder standing alone 3). The rule is build/emdash.py; a dash inside quotation marks was converted like any other, and no word moved."
    ],
+   "text_diff": [
+    "(new in this pass: no baseline text)"
+   ]
+  },
+  "canadian-dcf-cca": {
+   "url": "canadian-dcf-cca.html",
+   "title": "The tax base nobody discloses",
+   "class": "new",
    "text_diff": [
     "(new in this pass: no baseline text)"
    ]
