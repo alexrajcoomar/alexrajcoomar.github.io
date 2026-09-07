@@ -1,6 +1,6 @@
 {
- "version": "0ef81ac25c38",
- "bytes": 19456284,
+ "version": "b419a432ff55",
+ "bytes": 19456488,
  "files": [
   "InterVariable-sub.woff2",
   "about.html",
@@ -234,10 +234,10 @@
   "brittle-network-protocol.pdf": "07acc0923a8c",
   "brittle-network.html": "992f5490b642",
   "business-law-primer.html": "ff05560ded0c",
-  "canadian-dcf-cca.html": "c412647afc15",
+  "canadian-dcf-cca.html": "5ee7ab29bacc",
   "case-method.css": "9bc2c3a6e5e4",
   "colophon.html": "eb047301de07",
-  "controls.html": "515ccd40fd9f",
+  "controls.html": "499b505b31e0",
   "coursework.html": "fbf4e43b32cf",
   "crucible-cockpit.html": "af5e59e3ec43",
   "crucible-run-0-transcript.html": "15a91ee58ba1",
