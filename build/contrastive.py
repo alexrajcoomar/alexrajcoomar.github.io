@@ -73,9 +73,14 @@ def validate():
 
 
 def tally():
+    """The counts by class. A class the file does not declare is not counted
+    here: validate() is what reports it, and it can only do that if this runs
+    first without raising. A crash is a refusal, but it refuses without
+    naming the cause, which is the one thing the build is not allowed to do."""
     t = {k: 0 for k in CLASSES}
     for p in PAIRS:
-        t[p["class"]] += 1
+        if p.get("class") in t:
+            t[p["class"]] += 1
     return t
 
 
