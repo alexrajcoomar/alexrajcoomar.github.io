@@ -1294,6 +1294,26 @@
    "built_from": "Not declared on file."
   },
   {
+   "slug": "spanish-a1-cafe",
+   "t": "Unidad 1: En el Café",
+   "s": "The same café in Spanish, read against the French unit",
+   "k": "Reference",
+   "surface": "personal",
+   "c": "",
+   "d": "September 2026",
+   "url": "spanish-a1-cafe.html",
+   "featured": false,
+   "pwa": false,
+   "tags": [
+    "Spanish",
+    "CEFR A1",
+    "Contrastive"
+   ],
+   "blurb": "Two A1 café units on the same twenty words, laid side by side to find out how much of the first language survives the trip to the second. Of the twenty-two concepts both units teach, ten transfer from French to Spanish unchanged, ten mislead, and two share nothing but a meaning. The ten that mislead are the piece: the same verb that is blunt in a French café is ordinary in a Mexican one, the gender of the tip flips, and both languages make water irregular in different places.",
+   "demo": "The claim is arranged to be checkable rather than admired. Every row cites the section of each unit it was read from, the counts on the page are computed from the alignment file on each build so the page cannot claim a tally the data does not carry, and the classification is declared as a reading with the file named as the place to disagree. Section 08 says what would make it wrong, including that there is no learner in the data: the piece predicts where transfer fails and never observes anyone failing.",
+   "built_from": "the two A1 café units on this site, Unité 1 : Au Café and this one, and nothing else. Where a claim would have needed a third source it was left out and the page says so. The alignment lives in content/contrastive-a1.json and the page is written from it by build/contrastive.py, so no count on the page is typed by hand."
+  },
+  {
    "slug": "canadian-dcf-cca",
    "t": "The tax base nobody discloses",
    "s": "A Dollarama valuation built on capital cost allowance",

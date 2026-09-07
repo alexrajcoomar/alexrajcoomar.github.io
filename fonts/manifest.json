@@ -16091,11 +16091,11 @@
   }
  },
  "inter": {
-  "bytes": 80500,
+  "bytes": 80976,
   "file": "InterVariable-sub.woff2",
   "internal_name": "Portfolio UI Sans",
   "licence": "SIL Open Font License 1.1, Copyright 2016 The Inter Project Authors; no Reserved Font Name declared",
-  "sha256": "0adad0fe0a8198a7af8963061da10cb9203c67b04f92efe34ca46f7a708e28b9",
+  "sha256": "9733a4c6d5a68730744655a007a96dd8907b504ff5bf9088e5e7c779967af712",
   "source": "inter-ui 4.1.1 (npm), variable/InterVariable.woff2, Inter 4.001;git-9221beed3"
  },
  "internal_names": {
