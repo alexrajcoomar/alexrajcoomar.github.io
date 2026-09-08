@@ -1,7 +1,7 @@
 # LEESHARAM (ALEX) RAJCOOMAR
 
 Brampton, ON | (647) 471-3023 | a2rajcoo@uwaterloo.ca
-linkedin.com/in/leesharam-rajcoomar | alexrajcoomar.github.io
+linkedin.com/in/leesharam-rajcoomar | **alexrajcoomar.github.io**
 *Available for a January to April 2027 co-op work term*
 
 ---

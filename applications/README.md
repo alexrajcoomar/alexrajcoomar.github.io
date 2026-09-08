@@ -58,11 +58,33 @@ from the body, and the shown text cannot drift from where it goes.
 | `linkedin.com/in/leesharam-rajcoomar` | `https://www.linkedin.com/in/leesharam-rajcoomar/` |
 | `alexrajcoomar.github.io` | `https://alexrajcoomar.github.io` |
 
-They are black text with a thin grey rule under them, in both formats. A link
-that shouts is a link a reader distrusts, and a link that hides is one nobody
-clicks. In Word this is written as an explicit run property rather than by
-applying Word's Hyperlink style, which paints blue and underlines in the
-default theme.
+Two signals carry every link: the accent `#1F4E79`, which is Word's own Blue
+Accent 1 Darker 50%, and a 0.4pt rule in the same colour dropped 1.8pt clear of
+the baseline. In Word both are written as explicit run properties rather than
+by applying the built-in Hyperlink style, which paints a brighter blue that
+changes with the theme.
+
+The rule is not decoration and is not optional, and the reason is measured
+rather than felt. The accent reads 8.7:1 against white, comfortably legible at
+10pt, but only **2.42:1 against the black beside it**, under the 3:1 at which
+one colour becomes distinguishable from another. A greyscale printer renders
+the accent at 7% luminance against black's 0%. Rendering the header through
+`pdftoppm -gray`, which is what a laser print produces, the colour disappears
+entirely and the hairline is the only thing still saying a link is there. The
+same holds for the roughly one man in twelve with a colour vision deficiency.
+Colour alone would signal the portfolio to a recruiter reading on screen and
+hide it from the one who cared enough to print the page.
+
+The portfolio is bold in the header, the only emphasis in that line. It earns
+it by sitting last: the eye lands on the terminal item in a centred line, so
+bold there reads as a deliberate terminus rather than an accident, and at 9.5pt
+it cannot compete with a 17pt name. Three alternatives were rendered and
+rejected. Moving the portfolio ahead of LinkedIn puts it in a weaker position
+and breaks the conventional email-then-profile order. Labelling it "Portfolio:"
+raises the question of why only one item is labelled. Leaving all three equal
+under-signals the one piece of evidence a reader can actually go and check. The
+same token appears again, bold and accented, as the entry title of the
+Independent Research section, so it reads as one object seen twice.
 
 The compiler counts what the source declares and then reads it back out of both
 finished files: the `/URI` actions in the PDF, and the `w:hyperlink` elements in

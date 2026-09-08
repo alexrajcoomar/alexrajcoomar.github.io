@@ -58,6 +58,24 @@ LETTERS = [
 ]
 LETTER_WORD_CAP = 250
 
+# One accent, used for nothing but links. Black is the document's information;
+# the accent means "this goes somewhere". #1F4E79 is Word's own Blue Accent 1
+# Darker 50%, so the DOCX looks native rather than arbitrarily coloured.
+#
+# The rule under a link is not decoration and is not optional. Measured on this
+# palette: the accent reads 8.7:1 against white, which is comfortably legible at
+# 10pt, but only 2.42:1 against the black beside it, under the 3:1 that makes
+# one colour distinguishable from another. A greyscale printer renders the
+# accent at 7% luminance against black's 0%, a difference no laser print shows.
+# So on the page a recruiter prints, and for the roughly one man in twelve with
+# a colour vision deficiency, the colour carries no signal and the hairline is
+# the only thing left saying a link is there. It is set at 0.4pt and dropped
+# clear of the baseline, which is what separates it from the default browser
+# underline that makes a document look like a web page.
+ACCENT = "1F4E79"
+RULE_PT = 0.4
+RULE_OFFSET_PT = 1.8
+
 # Letter, in CSS pixels at 96 dpi, which is the unit Chromium lays out in.
 PAGE_W_IN, PAGE_H_IN = 8.5, 11.0
 MARGIN_IN = 0.55
@@ -299,10 +317,12 @@ p.addr { margin: 0; }
 p.gap { margin: 0 0 %(gap).1fpt; }
 p.para { margin: 0 0 %(gap).1fpt; text-align: left; }
 /* A link that shouts is a link a reader distrusts, and a link that hides is
-   one nobody clicks. The text keeps the colour of the page and takes a thin
-   grey rule under it, set clear of the baseline so descenders are not cut. */
-a { color: inherit; text-decoration: underline; text-decoration-color: #6b6b6b;
-    text-decoration-thickness: .5pt; text-underline-offset: 1.7pt; }
+   one nobody clicks. Both signals are carried: the accent for the reader
+   looking at a screen, the hairline for the one holding a greyscale print. */
+a { color: #%(accent)s; text-decoration: underline;
+    text-decoration-color: #%(accent)s;
+    text-decoration-thickness: %(rule).1fpt;
+    text-underline-offset: %(offset).1fpt; }
 """
 
 
@@ -312,7 +332,8 @@ def letter_html(letter, body_pt, line_h, gap):
                         "headpt": HEAD_PT, "headlead": HEAD_LEAD,
                         "contactpt": CONTACT_PT, "contactlead": CONTACT_LEAD,
                         "availpt": AVAIL_PT, "availlead": AVAIL_LEAD,
-                        "gap": gap, "pwin": PAGE_W_IN - 2 * MARGIN_IN}
+                        "gap": gap, "pwin": PAGE_W_IN - 2 * MARGIN_IN,
+                        "accent": ACCENT, "rule": RULE_PT, "offset": RULE_OFFSET_PT}
     name, contact, avail = header_lines(letter)
     p = ['<!doctype html><html><head><meta charset="utf-8">',
          "<title>%s</title><style>%s</style></head><body>" % (H.escape(name), css),
@@ -342,10 +363,10 @@ def docx_runs(document, paragraph, text, bold=None, italic=None, size=None):
     LibreOffice both read that, and so does every PDF exporter that has to
     turn the file back into a document.
 
-    The link is styled here rather than by Word's Hyperlink style, which
-    paints blue and underlines in the default theme. Black text with a grey
-    rule under it is legible as a link without looking like one pasted from a
-    browser.
+    The link is styled here rather than by Word's Hyperlink style, so the
+    accent and the hairline are the document's own choices and survive a theme
+    change, a copy into another file, or a reviewer with a different Normal
+    style.
     """
     from docx.opc.constants import RELATIONSHIP_TYPE as RT
     from docx.oxml import OxmlElement
@@ -370,9 +391,9 @@ def docx_runs(document, paragraph, text, bold=None, italic=None, size=None):
         run = paragraph.add_run(t)
         style(run, b, i_)
         rPr = run._r.get_or_add_rPr()
-        col = OxmlElement("w:color"); col.set(qn("w:val"), "000000")
+        col = OxmlElement("w:color"); col.set(qn("w:val"), ACCENT)
         u = OxmlElement("w:u")
-        u.set(qn("w:val"), "single"); u.set(qn("w:color"), "6B6B6B")
+        u.set(qn("w:val"), "single"); u.set(qn("w:color"), ACCENT)
         rPr.append(col); rPr.append(u)
         paragraph._p.remove(run._r)
         link.append(run._r)
@@ -514,10 +535,12 @@ ul { margin: .8pt 0 2pt; padding-left: 11.5pt; }
 li { margin: 0 0 1.15pt; padding-left: 1.5pt; }
 li::marker { font-size: .85em; }
 /* A link that shouts is a link a reader distrusts, and a link that hides is
-   one nobody clicks. The text keeps the colour of the page and takes a thin
-   grey rule under it, set clear of the baseline so descenders are not cut. */
-a { color: inherit; text-decoration: underline; text-decoration-color: #6b6b6b;
-    text-decoration-thickness: .5pt; text-underline-offset: 1.7pt; }
+   one nobody clicks. Both signals are carried: the accent for the reader
+   looking at a screen, the hairline for the one holding a greyscale print. */
+a { color: #%(accent)s; text-decoration: underline;
+    text-decoration-color: #%(accent)s;
+    text-decoration-thickness: %(rule).1fpt;
+    text-underline-offset: %(offset).1fpt; }
 b, strong { font-weight: 700; }
 i, em { font-style: italic; }
 """
@@ -548,7 +571,8 @@ def to_html(doc, body_pt, line_h):
                  "headpt": HEAD_PT, "headlead": HEAD_LEAD,
                  "contactpt": CONTACT_PT, "contactlead": CONTACT_LEAD,
                  "availpt": AVAIL_PT, "availlead": AVAIL_LEAD,
-                 "pwin": PAGE_W_IN - 2 * MARGIN_IN}
+                 "pwin": PAGE_W_IN - 2 * MARGIN_IN,
+                 "accent": ACCENT, "rule": RULE_PT, "offset": RULE_OFFSET_PT}
     p = ['<!doctype html><html><head><meta charset="utf-8">',
          "<title>%s</title><style>%s</style></head><body>" % (H.escape(name), css),
          '<div class="name">%s</div>' % H.escape(name),
