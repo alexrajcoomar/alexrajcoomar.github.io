@@ -1,6 +1,6 @@
 {
- "version": "0a2d4f4959fc",
- "bytes": 19535939,
+ "version": "2be5019e06b8",
+ "bytes": 19536356,
  "files": [
   "InterVariable-sub.woff2",
   "about.html",
@@ -238,7 +238,7 @@
   "canadian-dcf-cca.html": "5ee7ab29bacc",
   "case-method.css": "9bc2c3a6e5e4",
   "colophon.html": "58552b18c07c",
-  "controls.html": "3924d978ca17",
+  "controls.html": "8ef0ae8542ae",
   "coursework.html": "8d77bec6718b",
   "crucible-cockpit.html": "af5e59e3ec43",
   "crucible-run-0-transcript.html": "15a91ee58ba1",
@@ -355,7 +355,7 @@
   "predictive-history.html": "97558c6c14dc",
   "price-of-divergence.html": "f41b2561d26f",
   "research.html": "9a5afd36ff49",
-  "resume.html": "0f48795e9cee",
+  "resume.html": "0df3d1439fba",
   "revenue-recognition.html": "b9d8bbc0d727",
   "selected.html": "ebc459aae7c2",
   "site-192.png": "dbad8f0bc626",
