@@ -25,6 +25,9 @@ layout both, and it says which renderer rejected what when it refuses.
 | `Cover_Letter_Option_C_FPA` | 10.5pt | 1.15 | 14.0pt | 635px | 66.8% |
 | `Cover_Letter_Option_D_FinOps` | 10.5pt | 1.15 | 14.0pt | 618px | 65.0% |
 
+Four live links in each resume, five in each letter, thirty-two in all,
+resolved in both the PDF and the Word file.
+
 The letters sit at two thirds of the page on purpose. A cover letter that fills
 a page is a cover letter nobody finished, so the compiler caps the four
 paragraphs at 250 words and then walks the paragraph spacing from the most open
@@ -42,6 +45,36 @@ The typeface is Times New Roman with Liberation Serif behind it, which is
 metric-compatible with it. Without that fallback a machine lacking the
 Microsoft face substitutes something wider and the page-fit measurement stops
 predicting what Word does on the machine the file is sent from.
+
+## Links
+
+Three destinations are declared once in `build_resumes.py` and matched wherever
+their display text appears, so a link cannot exist in the header and be missing
+from the body, and the shown text cannot drift from where it goes.
+
+| Shown | Goes to |
+|---|---|
+| `a2rajcoo@uwaterloo.ca` | `mailto:a2rajcoo@uwaterloo.ca` |
+| `linkedin.com/in/leesharam-rajcoomar` | `https://www.linkedin.com/in/leesharam-rajcoomar/` |
+| `alexrajcoomar.github.io` | `https://alexrajcoomar.github.io` |
+
+They are black text with a thin grey rule under them, in both formats. A link
+that shouts is a link a reader distrusts, and a link that hides is one nobody
+clicks. In Word this is written as an explicit run property rather than by
+applying Word's Hyperlink style, which paints blue and underlines in the
+default theme.
+
+The compiler counts what the source declares and then reads it back out of both
+finished files: the `/URI` actions in the PDF, and the `w:hyperlink` elements in
+the Word file resolved through the document part's relationships. A mismatch in
+count or in target fails the build. That check was itself falsified two ways: a
+Word renderer that draws the underline but writes no relationship, and a link
+pointing at the wrong host. Both were refused, by name.
+
+Chromium writes a bare origin back with a trailing slash, so
+`https://alexrajcoomar.github.io` reads as `https://alexrajcoomar.github.io/` in
+the PDF. Same destination; the check normalises for it rather than pretending
+not to notice.
 
 ## Bolding
 

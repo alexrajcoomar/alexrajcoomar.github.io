@@ -181,6 +181,52 @@ def runs(text):
     return [r for r in out if r[0]]
 
 
+# The three destinations a reader is meant to reach. Written once, matched
+# wherever the display text appears, so a link cannot exist in the header and
+# be missing from the body, and the shown text cannot drift from where it goes.
+# The tokens are matched with a right-hand boundary that excludes the
+# punctuation a sentence puts after them, so "alexrajcoomar.github.io," links
+# the address and not the comma.
+LINKS = [
+    (re.compile(r"a2rajcoo@uwaterloo\.ca"),               "mailto:a2rajcoo@uwaterloo.ca"),
+    (re.compile(r"linkedin\.com/in/leesharam-rajcoomar"), "https://www.linkedin.com/in/leesharam-rajcoomar/"),
+    (re.compile(r"alexrajcoomar\.github\.io"),            "https://alexrajcoomar.github.io"),
+]
+
+
+def linked(text):
+    """Split a plain string into (text, href or None) segments. The earliest
+    match wins and the remainder is rescanned, so overlapping patterns cannot
+    produce a link inside a link."""
+    out, pos = [], 0
+    while pos < len(text):
+        best = None
+        for rx, url in LINKS:
+            m = rx.search(text, pos)
+            if m and (best is None or m.start() < best[0].start()):
+                best = (m, url)
+        if best is None:
+            out.append((text[pos:], None)); break
+        m, url = best
+        if m.start() > pos:
+            out.append((text[pos:m.start()], None))
+        out.append((m.group(0), url))
+        pos = m.end()
+    return [seg for seg in out if seg[0]]
+
+
+def runs_linked(text):
+    """(text, bold, italic, href) for a string, markdown emphasis and links
+    resolved together. Emphasis is split first because a link never spans an
+    emphasis boundary in these documents, and a run that did would have to be
+    two runs in Word anyway."""
+    out = []
+    for t, b, i_ in runs(text):
+        for seg, href in linked(t):
+            out.append((seg, b, i_, href))
+    return out
+
+
 def header_lines(doc):
     """The three-line header. The markdown carries the contact block over two
     lines because that is what reads well in a text editor; a printed resume
@@ -252,6 +298,11 @@ hr { border: 0; border-top: .9pt solid #000; margin: 5pt 0 11pt; }
 p.addr { margin: 0; }
 p.gap { margin: 0 0 %(gap).1fpt; }
 p.para { margin: 0 0 %(gap).1fpt; text-align: left; }
+/* A link that shouts is a link a reader distrusts, and a link that hides is
+   one nobody clicks. The text keeps the colour of the page and takes a thin
+   grey rule under it, set clear of the baseline so descenders are not cut. */
+a { color: inherit; text-decoration: underline; text-decoration-color: #6b6b6b;
+    text-decoration-thickness: .5pt; text-underline-offset: 1.7pt; }
 """
 
 
@@ -266,7 +317,7 @@ def letter_html(letter, body_pt, line_h, gap):
     p = ['<!doctype html><html><head><meta charset="utf-8">',
          "<title>%s</title><style>%s</style></head><body>" % (H.escape(name), css),
          '<div class="name">%s</div>' % H.escape(name),
-         '<div class="contact">%s</div>' % H.escape(contact),
+         '<div class="contact">%s</div>' % esc(contact),
          '<div class="avail">%s</div><hr>' % H.escape(avail)]
     prev = None
     for b in letter["body"]:
@@ -279,6 +330,53 @@ def letter_html(letter, body_pt, line_h, gap):
         prev = b["kind"] if b["text"] else prev
     p.append("</body></html>")
     return "\n".join(p)
+
+
+
+def docx_runs(document, paragraph, text, bold=None, italic=None, size=None):
+    """Write one string into a Word paragraph, emphasis and hyperlinks both.
+
+    python-docx has no hyperlink API, so a linked run is built by hand: the
+    document part is asked for an external relationship to the target, and a
+    w:hyperlink element carrying that relationship id wraps the run. Word and
+    LibreOffice both read that, and so does every PDF exporter that has to
+    turn the file back into a document.
+
+    The link is styled here rather than by Word's Hyperlink style, which
+    paints blue and underlines in the default theme. Black text with a grey
+    rule under it is legible as a link without looking like one pasted from a
+    browser.
+    """
+    from docx.opc.constants import RELATIONSHIP_TYPE as RT
+    from docx.oxml import OxmlElement
+    from docx.oxml.ns import qn
+    from docx.shared import Pt
+
+    def style(run, b, i_):
+        run.bold = b if bold is None else bold
+        run.italic = i_ if italic is None else italic
+        if size:
+            run.font.size = Pt(size)
+
+    for t, b, i_, href in runs_linked(text):
+        if not href:
+            style(paragraph.add_run(t), b, i_)
+            continue
+        rid = document.part.relate_to(href, RT.HYPERLINK, is_external=True)
+        link = OxmlElement("w:hyperlink")
+        link.set(qn("r:id"), rid)
+        # Build the run through python-docx so its own run properties apply,
+        # then move the finished element under the hyperlink.
+        run = paragraph.add_run(t)
+        style(run, b, i_)
+        rPr = run._r.get_or_add_rPr()
+        col = OxmlElement("w:color"); col.set(qn("w:val"), "000000")
+        u = OxmlElement("w:u")
+        u.set(qn("w:val"), "single"); u.set(qn("w:color"), "6B6B6B")
+        rPr.append(col); rPr.append(u)
+        paragraph._p.remove(run._r)
+        link.append(run._r)
+        paragraph._p.append(link)
 
 
 def letter_docx(letter, path, body_pt, line_h, gap):
@@ -320,15 +418,14 @@ def letter_docx(letter, path, body_pt, line_h, gap):
         return p
 
     def put(p, text):
-        for t, b, i_ in runs(text):
-            r = p.add_run(t); r.bold = b; r.italic = i_
+        docx_runs(d, p, text)
         return p
 
     name, contact, avail = header_lines(letter)
     p = para(1.2, Pt(HEAD_LEAD), WD_ALIGN_PARAGRAPH.CENTER)
     r = p.add_run(name); r.bold = True; r.font.size = Pt(HEAD_PT)
     p = para(0.5, Pt(CONTACT_LEAD), WD_ALIGN_PARAGRAPH.CENTER)
-    r = p.add_run(contact); r.font.size = Pt(CONTACT_PT)
+    docx_runs(d, p, contact, bold=False, italic=False, size=CONTACT_PT)
     p = para(5.0, Pt(AVAIL_LEAD), WD_ALIGN_PARAGRAPH.CENTER)
     r = p.add_run(avail); r.italic = True; r.font.size = Pt(AVAIL_PT)
     # The rule under the letterhead is the same paragraph border the resumes
@@ -416,6 +513,11 @@ ul + .entry { margin-top: 2.8pt; }
 ul { margin: .8pt 0 2pt; padding-left: 11.5pt; }
 li { margin: 0 0 1.15pt; padding-left: 1.5pt; }
 li::marker { font-size: .85em; }
+/* A link that shouts is a link a reader distrusts, and a link that hides is
+   one nobody clicks. The text keeps the colour of the page and takes a thin
+   grey rule under it, set clear of the baseline so descenders are not cut. */
+a { color: inherit; text-decoration: underline; text-decoration-color: #6b6b6b;
+    text-decoration-thickness: .5pt; text-underline-offset: 1.7pt; }
 b, strong { font-weight: 700; }
 i, em { font-style: italic; }
 """
@@ -423,9 +525,19 @@ i, em { font-style: italic; }
 
 
 def esc(text):
-    return "".join(
-        ("<b><i>%s</i></b>" if (b and i_) else "<b>%s</b>" if b else "<i>%s</i>" if i_ else "%s")
-        % H.escape(t) for t, b, i_ in runs(text))
+    out = []
+    for t, b, i_, href in runs_linked(text):
+        piece = H.escape(t)
+        if b and i_:
+            piece = "<b><i>%s</i></b>" % piece
+        elif b:
+            piece = "<b>%s</b>" % piece
+        elif i_:
+            piece = "<i>%s</i>" % piece
+        if href:
+            piece = '<a href="%s">%s</a>' % (H.escape(href, quote=True), piece)
+        out.append(piece)
+    return "".join(out)
 
 
 def to_html(doc, body_pt, line_h):
@@ -440,7 +552,7 @@ def to_html(doc, body_pt, line_h):
     p = ['<!doctype html><html><head><meta charset="utf-8">',
          "<title>%s</title><style>%s</style></head><body>" % (H.escape(name), css),
          '<div class="name">%s</div>' % H.escape(name),
-         '<div class="contact">%s</div>' % H.escape(contact),
+         '<div class="contact">%s</div>' % esc(contact),
          '<div class="avail">%s</div>' % H.escape(avail)]
     for sec in doc["sections"]:
         p.append("<h2>%s</h2>" % H.escape(sec["title"]))
@@ -587,12 +699,7 @@ def render_docx(doc, path, body_pt, line_h):
         return p
 
     def put(p, text, bold=None, italic=None, size=None):
-        for t, b, i_ in runs(text):
-            r = p.add_run(t)
-            r.bold = b if bold is None else bold
-            r.italic = i_ if italic is None else italic
-            if size:
-                r.font.size = Pt(size)
+        docx_runs(d, p, text, bold, italic, size)
         return p
 
     def rule(p):
@@ -609,7 +716,7 @@ def render_docx(doc, path, body_pt, line_h):
     p = para(0, 1.2, Pt(HEAD_LEAD)); p.alignment = WD_ALIGN_PARAGRAPH.CENTER
     r = p.add_run(name); r.bold = True; r.font.size = Pt(HEAD_PT)
     p = para(0, 0.5, Pt(CONTACT_LEAD)); p.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    r = p.add_run(contact); r.font.size = Pt(CONTACT_PT)
+    docx_runs(d, p, contact, bold=False, italic=False, size=CONTACT_PT)
     p = para(0, 2.0, Pt(AVAIL_LEAD)); p.alignment = WD_ALIGN_PARAGRAPH.CENTER
     r = p.add_run(avail); r.italic = True; r.font.size = Pt(AVAIL_PT)
 
@@ -665,6 +772,78 @@ def docx_pages(path):
         return pdf_pages(out)[0], None
 
 
+
+def expected_links(texts):
+    """How many link segments the source says a document should carry, and to
+    where. Counted from the same function the renderers use, so the count
+    cannot drift from what was written."""
+    out = []
+    for t in texts:
+        out += [href for _seg, href in linked(t) if href]
+    return out
+
+
+def doc_texts(doc):
+    _n, contact, _a = header_lines(doc)
+    out = [contact]
+    for sec in doc["sections"]:
+        for blk in sec["blocks"]:
+            for k in ("text", "main", "sub"):
+                if blk.get(k):
+                    out.append(blk[k])
+    return out
+
+
+def letter_texts(letter):
+    _n, contact, _a = header_lines(letter)
+    return [contact] + [b["text"] for b in letter["body"] if b["text"]]
+
+
+def pdf_links(path):
+    """The URI actions the PDF actually carries. A link that is only styled to
+    look like one is the failure this catches: the text is underlined, the
+    reader clicks, and nothing happens."""
+    raw = open(path, "rb").read()
+    return [u.decode("latin-1") for u in re.findall(rb"/URI\s*\((.*?)\)", raw)]
+
+
+def docx_links(path):
+    """The hyperlink elements in the Word file, resolved through the document
+    part's relationships. Counting relationships alone would undercount, since
+    Word reuses one relationship for repeated targets."""
+    import zipfile
+    z = zipfile.ZipFile(path)
+    rels = z.read("word/_rels/document.xml.rels").decode("utf-8")
+    body = z.read("word/document.xml").decode("utf-8")
+    z.close()
+    by_id = dict(re.findall(r'Id="([^"]+)"[^>]*Target="([^"]+)"[^>]*TargetMode="External"',
+                            rels))
+    return [by_id.get(rid, "?") for rid in
+            re.findall(r'<w:hyperlink [^>]*r:id="([^"]+)"', body)]
+
+
+def same_target(a, b):
+    """Chromium writes a bare origin back with its trailing slash. That is the
+    same destination, not a different one."""
+    return a.rstrip("/") == b.rstrip("/")
+
+
+def check_links(stem, want, pdf_path, docx_path):
+    """Every link the source declares must exist in both files, pointing where
+    it was told to point."""
+    problems = []
+    for label, got in (("PDF", pdf_links(pdf_path)), ("DOCX", docx_links(docx_path))):
+        if len(got) != len(want):
+            problems.append("%s: the %s carries %d links, the source declares %d"
+                            % (stem, label, len(got), len(want)))
+            continue
+        for w, g in zip(sorted(want), sorted(got)):
+            if not same_target(w, g):
+                problems.append("%s: the %s links to %s where the source says %s"
+                                % (stem, label, g, w))
+    return problems
+
+
 # ---------------------------------------------------------------- main
 
 def fit(doc, pdf_path, docx_path):
@@ -718,10 +897,12 @@ def main():
                        "roughly %.1f lines."
                        % (stem, last[0], last[1], last[2], last[3], last[4],
                           PRINTABLE_H, SLACK_PX, max(0.0, over) / line_px))
-            rows.append((stem, "-", "-", "-", tried[-1][4], 0.0))
+            rows.append((stem, "-", "-", "-", tried[-1][4], 0.0, 0))
             continue
+        want = expected_links(doc_texts(doc))
+        bad += check_links(stem, want, pdf_path, docx_path)
         rows.append((stem, "%.1fpt / %.2f" % (body_pt, line_h), 1, dpages, px,
-                     100.0 * px / PRINTABLE_H))
+                     100.0 * px / PRINTABLE_H, len(want)))
 
     if not only or only == "letter":
         md = open(os.path.join(HERE, LETTER_SRC), encoding="utf-8").read()
@@ -744,24 +925,28 @@ def main():
                 bad.append("%s: does not fit one page. At the tightest setting "
                            "the %s renderer laid it out on %s pages."
                            % (stem, last[2], last[3]))
-                rows.append((stem, "-", "-", "-", last[4], 0.0))
+                rows.append((stem, "-", "-", "-", last[4], 0.0, 0))
                 continue
+            want = expected_links(letter_texts(letter))
+            bad += check_links(stem, want, pdf_path, docx_path)
             rows.append((stem, "%.1fpt / %.2f / %.1fpt" % (body_pt, line_h, gap),
-                         1, dpages, px, 100.0 * px / PRINTABLE_H))
+                         1, dpages, px, 100.0 * px / PRINTABLE_H, len(want)))
 
     w = max(len(r[0]) for r in rows) if rows else 10
-    print("%-*s  %-22s %-4s %-5s  %-9s  %s"
-          % (w, "document", "setting", "PDF", "DOCX", "content", "page fill"))
-    for stem, setting, pages, dpages, px, fill in rows:
-        print("%-*s  %-14s %-4s %-5s  %6.1fpx  %5.1f%% of %.0fpx"
-              % (w, stem, setting, pages, dpages, px, fill, PRINTABLE_H))
+    print("%-*s  %-22s %-4s %-5s %-6s %-9s  %s"
+          % (w, "document", "setting (body / line / gap)", "PDF", "DOCX",
+             "links", "content", "page fill"))
+    for stem, setting, pages, dpages, px, fill, nlinks in rows:
+        print("%-*s  %-22s %-4s %-5s %-6s %6.1fpx  %5.1f%% of %.0fpx"
+              % (w, stem, setting, pages, dpages, nlinks, px, fill, PRINTABLE_H))
     if bad:
         print()
         for b in bad:
             print("FAIL " + b)
         return 1
     print("\nAll %d compiled to exactly one page, measured in both Chromium "
-          "and LibreOffice." % len(rows))
+          "and LibreOffice, with %d live links resolved in both formats."
+          % (len(rows), sum(r[6] for r in rows)))
     return 0
 
 
