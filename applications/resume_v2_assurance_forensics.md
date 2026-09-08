@@ -1,7 +1,7 @@
 # LEESHARAM (ALEX) RAJCOOMAR
 
 Brampton, ON | (647) 471-3023 | a2rajcoo@uwaterloo.ca
-linkedin.com/in/leesharam-rajcoomar-868144317 | alexrajcoomar.github.io
+linkedin.com/in/leesharam-rajcoomar | alexrajcoomar.github.io
 *Available for a January to April 2027 co-op work term*
 
 ---
@@ -35,9 +35,9 @@ linkedin.com/in/leesharam-rajcoomar-868144317 | alexrajcoomar.github.io
 **alexrajcoomar.github.io**
 *Author and publisher, independent research in forensic accounting, financial reporting and evidence method* | 2026 to Present
 
-- ***Flagged in Hindsight:*** ran the **Beneish M-Score ex ante** on five Canadian frauds with completed regulatory or judicial findings (Sino-Forest, Nortel, Poseidon Concepts, Livent, Philip Services), on only the filings that existed before each collapse. **None of the three computable test years crossed the standard -1.78 cut-off.** The piece types every miss by cause, threshold, mechanism, model scope or archive failure, and publishes the script and filed inputs so the scores can be reproduced
-- ***IFRS 15 Judgment Trainer:*** wrote and verified **62 revenue recognition scenarios** across the five steps plus contract costs and disclosure, separating **29 determinate items** from **33 that turn on judgment the standard leaves open** and scoring the second group on reasoning rather than answer. Every item cites its paragraph or illustrative example, verified against **IFRS 15 in Part I of the CPA Canada Handbook, 2026 Edition**, with 20 sources registered and none written from memory
-- Publish 67 pieces, 25 of them independent research, carrying **188 figures and 7 interactive tools**. The build runs a register of automated checks on every commit and refuses to publish if a stated number does not match the data behind it
+- ***Flagged in Hindsight:*** ran the **Beneish M-Score** ex ante on five Canadian frauds with completed regulatory or judicial findings (Sino-Forest, Nortel, Poseidon Concepts, Livent, Philip Services), on only the filings that existed before each collapse. None of the three computable test years crossed the standard -1.78 cut-off. The piece types every miss by cause, threshold, mechanism, model scope or archive failure, and publishes the script and filed inputs so the scores can be reproduced
+- ***IFRS 15 Judgment Trainer:*** wrote and verified **62 revenue recognition scenarios** across the five steps plus contract costs and disclosure, separating 29 determinate items from 33 that turn on judgment the standard leaves open, and scoring the second group on reasoning rather than answer. Every item cites its paragraph or illustrative example, verified against IFRS 15 in Part I of the CPA Canada Handbook, 2026 Edition, with 20 sources registered and none written from memory
+- Publish **67 pieces, 25 of them independent research**, carrying 188 figures and 7 interactive tools. The build runs a register of automated checks on every commit and refuses to publish if a stated number does not match the data behind it
 - ***Crucible Cockpit:*** built an adversarial claim-auditing method that decomposes a question into individually falsifiable claims, files a falsifier and an evidence tier with each, and attacks them on provenance, inference, selection and anachronism
 
 ---
@@ -46,11 +46,11 @@ linkedin.com/in/leesharam-rajcoomar-868144317 | alexrajcoomar.github.io
 
 **Pet Valu Strategic Growth Case**, team of four | 2025
 
-- Built three-year pro forma models for two capital deployment strategies behind a **$575M** expansion decision, stress-testing ROA, debt to EBITDA and net profit margin, and recommended the conservative case to a simulated CEO and CFO panel on a **sustained 16% ROA** against a decline from 17% to 10%
+- Built three-year pro forma models for two capital deployment strategies behind a **$575M** expansion decision, stress-testing ROA, debt to EBITDA and net profit margin, and recommended the conservative case to a simulated CEO and CFO panel on a sustained 16% ROA against a decline from 17% to 10%
 
 **UW CISA Interactive Business Dashboard Competition**, team of four | 2024
 
-- Built the competition dashboard in **Tableau and Excel** from multi-variable performance datasets analysed in R, and presented the competitive gaps the data exposed as a short set of specific operating recommendations
+- Built the competition dashboard in **Tableau** and Excel from multi-variable performance datasets analysed in R, and presented the competitive gaps the data exposed as a short set of specific operating recommendations
 
 ---
 

@@ -15,11 +15,20 @@ layout both, and it says which renderer rejected what when it refuses.
 
 ## What the compiler settled
 
-| Document | Body | Line height | Content | Page fill |
-|---|---|---|---|---|
-| `Alex_Rajcoomar_Resume_V1_Tax` | 10.0pt | 1.15 | 928px | 97.6% |
-| `Alex_Rajcoomar_Resume_V2_Assurance` | 10.0pt | 1.11 | 933px | 98.2% |
-| `Alex_Rajcoomar_Resume_V3_FPA` | 10.0pt | 1.13 | 932px | 98.1% |
+| Document | Body | Line | Gap | Content | Page fill |
+|---|---|---|---|---|---|
+| `Alex_Rajcoomar_Resume_V1_Tax` | 10.0pt | 1.15 | | 929px | 97.7% |
+| `Alex_Rajcoomar_Resume_V2_Assurance` | 10.0pt | 1.11 | | 935px | 98.4% |
+| `Alex_Rajcoomar_Resume_V3_FPA` | 10.0pt | 1.13 | | 934px | 98.3% |
+| `Cover_Letter_Template` (option A) | 10.5pt | 1.15 | 14.0pt | 618px | 65.0% |
+| `Cover_Letter_Option_B_Assurance` | 10.5pt | 1.15 | 14.0pt | 618px | 65.0% |
+| `Cover_Letter_Option_C_FPA` | 10.5pt | 1.15 | 14.0pt | 635px | 66.8% |
+| `Cover_Letter_Option_D_FinOps` | 10.5pt | 1.15 | 14.0pt | 618px | 65.0% |
+
+The letters sit at two thirds of the page on purpose. A cover letter that fills
+a page is a cover letter nobody finished, so the compiler caps the four
+paragraphs at 250 words and then walks the paragraph spacing from the most open
+setting down rather than the tightest up.
 
 Letter, 0.55in margins, single column, Times New Roman. The line height is a
 true multiple of the body size in both files, which is not what Word's own
@@ -34,9 +43,18 @@ metric-compatible with it. Without that fallback a machine lacking the
 Microsoft face substitutes something wider and the page-fit measurement stops
 predicting what Word does on the machine the file is sent from.
 
+## Bolding
+
+One emphasis span per bullet, and it is the figure or the credential that
+bullet exists to deliver. Structural bold is separate and does not count
+against it: the employer, the institution, a project title, a label at the head
+of a line. Bold italic is reserved for the title of a published piece. The rule
+exists because emphasis is a budget, not a decoration: a bullet with three bold
+phrases has none.
+
 ## Editing
 
-Edit the markdown, re-run the compiler, and read what it says. Every document
+Edit the markdown, re-run the compiler, and read what it says. Every resume
 sits above 97% of the page, so one added line will fail the build rather than
 quietly produce a two-page resume. That is the point: a resume that spilled is
 a defect the sender cannot see in the file they attach.

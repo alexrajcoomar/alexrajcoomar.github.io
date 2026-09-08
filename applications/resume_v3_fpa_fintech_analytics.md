@@ -1,7 +1,7 @@
 # LEESHARAM (ALEX) RAJCOOMAR
 
 Brampton, ON | (647) 471-3023 | a2rajcoo@uwaterloo.ca
-linkedin.com/in/leesharam-rajcoomar-868144317 | alexrajcoomar.github.io
+linkedin.com/in/leesharam-rajcoomar | alexrajcoomar.github.io
 *Available for a January to April 2027 co-op work term*
 
 ---
@@ -35,9 +35,9 @@ linkedin.com/in/leesharam-rajcoomar-868144317 | alexrajcoomar.github.io
 **alexrajcoomar.github.io**
 *Author, publisher and sole engineer of a reproducible research platform* | 2026 to Present
 
-- ***The tax base nobody discloses:*** built a Python valuation module that reconstructs Dollarama's tax base across **seven CCA classes**, rolls the allowance forward under statutory rates, builds a **5.56% WACC** from a regressed beta and the issuer's own debt tranches, and discounts free cash flow under two capital anchors returning **$187.16 and $125.14 per share** against a $183.50 market price. Nothing is typed in: every figure is recomputed on each build and the build fails if page and model disagree
-- Designed and ship the platform itself: **14,719 lines of Python and 5,222 lines of JavaScript**, standard library only, driving a CI pipeline that measures each page in a real browser, runs a register of automated checks, deliberately falsifies each check to prove it still catches failure, and blocks the deploy on any break
-- Publish 67 pieces, 25 of them independent research, with **188 figures, 799 data tables and 7 interactive tools**, every figure carrying its source and every derived number labelled as derived
+- ***The tax base nobody discloses:*** built a Python valuation module that reconstructs Dollarama's tax base across seven CCA classes, rolls the allowance forward under statutory rates, builds a 5.56% WACC from a regressed beta and the issuer's own debt tranches, and discounts free cash flow under two capital anchors returning **$187.16 and $125.14 per share** against a $183.50 market price. Nothing is typed in: every figure is recomputed on each build and the build fails if page and model disagree
+- Designed and ship the platform itself: **14,719 lines of Python** and 5,222 of JavaScript, standard library only, driving a CI pipeline that measures each page in a real browser, runs a register of automated checks, deliberately falsifies each check to prove it still catches failure, and blocks the deploy on any break
+- Publish **67 pieces, 25 of them independent research**, with 188 figures, 799 data tables and 7 interactive tools, every figure carrying its source and every derived number labelled as derived
 - ***Flagged in Hindsight:*** ran the **Beneish M-Score** as an ex ante screen on five Canadian accounting frauds, found that none of the three computable test years crossed the standard cut-off, and published the script and inputs so the negative result can be reproduced and attacked
 
 ---
@@ -51,7 +51,7 @@ linkedin.com/in/leesharam-rajcoomar-868144317 | alexrajcoomar.github.io
 
 **UW CISA Interactive Business Dashboard Competition**, team of four | 2024
 
-- Built the competition dashboard in **Tableau and Excel** from multi-variable performance datasets analysed in R, and presented the competitive gaps the data exposed as a short set of specific operating recommendations
+- Built the competition dashboard in **Tableau** and Excel from multi-variable performance datasets analysed in R, and presented the competitive gaps the data exposed as a short set of specific operating recommendations
 
 ---
 

@@ -1,7 +1,7 @@
 # LEESHARAM (ALEX) RAJCOOMAR
 
 Brampton, ON | (647) 471-3023 | a2rajcoo@uwaterloo.ca
-linkedin.com/in/leesharam-rajcoomar-868144317 | alexrajcoomar.github.io
+linkedin.com/in/leesharam-rajcoomar | alexrajcoomar.github.io
 *Available for a January to April 2027 co-op work term*
 
 ---
@@ -35,9 +35,9 @@ linkedin.com/in/leesharam-rajcoomar-868144317 | alexrajcoomar.github.io
 **alexrajcoomar.github.io**
 *Author and publisher, independent research in Canadian tax, financial reporting and forensic accounting* | 2026 to Present
 
-- Publish 67 pieces, 25 of them independent research, carrying **188 figures and 7 interactive tools**. Every figure names its source, every derived number is labelled as derived, and the site refuses to build if a published number does not match the data it was computed from
-- ***The tax base nobody discloses:*** no Canadian issuer publishes a UCC balance, so reconstructed Dollarama's across **seven CCA classes** from its deferred tax disclosure and SEDAR+ filings, ran the allowance under the rates and first-year rules in force, and showed the statutory shield worth **$1.78 to $2.27 per share** more than a book depreciation proxy. The reconstructed base reproduces the issuer's disclosed current tax expense for a year it was not fitted to
-- ***IFRS 15 Judgment Trainer:*** wrote and verified **62 revenue recognition scenarios**, 29 determinate and 33 turning on judgment the standard leaves open, each answer tied to a paragraph or illustrative example and checked item by item against **IFRS 15 in Part I of the CPA Canada Handbook, 2026 Edition** on Knotia
+- Publish **67 pieces, 25 of them independent research**, carrying 188 figures and 7 interactive tools. Every figure names its source, every derived number is labelled as derived, and the site refuses to build if a published number does not match the data it was computed from
+- ***The tax base nobody discloses:*** no Canadian issuer publishes a UCC balance, so reconstructed Dollarama's across seven CCA classes from its deferred tax disclosure and SEDAR+ filings, ran the allowance under the rates and first-year rules in force, and showed the statutory shield worth **$1.78 to $2.27 per share** more than a book depreciation proxy. The reconstructed base reproduces the issuer's disclosed current tax expense for a year it was not fitted to
+- ***IFRS 15 Judgment Trainer:*** wrote and verified **62 revenue recognition scenarios**, 29 determinate and 33 turning on judgment the standard leaves open, each answer tied to a paragraph or illustrative example and checked item by item against IFRS 15 in Part I of the CPA Canada Handbook, 2026 Edition, on Knotia
 
 ---
 
@@ -50,7 +50,7 @@ linkedin.com/in/leesharam-rajcoomar-868144317 | alexrajcoomar.github.io
 
 **UW CISA Interactive Business Dashboard Competition**, team of four | 2024
 
-- Built the competition dashboard in **Tableau and Excel** from multi-variable performance datasets analysed in R, and presented the competitive gaps the data exposed as a short set of specific operating recommendations
+- Built the competition dashboard in **Tableau** and Excel from multi-variable performance datasets analysed in R, and presented the competitive gaps the data exposed as a short set of specific operating recommendations
 
 ---
 

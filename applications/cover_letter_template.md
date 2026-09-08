@@ -1,176 +1,119 @@
-# Cover letter template, Winter 2027 co-op
+# LEESHARAM (ALEX) RAJCOOMAR
 
-**How to use this.** Paragraphs 1, 3 and 4 are fixed. Paragraph 2 swaps by
-domain. Fill the square brackets before sending, and delete any bracket you did
-not fill rather than sending it with a placeholder in it. Target length is one
-page, roughly 300 to 350 words, which is what the four paragraphs come to
-without padding.
-
-Every figure below is verified against the repository. Do not adjust one without
-checking `applications/VERIFIED_METRICS.md` first, because the site publishes the
-same numbers and a recruiter who follows the link will see them.
+Brampton, ON | (647) 471-3023 | a2rajcoo@uwaterloo.ca
+linkedin.com/in/leesharam-rajcoomar | alexrajcoomar.github.io
+*Available for a January to April 2027 co-op work term*
 
 ---
 
-## Letterhead
+## HOW TO USE
 
-```
-Leesharam (Alex) Rajcoomar
-Brampton, ON | (647) 471-3023 | a2rajcoo@uwaterloo.ca
-linkedin.com/in/leesharam-rajcoomar-868144317 | alexrajcoomar.github.io
+Four blocks make a letter: the opening, paragraph 1, one paragraph 2, then
+paragraphs 3 and 4. Only paragraph 2 changes between applications, and inside
+it only the bracketed closing sentence changes between firms. Assembled, a
+letter runs about 210 words and lands on one page with room to spare.
+
+Three minutes per application: fill the four brackets in the opening and
+paragraph 1, pick the option, write the one bracketed sentence at the end of
+it, done. Do not fill a bracket with a phrase that would fit any other firm. If
+you cannot name something specific to this one, delete the sentence instead:
+an empty slot reads better than a compliment that fits anyone.
+
+`build_resumes.py` compiles each option into its own one-page PDF and DOCX, so
+in practice you open the compiled file for the option you want and type into
+the brackets. Option A is the one saved as `Cover_Letter_Template`, because
+Domains 1 and 2 take 24 of the 50 applications.
+
+| Option | Use for | Compiled as |
+|---|---|---|
+| A | Regional CPA practices, MNP tax, corporate tax, any January to April season | `Cover_Letter_Template` |
+| B | Big Four assurance, Crowe Soberman, OAG Ontario, CIRO, HOOPP, forensic and dispute advisory | `Cover_Letter_Option_B_Assurance` |
+| C | Corporate FP&A, commercial finance, treasury, fund reporting | `Cover_Letter_Option_C_FPA` |
+| D | Accounting technology, FinOps, workflow automation, SR&ED | `Cover_Letter_Option_D_FinOps` |
+
+Every figure below is verified against the repository. Before changing one,
+read `applications/VERIFIED_METRICS.md`: the site publishes the same numbers,
+and a recruiter who follows the link will see them.
+
+## BLOCK: opening
 
 [Date]
 
-[Hiring contact name, if the posting names one]
+[Hiring contact name]
 [Firm name]
 [City, Province]
 
-Dear [Hiring contact name / Hiring Committee],
-```
+Dear [Hiring contact name],
 
----
+## BLOCK: p1
 
-## Paragraph 1: the hook (fixed)
+I am applying for the [exact posting title], WaterlooWorks posting [ID], at
+[firm name]. I am a second-year Accounting and Financial Management student at
+the University of Waterloo, available full time from January to April 2027. I
+have already worked a complete Canadian personal tax season, preparing and
+reviewing 200+ T1 returns in DT Max, so I can be billable in the first week of
+the term rather than the fourth.
 
-> I am applying for the **[exact posting title, WaterlooWorks #\[ID\]]** position
-> at **[firm name]**. I am a second-year Accounting and Financial Management
-> student at the University of Waterloo, available full time from **January to
-> April 2027**, and I have already worked a complete Canadian personal tax
-> season: 200+ T1 returns prepared and reconciled in DT Max between January and
-> April 2026. I know what a filing deadline does to a file room, and I can be
-> billable in the first week rather than the fourth.
+## BLOCK: p2-a | Tax and staff accounting
 
----
+Your term runs across the 2027 filing season, which is work I have already
+done. At Taxwide I built 200+ T1 files in DT Max from client documentation and
+CRA Auto-fill my return downloads, then reviewed every return against its
+source slips before signature. That review is where the work actually sat:
+unreported slips, spouse or common-law partner amount claims turning on a
+spouse's net income, and balances owing reconciled to CRA administrative
+positions before a client could be told what they owed and why. [One sentence
+naming something specific to this firm.]
 
-## Paragraph 2, Variant A: regional CPA practices and tax compliance
+## BLOCK: p2-b | Audit, assurance and investigations
 
-*Use for Domain 1 firms, MNP tax, Liberty Tax, corporate tax analyst roles, and any posting whose season is January to April.*
+The work your team would care about is published rather than claimed. Flagged
+in Hindsight runs the Beneish M-Score ex ante on five Canadian frauds and
+reports that none of the three computable test years crossed the standard
+cut-off, with the script and inputs published so the result can be re-run and
+attacked. My IFRS 15 trainer carries
+62 revenue scenarios verified against Part I of the CPA Canada Handbook, and it
+separates what the standard settles from what it leaves to judgment. Both rest
+on the habit a tax file teaches: agree the figure to its source first. [One sentence naming this team's mandate.]
 
-> Your posting runs across the 2027 filing season, which is the work I have
-> already done. At Taxwide I built 200+ T1 files in DT Max from documentation
-> that arrived incomplete, pulling employment, investment and self-employment
-> income from client records and CRA Auto-fill my return downloads covering T4,
-> T5, T3 and RRSP slips. I then reviewed each return against its source slips
-> before it went out for signature, which is where the real work sat: unreported
-> slips, spouse or common-law partner amount claims that turn on a spouse's net
-> income, amounts transferred under Schedule 2, and balances owing that had to be
-> reconciled to CRA administrative positions before a client could be told what
-> they owed and why. I handled the Represent a Client authorizations and the
-> correspondence that went with all of it. **[One sentence naming something
-> specific to this firm: its client base, its assurance practice, an office
-> location, a service line the posting emphasises.]**
+## BLOCK: p2-c | FP&A and financial analysis
 
----
+I model capital decisions and test whether they survive being wrong.
+For a Pet Valu strategic growth case I built three-year pro formas for two
+capital deployment strategies behind a $575M expansion, stress-testing ROA,
+debt to EBITDA and net profit margin, and recommended the conservative path to
+a simulated CEO and CFO panel on a sustained 16% ROA against a decline from 17%
+to 10% under the aggressive case. I build the reporting layer as well as the
+model, in Tableau and in Python, and I have reconciled the data at volume
+through a tax season. [One sentence on this company's own capital or
+margin problem.]
 
-## Paragraph 2, Variant B: assurance, audit and investigations
+## BLOCK: p2-d | Accounting technology and FinOps
 
-*Use for Domain 3 (Big Four assurance, Crowe Soberman, OAG Ontario, CIRO, HOOPP Investigations), MNP Enterprise Risk, and forensic or dispute advisory.*
+Most people who can write the code cannot read a deferred tax note, and most
+people who can read it cannot write the code. I do both, and the evidence is
+public: 14,719 lines of Python behind a research platform that recomputes every
+figure it publishes and refuses to deploy when the page and the model disagree.
+The reconciliation instinct came from a tax season where 200+ files had to
+agree to their source slips before release, and the automation instinct came
+from watching how much of that reconciliation was mechanical. [One sentence on
+the workflow this role would automate.]
 
-> The work that would matter most to your team is not on my transcript, it is
-> published. In *Flagged in Hindsight* I ran the Beneish M-Score as an ex ante
-> screen on five Canadian frauds with completed regulatory or judicial findings,
-> Sino-Forest, Nortel, Poseidon Concepts, Livent and Philip Services, using only
-> the filings that existed before each collapse. None of the three computable
-> test years crossed the standard cut-off. Publishing a negative result was the
-> point: the piece types every miss by cause, threshold, mechanism, model scope
-> or archive failure, and ships the script and the filed inputs so a reader can
-> re-run the scores and disagree with me on the record. I bring the same
-> discipline to reporting judgment. My IFRS 15 trainer carries 62 revenue
-> scenarios verified paragraph by paragraph against Part I of the CPA Canada
-> Handbook, 2026 Edition, and it separates the 29 items the standard settles from
-> the 33 it leaves to judgment, because scoring a judgment call as if it had one
-> answer teaches the wrong instinct. **[One sentence naming this team's mandate:
-> the file types it works, the standard it applies, the enforcement or reporting
-> outcome it produces.]**
+## BLOCK: p3
 
----
+Everything above is published at alexrajcoomar.github.io, where every figure
+names its source, every derived number is labelled as derived, and the build
+refuses to publish if a number does not match the data behind it. I would
+rather be checkable than impressive, and I expect to be asked how I know
+something.
 
-## Paragraph 2, Variant C: corporate FP&A, commercial finance and treasury
+## BLOCK: p4
 
-*Use for Domain 5 (PepsiCo, Loblaw, Toyota, Magna, CI Financial, Equitable Life, Foresters, The Stronach Group) and Domain 6 reporting or fund operations roles.*
+I would welcome the chance to discuss the role with you. I can be reached at
+a2rajcoo@uwaterloo.ca or (647) 471-3023.
 
-> I model capital decisions and then test whether the model survives being
-> wrong. In a Pet Valu strategic growth case I built three-year pro formas for
-> two capital deployment strategies behind a $575M expansion decision, stress
-> testing ROA, debt to EBITDA and net profit margin, and recommended the
-> conservative path to a simulated CEO and CFO panel on a sustained 16% ROA
-> against a decline from 17% to 10% under the aggressive case. I took the same
-> approach further on my own: my Dollarama valuation reconstructs a tax base no
-> Canadian issuer discloses, across seven capital cost allowance classes, builds a
-> 5.56% weighted average cost of capital from the issuer's own debt tranches, and
-> carries two capital anchors to the end at $187.16 and $125.14 per share rather
-> than picking the one that looks better. That model is a Python module, not a
-> spreadsheet, and every figure on the published page is recomputed from it on
-> each build. **[One sentence on this company's own capital or margin problem:
-> a category it is investing behind, a cost line under pressure, a reporting
-> cycle the role owns.]**
+## BLOCK: sign
 
----
+Sincerely,
 
-## Paragraph 2, Variant D: accounting technology, FinOps and workflow automation
-
-*Use for Domain 4 (Cherry Chan agentic workflow, CloudAct, RLB Systems Developer, AppLogic, Convoy FinOps, OpenText FinOps, EVAMAX) and any role that sits between a finance function and a codebase.*
-
-> Most people who can write the code cannot read a deferred tax note, and most
-> people who can read it cannot write the code. I do both, and the evidence is
-> public. I built and run alexrajcoomar.github.io myself: 14,719 lines of Python
-> and 5,222 lines of JavaScript, standard library only, driving a pipeline that
-> measures every page in a real browser, runs a register of automated checks,
-> deliberately breaks each check to prove it still catches failure, and blocks the
-> deploy when anything disagrees. The accounting content is held to the same
-> standard. My Dollarama valuation is a Python module that recomputes every
-> published figure on each build, so the page cannot drift from the model. The
-> reconciliation instinct came from tax season, where 200+ T1 files had to agree
-> to their source slips before anything was released, and the automation instinct
-> came from watching how much of that reconciliation was mechanical. **[One
-> sentence on the specific workflow this role would automate: the intake, the
-> reconciliation, the client deliverable, the reporting cycle.]**
-
----
-
-## Paragraph 3: research discipline and auditability (fixed)
-
-> I would rather be checkable than impressive. Everything above is published at
-> **alexrajcoomar.github.io**, where 67 pieces carry 188 figures and 7 interactive
-> tools, every figure names its source, every derived number is labelled as
-> derived, and the site refuses to build if a published number does not match the
-> data behind it. That is a deliberate constraint on myself: it means anyone who
-> wants to test a claim I have made can do so without asking me, and it means I
-> have already had the experience of publishing a result that undercut what I
-> hoped to find. I expect to be asked how I know something, and I have built my
-> work so that the answer is a file rather than an assurance.
-
----
-
-## Paragraph 4: close (fixed)
-
-> I would welcome the chance to discuss how I could contribute to
-> **[firm name]** during the January to April 2027 term. I can be reached at
-> a2rajcoo@uwaterloo.ca or (647) 471-3023, and the portfolio described above is at
-> alexrajcoomar.github.io. Thank you for your consideration.
->
-> Sincerely,
-> Leesharam (Alex) Rajcoomar
-
----
-
-## Which resume goes with which variant
-
-| Variant | Resume file | Domains |
-|---|---|---|
-| A | `resume_v1_accounting_tax.md` | 1, 2 (MNP tax), corporate tax analyst |
-| B | `resume_v2_assurance_forensics.md` | 2 (MNP assurance and risk), 3, 7 (OAG) |
-| C | `resume_v3_fpa_fintech_analytics.md` | 5, 6 |
-| D | `resume_v3_fpa_fintech_analytics.md` | 4 |
-
-## Rules for the bracketed sentence
-
-The bracketed sentence at the end of paragraph 2 is the only part that changes
-per firm, and it is the part that decides whether the letter reads as targeted.
-Three rules:
-
-1. Name something only that firm has. An office, a client base, a service line,
-   a named practice, a stated problem in the posting. "Your firm's excellent
-   reputation" is worse than no sentence at all.
-2. Connect it to the paragraph above it, not to a general statement of interest.
-3. One sentence. If it needs two, the second one belongs in an interview.
+Leesharam (Alex) Rajcoomar

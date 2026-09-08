@@ -252,9 +252,10 @@ highest-conviction ones get written while you are fresh.
   rebuilt, so a recruiter following your link from any of the three resumes
   finds the same skills line, the same Tableau grounding and the same corpus
   counts. Keep it that way: if you edit a resume, edit the JSON and rebuild.
-- **Decide on the LinkedIn vanity URL.** Your current public URL is
-  `linkedin.com/in/leesharam-rajcoomar-868144317`. All four documents use it as
-  given. If you claim `leesharam-rajcoomar` under Edit public profile and URL, it
-  is a one-line change in each of the four files, and worth doing.
-- **Add the phone line if you convert to PDF from these files.** It is in the
-  header of all three resumes and in paragraph 4 of the letter.
+- **The LinkedIn vanity URL is claimed and in use.** Every document shows
+  `linkedin.com/in/leesharam-rajcoomar`. Open it once from a signed-out browser
+  before you send anything: a header link that 404s costs more than a long one.
+- **Send the compiled files, not the markdown.** `applications/compiled/`
+  carries the PDF and DOCX of each resume and each cover letter variant, every
+  one measured onto exactly one page. Send the PDF unless a posting asks for
+  Word.
