@@ -881,8 +881,8 @@
  "runtime": {
   "meta": {
    "tool": "build/audit.js --falsify",
-   "date": "2026-09-07",
-   "commit": "e0b8a21",
+   "date": "2026-09-08",
+   "commit": "b6a3785",
    "code": "c9bb6a8fb826"
   },
   "cases": [
@@ -973,7 +973,7 @@
        "rows": 6,
        "aimed": 6,
        "faced": 6,
-       "framesSettle": 1558,
+       "framesSettle": 1554,
        "framesAfter": 2220,
        "framesAtTop": 660
       },
@@ -1091,7 +1091,7 @@
      "inspect": {
       "layers": 2,
       "rest": 0,
-      "hover": 0.666598,
+      "hover": 0.666616,
       "focus": 1,
       "ms": 900,
       "moved": 0,

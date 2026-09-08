@@ -3,8 +3,8 @@
  "meta": {
   "tool": "build/audit.js",
   "browser": "Chromium 153.0.8010.12",
-  "date": "2026-09-07",
-  "commit": "e0b8a21",
+  "date": "2026-09-08",
+  "commit": "b6a3785",
   "runs": [
    {
     "commit": "21aacf2",
@@ -104,6 +104,11 @@
    {
     "commit": "e0b8a21",
     "date": "2026-09-07",
+    "audit": "ran"
+   },
+   {
+    "commit": "b6a3785",
+    "date": "2026-09-08",
     "audit": "ran"
    }
   ]
@@ -212,8 +217,8 @@
    "motion": {
     "animations": 0
    },
-   "inputs": "eb962b623014",
-   "measured": "2026-09-07"
+   "inputs": "c3c2da9a825b",
+   "measured": "2026-09-08"
   },
   "admin.html": {
    "ext": {
@@ -792,8 +797,8 @@
    },
    "errors": 0,
    "chrome": {
-    "a": 14485,
-    "b": 14440
+    "a": 14490,
+    "b": 14445
    },
    "print": {
     "stickyLeft": 0,
@@ -832,8 +837,8 @@
    "motion": {
     "animations": 0
    },
-   "inputs": "af3f3bc2c226",
-   "measured": "2026-09-07"
+   "inputs": "fa00c3d67678",
+   "measured": "2026-09-08"
   },
   "brittle-network.html": {
    "ext": {
@@ -1554,8 +1559,8 @@
    "motion": {
     "animations": 0
    },
-   "inputs": "79ce337323f4",
-   "measured": "2026-09-07"
+   "inputs": "9df92117ce87",
+   "measured": "2026-09-08"
   },
   "kennedy-dossier.html": {
    "ext": {
@@ -1873,8 +1878,8 @@
    },
    "errors": 0,
    "chrome": {
-    "a": 783,
-    "b": 738
+    "a": 797,
+    "b": 752
    },
    "print": {
     "stickyLeft": 0,
@@ -1913,8 +1918,8 @@
    "motion": {
     "animations": 0
    },
-   "inputs": "9f5950374f3b",
-   "measured": "2026-09-07"
+   "inputs": "e8cb7dbfb9b6",
+   "measured": "2026-09-08"
   },
   "revenue-recognition.html": {
    "ext": {
