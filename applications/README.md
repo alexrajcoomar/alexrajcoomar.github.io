@@ -46,6 +46,16 @@ metric-compatible with it. Without that fallback a machine lacking the
 Microsoft face substitutes something wider and the page-fit measurement stops
 predicting what Word does on the machine the file is sent from.
 
+## Handing this to another model
+
+`CANDIDATE_BRIEF.md` is a self-contained handoff. It carries the candidate
+profile including the transcript problem stated plainly, the verified portfolio
+evidence mapped to the kind of role each piece would prove something for, the
+constraints, the full WaterlooWorks pool of 263 postings, a prior 50-application
+allocation with its reasoning, and a section naming where that reasoning is most
+likely to be wrong. A model reading only that file should be able to decide
+which postings to apply to and defend the decision without this conversation.
+
 ## Links
 
 Three destinations are declared once in `build_resumes.py` and matched wherever
