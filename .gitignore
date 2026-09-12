@@ -4,3 +4,7 @@ package-lock.json
 __pycache__/
 *.pyc
 .DS_Store
+
+# The author's co-op working files. Private, and never served: the
+# packaging step excludes this directory as well.
+applications/

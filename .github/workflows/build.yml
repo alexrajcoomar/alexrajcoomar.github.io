@@ -110,11 +110,18 @@ jobs:
             git push
           fi
 
-      # The tree that passed, without the repository's own machinery.
+      # The tree that passed, without the repository's own machinery and
+      # without the author's private working files. applications/ holds the
+      # co-op material: the candidate brief, the targeting strategy and the
+      # compiled resumes. It was being published, because this step copied
+      # everything it was not told to leave behind. It is excluded here as
+      # well as untracked, so a copy that reappears in the working tree is
+      # still not served.
       - name: Package the site
         run: |
           mkdir -p /tmp/site
-          rsync -a --exclude .git --exclude .github --exclude node_modules --exclude __pycache__ ./ /tmp/site/
+          rsync -a --exclude .git --exclude .github --exclude node_modules --exclude __pycache__ --exclude applications ./ /tmp/site/
+          test ! -e /tmp/site/applications
       - uses: actions/upload-pages-artifact@v3
         with:
           path: /tmp/site
