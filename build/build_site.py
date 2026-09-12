@@ -6286,21 +6286,67 @@ def check_site():
 
     # 36. contrast, from the tokens themselves. Every colour the site puts text
     # in has to clear 4.5:1 on every surface a page can stand it on, in both
-    # themes, and the two lights may not take it under that: each is composited
-    # over the paper at its full strength and the whole set is measured again.
+    # themes. The two lights occupy separate, existing boxes over paper; opaque
+    # panels keep their own ground. Inventory first, then parse a closed grammar
+    # and measure its whole alpha envelope. A value the parser cannot understand
+    # is a failed check, never a light silently omitted from the measurement.
     # The floor for a control's border is 3:1 (WCAG 2.2 SC 1.4.11), because on
     # a control the border is the only thing telling a reader it is there.
     t36 = T["contrast"] = {"tokens": 0, "pairs": 0, "themes": 0, "floor": 4.5,
-                           "worst": None, "worst_at": "", "under": 0, "mirrored": 0}
-    TEXT36 = ("ink", "ink-2", "ink-3", "accent", "accent-2", "link", "tool", "ref")
+                           "worst": None, "worst_at": "", "under": 0, "mirrored": 0,
+                           "lamps_declared": 0, "lamps_parsed": 0, "lamps_measured": 0,
+                           "lamp_uses": 0}
+    TEXT36 = ("ink", "ink-2", "ink-3", "accent", "accent-2", "link", "cobalt", "tool", "ref")
     SURF36 = ("paper", "panel", "panel-2")
+    LAMPS36 = {"--lamp-cool", "--lamp-warm"}
     EDGE36 = 3.0
+    # Spaces preserve source offsets, including those inside rejected values.
+    css36 = re.sub(r"/\*.*?\*/", lambda m: " " * len(m.group()), css34, flags=re.S)
+
+    def _fail36(message):
+        t36["under"] += 1
+        problems.append(_p("36", "site.css: " + message))
 
     def _tok36(block):
         return dict(re.findall(r"--([a-z0-9-]+):\s*(#[0-9a-fA-F]{6})", block))
 
-    def _lamp36(block):
-        return dict(re.findall(r"--(lamp-[a-z]+):\s*rgba\(([^)]*)\)", block))
+    # Decode identifiers for inventory only. Escaped names are then rejected,
+    # so CSS escapes cannot hide a declaration or a use from the closed grammar.
+    esc36 = r"\\(?:[0-9a-fA-F]{1,6}[ \t\r\n\f]?|[^\r\n\f])"
+    ident36 = r"(?:" + esc36 + r"|[-_a-zA-Z0-9\u0080-\uffff])+"
+
+    def _name36(raw):
+        def decode(m):
+            value = m.group()[1:]
+            if re.fullmatch(r"[0-9a-fA-F]{1,6}[ \t\r\n\f]?", value):
+                code = int(value.strip(), 16)
+                return chr(code) if 0 < code <= 0x10ffff and not 0xd800 <= code <= 0xdfff else "\ufffd"
+            return value
+        return re.sub(esc36, decode, raw)
+
+    number36 = r"(?:\d+(?:\.\d+)?|\.\d+)"
+    stop36 = r"rgba\(\s*(%s)\s*,\s*(%s)\s*,\s*(%s)\s*,\s*(%s)\s*\)\s+(%s)%%" % ((number36,) * 5)
+
+    def _lamp36(value):
+        geometry = re.fullmatch(r"radial-gradient\(\s*(?:ellipse\s+)?(%s)%%\s+(%s)%%\s+at\s+"
+                                r"(%s)%%\s+(%s)%%\s*,\s*(.*?)\s*\)" % ((number36,) * 4), value, re.S)
+        if not geometry:
+            raise ValueError("expected a radial-gradient with numeric percentage geometry")
+        radii = [float(n) for n in geometry.groups()[:4]]
+        if not all(math.isfinite(n) and 0 <= n <= 100 for n in radii) or min(radii[:2]) <= 0:
+            raise ValueError("gradient radii must be positive and geometry must be within 0..100%")
+        stops = geometry.group(5)
+        if not re.fullmatch(stop36 + r"(?:\s*,\s*" + stop36 + r")+", stops):
+            raise ValueError("unsupported lamp syntax; use only numeric rgba(...) percentage stops")
+        parsed = [tuple(float(n) for n in m.groups()) for m in re.finditer(stop36, stops)]
+        if any(not all(math.isfinite(n) for n in s) or not all(0 <= n <= 255 for n in s[:3])
+               or not 0 <= s[3] <= 1 or not 0 <= s[4] <= 100 for s in parsed):
+            raise ValueError("lamp channels, alpha or stops are outside their finite bounds")
+        if parsed[0][4] != 0 or parsed[-1][3] != 0 or any(a[4] >= b[4] for a, b in zip(parsed, parsed[1:])):
+            raise ValueError("lamp stops must start at 0%, increase strictly and end with zero alpha")
+        if any(s[:3] != parsed[0][:3] for s in parsed):
+            raise ValueError("a lamp must retain one RGB colour through all stops")
+        return parsed
 
     def _rgb36(h):
         h = h.lstrip("#")
@@ -6311,25 +6357,73 @@ def check_site():
         r, g, b = (f(v) for v in c)
         return 0.2126 * r + 0.7152 * g + 0.0722 * b
 
-    def _cr36(a, b):
-        la, lb = _lum36(a), _lum36(b)
-        hi, lo = max(la, lb), min(la, lb)
-        return (hi + 0.05) / (lo + 0.05)
+    def _cr36(foreground, low, high):
+        light = _lum36(foreground)
+        if low <= light <= high:
+            return 1.0
+        return min((max(light, ground) + 0.05) / (min(light, ground) + 0.05)
+                   for ground in (low, high))
 
-    mlight = re.search(r":root\{(.*?)\n\}", css34, re.S)
-    mdark = re.search(r':root\[data-theme="dark"\]\{(.*?)\n\}', css34, re.S)
-    # the dark ground is declared twice on purpose: once for a browser that
-    # asks for it and once for a reader who pressed the button. Only the second
-    # is measured below, so the two have to say the same thing, or a reader
-    # whose system is dark gets a palette nothing checked.
+    mlight = re.search(r"(?m)^:root\{([^{}]*)\}", css36)
+    mdark = re.search(r'(?m)^:root\[data-theme="dark"\]\{([^{}]*)\}', css36)
     mmedia = re.search(r"@media \(prefers-color-scheme: dark\)\{\s*"
-                       r':root:where\(:not\(\[data-theme="light"\]\)\)\{(.*?)\n  \}', css34, re.S)
-    if not mmedia:
-        problems.append(_p("36", "site.css: the dark palette for a browser that asks for it is not readable "
-                                 "as a token block, so it cannot be held to the one the button sets"))
-    elif mdark:
+                       r':root:where\(:not\(\[data-theme="light"\]\)\)\{([^{}]*)\}', css36)
+    mprint = re.search(r'@media print\{\s*:root,:root\[data-theme="dark"\]\{([^{}]*)\}\s*\}', css36)
+    scopes36 = {"Archival light": mlight, "Obsidian": mdark, "Obsidian (system)": mmedia, "Print": mprint}
+    entries36, parsed36, measured36 = [], {}, set()
+    declaration36 = r"(?:^|(?<=[{;]))\s*(?P<name>" + ident36 + r")\s*:\s*(?P<value>[^;{}]*)"
+    for m36 in re.finditer(declaration36, css36):
+        name36 = _name36(m36.group("name"))
+        if not name36.startswith("--lamp-"):
+            continue
+        pos36, value36 = m36.start("name"), m36.group("value").strip()
+        scope36 = next((k for k, m in scopes36.items() if m and m.start(1) <= pos36 < m.end(1)), None)
+        entry36 = {"id": pos36, "name": name36, "value": value36, "scope": scope36}
+        entries36.append(entry36)
+        where36 = "%s at line %d" % (name36, css34.count("\n", 0, pos36) + 1)
+        if name36 not in LAMPS36 or name36 != m36.group("name") or scope36 is None:
+            _fail36("%s has an unsupported name or declaration scope" % where36)
+            continue
+        try:
+            if scope36 == "Print":
+                if value36 != "none":
+                    raise ValueError("print lamps must be explicitly off with none")
+                parsed36[pos36] = None
+            else:
+                parsed36[pos36] = _lamp36(value36)
+        except ValueError as e36:
+            _fail36("%s: %s" % (where36, e36))
+    t36["lamps_declared"], t36["lamps_parsed"] = len(entries36), len(parsed36)
+    for scope36, m36 in scopes36.items():
+        names36 = [e["name"] for e in entries36 if e["scope"] == scope36]
+        if not m36 or len(names36) != 2 or set(names36) != LAMPS36:
+            _fail36("%s must declare exactly one --lamp-cool and one --lamp-warm in its measured block" % scope36)
+
+    # Every use must be the entire background on these two separate boxes.
+    # An extra layer, fallback, alias or consumer changes the measured model.
+    allowed36 = set()
+    for selector36, name36 in ((r"\.descent > \.stage", "--lamp-warm"),
+                               (r"\.descent-globe \.stage-globe", "--lamp-cool")):
+        box36 = re.search(r"(?m)^" + selector36 + r"\{([^{}]*)\}", css36)
+        backgrounds36 = list(re.finditer(r"(?:^|;)\s*background\s*:\s*([^;{}]*)", box36.group(1))) if box36 else []
+        if len(backgrounds36) != 1 or not re.fullmatch(r"var\(\s*" + name36 + r"\s*\)", backgrounds36[0].group(1).strip()):
+            _fail36("%s must be the whole background of its existing measured box" % name36)
+        else:
+            b36 = backgrounds36[0]
+            allowed36.add(box36.start(1) + b36.start(1) + b36.group(1).index(name36))
+    declared36 = {e["id"] for e in entries36}
+    uses36 = {m.start() for m in re.finditer(ident36, css36)
+              if _name36(m.group()).startswith("--lamp-") and m.start() not in declared36}
+    t36["lamp_uses"] = len(uses36)
+    if uses36 != allowed36 or len(uses36) != 2:
+        _fail36("every lamp reference must enter one of the two measured backgrounds; found %d unsupported uses"
+                % len(uses36 - allowed36))
+
+    # Both dark paths are measured and also required to agree.
+    if mmedia and mdark:
         a36, b36 = _tok36(mmedia.group(1)), _tok36(mdark.group(1))
-        a36.update(_lamp36(mmedia.group(1))); b36.update(_lamp36(mdark.group(1)))
+        a36.update({e["name"]: re.sub(r"\s+", "", e["value"]) for e in entries36 if e["scope"] == "Obsidian (system)"})
+        b36.update({e["name"]: re.sub(r"\s+", "", e["value"]) for e in entries36 if e["scope"] == "Obsidian"})
         t36["mirrored"] = len(b36)
         for k36 in sorted(set(a36) | set(b36)):
             if a36.get(k36) != b36.get(k36):
@@ -6337,28 +6431,33 @@ def check_site():
                 problems.append(_p("36", "site.css: the two dark palettes disagree on %s, %s where the browser "
                                          "asks for dark and %s where the button sets it"
                                          % (k36, a36.get(k36, "not defined"), b36.get(k36, "not defined"))))
-    if not (mlight and mdark):
-        problems.append(_p("36", "site.css: the light and dark palettes are not both readable as token blocks"))
-    else:
-        for tname, blk in (("Archival light", mlight.group(1)), ("Obsidian", mdark.group(1))):
-            toks, lamps = _tok36(blk), _lamp36(blk)
+    measured_themes36 = set()
+    for tname, match36 in scopes36.items():
+        if tname != "Print" and match36:
+            toks = _tok36(match36.group(1))
             t36["themes"] += 1
             missing = [k for k in TEXT36 + SURF36 + ("edge",) if k not in toks]
             if missing:
                 problems.append(_p("36", "site.css: the %s palette defines no %s" % (tname, ", ".join(missing))))
                 continue
-            grounds = [(sname, _rgb36(toks[sname])) for sname in SURF36]
-            for lname, spec in sorted(lamps.items()):
-                parts = [x.strip() for x in spec.split(",")]
-                lr, lg, lb, la = [float(x) for x in parts[:3]] + [float(parts[3])]
+            grounds = [(sname, _lum36(_rgb36(toks[sname])), _lum36(_rgb36(toks[sname]))) for sname in SURF36]
+            for entry36 in entries36:
+                if entry36["scope"] != tname or entry36["id"] not in parsed36:
+                    continue
                 paper = _rgb36(toks["paper"])
-                grounds.append(("paper under the %s" % lname.replace("lamp-", "").replace("cool", "cool light").replace("warm", "warm light"),
-                                tuple((lr / 255.0, lg / 255.0, lb / 255.0)[i] * la + paper[i] * (1 - la)
-                                      for i in range(3))))
+                stops36 = parsed36[entry36["id"]]
+                colours36 = [paper] + [tuple(s[i] / 255.0 * s[3] + paper[i] * (1 - s[3]) for i in range(3)) for s in stops36]
+                # Same-RGB rgba stops interpolate only alpha. Channel extrema
+                # bound luminance throughout every shoulder, including where
+                # a foreground could cross the surface and reach contrast 1.
+                low36 = _lum36(tuple(min(c[i] for c in colours36) for i in range(3)))
+                high36 = _lum36(tuple(max(c[i] for c in colours36) for i in range(3)))
+                grounds.append(("paper under " + entry36["name"], low36, high36))
+                measured36.add(entry36["id"])
             for tk in TEXT36:
                 t36["tokens"] += 1
-                for sname, ground in grounds:
-                    c = _cr36(_rgb36(toks[tk]), ground)
+                for sname, low36, high36 in grounds:
+                    c = _cr36(_rgb36(toks[tk]), low36, high36)
                     t36["pairs"] += 1
                     if t36["worst"] is None or c < t36["worst"]:
                         t36["worst"] = round(c, 2)
@@ -6367,14 +6466,25 @@ def check_site():
                         t36["under"] += 1
                         problems.append(_p("36", "site.css: %s on %s in %s is %.2f:1, under the 4.5:1 a "
                                                  "reader needs to read it" % (tk, sname, tname, c)))
-            for sname in ("paper", "panel"):
-                c = _cr36(_rgb36(toks["edge"]), _rgb36(toks[sname]))
+            for sname, low36, high36 in grounds:
+                if sname == "panel-2":
+                    continue
+                c = _cr36(_rgb36(toks["edge"]), low36, high36)
                 t36["pairs"] += 1
                 if c < EDGE36:
                     t36["under"] += 1
                     problems.append(_p("36", "site.css: the border of a control is %.2f:1 on the %s in %s, "
                                              "under the 3:1 that tells a reader the control is there"
                                              % (c, sname, tname)))
+            measured_themes36.add(tname)
+    # none paints no pixels in print. All inherited theme grounds above were
+    # measured without light as well, covering either reader-selected palette.
+    if measured_themes36 == set(scopes36) - {"Print"}:
+        measured36.update(e["id"] for e in entries36 if e["scope"] == "Print" and e["id"] in parsed36)
+    t36["lamps_measured"] = len(measured36)
+    if declared36 != set(parsed36) or declared36 != measured36:
+        _fail36("lamp coverage is incomplete: %d declared, %d parsed, %d composited or verified off"
+                % (len(declared36), len(parsed36), len(measured36)))
 
     # 37. a table header says which cells it heads. Every th the build writes
     # carries a scope, because a header cell with none leaves a screen reader
