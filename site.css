@@ -325,11 +325,10 @@ kbd{
 /* ------------------------------ header ------------------------------ */
 header.top{
   position:sticky;top:0;z-index:40;
-  background:color-mix(in oklab, var(--paper) 88%, transparent);
-  backdrop-filter:saturate(1.4) blur(10px);
-  border-bottom:1px solid var(--rule);
+  /* The folder fascia is an opaque, measured surface above the paper. */
+  background:var(--panel);
+  border-bottom:1px solid var(--rule-strong);
 }
-@supports not (backdrop-filter:blur(1px)){ header.top{background:var(--paper)} }
 header.top .bar{
   max-width:var(--shell);margin:0 auto;padding:.7rem var(--gap);
   display:flex;align-items:center;gap:1rem;justify-content:space-between
@@ -414,7 +413,7 @@ nav.main a{
   text-decoration:none;font-size:.92rem;font-weight:560;color:var(--ink-2);
   padding:.42rem .62rem;border-bottom:2px solid transparent
 }
-nav.main a:hover{color:var(--ink);background:var(--panel)}
+nav.main a:hover{color:var(--ink);background:var(--paper)}
 nav.main a[aria-current="page"]{color:var(--ink);border-bottom-color:var(--accent)}
 .iconbtn{
   font:inherit;font-size:var(--btn-size);font-weight:var(--btn-weight);line-height:1;cursor:pointer;
@@ -1186,10 +1185,8 @@ details.tv[open]{padding-bottom:1rem}
   /* Sits below the site header rather than on top of it: both are sticky,
      and at top:0 they stack in the same 60px. */
   position:sticky;top:var(--stick);z-index:40;
-  background:color-mix(in srgb,var(--paper) 92%,transparent);
-  backdrop-filter:saturate(1.3) blur(10px);
-  -webkit-backdrop-filter:saturate(1.3) blur(10px);
-  border-bottom:1px solid var(--rule);
+  background:var(--paper);
+  border-bottom:1px solid var(--rule-strong);
 }
 .docbar .inner{
   max-width:var(--shell);margin:0 auto;padding:.5rem 1.5rem;
@@ -2870,4 +2867,20 @@ dialog.prov:not([open])::backdrop{background-color:rgba(10,10,8,0)}
   .rsec{padding-top:.8rem}
   .rrow{break-inside:avoid;border-top:1px solid #999}
   .rprint{display:none}
+}
+
+/* The archival container: existing panel values form the folder edge,
+   while the working sheet and both measured light boxes remain on paper.
+   The wide-screen gutter sits outside the existing shell measure. Small
+   screens keep their full reading width; print keeps the existing sheet. */
+@media screen and (min-width:84rem){
+  body > main#main:not(.doc):not(:has(> .doc)){
+    max-width:calc(var(--shell) + 2rem);margin-inline:auto;
+    border-inline:1rem solid var(--panel);outline:1px solid var(--rule-strong);
+  }
+}
+/* A stronger upper rule records the front edge of each existing panel. */
+@media screen{
+  .pane,.tools-bar,.figband .spec,.figband .spec + .spec,
+  .stmt-list .spec,.stmt-list .specimen{border-top-color:var(--rule-strong)}
 }

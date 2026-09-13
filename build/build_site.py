@@ -1486,6 +1486,120 @@ def strip_css():
                        + fid + "{" + body + "}}")
             out.append(":root[data-theme=\"dark\"] #" + fid + "{" + body + "}")
     return "\n".join(out)
+
+
+def valuation_lineage_css():
+    """A declared figure scope, using the site's already measured palettes."""
+    css = open(os.path.join(OUT, "site.css"), encoding="utf-8").read()
+    clean = re.sub(r"/\*.*?\*/", "", css, flags=re.S)
+    names = ("paper", "panel", "ink", "ink-2", "ink-3", "rule", "rule-strong", "edge", "radius")
+    palettes = []
+    for pattern, selector, media in (
+            (r"(?m)^:root\{([^{}]*)\}", "#fs-vroot", ""),
+            (r':root:where\(:not\(\[data-theme="light"\]\)\)\{([^{}]*)\}',
+             ':root:where(:not([data-theme="light"])) #fs-vroot', "@media (prefers-color-scheme:dark)"),
+            (r':root\[data-theme="dark"\]\{([^{}]*)\}', ':root[data-theme="dark"] #fs-vroot', "")):
+        match = re.search(pattern, clean)
+        values = dict(re.findall(r"--([a-z0-9-]+)\s*:\s*([^;{}]+);", match.group(1))) if match else {}
+        rule = selector + "{" + "".join("--%s:%s;" % (name, values[name].strip()) for name in names if name in values) + "}"
+        palettes.append(media + "{" + rule + "}" if media else rule)
+    return "\n".join(palettes) + """
+#fs-vroot{margin:2rem 0;padding:1rem;border:1px solid var(--rule);border-radius:var(--radius);background:var(--paper);color:var(--ink)}
+#fs-vroot figcaption{margin:0 0 1rem;max-width:40rem;color:var(--ink-2)}
+#fs-vroot .vr-title{display:block;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.8rem;letter-spacing:.08em;text-transform:uppercase;font-weight:600;color:var(--ink)}
+#fs-vroot .vr-scope{margin:.6rem 0 0;font-size:.9rem;line-height:1.5}
+#fs-vroot svg{display:block;width:100%;max-width:25rem;height:auto;margin:auto;overflow:visible}
+#fs-vroot .vr-edge{fill:none;stroke:var(--edge);stroke-width:1.2;vector-effect:non-scaling-stroke}
+#fs-vroot .vr-node rect{fill:var(--panel);stroke:var(--edge);stroke-width:1;vector-effect:non-scaling-stroke}
+#fs-vroot text{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:14px;fill:var(--ink-2);text-anchor:middle;font-variant-numeric:tabular-nums}
+#fs-vroot .vr-value{font-size:15px;font-weight:600;fill:var(--ink)}
+@media print{#fs-vroot{break-inside:avoid;page-break-inside:avoid}}
+@media print{#fs-vroot svg{max-width:18rem}}
+"""
+
+
+def valuation_lineage():
+    """The tax-base reconciliation only, not the full valuation dependency graph.
+    Records supply every value. The declared edges are the two reconciliation
+    identities in valuation.py, with no inferred links to the pricing anchors.
+    Missing records are left missing so Check 41 can name the absent ancestor.
+    """
+    records = {}
+    for name in ("inputs", "output"):
+        try:
+            records[name] = json.load(open(os.path.join(OUT, "content/valuation-" + name + ".json"), encoding="utf-8"))
+        except (OSError, ValueError):
+            records[name] = {}
+    specs = (
+        ("filing", "inputs", "filing/period_end", ("Audited filing",), 60, 610, 180, 80),
+        ("owned", "inputs", "ppe_note/total_net_book_value_closing", ("Owned property", "book value"), 8, 310, 138, 88),
+        ("rou", "inputs", "leases_note/right_of_use_assets_net_book_value/current", ("Right of use", "book value"), 154, 310, 138, 88),
+        ("dtl", "inputs", "tax_note/deferred_tax_liability_ppe/current", ("Deferred tax", "liability"), 8, 450, 138, 88),
+        ("rate", "inputs", "tax_note/statutory_rate_combined/current", ("Statutory", "tax rate"), 154, 450, 138, 88),
+        ("difference", "output", "tax_base/current/temporary_difference", ("Reconciliation", "temporary difference"), 48, 174, 204, 88),
+        ("owned-reading", "output", "tax_base/current/reading_owned_only_ucc", ("Owned only", "negative balance"), 8, 18, 138, 88),
+        ("rou-reading", "output", "tax_base/current/reading_with_right_of_use_ucc", ("With right", "of use assets"), 154, 18, 138, 88))
+    edges = (("filing", "owned"), ("filing", "rou"), ("filing", "dtl"), ("filing", "rate"),
+             ("dtl", "difference"), ("rate", "difference"), ("owned", "owned-reading"),
+             ("difference", "owned-reading"), ("owned", "rou-reading"), ("rou", "rou-reading"),
+             ("difference", "rou-reading"))
+    # The perimeter lanes keep direct book balances separate from the
+    # division at the centre. Geometry is declared, never random or animated.
+    routes = {
+        ("filing", "owned"): "M 120 610 L 120 566 L 2 566 L 2 412 L 77 412 L 77 398",
+        ("filing", "rou"): "M 180 610 L 180 566 L 298 566 L 298 412 L 223 412 L 223 398",
+        ("filing", "dtl"): "M 135 610 C 135 566 77 580 77 538",
+        ("filing", "rate"): "M 165 610 C 165 566 223 580 223 538",
+        ("dtl", "difference"): "M 77 450 C 77 424 148 430 148 404 L 148 284 C 148 272 130 274 130 262",
+        ("rate", "difference"): "M 223 450 C 223 424 152 430 152 404 L 152 284 C 152 272 170 274 170 262",
+        ("owned", "owned-reading"): "M 45 310 C 4 266 4 148 45 106",
+        ("difference", "owned-reading"): "M 120 174 C 120 142 106 138 106 106",
+        ("owned", "rou-reading"): "M 108 310 L 108 298 L 296 298 L 296 120 L 260 106",
+        ("rou", "rou-reading"): "M 262 310 C 292 276 292 140 245 106",
+        ("difference", "rou-reading"): "M 180 174 C 180 142 194 138 194 106"}
+    out = ['<figure id="fs-vroot" class="valuation-lineage">',
+           '<figcaption><strong class="vr-title">The recorded roots of the tax base</strong>',
+           '<p class="vr-scope">Read upward from the audited filing through four transcribed inputs, the tax-base reconciliation and both recorded readings. Amounts are CAD thousands; the rate is a percentage. This is the ancestry of the tax-base figure, not the complete valuation model. The original evidence tables and source disclosure follow.</p></figcaption>',
+           '<svg viewBox="0 0 300 710" role="img" aria-labelledby="vroot-title vroot-desc">',
+           '<title id="vroot-title">Filing, inputs, reconciliation and two tax-base readings</title>',
+           '<desc id="vroot-desc">The filed statements supply owned property, right of use assets, the deferred tax liability and the statutory rate. Liability divided by rate gives the temporary difference. Owned property less that difference gives the negative reading. Adding right of use assets gives the other reading. All eight nodes name their source record.</desc>']
+    for source, target in edges:
+        out.append('<path class="vr-edge" data-from="%s" data-to="%s" d="%s"/>' % (source, target, routes.get((source, target), "M 0 0 L 1 1")))
+    for key, source, pointer, labels, x, y, width, height in specs:
+        value = records[source]
+        try:
+            for part in pointer.split("/"):
+                value = value[part]
+        except (KeyError, TypeError):
+            continue
+        shown = str(value) if key == "filing" else ("%g%%" % value if key == "rate" else format(value, ","))
+        out.append('<g class="vr-node" data-node="%s" data-record="content/valuation-%s.json#/%s" data-value="%s">'
+                   % (key, source, pointer, esc(json.dumps(value))))
+        out.append('<rect x="%d" y="%d" width="%d" height="%d"/>' % (x, y, width, height))
+        for line, label in enumerate(labels):
+            out.append('<text x="%g" y="%d">%s</text>' % (x + width / 2, y + 23 + 18 * line, esc(label)))
+        out.append('<text class="vr-value" x="%g" y="%d">%s</text></g>' % (x + width / 2, y + 68, esc(shown)))
+    out.append('</svg></figure>')
+    return "\n".join(out)
+
+
+def own_valuation_lineage(path):
+    """Insert substantive recorded content before the existing source tables.
+    The marker owns replacement only; it is deliberately not excluded from
+    the piece's measurements or invariance ledger.
+    """
+    text = open(path, encoding="utf-8").read()
+    text = re.sub(r'<!--__roots-->.*?<!--/__roots-->\n?', '', text, flags=re.S)
+    anchor = '<h2 id="s-02-what-the-filing-does-say">'
+    if text.count(anchor) != 1:
+        return False
+    block = '<!--__roots-->\n' + valuation_lineage() + '\n<!--/__roots-->\n'
+    new = text.replace(anchor, block + anchor, 1)
+    old = open(path, encoding="utf-8").read()
+    if new != old:
+        os.chmod(path, 0o644)
+        open(path, "w", encoding="utf-8").write(new)
+    return True
 REFIT = json.load(open(os.path.join(HERE, "refit.json"), encoding="utf-8"))
 SPECS = json.load(open(os.path.join(HERE, "specimens.json"), encoding="utf-8"))
 
@@ -3644,6 +3758,7 @@ def head_block(p):
     return f"""{_HEAD_START}
 <meta name="color-scheme" content="{p.get('_scheme', 'light dark')}">
 <meta name="description" content="{esc(desc)}">
+{'<link rel="stylesheet" href="' + asset('figures.css') + '">' if p['slug'] == 'canadian-dcf-cca' else ''}
 <link rel="icon" href="{FAVICON}">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 {'' if p.get("pwa") else '<link rel="manifest" href="site.webmanifest">'}
@@ -3980,6 +4095,8 @@ def add_returns_everywhere():
         if not f.endswith(".html") or f in shell:
             continue
         path = os.path.join(OUT, f)
+        if f == "canadian-dcf-cca.html":
+            own_valuation_lineage(path)
         if f in by_url and normalise_head(path, by_url[f]):
             heads += 1
         fix_stale_host(path)
@@ -5000,7 +5117,7 @@ def check_site():
     fpath = os.path.join(OUT, "figures.css")
     if os.path.exists(fpath):
         sheet = open(fpath, encoding="utf-8").read()
-    for f in SHELL_PAGES:
+    for f in list(SHELL_PAGES) + ["canadian-dcf-cca.html"]:
         path = os.path.join(OUT, f)
         if not os.path.exists(path):
             continue
@@ -6988,6 +7105,192 @@ def check_site():
         if any(rules40.get(selector40, {}).get(prop) != value for prop, value in required_type40.items()):
             _fail40("site.css", selector40 + " omits the required monospaced metadata typography")
 
+    # 41. every root is recorded. Read the actual SVG independently of its
+    # emitter, then hold the two reconciliation identities to the filed
+    # inputs. This is the tax-base figure's ancestry, not a claim that those
+    # four inputs alone explain the model's two per-share valuation anchors.
+    import xml.etree.ElementTree as ET
+    t41 = T["lineage"] = {"nodes": 0, "edges": 0, "ancestors": 0, "identities": 0, "wrong": 0}
+    file41 = "canadian-dcf-cca.html"
+    look("41", file41)
+
+    def fail41(message):
+        t41["wrong"] += 1
+        problems.append(_p("41", file41 + ": " + message))
+
+    inputs41, output41 = {}, {}
+    for kind41 in ("inputs", "output"):
+        try:
+            data41 = json.load(open(os.path.join(OUT, "content/valuation-" + kind41 + ".json"), encoding="utf-8"))
+            if kind41 == "inputs":
+                inputs41 = data41
+            else:
+                output41 = data41
+        except (OSError, ValueError) as error41:
+            fail41("cannot read the recorded valuation " + kind41 + ": " + str(error41))
+    paths41 = {
+        "filing": ("inputs", "filing/period_end"),
+        "owned": ("inputs", "ppe_note/total_net_book_value_closing"),
+        "rou": ("inputs", "leases_note/right_of_use_assets_net_book_value/current"),
+        "dtl": ("inputs", "tax_note/deferred_tax_liability_ppe/current"),
+        "rate": ("inputs", "tax_note/statutory_rate_combined/current"),
+        "difference": ("output", "tax_base/current/temporary_difference"),
+        "owned-reading": ("output", "tax_base/current/reading_owned_only_ucc"),
+        "rou-reading": ("output", "tax_base/current/reading_with_right_of_use_ucc")}
+    values41 = {}
+    labels41 = {"filing": ["Audited filing"], "owned": ["Owned property", "book value"],
+                "rou": ["Right of use", "book value"], "dtl": ["Deferred tax", "liability"],
+                "rate": ["Statutory", "tax rate"], "difference": ["Reconciliation", "temporary difference"],
+                "owned-reading": ["Owned only", "negative balance"], "rou-reading": ["With right", "of use assets"]}
+    for key41, (kind41, pointer41) in paths41.items():
+        value41 = inputs41 if kind41 == "inputs" else output41
+        try:
+            for part41 in pointer41.split("/"):
+                value41 = value41[part41]
+            if value41 is None or (key41 != "filing" and (isinstance(value41, bool) or not isinstance(value41, (int, float)) or not math.isfinite(value41))):
+                raise ValueError("no finite recorded value")
+            values41[key41] = value41
+            t41["ancestors"] += int(kind41 == "inputs")
+        except (KeyError, TypeError, ValueError):
+            fail41("missing recorded ancestor content/valuation-%s.json#/%s" % (kind41, pointer41))
+    if all(k in values41 for k in paths41):
+        if values41["rate"] <= 0:
+            fail41("the recorded statutory rate cannot divide the deferred tax liability")
+        else:
+            difference41 = values41["dtl"] / (values41["rate"] / 100)
+            for key41, computed41 in (("difference", difference41),
+                    ("owned-reading", values41["owned"] - difference41),
+                    ("rou-reading", values41["owned"] + values41["rou"] - difference41)):
+                t41["identities"] += 1
+                if values41[key41] != round(computed41):
+                    fail41(key41 + " disagrees with the recorded reconciliation inputs")
+    try:
+        accession41 = inputs41["filing"]["sedar_accession"]
+        contexts41 = (inputs41["ppe_note"], inputs41["leases_note"]["right_of_use_assets_net_book_value"],
+                      inputs41["tax_note"]["deferred_tax_liability_ppe"], inputs41["tax_note"]["statutory_rate_combined"])
+        if not accession41 or any(c.get("accession") != accession41 or not c.get("page") or not c.get("note") for c in contexts41):
+            fail41("every input ancestor must retain its filing accession, note and page")
+    except (KeyError, TypeError):
+        fail41("a filed input has lost its provenance record")
+    want_edges41 = {("filing", "owned"), ("filing", "rou"), ("filing", "dtl"), ("filing", "rate"),
+                    ("dtl", "difference"), ("rate", "difference"), ("owned", "owned-reading"),
+                    ("difference", "owned-reading"), ("owned", "rou-reading"), ("rou", "rou-reading"),
+                    ("difference", "rou-reading")}
+    raw41 = open(os.path.join(OUT, file41), encoding="utf-8").read() if os.path.exists(os.path.join(OUT, file41)) else ""
+    figures41 = re.findall(r'<figure id="fs-vroot"[^>]*>(.*?)</figure>', raw41, re.S)
+    if len(figures41) != 1:
+        fail41("the tax-base figure must carry exactly one recorded lineage")
+    else:
+        svg41 = re.findall(r"<svg\b.*?</svg>", figures41[0], re.S)
+        try:
+            if len(svg41) != 1:
+                raise ValueError("expected one static SVG")
+            tree41 = ET.fromstring(svg41[0])
+            if tree41.get("role") != "img" or tree41.get("aria-labelledby") != "vroot-title vroot-desc":
+                fail41("the lineage must retain its accessible image role and labels")
+            for tag41, id41 in (("title", "vroot-title"), ("desc", "vroot-desc")):
+                accessible41 = [e for e in tree41 if e.tag == tag41 and e.get("id") == id41]
+                if len(accessible41) != 1 or not "".join(accessible41[0].itertext()).strip():
+                    fail41("the lineage omits its accessible " + tag41)
+            if tree41.get("viewBox") != "0 0 300 710":
+                fail41("the lineage changed its declared readable artboard")
+            forbidden41 = {"style", "opacity", "filter", "fill", "stroke", "transform", "hidden", "tabindex", "aria-hidden"}
+            if any(e.tag not in {"svg", "title", "desc", "g", "rect", "text", "path"} or
+                   forbidden41.intersection(e.attrib) or any(k.lower().startswith("on") for k in e.attrib) for e in tree41.iter()):
+                fail41("the recorded lineage must remain static, visible and styled only by its declared scope")
+            nodes41, bounds41 = list(tree41.iter("g")), {}
+            t41["nodes"] = len(nodes41)
+            if len(nodes41) != len(paths41) or {e.get("data-node") for e in nodes41} != set(paths41):
+                fail41("drawn nodes do not cover every recorded ancestor and both readings exactly once")
+            for node41 in nodes41:
+                key41 = node41.get("data-node")
+                if key41 not in paths41 or key41 not in values41:
+                    continue
+                kind41, pointer41 = paths41[key41]
+                value41 = values41[key41]
+                shown41 = str(value41) if key41 == "filing" else ("%g%%" % value41 if key41 == "rate" else format(value41, ","))
+                texts41 = [e for e in node41 if e.tag == "text" and e.get("class") == "vr-value"]
+                if (node41.get("class") != "vr-node" or node41.get("data-record") != "content/valuation-%s.json#/%s" % (kind41, pointer41)
+                        or node41.get("data-value") != json.dumps(value41) or len(texts41) != 1 or texts41[0].text != shown41):
+                    fail41("drawn value or source path disagrees with the recorded " + key41)
+                if [e.text for e in node41 if e.tag == "text" and e.get("class") != "vr-value"] != labels41[key41]:
+                    fail41("drawn label misidentifies the recorded " + key41)
+                rects41 = list(node41.iter("rect"))
+                if len(rects41) != 1:
+                    fail41(key41 + " must have one square node boundary")
+                    continue
+                rect41 = rects41[0]
+                x41, y41, w41, h41 = [float(rect41.get(k, "nan")) for k in ("x", "y", "width", "height")]
+                if (not all(math.isfinite(v) for v in (x41, y41, w41, h41)) or not (0 <= x41 < x41 + w41 <= 300 and 0 <= y41 < y41 + h41 <= 710)
+                        or rect41.get("rx") or rect41.get("ry")):
+                    fail41(key41 + " leaves the declared square artboard")
+                bounds41[key41] = (x41, y41, w41, h41)
+            edges41 = list(tree41.iter("path"))
+            t41["edges"] = len(edges41)
+            if len(edges41) != len(want_edges41) or {(e.get("data-from"), e.get("data-to")) for e in edges41} != want_edges41:
+                fail41("drawn edge set contains an unrecorded relation or omits a recorded ancestor")
+            for edge41 in edges41:
+                path41 = edge41.get("d", "")
+                coordinates41 = [float(x) for x in re.findall(r"\d+(?:\.\d+)?", path41)]
+                source41, target41 = bounds41.get(edge41.get("data-from")), bounds41.get(edge41.get("data-to"))
+                if edge41.get("class") != "vr-edge" or not re.fullmatch(r"M[ 0-9.LC]+", path41) or len(coordinates41) < 4 or not source41 or not target41:
+                    fail41("a lineage edge has unsupported or unrecorded geometry")
+                    continue
+                x41, y41, w41, h41 = source41
+                tx41, ty41, tw41, th41 = target41
+                if not (x41 <= coordinates41[0] <= x41 + w41 and coordinates41[1] == y41 and
+                        tx41 <= coordinates41[-2] <= tx41 + tw41 and coordinates41[-1] == ty41 + th41):
+                    fail41("a lineage edge does not reach the ancestor and output it names")
+        except (ET.ParseError, ValueError, TypeError) as error41:
+            fail41("cannot read the static lineage SVG: " + str(error41))
+    if not re.search(r'<link rel="stylesheet" href="figures.css(?:\?[^"<>]*)?">', raw41) or "#fs-vroot .vr-edge" not in sheet:
+        fail41("the lineage does not load its declared figures.css scope")
+    palettes41 = {}
+    for name41, match41 in (("Archival light", mlight), ("Obsidian", mdark), ("Obsidian system", mmedia)):
+        prefix41 = "#fs-vroot" if name41 == "Archival light" else (':root[data-theme="dark"] #fs-vroot' if name41 == "Obsidian" else ':root:where(:not([data-theme="light"])) #fs-vroot')
+        block41 = re.search(re.escape(prefix41) + r"\{([^{}]*)\}", sheet)
+        want41 = _tok36(match41.group(1)) if match41 else {}
+        palettes41[prefix41] = dict(want41, radius="0px")
+        got41 = _tok36(block41.group(1)) if block41 else {}
+        if any(got41.get(k) != want41.get(k) or k not in got41 for k in ("paper", "panel", "ink", "ink-2", "ink-3", "rule", "rule-strong", "edge")):
+            fail41(name41 + " lineage colours differ from the measured site tokens")
+    style41 = {"margin": {"2rem 0", "0 0 1rem", ".6rem 0 0", "auto"}, "padding": {"1rem"},
+               "border": {"1px solid var(--rule)"}, "border-radius": {"var(--radius)"}, "background": {"var(--paper)"},
+               "color": {"var(--ink)", "var(--ink-2)"}, "display": {"block"},
+               "font-family": {"ui-monospace,Menlo,Consolas,monospace"}, "font-size": {".8rem", ".9rem", "14px", "15px"},
+               "letter-spacing": {".08em"}, "text-transform": {"uppercase"}, "font-weight": {"600"}, "line-height": {"1.5"},
+               "width": {"100%"}, "max-width": {"40rem", "25rem", "18rem"}, "height": {"auto"}, "overflow": {"visible"},
+               "fill": {"none", "var(--panel)", "var(--ink)", "var(--ink-2)"}, "stroke": {"var(--edge)"},
+               "stroke-width": {"1", "1.2"}, "vector-effect": {"non-scaling-stroke"}, "text-anchor": {"middle"},
+               "font-variant-numeric": {"tabular-nums"}, "break-inside": {"avoid"}, "page-break-inside": {"avoid"}}
+    clean41 = re.sub(r"/\*.*?\*/", "", sheet, flags=re.S)
+    actual41, custom41 = {}, set()
+    for selector41, body41 in re.findall(r"([^{}]+)\{([^{}]*)\}", clean41):
+        if "#fs-vroot" not in selector41:
+            continue
+        for declaration41 in body41.split(";"):
+            if not declaration41.strip():
+                continue
+            property41, separator41, value41 = declaration41.strip().partition(":")
+            value41 = value41.strip()
+            if property41.startswith("--"):
+                key41 = (selector41.strip(), property41)
+                if (property41[2:] not in {"paper", "panel", "ink", "ink-2", "ink-3", "rule", "rule-strong", "edge", "radius"}
+                        or palettes41.get(selector41.strip(), {}).get(property41[2:]) != value41 or key41 in custom41):
+                    fail41("the lineage declares an unmeasured, duplicate or unscoped custom property")
+                custom41.add(key41)
+                continue
+            if not separator41 or value41 not in style41.get(property41, set()):
+                fail41("unsupported lineage style " + declaration41.strip())
+            actual41.setdefault(selector41.strip(), {})[property41] = value41
+    if ("#fs-vroot", "--radius") not in custom41:
+        fail41("the lineage must explicitly retain square corners")
+    for selector41, property41, value41 in (("#fs-vroot .vr-edge", "stroke", "var(--edge)"),
+            ("#fs-vroot .vr-value", "fill", "var(--ink)"), ("#fs-vroot text", "fill", "var(--ink-2)"),
+            ("#fs-vroot .vr-node rect", "fill", "var(--panel)"), ("#fs-vroot svg", "display", "block")):
+        if actual41.get(selector41, {}).get(property41) != value41:
+            fail41("the lineage omits a required visible, measured mark style")
+
     # 33. the editor. admin.html is hand-maintained and the build never
     # writes it. Held here: the file is byte-identical to the bytes this run
     # started from; it is a whole document (the doctype at one end, </html> at
@@ -7462,7 +7765,9 @@ def main():
     figures_css = ("/* Generated from build/figures.json. Do not edit: the next build\n"
                    "   overwrites it. Each lifted figure keeps the colour variables and\n"
                    "   class rules it was drawn against, scoped to its own id so nothing\n"
-                   "   leaks into the page around it. */\n" + strip_css() + "\n")
+                   "   leaks into the page around it. The valuation lineage is emitted\n"
+                   "   by build/build_site.py from its recorded inputs and outputs. */\n"
+                   + strip_css() + "\n" + valuation_lineage_css())
     stamp_assets({"figures.css": figures_css})
 
     pages = {"index.html": page_index(), "research.html": page_research(),

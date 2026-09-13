@@ -134,6 +134,17 @@ def _font_sha_flip(d):
 
 
 CASES = [
+    C("41", "lineage-missing-ancestor", "the tax-base lineage loses the filed right-of-use ancestor",
+      lambda t: _json(t, "content/valuation-inputs.json", lambda d: d["leases_note"].pop("right_of_use_assets_net_book_value"))),
+    C("41", "lineage-wrong-value", "a drawn lineage value disagrees with its recorded input or output",
+      lambda t: _in_block(t, BS, "def valuation_lineage():", "def own_valuation_lineage(path):",
+                         r'else format\(value, ","\)', 'else format(value + 1, ",")')),
+    C("41", "lineage-unrecorded-edge", "the tree draws a relation the tax-base reconciliation never records",
+      lambda t: _in_block(t, BS, "def valuation_lineage():", "def own_valuation_lineage(path):",
+                         r'for source, target in edges:', 'for source, target in edges + (("owned", "rate"),):')),
+    C("41", "lineage-unmeasured-fill", "the lineage draws its values in an unmeasured decorative rule token",
+      lambda t: _edit(t, BS, '#fs-vroot .vr-value{font-size:15px;font-weight:600;fill:var(--ink)}',
+                     '#fs-vroot .vr-value{font-size:15px;font-weight:600;fill:var(--rule)}')),
     C("40", "dossier-invented-citation", "the piece register prints one more citation chord than its recorded links supply",
       lambda t: _edit(t, BS, 'Citation chords / {link_degree(p["slug"])}',
                      'Citation chords / {link_degree(p["slug"]) + 1}')),

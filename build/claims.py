@@ -669,6 +669,24 @@ def build(ctx):
                  "The sets overlap, so their subtotals do not add to the corpus. The check holds the arithmetic and "
                  "the membership's existence, not the judgment.")
 
+    t = T.get("dossier", {})
+    checked("The dossier register reads origin, citation degree and header counts from the recorded work. "
+            "Each metadata verification stamp belongs to one bounded register, with the shared measured typography.",
+            ["40"],
+            f"{t.get('rows', 0)} shelf rows, {t.get('headers', 0)} piece headers and {t.get('keys', 0)} Atlas definitions; "
+            f"{t.get('wrong', 0)} readback disagreements",
+            ["library.html", "atlas.html", "controls.html"],
+            note="The stamp verifies metadata. Converted-header registers are excluded from document prose counts.")
+
+    t = T.get("lineage", {})
+    checked("The tax-base roots name recorded valuation inputs and outputs. Every drawn value, ancestor and "
+            "branch matches the recorded reconciliation, with both readings checked independently of the SVG emitter.",
+            ["41"],
+            f"{t.get('nodes', 0)} recorded nodes, {t.get('edges', 0)} branches, {t.get('ancestors', 0)} source records and "
+            f"{t.get('identities', 0)} reconciliation identities; {t.get('wrong', 0)} readback disagreements",
+            ["canadian-dcf-cca.html", "controls.html"],
+            note="This figure traces the tax-base reconstruction. It does not claim to map every dependency of the valuation model.")
+
     t = T.get("editor", {})
     checked("The editor, admin.html, exists and the build never writes it: every stylesheet, script and local asset it references resolves to a file, "
             "every custom property its styles read is defined by the stylesheet it loads, every element id its script names is in its markup, "
