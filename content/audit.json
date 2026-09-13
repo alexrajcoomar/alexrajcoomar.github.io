@@ -4,7 +4,7 @@
   "tool": "build/audit.js",
   "browser": "Chromium 141.0.7390.37",
   "date": "2026-09-13",
-  "commit": "45853c1",
+  "commit": "936e9a2",
   "runs": [
    {
     "commit": "21aacf2",
@@ -2249,15 +2249,14 @@
   }
  },
  "offline": {
-  "before": 185,
-  "of": 185,
-  "after": 185,
-  "refreshed": true,
+  "before": 0,
+  "after": 0,
+  "refreshed": false,
   "editor": {
    "stored": false,
    "fresh": true
   },
-  "inputs": "4743e020054b",
-  "measured": "2026-09-05"
+  "inputs": "dcadc643e7e2",
+  "measured": "2026-09-13"
  }
 }
