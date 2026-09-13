@@ -2,9 +2,9 @@
  "note": "Written by build/audit.js: what a headless browser measured on each page, with the fingerprint of the inputs it measured. The register on the controls page prints these results; a page whose inputs moved since is not yet measured for that build. meta.runs is appended by build/claims.py --record-run on every publish.",
  "meta": {
   "tool": "build/audit.js",
-  "browser": "Chromium 152.0.7977.83",
+  "browser": "Chromium 141.0.7390.37",
   "date": "2026-09-13",
-  "commit": "62a9279",
+  "commit": "7ee6e83",
   "runs": [
    {
     "commit": "21aacf2",
@@ -125,6 +125,11 @@
     "commit": "9a67c9e",
     "date": "2026-09-12",
     "audit": "ran"
+   },
+   {
+    "commit": "a89052e",
+    "date": "2026-09-13",
+    "audit": "ran"
    }
   ]
  },
@@ -232,7 +237,7 @@
    "motion": {
     "animations": 0
    },
-   "inputs": "55ff63c72ec1",
+   "inputs": "3097573dcb92",
    "measured": "2026-09-13"
   },
   "admin.html": {
@@ -852,7 +857,7 @@
    "motion": {
     "animations": 0
    },
-   "inputs": "bf17ad0341ff",
+   "inputs": "1ca00acb7b76",
    "measured": "2026-09-13"
   },
   "brittle-network.html": {
@@ -1574,7 +1579,7 @@
    "motion": {
     "animations": 0
    },
-   "inputs": "570378969fa7",
+   "inputs": "8839c46dbab5",
    "measured": "2026-09-13"
   },
   "kennedy-dossier.html": {
@@ -1687,7 +1692,7 @@
    "motion": {
     "animations": 0
    },
-   "inputs": "437c4ca56a71",
+   "inputs": "8f8bc9264da2",
    "measured": "2026-09-13"
   },
   "monroe-case-file.html": {
@@ -1933,7 +1938,7 @@
    "motion": {
     "animations": 0
    },
-   "inputs": "5a2d748734ef",
+   "inputs": "0b52c1a030c6",
    "measured": "2026-09-13"
   },
   "revenue-recognition.html": {
