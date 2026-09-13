@@ -134,6 +134,25 @@ def _font_sha_flip(d):
 
 
 CASES = [
+    C("40", "dossier-invented-citation", "the piece register prints one more citation chord than its recorded links supply",
+      lambda t: _edit(t, BS, 'Citation chords / {link_degree(p["slug"])}',
+                     'Citation chords / {link_degree(p["slug"]) + 1}')),
+    C("40", "dossier-unmeasured-text", "the active register sets metadata in the decorative rule token instead of measured ink",
+      lambda t: _in_block(t, "site.css", "/* dossier-type:start */", "/* dossier-type:end */",
+                         r"color:var\(--ink-3\)", "color:var(--rule)")),
+    C("40", "dossier-duplicate-status", "a piece register grows a second verification stamp without another recorded fact",
+      lambda t: _in_block(t, BS, "def piece_row(p):", "def dossier_chrome_css():",
+                         '<span class="dossier-status">Metadata verified by build</span>',
+                         '<span class="dossier-status">Metadata verified by build</span><span class="dossier-status">Metadata verified by build</span>')),
+    C("40", "dossier-faded-ink", "the register fades its measured ink through an unmeasured opacity declaration",
+      lambda t: _in_block(t, "site.css", "/* dossier-type:start */", "/* dossier-type:end */",
+                         r"color:var\(--ink-3\)", "color:var(--ink-3);opacity:.25")),
+    C("40", "dossier-uncopied-token", "a shared register reads an ink token the standalone header does not carry",
+      lambda t: _in_block(t, "site.css", "/* dossier-type:start */", "/* dossier-type:end */",
+                         r"color:var\(--ink-3\)", "color:var(--ink)")),
+    C("40", "dossier-counted-as-prose", "a converted header loses the existing exclusion that keeps metadata out of measured words",
+      lambda t: _edit(t, BS, '<p class="dossier" id="__rb-from" data-dossier=',
+                     '<p class="dossier" id="__meta-dossier" data-dossier=')),
     C("1", "canonical-offsite", "the build writes every canonical address on another site",
       lambda t: _edit(t, BS, '<link rel="canonical" href="{SITE_URL}/', '<link rel="canonical" href="https://elsewhere.invalid/')),
     # a piece cannot carry this falsification: the build rewrites any stale

@@ -297,6 +297,31 @@ kbd{
    item, so it keeps its own case. */
 .tag{text-transform:none}
 
+/* The dossier register uses the existing metadata measure and palette.
+   Only recorded facts receive a stamp; the author's prose keeps its case.
+   The build copies this flat block into the standalone header, scoped to
+   its existing bar, so an essay does not need the whole site stylesheet.
+   The nominal .72rem at 16px is a floor: a legacy document's smaller root
+   size must not shrink the register below the shared metadata measure. */
+/* dossier-type:start */
+.dossier{
+  display:flex;flex-wrap:wrap;align-items:baseline;gap:.35rem .75rem;
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  font-size:max(var(--meta-size),11.52px);letter-spacing:var(--meta-track);
+  font-weight:var(--meta-weight);line-height:1.5;text-transform:uppercase;
+  font-variant-numeric:tabular-nums;color:var(--ink-3);
+  border-top:1px solid var(--rule);padding-top:.5rem;
+}
+.dossier > *{min-width:0;white-space:normal;overflow-wrap:anywhere}
+.dossier .dossier-origin,.dossier .dossier-counts{color:var(--ink-2)}
+.dossier .kind,.dossier .surf{font-family:inherit;color:var(--ink-2)}
+.dossier .tag,.dossier .metadate{text-transform:none;letter-spacing:.01em}
+.dossier .dossier-status{
+  display:inline-block;border:1px solid var(--rule-strong);border-radius:var(--radius);
+  padding:.12rem .4rem;color:var(--ink-2);font-weight:var(--thead-weight);
+}
+/* dossier-type:end */
+
 /* ------------------------------ header ------------------------------ */
 header.top{
   position:sticky;top:0;z-index:40;
@@ -1855,6 +1880,22 @@ body.atlas-free .atlas-h1{font-size:clamp(1.2rem,1.7vw,1.42rem);max-width:24em;
 .akey-list li.akey-wide{flex:1 1 100%;align-items:flex-start}
 .akey-list li.akey-wide .ak{margin-top:-.05rem}
 .akey-note{font-size:.85rem;color:var(--ink-2);margin:0;line-height:1.5}
+/* Every key row aligns a drawn mark with its named rule and explanation. */
+.akey-list.dossier-key{display:grid;gap:0}
+.dossier-key > li,.dossier-key > li.akey-wide{
+  display:grid;grid-template-columns:1rem minmax(7rem,10rem) minmax(0,1fr);
+  align-items:baseline;gap:.5rem .75rem;padding:.6rem 0;border-bottom:1px solid var(--rule);
+}
+.dossier-key .dossier-term{
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  font-size:max(var(--meta-size),11.52px);letter-spacing:var(--meta-track);font-weight:var(--meta-weight);
+  line-height:1.5;text-transform:uppercase;color:var(--ink-2);overflow-wrap:anywhere;
+}
+.dossier-key .dossier-detail{min-width:0;line-height:1.5;color:var(--ink-2)}
+@media (max-width:36rem){
+  .dossier-key > li,.dossier-key > li.akey-wide{grid-template-columns:1rem minmax(0,1fr);gap:.3rem .65rem}
+  .dossier-key .dossier-detail{grid-column:2}
+}
 .replay{margin:.9rem 0 0;font-size:.82rem}
 /* Flown into one document, a key for the whole corpus and an invitation to
    replay the tour are both about somewhere else. */

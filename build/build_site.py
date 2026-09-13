@@ -1156,7 +1156,7 @@ def shelf_row(k, p, extra="", fp=False):
             <h3><a href="{p['url']}">{esc(p['t'])}</a></h3>
             <p class="s">{esc(p['s'])}</p>
             {rule}
-            <p class="meta">{kind_chip(p)}{surf(p)}{mins}<span class="metadate">{esc(p['d'])}</span>{tags}</p>
+            <p class="meta dossier" data-dossier="{esc(p['slug'])}">{kind_chip(p)}{surf(p, dossier=True)}{mins}<span class="metadate">{esc(p['d'])}</span>{tags}<span class="dossier-cites">Citation chords / {link_degree(p['slug'])}</span><span class="dossier-status">Metadata verified by build</span></p>
             {extra}
           </div>
           <div class="sr-n"><span class="tnum">{md(p['words'], 'words', p['slug'])}</span><span class="tnum">{md(p['figures'], 'figures', p['slug'], str(p['figures']))}</span><span class="tnum">{md(p['tables'], 'tables', p['slug'], str(p['tables']))}</span></div>
@@ -1261,8 +1261,10 @@ def google_font_families():
 
 SURF_LABEL = {"independent":"Independent","course":"Coursework","personal":"Personal"}
 
-def surf(p):
-    return f'<span class="surf surf-{p["surface"]}">{SURF_LABEL[p["surface"]]}</span>'
+def surf(p, dossier=False):
+    cls = " dossier-origin" if dossier else ""
+    label = ("Origin / " if dossier else "") + SURF_LABEL[p["surface"]]
+    return f'<span class="surf surf-{p["surface"]}{cls}">{label}</span>'
 
 def piece_mins(p):
     """The derived reading time, or None. A Tool carries none whatever its
@@ -3061,7 +3063,7 @@ RETURN_BAR = """
 #__rb .__rb-right{margin-left:auto;display:flex;gap:1.1rem;flex-wrap:wrap}
 /* the piece's own row of the statement: origin, words, figures, tables, the
    same figures the home page prints for it, from the same measurement */
-#__rb .__rb-row{color:#66635a;font-variant-numeric:tabular-nums;white-space:nowrap}
+#__rb .__rb-row{flex-basis:100%;order:3;color:#66635a;font-variant-numeric:tabular-nums;white-space:normal}
 #__rb .__rb-row b{font-weight:600;color:#55524a}
 @media (max-width:44rem){#__rb .__rb-row{flex-basis:100%;order:3;white-space:normal}}
 /* what the piece was built from, in the owner's words, from pieces.json */
@@ -3100,11 +3102,12 @@ RETURN_BAR = """
 :root[data-theme="dark"] #__rb .__rb-from b{color:#b9bbc1}
 :root[data-theme="dark"] #__rb a{color:#8fb6ee}
 :root[data-theme="dark"] #__rb .__mark{background:#f3f3f0;color:#0d0e11}
+__DOSSIER_CSS__
 @media print{#__rb{display:none !important}}
 </style>
 <nav id="__rb" aria-label="Portfolio">
   <a class="__rb-home" href="index.html">__MARK__Alex Rajcoomar <i>portfolio</i></a>
-  <span class="__rb-row">__ROW__</span>
+  <span class="__rb-row dossier" data-dossier="__DOSSIER__">__ROW__</span>
   <span class="__rb-right"><a href="__UP__">__UPNAME__</a><a href="atlas.html">Atlas</a><a href="library.html">All work</a></span>
   __FROM__
 </nav>
@@ -3275,8 +3278,58 @@ def _body_tag(text):
 def piece_row(p):
     if not p:
         return ""
-    return (f'{SURF_LABEL[p["surface"]]} &middot; <b>{p["words"]:,}</b> words &middot; '
-            f'<b>{p["figures"]}</b> figures &middot; <b>{p["tables"]}</b> tables')
+    return (f'<span class="dossier-origin">Origin / {SURF_LABEL[p["surface"]]}</span>'
+            f'<span class="dossier-counts">{p["words"]:,} words / {p["figures"]} figures / {p["tables"]} tables</span>'
+            f'<span class="dossier-cites">Citation chords / {link_degree(p["slug"])}</span>'
+            '<span class="dossier-status">Metadata verified by build</span>')
+
+
+def dossier_chrome_css():
+    """Copy the shared register grammar into the existing standalone bar.
+    Its selectors and tokens are scoped to the bar, so legacy piece styles
+    keep their own layout. An incomplete source returns no fragment; Check
+    40 then refuses the missing contract with the rest of its readback."""
+    try:
+        css = open(os.path.join(OUT, "site.css"), encoding="utf-8").read()
+    except OSError:
+        return ""
+    marked = re.search(r"/\* dossier-type:start \*/(.*?)/\* dossier-type:end \*/", css, re.S)
+    if not marked:
+        return ""
+    clean = re.sub(r"/\*.*?\*/", "", css, flags=re.S)
+    block = re.sub(r"/\*.*?\*/", "", marked.group(1), flags=re.S).strip()
+    rules = list(re.finditer(r"([^{}]+)\{([^{}]*)\}", block))
+    if not rules or re.sub(r"[^{}]+\{[^{}]*\}", "", block).strip():
+        return ""
+    scoped = []
+    for rule in rules:
+        selectors = [s.strip() for s in rule.group(1).split(",")]
+        if any(not s.startswith(".") or "@" in s for s in selectors):
+            return ""
+        scoped.append(",".join("#__rb " + s for s in selectors) + "{" + rule.group(2) + "}")
+    names = ("meta-size", "meta-track", "meta-weight", "thead-weight", "radius",
+             "ink-2", "ink-3", "rule", "rule-strong")
+    palette_patterns = (
+        (r":root\s*\{([^{}]*)\}", "#__rb", ""),
+        (r':root:where\(:not\(\[data-theme="light"\]\)\)\s*\{([^{}]*)\}',
+         ':root:where(:not([data-theme="light"])) #__rb', "@media (prefers-color-scheme:dark)"),
+        (r':root\[data-theme="dark"\]\s*\{([^{}]*)\}', ':root[data-theme="dark"] #__rb', ""))
+    palettes = []
+    base = {}
+    for pattern, selector, media in palette_patterns:
+        match = re.search(pattern, clean, re.S)
+        if not match:
+            return ""
+        declared = dict(re.findall(r"--([a-z0-9-]+)\s*:\s*([^;{}]+);", match.group(1)))
+        values = dict(base)
+        values.update({name: declared[name].strip() for name in names if name in declared})
+        if any(name not in values for name in names):
+            return ""
+        if not base:
+            base = values
+        rendered = selector + "{" + "".join("--%s:%s;" % (name, values[name]) for name in names) + "}"
+        palettes.append(media + "{" + rendered + "}" if media else rendered)
+    return "\n".join(["/* dossier-chrome:start */"] + palettes + scoped + ["/* dossier-chrome:end */"])
 
 def from_line(p):
     """The built_from line's own markup: label plus complement, or the
@@ -3303,7 +3356,10 @@ def own_from(path, p):
     if not p or not (p.get("built_from") or "").strip():
         return False
     text = open(path, encoding="utf-8", errors="ignore").read()
-    block = '<!--__from--><p class="docfrom">%s</p><!--/__from-->' % from_line(p)
+    # Reuse the existing measurement exclusion: metadata is chrome, not prose.
+    block = ('<!--__from--><p class="dossier" id="__rb-from" data-dossier="%s">%s</p>'
+             '<p class="docfrom">%s</p><!--/__from-->'
+             % (esc(p["slug"]), piece_row(p), from_line(p)))
     new = _FROM_BLOCK.sub("", text)
     m = re.search(r'(<div class="docmeta">.*?</div>)(\s*</header>)', new, re.S)
     if not m:
@@ -3359,7 +3415,11 @@ def add_return(path, up="index.html", upname="Home", bar=True, p=None):
         top = (RETURN_BAR.replace("__MARKPX__", str(marks_mod.VARIANTS["bar"]["px"]))
                .replace("__MARK__", marks_mod.svg("bar", cls="__mark mk-bar"))
                .replace("__UP__", up).replace("__UPNAME__", upname)
+               .replace("__DOSSIER__", esc(p["slug"]) if p else "")
+               .replace("__DOSSIER_CSS__", dossier_chrome_css())
                .replace("__ROW__", piece_row(p)).replace("__FROM__", piece_from(p)))
+        if not p:
+            top = top.replace('  <span class="__rb-row dossier" data-dossier=""></span>\n', "")
         m = _body_tag(text)
         text = (text[:m.end()] + top + text[m.end():]) if m else (top + text)
     i = text.lower().rfind("</body>")
@@ -3980,18 +4040,18 @@ ATLAS_BODY = r"""<section class="band atlas-band" id="atlas">
         <p class="atoday" id="atoday" hidden></p>
         <div class="atlas-results" id="ares" hidden></div>
         <div class="atlas-key">
-          <ul class="akey-list">
-            <li><i class="ak ak-ind"></i>Independent work</li>
-            <li><i class="ak ak-per"></i>Personal interest</li>
-            <li><i class="ak ak-cou"></i>Coursework, drawn as an outline</li>
-            <li><i class="ak ak-too"></i>Tools, one mark each, standing off the sphere: not headings</li>
-            <li class="akey-wide"><i class="ak ak-shr"></i>Headings carried by more than one document, standing off the surface by how many carry them; point at one and the fan to its documents is drawn</li>
-            <li class="akey-wide"><i class="ak ak-vis"></i><span id="aseen">Passages</span> this browser has opened, ringed. The record stays in this browser</li>
-            <li class="akey-wide"><i class="ak ak-lnk"></i>Point at any mark and chords join its document to the documents its text links, or that link it; each chord's tick sits nearer the linked one</li>
-            <li class="akey-wide"><i class="ak ak-dsc"></i>A document's disc, a hairline: two thirds of its share of the sphere, settled clear of every other disc; the document under the pointer, or faced by the home sphere, has its disc drawn in the chord colour</li>
-            <li class="akey-wide"><i class="ak ak-zon"></i>The two parallels that bound the origins' zones: independent work north of the first, coursework between them, personal interest south of the second</li>
-            <li class="akey-wide"><i class="ak ak-aut"></i>The author, one anchor at the north pole, above his own independent work: an origin of his own, its zone, disc and position by the rule every document follows; its card is the recorded standing, the recorded co-op term counted from this build's date, and the featured pieces' subtotal</li>
-            <li class="akey-wide"><i class="ak ak-cor"></i>The light behind the home sphere takes the hue of the faced document's recorded origin: indigo over slate for independent work, cobalt for coursework, bronze over slate for personal interest; parchment, ivory and bone on paper</li>
+          <ul class="akey-list dossier-key">
+            <li><i class="ak ak-ind"></i><span class="dossier-term">Origin / independent</span><span class="dossier-detail">Independent work</span></li>
+            <li><i class="ak ak-per"></i><span class="dossier-term">Origin / personal</span><span class="dossier-detail">Personal interest</span></li>
+            <li><i class="ak ak-cou"></i><span class="dossier-term">Origin / coursework</span><span class="dossier-detail">Coursework, drawn as an outline</span></li>
+            <li><i class="ak ak-too"></i><span class="dossier-term">Tool marks</span><span class="dossier-detail">Tools, one mark each, standing off the sphere: not headings</span></li>
+            <li class="akey-wide"><i class="ak ak-shr"></i><span class="dossier-term">Shared headings</span><span class="dossier-detail">Headings carried by more than one document, standing off the surface by how many carry them; point at one and the fan to its documents is drawn</span></li>
+            <li class="akey-wide"><i class="ak ak-vis"></i><span class="dossier-term">Reading record</span><span class="dossier-detail"><span id="aseen">Passages</span> this browser has opened, ringed. The record stays in this browser</span></li>
+            <li class="akey-wide"><i class="ak ak-lnk"></i><span class="dossier-term">Citation chords</span><span class="dossier-detail">Point at any mark and chords join its document to the documents its text links, or that link it; each chord's tick sits nearer the linked one</span></li>
+            <li class="akey-wide"><i class="ak ak-dsc"></i><span class="dossier-term">Document discs</span><span class="dossier-detail">A document's disc, a hairline: two thirds of its share of the sphere, settled clear of every other disc; the document under the pointer, or faced by the home sphere, has its disc drawn in the chord colour</span></li>
+            <li class="akey-wide"><i class="ak ak-zon"></i><span class="dossier-term">Origin zones</span><span class="dossier-detail">The two parallels that bound the origins' zones: independent work north of the first, coursework between them, personal interest south of the second</span></li>
+            <li class="akey-wide"><i class="ak ak-aut"></i><span class="dossier-term">Author datum</span><span class="dossier-detail">The author, one anchor at the north pole, above his own independent work: an origin of his own, its zone, disc and position by the rule every document follows; its card is the recorded standing, the recorded co-op term counted from this build's date, and the featured pieces' subtotal</span></li>
+            <li class="akey-wide"><i class="ak ak-cor"></i><span class="dossier-term">Recorded origin light</span><span class="dossier-detail">The light behind the home sphere takes the hue of the faced document's recorded origin: indigo over slate for independent work, cobalt for coursework, bronze over slate for personal interest; parchment, ivory and bone on paper</span></li>
           </ul>
           <p class="akey-note">A mark's area is apportioned from its document's measured word count by
           the share of the document's static text under that heading; it is not a per-section
@@ -6702,6 +6762,231 @@ def check_site():
             t39["wrong"] += 1
             problems.append(_p("39", "content/capabilities.json: %s evidences nothing the about page "
                                      "claims" % cid39))
+
+    # 40. the dossier is a register of recorded metadata, not a verdict on
+    # the piece. Read the rendered structure independently of its emitters:
+    # each existing shelf row and research header gets one bounded register,
+    # and citation degree comes from the recorded graph, not the printed claim.
+    from html.parser import HTMLParser
+    t40 = T["dossier"] = {"pages": 0, "rows": 0, "headers": 0, "keys": 0, "rules": 0, "wrong": 0}
+
+    def _fail40(file, message):
+        t40["wrong"] += 1
+        problems.append(_p("40", file + ": " + message))
+
+    class _Dossier40(HTMLParser):
+        def __init__(self):
+            super().__init__(convert_charrefs=True)
+            self.nodes, self.stack = [], []
+
+        def handle_starttag(self, tag, attrs):
+            node = {"tag": tag, "attrs": dict(attrs), "children": [], "content": [],
+                    "parent": self.stack[-1] if self.stack else None}
+            self.nodes.append(node)
+            if self.stack:
+                self.stack[-1]["children"].append(node)
+                self.stack[-1]["content"].append(node)
+            if tag not in {"area", "base", "br", "col", "embed", "hr", "img", "input", "link", "meta", "param", "source", "track", "wbr"}:
+                self.stack.append(node)
+
+        def handle_startendtag(self, tag, attrs):
+            self.handle_starttag(tag, attrs)
+            self.handle_endtag(tag)
+
+        def handle_endtag(self, tag):
+            for i in range(len(self.stack) - 1, -1, -1):
+                if self.stack[i]["tag"] == tag:
+                    del self.stack[i:]
+                    break
+
+        def handle_data(self, data):
+            if self.stack:
+                self.stack[-1]["content"].append(data)
+
+    def _classes40(node):
+        return set(node["attrs"].get("class", "").split())
+
+    def _text40(node):
+        return "".join(x if isinstance(x, str) else _text40(x) for x in node["content"])
+
+    def _ancestor40(node, cls=None, id=None, tag=None):
+        while node is not None:
+            if (cls and cls in _classes40(node)) or (id and node["attrs"].get("id") == id) or (tag and node["tag"] == tag):
+                return node
+            node = node["parent"]
+        return None
+
+    by40 = {p["slug"]: p for p in P}
+    urls40 = {p["url"]: p["slug"] for p in P}
+    degree40 = {slug: 0 for slug in by40}
+    for a40, b40 in ATLAS.get("edges") or ():
+        degree40[a40] = degree40.get(a40, 0) + 1
+        degree40[b40] = degree40.get(b40, 0) + 1
+    origins40 = {"independent": "Independent", "course": "Coursework", "personal": "Personal"}
+    terms40 = {"ind": "Origin / independent", "per": "Origin / personal", "cou": "Origin / coursework",
+               "too": "Tool marks", "shr": "Shared headings", "vis": "Reading record", "lnk": "Citation chords",
+               "dsc": "Document discs", "zon": "Origin zones", "aut": "Author datum", "cor": "Recorded origin light"}
+    common40 = re.search(r"/\* dossier-type:start \*/(.*?)/\* dossier-type:end \*/", css34, re.S)
+    scoped40 = []
+    if common40:
+        for selectors40, body40 in re.findall(r"([^{}]+)\{([^{}]*)\}", common40.group(1)):
+            scoped40.append(",".join("#__rb " + s.strip() for s in selectors40.split(",")) + "{" + body40 + "}")
+    token_names40 = ("meta-size", "meta-track", "meta-weight", "thead-weight", "radius", "ink-2", "ink-3", "rule", "rule-strong")
+    palettes40, base40 = [], {}
+    for match40, selector40, media40 in (
+            (mlight, "#__rb", ""),
+            (mmedia, ':root:where(:not([data-theme="light"])) #__rb', "@media (prefers-color-scheme:dark)"),
+            (mdark, ':root[data-theme="dark"] #__rb', "")):
+        values40 = dict(base40)
+        if match40:
+            values40.update({name: value.strip() for name, value in re.findall(r"--([a-z0-9-]+)\s*:\s*([^;{}]+);", match40.group(1))})
+        if any(name not in values40 for name in token_names40):
+            _fail40("site.css", "dossier palette omits a required typography or measured colour token")
+            continue
+        type_values40 = {"meta-size": ".72rem", "meta-track": ".08em", "meta-weight": "560", "thead-weight": "670", "radius": "0px"}
+        if any(values40.get(name) != value for name, value in type_values40.items()):
+            _fail40("site.css", "dossier typography must retain its declared size, tracking, weight and square corners")
+        if not base40:
+            base40 = values40
+        rule40 = selector40 + "{" + "".join("--%s:%s;" % (name, values40[name]) for name in token_names40) + "}"
+        palettes40.append(media40 + "{" + rule40 + "}" if media40 else rule40)
+    expected_css40 = "\n".join(["/* dossier-chrome:start */"] + palettes40 + scoped40 + ["/* dossier-chrome:end */"])
+    for f40 in html_files:
+        raw40 = open(os.path.join(OUT, f40), encoding="utf-8", errors="ignore").read()
+        doc40 = _Dossier40()
+        doc40.feed(raw40)
+        regs40 = [n for n in doc40.nodes if "dossier" in _classes40(n)]
+        rows40 = []
+        for node40 in doc40.nodes:
+            if "sr-t" not in _classes40(node40):
+                continue
+            owner40 = _ancestor40(node40, tag="li")
+            if owner40 and ("data-kind" in owner40["attrs"] or "data-search" in owner40["attrs"]):
+                rows40.append(node40)
+            elif owner40 is None or not (_classes40(owner40) & {"sr-head", "sr-sub"}):
+                _fail40(f40, "a shelf row has neither a piece record nor the existing subtotal/header role")
+        keys40 = [n for n in doc40.nodes if "dossier-key" in _classes40(n)]
+        required40 = f40 in urls40 and by40[urls40[f40]]["k"] != "Tool"
+        if not (regs40 or rows40 or keys40 or required40 or f40 == "atlas.html"):
+            continue
+        look("40", f40)
+        t40["pages"] += 1
+        row_regs40 = []
+        for row40 in rows40:
+            metas40 = [n for n in row40["children"] if "meta" in _classes40(n)]
+            links40 = [n for n in doc40.nodes if n["tag"] == "a" and _ancestor40(n, cls="sr-t") is row40]
+            slug40 = urls40.get(links40[0]["attrs"].get("href")) if links40 else None
+            if len(metas40) != 1 or "dossier" not in _classes40(metas40[0]) or metas40[0]["attrs"].get("data-dossier") != slug40:
+                _fail40(f40, "each shelf row must carry one dossier for its linked piece")
+            else:
+                row_regs40.append(metas40[0])
+        heads40 = [n for n in regs40 if _ancestor40(n, cls="sr-t") is None]
+        if len(heads40) != int(required40) or (heads40 and heads40[0]["attrs"].get("data-dossier") != urls40.get(f40)):
+            _fail40(f40, "each listed research header must carry exactly one dossier for that piece")
+        if heads40 and _ancestor40(heads40[0], id="__rb") is not None:
+            copies40 = re.findall(r"/\* dossier-chrome:start \*/.*?/\* dossier-chrome:end \*/", raw40, re.S)
+            if copies40 != [expected_css40] or not scoped40 or len(palettes40) != 3:
+                _fail40(f40, "the standalone dossier CSS disagrees with the measured source grammar or palettes")
+        elif heads40 and heads40[0]["attrs"].get("id") != "__rb-from":
+            _fail40(f40, "converted header metadata lacks the existing chrome-count exclusion")
+        for reg40 in regs40:
+            slug40 = reg40["attrs"].get("data-dossier")
+            if slug40 not in by40:
+                _fail40(f40, "dossier names an unknown piece " + repr(slug40))
+                continue
+            p40, children40 = by40[slug40], reg40["children"]
+            shelf40 = _ancestor40(reg40, cls="sr-t") is not None
+            t40["rows" if shelf40 else "headers"] += 1
+            want40 = {"dossier-origin": "Origin / " + origins40[p40["surface"]],
+                      "dossier-cites": "Citation chords / %d" % degree40.get(slug40, 0),
+                      "dossier-status": "Metadata verified by build"}
+            if not shelf40:
+                want40["dossier-counts"] = "{:,} words / {} figures / {} tables".format(p40["words"], p40["figures"], p40["tables"])
+            else:
+                want40["kind"] = p40["k"]
+                if p40["k"] != "Tool" and p40["words"] >= DOC_MIN:
+                    want40["s-min"] = "%d min" % max(1, round(p40["words"] / WPM))
+            for cls40, value40 in want40.items():
+                fields40 = [n for n in children40 if cls40 in _classes40(n)]
+                if len(fields40) != 1 or _text40(fields40[0]) != value40:
+                    _fail40(f40, "%s has an incorrect or duplicate %s" % (slug40, cls40))
+            # No wrappers, hidden stamps or decorative descendants can enter
+            # a register. The shelf retains its original tags and date.
+            expected40 = 5 + len(p40["tags"]) + int(p40["k"] != "Tool" and p40["words"] >= DOC_MIN) if shelf40 else 4
+            if len(children40) != expected40 or any(n["tag"] != "span" or n["children"] or "style" in n["attrs"] or "hidden" in n["attrs"] for n in children40):
+                _fail40(f40, slug40 + " exceeds the dossier's flat, recorded field budget")
+            if "style" in reg40["attrs"] or "hidden" in reg40["attrs"]:
+                _fail40(f40, slug40 + " overrides or hides its dossier")
+            if shelf40:
+                tags40 = [_text40(n) for n in children40 if "tag" in _classes40(n)]
+                dates40 = [_text40(n) for n in children40 if "metadate" in _classes40(n)]
+                if tags40 != p40["tags"] or dates40 != [p40["d"]]:
+                    _fail40(f40, slug40 + " changed the recorded tags or date")
+        statuses40 = [n for n in doc40.nodes if "dossier-status" in _classes40(n)]
+        if len(statuses40) != len(regs40) or any(_ancestor40(n, cls="dossier") is None for n in statuses40):
+            _fail40(f40, "metadata verification stamps must occur exactly once inside each dossier")
+        if f40 == "atlas.html":
+            if len(keys40) != 1 or len(keys40[0]["children"]) != len(terms40):
+                _fail40(f40, "the dossier key must retain all eleven recorded mark definitions")
+            else:
+                seen40 = []
+                for item40 in keys40[0]["children"]:
+                    fields40 = item40["children"]
+                    if item40["tag"] != "li" or len(fields40) != 3:
+                        _fail40(f40, "a key row must contain its existing swatch, term and explanation")
+                        continue
+                    mark40, term40, detail40 = fields40
+                    key40 = next((k for k in terms40 if "ak-" + k in _classes40(mark40)), None)
+                    seen40.append(key40)
+                    nested40 = detail40["children"]
+                    if (mark40["tag"] != "i" or mark40["children"] or term40["tag"] != "span" or term40["children"]
+                            or "dossier-term" not in _classes40(term40) or _text40(term40) != terms40.get(key40)
+                            or detail40["tag"] != "span" or "dossier-detail" not in _classes40(detail40) or not _text40(detail40).strip()
+                            or len(nested40) != int(key40 == "vis") or any(n["attrs"].get("id") != "aseen" or n["children"] for n in nested40)):
+                        _fail40(f40, "a dossier key term or its bounded explanation disagrees with the mark record")
+                    t40["keys"] += 1
+                if len(set(seen40)) != len(terms40) or set(seen40) != set(terms40):
+                    _fail40(f40, "the dossier key repeats or omits a recorded mark")
+
+    # These active rules use only the measured text tokens and square rules.
+    # A closed property/value grammar refuses opacity, filters, raw colours,
+    # custom overrides and other ways of evading Check 36's contrast floor.
+    allowed40 = {
+        "display": {"flex", "grid", "inline-block"}, "flex-wrap": {"wrap"}, "align-items": {"baseline"},
+        "gap": {".35rem .75rem", "0", ".5rem .75rem", ".3rem .65rem"},
+        "font-family": {"ui-monospace,SFMono-Regular,Menlo,Consolas,monospace", "inherit"},
+        "font-size": {"max(var(--meta-size),11.52px)"}, "letter-spacing": {"var(--meta-track)", ".01em"},
+        "font-weight": {"var(--meta-weight)", "var(--thead-weight)"}, "line-height": {"1.5"},
+        "text-transform": {"uppercase", "none"}, "font-variant-numeric": {"tabular-nums"},
+        "color": {"var(--ink-2)", "var(--ink-3)"},
+        "border-top": {"1px solid var(--rule)"}, "border-bottom": {"1px solid var(--rule)"},
+        "border": {"1px solid var(--rule-strong)"}, "border-radius": {"var(--radius)"},
+        "padding-top": {".5rem"}, "padding": {".12rem .4rem", ".6rem 0"},
+        "min-width": {"0"}, "white-space": {"normal"}, "overflow-wrap": {"anywhere"},
+        "grid-template-columns": {"1rem minmax(7rem,10rem) minmax(0,1fr)", "1rem minmax(0,1fr)"},
+        "grid-column": {"2"}}
+    look("40", "site.css")
+    rules40 = {}
+    for selectors40, declarations40 in re.findall(r"([^{}]+)\{([^{}]*)\}", css36):
+        if not re.search(r"\.dossier(?:[-\s.>:{,]|$)", selectors40):
+            continue
+        t40["rules"] += 1
+        for declaration40 in declarations40.split(";"):
+            if not declaration40.strip():
+                continue
+            prop40, sep40, value40 = declaration40.strip().partition(":")
+            if not sep40 or value40.strip() not in allowed40.get(prop40, set()):
+                _fail40("site.css", "unsupported dossier declaration " + declaration40.strip())
+            for selector40 in selectors40.split(","):
+                rules40.setdefault(selector40.strip(), {})[prop40] = value40.strip()
+    if t40["rules"] < 11:
+        _fail40("site.css", "the dossier's typography or key rules are missing")
+    required_type40 = {"font-family": "ui-monospace,SFMono-Regular,Menlo,Consolas,monospace",
+                       "font-size": "max(var(--meta-size),11.52px)", "letter-spacing": "var(--meta-track)",
+                       "font-weight": "var(--meta-weight)", "line-height": "1.5", "text-transform": "uppercase"}
+    for selector40 in (".dossier", ".dossier-key .dossier-term"):
+        if any(rules40.get(selector40, {}).get(prop) != value for prop, value in required_type40.items()):
+            _fail40("site.css", selector40 + " omits the required monospaced metadata typography")
 
     # 33. the editor. admin.html is hand-maintained and the build never
     # writes it. Held here: the file is byte-identical to the bytes this run
