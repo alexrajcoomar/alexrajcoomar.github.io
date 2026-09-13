@@ -527,7 +527,12 @@ async function measureOffline(port, mutate) {
   const ctx = await chromium.launchPersistentContext(profile, Object.assign({ serviceWorkers: 'allow', viewport: { width: 1280, height: 800 } }, LAUNCH));
   const page = ctx.pages()[0] || await ctx.newPage();
   const held = () => page.evaluate(async () => {
-    const ks = await caches.keys(); const k = ks.find(x => x.indexOf('site-pages-') === 0);
+    // the worker names its caches after its own registration scope, so the
+    // probe asks the page which worker it has rather than guessing a name:
+    // a worker that namespaced them wrongly is a worker this finds nothing for
+    const reg = await navigator.serviceWorker.getRegistration();
+    const ns = reg ? 'site[' + new URL(reg.scope).pathname + ']pages-' : null;
+    const ks = await caches.keys(); const k = ns && ks.find(x => x.indexOf(ns) === 0);
     if (!k) return { files: 0, marker: false };
     const c = await caches.open(k); const man = await c.match('offline-manifest.json');
     const files = man ? (await man.json()).files : [];
