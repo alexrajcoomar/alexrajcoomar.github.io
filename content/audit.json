@@ -4,7 +4,7 @@
   "tool": "build/audit.js",
   "browser": "Chromium 141.0.7390.37",
   "date": "2026-09-13",
-  "commit": "ed032e8",
+  "commit": "45853c1",
   "runs": [
    {
     "commit": "21aacf2",
@@ -184,7 +184,7 @@
    "motion": {
     "animations": 0
    },
-   "inputs": "5df90badc6d7",
+   "inputs": "7db73da69e22",
    "measured": "2026-09-13"
   },
   "about.html": {
@@ -237,7 +237,7 @@
    "motion": {
     "animations": 0
    },
-   "inputs": "6d5b722b126e",
+   "inputs": "fe21c46c43df",
    "measured": "2026-09-13"
   },
   "admin.html": {
@@ -284,7 +284,7 @@
     "scrollWidth": 320,
     "overflow": false
    },
-   "inputs": "e37ea7453c44",
+   "inputs": "7eb7ebafa024",
    "measured": "2026-09-13"
   },
   "afm241-cheat-sheet.html": {
@@ -857,7 +857,7 @@
    "motion": {
     "animations": 0
    },
-   "inputs": "95908054e0ce",
+   "inputs": "1acb591cc54c",
    "measured": "2026-09-13"
   },
   "brittle-network.html": {
@@ -970,7 +970,7 @@
    "motion": {
     "animations": 0
    },
-   "inputs": "0dbe7d018d30",
+   "inputs": "a8a7625794d8",
    "measured": "2026-09-13"
   },
   "controls.html": {
@@ -983,8 +983,8 @@
    },
    "errors": 0,
    "chrome": {
-    "a": 4599,
-    "b": 4554
+    "a": 4568,
+    "b": 4523
    },
    "print": {
     "stickyLeft": 0,
@@ -1023,7 +1023,7 @@
    "motion": {
     "animations": 0
    },
-   "inputs": "68324d4e0920",
+   "inputs": "08a976abc6bf",
    "measured": "2026-09-13"
   },
   "coursework.html": {
@@ -1076,7 +1076,7 @@
    "motion": {
     "animations": 0
    },
-   "inputs": "0a77e1ff39e6",
+   "inputs": "a2441da5b8a6",
    "measured": "2026-09-13"
   },
   "crucible-cockpit.html": {
@@ -1579,7 +1579,7 @@
    "motion": {
     "animations": 0
    },
-   "inputs": "4d31eff08c65",
+   "inputs": "d1a5afbb8aae",
    "measured": "2026-09-13"
   },
   "kennedy-dossier.html": {
@@ -1692,7 +1692,7 @@
    "motion": {
     "animations": 0
    },
-   "inputs": "89c76bd577e0",
+   "inputs": "82a673316bba",
    "measured": "2026-09-13"
   },
   "monroe-case-file.html": {
@@ -1885,7 +1885,7 @@
    "motion": {
     "animations": 0
    },
-   "inputs": "5a25a5da61e6",
+   "inputs": "73af4f0dafce",
    "measured": "2026-09-13"
   },
   "resume.html": {
@@ -1898,8 +1898,8 @@
    },
    "errors": 0,
    "chrome": {
-    "a": 797,
-    "b": 752
+    "a": 820,
+    "b": 775
    },
    "print": {
     "stickyLeft": 0,
@@ -1938,7 +1938,7 @@
    "motion": {
     "animations": 0
    },
-   "inputs": "73925ada32c4",
+   "inputs": "560fda5271bf",
    "measured": "2026-09-13"
   },
   "revenue-recognition.html": {
@@ -1971,8 +1971,8 @@
    },
    "errors": 0,
    "chrome": {
-    "a": 2945,
-    "b": 2900
+    "a": 2995,
+    "b": 2950
    },
    "print": {
     "stickyLeft": 0,
@@ -1985,7 +1985,7 @@
     "overflow": false
    },
    "keyboard": {
-    "stops": 35,
+    "stops": 37,
     "noRing": 0
    },
    "theme": {
@@ -2011,7 +2011,7 @@
    "motion": {
     "animations": 0
    },
-   "inputs": "f9ffd7560b85",
+   "inputs": "edbdeaa2385d",
    "measured": "2026-09-13"
   },
   "skill-forge.html": {
@@ -2164,7 +2164,7 @@
    "motion": {
     "animations": 0
    },
-   "inputs": "4e37e3438e47",
+   "inputs": "efd523ab9f48",
    "measured": "2026-09-13"
   },
   "transformers-study-guide.html": {

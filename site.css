@@ -3343,13 +3343,12 @@ html.selected-review .stack-end{
 .priority-title a{
   color:inherit;
   text-decoration:none;
+  border-bottom:1px solid var(--rule-strong);
 }
 
-.priority-title a::after{
-  content:"";
-  position:absolute;
-  inset:0;
-  z-index:1;
+.priority-title a:hover,
+.priority-title a:focus-visible{
+  border-bottom-color:var(--accent);
 }
 
 .priority-subtitle{
@@ -3768,4 +3767,128 @@ html.selected-review .stack-end{
   .priority-action{
     transition:none;
   }
+}
+
+
+/* ---------------- the handoff, and the resume's one figure -------- */
+/* What a reader who has read enough does next. Every value in it is one the
+   site already records, so the block cannot outlive the field behind it. */
+.review-handoff{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  gap:1rem clamp(1.5rem,4vw,3rem);
+  align-items:center;
+  margin-top:clamp(2.2rem,4vw,3.2rem);
+  padding:1rem 1.1rem;
+  background:var(--panel);
+  border:1px solid var(--rule-strong);
+  border-top:2px solid var(--ink-2);
+  border-bottom:3px solid var(--edge);
+}
+
+.handoff-label{
+  margin:0;
+  color:var(--accent);
+  font:560 .72rem/1.2 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+
+.handoff-line{
+  margin:.38rem 0 0;
+  color:var(--ink-2);
+  font-size:.92rem;
+  line-height:1.5;
+  max-width:46rem;
+}
+
+.handoff-line b{color:var(--ink);font-weight:660}
+
+.handoff-who{
+  margin:.3rem 0 0;
+  color:var(--ink-3);
+  font:560 .68rem/1.3 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  letter-spacing:.07em;
+  text-transform:uppercase;
+}
+
+.handoff-acts{
+  display:flex;
+  flex-wrap:wrap;
+  gap:.6rem;
+  margin:0;
+}
+
+.handoff-go{
+  display:flex;
+  align-items:center;
+  gap:.55rem;
+  min-height:2.75rem;
+  padding:.55rem .85rem;
+  background:var(--paper);
+  border:1px solid var(--edge);
+  border-radius:var(--radius);
+  color:var(--ink);
+  font-size:.82rem;
+  font-weight:660;
+  text-decoration:none;
+  white-space:nowrap;
+}
+
+.handoff-go:hover,
+.handoff-go:focus-visible{
+  background:var(--ink);
+  color:var(--paper);
+}
+
+/* The one figure from paid work, where a recruiter reads first. */
+.rproof{
+  display:grid;
+  grid-template-columns:auto minmax(0,1fr);
+  gap:.75rem 1.1rem;
+  align-items:start;
+  margin:1.1rem 0 0;
+  padding:.85rem 1rem;
+  background:var(--panel);
+  border:1px solid var(--rule-strong);
+  border-top:2px solid var(--ink-2);
+}
+
+.rproof-fig{margin:0}
+
+.rproof-fig b{
+  display:block;
+  color:var(--ink);
+  font-size:clamp(1.5rem,2.6vw,2rem);
+  font-weight:680;
+  line-height:1;
+  letter-spacing:-.02em;
+  font-variant-numeric:tabular-nums lining-nums;
+}
+
+.rproof-fig span{
+  display:block;
+  max-width:9rem;
+  margin-top:.32rem;
+  color:var(--ink-3);
+  font:560 .62rem/1.3 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  letter-spacing:.07em;
+  text-transform:uppercase;
+}
+
+.rproof-what p{margin:0;color:var(--ink-2);font-size:.88rem;line-height:1.5}
+.rproof-role{color:var(--ink);font-weight:640}
+.rproof-what p + p{margin-top:.25rem}
+
+@media (max-width:640px){
+  .review-handoff{grid-template-columns:1fr;padding:.85rem}
+  .handoff-acts{gap:.5rem}
+  .handoff-go{flex:1 1 auto;justify-content:space-between}
+  .rproof{grid-template-columns:1fr;gap:.5rem}
+  .rproof-fig span{max-width:none}
+}
+
+@media print{
+  .review-handoff{break-inside:avoid}
+  .rproof{background:none;border-color:#ddd9cf}
 }

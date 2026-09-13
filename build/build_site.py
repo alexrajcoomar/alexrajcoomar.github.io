@@ -989,6 +989,17 @@ def page_resume(summary=None):
         % (esc(p["d"]), esc(p["url"]), esc(p["t"]), esc(p["s"]),
            format(p["words"], ","), p["figures"], p["tables"])
         for p in feats)
+    proof = ""
+    for e in (RESUME_D.get("experience") or []):
+        pr = e.get("proof") or {}
+        if pr.get("value") and pr.get("unit"):
+            proof = ('<aside class="rproof"><p class="rproof-fig"><b>%s</b><span>%s%s</span></p>'
+                     '<div class="rproof-what"><p class="rproof-role">%s</p><p>%s</p></div></aside>'
+                     % (esc(pr["value"]), esc(pr["unit"]),
+                        (", " + esc(pr["when"])) if (pr.get("when") or "").strip() else "",
+                        esc(", ".join(x for x in (e.get("title") or "", e.get("employer") or "") if x)),
+                        esc(pr.get("line") or "")))
+            break
     w = coop_window()
     avail = esc(COOP_TERM) + ((", %s days from this build" % format(w["days"], ",")) if w and w["days"] > 0 else "")
 
@@ -1039,6 +1050,7 @@ def page_resume(summary=None):
   {" ".join(profile_links(resume=False))}</p>
   <p class="rprint">Every number below is counted by the build that wrote this page. For a PDF, print this page:
   it is laid out for paper and carries no navigation there.</p>
+{proof}
   </div>
 {resume_timeline_block()}
   </div>
@@ -1136,6 +1148,14 @@ def priority_card(i, d, p):
     metrics = "".join(
         f'<div class="priority-metric"><b>{v}</b><span>{lab.title()}</span></div>'
         for lab, v in measures)
+    # A card whose action opened the front door asked a reader to scroll twenty
+    # thousand pixels for the thing the card had just promised. The route is a
+    # section the piece's own invariance record holds, declared beside the
+    # reading it belongs to; without one the card falls back to the document.
+    route, label = p["url"], "Read %s" % p["t"]
+    if d.get("route") and d["route"] in case_headings(p["url"]):
+        route = "%s#%s" % (p["url"], d["route"])
+        label = d.get("route_label") or label
     return f"""      <article class="priority-card" data-piece="{esc(p["slug"])}">
         <p class="priority-sequence"><span><b>{review_seq(i)}</b> &#47;&#47; {esc(d["archetype"])}</span><span class="priority-signal">{esc(d.get("signal") or "Primary")}</span></p>
         <div class="priority-head">
@@ -1149,7 +1169,7 @@ def priority_card(i, d, p):
         <p class="priority-proof">{esc(d["callout"])}</p>
         <div class="priority-metrics">{metrics}</div>
         <p class="priority-note">{esc(d["note"])}</p>
-        <a class="priority-action" href="{esc(p["url"])}">Open {esc(p["t"])} <span aria-hidden="true">&#8599;</span></a>
+        <a class="priority-action" href="{esc(route)}">{esc(label)} <span aria-hidden="true">&#8599;</span></a>
       </article>"""
 
 
@@ -1168,6 +1188,35 @@ def support_card(i, d, p, first):
         <p class="support-measures">{measures}</p>
         <p class="support-open"><span>Open the dossier</span><span aria-hidden="true">&#8599;</span></p>
       </article>"""
+
+
+def handoff():
+    """What a reader who has read enough does next. Nothing here is typed: the
+    standing and the co-op term are the owner's fields in content/pieces.json,
+    the address is the one address the site holds, and the resume is a page
+    this build wrote. A field the owner has not filled renders nothing."""
+    c = (REVIEW.get("consoles") or {}).get("handoff") or {}
+    who = ", ".join(x for x in (STANDING and "Standing %s" % STANDING,
+                                "AFM Analytics at Waterloo") if x)
+    term = ("Available %s" % COOP_TERM) if COOP_TERM else ""
+    note = (c.get("note") or "").strip()
+    acts = []
+    if os.path.exists(os.path.join(OUT, "resume.html")):
+        acts.append('<a class="handoff-go" href="resume.html">%s <span aria-hidden="true">&#8599;</span></a>'
+                    % esc(c.get("resume") or "Read the resume"))
+    if EMAIL:
+        acts.append('<a class="handoff-go" href="mailto:%s">%s <span aria-hidden="true">&#8599;</span></a>'
+                    % (esc(EMAIL), esc(c.get("email") or "Email")))
+    if not acts:
+        return ""
+    return f"""  <aside class="review-handoff">
+    <div>
+      <p class="handoff-label">{esc(c.get("label") or "Available for co-op")}</p>
+      <p class="handoff-line"><b>{esc(term)}</b>{" " + esc(note) if note else ""}</p>
+      <p class="handoff-who">{esc(who)}</p>
+    </div>
+    <p class="handoff-acts">{"".join(acts)}</p>
+  </aside>"""
 
 
 def review_console():
@@ -1244,6 +1293,7 @@ def page_selected():
 <section class="shell stack-end">
 {review_console()}
 {support_console(len(review_cards("primary")) + 1)}
+{handoff()}
   <details class="full-audit">
     <summary>
       <span class="audit-label"><b>{esc(audit.get("label") or "Audit index")} &#47; all {len(feats):02d} files</b><br>{esc(slots)}</span>
@@ -6985,7 +7035,8 @@ def check_site():
     # card carries the reading its record declares, and the title, link and
     # three figures the page prints on a card are the piece's own. The cards
     # are read back from the file, not from the generator that wrote them.
-    t38r = T["review"] = {"primary": 0, "supporting": 0, "cards": 0, "broken": 0, "mismeasured": 0}
+    t38r = T["review"] = {"primary": 0, "supporting": 0, "cards": 0, "routes": 0,
+                          "broken": 0, "mismeasured": 0}
     _seen38 = {}
     for _side38 in ("primary", "supporting"):
         for _d38 in (REVIEW.get(_side38) or ()):
@@ -7012,6 +7063,25 @@ def check_site():
                     t38r["broken"] += 1
                     problems.append(_p("38", "content/review.json: %s gives %s nothing to print"
                                              % (_sl38, _k38)))
+            # a route sends a reader past the front of the document, so it is
+            # held exactly as a case slot is: the section has to exist in the
+            # piece and in the record that says what the piece carries
+            _rt38 = (_d38.get("route") or "").strip()
+            if _rt38:
+                t38r["routes"] += 1
+                _pr38 = _slug38[_sl38]
+                if _rt38 not in case_headings(_pr38["url"]):
+                    t38r["broken"] += 1
+                    problems.append(_p("38", "content/review.json: %s routes to #%s, and %s carries no "
+                                             "heading with that id" % (_sl38, _rt38, _pr38["url"])))
+                elif _rt38 not in set(((_inv38.get(_sl38) or {}).get("sets") or {}).get("ids") or ()):
+                    t38r["broken"] += 1
+                    problems.append(_p("38", "content/review.json: #%s is not an anchor the invariance "
+                                             "record holds for %s" % (_rt38, _sl38)))
+                if not str(_d38.get("route_label") or "").strip():
+                    t38r["broken"] += 1
+                    problems.append(_p("38", "content/review.json: %s routes to #%s and gives the link "
+                                             "no label" % (_sl38, _rt38)))
     for _sl38 in sorted(_feat38 - set(_seen38)):
         t38r["broken"] += 1
         problems.append(_p("38", "content/review.json: %s is featured and the review map does not "
@@ -7030,6 +7100,12 @@ def check_site():
                                          "does not place there" % (_slug_c38, _side38)))
                 continue
             _pc38 = _slug38[_slug_c38]
+            _want_rt38 = (dict((d["slug"], d) for d in (REVIEW.get(_side38) or {}) if isinstance(d, dict))
+                          .get(_slug_c38, {}).get("route") or "")
+            if _want_rt38 and ('href="%s#%s"' % (_pc38["url"], _want_rt38)) not in _inner38:
+                t38r["broken"] += 1
+                problems.append(_p("38", "selected.html: the %s card does not open at #%s, which the review "
+                                         "map routes it to" % (_slug_c38, _want_rt38)))
             if ('href="%s"' % _pc38["url"]) not in _inner38:
                 t38r["broken"] += 1
                 problems.append(_p("38", "selected.html: the %s card does not open %s"
@@ -7047,6 +7123,18 @@ def check_site():
         if t38r["cards"] != t38r["primary"] + t38r["supporting"]:
             problems.append(_p("38", "selected.html: draws %d review cards where the map places %d"
                                      % (t38r["cards"], t38r["primary"] + t38r["supporting"])))
+
+    # the resume's proof figure is the owner's, and is held to the entry it
+    # stands on: a card cannot print a number the entry's own lines do not.
+    for _e38 in (RESUME_D.get("experience") or []):
+        _pr38 = _e38.get("proof") or {}
+        if not (_pr38.get("value") or "").strip():
+            continue
+        look("38", "resume.html")
+        _lines38 = " ".join(_e38.get("lines") or [])
+        if _pr38["value"].strip() not in _lines38:
+            problems.append(_p("38", "content/resume.json: the proof on %s prints %s, which that entry's own "
+                                     "lines do not carry" % (_e38.get("employer") or "an entry", _pr38["value"])))
 
     # 39. the capability map. content/capabilities.json says which pieces
     # evidence each of the four things the about page claims, and that
@@ -7922,8 +8010,10 @@ def _typed_numerals(extra_known=None):
         for _c in (_e.get("coursework") or []):
             _res_text += [_c.get("label") or ""] + list(_c.get("items") or [])
     for _e in (_rd.get("experience") or []):
+        _pr = _e.get("proof") or {}
         _res_text += [_e.get("employer") or "", _e.get("place") or "", _e.get("title") or "",
-                      _res_dates(_e)] + list(_e.get("lines") or [])
+                      _res_dates(_e), _pr.get("value") or "", _pr.get("unit") or "",
+                      _pr.get("when") or "", _pr.get("line") or ""] + list(_e.get("lines") or [])
     for _e in (_rd.get("projects") or []):
         _res_text += [_e.get("title") or "", _e.get("when") or "", _e.get("note") or ""] + list(_e.get("lines") or [])
     for _g in (_rd.get("skills") or []) + (_rd.get("service") or []):

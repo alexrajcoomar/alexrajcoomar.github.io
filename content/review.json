@@ -1,11 +1,11 @@
 {
-  "note": "The review map for selected.html. It says which three featured pieces the page leads with, which four sit behind them, and what capability each one is being read as evidence of. Every one of those placements is a reading, not a measurement, which is why it lives here rather than in the build: the archetype, the domain, the proof callout and the note are written by the owner, and the title, subtitle, link, figure and counts beside them are recomputed from content/pieces.json and content/metrics.json on every build. What the build holds is this: the two sets together are exactly the pieces recorded as featured, no slug appears twice, every slug is listed and featured, and every numeral in a callout or a note is a numeral the piece itself states in its own text. A callout that says a number the piece does not say fails the build. Disagree with a placement by editing this file.",
+  "note": "The review map for selected.html. It says which three featured pieces the page leads with, which four sit behind them, what capability each one is being read as evidence of, and which section of each leading piece the card opens at. Every one of those placements is a reading, not a measurement, which is why it lives here rather than in the build: the archetype, the domain, the proof callout, the note and the route label are written by the owner, and the title, subtitle, link, figure and counts beside them are recomputed from content/pieces.json and content/metrics.json on every build. What the build holds is this: the two sets together are exactly the pieces recorded as featured, no slug appears twice, every slug is listed and featured, every route names a section the piece's own invariance record holds, and every numeral in a callout, note or label is a numeral the piece itself states in its own text. A callout that says a number the piece does not say fails the build, and so does a route to a section the piece does not carry. Disagree with a placement by editing this file.",
   "consoles": {
     "primary": {
       "label": "Primary review",
       "unit": "capabilities",
       "title": "Three capabilities, one file each.",
-      "intent": "The three files this page leads with, one to a capability. Every count on a card is measured on this build; which three lead is a reading, declared in content/review.json and open to disagreement."
+      "intent": "The three files this page leads with, one to a capability. Each card opens at the section that carries the working model rather than at the front of the document. Every count on a card is measured on this build; which three lead is a reading, declared in content/review.json and open to disagreement."
     },
     "supporting": {
       "label": "Supporting dossiers",
@@ -16,6 +16,12 @@
     "audit": {
       "label": "Audit index",
       "open": "Open the complete evidence register"
+    },
+    "handoff": {
+      "label": "Available for co-op",
+      "note": "The whole record is on this site, and every figure on it is counted by the build that wrote the page.",
+      "resume": "Read the résumé",
+      "email": "Email Alex"
     }
   },
   "primary": [
@@ -25,7 +31,9 @@
       "domain": "Systems / network craft",
       "signal": "Primary",
       "callout": "A research protocol: methodology only, no results",
-      "note": "Declares its hypotheses, falsification conditions, data architecture and analysis plan before any data is touched, and drafts in advance the abstract to be published if the central hypothesis fails."
+      "note": "Synthetic network demonstration. The protocol declares its hypotheses and falsification conditions before any data is touched, and claims no historical results.",
+      "route": "systems-modelling-and-network-vulnerability-test",
+      "route_label": "Inspect the network model"
     },
     {
       "slug": "the-trillion-dollar-vintage",
@@ -33,7 +41,9 @@
       "domain": "Financial architecture",
       "signal": "Primary",
       "callout": "Two rival anchors carried to the end, never averaged",
-      "note": "Keeps the fork between the two readings of the same capital cycle open to the end, draws open any mark arithmetic produced rather than an instrument measured, and corrects its own arithmetic in public."
+      "note": "Study edition. The fork between the two anchors is never closed, any mark arithmetic produced rather than an instrument measured is drawn open, and the page corrects its own arithmetic in public.",
+      "route": "the-fork-two-instruments-2-3-apart",
+      "route_label": "Compare the two anchors"
     },
     {
       "slug": "predictive-history",
@@ -41,7 +51,9 @@
       "domain": "Forecast audit / calibration",
       "signal": "Primary",
       "callout": "Fifteen systems and 148 couplings, under an instrument that failed its own test",
-      "note": "Carries the verdict three independent raters gave each claim, blind to the author, and publishes the finding in its narrow form rather than its strong one."
+      "note": "The audit instrument was run against its own falsification test and failed it. The finding is published in its narrow form rather than its strong one.",
+      "route": "fifteen-systems-and-what-moves-between-them",
+      "route_label": "Open the audit map"
     }
   ],
   "supporting": [
