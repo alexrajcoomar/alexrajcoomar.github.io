@@ -1702,6 +1702,22 @@
    "url": "canadian-dcf-cca.html",
    "title": "The tax base nobody discloses",
    "class": "new",
+   "changes": [
+    "recorded valuation lineage"
+   ],
+   "additions": [
+    {
+     "text": "The recorded roots of the tax base\nRead upward from the audited filing through four transcribed inputs, the tax-base reconciliation and both recorded readings. Amounts are CAD thousands; the rate is a percentage. This is the ancestry of the tax-base figure, not the complete valuation model. The original evidence tables and source disclosure follow.\nFiling, inputs, reconciliation and two tax-base readings The filed statements supply owned property, right of use assets, the deferred tax liability and the statutory rate. Liability divided by rate gives the temporary difference. Owned property less that difference gives the negative reading. Adding right of use assets gives the other reading. All eight nodes name their source record. Audited filing 2026-02-01 Owned property book value 1,258,499 Right of use book value 2,397,209 Deferred tax liability 739,329 Statutory tax rate 26.5% Reconciliation temporary difference 2,789,921 Owned only negative balance -1,531,422 With right of use assets 865,787",
+     "ids": [
+      "fs-vroot",
+      "vroot-title",
+      "vroot-desc"
+     ]
+    }
+   ],
+   "notes": [
+    "Added a static tree of the recorded tax-base reconstruction before the original source tables: one filed ancestor, four transcribed inputs, the temporary-difference reconciliation and both tax-base readings. All original text, tables and drawings remain. The new figure is substantive content and is included in the piece measurements. No dependency claim is made for the complete per-share valuation."
+   ],
    "text_diff": [
     "(new in this pass: no baseline text)"
    ]

@@ -19,6 +19,11 @@ CASES   = json.load(open(os.path.join(ROOT, "content", "cases.json"), encoding="
 # page says the portfolio demonstrates. Membership is a reading; every number
 # printed beside it is recomputed from the measurements on each build.
 CAPS    = json.load(open(os.path.join(ROOT, "content", "capabilities.json"), encoding="utf-8"))
+# the review map: which three featured pieces the selected page leads with,
+# which four stand behind them, and what capability each is read as evidence
+# of. A reading like the case map, kept out of this file for the same reason;
+# every title, link, figure and count printed beside it is recomputed here.
+REVIEW  = json.load(open(os.path.join(ROOT, "content", "review.json"), encoding="utf-8"))
 # the parts of a resume nothing here can measure: education, employment and
 # named skills. Everything else on resume.html is generated from the same
 # measurements the rest of the site uses, and a section with no entries is
@@ -283,12 +288,16 @@ def stamp_assets(generated):
             ASSET_V[name] = _digest(open(path, encoding="utf-8",
                                          errors="ignore").read())
 
-def head(title, desc, page, extra=""):
+def head(title, desc, page, extra="", cls=""):
     CUR = ' aria-current="page"'
     nav = "\n      ".join(
         f'<a href="{u}"{CUR if u==page else ""}>{t}</a>' for u, t in NAV)
+    # a page class on the root element, for the one page whose layout is its
+    # own. The theme script appends " js" to className rather than setting it,
+    # so a class written here is still there after first paint.
+    root = f' class="{esc(cls)}"' if cls else ""
     return f"""<!DOCTYPE html>
-<html lang="en-CA">
+<html lang="en-CA"{root}>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -544,6 +553,14 @@ def fingerprint_coverage():
         out["elements"] += (1 + (1 if d["T"] else 0) + (1 if d["F"] else 0)
                             + (1 if (d["C"] and d["F"] >= 2) else 0) + d["F"] + 2)
     return out
+
+
+# The boxes that hold a drawn instrument and nothing else. A rule may place
+# one of these and colour it; it may not set a size on what is inside it,
+# because the figure's stroke rule was computed for the one size the build
+# draws it at. Named here so check 35 can refuse a descendant rule that
+# reaches the instrument without naming its class.
+INSTRUMENT_FRAMES = ("cfig", "priority-fingerprint", "support-fingerprint")
 
 
 def piece_fingerprint(p):
@@ -972,6 +989,17 @@ def page_resume(summary=None):
         % (esc(p["d"]), esc(p["url"]), esc(p["t"]), esc(p["s"]),
            format(p["words"], ","), p["figures"], p["tables"])
         for p in feats)
+    proof = ""
+    for e in (RESUME_D.get("experience") or []):
+        pr = e.get("proof") or {}
+        if pr.get("value") and pr.get("unit"):
+            proof = ('<aside class="rproof"><p class="rproof-fig"><b>%s</b><span>%s%s</span></p>'
+                     '<div class="rproof-what"><p class="rproof-role">%s</p><p>%s</p></div></aside>'
+                     % (esc(pr["value"]), esc(pr["unit"]),
+                        (", " + esc(pr["when"])) if (pr.get("when") or "").strip() else "",
+                        esc(", ".join(x for x in (e.get("title") or "", e.get("employer") or "") if x)),
+                        esc(pr.get("line") or "")))
+            break
     w = coop_window()
     avail = esc(COOP_TERM) + ((", %s days from this build" % format(w["days"], ",")) if w and w["days"] > 0 else "")
 
@@ -1022,6 +1050,7 @@ def page_resume(summary=None):
   {" ".join(profile_links(resume=False))}</p>
   <p class="rprint">Every number below is counted by the build that wrote this page. For a PDF, print this page:
   it is laid out for paper and carries no navigation there.</p>
+{proof}
   </div>
 {resume_timeline_block()}
   </div>
@@ -1072,6 +1101,7 @@ def slot_grid(feats):
         f' <b>{cov[k]}</b></li>' for k, lab, c in SLOT_KINDS)
     return f"""  <aside class="slotwrap" aria-labelledby="slots-h">
     <h2 id="slots-h" class="slots-h">The shape, filled</h2>
+    <p class="slotcount">{len(feats):02d} files / {len(CASE_SLOTS):02d} tests</p>
     <div class="slotscroll">
     <table class="slots">
       <caption class="sr">{len(feats)} featured pieces by eight slots: {cov["slots"]} slots,
@@ -1087,17 +1117,166 @@ def slot_grid(feats):
   </aside>"""
 
 
+def review_cards(key):
+    """One side of the review map, resolved against the pieces. The record
+    supplies the reading, which is the archetype, the domain, the proof
+    callout and the note; everything else on the card comes back from the
+    piece's own entry. A slug the file names but the corpus does not list
+    resolves to nothing and is dropped here, so the page cannot print a card
+    with no document behind it; check 38 refuses the build that did it."""
+    out = []
+    for i, d in enumerate(REVIEW.get(key) or (), 1):
+        p = CASE_BY_SLUG.get(d.get("slug"))
+        if p and p.get("featured"):
+            out.append((i, d, p))
+    return out
+
+
+def review_seq(n, first=1):
+    """A card's place in its console. A position, not a quantity: it is
+    written in the same wrapper the statement's row numbers use, and is cut
+    out of the typed-numeral scan with them."""
+    return '<span class="num tnum">%02d</span>' % (n + first - 1)
+
+
+def priority_card(i, d, p):
+    """One primary card: the position and the archetype, the piece's own
+    title, subtitle and figure, the declared callout, the three measured
+    figures, the declared note, and the piece itself at the end of it."""
+    measures = (("words", f'{p["words"]:,}'), ("figures", str(p["figures"])),
+                ("tables", str(p["tables"])))
+    metrics = "".join(
+        f'<div class="priority-metric"><b>{v}</b><span>{lab.title()}</span></div>'
+        for lab, v in measures)
+    # A card whose action opened the front door asked a reader to scroll twenty
+    # thousand pixels for the thing the card had just promised. The route is a
+    # section the piece's own invariance record holds, declared beside the
+    # reading it belongs to; without one the card falls back to the document.
+    route, label = p["url"], "Read %s" % p["t"]
+    if d.get("route") and d["route"] in case_headings(p["url"]):
+        route = "%s#%s" % (p["url"], d["route"])
+        label = d.get("route_label") or label
+    return f"""      <article class="priority-card" data-piece="{esc(p["slug"])}">
+        <p class="priority-sequence"><span><b>{review_seq(i)}</b> &#47;&#47; {esc(d["archetype"])}</span><span class="priority-signal">{esc(d.get("signal") or "Primary")}</span></p>
+        <div class="priority-head">
+          <div>
+            <p class="priority-domain">{esc(d["domain"])}</p>
+            <h3 class="priority-title"><a href="{esc(p["url"])}">{esc(p["t"])}</a></h3>
+            <p class="priority-subtitle">{esc(p["s"])}</p>
+          </div>
+          <div class="priority-fingerprint" aria-hidden="true">{piece_fingerprint(p)}</div>
+        </div>
+        <p class="priority-proof">{esc(d["callout"])}</p>
+        <div class="priority-metrics">{metrics}</div>
+        <p class="priority-note">{esc(d["note"])}</p>
+        <a class="priority-action" href="{esc(route)}">{esc(label)} <span aria-hidden="true">&#8599;</span></a>
+      </article>"""
+
+
+def support_card(i, d, p, first):
+    """One supporting card, in the quieter register: the same measured
+    figures on one line, and the piece's own title carrying the link."""
+    measures = " ".join(
+        f'<span>{v} {lab}</span>' for lab, v in
+        (("words", f'{p["words"]:,}'), ("figures", str(p["figures"])), ("tables", str(p["tables"]))))
+    return f"""      <article class="support-card" data-piece="{esc(p["slug"])}">
+        <p class="support-sequence"><b>{review_seq(i, first)}</b> {esc(d["archetype"])}</p>
+        <h3 class="support-title-card"><a href="{esc(p["url"])}">{esc(p["t"])}</a></h3>
+        <p class="support-subtitle">{esc(p["s"])}</p>
+        <div class="support-fingerprint" aria-hidden="true">{piece_fingerprint(p)}</div>
+        <p class="support-proof">{esc(d["callout"])}</p>
+        <p class="support-measures">{measures}</p>
+        <p class="support-open"><span>Open the dossier</span><span aria-hidden="true">&#8599;</span></p>
+      </article>"""
+
+
+def handoff():
+    """What a reader who has read enough does next. Nothing here is typed: the
+    standing and the co-op term are the owner's fields in content/pieces.json,
+    the address is the one address the site holds, and the resume is a page
+    this build wrote. A field the owner has not filled renders nothing."""
+    c = (REVIEW.get("consoles") or {}).get("handoff") or {}
+    who = ", ".join(x for x in (STANDING and "Standing %s" % STANDING,
+                                "AFM Analytics at Waterloo") if x)
+    term = ("Available %s" % COOP_TERM) if COOP_TERM else ""
+    note = (c.get("note") or "").strip()
+    acts = []
+    if os.path.exists(os.path.join(OUT, "resume.html")):
+        acts.append('<a class="handoff-go" href="resume.html">%s <span aria-hidden="true">&#8599;</span></a>'
+                    % esc(c.get("resume") or "Read the resume"))
+    if EMAIL:
+        acts.append('<a class="handoff-go" href="mailto:%s">%s <span aria-hidden="true">&#8599;</span></a>'
+                    % (esc(EMAIL), esc(c.get("email") or "Email")))
+    if not acts:
+        return ""
+    return f"""  <aside class="review-handoff">
+    <div>
+      <p class="handoff-label">{esc(c.get("label") or "Available for co-op")}</p>
+      <p class="handoff-line"><b>{esc(term)}</b>{" " + esc(note) if note else ""}</p>
+      <p class="handoff-who">{esc(who)}</p>
+    </div>
+    <p class="handoff-acts">{"".join(acts)}</p>
+  </aside>"""
+
+
+def review_console():
+    """The first level of the decision: three capabilities, one file each.
+    The count in the label is the length of the resolved set, so the label
+    and the grid under it cannot print different numbers."""
+    cards = review_cards("primary")
+    c = (REVIEW.get("consoles") or {}).get("primary") or {}
+    return f"""  <section class="review-console" aria-labelledby="primary-review-title">
+    <header class="review-console-head">
+      <div>
+        <p class="review-label">{esc(c.get("label") or "Primary review")} &#47; {len(cards):02d} {esc(c.get("unit") or "capabilities")}</p>
+        <h2 class="review-title" id="primary-review-title">{esc(c.get("title") or "")}</h2>
+      </div>
+      <p class="review-intent">{esc(c.get("intent") or "")}</p>
+    </header>
+    <div class="primary-grid">
+{chr(10).join(priority_card(i, d, p) for i, d, p in cards)}
+    </div>
+  </section>"""
+
+
+def support_console(first):
+    """The second level: the rest of the featured set, measured the same way
+    and one click away, in a register that does not compete with the first."""
+    cards = review_cards("supporting")
+    c = (REVIEW.get("consoles") or {}).get("supporting") or {}
+    return f"""  <section class="support-console" aria-labelledby="support-review-title">
+    <header class="support-console-head">
+      <div>
+        <p class="support-label">{esc(c.get("label") or "Supporting dossiers")} &#47; {len(cards):02d} {esc(c.get("unit") or "files")}</p>
+        <h2 class="support-title" id="support-review-title">{esc(c.get("title") or "")}</h2>
+      </div>
+      <p class="support-intent">{esc(c.get("intent") or "")}</p>
+    </header>
+    <div class="support-grid">
+{chr(10).join(support_card(i, d, p, first) for i, d, p in cards)}
+    </div>
+  </section>"""
+
+
 def page_selected():
-    """The pieces recorded as featured, each read against the same eight
-    slots. Every slot that is filled points at something that already exists:
-    a heading the piece carries, a document the corpus records a link to, or a
-    value this build computed. Nothing here is a new sentence about the work."""
+    """The pieces recorded as featured, read at two depths. The first screen
+    is a decision: three capabilities with one file each, then the rest of the
+    set in a quieter register. The complete reading against the same eight
+    slots is under the disclosure, unchanged, because the shape is what the
+    page is for and a summary is not allowed to replace it. Every slot that is
+    filled still points at something that already exists: a heading the piece
+    carries, a document the corpus records a link to, or a value this build
+    computed. Nothing here is a new sentence about the work except the
+    archetypes and callouts declared in content/review.json, and every numeral
+    in one of those is held to the piece it describes."""
     feats = featured_pieces()
     cov = case_coverage()
     entries = "\n".join(case_entry(i, p) for i, p in enumerate(feats, 1))
     w = sum(p["words"] for p in feats)
     f = sum(p["figures"] for p in feats)
     t = sum(p["tables"] for p in feats)
+    audit = (REVIEW.get("consoles") or {}).get("audit") or {}
+    slots = ", ".join(label for _k, label, _m in CASE_SLOTS)
     body = f"""<div class="hero tight shell">
   <div class="herowrap">
   <div class="herolead">
@@ -1112,6 +1291,15 @@ def page_selected():
   </div>
 </div>
 <section class="shell stack-end">
+{review_console()}
+{support_console(len(review_cards("primary")) + 1)}
+{handoff()}
+  <details class="full-audit">
+    <summary>
+      <span class="audit-label"><b>{esc(audit.get("label") or "Audit index")} &#47; all {len(feats):02d} files</b><br>{esc(slots)}</span>
+      <span class="audit-open">{esc(audit.get("open") or "Open the complete evidence register")} <span aria-hidden="true">+</span></span>
+    </summary>
+    <div class="full-audit-inner">
   <p class="caselead">{cov["slots"]} slots over {cov["pieces"]} pieces: {cov["sec"]} answered by a section,
   {cov["doc"]} by a linked document, {cov["rec"]} by a record, {cov["gap"]} not carried.
   <a href="#casenotes">How a slot is filled &#8595;</a></p>
@@ -1123,17 +1311,21 @@ def page_selected():
     The rest print a value this build already holds: the line the piece declares it was built from, or
     the artifact itself. A slot nothing answers says <i>not carried</i>, and is counted.</p>
     <p><b>What is measured and what is not.</b> The counts, the links and the figure on each entry are measured.
-    Which heading answers which slot is a reading, declared in <code>content/cases.json</code>. The build checks
-    that every anchor exists, that every heading is quoted as the invariance record holds it, and that every
-    named document is a recorded link; it does not check that the reading is the right one. Disagree with a
-    placement and the file is the place to say so.</p>
+    Which heading answers which slot is a reading, declared in <code>content/cases.json</code>, and which three
+    pieces lead is a second reading, declared in <code>content/review.json</code>. The build checks
+    that every anchor exists, that every heading is quoted as the invariance record holds it, that every
+    named document is a recorded link, and that the two review sets together are exactly the featured
+    pieces with nothing counted twice; it does not check that either reading is the right one. Disagree with a
+    placement and the files are the place to say so.</p>
   </div>
+    </div>
+  </details>
 </section>
 """
     return head(f"Selected work · {SHORT}",
                 f"{len(feats)} featured pieces by Alex Rajcoomar read against one shape: question, context, approach, "
                 f"evidence, build, finding, limitation, artifact, every slot pointing at the piece's own record.",
-                "selected.html") + body + foot()
+                "selected.html", cls="selected-review") + body + foot()
 
 
 def shelf_row(k, p, extra="", fp=False):
@@ -1156,7 +1348,7 @@ def shelf_row(k, p, extra="", fp=False):
             <h3><a href="{p['url']}">{esc(p['t'])}</a></h3>
             <p class="s">{esc(p['s'])}</p>
             {rule}
-            <p class="meta">{kind_chip(p)}{surf(p)}{mins}<span class="metadate">{esc(p['d'])}</span>{tags}</p>
+            <p class="meta dossier" data-dossier="{esc(p['slug'])}">{kind_chip(p)}{surf(p, dossier=True)}{mins}<span class="metadate">{esc(p['d'])}</span>{tags}<span class="dossier-cites">Citation chords / {link_degree(p['slug'])}</span><span class="dossier-status">Metadata verified by build</span></p>
             {extra}
           </div>
           <div class="sr-n"><span class="tnum">{md(p['words'], 'words', p['slug'])}</span><span class="tnum">{md(p['figures'], 'figures', p['slug'], str(p['figures']))}</span><span class="tnum">{md(p['tables'], 'tables', p['slug'], str(p['tables']))}</span></div>
@@ -1261,8 +1453,10 @@ def google_font_families():
 
 SURF_LABEL = {"independent":"Independent","course":"Coursework","personal":"Personal"}
 
-def surf(p):
-    return f'<span class="surf surf-{p["surface"]}">{SURF_LABEL[p["surface"]]}</span>'
+def surf(p, dossier=False):
+    cls = " dossier-origin" if dossier else ""
+    label = ("Origin / " if dossier else "") + SURF_LABEL[p["surface"]]
+    return f'<span class="surf surf-{p["surface"]}{cls}">{label}</span>'
 
 def piece_mins(p):
     """The derived reading time, or None. A Tool carries none whatever its
@@ -1484,6 +1678,127 @@ def strip_css():
                        + fid + "{" + body + "}}")
             out.append(":root[data-theme=\"dark\"] #" + fid + "{" + body + "}")
     return "\n".join(out)
+
+
+def valuation_lineage_css():
+    """A declared figure scope, using the site's already measured palettes."""
+    css = open(os.path.join(OUT, "site.css"), encoding="utf-8").read()
+    clean = re.sub(r"/\*.*?\*/", "", css, flags=re.S)
+    names = ("paper", "panel", "ink", "ink-2", "ink-3", "rule", "rule-strong", "edge",
+             "accent", "alt-paper", "alt-ink", "radius")
+    palettes = []
+    for pattern, selector, media in (
+            (r"(?m)^:root\{([^{}]*)\}", "#fs-vroot", ""),
+            (r':root:where\(:not\(\[data-theme="light"\]\)\)\{([^{}]*)\}',
+             ':root:where(:not([data-theme="light"])) #fs-vroot', "@media (prefers-color-scheme:dark)"),
+            (r':root\[data-theme="dark"\]\{([^{}]*)\}', ':root[data-theme="dark"] #fs-vroot', "")):
+        match = re.search(pattern, clean)
+        values = dict(re.findall(r"--([a-z0-9-]+)\s*:\s*([^;{}]+);", match.group(1))) if match else {}
+        roles = (("--vr-surface:var(--alt-paper);--vr-label:var(--alt-ink);"
+                  "--vr-value-ink:var(--alt-ink);") if selector == "#fs-vroot" else
+                 ("--vr-surface:var(--panel);--vr-label:var(--ink-2);"
+                  "--vr-value-ink:var(--ink);"))
+        rule = selector + "{" + "".join("--%s:%s;" % (name, values[name].strip()) for name in names if name in values) + roles + "}"
+        palettes.append(media + "{" + rule + "}" if media else rule)
+    return "\n".join(palettes) + """
+#fs-vroot{margin:2rem 0;padding:1rem;border:1px solid var(--rule);border-radius:var(--radius);background:var(--paper);color:var(--ink)}
+#fs-vroot figcaption{margin:0 0 1rem;max-width:40rem;color:var(--ink-2)}
+#fs-vroot .vr-title{display:block;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.8rem;letter-spacing:.08em;text-transform:uppercase;font-weight:600;color:var(--ink)}
+#fs-vroot .vr-scope{margin:.6rem 0 0;font-size:.9rem;line-height:1.5}
+#fs-vroot svg{display:block;width:100%;max-width:25rem;height:auto;margin:auto;overflow:visible}
+#fs-vroot .vr-edge{fill:none;stroke:var(--edge);stroke-width:1;vector-effect:non-scaling-stroke}
+#fs-vroot .vr-node rect{fill:var(--vr-surface);stroke:var(--rule-strong);stroke-width:1;vector-effect:non-scaling-stroke}
+#fs-vroot .vr-node[data-node$="-reading"] rect{stroke:var(--accent);stroke-width:2}
+#fs-vroot text{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:14px;fill:var(--vr-label);text-anchor:middle;font-variant-numeric:tabular-nums}
+#fs-vroot .vr-node text:not(.vr-value){font-size:12px;letter-spacing:.055em;text-transform:uppercase}
+#fs-vroot .vr-value{font-size:15px;font-weight:650;letter-spacing:0;fill:var(--vr-value-ink)}
+@media print{#fs-vroot{break-inside:avoid;page-break-inside:avoid}}
+@media print{#fs-vroot svg{max-width:18rem}}
+"""
+
+
+def valuation_lineage():
+    """The tax-base reconciliation only, not the full valuation dependency graph.
+    Records supply every value. The declared edges are the two reconciliation
+    identities in valuation.py, with no inferred links to the pricing anchors.
+    Missing records are left missing so Check 41 can name the absent ancestor.
+    """
+    records = {}
+    for name in ("inputs", "output"):
+        try:
+            records[name] = json.load(open(os.path.join(OUT, "content/valuation-" + name + ".json"), encoding="utf-8"))
+        except (OSError, ValueError):
+            records[name] = {}
+    specs = (
+        ("filing", "inputs", "filing/period_end", ("Audited filing",), 60, 610, 180, 80),
+        ("owned", "inputs", "ppe_note/total_net_book_value_closing", ("Owned property", "book value"), 8, 310, 138, 88),
+        ("rou", "inputs", "leases_note/right_of_use_assets_net_book_value/current", ("Right of use", "book value"), 154, 310, 138, 88),
+        ("dtl", "inputs", "tax_note/deferred_tax_liability_ppe/current", ("Deferred tax", "liability"), 8, 450, 138, 88),
+        ("rate", "inputs", "tax_note/statutory_rate_combined/current", ("Statutory", "tax rate"), 154, 450, 138, 88),
+        ("difference", "output", "tax_base/current/temporary_difference", ("Reconciliation", "temporary difference"), 48, 174, 204, 88),
+        ("owned-reading", "output", "tax_base/current/reading_owned_only_ucc", ("Owned only", "negative balance"), 8, 18, 138, 88),
+        ("rou-reading", "output", "tax_base/current/reading_with_right_of_use_ucc", ("With right", "of use assets"), 154, 18, 138, 88))
+    edges = (("filing", "owned"), ("filing", "rou"), ("filing", "dtl"), ("filing", "rate"),
+             ("dtl", "difference"), ("rate", "difference"), ("owned", "owned-reading"),
+             ("difference", "owned-reading"), ("owned", "rou-reading"), ("rou", "rou-reading"),
+             ("difference", "rou-reading"))
+    # The perimeter lanes keep direct book balances separate from the
+    # division at the centre. Geometry is declared, never random or animated.
+    routes = {
+        ("filing", "owned"): "M 120 610 L 120 566 L 2 566 L 2 412 L 77 412 L 77 398",
+        ("filing", "rou"): "M 180 610 L 180 566 L 298 566 L 298 412 L 223 412 L 223 398",
+        ("filing", "dtl"): "M 135 610 C 135 566 77 580 77 538",
+        ("filing", "rate"): "M 165 610 C 165 566 223 580 223 538",
+        ("dtl", "difference"): "M 77 450 C 77 424 148 430 148 404 L 148 284 C 148 272 130 274 130 262",
+        ("rate", "difference"): "M 223 450 C 223 424 152 430 152 404 L 152 284 C 152 272 170 274 170 262",
+        ("owned", "owned-reading"): "M 45 310 C 4 266 4 148 45 106",
+        ("difference", "owned-reading"): "M 120 174 C 120 142 106 138 106 106",
+        ("owned", "rou-reading"): "M 108 310 L 108 298 L 296 298 L 296 120 L 260 106",
+        ("rou", "rou-reading"): "M 262 310 C 292 276 292 140 245 106",
+        ("difference", "rou-reading"): "M 180 174 C 180 142 194 138 194 106"}
+    out = ['<figure id="fs-vroot" class="valuation-lineage">',
+           '<figcaption><strong class="vr-title">The recorded roots of the tax base</strong>',
+           '<p class="vr-scope">Read upward from the audited filing through four transcribed inputs, the tax-base reconciliation and both recorded readings. Amounts are CAD thousands; the rate is a percentage. This is the ancestry of the tax-base figure, not the complete valuation model. The original evidence tables and source disclosure follow.</p></figcaption>',
+           '<svg viewBox="0 0 300 710" role="img" aria-labelledby="vroot-title vroot-desc">',
+           '<title id="vroot-title">Filing, inputs, reconciliation and two tax-base readings</title>',
+           '<desc id="vroot-desc">The filed statements supply owned property, right of use assets, the deferred tax liability and the statutory rate. Liability divided by rate gives the temporary difference. Owned property less that difference gives the negative reading. Adding right of use assets gives the other reading. All eight nodes name their source record.</desc>']
+    for source, target in edges:
+        out.append('<path class="vr-edge" data-from="%s" data-to="%s" d="%s"/>' % (source, target, routes.get((source, target), "M 0 0 L 1 1")))
+    for key, source, pointer, labels, x, y, width, height in specs:
+        value = records[source]
+        try:
+            for part in pointer.split("/"):
+                value = value[part]
+        except (KeyError, TypeError):
+            continue
+        shown = str(value) if key == "filing" else ("%g%%" % value if key == "rate" else format(value, ","))
+        out.append('<g class="vr-node" data-node="%s" data-record="content/valuation-%s.json#/%s" data-value="%s">'
+                   % (key, source, pointer, esc(json.dumps(value))))
+        out.append('<rect x="%d" y="%d" width="%d" height="%d"/>' % (x, y, width, height))
+        for line, label in enumerate(labels):
+            out.append('<text x="%g" y="%d">%s</text>' % (x + width / 2, y + 23 + 18 * line, esc(label)))
+        out.append('<text class="vr-value" x="%g" y="%d">%s</text></g>' % (x + width / 2, y + 68, esc(shown)))
+    out.append('</svg></figure>')
+    return "\n".join(out)
+
+
+def own_valuation_lineage(path):
+    """Insert substantive recorded content before the existing source tables.
+    The marker owns replacement only; it is deliberately not excluded from
+    the piece's measurements or invariance ledger.
+    """
+    text = open(path, encoding="utf-8").read()
+    text = re.sub(r'<!--__roots-->.*?<!--/__roots-->\n?', '', text, flags=re.S)
+    anchor = '<h2 id="s-02-what-the-filing-does-say">'
+    if text.count(anchor) != 1:
+        return False
+    block = '<!--__roots-->\n' + valuation_lineage() + '\n<!--/__roots-->\n'
+    new = text.replace(anchor, block + anchor, 1)
+    old = open(path, encoding="utf-8").read()
+    if new != old:
+        os.chmod(path, 0o644)
+        open(path, "w", encoding="utf-8").write(new)
+    return True
 REFIT = json.load(open(os.path.join(HERE, "refit.json"), encoding="utf-8"))
 SPECS = json.load(open(os.path.join(HERE, "specimens.json"), encoding="utf-8"))
 
@@ -3061,7 +3376,7 @@ RETURN_BAR = """
 #__rb .__rb-right{margin-left:auto;display:flex;gap:1.1rem;flex-wrap:wrap}
 /* the piece's own row of the statement: origin, words, figures, tables, the
    same figures the home page prints for it, from the same measurement */
-#__rb .__rb-row{color:#66635a;font-variant-numeric:tabular-nums;white-space:nowrap}
+#__rb .__rb-row{flex-basis:100%;order:3;color:#66635a;font-variant-numeric:tabular-nums;white-space:normal}
 #__rb .__rb-row b{font-weight:600;color:#55524a}
 @media (max-width:44rem){#__rb .__rb-row{flex-basis:100%;order:3;white-space:normal}}
 /* what the piece was built from, in the owner's words, from pieces.json */
@@ -3100,11 +3415,12 @@ RETURN_BAR = """
 :root[data-theme="dark"] #__rb .__rb-from b{color:#b9bbc1}
 :root[data-theme="dark"] #__rb a{color:#8fb6ee}
 :root[data-theme="dark"] #__rb .__mark{background:#f3f3f0;color:#0d0e11}
+__DOSSIER_CSS__
 @media print{#__rb{display:none !important}}
 </style>
 <nav id="__rb" aria-label="Portfolio">
   <a class="__rb-home" href="index.html">__MARK__Alex Rajcoomar <i>portfolio</i></a>
-  <span class="__rb-row">__ROW__</span>
+  <span class="__rb-row dossier" data-dossier="__DOSSIER__">__ROW__</span>
   <span class="__rb-right"><a href="__UP__">__UPNAME__</a><a href="atlas.html">Atlas</a><a href="library.html">All work</a></span>
   __FROM__
 </nav>
@@ -3275,8 +3591,58 @@ def _body_tag(text):
 def piece_row(p):
     if not p:
         return ""
-    return (f'{SURF_LABEL[p["surface"]]} &middot; <b>{p["words"]:,}</b> words &middot; '
-            f'<b>{p["figures"]}</b> figures &middot; <b>{p["tables"]}</b> tables')
+    return (f'<span class="dossier-origin">Origin / {SURF_LABEL[p["surface"]]}</span>'
+            f'<span class="dossier-counts">{p["words"]:,} words / {p["figures"]} figures / {p["tables"]} tables</span>'
+            f'<span class="dossier-cites">Citation chords / {link_degree(p["slug"])}</span>'
+            '<span class="dossier-status">Metadata verified by build</span>')
+
+
+def dossier_chrome_css():
+    """Copy the shared register grammar into the existing standalone bar.
+    Its selectors and tokens are scoped to the bar, so legacy piece styles
+    keep their own layout. An incomplete source returns no fragment; Check
+    40 then refuses the missing contract with the rest of its readback."""
+    try:
+        css = open(os.path.join(OUT, "site.css"), encoding="utf-8").read()
+    except OSError:
+        return ""
+    marked = re.search(r"/\* dossier-type:start \*/(.*?)/\* dossier-type:end \*/", css, re.S)
+    if not marked:
+        return ""
+    clean = re.sub(r"/\*.*?\*/", "", css, flags=re.S)
+    block = re.sub(r"/\*.*?\*/", "", marked.group(1), flags=re.S).strip()
+    rules = list(re.finditer(r"([^{}]+)\{([^{}]*)\}", block))
+    if not rules or re.sub(r"[^{}]+\{[^{}]*\}", "", block).strip():
+        return ""
+    scoped = []
+    for rule in rules:
+        selectors = [s.strip() for s in rule.group(1).split(",")]
+        if any(not s.startswith(".") or "@" in s for s in selectors):
+            return ""
+        scoped.append(",".join("#__rb " + s for s in selectors) + "{" + rule.group(2) + "}")
+    names = ("meta-size", "meta-track", "meta-weight", "thead-weight", "radius",
+             "ink-2", "ink-3", "rule", "rule-strong")
+    palette_patterns = (
+        (r":root\s*\{([^{}]*)\}", "#__rb", ""),
+        (r':root:where\(:not\(\[data-theme="light"\]\)\)\s*\{([^{}]*)\}',
+         ':root:where(:not([data-theme="light"])) #__rb', "@media (prefers-color-scheme:dark)"),
+        (r':root\[data-theme="dark"\]\s*\{([^{}]*)\}', ':root[data-theme="dark"] #__rb', ""))
+    palettes = []
+    base = {}
+    for pattern, selector, media in palette_patterns:
+        match = re.search(pattern, clean, re.S)
+        if not match:
+            return ""
+        declared = dict(re.findall(r"--([a-z0-9-]+)\s*:\s*([^;{}]+);", match.group(1)))
+        values = dict(base)
+        values.update({name: declared[name].strip() for name in names if name in declared})
+        if any(name not in values for name in names):
+            return ""
+        if not base:
+            base = values
+        rendered = selector + "{" + "".join("--%s:%s;" % (name, values[name]) for name in names) + "}"
+        palettes.append(media + "{" + rendered + "}" if media else rendered)
+    return "\n".join(["/* dossier-chrome:start */"] + palettes + scoped + ["/* dossier-chrome:end */"])
 
 def from_line(p):
     """The built_from line's own markup: label plus complement, or the
@@ -3303,7 +3669,10 @@ def own_from(path, p):
     if not p or not (p.get("built_from") or "").strip():
         return False
     text = open(path, encoding="utf-8", errors="ignore").read()
-    block = '<!--__from--><p class="docfrom">%s</p><!--/__from-->' % from_line(p)
+    # Reuse the existing measurement exclusion: metadata is chrome, not prose.
+    block = ('<!--__from--><p class="dossier" id="__rb-from" data-dossier="%s">%s</p>'
+             '<p class="docfrom">%s</p><!--/__from-->'
+             % (esc(p["slug"]), piece_row(p), from_line(p)))
     new = _FROM_BLOCK.sub("", text)
     m = re.search(r'(<div class="docmeta">.*?</div>)(\s*</header>)', new, re.S)
     if not m:
@@ -3359,7 +3728,11 @@ def add_return(path, up="index.html", upname="Home", bar=True, p=None):
         top = (RETURN_BAR.replace("__MARKPX__", str(marks_mod.VARIANTS["bar"]["px"]))
                .replace("__MARK__", marks_mod.svg("bar", cls="__mark mk-bar"))
                .replace("__UP__", up).replace("__UPNAME__", upname)
+               .replace("__DOSSIER__", esc(p["slug"]) if p else "")
+               .replace("__DOSSIER_CSS__", dossier_chrome_css())
                .replace("__ROW__", piece_row(p)).replace("__FROM__", piece_from(p)))
+        if not p:
+            top = top.replace('  <span class="__rb-row dossier" data-dossier=""></span>\n', "")
         m = _body_tag(text)
         text = (text[:m.end()] + top + text[m.end():]) if m else (top + text)
     i = text.lower().rfind("</body>")
@@ -3584,6 +3957,7 @@ def head_block(p):
     return f"""{_HEAD_START}
 <meta name="color-scheme" content="{p.get('_scheme', 'light dark')}">
 <meta name="description" content="{esc(desc)}">
+{'<link rel="stylesheet" href="' + asset('figures.css') + '">' if p['slug'] == 'canadian-dcf-cca' else ''}
 <link rel="icon" href="{FAVICON}">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 {'' if p.get("pwa") else '<link rel="manifest" href="site.webmanifest">'}
@@ -3920,6 +4294,8 @@ def add_returns_everywhere():
         if not f.endswith(".html") or f in shell:
             continue
         path = os.path.join(OUT, f)
+        if f == "canadian-dcf-cca.html":
+            own_valuation_lineage(path)
         if f in by_url and normalise_head(path, by_url[f]):
             heads += 1
         fix_stale_host(path)
@@ -3980,18 +4356,18 @@ ATLAS_BODY = r"""<section class="band atlas-band" id="atlas">
         <p class="atoday" id="atoday" hidden></p>
         <div class="atlas-results" id="ares" hidden></div>
         <div class="atlas-key">
-          <ul class="akey-list">
-            <li><i class="ak ak-ind"></i>Independent work</li>
-            <li><i class="ak ak-per"></i>Personal interest</li>
-            <li><i class="ak ak-cou"></i>Coursework, drawn as an outline</li>
-            <li><i class="ak ak-too"></i>Tools, one mark each, standing off the sphere: not headings</li>
-            <li class="akey-wide"><i class="ak ak-shr"></i>Headings carried by more than one document, standing off the surface by how many carry them; point at one and the fan to its documents is drawn</li>
-            <li class="akey-wide"><i class="ak ak-vis"></i><span id="aseen">Passages</span> this browser has opened, ringed. The record stays in this browser</li>
-            <li class="akey-wide"><i class="ak ak-lnk"></i>Point at any mark and chords join its document to the documents its text links, or that link it; each chord's tick sits nearer the linked one</li>
-            <li class="akey-wide"><i class="ak ak-dsc"></i>A document's disc, a hairline: two thirds of its share of the sphere, settled clear of every other disc; the document under the pointer, or faced by the home sphere, has its disc drawn in the chord colour</li>
-            <li class="akey-wide"><i class="ak ak-zon"></i>The two parallels that bound the origins' zones: independent work north of the first, coursework between them, personal interest south of the second</li>
-            <li class="akey-wide"><i class="ak ak-aut"></i>The author, one anchor at the north pole, above his own independent work: an origin of his own, its zone, disc and position by the rule every document follows; its card is the recorded standing, the recorded co-op term counted from this build's date, and the featured pieces' subtotal</li>
-            <li class="akey-wide"><i class="ak ak-cor"></i>The light behind the home sphere takes the hue of the faced document's recorded origin: indigo over slate for independent work, cobalt for coursework, bronze over slate for personal interest; parchment, ivory and bone on paper</li>
+          <ul class="akey-list dossier-key">
+            <li><i class="ak ak-ind"></i><span class="dossier-term">Origin / independent</span><span class="dossier-detail">Independent work</span></li>
+            <li><i class="ak ak-per"></i><span class="dossier-term">Origin / personal</span><span class="dossier-detail">Personal interest</span></li>
+            <li><i class="ak ak-cou"></i><span class="dossier-term">Origin / coursework</span><span class="dossier-detail">Coursework, drawn as an outline</span></li>
+            <li><i class="ak ak-too"></i><span class="dossier-term">Tool marks</span><span class="dossier-detail">Tools, one mark each, standing off the sphere: not headings</span></li>
+            <li class="akey-wide"><i class="ak ak-shr"></i><span class="dossier-term">Shared headings</span><span class="dossier-detail">Headings carried by more than one document, standing off the surface by how many carry them; point at one and the fan to its documents is drawn</span></li>
+            <li class="akey-wide"><i class="ak ak-vis"></i><span class="dossier-term">Reading record</span><span class="dossier-detail"><span id="aseen">Passages</span> this browser has opened, ringed. The record stays in this browser</span></li>
+            <li class="akey-wide"><i class="ak ak-lnk"></i><span class="dossier-term">Citation chords</span><span class="dossier-detail">Point at any mark and chords join its document to the documents its text links, or that link it; each chord's tick sits nearer the linked one</span></li>
+            <li class="akey-wide"><i class="ak ak-dsc"></i><span class="dossier-term">Document discs</span><span class="dossier-detail">A document's disc, a hairline: two thirds of its share of the sphere, settled clear of every other disc; the document under the pointer, or faced by the home sphere, has its disc drawn in the chord colour</span></li>
+            <li class="akey-wide"><i class="ak ak-zon"></i><span class="dossier-term">Origin zones</span><span class="dossier-detail">The two parallels that bound the origins' zones: independent work north of the first, coursework between them, personal interest south of the second</span></li>
+            <li class="akey-wide"><i class="ak ak-aut"></i><span class="dossier-term">Author datum</span><span class="dossier-detail">The author, one anchor at the north pole, above his own independent work: an origin of his own, its zone, disc and position by the rule every document follows; its card is the recorded standing, the recorded co-op term counted from this build's date, and the featured pieces' subtotal</span></li>
+            <li class="akey-wide"><i class="ak ak-cor"></i><span class="dossier-term">Recorded origin light</span><span class="dossier-detail">The light behind the home sphere takes the hue of the faced document's recorded origin: indigo over slate for independent work, cobalt for coursework, bronze over slate for personal interest; parchment, ivory and bone on paper</span></li>
           </ul>
           <p class="akey-note">A mark's area is apportioned from its document's measured word count by
           the share of the document's static text under that heading; it is not a per-section
@@ -4489,12 +4865,29 @@ SW_TEMPLATE = r"""/* Offline machinery for the whole site. Generated by
    carries every entry of the previous generation across before deleting
    it, so nothing a reader saved is lost. A saved full copy then refreshes
    itself: the manifest carries a digest per file, and only the files whose
-   digest moved are fetched again. Caches named term-* belong to the /term/
-   instrument's own worker, which manages its own versions; they are not
-   this worker's to delete. */
+   digest moved are fetched again.
+
+   Both names carry this registration's own scope, and this worker deletes
+   nothing outside it. Cache storage is scoped to the origin, not to the
+   path, so a copy of this site served from a subpath of the same origin (a
+   staging preview, a branch build) shares one cache store with the live
+   site. Without the scope in the name, the preview's activate handler read
+   the live site's saved copy as a previous generation of its own: it
+   migrated every entry across and then deleted the original. The scope is
+   bracketed because a path is a prefix of the paths under it, and "site[/]"
+   must not match "site[/preview/]". Caches named term-* belong to the
+   /term/ instrument's own worker, and are outside this namespace like
+   everything else this worker does not own. */
 const VERSION  = "__VERSION__";
-const CORE     = "site-" + VERSION;
-const PAGES    = "site-pages-__PAGES__";
+const SCOPE    = new URL(self.registration.scope).pathname;
+const NS       = "site[" + SCOPE + "]";
+const CORE     = NS + "core-" + VERSION;
+const PAGES    = NS + "pages-__PAGES__";
+const MINE     = k => k.indexOf(NS) === 0;
+// The names this worker used before they carried a scope. Only a worker at
+// the root may retire them: a copy at a subpath cannot tell its own legacy
+// caches from the live site's, which is the whole reason for the scope.
+const LEGACY   = k => SCOPE === "/" && /^site-(pages-)?[0-9a-f]{12}$/.test(k);
 const MANIFEST = "offline-manifest.json";
 const FILES    = __FILES__;
 // The editor is never served from this cache: an administrative page read
@@ -4520,7 +4913,10 @@ self.addEventListener("install", e => {
    refreshes it then) or until the full copy syncs itself below. */
 async function migrate() {
   const keys = await caches.keys();
-  const old = keys.filter(k => k.indexOf("site-pages-") === 0 && k !== PAGES);
+  // the previous generation of this scope, and the one generation of saved
+  // pages that predates the scope, so a reader's copy survives the rename
+  const old = keys.filter(k => k !== PAGES
+    && (k.indexOf(NS + "pages-") === 0 || (LEGACY(k) && k.indexOf("site-pages-") === 0)));
   if (!old.length) return false;
   const nc = await caches.open(PAGES);
   for (const k of old) {
@@ -4540,7 +4936,7 @@ self.addEventListener("activate", e => {
     await migrate();
     const keys = await caches.keys();
     await Promise.all(keys
-      .filter(k => k !== CORE && k !== PAGES && k.indexOf("term-") !== 0)
+      .filter(k => k !== CORE && k !== PAGES && (MINE(k) || LEGACY(k)))
       .map(k => caches.delete(k)));
     await self.clients.claim();
     // a saved full copy refreshes itself against the new manifest
@@ -4940,7 +5336,7 @@ def check_site():
     fpath = os.path.join(OUT, "figures.css")
     if os.path.exists(fpath):
         sheet = open(fpath, encoding="utf-8").read()
-    for f in SHELL_PAGES:
+    for f in list(SHELL_PAGES) + ["canadian-dcf-cca.html"]:
         path = os.path.join(OUT, f)
         if not os.path.exists(path):
             continue
@@ -6277,30 +6673,94 @@ def check_site():
     if t35["figures"] and t35["figures"] != len(P):
         problems.append(_p("35", "the whole statement carries %d figures for %d pieces"
                                  % (t35["figures"], len(P))))
-    # the stylesheet may not resize an instrument either
-    for m in re.finditer(r"\.(gl|sl|fp)(-[a-z]+)?\s*\{([^}]*)\}", css34):
-        for prop, val in re.findall(r"\b(width|height)\s*:\s*([^;}]+)", m.group(3)):
-            problems.append(_p("35", "site.css: a rule on the instruments sets %s to %s; each one is drawn at "
-                                     "the size its stroke rule was computed for and is never resized"
-                                     % (prop, val.strip())))
+    # the stylesheet may not resize an instrument either, by its own class or
+    # through one of the frames the build fills with nothing else. The second
+    # route is the one a selector like ".priority-fingerprint svg" takes: it
+    # never names .fp and reaches every instrument on the page all the same.
+    _own35 = re.compile(r"(?:^|[\s>+~])[a-z0-9_-]*\.(?:gl|sl|fp)(?:-[a-z]+)?$")
+    _frame35 = re.compile(r"\.(?:%s)\b" % "|".join(re.escape(f) for f in INSTRUMENT_FRAMES))
+    for m in re.finditer(r"([^{}]+)\{([^{}]*)\}", re.sub(r"/\*.*?\*/", " ", css34, flags=re.S)):
+        sel35, decl35 = m.group(1).strip(), m.group(2)
+        if sel35.startswith("@"):
+            continue
+        sized35 = re.findall(r"\b(width|height)\s*:\s*([^;}]+)", decl35)
+        if not sized35:
+            continue
+        for one35 in sel35.split(","):
+            one35 = one35.strip()
+            parts35 = one35.replace(">", " ").replace("+", " ").replace("~", " ").split()
+            reaches35 = bool(_own35.search(" " + one35)) or (
+                parts35[-1:] == ["svg"] and bool(_frame35.search(one35)))
+            if not reaches35:
+                continue
+            for prop, val in sized35:
+                problems.append(_p("35", "site.css: a rule on the instruments sets %s to %s; each one is drawn at "
+                                         "the size its stroke rule was computed for and is never resized"
+                                         % (prop, val.strip())))
 
     # 36. contrast, from the tokens themselves. Every colour the site puts text
     # in has to clear 4.5:1 on every surface a page can stand it on, in both
-    # themes, and the two lights may not take it under that: each is composited
-    # over the paper at its full strength and the whole set is measured again.
+    # themes. The two lights occupy separate, existing boxes over paper; opaque
+    # panels keep their own ground. Inventory first, then parse a closed grammar
+    # and measure its whole alpha envelope. A value the parser cannot understand
+    # is a failed check, never a light silently omitted from the measurement.
     # The floor for a control's border is 3:1 (WCAG 2.2 SC 1.4.11), because on
     # a control the border is the only thing telling a reader it is there.
     t36 = T["contrast"] = {"tokens": 0, "pairs": 0, "themes": 0, "floor": 4.5,
-                           "worst": None, "worst_at": "", "under": 0, "mirrored": 0}
-    TEXT36 = ("ink", "ink-2", "ink-3", "accent", "accent-2", "link", "tool", "ref")
+                           "worst": None, "worst_at": "", "under": 0, "mirrored": 0,
+                           "lamps_declared": 0, "lamps_parsed": 0, "lamps_measured": 0,
+                           "lamp_uses": 0}
+    TEXT36 = ("ink", "ink-2", "ink-3", "accent", "accent-2", "link", "cobalt", "tool", "ref")
     SURF36 = ("paper", "panel", "panel-2")
+    LAMPS36 = {"--lamp-cool", "--lamp-warm"}
     EDGE36 = 3.0
+    # Spaces preserve source offsets, including those inside rejected values.
+    css36 = re.sub(r"/\*.*?\*/", lambda m: " " * len(m.group()), css34, flags=re.S)
+
+    def _fail36(message):
+        t36["under"] += 1
+        problems.append(_p("36", "site.css: " + message))
 
     def _tok36(block):
         return dict(re.findall(r"--([a-z0-9-]+):\s*(#[0-9a-fA-F]{6})", block))
 
-    def _lamp36(block):
-        return dict(re.findall(r"--(lamp-[a-z]+):\s*rgba\(([^)]*)\)", block))
+    # Decode identifiers for inventory only. Escaped names are then rejected,
+    # so CSS escapes cannot hide a declaration or a use from the closed grammar.
+    esc36 = r"\\(?:[0-9a-fA-F]{1,6}[ \t\r\n\f]?|[^\r\n\f])"
+    ident36 = r"(?:" + esc36 + r"|[-_a-zA-Z0-9\u0080-\uffff])+"
+
+    def _name36(raw):
+        def decode(m):
+            value = m.group()[1:]
+            if re.fullmatch(r"[0-9a-fA-F]{1,6}[ \t\r\n\f]?", value):
+                code = int(value.strip(), 16)
+                return chr(code) if 0 < code <= 0x10ffff and not 0xd800 <= code <= 0xdfff else "\ufffd"
+            return value
+        return re.sub(esc36, decode, raw)
+
+    number36 = r"(?:\d+(?:\.\d+)?|\.\d+)"
+    stop36 = r"rgba\(\s*(%s)\s*,\s*(%s)\s*,\s*(%s)\s*,\s*(%s)\s*\)\s+(%s)%%" % ((number36,) * 5)
+
+    def _lamp36(value):
+        geometry = re.fullmatch(r"radial-gradient\(\s*(?:ellipse\s+)?(%s)%%\s+(%s)%%\s+at\s+"
+                                r"(%s)%%\s+(%s)%%\s*,\s*(.*?)\s*\)" % ((number36,) * 4), value, re.S)
+        if not geometry:
+            raise ValueError("expected a radial-gradient with numeric percentage geometry")
+        radii = [float(n) for n in geometry.groups()[:4]]
+        if not all(math.isfinite(n) and 0 <= n <= 100 for n in radii) or min(radii[:2]) <= 0:
+            raise ValueError("gradient radii must be positive and geometry must be within 0..100%")
+        stops = geometry.group(5)
+        if not re.fullmatch(stop36 + r"(?:\s*,\s*" + stop36 + r")+", stops):
+            raise ValueError("unsupported lamp syntax; use only numeric rgba(...) percentage stops")
+        parsed = [tuple(float(n) for n in m.groups()) for m in re.finditer(stop36, stops)]
+        if any(not all(math.isfinite(n) for n in s) or not all(0 <= n <= 255 for n in s[:3])
+               or not 0 <= s[3] <= 1 or not 0 <= s[4] <= 100 for s in parsed):
+            raise ValueError("lamp channels, alpha or stops are outside their finite bounds")
+        if parsed[0][4] != 0 or parsed[-1][3] != 0 or any(a[4] >= b[4] for a, b in zip(parsed, parsed[1:])):
+            raise ValueError("lamp stops must start at 0%, increase strictly and end with zero alpha")
+        if any(s[:3] != parsed[0][:3] for s in parsed):
+            raise ValueError("a lamp must retain one RGB colour through all stops")
+        return parsed
 
     def _rgb36(h):
         h = h.lstrip("#")
@@ -6311,25 +6771,73 @@ def check_site():
         r, g, b = (f(v) for v in c)
         return 0.2126 * r + 0.7152 * g + 0.0722 * b
 
-    def _cr36(a, b):
-        la, lb = _lum36(a), _lum36(b)
-        hi, lo = max(la, lb), min(la, lb)
-        return (hi + 0.05) / (lo + 0.05)
+    def _cr36(foreground, low, high):
+        light = _lum36(foreground)
+        if low <= light <= high:
+            return 1.0
+        return min((max(light, ground) + 0.05) / (min(light, ground) + 0.05)
+                   for ground in (low, high))
 
-    mlight = re.search(r":root\{(.*?)\n\}", css34, re.S)
-    mdark = re.search(r':root\[data-theme="dark"\]\{(.*?)\n\}', css34, re.S)
-    # the dark ground is declared twice on purpose: once for a browser that
-    # asks for it and once for a reader who pressed the button. Only the second
-    # is measured below, so the two have to say the same thing, or a reader
-    # whose system is dark gets a palette nothing checked.
+    mlight = re.search(r"(?m)^:root\{([^{}]*)\}", css36)
+    mdark = re.search(r'(?m)^:root\[data-theme="dark"\]\{([^{}]*)\}', css36)
     mmedia = re.search(r"@media \(prefers-color-scheme: dark\)\{\s*"
-                       r':root:where\(:not\(\[data-theme="light"\]\)\)\{(.*?)\n  \}', css34, re.S)
-    if not mmedia:
-        problems.append(_p("36", "site.css: the dark palette for a browser that asks for it is not readable "
-                                 "as a token block, so it cannot be held to the one the button sets"))
-    elif mdark:
+                       r':root:where\(:not\(\[data-theme="light"\]\)\)\{([^{}]*)\}', css36)
+    mprint = re.search(r'@media print\{\s*:root,:root\[data-theme="dark"\]\{([^{}]*)\}\s*\}', css36)
+    scopes36 = {"Archival light": mlight, "Obsidian": mdark, "Obsidian (system)": mmedia, "Print": mprint}
+    entries36, parsed36, measured36 = [], {}, set()
+    declaration36 = r"(?:^|(?<=[{;]))\s*(?P<name>" + ident36 + r")\s*:\s*(?P<value>[^;{}]*)"
+    for m36 in re.finditer(declaration36, css36):
+        name36 = _name36(m36.group("name"))
+        if not name36.startswith("--lamp-"):
+            continue
+        pos36, value36 = m36.start("name"), m36.group("value").strip()
+        scope36 = next((k for k, m in scopes36.items() if m and m.start(1) <= pos36 < m.end(1)), None)
+        entry36 = {"id": pos36, "name": name36, "value": value36, "scope": scope36}
+        entries36.append(entry36)
+        where36 = "%s at line %d" % (name36, css34.count("\n", 0, pos36) + 1)
+        if name36 not in LAMPS36 or name36 != m36.group("name") or scope36 is None:
+            _fail36("%s has an unsupported name or declaration scope" % where36)
+            continue
+        try:
+            if scope36 == "Print":
+                if value36 != "none":
+                    raise ValueError("print lamps must be explicitly off with none")
+                parsed36[pos36] = None
+            else:
+                parsed36[pos36] = _lamp36(value36)
+        except ValueError as e36:
+            _fail36("%s: %s" % (where36, e36))
+    t36["lamps_declared"], t36["lamps_parsed"] = len(entries36), len(parsed36)
+    for scope36, m36 in scopes36.items():
+        names36 = [e["name"] for e in entries36 if e["scope"] == scope36]
+        if not m36 or len(names36) != 2 or set(names36) != LAMPS36:
+            _fail36("%s must declare exactly one --lamp-cool and one --lamp-warm in its measured block" % scope36)
+
+    # Every use must be the entire background on these two separate boxes.
+    # An extra layer, fallback, alias or consumer changes the measured model.
+    allowed36 = set()
+    for selector36, name36 in ((r"\.descent > \.stage", "--lamp-warm"),
+                               (r"\.descent-globe \.stage-globe", "--lamp-cool")):
+        box36 = re.search(r"(?m)^" + selector36 + r"\{([^{}]*)\}", css36)
+        backgrounds36 = list(re.finditer(r"(?:^|;)\s*background\s*:\s*([^;{}]*)", box36.group(1))) if box36 else []
+        if len(backgrounds36) != 1 or not re.fullmatch(r"var\(\s*" + name36 + r"\s*\)", backgrounds36[0].group(1).strip()):
+            _fail36("%s must be the whole background of its existing measured box" % name36)
+        else:
+            b36 = backgrounds36[0]
+            allowed36.add(box36.start(1) + b36.start(1) + b36.group(1).index(name36))
+    declared36 = {e["id"] for e in entries36}
+    uses36 = {m.start() for m in re.finditer(ident36, css36)
+              if _name36(m.group()).startswith("--lamp-") and m.start() not in declared36}
+    t36["lamp_uses"] = len(uses36)
+    if uses36 != allowed36 or len(uses36) != 2:
+        _fail36("every lamp reference must enter one of the two measured backgrounds; found %d unsupported uses"
+                % len(uses36 - allowed36))
+
+    # Both dark paths are measured and also required to agree.
+    if mmedia and mdark:
         a36, b36 = _tok36(mmedia.group(1)), _tok36(mdark.group(1))
-        a36.update(_lamp36(mmedia.group(1))); b36.update(_lamp36(mdark.group(1)))
+        a36.update({e["name"]: re.sub(r"\s+", "", e["value"]) for e in entries36 if e["scope"] == "Obsidian (system)"})
+        b36.update({e["name"]: re.sub(r"\s+", "", e["value"]) for e in entries36 if e["scope"] == "Obsidian"})
         t36["mirrored"] = len(b36)
         for k36 in sorted(set(a36) | set(b36)):
             if a36.get(k36) != b36.get(k36):
@@ -6337,28 +6845,33 @@ def check_site():
                 problems.append(_p("36", "site.css: the two dark palettes disagree on %s, %s where the browser "
                                          "asks for dark and %s where the button sets it"
                                          % (k36, a36.get(k36, "not defined"), b36.get(k36, "not defined"))))
-    if not (mlight and mdark):
-        problems.append(_p("36", "site.css: the light and dark palettes are not both readable as token blocks"))
-    else:
-        for tname, blk in (("Archival light", mlight.group(1)), ("Obsidian", mdark.group(1))):
-            toks, lamps = _tok36(blk), _lamp36(blk)
+    measured_themes36 = set()
+    for tname, match36 in scopes36.items():
+        if tname != "Print" and match36:
+            toks = _tok36(match36.group(1))
             t36["themes"] += 1
             missing = [k for k in TEXT36 + SURF36 + ("edge",) if k not in toks]
             if missing:
                 problems.append(_p("36", "site.css: the %s palette defines no %s" % (tname, ", ".join(missing))))
                 continue
-            grounds = [(sname, _rgb36(toks[sname])) for sname in SURF36]
-            for lname, spec in sorted(lamps.items()):
-                parts = [x.strip() for x in spec.split(",")]
-                lr, lg, lb, la = [float(x) for x in parts[:3]] + [float(parts[3])]
+            grounds = [(sname, _lum36(_rgb36(toks[sname])), _lum36(_rgb36(toks[sname]))) for sname in SURF36]
+            for entry36 in entries36:
+                if entry36["scope"] != tname or entry36["id"] not in parsed36:
+                    continue
                 paper = _rgb36(toks["paper"])
-                grounds.append(("paper under the %s" % lname.replace("lamp-", "").replace("cool", "cool light").replace("warm", "warm light"),
-                                tuple((lr / 255.0, lg / 255.0, lb / 255.0)[i] * la + paper[i] * (1 - la)
-                                      for i in range(3))))
+                stops36 = parsed36[entry36["id"]]
+                colours36 = [paper] + [tuple(s[i] / 255.0 * s[3] + paper[i] * (1 - s[3]) for i in range(3)) for s in stops36]
+                # Same-RGB rgba stops interpolate only alpha. Channel extrema
+                # bound luminance throughout every shoulder, including where
+                # a foreground could cross the surface and reach contrast 1.
+                low36 = _lum36(tuple(min(c[i] for c in colours36) for i in range(3)))
+                high36 = _lum36(tuple(max(c[i] for c in colours36) for i in range(3)))
+                grounds.append(("paper under " + entry36["name"], low36, high36))
+                measured36.add(entry36["id"])
             for tk in TEXT36:
                 t36["tokens"] += 1
-                for sname, ground in grounds:
-                    c = _cr36(_rgb36(toks[tk]), ground)
+                for sname, low36, high36 in grounds:
+                    c = _cr36(_rgb36(toks[tk]), low36, high36)
                     t36["pairs"] += 1
                     if t36["worst"] is None or c < t36["worst"]:
                         t36["worst"] = round(c, 2)
@@ -6367,14 +6880,25 @@ def check_site():
                         t36["under"] += 1
                         problems.append(_p("36", "site.css: %s on %s in %s is %.2f:1, under the 4.5:1 a "
                                                  "reader needs to read it" % (tk, sname, tname, c)))
-            for sname in ("paper", "panel"):
-                c = _cr36(_rgb36(toks["edge"]), _rgb36(toks[sname]))
+            for sname, low36, high36 in grounds:
+                if sname == "panel-2":
+                    continue
+                c = _cr36(_rgb36(toks["edge"]), low36, high36)
                 t36["pairs"] += 1
                 if c < EDGE36:
                     t36["under"] += 1
                     problems.append(_p("36", "site.css: the border of a control is %.2f:1 on the %s in %s, "
                                              "under the 3:1 that tells a reader the control is there"
                                              % (c, sname, tname)))
+            measured_themes36.add(tname)
+    # none paints no pixels in print. All inherited theme grounds above were
+    # measured without light as well, covering either reader-selected palette.
+    if measured_themes36 == set(scopes36) - {"Print"}:
+        measured36.update(e["id"] for e in entries36 if e["scope"] == "Print" and e["id"] in parsed36)
+    t36["lamps_measured"] = len(measured36)
+    if declared36 != set(parsed36) or declared36 != measured36:
+        _fail36("lamp coverage is incomplete: %d declared, %d parsed, %d composited or verified off"
+                % (len(declared36), len(parsed36), len(measured36)))
 
     # 37. a table header says which cells it heads. Every th the build writes
     # carries a scope, because a header cell with none leaves a screen reader
@@ -6523,6 +7047,115 @@ def check_site():
             problems.append(_p("38", "selected.html: the page counts %d %s and the files hold %d"
                                      % (_said38.get(k38, 0), k38, t38[k38])))
 
+    # the review map, on the same terms. content/review.json says which three
+    # featured pieces the page leads with and which four stand behind them,
+    # and that split is a reading. What is held: every slug is a listed piece
+    # recorded as featured, no slug is named twice, the two sets together are
+    # exactly the featured set with nothing left out and nothing added, every
+    # card carries the reading its record declares, and the title, link and
+    # three figures the page prints on a card are the piece's own. The cards
+    # are read back from the file, not from the generator that wrote them.
+    t38r = T["review"] = {"primary": 0, "supporting": 0, "cards": 0, "routes": 0,
+                          "broken": 0, "mismeasured": 0}
+    _seen38 = {}
+    for _side38 in ("primary", "supporting"):
+        for _d38 in (REVIEW.get(_side38) or ()):
+            _sl38 = _d38.get("slug")
+            t38r[_side38] += 1
+            if _sl38 in _seen38:
+                t38r["broken"] += 1
+                problems.append(_p("38", "content/review.json: %s is named under %s and under %s; a piece "
+                                         "leads or it supports, not both"
+                                         % (_sl38, _seen38[_sl38], _side38)))
+                continue
+            _seen38[_sl38] = _side38
+            if _sl38 not in _slug38:
+                t38r["broken"] += 1
+                problems.append(_p("38", "content/review.json: %s is not a listed piece" % _sl38))
+                continue
+            if _sl38 not in _feat38:
+                t38r["broken"] += 1
+                problems.append(_p("38", "content/review.json: %s is reviewed but is not recorded as "
+                                         "featured, so nothing on the site shows it" % _sl38))
+            for _k38 in (("archetype", "domain", "callout", "note") if _side38 == "primary"
+                         else ("archetype", "callout")):
+                if not str(_d38.get(_k38) or "").strip():
+                    t38r["broken"] += 1
+                    problems.append(_p("38", "content/review.json: %s gives %s nothing to print"
+                                             % (_sl38, _k38)))
+            # a route sends a reader past the front of the document, so it is
+            # held exactly as a case slot is: the section has to exist in the
+            # piece and in the record that says what the piece carries
+            _rt38 = (_d38.get("route") or "").strip()
+            if _rt38:
+                t38r["routes"] += 1
+                _pr38 = _slug38[_sl38]
+                if _rt38 not in case_headings(_pr38["url"]):
+                    t38r["broken"] += 1
+                    problems.append(_p("38", "content/review.json: %s routes to #%s, and %s carries no "
+                                             "heading with that id" % (_sl38, _rt38, _pr38["url"])))
+                elif _rt38 not in set(((_inv38.get(_sl38) or {}).get("sets") or {}).get("ids") or ()):
+                    t38r["broken"] += 1
+                    problems.append(_p("38", "content/review.json: #%s is not an anchor the invariance "
+                                             "record holds for %s" % (_rt38, _sl38)))
+                if not str(_d38.get("route_label") or "").strip():
+                    t38r["broken"] += 1
+                    problems.append(_p("38", "content/review.json: %s routes to #%s and gives the link "
+                                             "no label" % (_sl38, _rt38)))
+    for _sl38 in sorted(_feat38 - set(_seen38)):
+        t38r["broken"] += 1
+        problems.append(_p("38", "content/review.json: %s is featured and the review map does not "
+                                 "place it, so the page would lose it" % _sl38))
+
+    if os.path.exists(_sel38):
+        _cards38 = re.findall(r'<article class="(priority|support)-card" data-piece="([^"]+)">(.*?)</article>',
+                              _raw38, re.S)
+        t38r["cards"] = len(_cards38)
+        _want38 = {"priority": "primary", "support": "supporting"}
+        for _kind38, _slug_c38, _inner38 in _cards38:
+            _side38 = _want38[_kind38]
+            if _seen38.get(_slug_c38) != _side38:
+                t38r["broken"] += 1
+                problems.append(_p("38", "selected.html: draws %s as a %s card, which the review map "
+                                         "does not place there" % (_slug_c38, _side38)))
+                continue
+            _pc38 = _slug38[_slug_c38]
+            _want_rt38 = (dict((d["slug"], d) for d in (REVIEW.get(_side38) or {}) if isinstance(d, dict))
+                          .get(_slug_c38, {}).get("route") or "")
+            if _want_rt38 and ('href="%s#%s"' % (_pc38["url"], _want_rt38)) not in _inner38:
+                t38r["broken"] += 1
+                problems.append(_p("38", "selected.html: the %s card does not open at #%s, which the review "
+                                         "map routes it to" % (_slug_c38, _want_rt38)))
+            if ('href="%s"' % _pc38["url"]) not in _inner38:
+                t38r["broken"] += 1
+                problems.append(_p("38", "selected.html: the %s card does not open %s"
+                                         % (_slug_c38, _pc38["url"])))
+            _txt38 = html.unescape(re.sub(r"<[^>]+>", " ", re.sub(
+                r"<svg\b[^>]*>.*?</svg>", " ", _inner38, flags=re.S)))
+            for _v38, _lab38 in ((_pc38["words"], "words"), (_pc38["figures"], "figures"),
+                                 (_pc38["tables"], "tables")):
+                if not re.search(r"(?<![\d,])%s\s+%s\b" % (re.escape(format(_v38, ",")), _lab38),
+                                 _txt38, re.I):
+                    t38r["mismeasured"] += 1
+                    problems.append(_p("38", "selected.html: the %s card does not print the %s the files "
+                                             "hold for it, which is %s"
+                                             % (_slug_c38, _lab38, format(_v38, ","))))
+        if t38r["cards"] != t38r["primary"] + t38r["supporting"]:
+            problems.append(_p("38", "selected.html: draws %d review cards where the map places %d"
+                                     % (t38r["cards"], t38r["primary"] + t38r["supporting"])))
+
+    # the resume's proof figure is the owner's, and is held to the entry it
+    # stands on: a card cannot print a number the entry's own lines do not.
+    for _e38 in (RESUME_D.get("experience") or []):
+        _pr38 = _e38.get("proof") or {}
+        if not (_pr38.get("value") or "").strip():
+            continue
+        look("38", "resume.html")
+        _lines38 = " ".join(_e38.get("lines") or [])
+        if _pr38["value"].strip() not in _lines38:
+            problems.append(_p("38", "content/resume.json: the proof on %s prints %s, which that entry's own "
+                                     "lines do not carry" % (_e38.get("employer") or "an entry", _pr38["value"])))
+
     # 39. the capability map. content/capabilities.json says which pieces
     # evidence each of the four things the about page claims, and that
     # membership is a reading. What is held: every named piece is one the site
@@ -6592,6 +7225,430 @@ def check_site():
             t39["wrong"] += 1
             problems.append(_p("39", "content/capabilities.json: %s evidences nothing the about page "
                                      "claims" % cid39))
+
+    # 40. the dossier is a register of recorded metadata, not a verdict on
+    # the piece. Read the rendered structure independently of its emitters:
+    # each existing shelf row and research header gets one bounded register,
+    # and citation degree comes from the recorded graph, not the printed claim.
+    from html.parser import HTMLParser
+    t40 = T["dossier"] = {"pages": 0, "rows": 0, "headers": 0, "keys": 0, "rules": 0, "wrong": 0}
+
+    def _fail40(file, message):
+        t40["wrong"] += 1
+        problems.append(_p("40", file + ": " + message))
+
+    class _Dossier40(HTMLParser):
+        def __init__(self):
+            super().__init__(convert_charrefs=True)
+            self.nodes, self.stack = [], []
+
+        def handle_starttag(self, tag, attrs):
+            node = {"tag": tag, "attrs": dict(attrs), "children": [], "content": [],
+                    "parent": self.stack[-1] if self.stack else None}
+            self.nodes.append(node)
+            if self.stack:
+                self.stack[-1]["children"].append(node)
+                self.stack[-1]["content"].append(node)
+            if tag not in {"area", "base", "br", "col", "embed", "hr", "img", "input", "link", "meta", "param", "source", "track", "wbr"}:
+                self.stack.append(node)
+
+        def handle_startendtag(self, tag, attrs):
+            self.handle_starttag(tag, attrs)
+            self.handle_endtag(tag)
+
+        def handle_endtag(self, tag):
+            for i in range(len(self.stack) - 1, -1, -1):
+                if self.stack[i]["tag"] == tag:
+                    del self.stack[i:]
+                    break
+
+        def handle_data(self, data):
+            if self.stack:
+                self.stack[-1]["content"].append(data)
+
+    def _classes40(node):
+        return set(node["attrs"].get("class", "").split())
+
+    def _text40(node):
+        return "".join(x if isinstance(x, str) else _text40(x) for x in node["content"])
+
+    def _ancestor40(node, cls=None, id=None, tag=None):
+        while node is not None:
+            if (cls and cls in _classes40(node)) or (id and node["attrs"].get("id") == id) or (tag and node["tag"] == tag):
+                return node
+            node = node["parent"]
+        return None
+
+    by40 = {p["slug"]: p for p in P}
+    urls40 = {p["url"]: p["slug"] for p in P}
+    degree40 = {slug: 0 for slug in by40}
+    for a40, b40 in ATLAS.get("edges") or ():
+        degree40[a40] = degree40.get(a40, 0) + 1
+        degree40[b40] = degree40.get(b40, 0) + 1
+    origins40 = {"independent": "Independent", "course": "Coursework", "personal": "Personal"}
+    terms40 = {"ind": "Origin / independent", "per": "Origin / personal", "cou": "Origin / coursework",
+               "too": "Tool marks", "shr": "Shared headings", "vis": "Reading record", "lnk": "Citation chords",
+               "dsc": "Document discs", "zon": "Origin zones", "aut": "Author datum", "cor": "Recorded origin light"}
+    common40 = re.search(r"/\* dossier-type:start \*/(.*?)/\* dossier-type:end \*/", css34, re.S)
+    scoped40 = []
+    if common40:
+        for selectors40, body40 in re.findall(r"([^{}]+)\{([^{}]*)\}", common40.group(1)):
+            scoped40.append(",".join("#__rb " + s.strip() for s in selectors40.split(",")) + "{" + body40 + "}")
+    token_names40 = ("meta-size", "meta-track", "meta-weight", "thead-weight", "radius", "ink-2", "ink-3", "rule", "rule-strong")
+    palettes40, base40 = [], {}
+    for match40, selector40, media40 in (
+            (mlight, "#__rb", ""),
+            (mmedia, ':root:where(:not([data-theme="light"])) #__rb', "@media (prefers-color-scheme:dark)"),
+            (mdark, ':root[data-theme="dark"] #__rb', "")):
+        values40 = dict(base40)
+        if match40:
+            values40.update({name: value.strip() for name, value in re.findall(r"--([a-z0-9-]+)\s*:\s*([^;{}]+);", match40.group(1))})
+        if any(name not in values40 for name in token_names40):
+            _fail40("site.css", "dossier palette omits a required typography or measured colour token")
+            continue
+        type_values40 = {"meta-size": ".72rem", "meta-track": ".08em", "meta-weight": "560", "thead-weight": "670", "radius": "0px"}
+        if any(values40.get(name) != value for name, value in type_values40.items()):
+            _fail40("site.css", "dossier typography must retain its declared size, tracking, weight and square corners")
+        if not base40:
+            base40 = values40
+        rule40 = selector40 + "{" + "".join("--%s:%s;" % (name, values40[name]) for name in token_names40) + "}"
+        palettes40.append(media40 + "{" + rule40 + "}" if media40 else rule40)
+    expected_css40 = "\n".join(["/* dossier-chrome:start */"] + palettes40 + scoped40 + ["/* dossier-chrome:end */"])
+    for f40 in html_files:
+        raw40 = open(os.path.join(OUT, f40), encoding="utf-8", errors="ignore").read()
+        doc40 = _Dossier40()
+        doc40.feed(raw40)
+        regs40 = [n for n in doc40.nodes if "dossier" in _classes40(n)]
+        rows40 = []
+        for node40 in doc40.nodes:
+            if "sr-t" not in _classes40(node40):
+                continue
+            owner40 = _ancestor40(node40, tag="li")
+            if owner40 and ("data-kind" in owner40["attrs"] or "data-search" in owner40["attrs"]):
+                rows40.append(node40)
+            elif owner40 is None or not (_classes40(owner40) & {"sr-head", "sr-sub"}):
+                _fail40(f40, "a shelf row has neither a piece record nor the existing subtotal/header role")
+        keys40 = [n for n in doc40.nodes if "dossier-key" in _classes40(n)]
+        required40 = f40 in urls40 and by40[urls40[f40]]["k"] != "Tool"
+        if not (regs40 or rows40 or keys40 or required40 or f40 == "atlas.html"):
+            continue
+        look("40", f40)
+        t40["pages"] += 1
+        row_regs40 = []
+        for row40 in rows40:
+            metas40 = [n for n in row40["children"] if "meta" in _classes40(n)]
+            links40 = [n for n in doc40.nodes if n["tag"] == "a" and _ancestor40(n, cls="sr-t") is row40]
+            slug40 = urls40.get(links40[0]["attrs"].get("href")) if links40 else None
+            if len(metas40) != 1 or "dossier" not in _classes40(metas40[0]) or metas40[0]["attrs"].get("data-dossier") != slug40:
+                _fail40(f40, "each shelf row must carry one dossier for its linked piece")
+            else:
+                row_regs40.append(metas40[0])
+        heads40 = [n for n in regs40 if _ancestor40(n, cls="sr-t") is None]
+        if len(heads40) != int(required40) or (heads40 and heads40[0]["attrs"].get("data-dossier") != urls40.get(f40)):
+            _fail40(f40, "each listed research header must carry exactly one dossier for that piece")
+        if heads40 and _ancestor40(heads40[0], id="__rb") is not None:
+            copies40 = re.findall(r"/\* dossier-chrome:start \*/.*?/\* dossier-chrome:end \*/", raw40, re.S)
+            if copies40 != [expected_css40] or not scoped40 or len(palettes40) != 3:
+                _fail40(f40, "the standalone dossier CSS disagrees with the measured source grammar or palettes")
+        elif heads40 and heads40[0]["attrs"].get("id") != "__rb-from":
+            _fail40(f40, "converted header metadata lacks the existing chrome-count exclusion")
+        for reg40 in regs40:
+            slug40 = reg40["attrs"].get("data-dossier")
+            if slug40 not in by40:
+                _fail40(f40, "dossier names an unknown piece " + repr(slug40))
+                continue
+            p40, children40 = by40[slug40], reg40["children"]
+            shelf40 = _ancestor40(reg40, cls="sr-t") is not None
+            t40["rows" if shelf40 else "headers"] += 1
+            want40 = {"dossier-origin": "Origin / " + origins40[p40["surface"]],
+                      "dossier-cites": "Citation chords / %d" % degree40.get(slug40, 0),
+                      "dossier-status": "Metadata verified by build"}
+            if not shelf40:
+                want40["dossier-counts"] = "{:,} words / {} figures / {} tables".format(p40["words"], p40["figures"], p40["tables"])
+            else:
+                want40["kind"] = p40["k"]
+                if p40["k"] != "Tool" and p40["words"] >= DOC_MIN:
+                    want40["s-min"] = "%d min" % max(1, round(p40["words"] / WPM))
+            for cls40, value40 in want40.items():
+                fields40 = [n for n in children40 if cls40 in _classes40(n)]
+                if len(fields40) != 1 or _text40(fields40[0]) != value40:
+                    _fail40(f40, "%s has an incorrect or duplicate %s" % (slug40, cls40))
+            # No wrappers, hidden stamps or decorative descendants can enter
+            # a register. The shelf retains its original tags and date.
+            expected40 = 5 + len(p40["tags"]) + int(p40["k"] != "Tool" and p40["words"] >= DOC_MIN) if shelf40 else 4
+            if len(children40) != expected40 or any(n["tag"] != "span" or n["children"] or "style" in n["attrs"] or "hidden" in n["attrs"] for n in children40):
+                _fail40(f40, slug40 + " exceeds the dossier's flat, recorded field budget")
+            if "style" in reg40["attrs"] or "hidden" in reg40["attrs"]:
+                _fail40(f40, slug40 + " overrides or hides its dossier")
+            if shelf40:
+                tags40 = [_text40(n) for n in children40 if "tag" in _classes40(n)]
+                dates40 = [_text40(n) for n in children40 if "metadate" in _classes40(n)]
+                if tags40 != p40["tags"] or dates40 != [p40["d"]]:
+                    _fail40(f40, slug40 + " changed the recorded tags or date")
+        statuses40 = [n for n in doc40.nodes if "dossier-status" in _classes40(n)]
+        if len(statuses40) != len(regs40) or any(_ancestor40(n, cls="dossier") is None for n in statuses40):
+            _fail40(f40, "metadata verification stamps must occur exactly once inside each dossier")
+        if f40 == "atlas.html":
+            if len(keys40) != 1 or len(keys40[0]["children"]) != len(terms40):
+                _fail40(f40, "the dossier key must retain all eleven recorded mark definitions")
+            else:
+                seen40 = []
+                for item40 in keys40[0]["children"]:
+                    fields40 = item40["children"]
+                    if item40["tag"] != "li" or len(fields40) != 3:
+                        _fail40(f40, "a key row must contain its existing swatch, term and explanation")
+                        continue
+                    mark40, term40, detail40 = fields40
+                    key40 = next((k for k in terms40 if "ak-" + k in _classes40(mark40)), None)
+                    seen40.append(key40)
+                    nested40 = detail40["children"]
+                    if (mark40["tag"] != "i" or mark40["children"] or term40["tag"] != "span" or term40["children"]
+                            or "dossier-term" not in _classes40(term40) or _text40(term40) != terms40.get(key40)
+                            or detail40["tag"] != "span" or "dossier-detail" not in _classes40(detail40) or not _text40(detail40).strip()
+                            or len(nested40) != int(key40 == "vis") or any(n["attrs"].get("id") != "aseen" or n["children"] for n in nested40)):
+                        _fail40(f40, "a dossier key term or its bounded explanation disagrees with the mark record")
+                    t40["keys"] += 1
+                if len(set(seen40)) != len(terms40) or set(seen40) != set(terms40):
+                    _fail40(f40, "the dossier key repeats or omits a recorded mark")
+
+    # These active rules use only the measured text tokens and square rules.
+    # A closed property/value grammar refuses opacity, filters, raw colours,
+    # custom overrides and other ways of evading Check 36's contrast floor.
+    allowed40 = {
+        "display": {"flex", "grid", "inline-block"}, "flex-wrap": {"wrap"}, "align-items": {"baseline"},
+        "gap": {".35rem .75rem", "0", ".5rem .75rem", ".3rem .65rem"},
+        "font-family": {"ui-monospace,SFMono-Regular,Menlo,Consolas,monospace", "inherit"},
+        "font-size": {"max(var(--meta-size),11.52px)"}, "letter-spacing": {"var(--meta-track)", ".01em"},
+        "font-weight": {"var(--meta-weight)", "var(--thead-weight)"}, "line-height": {"1.5"},
+        "text-transform": {"uppercase", "none"}, "font-variant-numeric": {"tabular-nums"},
+        "color": {"var(--ink-2)", "var(--ink-3)"},
+        "border-top": {"1px solid var(--rule)"}, "border-bottom": {"1px solid var(--rule)"},
+        "border": {"1px solid var(--rule-strong)"}, "border-radius": {"var(--radius)"},
+        "padding-top": {".5rem"}, "padding": {".12rem .4rem", ".6rem 0"},
+        "min-width": {"0"}, "white-space": {"normal"}, "overflow-wrap": {"anywhere"},
+        "grid-template-columns": {"1rem minmax(7rem,10rem) minmax(0,1fr)", "1rem minmax(0,1fr)"},
+        "grid-column": {"2"}}
+    look("40", "site.css")
+    rules40 = {}
+    for selectors40, declarations40 in re.findall(r"([^{}]+)\{([^{}]*)\}", css36):
+        if not re.search(r"\.dossier(?:[-\s.>:{,]|$)", selectors40):
+            continue
+        t40["rules"] += 1
+        for declaration40 in declarations40.split(";"):
+            if not declaration40.strip():
+                continue
+            prop40, sep40, value40 = declaration40.strip().partition(":")
+            if not sep40 or value40.strip() not in allowed40.get(prop40, set()):
+                _fail40("site.css", "unsupported dossier declaration " + declaration40.strip())
+            for selector40 in selectors40.split(","):
+                rules40.setdefault(selector40.strip(), {})[prop40] = value40.strip()
+    if t40["rules"] < 11:
+        _fail40("site.css", "the dossier's typography or key rules are missing")
+    required_type40 = {"font-family": "ui-monospace,SFMono-Regular,Menlo,Consolas,monospace",
+                       "font-size": "max(var(--meta-size),11.52px)", "letter-spacing": "var(--meta-track)",
+                       "font-weight": "var(--meta-weight)", "line-height": "1.5", "text-transform": "uppercase"}
+    for selector40 in (".dossier", ".dossier-key .dossier-term"):
+        if any(rules40.get(selector40, {}).get(prop) != value for prop, value in required_type40.items()):
+            _fail40("site.css", selector40 + " omits the required monospaced metadata typography")
+
+    # 41. every root is recorded. Read the actual SVG independently of its
+    # emitter, then hold the two reconciliation identities to the filed
+    # inputs. This is the tax-base figure's ancestry, not a claim that those
+    # four inputs alone explain the model's two per-share valuation anchors.
+    import xml.etree.ElementTree as ET
+    t41 = T["lineage"] = {"nodes": 0, "edges": 0, "ancestors": 0, "identities": 0, "wrong": 0}
+    file41 = "canadian-dcf-cca.html"
+    look("41", file41)
+
+    def fail41(message):
+        t41["wrong"] += 1
+        problems.append(_p("41", file41 + ": " + message))
+
+    inputs41, output41 = {}, {}
+    for kind41 in ("inputs", "output"):
+        try:
+            data41 = json.load(open(os.path.join(OUT, "content/valuation-" + kind41 + ".json"), encoding="utf-8"))
+            if kind41 == "inputs":
+                inputs41 = data41
+            else:
+                output41 = data41
+        except (OSError, ValueError) as error41:
+            fail41("cannot read the recorded valuation " + kind41 + ": " + str(error41))
+    paths41 = {
+        "filing": ("inputs", "filing/period_end"),
+        "owned": ("inputs", "ppe_note/total_net_book_value_closing"),
+        "rou": ("inputs", "leases_note/right_of_use_assets_net_book_value/current"),
+        "dtl": ("inputs", "tax_note/deferred_tax_liability_ppe/current"),
+        "rate": ("inputs", "tax_note/statutory_rate_combined/current"),
+        "difference": ("output", "tax_base/current/temporary_difference"),
+        "owned-reading": ("output", "tax_base/current/reading_owned_only_ucc"),
+        "rou-reading": ("output", "tax_base/current/reading_with_right_of_use_ucc")}
+    values41 = {}
+    labels41 = {"filing": ["Audited filing"], "owned": ["Owned property", "book value"],
+                "rou": ["Right of use", "book value"], "dtl": ["Deferred tax", "liability"],
+                "rate": ["Statutory", "tax rate"], "difference": ["Reconciliation", "temporary difference"],
+                "owned-reading": ["Owned only", "negative balance"], "rou-reading": ["With right", "of use assets"]}
+    for key41, (kind41, pointer41) in paths41.items():
+        value41 = inputs41 if kind41 == "inputs" else output41
+        try:
+            for part41 in pointer41.split("/"):
+                value41 = value41[part41]
+            if value41 is None or (key41 != "filing" and (isinstance(value41, bool) or not isinstance(value41, (int, float)) or not math.isfinite(value41))):
+                raise ValueError("no finite recorded value")
+            values41[key41] = value41
+            t41["ancestors"] += int(kind41 == "inputs")
+        except (KeyError, TypeError, ValueError):
+            fail41("missing recorded ancestor content/valuation-%s.json#/%s" % (kind41, pointer41))
+    if all(k in values41 for k in paths41):
+        if values41["rate"] <= 0:
+            fail41("the recorded statutory rate cannot divide the deferred tax liability")
+        else:
+            difference41 = values41["dtl"] / (values41["rate"] / 100)
+            for key41, computed41 in (("difference", difference41),
+                    ("owned-reading", values41["owned"] - difference41),
+                    ("rou-reading", values41["owned"] + values41["rou"] - difference41)):
+                t41["identities"] += 1
+                if values41[key41] != round(computed41):
+                    fail41(key41 + " disagrees with the recorded reconciliation inputs")
+    try:
+        accession41 = inputs41["filing"]["sedar_accession"]
+        contexts41 = (inputs41["ppe_note"], inputs41["leases_note"]["right_of_use_assets_net_book_value"],
+                      inputs41["tax_note"]["deferred_tax_liability_ppe"], inputs41["tax_note"]["statutory_rate_combined"])
+        if not accession41 or any(c.get("accession") != accession41 or not c.get("page") or not c.get("note") for c in contexts41):
+            fail41("every input ancestor must retain its filing accession, note and page")
+    except (KeyError, TypeError):
+        fail41("a filed input has lost its provenance record")
+    want_edges41 = {("filing", "owned"), ("filing", "rou"), ("filing", "dtl"), ("filing", "rate"),
+                    ("dtl", "difference"), ("rate", "difference"), ("owned", "owned-reading"),
+                    ("difference", "owned-reading"), ("owned", "rou-reading"), ("rou", "rou-reading"),
+                    ("difference", "rou-reading")}
+    raw41 = open(os.path.join(OUT, file41), encoding="utf-8").read() if os.path.exists(os.path.join(OUT, file41)) else ""
+    figures41 = re.findall(r'<figure id="fs-vroot"[^>]*>(.*?)</figure>', raw41, re.S)
+    if len(figures41) != 1:
+        fail41("the tax-base figure must carry exactly one recorded lineage")
+    else:
+        svg41 = re.findall(r"<svg\b.*?</svg>", figures41[0], re.S)
+        try:
+            if len(svg41) != 1:
+                raise ValueError("expected one static SVG")
+            tree41 = ET.fromstring(svg41[0])
+            if tree41.get("role") != "img" or tree41.get("aria-labelledby") != "vroot-title vroot-desc":
+                fail41("the lineage must retain its accessible image role and labels")
+            for tag41, id41 in (("title", "vroot-title"), ("desc", "vroot-desc")):
+                accessible41 = [e for e in tree41 if e.tag == tag41 and e.get("id") == id41]
+                if len(accessible41) != 1 or not "".join(accessible41[0].itertext()).strip():
+                    fail41("the lineage omits its accessible " + tag41)
+            if tree41.get("viewBox") != "0 0 300 710":
+                fail41("the lineage changed its declared readable artboard")
+            forbidden41 = {"style", "opacity", "filter", "fill", "stroke", "transform", "hidden", "tabindex", "aria-hidden"}
+            if any(e.tag not in {"svg", "title", "desc", "g", "rect", "text", "path"} or
+                   forbidden41.intersection(e.attrib) or any(k.lower().startswith("on") for k in e.attrib) for e in tree41.iter()):
+                fail41("the recorded lineage must remain static, visible and styled only by its declared scope")
+            nodes41, bounds41 = list(tree41.iter("g")), {}
+            t41["nodes"] = len(nodes41)
+            if len(nodes41) != len(paths41) or {e.get("data-node") for e in nodes41} != set(paths41):
+                fail41("drawn nodes do not cover every recorded ancestor and both readings exactly once")
+            for node41 in nodes41:
+                key41 = node41.get("data-node")
+                if key41 not in paths41 or key41 not in values41:
+                    continue
+                kind41, pointer41 = paths41[key41]
+                value41 = values41[key41]
+                shown41 = str(value41) if key41 == "filing" else ("%g%%" % value41 if key41 == "rate" else format(value41, ","))
+                texts41 = [e for e in node41 if e.tag == "text" and e.get("class") == "vr-value"]
+                if (node41.get("class") != "vr-node" or node41.get("data-record") != "content/valuation-%s.json#/%s" % (kind41, pointer41)
+                        or node41.get("data-value") != json.dumps(value41) or len(texts41) != 1 or texts41[0].text != shown41):
+                    fail41("drawn value or source path disagrees with the recorded " + key41)
+                if [e.text for e in node41 if e.tag == "text" and e.get("class") != "vr-value"] != labels41[key41]:
+                    fail41("drawn label misidentifies the recorded " + key41)
+                rects41 = list(node41.iter("rect"))
+                if len(rects41) != 1:
+                    fail41(key41 + " must have one square node boundary")
+                    continue
+                rect41 = rects41[0]
+                x41, y41, w41, h41 = [float(rect41.get(k, "nan")) for k in ("x", "y", "width", "height")]
+                if (not all(math.isfinite(v) for v in (x41, y41, w41, h41)) or not (0 <= x41 < x41 + w41 <= 300 and 0 <= y41 < y41 + h41 <= 710)
+                        or rect41.get("rx") or rect41.get("ry")):
+                    fail41(key41 + " leaves the declared square artboard")
+                bounds41[key41] = (x41, y41, w41, h41)
+            edges41 = list(tree41.iter("path"))
+            t41["edges"] = len(edges41)
+            if len(edges41) != len(want_edges41) or {(e.get("data-from"), e.get("data-to")) for e in edges41} != want_edges41:
+                fail41("drawn edge set contains an unrecorded relation or omits a recorded ancestor")
+            for edge41 in edges41:
+                path41 = edge41.get("d", "")
+                coordinates41 = [float(x) for x in re.findall(r"\d+(?:\.\d+)?", path41)]
+                source41, target41 = bounds41.get(edge41.get("data-from")), bounds41.get(edge41.get("data-to"))
+                if edge41.get("class") != "vr-edge" or not re.fullmatch(r"M[ 0-9.LC]+", path41) or len(coordinates41) < 4 or not source41 or not target41:
+                    fail41("a lineage edge has unsupported or unrecorded geometry")
+                    continue
+                x41, y41, w41, h41 = source41
+                tx41, ty41, tw41, th41 = target41
+                if not (x41 <= coordinates41[0] <= x41 + w41 and coordinates41[1] == y41 and
+                        tx41 <= coordinates41[-2] <= tx41 + tw41 and coordinates41[-1] == ty41 + th41):
+                    fail41("a lineage edge does not reach the ancestor and output it names")
+        except (ET.ParseError, ValueError, TypeError) as error41:
+            fail41("cannot read the static lineage SVG: " + str(error41))
+    if not re.search(r'<link rel="stylesheet" href="figures.css(?:\?[^"<>]*)?">', raw41) or "#fs-vroot .vr-edge" not in sheet:
+        fail41("the lineage does not load its declared figures.css scope")
+    palettes41 = {}
+    for name41, match41 in (("Archival light", mlight), ("Obsidian", mdark), ("Obsidian system", mmedia)):
+        prefix41 = "#fs-vroot" if name41 == "Archival light" else (':root[data-theme="dark"] #fs-vroot' if name41 == "Obsidian" else ':root:where(:not([data-theme="light"])) #fs-vroot')
+        block41 = re.search(re.escape(prefix41) + r"\{([^{}]*)\}", sheet)
+        want41 = _tok36(match41.group(1)) if match41 else {}
+        roles41 = ({"vr-surface": "var(--alt-paper)", "vr-label": "var(--alt-ink)",
+                    "vr-value-ink": "var(--alt-ink)"} if prefix41 == "#fs-vroot" else
+                   {"vr-surface": "var(--panel)", "vr-label": "var(--ink-2)",
+                    "vr-value-ink": "var(--ink)"})
+        palettes41[prefix41] = dict(want41, radius="0px", **roles41)
+        got41 = _tok36(block41.group(1)) if block41 else {}
+        if any(got41.get(k) != want41.get(k) or k not in got41 for k in
+               ("paper", "panel", "ink", "ink-2", "ink-3", "rule", "rule-strong", "edge",
+                "accent", "alt-paper", "alt-ink")):
+            fail41(name41 + " lineage colours differ from the measured site tokens")
+    style41 = {"margin": {"2rem 0", "0 0 1rem", ".6rem 0 0", "auto"}, "padding": {"1rem"},
+               "border": {"1px solid var(--rule)"}, "border-radius": {"var(--radius)"}, "background": {"var(--paper)"},
+               "color": {"var(--ink)", "var(--ink-2)"}, "display": {"block"},
+               "font-family": {"ui-monospace,Menlo,Consolas,monospace", "ui-monospace,SFMono-Regular,Menlo,Consolas,monospace"},
+               "font-size": {".8rem", ".9rem", "12px", "14px", "15px"},
+               "letter-spacing": {".08em", ".055em", "0"}, "text-transform": {"uppercase"},
+               "font-weight": {"600", "650"}, "line-height": {"1.5"},
+               "width": {"100%"}, "max-width": {"40rem", "25rem", "18rem"}, "height": {"auto"}, "overflow": {"visible"},
+               "fill": {"none", "var(--vr-surface)", "var(--vr-label)", "var(--vr-value-ink)"},
+               "stroke": {"var(--edge)", "var(--rule-strong)", "var(--accent)"},
+               "stroke-width": {"1", "2"}, "vector-effect": {"non-scaling-stroke"}, "text-anchor": {"middle"},
+               "font-variant-numeric": {"tabular-nums"}, "break-inside": {"avoid"}, "page-break-inside": {"avoid"}}
+    clean41 = re.sub(r"/\*.*?\*/", "", sheet, flags=re.S)
+    actual41, custom41 = {}, set()
+    for selector41, body41 in re.findall(r"([^{}]+)\{([^{}]*)\}", clean41):
+        if "#fs-vroot" not in selector41:
+            continue
+        for declaration41 in body41.split(";"):
+            if not declaration41.strip():
+                continue
+            property41, separator41, value41 = declaration41.strip().partition(":")
+            value41 = value41.strip()
+            if property41.startswith("--"):
+                key41 = (selector41.strip(), property41)
+                if (property41[2:] not in {"paper", "panel", "ink", "ink-2", "ink-3", "rule", "rule-strong", "edge",
+                                                   "accent", "alt-paper", "alt-ink", "radius", "vr-surface", "vr-label", "vr-value-ink"}
+                        or palettes41.get(selector41.strip(), {}).get(property41[2:]) != value41 or key41 in custom41):
+                    fail41("the lineage declares an unmeasured, duplicate or unscoped custom property")
+                custom41.add(key41)
+                continue
+            if not separator41 or value41 not in style41.get(property41, set()):
+                fail41("unsupported lineage style " + declaration41.strip())
+            actual41.setdefault(selector41.strip(), {})[property41] = value41
+    if ("#fs-vroot", "--radius") not in custom41:
+        fail41("the lineage must explicitly retain square corners")
+    for selector41, property41, value41 in (("#fs-vroot .vr-edge", "stroke", "var(--edge)"),
+            ("#fs-vroot .vr-value", "fill", "var(--vr-value-ink)"),
+            ("#fs-vroot text", "fill", "var(--vr-label)"),
+            ("#fs-vroot .vr-node rect", "fill", "var(--vr-surface)"),
+            ('#fs-vroot .vr-node[data-node$="-reading"] rect', "stroke", "var(--accent)"),
+            ("#fs-vroot svg", "display", "block")):
+        if actual41.get(selector41, {}).get(property41) != value41:
+            fail41("the lineage omits a required visible, measured mark style")
 
     # 33. the editor. admin.html is hand-maintained and the build never
     # writes it. Held here: the file is byte-identical to the bytes this run
@@ -6850,6 +7907,9 @@ def _known_numbers():
             for m in _NUM.findall(x): vals.add(_num(m))
             for m in _SMALL.findall(x): vals.add(_num(m))
     add(case_coverage()); add(len(CASE_SLOTS))
+    # the two review consoles print the size of the set under each of them
+    add([len(review_cards("primary")), len(review_cards("supporting")),
+         len(featured_pieces())])
     for _cid, _t, _pr in CAP_BLOCKS:
         add(capability_evidence(_cid))
     # the four capability sets read as sets: the citations, the distinct
@@ -6941,6 +8001,22 @@ def _typed_numerals(extra_known=None):
             else:
                 out.append("lifted caption for %s quotes %s, which the piece does not state"
                            % (href, m))
+    # the review map's archetypes, domains, callouts and notes are sentences
+    # about one piece each, and are held to that piece exactly as a lifted
+    # caption is: a callout may say a number only if the piece says it too
+    for _side in ("primary", "supporting"):
+        for _d in (REVIEW.get(_side) or ()):
+            _p38 = CASE_BY_SLUG.get(_d.get("slug"))
+            if not _p38:
+                continue
+            stated = _piece_numbers(_p38["url"])
+            for _k in ("archetype", "domain", "signal", "callout", "note"):
+                for m in _NUM.findall(str(_d.get(_k) or "")) + _SMALL.findall(str(_d.get(_k) or "")):
+                    if _num(m) in stated:
+                        quoted.add(_num(m))
+                    else:
+                        out.append("content/review.json: the %s of %s quotes %s, which %s does not "
+                                   "state" % (_k, _d["slug"], m, _p38["url"]))
     # the resume states figures nothing here can measure: a client count, a
     # deal size, a return on assets. They are the author's, declared in
     # content/resume.json, and are held to that file the way a lifted caption
@@ -6954,8 +8030,10 @@ def _typed_numerals(extra_known=None):
         for _c in (_e.get("coursework") or []):
             _res_text += [_c.get("label") or ""] + list(_c.get("items") or [])
     for _e in (_rd.get("experience") or []):
+        _pr = _e.get("proof") or {}
         _res_text += [_e.get("employer") or "", _e.get("place") or "", _e.get("title") or "",
-                      _res_dates(_e)] + list(_e.get("lines") or [])
+                      _res_dates(_e), _pr.get("value") or "", _pr.get("unit") or "",
+                      _pr.get("when") or "", _pr.get("line") or ""] + list(_e.get("lines") or [])
     for _e in (_rd.get("projects") or []):
         _res_text += [_e.get("title") or "", _e.get("when") or "", _e.get("note") or ""] + list(_e.get("lines") or [])
     for _g in (_rd.get("skills") or []) + (_rd.get("service") or []):
@@ -7067,7 +8145,9 @@ def main():
     figures_css = ("/* Generated from build/figures.json. Do not edit: the next build\n"
                    "   overwrites it. Each lifted figure keeps the colour variables and\n"
                    "   class rules it was drawn against, scoped to its own id so nothing\n"
-                   "   leaks into the page around it. */\n" + strip_css() + "\n")
+                   "   leaks into the page around it. The valuation lineage is emitted\n"
+                   "   by build/build_site.py from its recorded inputs and outputs. */\n"
+                   + strip_css() + "\n" + valuation_lineage_css())
     stamp_assets({"figures.css": figures_css})
 
     pages = {"index.html": page_index(), "research.html": page_research(),

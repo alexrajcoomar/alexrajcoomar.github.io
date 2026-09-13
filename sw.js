@@ -8,12 +8,29 @@
    carries every entry of the previous generation across before deleting
    it, so nothing a reader saved is lost. A saved full copy then refreshes
    itself: the manifest carries a digest per file, and only the files whose
-   digest moved are fetched again. Caches named term-* belong to the /term/
-   instrument's own worker, which manages its own versions; they are not
-   this worker's to delete. */
-const VERSION  = "34465567bbe9";
-const CORE     = "site-" + VERSION;
-const PAGES    = "site-pages-e09188d08f6b";
+   digest moved are fetched again.
+
+   Both names carry this registration's own scope, and this worker deletes
+   nothing outside it. Cache storage is scoped to the origin, not to the
+   path, so a copy of this site served from a subpath of the same origin (a
+   staging preview, a branch build) shares one cache store with the live
+   site. Without the scope in the name, the preview's activate handler read
+   the live site's saved copy as a previous generation of its own: it
+   migrated every entry across and then deleted the original. The scope is
+   bracketed because a path is a prefix of the paths under it, and "site[/]"
+   must not match "site[/preview/]". Caches named term-* belong to the
+   /term/ instrument's own worker, and are outside this namespace like
+   everything else this worker does not own. */
+const VERSION  = "b7a8ce856495";
+const SCOPE    = new URL(self.registration.scope).pathname;
+const NS       = "site[" + SCOPE + "]";
+const CORE     = NS + "core-" + VERSION;
+const PAGES    = NS + "pages-2bbdfa1f735a";
+const MINE     = k => k.indexOf(NS) === 0;
+// The names this worker used before they carried a scope. Only a worker at
+// the root may retire them: a copy at a subpath cannot tell its own legacy
+// caches from the live site's, which is the whole reason for the scope.
+const LEGACY   = k => SCOPE === "/" && /^site-(pages-)?[0-9a-f]{12}$/.test(k);
 const MANIFEST = "offline-manifest.json";
 const FILES    = [
   "daily-learning-cockpit-192.png",
@@ -52,7 +69,10 @@ self.addEventListener("install", e => {
    refreshes it then) or until the full copy syncs itself below. */
 async function migrate() {
   const keys = await caches.keys();
-  const old = keys.filter(k => k.indexOf("site-pages-") === 0 && k !== PAGES);
+  // the previous generation of this scope, and the one generation of saved
+  // pages that predates the scope, so a reader's copy survives the rename
+  const old = keys.filter(k => k !== PAGES
+    && (k.indexOf(NS + "pages-") === 0 || (LEGACY(k) && k.indexOf("site-pages-") === 0)));
   if (!old.length) return false;
   const nc = await caches.open(PAGES);
   for (const k of old) {
@@ -72,7 +92,7 @@ self.addEventListener("activate", e => {
     await migrate();
     const keys = await caches.keys();
     await Promise.all(keys
-      .filter(k => k !== CORE && k !== PAGES && k.indexOf("term-") !== 0)
+      .filter(k => k !== CORE && k !== PAGES && (MINE(k) || LEGACY(k)))
       .map(k => caches.delete(k)));
     await self.clients.claim();
     // a saved full copy refreshes itself against the new manifest

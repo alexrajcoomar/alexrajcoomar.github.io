@@ -74,14 +74,19 @@
   --ref:          #8a5410;   /*  5.4:1 on paper */
   --selection:    #cfe0f6;
   /* --- the two lights ------------------------------------------------
-     One cool wash behind the sphere, where the instrument sits, and one
-     warmer reading light behind the column of type. They are gradients on
-     two elements that already exist, not layers added to carry them, and
-     they touch no text colour. Check 36 composites both of them over the
-     paper at full strength and holds every ink token to 4.5:1 there, so
-     "no effect on contrast" is measured rather than asserted. */
-  --lamp-cool:    rgba(20,80,155,.05);
-  --lamp-warm:    rgba(190,168,120,.16);
+     The cool field belongs to the instrument wrapper; the tighter warm
+     pool belongs to the reading column. Each holds a compressed shoulder
+     before falling to zero inside its existing box, leaving the perimeter
+     unlit. RGB values come from the existing palette. Geometry, stops and
+     alpha are declared here; no image or additional layer supplies light.
+     Check 36 inventories every declaration and measures the full alpha
+     range over paper for text and control borders in both themes. */
+  --lamp-cool:    radial-gradient(62% 56% at 51% 44%,
+    rgba(20,80,155,.085) 0%, rgba(20,80,155,.038) 36%,
+    rgba(20,80,155,.018) 62%, rgba(20,80,155,0) 88%);
+  --lamp-warm:    radial-gradient(62% 58% at 38% 45%,
+    rgba(190,168,120,.22) 0%, rgba(190,168,120,.10) 34%,
+    rgba(190,168,120,.045) 62%, rgba(190,168,120,0) 88%);
 
   --shell:        76rem;
   --measure:      38rem;
@@ -162,8 +167,12 @@
     --tool:        #4fc4a6;
     --ref:         #dbab5d;
     --selection:   #223b5c;
-    --lamp-cool:   rgba(74,102,196,.14);
-    --lamp-warm:   rgba(219,171,93,.05);
+    --lamp-cool:   radial-gradient(62% 56% at 51% 44%,
+      rgba(74,102,196,.21) 0%, rgba(74,102,196,.095) 36%,
+      rgba(74,102,196,.045) 62%, rgba(74,102,196,0) 88%);
+    --lamp-warm:   radial-gradient(62% 58% at 38% 45%,
+      rgba(219,171,93,.115) 0%, rgba(219,171,93,.052) 34%,
+      rgba(219,171,93,.025) 62%, rgba(219,171,93,0) 88%);
   }
 }
 :root[data-theme="dark"]{
@@ -187,8 +196,12 @@
   --tool:        #4fc4a6;
   --ref:         #dbab5d;
   --selection:   #223b5c;
-  --lamp-cool:   rgba(74,102,196,.14);
-  --lamp-warm:   rgba(219,171,93,.05);
+  --lamp-cool:   radial-gradient(62% 56% at 51% 44%,
+    rgba(74,102,196,.21) 0%, rgba(74,102,196,.095) 36%,
+    rgba(74,102,196,.045) 62%, rgba(74,102,196,0) 88%);
+  --lamp-warm:   radial-gradient(62% 58% at 38% 45%,
+    rgba(219,171,93,.115) 0%, rgba(219,171,93,.052) 34%,
+    rgba(219,171,93,.025) 62%, rgba(219,171,93,0) 88%);
 }
 
 /* ------------------------------ base ------------------------------ */
@@ -284,14 +297,38 @@ kbd{
    item, so it keeps its own case. */
 .tag{text-transform:none}
 
+/* The dossier register uses the existing metadata measure and palette.
+   Only recorded facts receive a stamp; the author's prose keeps its case.
+   The build copies this flat block into the standalone header, scoped to
+   its existing bar, so an essay does not need the whole site stylesheet.
+   The nominal .72rem at 16px is a floor: a legacy document's smaller root
+   size must not shrink the register below the shared metadata measure. */
+/* dossier-type:start */
+.dossier{
+  display:flex;flex-wrap:wrap;align-items:baseline;gap:.35rem .75rem;
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  font-size:max(var(--meta-size),11.52px);letter-spacing:var(--meta-track);
+  font-weight:var(--meta-weight);line-height:1.5;text-transform:uppercase;
+  font-variant-numeric:tabular-nums;color:var(--ink-3);
+  border-top:1px solid var(--rule);padding-top:.5rem;
+}
+.dossier > *{min-width:0;white-space:normal;overflow-wrap:anywhere}
+.dossier .dossier-origin,.dossier .dossier-counts{color:var(--ink-2)}
+.dossier .kind,.dossier .surf{font-family:inherit;color:var(--ink-2)}
+.dossier .tag,.dossier .metadate{text-transform:none;letter-spacing:.01em}
+.dossier .dossier-status{
+  display:inline-block;border:1px solid var(--rule-strong);border-radius:var(--radius);
+  padding:.12rem .4rem;color:var(--ink-2);font-weight:var(--thead-weight);
+}
+/* dossier-type:end */
+
 /* ------------------------------ header ------------------------------ */
 header.top{
   position:sticky;top:0;z-index:40;
-  background:color-mix(in oklab, var(--paper) 88%, transparent);
-  backdrop-filter:saturate(1.4) blur(10px);
-  border-bottom:1px solid var(--rule);
+  /* The folder fascia is an opaque, measured surface above the paper. */
+  background:var(--panel);
+  border-bottom:1px solid var(--rule-strong);
 }
-@supports not (backdrop-filter:blur(1px)){ header.top{background:var(--paper)} }
 header.top .bar{
   max-width:var(--shell);margin:0 auto;padding:.7rem var(--gap);
   display:flex;align-items:center;gap:1rem;justify-content:space-between
@@ -323,7 +360,7 @@ header.top .bar{
 @media (prefers-reduced-motion:reduce){.mk-ins{transition:none}}
 @media print{.mk-ins{display:none}}
 /* neither light survives onto paper: a gradient prints as a grey field */
-@media print{:root,:root[data-theme="dark"]{--lamp-cool:transparent;--lamp-warm:transparent}}
+@media print{:root,:root[data-theme="dark"]{--lamp-cool:none;--lamp-warm:none}}
 
 /* The six verification glyphs. Authored on a 24 unit grid at stroke 1.25,
    which renders over one device pixel at both sizes this site draws them, so
@@ -376,7 +413,7 @@ nav.main a{
   text-decoration:none;font-size:.92rem;font-weight:560;color:var(--ink-2);
   padding:.42rem .62rem;border-bottom:2px solid transparent
 }
-nav.main a:hover{color:var(--ink);background:var(--panel)}
+nav.main a:hover{color:var(--ink);background:var(--paper)}
 nav.main a[aria-current="page"]{color:var(--ink);border-bottom-color:var(--accent)}
 .iconbtn{
   font:inherit;font-size:var(--btn-size);font-weight:var(--btn-weight);line-height:1;cursor:pointer;
@@ -1148,10 +1185,8 @@ details.tv[open]{padding-bottom:1rem}
   /* Sits below the site header rather than on top of it: both are sticky,
      and at top:0 they stack in the same 60px. */
   position:sticky;top:var(--stick);z-index:40;
-  background:color-mix(in srgb,var(--paper) 92%,transparent);
-  backdrop-filter:saturate(1.3) blur(10px);
-  -webkit-backdrop-filter:saturate(1.3) blur(10px);
-  border-bottom:1px solid var(--rule);
+  background:var(--paper);
+  border-bottom:1px solid var(--rule-strong);
 }
 .docbar .inner{
   max-width:var(--shell);margin:0 auto;padding:.5rem 1.5rem;
@@ -1842,6 +1877,22 @@ body.atlas-free .atlas-h1{font-size:clamp(1.2rem,1.7vw,1.42rem);max-width:24em;
 .akey-list li.akey-wide{flex:1 1 100%;align-items:flex-start}
 .akey-list li.akey-wide .ak{margin-top:-.05rem}
 .akey-note{font-size:.85rem;color:var(--ink-2);margin:0;line-height:1.5}
+/* Every key row aligns a drawn mark with its named rule and explanation. */
+.akey-list.dossier-key{display:grid;gap:0}
+.dossier-key > li,.dossier-key > li.akey-wide{
+  display:grid;grid-template-columns:1rem minmax(7rem,10rem) minmax(0,1fr);
+  align-items:baseline;gap:.5rem .75rem;padding:.6rem 0;border-bottom:1px solid var(--rule);
+}
+.dossier-key .dossier-term{
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  font-size:max(var(--meta-size),11.52px);letter-spacing:var(--meta-track);font-weight:var(--meta-weight);
+  line-height:1.5;text-transform:uppercase;color:var(--ink-2);overflow-wrap:anywhere;
+}
+.dossier-key .dossier-detail{min-width:0;line-height:1.5;color:var(--ink-2)}
+@media (max-width:36rem){
+  .dossier-key > li,.dossier-key > li.akey-wide{grid-template-columns:1rem minmax(0,1fr);gap:.3rem .65rem}
+  .dossier-key .dossier-detail{grid-column:2}
+}
 .replay{margin:.9rem 0 0;font-size:.82rem}
 /* Flown into one document, a key for the whole corpus and an invitation to
    replay the tour are both about somewhere else. */
@@ -2229,8 +2280,8 @@ a.nref{position:relative;display:inline;padding:.75rem .45rem;margin:0 -.35rem 0
    ================================================================== */
 .descent{display:grid;grid-template-columns:minmax(0,1fr);column-gap:0}
 .descent > .stage{padding-block:clamp(1.25rem,3vw,2.5rem) clamp(1.25rem,3vw,2rem);display:grid;gap:1.1rem 0;align-items:start;
-  /* the reading light: off centre and low, the way a window falls on a desk */
-  background:radial-gradient(78% 62% at 18% 34%,var(--lamp-warm) 0,transparent 72%)}
+  /* The reading pool follows this column's measure at every breakpoint. */
+  background:var(--lamp-warm)}
 .descent > .stage .eyeb{justify-self:start;margin:0}
 .descent > .stage .display{margin:.5rem 0 0;font-size:clamp(2.3rem,4.6vw,3.9rem)}
 .descent > .stage .method{margin:0;font-size:.95rem;line-height:1.55;color:var(--ink-2);max-width:34rem}
@@ -2244,11 +2295,10 @@ a.nref{position:relative;display:inline;padding:.75rem .45rem;margin:0 -.35rem 0
 .descent-globe{position:sticky;top:var(--pin-top,var(--stick));z-index:3;align-self:start;
   background:var(--paper);padding-block:.25rem .5rem;
   -webkit-print-color-adjust:exact;print-color-adjust:exact}
-/* the corona behind the instrument. On the inner wrapper rather than the
-   sticky block, because that block's background is set to transparent at
-   desktop widths and would take the gradient with it. */
-.descent-globe .stage-globe{position:relative;
-  background:radial-gradient(56% 42% at 50% 33%,var(--lamp-cool) 0,transparent 74%)}
+/* The cool field follows the instrument bounds on the inner wrapper.
+   Its transparent perimeter leaves the surrounding paper untouched. */
+.descent-globe .stage-globe{position:relative;isolation:isolate;
+  background:var(--lamp-cool)}
 /* min-height:0, or the canvas's last pixel height holds the box open after
    the sphere steps back and the square becomes a tall rectangle */
 .descent-globe .tease-globe.hero-globe{aspect-ratio:1/1;max-height:none;min-height:0;overflow:hidden;width:100%;max-width:min(100%,42rem);
@@ -2345,16 +2395,32 @@ table.st tr.item th a{transition:color 260ms var(--ease-weight)}
 .globe-card .gc-d .gc-l{color:var(--link);font-weight:640}
 .globe-hint .gc-l,.globe-hint-touch .gc-l{color:var(--link)}
 .stage-globe .note{font-size:.9rem;color:var(--ink-2);max-width:30rem;margin:.5rem auto 0;text-align:center}
-/* the corpus in four figures: label over value, hairlines between */
-.corpusline{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)}
-.corpusline div{padding:.7rem .75rem .65rem 0;margin:0}
-.corpusline div + div{border-left:1px solid var(--rule);padding-left:.75rem}
-.corpusline dt{font-size:var(--meta-size);letter-spacing:var(--meta-track);text-transform:uppercase;font-weight:var(--meta-weight);color:var(--ink-3)}
-.corpusline dd{margin:.15rem 0 0;font-size:clamp(1.15rem,1.7vw,1.5rem);font-weight:640;letter-spacing:-.02em;color:var(--ink);line-height:1.1}
+/* The corpus readout is one instrument bank: four measured cells, one datum
+   edge and the existing calibration ticks. Every response changes value only,
+   so the figures never move when a cell is inspected. */
+.corpusline{
+  display:grid;grid-template-columns:repeat(4,minmax(0,1fr));
+  border:1px solid var(--edge);border-top:2px solid var(--ink-2);
+  border-radius:var(--radius);background:var(--panel)
+}
+.corpusline div{padding:.8rem .75rem .75rem;margin:0;background:var(--panel)}
+.corpusline div + div{border-left:1px solid var(--rule-strong)}
+.corpusline div:hover,.corpusline div:focus-within{background:var(--panel-2)}
+.corpusline dt{
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;
+  font-weight:560;color:var(--ink-2)
+}
+.corpusline dd{
+  margin:.18rem 0 0;font-family:"InterVar","InterFallback",ui-sans-serif,system-ui,sans-serif;
+  font-size:clamp(1.25rem,2vw,1.625rem);font-weight:670;letter-spacing:-.02em;
+  font-variant-numeric:lining-nums tabular-nums;font-feature-settings:"lnum" 1,"tnum" 1;
+  color:var(--ink);line-height:1.05
+}
 @media (max-width:26rem){
   .corpusline{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .corpusline div:nth-child(3){border-left:0;padding-left:0}
-  .corpusline div:nth-child(n+3){border-top:1px solid var(--rule)}
+  .corpusline div:nth-child(3){border-left:0}
+  .corpusline div:nth-child(n+3){border-top:1px solid var(--rule-strong)}
 }
 
 /* ---- the composed sections: an index, a title, a note, a count ---- */
@@ -2635,13 +2701,21 @@ dialog.prov:not([open])::backdrop{background-color:rgba(10,10,8,0)}
 .casenote code{font-size:.86em;color:var(--ink)}
 .ccount{font-variant-numeric:tabular-nums;color:var(--ink-3) !important}
 
-.case{border-top:1px solid var(--rule-strong);padding:1.6rem 0 2.2rem;margin:0}
-.case:last-child{border-bottom:1px solid var(--rule-strong)}
+.case{
+  border:1px solid var(--rule-strong);border-top:2px solid var(--ink-2);
+  border-bottom:3px solid var(--edge);border-radius:var(--radius);
+  padding:1.35rem 1.25rem 1.5rem;margin:0;background:var(--panel)
+}
+.case + .case{margin-top:1rem}
 .casehead{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:.2rem 1rem;align-items:start}
 .ceyebrow{grid-column:1;margin:0 0 .35rem;display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;
   font-size:var(--meta-size);letter-spacing:var(--meta-track);text-transform:uppercase;
   font-weight:var(--meta-weight);color:var(--ink-3)}
 .ceyebrow .num{color:var(--ink-3);font-variant-numeric:tabular-nums}
+.ceyebrow .kind,.ceyebrow .csurf,.ceyebrow .cdate{
+  display:inline-block;border:1px solid var(--rule-strong);border-radius:var(--radius);
+  padding:.12rem .38rem;background:var(--paper);color:var(--ink-2)
+}
 .ctitle{grid-column:1;margin:0 0 .3rem;font-size:clamp(1.35rem,2.6vw,1.9rem);
   letter-spacing:-.02em;line-height:1.1}
 .ctitle a{color:var(--ink)}
@@ -2651,6 +2725,8 @@ dialog.prov:not([open])::backdrop{background-color:rgba(10,10,8,0)}
   transition:color 180ms cubic-bezier(.2,.6,.2,1)}
 .case:hover .cfig,.case:focus-within .cfig{color:var(--ink)}
 .cmeasure{display:flex;flex-wrap:wrap;gap:.2rem 1.1rem;margin:.9rem 0 .8rem;
+  padding:.55rem .65rem;background:var(--paper);
+  border-top:1px solid var(--rule-strong);border-bottom:1px solid var(--rule-strong);
   font-size:var(--meta-size);letter-spacing:var(--meta-track);text-transform:uppercase;
   font-weight:var(--meta-weight);color:var(--ink-3);font-variant-numeric:tabular-nums}
 .cblurb{margin:0 0 1.2rem;font-size:.95rem;color:var(--ink-2);max-width:46rem;line-height:1.55}
@@ -2679,12 +2755,14 @@ dialog.prov:not([open])::backdrop{background-color:rgba(10,10,8,0)}
 .cgap{font-size:var(--meta-size);letter-spacing:var(--meta-track);text-transform:uppercase;
   font-weight:var(--meta-weight);color:var(--ink-3)}
 .cempty td,.cempty th .cslotname{color:var(--ink-3)}
-.cread{margin:0;display:flex;flex-wrap:wrap;gap:.5rem 1.2rem;align-items:baseline}
-.cgo{font-size:.9rem;font-weight:660;color:var(--accent);display:inline-flex;gap:.4rem;align-items:center}
+.cread{margin:0;padding-top:.8rem;border-top:1px solid var(--rule-strong);display:flex;flex-wrap:wrap;gap:.5rem 1.2rem;align-items:center}
+.cgo{font-size:.9rem;font-weight:660;color:var(--accent);display:inline-flex;gap:.4rem;align-items:center;
+  min-height:2.5rem;padding:.45rem .65rem;border:1px solid var(--edge);background:var(--paper)}
 .cgo .arrow{transition:transform var(--t-fast) var(--ease-move)}
 .cgo:hover .arrow{transform:translateX(3px)}
 .cheld{font-size:var(--meta-size);letter-spacing:var(--meta-track);text-transform:uppercase;
-  font-weight:var(--meta-weight);color:var(--ink-3);font-variant-numeric:tabular-nums}
+  font-weight:var(--meta-weight);color:var(--ink-2);font-variant-numeric:tabular-nums;
+  border:1px solid var(--rule-strong);border-radius:var(--radius);padding:.18rem .42rem;background:var(--paper)}
 
 /* A phone has no room for a 12.5rem label column beside a sentence, so the
    table becomes two stacked blocks per row and the slot name reads as the
@@ -2741,6 +2819,14 @@ dialog.prov:not([open])::backdrop{background-color:rgba(10,10,8,0)}
 .startlinks a{font-size:.92rem;font-weight:640;color:var(--ink);white-space:nowrap;
   border-bottom:1px solid var(--rule-strong);padding-bottom:.1rem}
 .startlinks a:hover{color:var(--accent);border-bottom-color:var(--accent)}
+.startlinks a[href="selected.html"]{
+  display:inline-flex;align-items:center;min-height:44px;padding:.6rem .8rem;
+  border:1px solid var(--edge);border-radius:var(--radius);background:var(--panel-2);
+  color:var(--ink);font-weight:640;line-height:1.2
+}
+.startlinks a[href="selected.html"]:hover,.startlinks a[href="selected.html"]:focus-visible{
+  border-color:var(--ink-2);background:var(--panel);color:var(--ink)
+}
 
 /* The Now block reuses the facts grammar of the short version above it, one
    step quieter, because it is the only part of this page that goes stale. */
@@ -2817,4 +2903,992 @@ dialog.prov:not([open])::backdrop{background-color:rgba(10,10,8,0)}
   .rsec{padding-top:.8rem}
   .rrow{break-inside:avoid;border-top:1px solid #999}
   .rprint{display:none}
+}
+
+/* The archival container: existing panel values form the folder edge,
+   while the working sheet and both measured light boxes remain on paper.
+   The wide-screen gutter sits outside the existing shell measure. Small
+   screens keep their full reading width; print keeps the existing sheet. */
+@media screen and (min-width:84rem){
+  body > main#main:not(.doc):not(:has(> .doc)){
+    max-width:calc(var(--shell) + 2rem);margin-inline:auto;
+    border-inline:1rem solid var(--panel);outline:1px solid var(--rule-strong);
+  }
+}
+/* A stronger upper rule records the front edge of each existing panel. */
+@media screen{
+  .pane,.tools-bar,.figband .spec,.figband .spec + .spec,
+  .stmt-list .spec,.stmt-list .specimen{border-top-color:var(--rule-strong)}
+}
+
+
+/* ==================================================================
+   DESIGN ELEVATION REVIEW MODULE
+   Surface 1: homepage astrolabe and instrument controls.
+   Surface 2: selected-work capability triptych.
+
+   The selected-work rules require the generated DOM and the
+   html.selected-review page class documented in DESIGN_ELEVATION_SPEC.md.
+   No timer, keyframe animation or new colour token is introduced here.
+   ================================================================== */
+
+/* ---------------- homepage astrolabe harmonization ---------------- */
+/* Keep the first screen compact while giving the title slightly more poise. */
+.descent > .stage{gap:.94rem 0}
+.descent > .stage .display{
+  line-height:.96;
+  letter-spacing:-.052em;
+  text-wrap:balance;
+}
+.descent > .stage .method{max-width:33rem}
+.descent > .stage .eyeb{
+  border-left:2px solid var(--accent);
+  background:var(--panel);
+}
+
+/* One calibrated numerical faceplate. Values sit against a common right datum. */
+.corpusline{
+  position:relative;
+  border-color:var(--edge);
+  border-top-color:var(--ink-2);
+  background:var(--panel);
+  box-shadow:inset 0 -1px 0 var(--rule);
+}
+.corpusline div{
+  position:relative;
+  display:grid;
+  grid-template-rows:auto 1fr;
+  min-height:4.9rem;
+  padding:.72rem .68rem .62rem;
+}
+.corpusline div::after{
+  content:"";
+  position:absolute;
+  right:.5rem;
+  bottom:.42rem;
+  width:.48rem;
+  height:1px;
+  background:var(--rule-strong);
+}
+.corpusline dt{padding-top:.5rem;line-height:1}
+.corpusline dt::before{
+  height:4px;
+  background:repeating-linear-gradient(90deg,var(--edge) 0 1px,transparent 1px 6px);
+  opacity:.72;
+}
+.corpusline dt::after{height:8px;background:var(--ink-2)}
+.corpusline dd{
+  align-self:end;
+  margin:.28rem 0 0;
+  padding-right:.62rem;
+  text-align:right;
+  font-size:clamp(1.3rem,2vw,1.7rem);
+  letter-spacing:-.035em;
+}
+.corpusline div:hover,.corpusline div:focus-within{
+  background:var(--panel-2);
+  box-shadow:inset 0 -2px 0 var(--accent);
+}
+
+/* The three doorways become a single segmented control bank. */
+.startrow{margin:.74rem 0 0;padding-top:.68rem;border-top:1px solid var(--rule)}
+.startlab{
+  display:block;
+  width:max-content;
+  margin:0 0 -1px;
+  padding:.24rem .48rem .2rem;
+  border:1px solid var(--edge);
+  border-bottom-color:var(--panel);
+  background:var(--panel);
+  color:var(--ink-2);
+  font-size:.66rem;
+  letter-spacing:.11em;
+}
+.startlinks{
+  counter-reset:door;
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:0;
+  margin:0;
+  border:1px solid var(--edge);
+  border-top:2px solid var(--ink-2);
+  background:var(--panel);
+}
+.startlinks a,
+.startlinks a[href="selected.html"]{
+  counter-increment:door;
+  display:grid;
+  grid-template-columns:auto minmax(0,1fr);
+  align-items:center;
+  gap:.45rem;
+  min-width:0;
+  min-height:3.2rem;
+  padding:.5rem .58rem;
+  border:0;
+  border-radius:var(--radius);
+  background:var(--panel);
+  color:var(--ink);
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  font-size:clamp(.66rem,.78vw,.75rem);
+  font-weight:600;
+  line-height:1.22;
+  letter-spacing:.015em;
+  white-space:normal;
+  text-decoration:none;
+  box-shadow:none;
+  position:relative;
+  padding-right:1.18rem;
+}
+.startlinks a::before{
+  content:"0" counter(door);
+  color:var(--ink-3);
+  font-size:.62rem;
+  font-weight:650;
+  letter-spacing:.08em;
+  align-self:start;
+  padding-top:.08rem;
+}
+.startlinks a + a{border-left:1px solid var(--rule-strong)}
+.startlinks a > span[aria-hidden="true"]{
+  position:absolute;
+  right:.46rem;
+  bottom:.38rem;
+  color:var(--accent);
+  font-family:"InterVar","InterFallback",ui-sans-serif,system-ui,sans-serif;
+  font-size:.78rem;
+  line-height:1;
+}
+.startlinks a[href="selected.html"]{
+  background:var(--panel-2);
+  box-shadow:inset 0 -2px 0 var(--accent);
+}
+.startlinks a:hover,
+.startlinks a:focus-visible,
+.startlinks a[href="selected.html"]:hover,
+.startlinks a[href="selected.html"]:focus-visible{
+  color:var(--ink);
+  border-color:var(--rule-strong);
+  background:var(--panel-2);
+  box-shadow:inset 0 -2px 0 var(--accent);
+}
+
+/* A static astrolabe around the live canvas: limb, graduations and cardinal datums. */
+.descent-globe .tease-globe.hero-globe{
+  position:relative;
+  isolation:isolate;
+  background:
+    linear-gradient(var(--ink-2),var(--ink-2)) center 1.6%/1px 16px no-repeat,
+    linear-gradient(var(--ink-2),var(--ink-2)) center 98.4%/1px 16px no-repeat,
+    linear-gradient(90deg,var(--ink-2),var(--ink-2)) 1.6% center/16px 1px no-repeat,
+    linear-gradient(90deg,var(--ink-2),var(--ink-2)) 98.4% center/16px 1px no-repeat;
+}
+.descent-globe .tease-globe.hero-globe::before{
+  content:"";
+  position:absolute;
+  inset:4.6%;
+  z-index:3;
+  border:1px solid var(--edge);
+  opacity:.72;
+  border-radius:50%;
+  pointer-events:none;
+}
+.descent-globe .tease-globe.hero-globe::after{
+  content:"";
+  position:absolute;
+  inset:1.9%;
+  z-index:4;
+  border-radius:50%;
+  background:repeating-conic-gradient(from -.28deg,
+    var(--ink-2) 0 .42deg,
+    transparent .42deg 7.5deg);
+  -webkit-mask:radial-gradient(circle at center,
+    transparent 0 46.6%,#000 46.8% 49.1%,transparent 49.3%);
+  mask:radial-gradient(circle at center,
+    transparent 0 46.6%,#000 46.8% 49.1%,transparent 49.3%);
+  pointer-events:none;
+  opacity:.7;
+}
+.stage-globe .globe-cap{
+  max-width:25rem;
+  margin:.2rem auto 0;
+  padding:.55rem .75rem .58rem;
+  border-top:1px solid var(--rule-strong);
+  border-bottom:1px solid var(--rule);
+  background:var(--panel);
+}
+.stage-globe .globe-cap > a{
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  font-size:.69rem;
+  font-weight:620;
+  letter-spacing:.055em;
+  text-transform:uppercase;
+}
+.stage-globe .globe-hint,.stage-globe .globe-hint-touch{
+  margin-top:.28rem;
+  font-size:.72rem;
+  line-height:1.44;
+}
+.stage-globe .globe-key{
+  max-width:39em;
+  margin-top:.62rem;
+  padding-top:.62rem;
+  border-top:1px solid var(--rule);
+}
+
+@media (max-width:44rem){
+  .descent > .stage{gap:.86rem 0}
+  .descent > .stage .display{letter-spacing:-.047em}
+  .corpusline div{min-height:4.6rem;padding:.66rem .62rem .58rem}
+  .corpusline dd{padding-right:.5rem}
+  .startlinks a,.startlinks a[href="selected.html"]{
+    min-height:3.45rem;
+    padding:.46rem .42rem;
+    gap:.32rem;
+    font-size:.64rem;
+  }
+  .startlinks a::before{font-size:.57rem}
+  .stage-globe .globe-cap{max-width:22rem}
+}
+
+@media (prefers-reduced-motion:reduce){
+  .corpusline div,.startlinks a{transition:none}
+}
+
+/* ---------------- recruiter capability triptych ------------------- */
+html.selected-review .hero.tight{
+  padding-block:clamp(2rem,3.7vw,3.2rem) 1.35rem;
+}
+
+html.selected-review .hero.tight .herowrap{
+  align-items:start;
+}
+
+html.selected-review .hero.tight .h1{
+  max-width:16ch;
+}
+
+html.selected-review .slotwrap{
+  background:var(--panel);
+  border:1px solid var(--rule-strong);
+  border-top:2px solid var(--ink-2);
+  padding:.72rem .78rem .68rem;
+  position:relative;
+}
+
+html.selected-review .slotcount{
+  position:absolute;
+  right:.78rem;
+  top:.62rem;
+  margin:0;
+  color:var(--ink-3);
+  font:560 .62rem/1 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+
+html.selected-review .slotwrap .slots-h{
+  padding-right:8.8rem;
+  color:var(--ink-2);
+}
+
+html.selected-review .stack-end{
+  padding-bottom:clamp(3rem,6vw,5rem);
+}
+
+.review-console{
+  margin-top:.35rem;
+  border-top:1px solid var(--ink);
+  padding-top:.7rem;
+}
+
+.review-console-head,
+.support-console-head{
+  display:grid;
+  grid-template-columns:minmax(0,1.15fr) minmax(19rem,.85fr);
+  gap:clamp(1.5rem,4vw,4.25rem);
+  align-items:end;
+  margin:0 0 1.15rem;
+}
+
+.review-label,
+.support-label,
+.priority-sequence,
+.priority-domain,
+.support-sequence,
+.support-domain,
+.audit-label{
+  margin:0;
+  color:var(--ink-2);
+  font:560 .72rem/1.2 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+
+.review-label,
+.support-label{
+  display:flex;
+  align-items:center;
+  gap:.55rem;
+  color:var(--accent);
+}
+
+.review-label::before,
+.support-label::before{
+  content:"";
+  width:1.4rem;
+  height:2px;
+  background:currentColor;
+}
+
+.review-title,
+.support-title{
+  margin:.35rem 0 0;
+  max-width:23ch;
+  color:var(--ink);
+  font-size:clamp(1.45rem,2.3vw,2.15rem);
+  font-weight:670;
+  letter-spacing:-.025em;
+  line-height:1.04;
+}
+
+.review-intent,
+.support-intent{
+  margin:0;
+  max-width:39rem;
+  color:var(--ink-2);
+  font-size:.92rem;
+  line-height:1.55;
+}
+
+.primary-grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:.8rem;
+  counter-reset:priority;
+}
+
+.priority-card{
+  min-width:0;
+  min-height:25rem;
+  display:flex;
+  flex-direction:column;
+  position:relative;
+  overflow:hidden;
+  background:var(--panel);
+  border:1px solid var(--rule-strong);
+  border-top:2px solid var(--ink-2);
+  border-bottom:3px solid var(--edge);
+  padding:1rem 1rem .95rem;
+}
+
+.priority-card::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  background:
+    linear-gradient(var(--rule),var(--rule)) 1rem 4.2rem / 2.1rem 1px no-repeat,
+    linear-gradient(var(--rule),var(--rule)) calc(100% - 3.1rem) 4.2rem / 2.1rem 1px no-repeat,
+    linear-gradient(var(--rule),var(--rule)) 50% 0 / 1px .42rem no-repeat;
+}
+
+.priority-card:hover,
+.priority-card:focus-within{
+  background:var(--panel-2);
+  border-color:var(--edge);
+  border-top-color:var(--accent);
+}
+
+.priority-sequence{
+  display:flex;
+  justify-content:space-between;
+  gap:.75rem;
+  padding-bottom:.78rem;
+  border-bottom:1px solid var(--rule-strong);
+  color:var(--ink-2);
+}
+
+.priority-sequence b{
+  color:var(--accent);
+  font-weight:680;
+}
+
+.priority-signal{
+  color:var(--ink-3);
+  white-space:nowrap;
+}
+
+.priority-head{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) 4.25rem;
+  gap:.65rem;
+  align-items:start;
+  padding-top:1rem;
+}
+
+.priority-domain{
+  color:var(--ink-3);
+  min-height:1.8rem;
+}
+
+.priority-title{
+  margin:.32rem 0 .38rem;
+  color:var(--ink);
+  font-size:clamp(1.32rem,1.7vw,1.72rem);
+  font-weight:680;
+  line-height:1.06;
+  letter-spacing:-.025em;
+}
+
+.priority-title a{
+  color:inherit;
+  text-decoration:none;
+  border-bottom:1px solid var(--rule-strong);
+}
+
+.priority-title a:hover,
+.priority-title a:focus-visible{
+  border-bottom-color:var(--accent);
+}
+
+.priority-subtitle{
+  margin:0;
+  color:var(--ink-2);
+  font-size:.87rem;
+  line-height:1.47;
+}
+
+.priority-fingerprint{
+  width:4.25rem;
+  min-width:3.5rem;
+  aspect-ratio:1;
+  display:grid;
+  place-items:center;
+  color:var(--ink-2);
+  border:1px solid var(--rule-strong);
+  background:
+    linear-gradient(90deg,transparent calc(50% - .5px),var(--rule) 50%,transparent calc(50% + .5px)),
+    linear-gradient(transparent calc(50% - .5px),var(--rule) 50%,transparent calc(50% + .5px)),
+    var(--paper);
+}
+
+.priority-fingerprint > svg{
+  flex:none;
+}
+
+.priority-proof{
+  min-height:3.65rem;
+  display:flex;
+  align-items:center;
+  margin:1rem 0 0;
+  padding:.58rem .62rem;
+  color:var(--ink);
+  background:var(--paper);
+  border-top:1px solid var(--rule-strong);
+  border-bottom:1px solid var(--rule-strong);
+  font:600 .69rem/1.45 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  letter-spacing:.065em;
+  text-transform:uppercase;
+}
+
+.priority-proof::before{
+  content:"[";
+  color:var(--accent);
+  margin-right:.38rem;
+}
+
+.priority-proof::after{
+  content:"]";
+  color:var(--accent);
+  margin-left:.38rem;
+}
+
+.priority-metrics{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  margin:.78rem 0 0;
+  border-top:1px solid var(--rule);
+  border-bottom:1px solid var(--rule);
+}
+
+.priority-metric{
+  min-width:0;
+  padding:.5rem .35rem .48rem 0;
+  border-right:1px solid var(--rule);
+}
+
+.priority-metric + .priority-metric{
+  padding-left:.5rem;
+}
+
+.priority-metric:last-child{
+  border-right:0;
+}
+
+.priority-metric b,
+.priority-metric span{
+  display:block;
+  font-variant-numeric:tabular-nums lining-nums;
+}
+
+.priority-metric b{
+  color:var(--ink);
+  font-size:.96rem;
+  font-weight:670;
+  line-height:1.15;
+}
+
+.priority-metric span{
+  margin-top:.18rem;
+  color:var(--ink-3);
+  font:560 .62rem/1.2 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  letter-spacing:.07em;
+  text-transform:uppercase;
+}
+
+.priority-note{
+  margin:.78rem 0 1rem;
+  color:var(--ink-2);
+  font-size:.84rem;
+  line-height:1.52;
+}
+
+.priority-action{
+  position:relative;
+  z-index:2;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  min-height:2.75rem;
+  margin-top:auto;
+  padding:.55rem .68rem;
+  background:var(--paper);
+  border:1px solid var(--edge);
+  color:var(--ink);
+  font-size:.82rem;
+  font-weight:660;
+  text-decoration:none;
+}
+
+.priority-action span{
+  color:var(--accent);
+  font-size:1rem;
+}
+
+.priority-action:hover,
+.priority-action:focus-visible{
+  background:var(--ink);
+  color:var(--paper);
+}
+
+.support-console{
+  margin-top:clamp(2.8rem,6vw,5rem);
+  padding-top:.7rem;
+  border-top:1px solid var(--ink);
+}
+
+.support-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  border-top:2px solid var(--ink-2);
+  border-left:1px solid var(--rule-strong);
+}
+
+.support-card{
+  min-width:0;
+  display:grid;
+  grid-template-columns:minmax(0,1fr) 3.7rem;
+  gap:.65rem 1rem;
+  align-content:start;
+  position:relative;
+  padding:1rem;
+  background:var(--panel);
+  border-right:1px solid var(--rule-strong);
+  border-bottom:1px solid var(--rule-strong);
+}
+
+.support-card:hover,
+.support-card:focus-within{
+  background:var(--panel-2);
+}
+
+.support-sequence{
+  grid-column:1;
+  display:flex;
+  gap:.55rem;
+  color:var(--ink-3);
+}
+
+.support-sequence b{
+  color:var(--ink-2);
+  font-weight:670;
+}
+
+.support-title-card{
+  grid-column:1;
+  margin:.1rem 0 0;
+  color:var(--ink);
+  font-size:1.13rem;
+  font-weight:660;
+  line-height:1.13;
+  letter-spacing:-.015em;
+}
+
+.support-title-card a{
+  color:inherit;
+  text-decoration:none;
+}
+
+.support-title-card a::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:1;
+}
+
+.support-subtitle{
+  grid-column:1;
+  margin:0;
+  color:var(--ink-2);
+  font-size:.84rem;
+  line-height:1.45;
+}
+
+.support-fingerprint{
+  grid-column:2;
+  grid-row:1 / span 3;
+  color:var(--ink-3);
+  justify-self:end;
+}
+
+.support-fingerprint > svg{
+  display:block;
+}
+
+.support-proof{
+  grid-column:1 / -1;
+  margin:.2rem 0 0;
+  padding-top:.62rem;
+  border-top:1px solid var(--rule);
+  color:var(--ink-2);
+  font:560 .67rem/1.4 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+}
+
+.support-measures{
+  grid-column:1 / -1;
+  display:flex;
+  flex-wrap:wrap;
+  gap:.2rem .8rem;
+  margin:0;
+  color:var(--ink-3);
+  font:560 .65rem/1.4 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+  font-variant-numeric:tabular-nums;
+}
+
+.support-open{
+  grid-column:1 / -1;
+  display:flex;
+  justify-content:space-between;
+  margin:.15rem 0 0;
+  padding-top:.58rem;
+  border-top:1px solid var(--rule-strong);
+  color:var(--accent);
+  font-size:.8rem;
+  font-weight:660;
+}
+
+.full-audit{
+  margin-top:2rem;
+  border-top:1px solid var(--rule-strong);
+  border-bottom:3px solid var(--edge);
+  background:var(--panel);
+}
+
+.full-audit > summary{
+  list-style:none;
+  min-height:4.25rem;
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  gap:1rem;
+  align-items:center;
+  padding:.8rem 1rem;
+  cursor:pointer;
+  border:1px solid var(--rule-strong);
+  border-top:2px solid var(--ink-2);
+}
+
+.full-audit > summary::-webkit-details-marker{
+  display:none;
+}
+
+.audit-label{
+  color:var(--ink-2);
+}
+
+.audit-label b{
+  color:var(--ink);
+  font-weight:670;
+}
+
+.audit-open{
+  color:var(--accent);
+  font-size:.82rem;
+  font-weight:650;
+}
+
+.full-audit[open] > summary{
+  border-bottom-color:var(--edge);
+}
+
+.full-audit-inner{
+  padding:1rem;
+  border-left:1px solid var(--rule-strong);
+  border-right:1px solid var(--rule-strong);
+}
+
+.full-audit-inner .caselead{
+  margin:.35rem 0 1rem;
+}
+
+@media (max-width:63.99rem){
+  .review-console-head,
+  .support-console-head{
+    grid-template-columns:1fr;
+    gap:.65rem;
+  }
+  .primary-grid{
+    grid-template-columns:1fr;
+  }
+  .priority-card{
+    min-height:0;
+  }
+}
+
+@media (min-width:48rem) and (max-width:63.99rem){
+  .priority-card{
+    display:grid;
+    grid-template-columns:minmax(0,1fr) minmax(14rem,.7fr);
+    gap:0 1.2rem;
+  }
+  .priority-sequence,
+  .priority-head{
+    grid-column:1;
+  }
+  .priority-proof,
+  .priority-metrics,
+  .priority-note,
+  .priority-action{
+    grid-column:2;
+  }
+  .priority-proof{
+    margin-top:1rem;
+  }
+}
+
+@media (max-width:640px){
+  html.selected-review .hero.tight{
+    padding-block:1.55rem .9rem;
+  }
+  html.selected-review .slotwrap{
+    margin-top:1rem;
+  }
+  html.selected-review .slotcount{
+    position:static;
+    display:block;
+    margin-top:.55rem;
+  }
+  html.selected-review .slotwrap .slots-h{
+    padding-right:0;
+  }
+  .review-console{
+    margin-top:.15rem;
+  }
+  .review-console-head,
+  .support-console-head{
+    margin-bottom:.85rem;
+  }
+  .review-title,
+  .support-title{
+    font-size:1.5rem;
+    max-width:18ch;
+  }
+  .review-intent,
+  .support-intent{
+    font-size:.85rem;
+  }
+  .primary-grid{
+    gap:.65rem;
+  }
+  .priority-card{
+    padding:.85rem;
+  }
+  .priority-head{
+    grid-template-columns:minmax(0,1fr) 3.75rem;
+  }
+  .priority-fingerprint{
+    width:3.75rem;
+  }
+  .priority-domain{
+    min-height:0;
+  }
+  .priority-proof{
+    min-height:0;
+  }
+  .priority-note{
+    font-size:.82rem;
+  }
+  .support-console{
+    margin-top:2.8rem;
+  }
+  .support-grid{
+    grid-template-columns:1fr;
+  }
+  .support-card{
+    grid-template-columns:minmax(0,1fr) 3.6rem;
+    padding:.85rem;
+  }
+  .full-audit > summary{
+    grid-template-columns:1fr;
+    gap:.15rem;
+    align-content:center;
+  }
+  .full-audit-inner{
+    padding:.65rem;
+  }
+}
+
+@media (prefers-reduced-motion:reduce){
+  .priority-card,
+  .support-card,
+  .priority-action{
+    transition:none;
+  }
+}
+
+
+/* ---------------- the handoff, and the resume's one figure -------- */
+/* What a reader who has read enough does next. Every value in it is one the
+   site already records, so the block cannot outlive the field behind it. */
+.review-handoff{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  gap:1rem clamp(1.5rem,4vw,3rem);
+  align-items:center;
+  margin-top:clamp(2.2rem,4vw,3.2rem);
+  padding:1rem 1.1rem;
+  background:var(--panel);
+  border:1px solid var(--rule-strong);
+  border-top:2px solid var(--ink-2);
+  border-bottom:3px solid var(--edge);
+}
+
+.handoff-label{
+  margin:0;
+  color:var(--accent);
+  font:560 .72rem/1.2 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+
+.handoff-line{
+  margin:.38rem 0 0;
+  color:var(--ink-2);
+  font-size:.92rem;
+  line-height:1.5;
+  max-width:46rem;
+}
+
+.handoff-line b{color:var(--ink);font-weight:660}
+
+.handoff-who{
+  margin:.3rem 0 0;
+  color:var(--ink-3);
+  font:560 .68rem/1.3 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  letter-spacing:.07em;
+  text-transform:uppercase;
+}
+
+.handoff-acts{
+  display:flex;
+  flex-wrap:wrap;
+  gap:.6rem;
+  margin:0;
+}
+
+.handoff-go{
+  display:flex;
+  align-items:center;
+  gap:.55rem;
+  min-height:2.75rem;
+  padding:.55rem .85rem;
+  background:var(--paper);
+  border:1px solid var(--edge);
+  border-radius:var(--radius);
+  color:var(--ink);
+  font-size:.82rem;
+  font-weight:660;
+  text-decoration:none;
+  white-space:nowrap;
+}
+
+.handoff-go:hover,
+.handoff-go:focus-visible{
+  background:var(--ink);
+  color:var(--paper);
+}
+
+/* The one figure from paid work, where a recruiter reads first. */
+.rproof{
+  display:grid;
+  grid-template-columns:auto minmax(0,1fr);
+  gap:.75rem 1.1rem;
+  align-items:start;
+  margin:1.1rem 0 0;
+  padding:.85rem 1rem;
+  background:var(--panel);
+  border:1px solid var(--rule-strong);
+  border-top:2px solid var(--ink-2);
+}
+
+.rproof-fig{margin:0}
+
+.rproof-fig b{
+  display:block;
+  color:var(--ink);
+  font-size:clamp(1.5rem,2.6vw,2rem);
+  font-weight:680;
+  line-height:1;
+  letter-spacing:-.02em;
+  font-variant-numeric:tabular-nums lining-nums;
+}
+
+.rproof-fig span{
+  display:block;
+  max-width:9rem;
+  margin-top:.32rem;
+  color:var(--ink-3);
+  font:560 .62rem/1.3 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  letter-spacing:.07em;
+  text-transform:uppercase;
+}
+
+.rproof-what p{margin:0;color:var(--ink-2);font-size:.88rem;line-height:1.5}
+.rproof-role{color:var(--ink);font-weight:640}
+.rproof-what p + p{margin-top:.25rem}
+
+@media (max-width:640px){
+  .review-handoff{grid-template-columns:1fr;padding:.85rem}
+  .handoff-acts{gap:.5rem}
+  .handoff-go{flex:1 1 auto;justify-content:space-between}
+  .rproof{grid-template-columns:1fr;gap:.5rem}
+  .rproof-fig span{max-width:none}
+}
+
+@media print{
+  .review-handoff{break-inside:avoid}
+  .rproof{background:none;border-color:#ddd9cf}
 }

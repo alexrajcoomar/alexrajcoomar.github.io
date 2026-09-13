@@ -397,6 +397,7 @@ figure.lens .plot{opacity:var(--figlens,1);transition:opacity var(--dur)}
 </style><!--__meta-->
 <meta name="color-scheme" content="light dark">
 <meta name="description" content="Fifteen systems and 148 couplings, annotated by an audit instrument that was run against its own falsification test and failed it. Every one of eighty…">
+
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' fill='%2316150f'/><g fill='none' stroke='%23faf9f6' stroke-linecap='round' stroke-linejoin='round'><path d='M12 56 L32 6 L52 56' stroke-width='4.95'/><path d='M20 38 H44' stroke-width='4.95'/><path d='M32 36 L51 56' stroke-width='4.95'/></g></svg>">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="manifest" href="site.webmanifest">
@@ -446,7 +447,7 @@ figure.lens .plot{opacity:var(--figlens,1);transition:opacity var(--dur)}
 #__rb .__rb-right{margin-left:auto;display:flex;gap:1.1rem;flex-wrap:wrap}
 /* the piece's own row of the statement: origin, words, figures, tables, the
    same figures the home page prints for it, from the same measurement */
-#__rb .__rb-row{color:#66635a;font-variant-numeric:tabular-nums;white-space:nowrap}
+#__rb .__rb-row{flex-basis:100%;order:3;color:#66635a;font-variant-numeric:tabular-nums;white-space:normal}
 #__rb .__rb-row b{font-weight:600;color:#55524a}
 @media (max-width:44rem){#__rb .__rb-row{flex-basis:100%;order:3;white-space:normal}}
 /* what the piece was built from, in the owner's words, from pieces.json */
@@ -485,11 +486,32 @@ figure.lens .plot{opacity:var(--figlens,1);transition:opacity var(--dur)}
 :root[data-theme="dark"] #__rb .__rb-from b{color:#b9bbc1}
 :root[data-theme="dark"] #__rb a{color:#8fb6ee}
 :root[data-theme="dark"] #__rb .__mark{background:#f3f3f0;color:#0d0e11}
+/* dossier-chrome:start */
+#__rb{--meta-size:.72rem;--meta-track:.08em;--meta-weight:560;--thead-weight:670;--radius:0px;--ink-2:#55524a;--ink-3:#66635a;--rule:#ddd9cf;--rule-strong:#bfb9aa;}
+@media (prefers-color-scheme:dark){:root:where(:not([data-theme="light"])) #__rb{--meta-size:.72rem;--meta-track:.08em;--meta-weight:560;--thead-weight:670;--radius:0px;--ink-2:#b9bbc1;--ink-3:#8f929a;--rule:#26282d;--rule-strong:#3c3e45;}}
+:root[data-theme="dark"] #__rb{--meta-size:.72rem;--meta-track:.08em;--meta-weight:560;--thead-weight:670;--radius:0px;--ink-2:#b9bbc1;--ink-3:#8f929a;--rule:#26282d;--rule-strong:#3c3e45;}
+#__rb .dossier{
+  display:flex;flex-wrap:wrap;align-items:baseline;gap:.35rem .75rem;
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  font-size:max(var(--meta-size),11.52px);letter-spacing:var(--meta-track);
+  font-weight:var(--meta-weight);line-height:1.5;text-transform:uppercase;
+  font-variant-numeric:tabular-nums;color:var(--ink-3);
+  border-top:1px solid var(--rule);padding-top:.5rem;
+}
+#__rb .dossier > *{min-width:0;white-space:normal;overflow-wrap:anywhere}
+#__rb .dossier .dossier-origin,#__rb .dossier .dossier-counts{color:var(--ink-2)}
+#__rb .dossier .kind,#__rb .dossier .surf{font-family:inherit;color:var(--ink-2)}
+#__rb .dossier .tag,#__rb .dossier .metadate{text-transform:none;letter-spacing:.01em}
+#__rb .dossier .dossier-status{
+  display:inline-block;border:1px solid var(--rule-strong);border-radius:var(--radius);
+  padding:.12rem .4rem;color:var(--ink-2);font-weight:var(--thead-weight);
+}
+/* dossier-chrome:end */
 @media print{#__rb{display:none !important}}
 </style>
 <nav id="__rb" aria-label="Portfolio">
   <a class="__rb-home" href="index.html"><svg class="__mark mk-bar" viewBox="0 0 64 64" width="19" height="19" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 56 L32 6 L52 56" stroke-width="3.6"/><path d="M20 38 H44" stroke-width="3.6"/><path d="M32 18 H42 C51 18 51 35 42 36 H32" stroke-width="3.6"/><path d="M32 36 L51 56" stroke-width="3.6"/></svg>Alex Rajcoomar <i>portfolio</i></a>
-  <span class="__rb-row">Independent &middot; <b>9,621</b> words &middot; <b>11</b> figures &middot; <b>14</b> tables</span>
+  <span class="__rb-row dossier" data-dossier="predictive-history"><span class="dossier-origin">Origin / Independent</span><span class="dossier-counts">9,621 words / 11 figures / 14 tables</span><span class="dossier-cites">Citation chords / 1</span><span class="dossier-status">Metadata verified by build</span></span>
   <span class="__rb-right"><a href="research.html">Research</a><a href="atlas.html">Atlas</a><a href="library.html">All work</a></span>
   <span class="__rb-from"><b>Built from</b> the source document&#x27;s claims, each carrying a verdict graded by three independent raters, with the audit instrument run against its own falsification test.</span>
 </nav>

@@ -2666,6 +2666,24 @@
     "Table headers: in 3 tables whose header row opens with an empty cell, 10 row-label cells became th scope=\"row\" (tag only; the text is unchanged) so every data cell has a header; a rule keeps them looking as they did.",
     "Em dashes, this phase: 16 replaced by rule (colon 13, colon in a heading 1, comma 2); 3 kept (a nil placeholder standing alone 3). The rule is build/emdash.py; a dash inside quotation marks was converted like any other, and no word moved."
    ]
+  },
+  "canadian-dcf-cca": {
+   "changes": [
+    "recorded valuation lineage"
+   ],
+   "notes": [
+    "Added a static tree of the recorded tax-base reconstruction before the original source tables: one filed ancestor, four transcribed inputs, the temporary-difference reconciliation and both tax-base readings. All original text, tables and drawings remain. The new figure is substantive content and is included in the piece measurements. No dependency claim is made for the complete per-share valuation."
+   ],
+   "additions": [
+    {
+     "text": "The recorded roots of the tax base\nRead upward from the audited filing through four transcribed inputs, the tax-base reconciliation and both recorded readings. Amounts are CAD thousands; the rate is a percentage. This is the ancestry of the tax-base figure, not the complete valuation model. The original evidence tables and source disclosure follow.\nFiling, inputs, reconciliation and two tax-base readings The filed statements supply owned property, right of use assets, the deferred tax liability and the statutory rate. Liability divided by rate gives the temporary difference. Owned property less that difference gives the negative reading. Adding right of use assets gives the other reading. All eight nodes name their source record. Audited filing 2026-02-01 Owned property book value 1,258,499 Right of use book value 2,397,209 Deferred tax liability 739,329 Statutory tax rate 26.5% Reconciliation temporary difference 2,789,921 Owned only negative balance -1,531,422 With right of use assets 865,787",
+     "ids": [
+      "fs-vroot",
+      "vroot-title",
+      "vroot-desc"
+     ]
+    }
+   ]
   }
  },
  "shell": [
