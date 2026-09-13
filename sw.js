@@ -27,7 +27,7 @@
 // change to how it caches; fold either digest into an expression and every
 // build looks like new behaviour, which never settles.
 const VERSION  = "b7a8ce856495";
-const PAGES    = "ba05993b93a6";
+const PAGES    = "1403afcc1dfc";
 const SCOPE    = new URL(self.registration.scope).pathname;
 const NS       = "site[" + SCOPE + "]";
 const CORE     = NS + "core-" + VERSION;
