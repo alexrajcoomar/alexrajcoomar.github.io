@@ -19,6 +19,11 @@ CASES   = json.load(open(os.path.join(ROOT, "content", "cases.json"), encoding="
 # page says the portfolio demonstrates. Membership is a reading; every number
 # printed beside it is recomputed from the measurements on each build.
 CAPS    = json.load(open(os.path.join(ROOT, "content", "capabilities.json"), encoding="utf-8"))
+# the review map: which three featured pieces the selected page leads with,
+# which four stand behind them, and what capability each is read as evidence
+# of. A reading like the case map, kept out of this file for the same reason;
+# every title, link, figure and count printed beside it is recomputed here.
+REVIEW  = json.load(open(os.path.join(ROOT, "content", "review.json"), encoding="utf-8"))
 # the parts of a resume nothing here can measure: education, employment and
 # named skills. Everything else on resume.html is generated from the same
 # measurements the rest of the site uses, and a section with no entries is
@@ -283,12 +288,16 @@ def stamp_assets(generated):
             ASSET_V[name] = _digest(open(path, encoding="utf-8",
                                          errors="ignore").read())
 
-def head(title, desc, page, extra=""):
+def head(title, desc, page, extra="", cls=""):
     CUR = ' aria-current="page"'
     nav = "\n      ".join(
         f'<a href="{u}"{CUR if u==page else ""}>{t}</a>' for u, t in NAV)
+    # a page class on the root element, for the one page whose layout is its
+    # own. The theme script appends " js" to className rather than setting it,
+    # so a class written here is still there after first paint.
+    root = f' class="{esc(cls)}"' if cls else ""
     return f"""<!DOCTYPE html>
-<html lang="en-CA">
+<html lang="en-CA"{root}>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -544,6 +553,14 @@ def fingerprint_coverage():
         out["elements"] += (1 + (1 if d["T"] else 0) + (1 if d["F"] else 0)
                             + (1 if (d["C"] and d["F"] >= 2) else 0) + d["F"] + 2)
     return out
+
+
+# The boxes that hold a drawn instrument and nothing else. A rule may place
+# one of these and colour it; it may not set a size on what is inside it,
+# because the figure's stroke rule was computed for the one size the build
+# draws it at. Named here so check 35 can refuse a descendant rule that
+# reaches the instrument without naming its class.
+INSTRUMENT_FRAMES = ("cfig", "priority-fingerprint", "support-fingerprint")
 
 
 def piece_fingerprint(p):
@@ -1072,6 +1089,7 @@ def slot_grid(feats):
         f' <b>{cov[k]}</b></li>' for k, lab, c in SLOT_KINDS)
     return f"""  <aside class="slotwrap" aria-labelledby="slots-h">
     <h2 id="slots-h" class="slots-h">The shape, filled</h2>
+    <p class="slotcount">{len(feats):02d} files / {len(CASE_SLOTS):02d} tests</p>
     <div class="slotscroll">
     <table class="slots">
       <caption class="sr">{len(feats)} featured pieces by eight slots: {cov["slots"]} slots,
@@ -1087,17 +1105,129 @@ def slot_grid(feats):
   </aside>"""
 
 
+def review_cards(key):
+    """One side of the review map, resolved against the pieces. The record
+    supplies the reading, which is the archetype, the domain, the proof
+    callout and the note; everything else on the card comes back from the
+    piece's own entry. A slug the file names but the corpus does not list
+    resolves to nothing and is dropped here, so the page cannot print a card
+    with no document behind it; check 38 refuses the build that did it."""
+    out = []
+    for i, d in enumerate(REVIEW.get(key) or (), 1):
+        p = CASE_BY_SLUG.get(d.get("slug"))
+        if p and p.get("featured"):
+            out.append((i, d, p))
+    return out
+
+
+def review_seq(n, first=1):
+    """A card's place in its console. A position, not a quantity: it is
+    written in the same wrapper the statement's row numbers use, and is cut
+    out of the typed-numeral scan with them."""
+    return '<span class="num tnum">%02d</span>' % (n + first - 1)
+
+
+def priority_card(i, d, p):
+    """One primary card: the position and the archetype, the piece's own
+    title, subtitle and figure, the declared callout, the three measured
+    figures, the declared note, and the piece itself at the end of it."""
+    measures = (("words", f'{p["words"]:,}'), ("figures", str(p["figures"])),
+                ("tables", str(p["tables"])))
+    metrics = "".join(
+        f'<div class="priority-metric"><b>{v}</b><span>{lab.title()}</span></div>'
+        for lab, v in measures)
+    return f"""      <article class="priority-card" data-piece="{esc(p["slug"])}">
+        <p class="priority-sequence"><span><b>{review_seq(i)}</b> &#47;&#47; {esc(d["archetype"])}</span><span class="priority-signal">{esc(d.get("signal") or "Primary")}</span></p>
+        <div class="priority-head">
+          <div>
+            <p class="priority-domain">{esc(d["domain"])}</p>
+            <h3 class="priority-title"><a href="{esc(p["url"])}">{esc(p["t"])}</a></h3>
+            <p class="priority-subtitle">{esc(p["s"])}</p>
+          </div>
+          <div class="priority-fingerprint" aria-hidden="true">{piece_fingerprint(p)}</div>
+        </div>
+        <p class="priority-proof">{esc(d["callout"])}</p>
+        <div class="priority-metrics">{metrics}</div>
+        <p class="priority-note">{esc(d["note"])}</p>
+        <a class="priority-action" href="{esc(p["url"])}">Open {esc(p["t"])} <span aria-hidden="true">&#8599;</span></a>
+      </article>"""
+
+
+def support_card(i, d, p, first):
+    """One supporting card, in the quieter register: the same measured
+    figures on one line, and the piece's own title carrying the link."""
+    measures = " ".join(
+        f'<span>{v} {lab}</span>' for lab, v in
+        (("words", f'{p["words"]:,}'), ("figures", str(p["figures"])), ("tables", str(p["tables"]))))
+    return f"""      <article class="support-card" data-piece="{esc(p["slug"])}">
+        <p class="support-sequence"><b>{review_seq(i, first)}</b> {esc(d["archetype"])}</p>
+        <h3 class="support-title-card"><a href="{esc(p["url"])}">{esc(p["t"])}</a></h3>
+        <p class="support-subtitle">{esc(p["s"])}</p>
+        <div class="support-fingerprint" aria-hidden="true">{piece_fingerprint(p)}</div>
+        <p class="support-proof">{esc(d["callout"])}</p>
+        <p class="support-measures">{measures}</p>
+        <p class="support-open"><span>Open the dossier</span><span aria-hidden="true">&#8599;</span></p>
+      </article>"""
+
+
+def review_console():
+    """The first level of the decision: three capabilities, one file each.
+    The count in the label is the length of the resolved set, so the label
+    and the grid under it cannot print different numbers."""
+    cards = review_cards("primary")
+    c = (REVIEW.get("consoles") or {}).get("primary") or {}
+    return f"""  <section class="review-console" aria-labelledby="primary-review-title">
+    <header class="review-console-head">
+      <div>
+        <p class="review-label">{esc(c.get("label") or "Primary review")} &#47; {len(cards):02d} {esc(c.get("unit") or "capabilities")}</p>
+        <h2 class="review-title" id="primary-review-title">{esc(c.get("title") or "")}</h2>
+      </div>
+      <p class="review-intent">{esc(c.get("intent") or "")}</p>
+    </header>
+    <div class="primary-grid">
+{chr(10).join(priority_card(i, d, p) for i, d, p in cards)}
+    </div>
+  </section>"""
+
+
+def support_console(first):
+    """The second level: the rest of the featured set, measured the same way
+    and one click away, in a register that does not compete with the first."""
+    cards = review_cards("supporting")
+    c = (REVIEW.get("consoles") or {}).get("supporting") or {}
+    return f"""  <section class="support-console" aria-labelledby="support-review-title">
+    <header class="support-console-head">
+      <div>
+        <p class="support-label">{esc(c.get("label") or "Supporting dossiers")} &#47; {len(cards):02d} {esc(c.get("unit") or "files")}</p>
+        <h2 class="support-title" id="support-review-title">{esc(c.get("title") or "")}</h2>
+      </div>
+      <p class="support-intent">{esc(c.get("intent") or "")}</p>
+    </header>
+    <div class="support-grid">
+{chr(10).join(support_card(i, d, p, first) for i, d, p in cards)}
+    </div>
+  </section>"""
+
+
 def page_selected():
-    """The pieces recorded as featured, each read against the same eight
-    slots. Every slot that is filled points at something that already exists:
-    a heading the piece carries, a document the corpus records a link to, or a
-    value this build computed. Nothing here is a new sentence about the work."""
+    """The pieces recorded as featured, read at two depths. The first screen
+    is a decision: three capabilities with one file each, then the rest of the
+    set in a quieter register. The complete reading against the same eight
+    slots is under the disclosure, unchanged, because the shape is what the
+    page is for and a summary is not allowed to replace it. Every slot that is
+    filled still points at something that already exists: a heading the piece
+    carries, a document the corpus records a link to, or a value this build
+    computed. Nothing here is a new sentence about the work except the
+    archetypes and callouts declared in content/review.json, and every numeral
+    in one of those is held to the piece it describes."""
     feats = featured_pieces()
     cov = case_coverage()
     entries = "\n".join(case_entry(i, p) for i, p in enumerate(feats, 1))
     w = sum(p["words"] for p in feats)
     f = sum(p["figures"] for p in feats)
     t = sum(p["tables"] for p in feats)
+    audit = (REVIEW.get("consoles") or {}).get("audit") or {}
+    slots = ", ".join(label for _k, label, _m in CASE_SLOTS)
     body = f"""<div class="hero tight shell">
   <div class="herowrap">
   <div class="herolead">
@@ -1112,6 +1242,14 @@ def page_selected():
   </div>
 </div>
 <section class="shell stack-end">
+{review_console()}
+{support_console(len(review_cards("primary")) + 1)}
+  <details class="full-audit">
+    <summary>
+      <span class="audit-label"><b>{esc(audit.get("label") or "Audit index")} &#47; all {len(feats):02d} files</b><br>{esc(slots)}</span>
+      <span class="audit-open">{esc(audit.get("open") or "Open the complete evidence register")} <span aria-hidden="true">+</span></span>
+    </summary>
+    <div class="full-audit-inner">
   <p class="caselead">{cov["slots"]} slots over {cov["pieces"]} pieces: {cov["sec"]} answered by a section,
   {cov["doc"]} by a linked document, {cov["rec"]} by a record, {cov["gap"]} not carried.
   <a href="#casenotes">How a slot is filled &#8595;</a></p>
@@ -1123,17 +1261,21 @@ def page_selected():
     The rest print a value this build already holds: the line the piece declares it was built from, or
     the artifact itself. A slot nothing answers says <i>not carried</i>, and is counted.</p>
     <p><b>What is measured and what is not.</b> The counts, the links and the figure on each entry are measured.
-    Which heading answers which slot is a reading, declared in <code>content/cases.json</code>. The build checks
-    that every anchor exists, that every heading is quoted as the invariance record holds it, and that every
-    named document is a recorded link; it does not check that the reading is the right one. Disagree with a
-    placement and the file is the place to say so.</p>
+    Which heading answers which slot is a reading, declared in <code>content/cases.json</code>, and which three
+    pieces lead is a second reading, declared in <code>content/review.json</code>. The build checks
+    that every anchor exists, that every heading is quoted as the invariance record holds it, that every
+    named document is a recorded link, and that the two review sets together are exactly the featured
+    pieces with nothing counted twice; it does not check that either reading is the right one. Disagree with a
+    placement and the files are the place to say so.</p>
   </div>
+    </div>
+  </details>
 </section>
 """
     return head(f"Selected work · {SHORT}",
                 f"{len(feats)} featured pieces by Alex Rajcoomar read against one shape: question, context, approach, "
                 f"evidence, build, finding, limitation, artifact, every slot pointing at the piece's own record.",
-                "selected.html") + body + foot()
+                "selected.html", cls="selected-review") + body + foot()
 
 
 def shelf_row(k, p, extra="", fp=False):
@@ -6461,12 +6603,30 @@ def check_site():
     if t35["figures"] and t35["figures"] != len(P):
         problems.append(_p("35", "the whole statement carries %d figures for %d pieces"
                                  % (t35["figures"], len(P))))
-    # the stylesheet may not resize an instrument either
-    for m in re.finditer(r"\.(gl|sl|fp)(-[a-z]+)?\s*\{([^}]*)\}", css34):
-        for prop, val in re.findall(r"\b(width|height)\s*:\s*([^;}]+)", m.group(3)):
-            problems.append(_p("35", "site.css: a rule on the instruments sets %s to %s; each one is drawn at "
-                                     "the size its stroke rule was computed for and is never resized"
-                                     % (prop, val.strip())))
+    # the stylesheet may not resize an instrument either, by its own class or
+    # through one of the frames the build fills with nothing else. The second
+    # route is the one a selector like ".priority-fingerprint svg" takes: it
+    # never names .fp and reaches every instrument on the page all the same.
+    _own35 = re.compile(r"(?:^|[\s>+~])[a-z0-9_-]*\.(?:gl|sl|fp)(?:-[a-z]+)?$")
+    _frame35 = re.compile(r"\.(?:%s)\b" % "|".join(re.escape(f) for f in INSTRUMENT_FRAMES))
+    for m in re.finditer(r"([^{}]+)\{([^{}]*)\}", re.sub(r"/\*.*?\*/", " ", css34, flags=re.S)):
+        sel35, decl35 = m.group(1).strip(), m.group(2)
+        if sel35.startswith("@"):
+            continue
+        sized35 = re.findall(r"\b(width|height)\s*:\s*([^;}]+)", decl35)
+        if not sized35:
+            continue
+        for one35 in sel35.split(","):
+            one35 = one35.strip()
+            parts35 = one35.replace(">", " ").replace("+", " ").replace("~", " ").split()
+            reaches35 = bool(_own35.search(" " + one35)) or (
+                parts35[-1:] == ["svg"] and bool(_frame35.search(one35)))
+            if not reaches35:
+                continue
+            for prop, val in sized35:
+                problems.append(_p("35", "site.css: a rule on the instruments sets %s to %s; each one is drawn at "
+                                         "the size its stroke rule was computed for and is never resized"
+                                         % (prop, val.strip())))
 
     # 36. contrast, from the tokens themselves. Every colour the site puts text
     # in has to clear 4.5:1 on every surface a page can stand it on, in both
@@ -6816,6 +6976,77 @@ def check_site():
         if _said38.get(k38) != t38[k38]:
             problems.append(_p("38", "selected.html: the page counts %d %s and the files hold %d"
                                      % (_said38.get(k38, 0), k38, t38[k38])))
+
+    # the review map, on the same terms. content/review.json says which three
+    # featured pieces the page leads with and which four stand behind them,
+    # and that split is a reading. What is held: every slug is a listed piece
+    # recorded as featured, no slug is named twice, the two sets together are
+    # exactly the featured set with nothing left out and nothing added, every
+    # card carries the reading its record declares, and the title, link and
+    # three figures the page prints on a card are the piece's own. The cards
+    # are read back from the file, not from the generator that wrote them.
+    t38r = T["review"] = {"primary": 0, "supporting": 0, "cards": 0, "broken": 0, "mismeasured": 0}
+    _seen38 = {}
+    for _side38 in ("primary", "supporting"):
+        for _d38 in (REVIEW.get(_side38) or ()):
+            _sl38 = _d38.get("slug")
+            t38r[_side38] += 1
+            if _sl38 in _seen38:
+                t38r["broken"] += 1
+                problems.append(_p("38", "content/review.json: %s is named under %s and under %s; a piece "
+                                         "leads or it supports, not both"
+                                         % (_sl38, _seen38[_sl38], _side38)))
+                continue
+            _seen38[_sl38] = _side38
+            if _sl38 not in _slug38:
+                t38r["broken"] += 1
+                problems.append(_p("38", "content/review.json: %s is not a listed piece" % _sl38))
+                continue
+            if _sl38 not in _feat38:
+                t38r["broken"] += 1
+                problems.append(_p("38", "content/review.json: %s is reviewed but is not recorded as "
+                                         "featured, so nothing on the site shows it" % _sl38))
+            for _k38 in (("archetype", "domain", "callout", "note") if _side38 == "primary"
+                         else ("archetype", "callout")):
+                if not str(_d38.get(_k38) or "").strip():
+                    t38r["broken"] += 1
+                    problems.append(_p("38", "content/review.json: %s gives %s nothing to print"
+                                             % (_sl38, _k38)))
+    for _sl38 in sorted(_feat38 - set(_seen38)):
+        t38r["broken"] += 1
+        problems.append(_p("38", "content/review.json: %s is featured and the review map does not "
+                                 "place it, so the page would lose it" % _sl38))
+
+    if os.path.exists(_sel38):
+        _cards38 = re.findall(r'<article class="(priority|support)-card" data-piece="([^"]+)">(.*?)</article>',
+                              _raw38, re.S)
+        t38r["cards"] = len(_cards38)
+        _want38 = {"priority": "primary", "support": "supporting"}
+        for _kind38, _slug_c38, _inner38 in _cards38:
+            _side38 = _want38[_kind38]
+            if _seen38.get(_slug_c38) != _side38:
+                t38r["broken"] += 1
+                problems.append(_p("38", "selected.html: draws %s as a %s card, which the review map "
+                                         "does not place there" % (_slug_c38, _side38)))
+                continue
+            _pc38 = _slug38[_slug_c38]
+            if ('href="%s"' % _pc38["url"]) not in _inner38:
+                t38r["broken"] += 1
+                problems.append(_p("38", "selected.html: the %s card does not open %s"
+                                         % (_slug_c38, _pc38["url"])))
+            _txt38 = html.unescape(re.sub(r"<[^>]+>", " ", re.sub(
+                r"<svg\b[^>]*>.*?</svg>", " ", _inner38, flags=re.S)))
+            for _v38, _lab38 in ((_pc38["words"], "words"), (_pc38["figures"], "figures"),
+                                 (_pc38["tables"], "tables")):
+                if not re.search(r"(?<![\d,])%s\s+%s\b" % (re.escape(format(_v38, ",")), _lab38),
+                                 _txt38, re.I):
+                    t38r["mismeasured"] += 1
+                    problems.append(_p("38", "selected.html: the %s card does not print the %s the files "
+                                             "hold for it, which is %s"
+                                             % (_slug_c38, _lab38, format(_v38, ","))))
+        if t38r["cards"] != t38r["primary"] + t38r["supporting"]:
+            problems.append(_p("38", "selected.html: draws %d review cards where the map places %d"
+                                     % (t38r["cards"], t38r["primary"] + t38r["supporting"])))
 
     # 39. the capability map. content/capabilities.json says which pieces
     # evidence each of the four things the about page claims, and that
@@ -7568,6 +7799,9 @@ def _known_numbers():
             for m in _NUM.findall(x): vals.add(_num(m))
             for m in _SMALL.findall(x): vals.add(_num(m))
     add(case_coverage()); add(len(CASE_SLOTS))
+    # the two review consoles print the size of the set under each of them
+    add([len(review_cards("primary")), len(review_cards("supporting")),
+         len(featured_pieces())])
     for _cid, _t, _pr in CAP_BLOCKS:
         add(capability_evidence(_cid))
     # the four capability sets read as sets: the citations, the distinct
@@ -7659,6 +7893,22 @@ def _typed_numerals(extra_known=None):
             else:
                 out.append("lifted caption for %s quotes %s, which the piece does not state"
                            % (href, m))
+    # the review map's archetypes, domains, callouts and notes are sentences
+    # about one piece each, and are held to that piece exactly as a lifted
+    # caption is: a callout may say a number only if the piece says it too
+    for _side in ("primary", "supporting"):
+        for _d in (REVIEW.get(_side) or ()):
+            _p38 = CASE_BY_SLUG.get(_d.get("slug"))
+            if not _p38:
+                continue
+            stated = _piece_numbers(_p38["url"])
+            for _k in ("archetype", "domain", "signal", "callout", "note"):
+                for m in _NUM.findall(str(_d.get(_k) or "")) + _SMALL.findall(str(_d.get(_k) or "")):
+                    if _num(m) in stated:
+                        quoted.add(_num(m))
+                    else:
+                        out.append("content/review.json: the %s of %s quotes %s, which %s does not "
+                                   "state" % (_k, _d["slug"], m, _p38["url"]))
     # the resume states figures nothing here can measure: a client count, a
     # deal size, a return on assets. They are the author's, declared in
     # content/resume.json, and are held to that file the way a lifted caption
