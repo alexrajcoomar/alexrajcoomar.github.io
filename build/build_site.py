@@ -1492,7 +1492,8 @@ def valuation_lineage_css():
     """A declared figure scope, using the site's already measured palettes."""
     css = open(os.path.join(OUT, "site.css"), encoding="utf-8").read()
     clean = re.sub(r"/\*.*?\*/", "", css, flags=re.S)
-    names = ("paper", "panel", "ink", "ink-2", "ink-3", "rule", "rule-strong", "edge", "radius")
+    names = ("paper", "panel", "ink", "ink-2", "ink-3", "rule", "rule-strong", "edge",
+             "accent", "alt-paper", "alt-ink", "radius")
     palettes = []
     for pattern, selector, media in (
             (r"(?m)^:root\{([^{}]*)\}", "#fs-vroot", ""),
@@ -1501,7 +1502,11 @@ def valuation_lineage_css():
             (r':root\[data-theme="dark"\]\{([^{}]*)\}', ':root[data-theme="dark"] #fs-vroot', "")):
         match = re.search(pattern, clean)
         values = dict(re.findall(r"--([a-z0-9-]+)\s*:\s*([^;{}]+);", match.group(1))) if match else {}
-        rule = selector + "{" + "".join("--%s:%s;" % (name, values[name].strip()) for name in names if name in values) + "}"
+        roles = (("--vr-surface:var(--alt-paper);--vr-label:var(--alt-ink);"
+                  "--vr-value-ink:var(--alt-ink);") if selector == "#fs-vroot" else
+                 ("--vr-surface:var(--panel);--vr-label:var(--ink-2);"
+                  "--vr-value-ink:var(--ink);"))
+        rule = selector + "{" + "".join("--%s:%s;" % (name, values[name].strip()) for name in names if name in values) + roles + "}"
         palettes.append(media + "{" + rule + "}" if media else rule)
     return "\n".join(palettes) + """
 #fs-vroot{margin:2rem 0;padding:1rem;border:1px solid var(--rule);border-radius:var(--radius);background:var(--paper);color:var(--ink)}
@@ -1509,10 +1514,12 @@ def valuation_lineage_css():
 #fs-vroot .vr-title{display:block;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.8rem;letter-spacing:.08em;text-transform:uppercase;font-weight:600;color:var(--ink)}
 #fs-vroot .vr-scope{margin:.6rem 0 0;font-size:.9rem;line-height:1.5}
 #fs-vroot svg{display:block;width:100%;max-width:25rem;height:auto;margin:auto;overflow:visible}
-#fs-vroot .vr-edge{fill:none;stroke:var(--edge);stroke-width:1.2;vector-effect:non-scaling-stroke}
-#fs-vroot .vr-node rect{fill:var(--panel);stroke:var(--edge);stroke-width:1;vector-effect:non-scaling-stroke}
-#fs-vroot text{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:14px;fill:var(--ink-2);text-anchor:middle;font-variant-numeric:tabular-nums}
-#fs-vroot .vr-value{font-size:15px;font-weight:600;fill:var(--ink)}
+#fs-vroot .vr-edge{fill:none;stroke:var(--edge);stroke-width:1;vector-effect:non-scaling-stroke}
+#fs-vroot .vr-node rect{fill:var(--vr-surface);stroke:var(--rule-strong);stroke-width:1;vector-effect:non-scaling-stroke}
+#fs-vroot .vr-node[data-node$="-reading"] rect{stroke:var(--accent);stroke-width:2}
+#fs-vroot text{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:14px;fill:var(--vr-label);text-anchor:middle;font-variant-numeric:tabular-nums}
+#fs-vroot .vr-node text:not(.vr-value){font-size:12px;letter-spacing:.055em;text-transform:uppercase}
+#fs-vroot .vr-value{font-size:15px;font-weight:650;letter-spacing:0;fill:var(--vr-value-ink)}
 @media print{#fs-vroot{break-inside:avoid;page-break-inside:avoid}}
 @media print{#fs-vroot svg{max-width:18rem}}
 """
@@ -7250,18 +7257,27 @@ def check_site():
         prefix41 = "#fs-vroot" if name41 == "Archival light" else (':root[data-theme="dark"] #fs-vroot' if name41 == "Obsidian" else ':root:where(:not([data-theme="light"])) #fs-vroot')
         block41 = re.search(re.escape(prefix41) + r"\{([^{}]*)\}", sheet)
         want41 = _tok36(match41.group(1)) if match41 else {}
-        palettes41[prefix41] = dict(want41, radius="0px")
+        roles41 = ({"vr-surface": "var(--alt-paper)", "vr-label": "var(--alt-ink)",
+                    "vr-value-ink": "var(--alt-ink)"} if prefix41 == "#fs-vroot" else
+                   {"vr-surface": "var(--panel)", "vr-label": "var(--ink-2)",
+                    "vr-value-ink": "var(--ink)"})
+        palettes41[prefix41] = dict(want41, radius="0px", **roles41)
         got41 = _tok36(block41.group(1)) if block41 else {}
-        if any(got41.get(k) != want41.get(k) or k not in got41 for k in ("paper", "panel", "ink", "ink-2", "ink-3", "rule", "rule-strong", "edge")):
+        if any(got41.get(k) != want41.get(k) or k not in got41 for k in
+               ("paper", "panel", "ink", "ink-2", "ink-3", "rule", "rule-strong", "edge",
+                "accent", "alt-paper", "alt-ink")):
             fail41(name41 + " lineage colours differ from the measured site tokens")
     style41 = {"margin": {"2rem 0", "0 0 1rem", ".6rem 0 0", "auto"}, "padding": {"1rem"},
                "border": {"1px solid var(--rule)"}, "border-radius": {"var(--radius)"}, "background": {"var(--paper)"},
                "color": {"var(--ink)", "var(--ink-2)"}, "display": {"block"},
-               "font-family": {"ui-monospace,Menlo,Consolas,monospace"}, "font-size": {".8rem", ".9rem", "14px", "15px"},
-               "letter-spacing": {".08em"}, "text-transform": {"uppercase"}, "font-weight": {"600"}, "line-height": {"1.5"},
+               "font-family": {"ui-monospace,Menlo,Consolas,monospace", "ui-monospace,SFMono-Regular,Menlo,Consolas,monospace"},
+               "font-size": {".8rem", ".9rem", "12px", "14px", "15px"},
+               "letter-spacing": {".08em", ".055em", "0"}, "text-transform": {"uppercase"},
+               "font-weight": {"600", "650"}, "line-height": {"1.5"},
                "width": {"100%"}, "max-width": {"40rem", "25rem", "18rem"}, "height": {"auto"}, "overflow": {"visible"},
-               "fill": {"none", "var(--panel)", "var(--ink)", "var(--ink-2)"}, "stroke": {"var(--edge)"},
-               "stroke-width": {"1", "1.2"}, "vector-effect": {"non-scaling-stroke"}, "text-anchor": {"middle"},
+               "fill": {"none", "var(--vr-surface)", "var(--vr-label)", "var(--vr-value-ink)"},
+               "stroke": {"var(--edge)", "var(--rule-strong)", "var(--accent)"},
+               "stroke-width": {"1", "2"}, "vector-effect": {"non-scaling-stroke"}, "text-anchor": {"middle"},
                "font-variant-numeric": {"tabular-nums"}, "break-inside": {"avoid"}, "page-break-inside": {"avoid"}}
     clean41 = re.sub(r"/\*.*?\*/", "", sheet, flags=re.S)
     actual41, custom41 = {}, set()
@@ -7275,7 +7291,8 @@ def check_site():
             value41 = value41.strip()
             if property41.startswith("--"):
                 key41 = (selector41.strip(), property41)
-                if (property41[2:] not in {"paper", "panel", "ink", "ink-2", "ink-3", "rule", "rule-strong", "edge", "radius"}
+                if (property41[2:] not in {"paper", "panel", "ink", "ink-2", "ink-3", "rule", "rule-strong", "edge",
+                                                   "accent", "alt-paper", "alt-ink", "radius", "vr-surface", "vr-label", "vr-value-ink"}
                         or palettes41.get(selector41.strip(), {}).get(property41[2:]) != value41 or key41 in custom41):
                     fail41("the lineage declares an unmeasured, duplicate or unscoped custom property")
                 custom41.add(key41)
@@ -7286,8 +7303,11 @@ def check_site():
     if ("#fs-vroot", "--radius") not in custom41:
         fail41("the lineage must explicitly retain square corners")
     for selector41, property41, value41 in (("#fs-vroot .vr-edge", "stroke", "var(--edge)"),
-            ("#fs-vroot .vr-value", "fill", "var(--ink)"), ("#fs-vroot text", "fill", "var(--ink-2)"),
-            ("#fs-vroot .vr-node rect", "fill", "var(--panel)"), ("#fs-vroot svg", "display", "block")):
+            ("#fs-vroot .vr-value", "fill", "var(--vr-value-ink)"),
+            ("#fs-vroot text", "fill", "var(--vr-label)"),
+            ("#fs-vroot .vr-node rect", "fill", "var(--vr-surface)"),
+            ('#fs-vroot .vr-node[data-node$="-reading"] rect', "stroke", "var(--accent)"),
+            ("#fs-vroot svg", "display", "block")):
         if actual41.get(selector41, {}).get(property41) != value41:
             fail41("the lineage omits a required visible, measured mark style")
 

@@ -2395,16 +2395,32 @@ table.st tr.item th a{transition:color 260ms var(--ease-weight)}
 .globe-card .gc-d .gc-l{color:var(--link);font-weight:640}
 .globe-hint .gc-l,.globe-hint-touch .gc-l{color:var(--link)}
 .stage-globe .note{font-size:.9rem;color:var(--ink-2);max-width:30rem;margin:.5rem auto 0;text-align:center}
-/* the corpus in four figures: label over value, hairlines between */
-.corpusline{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)}
-.corpusline div{padding:.7rem .75rem .65rem 0;margin:0}
-.corpusline div + div{border-left:1px solid var(--rule);padding-left:.75rem}
-.corpusline dt{font-size:var(--meta-size);letter-spacing:var(--meta-track);text-transform:uppercase;font-weight:var(--meta-weight);color:var(--ink-3)}
-.corpusline dd{margin:.15rem 0 0;font-size:clamp(1.15rem,1.7vw,1.5rem);font-weight:640;letter-spacing:-.02em;color:var(--ink);line-height:1.1}
+/* The corpus readout is one instrument bank: four measured cells, one datum
+   edge and the existing calibration ticks. Every response changes value only,
+   so the figures never move when a cell is inspected. */
+.corpusline{
+  display:grid;grid-template-columns:repeat(4,minmax(0,1fr));
+  border:1px solid var(--edge);border-top:2px solid var(--ink-2);
+  border-radius:var(--radius);background:var(--panel)
+}
+.corpusline div{padding:.8rem .75rem .75rem;margin:0;background:var(--panel)}
+.corpusline div + div{border-left:1px solid var(--rule-strong)}
+.corpusline div:hover,.corpusline div:focus-within{background:var(--panel-2)}
+.corpusline dt{
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;
+  font-weight:560;color:var(--ink-2)
+}
+.corpusline dd{
+  margin:.18rem 0 0;font-family:"InterVar","InterFallback",ui-sans-serif,system-ui,sans-serif;
+  font-size:clamp(1.25rem,2vw,1.625rem);font-weight:670;letter-spacing:-.02em;
+  font-variant-numeric:lining-nums tabular-nums;font-feature-settings:"lnum" 1,"tnum" 1;
+  color:var(--ink);line-height:1.05
+}
 @media (max-width:26rem){
   .corpusline{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .corpusline div:nth-child(3){border-left:0;padding-left:0}
-  .corpusline div:nth-child(n+3){border-top:1px solid var(--rule)}
+  .corpusline div:nth-child(3){border-left:0}
+  .corpusline div:nth-child(n+3){border-top:1px solid var(--rule-strong)}
 }
 
 /* ---- the composed sections: an index, a title, a note, a count ---- */
@@ -2685,13 +2701,21 @@ dialog.prov:not([open])::backdrop{background-color:rgba(10,10,8,0)}
 .casenote code{font-size:.86em;color:var(--ink)}
 .ccount{font-variant-numeric:tabular-nums;color:var(--ink-3) !important}
 
-.case{border-top:1px solid var(--rule-strong);padding:1.6rem 0 2.2rem;margin:0}
-.case:last-child{border-bottom:1px solid var(--rule-strong)}
+.case{
+  border:1px solid var(--rule-strong);border-top:2px solid var(--ink-2);
+  border-bottom:3px solid var(--edge);border-radius:var(--radius);
+  padding:1.35rem 1.25rem 1.5rem;margin:0;background:var(--panel)
+}
+.case + .case{margin-top:1rem}
 .casehead{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:.2rem 1rem;align-items:start}
 .ceyebrow{grid-column:1;margin:0 0 .35rem;display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;
   font-size:var(--meta-size);letter-spacing:var(--meta-track);text-transform:uppercase;
   font-weight:var(--meta-weight);color:var(--ink-3)}
 .ceyebrow .num{color:var(--ink-3);font-variant-numeric:tabular-nums}
+.ceyebrow .kind,.ceyebrow .csurf,.ceyebrow .cdate{
+  display:inline-block;border:1px solid var(--rule-strong);border-radius:var(--radius);
+  padding:.12rem .38rem;background:var(--paper);color:var(--ink-2)
+}
 .ctitle{grid-column:1;margin:0 0 .3rem;font-size:clamp(1.35rem,2.6vw,1.9rem);
   letter-spacing:-.02em;line-height:1.1}
 .ctitle a{color:var(--ink)}
@@ -2701,6 +2725,8 @@ dialog.prov:not([open])::backdrop{background-color:rgba(10,10,8,0)}
   transition:color 180ms cubic-bezier(.2,.6,.2,1)}
 .case:hover .cfig,.case:focus-within .cfig{color:var(--ink)}
 .cmeasure{display:flex;flex-wrap:wrap;gap:.2rem 1.1rem;margin:.9rem 0 .8rem;
+  padding:.55rem .65rem;background:var(--paper);
+  border-top:1px solid var(--rule-strong);border-bottom:1px solid var(--rule-strong);
   font-size:var(--meta-size);letter-spacing:var(--meta-track);text-transform:uppercase;
   font-weight:var(--meta-weight);color:var(--ink-3);font-variant-numeric:tabular-nums}
 .cblurb{margin:0 0 1.2rem;font-size:.95rem;color:var(--ink-2);max-width:46rem;line-height:1.55}
@@ -2729,12 +2755,14 @@ dialog.prov:not([open])::backdrop{background-color:rgba(10,10,8,0)}
 .cgap{font-size:var(--meta-size);letter-spacing:var(--meta-track);text-transform:uppercase;
   font-weight:var(--meta-weight);color:var(--ink-3)}
 .cempty td,.cempty th .cslotname{color:var(--ink-3)}
-.cread{margin:0;display:flex;flex-wrap:wrap;gap:.5rem 1.2rem;align-items:baseline}
-.cgo{font-size:.9rem;font-weight:660;color:var(--accent);display:inline-flex;gap:.4rem;align-items:center}
+.cread{margin:0;padding-top:.8rem;border-top:1px solid var(--rule-strong);display:flex;flex-wrap:wrap;gap:.5rem 1.2rem;align-items:center}
+.cgo{font-size:.9rem;font-weight:660;color:var(--accent);display:inline-flex;gap:.4rem;align-items:center;
+  min-height:2.5rem;padding:.45rem .65rem;border:1px solid var(--edge);background:var(--paper)}
 .cgo .arrow{transition:transform var(--t-fast) var(--ease-move)}
 .cgo:hover .arrow{transform:translateX(3px)}
 .cheld{font-size:var(--meta-size);letter-spacing:var(--meta-track);text-transform:uppercase;
-  font-weight:var(--meta-weight);color:var(--ink-3);font-variant-numeric:tabular-nums}
+  font-weight:var(--meta-weight);color:var(--ink-2);font-variant-numeric:tabular-nums;
+  border:1px solid var(--rule-strong);border-radius:var(--radius);padding:.18rem .42rem;background:var(--paper)}
 
 /* A phone has no room for a 12.5rem label column beside a sentence, so the
    table becomes two stacked blocks per row and the slot name reads as the
@@ -2791,6 +2819,14 @@ dialog.prov:not([open])::backdrop{background-color:rgba(10,10,8,0)}
 .startlinks a{font-size:.92rem;font-weight:640;color:var(--ink);white-space:nowrap;
   border-bottom:1px solid var(--rule-strong);padding-bottom:.1rem}
 .startlinks a:hover{color:var(--accent);border-bottom-color:var(--accent)}
+.startlinks a[href="selected.html"]{
+  display:inline-flex;align-items:center;min-height:44px;padding:.6rem .8rem;
+  border:1px solid var(--edge);border-radius:var(--radius);background:var(--panel-2);
+  color:var(--ink);font-weight:640;line-height:1.2
+}
+.startlinks a[href="selected.html"]:hover,.startlinks a[href="selected.html"]:focus-visible{
+  border-color:var(--ink-2);background:var(--panel);color:var(--ink)
+}
 
 /* The Now block reuses the facts grammar of the short version above it, one
    step quieter, because it is the only part of this page that goes stale. */

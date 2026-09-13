@@ -551,7 +551,7 @@
 
     ctx.beginPath();
     ctx.arc(cx, cy, r, 0, Math.PI * 2);
-    ctx.strokeStyle = rgba(C.edge, focus ? 0.85 : 0.6);
+    ctx.strokeStyle = C.edge;
     ctx.lineWidth = 1;
     ctx.stroke();
   }
@@ -561,10 +561,35 @@
     return parseInt(p.slice(0, 2), 16) < 128;
   }
 
-  /* A reference frame you get while you are turning it and not before. The
-     grid is genuine (parallels every 30 degrees, meridians every 30) so it
-     tells you which way is up, and because it fades out when the sphere
-     settles it never sits behind the marks in the state a reader reads. */
+  /* The sparse frame stays visible at rest. Twelve six-pixel registrations
+     establish bearing, the equator establishes attitude, and each real pole
+     receives a five-pixel crosshair when it faces the reader. */
+  function drawReferenceFrame() {
+    var r = R();
+    smallCircle([0, 1, 0], Math.PI / 2, tone2(C.edge, dark() ? 0.42 : 0.5), 1, null);
+    ctx.save();
+    ctx.strokeStyle = C.edge;
+    ctx.lineWidth = 1;
+    for (var i = 0; i < 12; i++) {
+      var a = i * Math.PI / 6, ca = Math.cos(a), sa = Math.sin(a);
+      ctx.beginPath();
+      ctx.moveTo(cx + ca * (r - 6), cy + sa * (r - 6));
+      ctx.lineTo(cx + ca * r, cy + sa * r);
+      ctx.stroke();
+    }
+    for (var pole = -1; pole <= 1; pole += 2) {
+      var s = screenOf([0, pole, 0]);
+      if (s[2] < 0.02) continue;
+      ctx.beginPath();
+      ctx.moveTo(s[0] - 5, s[1]); ctx.lineTo(s[0] + 5, s[1]);
+      ctx.moveTo(s[0], s[1] - 5); ctx.lineTo(s[0], s[1] + 5);
+      ctx.stroke();
+    }
+    ctx.restore();
+  }
+
+  /* The dense thirty-degree graticule appears only while the sphere turns.
+     The resting frame above keeps orientation without filling the field. */
   var gridA = 0, _grid = null;
   function gridLines() {
     if (_grid) return _grid;
@@ -595,8 +620,7 @@
     ctx.lineWidth = 1;
     ctx.setLineDash([1, 3]);
     for (var g = 0; g < lines.length; g++) {
-      /* the equator is the reference the eye holds onto while the sphere
-         turns, so it alone is drawn solid, a second pass below */
+      /* the equator belongs to the resting frame and is not repeated here */
       if (g === 2) continue;
       var line = lines[g], started = false;
       ctx.beginPath();
@@ -611,32 +635,43 @@
       }
       ctx.stroke();
     }
-    ctx.setLineDash([]);
-    ctx.strokeStyle = tone2(C.edge, 0.7 * a);
-    var eq = lines[2], est = false;
+    ctx.restore();
+  }
+
+  /* A hovered mark reports its screen coordinates to the limb. The four
+     six-pixel endpoint ticks belong to those two axes, and disappear in the
+     same single paint as the reticle when the pointer leaves. */
+  function drawTargetAxes(p) {
+    if (!p || peeked || p.sz <= 0) return;
+    var r = R(), dx = p.sx - cx, dy = p.sy - cy;
+    if (dx * dx + dy * dy >= r * r) return;
+    var xSpan = Math.sqrt(Math.max(0, r * r - dy * dy));
+    var ySpan = Math.sqrt(Math.max(0, r * r - dx * dx));
+    var depth = (p.sz + 1) / 2;
+    var rad = (0.55 + 0.028 * Math.sqrt(p.w)) + 2.0 * depth;
+    if (focus && p.r === focus) rad += 1.1;
+    if (filter && p.on) rad += 1.5;
+    rad += 6.9;
+    var left = cx - xSpan, right = cx + xSpan;
+    var top = cy - ySpan, bottom = cy + ySpan;
+    ctx.save();
+    ctx.strokeStyle = rgba(C.ink, dark() ? 0.34 : 0.28);
+    ctx.lineWidth = 1;
+    ctx.setLineDash([2, 4]);
     ctx.beginPath();
-    for (var e2 = 0; e2 < eq.length; e2++) {
-      var ev = eq[e2];
-      var ex1 = ev[0] * _cy1 + ev[2] * _sy1;
-      var ez1 = -ev[0] * _sy1 + ev[2] * _cy1;
-      if (ev[1] * _sp1 + ez1 * _cp1 < 0.02) { est = false; continue; }
-      var esx = cx + ex1 * _r1, esy = cy - (ev[1] * _cp1 - ez1 * _sp1) * _r1;
-      if (!est) { ctx.moveTo(esx, esy); est = true; }
-      else ctx.lineTo(esx, esy);
-    }
+    if (p.sx - rad > left) { ctx.moveTo(left, p.sy); ctx.lineTo(p.sx - rad, p.sy); }
+    if (p.sx + rad < right) { ctx.moveTo(p.sx + rad, p.sy); ctx.lineTo(right, p.sy); }
+    if (p.sy - rad > top) { ctx.moveTo(p.sx, top); ctx.lineTo(p.sx, p.sy - rad); }
+    if (p.sy + rad < bottom) { ctx.moveTo(p.sx, p.sy + rad); ctx.lineTo(p.sx, bottom); }
     ctx.stroke();
-    /* the poles, crosshair-marked when they face the reader: the fixed points
-       every meridian shares, which is exactly what makes them worth marking */
-    for (var pv = -1; pv <= 1; pv += 2) {
-      var pd = pv * _sp1; /* depth of the pole [0,pv,0] after rotation */
-      if (pd < 0.02) continue;
-      var psx = cx, psy = cy - (pv * _cp1) * _r1;
-      ctx.beginPath();
-      ctx.moveTo(psx - 5, psy); ctx.lineTo(psx + 5, psy);
-      ctx.moveTo(psx, psy - 5); ctx.lineTo(psx, psy + 5);
-      ctx.stroke();
-    }
-    ctx.setLineDash([1, 3]);
+    ctx.setLineDash([]);
+    ctx.strokeStyle = C.edge;
+    ctx.beginPath();
+    ctx.moveTo(left, p.sy - 3); ctx.lineTo(left, p.sy + 3);
+    ctx.moveTo(right, p.sy - 3); ctx.lineTo(right, p.sy + 3);
+    ctx.moveTo(p.sx - 3, top); ctx.lineTo(p.sx + 3, top);
+    ctx.moveTo(p.sx - 3, bottom); ctx.lineTo(p.sx + 3, bottom);
+    ctx.stroke();
     ctx.restore();
   }
 
@@ -885,8 +920,10 @@
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     ctx.clearRect(0, 0, W, H);
     drawSilhouette();
+    drawReferenceFrame();
     drawGraticule(gridA);
     drawDiscs();
+    drawTargetAxes(hover);
     drawStems(true);
     /* Flown in, the silhouette runs off the frame, so the document's own cap
        is drawn as the boundary the reader is inside. */
@@ -1015,7 +1052,7 @@
       if (isHover) {
         ctx.beginPath();
         ctx.arc(p.sx, p.sy, rad + 4.5, 0, Math.PI * 2);
-        ctx.strokeStyle = rgba(C.ink, 0.6); ctx.lineWidth = 1; ctx.stroke();
+        ctx.strokeStyle = C.ink; ctx.lineWidth = 1; ctx.stroke();
       } else if (staged && staged.name && staged.name.length <= 2 &&
                  staged.name.indexOf(p) > -1) {
         /* one mark, named: findable in a field of 1,246 others */

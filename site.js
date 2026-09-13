@@ -1106,6 +1106,68 @@
       if (dash) ctx.setLineDash([]);
       return seen;
     }
+    /* A sparse frame stays on the instrument at rest. Twelve six-pixel
+       registrations establish bearing, the equator establishes attitude,
+       and the two real poles receive five-pixel crosshairs only when they
+       face the reader. All three are projections of the current camera. */
+    function drawReferenceFrame() {
+      ring([0, 1, 0], Math.PI / 2, C.e, DK ? 0.42 : 0.5, 1);
+      ctx.save();
+      ctx.strokeStyle = C.e;
+      ctx.lineWidth = 1;
+      for (var i = 0; i < 12; i++) {
+        var a = i * Math.PI / 6, ca = Math.cos(a), sa = Math.sin(a);
+        ctx.beginPath();
+        ctx.moveTo(cx + ca * (R - 6), cy + sa * (R - 6));
+        ctx.lineTo(cx + ca * R, cy + sa * R);
+        ctx.stroke();
+      }
+      for (var pole = -1; pole <= 1; pole += 2) {
+        var s = project([0, pole, 0]);
+        if (s[2] < 0.02) continue;
+        ctx.beginPath();
+        ctx.moveTo(s[0] - 5, s[1]); ctx.lineTo(s[0] + 5, s[1]);
+        ctx.moveTo(s[0], s[1] - 5); ctx.lineTo(s[0], s[1] + 5);
+        ctx.stroke();
+      }
+      ctx.restore();
+    }
+    /* The selected mark reports its screen coordinates to the limb. The
+       four short ticks are the endpoints of those two measured axes, not
+       decorative compass marks. A hover change calls paint once. */
+    function drawTargetAxes(i, hd) {
+      if (i < 0 || !pts[i]) return;
+      var p = pts[i], s = project([p.x, p.y, p.z]);
+      var dx = s[0] - cx, dy = s[1] - cy;
+      if (s[2] <= 0 || dx * dx + dy * dy >= R * R) return;
+      var xSpan = Math.sqrt(Math.max(0, R * R - dy * dy));
+      var ySpan = Math.sqrt(Math.max(0, R * R - dx * dx));
+      var depth = (s[2] + 1) / 2;
+      var rad = (BAND_R[p.b] + 1.5 * depth) * S;
+      if (hd >= 0 && own[i] === hd) rad += 0.6 * S;
+      rad += 6.9;
+      var left = cx - xSpan, right = cx + xSpan;
+      var top = cy - ySpan, bottom = cy + ySpan;
+      ctx.save();
+      ctx.strokeStyle = rgba(C.k, DK ? 0.34 : 0.28);
+      ctx.lineWidth = 1;
+      ctx.setLineDash([2, 4]);
+      ctx.beginPath();
+      if (s[0] - rad > left) { ctx.moveTo(left, s[1]); ctx.lineTo(s[0] - rad, s[1]); }
+      if (s[0] + rad < right) { ctx.moveTo(s[0] + rad, s[1]); ctx.lineTo(right, s[1]); }
+      if (s[1] - rad > top) { ctx.moveTo(s[0], top); ctx.lineTo(s[0], s[1] - rad); }
+      if (s[1] + rad < bottom) { ctx.moveTo(s[0], s[1] + rad); ctx.lineTo(s[0], bottom); }
+      ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.strokeStyle = C.e;
+      ctx.beginPath();
+      ctx.moveTo(left, s[1] - 3); ctx.lineTo(left, s[1] + 3);
+      ctx.moveTo(right, s[1] - 3); ctx.lineTo(right, s[1] + 3);
+      ctx.moveTo(s[0] - 3, top); ctx.lineTo(s[0] + 3, top);
+      ctx.moveTo(s[0] - 3, bottom); ctx.lineTo(s[0] + 3, bottom);
+      ctx.stroke();
+      ctx.restore();
+    }
     var hover = -1;
     function paint() {
       cx = W / 2; cy = H / 2;
@@ -1152,12 +1214,14 @@
       }
       ctx.beginPath();
       ctx.arc(cx, cy, R, 0, Math.PI * 2);
-      ctx.strokeStyle = rgba(lit ? C.e : C.r, DK ? 0.6 : 0.75);
+      ctx.strokeStyle = lit ? C.e : C.r;
       ctx.lineWidth = 1;
       ctx.stroke();
       /* the document under the pointer: its marks come forward, the rest
          hold; the chords its prose records are drawn under the marks */
       var hd = hover >= 0 && own.length ? own[hover] : curDoc;
+      drawReferenceFrame();
+      drawTargetAxes(hover, hd);
       /* the chords of a newly faced document draw outward over 220ms on
          the same curve the camera settles on; a pointed document's chords
          are drawn whole, one paint per change */
@@ -1227,7 +1291,7 @@
         if (i === hover) {
           ctx.beginPath();
           ctx.arc(sx, sy, rad + 4.5, 0, Math.PI * 2);
-          ctx.strokeStyle = rgba(C.k, 0.6); ctx.lineWidth = 1; ctx.stroke();
+          ctx.strokeStyle = C.k; ctx.lineWidth = 1; ctx.stroke();
         }
       }
     }
@@ -1340,15 +1404,10 @@
       if (dragT || vy !== 0 || vp !== 0 || springOn || chordT0 || corT0) kick(); else lastT = 0;
     }
 
-    /* First paint waits for an idle main thread: the home page is the LCP
-       surface and the sphere must not cost it. The box is sized by CSS, so
-       nothing shifts when the canvas fills in. */
+    /* The box is sized by CSS before this deferred script runs, so the first
+       layout can paint the complete instrument without a delayed swap. */
     function bootTeaser() { host.setAttribute("data-corona", "none"); size(); paint(); }
-    if ("requestIdleCallback" in window) {
-      requestIdleCallback(bootTeaser, { timeout: 1500 });
-    } else {
-      setTimeout(bootTeaser, 250);
-    }
+    bootTeaser();
     var t0;
     window.addEventListener("resize", function () {
       clearTimeout(t0);
