@@ -876,7 +876,7 @@ def cap_block(i, cap_id, title, prose):
                        if e["tools"] else []))
     lst = ", ".join('<a href="%s">%s</a>' % (esc(q["url"]), esc(q["t"])) for q in e["items"])
     gap = '<p class="capgap">%s</p>' % esc(e["gap"]) if e["gap"] else ""
-    return ('    <div><p class="plate-n"><b>%02d</b> <span>/ %02d</span></p><h3>%s</h3>%s\n'
+    return ('    <div class="about-capability"><p class="plate-n"><b>%02d</b> <span>/ %02d</span></p><h3>%s</h3>%s\n'
             '      <p class="capev">%s</p>\n'
             '      <details class="tv capdet"><summary>What evidences it</summary>\n'
             '      <p class="caplist">%s</p>%s</details></div>'
@@ -2490,7 +2490,7 @@ def page_library():
             k += 1
             rows.append(shelf_row(k, p, fp=True))
         rows.append(shelf_subtotal(f"{SURF_LABEL[key]}, {len(items)} pieces", items, fp=True))
-        blocks.append(f"""  <section class="lgroup" data-group="{key}" id="{key}">
+        blocks.append(f"""  <section class="lgroup shelf" data-group="{key}" id="{key}">
     <div class="grouphead"><h2>{SURF_LABEL[key]}</h2>
       <p class="gnote">{esc(notes[key])}</p>
       <span class="gcount">{len(items)} pieces &middot; {w:,} words</span></div>
@@ -2561,7 +2561,7 @@ def page_library():
 """
     return head(f"Work \u00b7 {SHORT}",
                 f"All {len(P)} pieces by Alex Rajcoomar as one statement of work: measured words, figures and tables on every row, split by origin.",
-                "library.html") + body + foot()
+                "library.html", cls="shelf-page") + body + foot()
 
 def profile_links(css="inlink", resume=True):
     """The optional recruiter links, each rendered only where a value
@@ -2627,17 +2627,17 @@ def page_about():
         seek_bits.append('<div><b>Profiles</b><span>'
                          + ' &middot; '.join(profile_links()) + '</span></div>')
     recruit_rows = ("\n    " + "\n    ".join(seek_bits)) if seek_bits else ""
-    body = f"""<div class="hero tight shell">
+    body = f"""<div class="hero tight shell about-dossier">
   <p class="eyebrow accent">About</p>
-  <div class="namerow">
+  <div class="namerow about-identity">
     <h1 class="h1" id="author">{marks_mod.svg("author")}{esc(NAME)}</h1>
-    <div class="affil">
-      <img class="affil-logo" src="uw-logo.png" alt="University of Waterloo"
+    <div class="affil about-affiliation">
+      <img class="affil-logo about-logo" src="uw-logo.png" alt="University of Waterloo"
         width="280" height="67" decoding="async">
       <span class="affil-school">School of Accounting and Finance</span>
     </div>
   </div>
-  <p class="lede">Alex, {(esc(STANDING) + ", ") if STANDING else ""}an Accounting and Financial Management
+  <p class="lede about-bio">Alex, {(esc(STANDING) + ", ") if STANDING else ""}an Accounting and Financial Management
   student in the Analytics stream at the University of Waterloo. I build the thing I need, then leave it
   running here.</p>
 </div>
@@ -2674,7 +2674,7 @@ def page_about():
     what building {len(P)} pieces of it actually required.</p>
     <span class="count">Four things</span>
   </div>
-  <div class="caps">
+  <div class="caps about-capabilities">
 {caps_html}
   </div>
   <p class="capnote">The paragraphs are the claim. Under each one is the work that evidences it, named
@@ -2726,7 +2726,7 @@ def page_about():
 """
     return head(f"About · {SHORT}",
                 "Alex Rajcoomar, Accounting and Financial Management student in the Analytics stream at the University of Waterloo.",
-                "about.html", extra="\n" + jsonld_person()) + body + foot()
+                "about.html", extra="\n" + jsonld_person(), cls="about-page") + body + foot()
 
 # One selection rule for the full-offline copy, stated once: the colophon's
 # "about N MB" and the manifest the service worker reads were two copies of

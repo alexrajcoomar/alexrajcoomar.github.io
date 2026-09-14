@@ -81,12 +81,8 @@
      alpha are declared here; no image or additional layer supplies light.
      Check 36 inventories every declaration and measures the full alpha
      range over paper for text and control borders in both themes. */
-  --lamp-cool:    radial-gradient(62% 56% at 51% 44%,
-    rgba(20,80,155,.085) 0%, rgba(20,80,155,.038) 36%,
-    rgba(20,80,155,.018) 62%, rgba(20,80,155,0) 88%);
-  --lamp-warm:    radial-gradient(62% 58% at 38% 45%,
-    rgba(190,168,120,.22) 0%, rgba(190,168,120,.10) 34%,
-    rgba(190,168,120,.045) 62%, rgba(190,168,120,0) 88%);
+  --lamp-cool:    radial-gradient(60% 53% at 52% 38%, rgba(20,80,155,.095) 0%, rgba(20,80,155,.039) 42%, rgba(20,80,155,.013) 64%, rgba(20,80,155,0) 88%);
+  --lamp-warm:    radial-gradient(76% 64% at 24% 42%, rgba(235,232,223,.8) 0%, rgba(235,232,223,.32) 48%, rgba(235,232,223,0) 88%);
 
   --shell:        76rem;
   --measure:      38rem;
@@ -167,12 +163,8 @@
     --tool:        #4fc4a6;
     --ref:         #dbab5d;
     --selection:   #223b5c;
-    --lamp-cool:   radial-gradient(62% 56% at 51% 44%,
-      rgba(74,102,196,.21) 0%, rgba(74,102,196,.095) 36%,
-      rgba(74,102,196,.045) 62%, rgba(74,102,196,0) 88%);
-    --lamp-warm:   radial-gradient(62% 58% at 38% 45%,
-      rgba(219,171,93,.115) 0%, rgba(219,171,93,.052) 34%,
-      rgba(219,171,93,.025) 62%, rgba(219,171,93,0) 88%);
+    --lamp-cool:    radial-gradient(60% 53% at 52% 38%, rgba(143,182,238,.095) 0%, rgba(143,182,238,.039) 42%, rgba(143,182,238,.013) 64%, rgba(143,182,238,0) 88%);
+    --lamp-warm:    radial-gradient(76% 64% at 24% 42%, rgba(28,29,34,.8) 0%, rgba(28,29,34,.32) 48%, rgba(28,29,34,0) 88%);
   }
 }
 :root[data-theme="dark"]{
@@ -196,12 +188,8 @@
   --tool:        #4fc4a6;
   --ref:         #dbab5d;
   --selection:   #223b5c;
-  --lamp-cool:   radial-gradient(62% 56% at 51% 44%,
-    rgba(74,102,196,.21) 0%, rgba(74,102,196,.095) 36%,
-    rgba(74,102,196,.045) 62%, rgba(74,102,196,0) 88%);
-  --lamp-warm:   radial-gradient(62% 58% at 38% 45%,
-    rgba(219,171,93,.115) 0%, rgba(219,171,93,.052) 34%,
-    rgba(219,171,93,.025) 62%, rgba(219,171,93,0) 88%);
+  --lamp-cool:    radial-gradient(60% 53% at 52% 38%, rgba(143,182,238,.095) 0%, rgba(143,182,238,.039) 42%, rgba(143,182,238,.013) 64%, rgba(143,182,238,0) 88%);
+  --lamp-warm:    radial-gradient(76% 64% at 24% 42%, rgba(28,29,34,.8) 0%, rgba(28,29,34,.32) 48%, rgba(28,29,34,0) 88%);
 }
 
 /* ------------------------------ base ------------------------------ */
@@ -3891,4 +3879,479 @@ html.selected-review .stack-end{
 @media print{
   .review-handoff{break-inside:avoid}
   .rproof{background:none;border-color:#ddd9cf}
+}
+
+/* Homepage visual polish: open rail, measured fold, quiet illumination.
+   Append to site.css. Existing HTML, canvas, interactions and radius stay intact.
+   All added colour is derived from the closed palette; lights are static.
+   Screen scoping preserves the existing print treatment. */
+@media screen {
+  .descent > .stage {
+    gap: 1rem 0;
+    padding-block: 2rem 2.5rem;
+  }
+
+  .descent > .stage .eyeb {
+    border: 0;
+    border-left: 1px solid var(--accent);
+    padding: .12rem .7rem;
+    background: none;
+    line-height: 1.5;
+    letter-spacing: .1em;
+  }
+
+  .descent > .stage .display {
+    margin-top: .7rem;
+    line-height: 1.01;
+    letter-spacing: -.048em;
+  }
+
+  .descent > .stage .method {
+    color: color-mix(in srgb, var(--ink-2) 82%, var(--ink));
+    line-height: 1.6;
+  }
+
+  .descent > .stage .ident .standing { line-height: 1.5; }
+  .descent > .stage .ident .term { color: var(--ink); }
+  .descent > .stage .ident .links { margin-top: .7rem; }
+
+  /* The metric bank keeps its four cells and calibration marks.
+     Its perimeter is decorative; the values keep their own affordances. */
+  .descent .corpusline {
+    border: 1px solid var(--rule-strong);
+    border-top-color: var(--edge);
+    background: linear-gradient(155deg, var(--panel-2), var(--panel) 72%);
+    box-shadow: none;
+  }
+
+  .descent .corpusline div {
+    background: none;
+    padding-block: .8rem .75rem;
+  }
+
+  .descent .corpusline div + div { border-left-color: var(--rule); }
+  .descent .corpusline div:hover,
+  .descent .corpusline div:focus-within { background: var(--panel-2); }
+
+  /* An unboxed label on one continuous hairline, followed by three lanes.
+     No badge, outer sidewalls or doubled top rule. */
+  .descent .startrow {
+    margin-top: .75rem;
+    padding-top: .35rem;
+    border-top: 0;
+  }
+
+  .descent .startlab {
+    width: auto;
+    margin: 0 0 .75rem;
+    padding: 0;
+    border: 0;
+    background: linear-gradient(var(--rule-strong), var(--rule-strong))
+      right center / calc(100% - 6.75rem) 1px no-repeat;
+    color: var(--ink-2);
+    font: 560 .66rem/1.5 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    letter-spacing: .14em;
+  }
+
+  .descent .startlinks {
+    border: 0;
+    border-bottom: 1px solid var(--rule-strong);
+    background: none;
+  }
+
+  .descent .startlinks a,
+  .descent .startlinks a[href="selected.html"] {
+    min-height: 3.8rem;
+    padding: .65rem 1.25rem .7rem .6rem;
+    gap: .6rem;
+    background: none;
+    box-shadow: none;
+    font-size: .72rem;
+    font-weight: 560;
+    line-height: 1.4;
+    letter-spacing: 0;
+  }
+
+  .descent .startlinks a + a { border-left: 1px solid var(--rule); }
+  .descent .startlinks a::before { color: var(--ink-2); padding-top: .12rem; }
+  .descent .startlinks a > span[aria-hidden="true"] { right: .6rem; bottom: .65rem; }
+
+  .descent .startlinks a[href="selected.html"] {
+    color: var(--accent);
+    background: color-mix(in srgb, var(--panel-2) 55%, transparent);
+    box-shadow: inset 0 -1px 0 var(--accent);
+  }
+
+  .descent .startlinks a[href="selected.html"]::before { color: var(--accent); }
+  .descent .startlinks a:hover,
+  .descent .startlinks a:focus-visible {
+    color: var(--accent);
+    background: var(--panel-2);
+    box-shadow: inset 0 -1px 0 var(--accent);
+  }
+
+  .descent .startlinks a:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+  }
+
+  .descent-globe .globe-cap {
+    background: none;
+    border-top-color: var(--rule-strong);
+    border-bottom: 0;
+    padding-block: .75rem .4rem;
+  }
+
+  .descent-globe .globe-key {
+    border-top: 0;
+    padding-top: 0;
+    margin-top: .65rem;
+  }
+}
+
+/* The desktop header has a 4rem floor, including its 1px rule.
+   Both hero columns share the remaining viewport. Min-height allows content
+   to grow on short screens / zoom; nothing is clipped or hidden to fit. */
+@media screen and (min-width: 64rem) {
+  body:has(.descent) > header.top .bar { min-height: calc(4rem - 1px); }
+
+  .descent > .stage {
+    min-height: calc(100svh - 4rem);
+    padding-block: clamp(2rem, 4svh, 4rem);
+    align-content: center;
+  }
+
+  .descent > .descent-globe {
+    top: var(--pin-top, 4rem);
+    min-height: calc(100svh - 4rem);
+    align-content: center;
+  }
+
+  .descent-globe .tease-globe.hero-globe {
+    max-width: min(100%, max(18rem, calc(100svh - 18rem)));
+  }
+}
+
+@media screen and (max-width: 44rem) {
+  .descent > .stage {
+    gap: .85rem 0;
+    padding-block: 1.5rem 2rem;
+    /* The narrow header occupies at least 5.5rem; keep the next globe clear. */
+    min-height: calc(100svh - 5.5rem);
+    align-content: start;
+  }
+  .descent > .stage .display { margin-top: .45rem; letter-spacing: -.042em; }
+  .descent > .stage .method { line-height: 1.55; }
+  .descent .corpusline div { padding-block: .7rem .65rem; }
+  .descent .corpusline div:nth-child(n+3) { border-top-color: var(--rule); }
+  .descent .startrow { margin-top: .45rem; }
+  .descent .startlinks a,
+  .descent .startlinks a[href="selected.html"] {
+    grid-template-columns: minmax(0,1fr);
+    align-content: start;
+    gap: .4rem;
+    min-height: 5.1rem;
+    padding: .55rem 1rem .6rem .5rem;
+    font-size: .68rem;
+    line-height: 1.35;
+  }
+  .descent .startlinks a::before { font-size: .6rem; padding-top: 0; }
+  .descent .startlinks a > span[aria-hidden="true"] { right: .4rem; bottom: .6rem; }
+}
+
+/* Secondary hub polish
+   Scope contract: about hooks, facts registers, and library shelves only. */
+
+.about-dossier {
+  position: relative;
+  background: var(--panel);
+  border: 1px solid var(--rule-strong);
+  border-top: 2px solid var(--ink-2);
+  border-radius: var(--radius);
+  padding-block: clamp(1.4rem, 3vw, 2.25rem);
+  margin-block: clamp(1.5rem, 4vw, 3rem);
+}
+
+.about-dossier::after {
+  content: "";
+  position: absolute;
+  inset: -2px auto auto clamp(1rem, 3vw, 2rem);
+  width: 4.5rem;
+  height: 2px;
+  background: var(--ink);
+}
+
+.about-dossier .about-identity {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  gap: 1.25rem 2.5rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid var(--rule-strong);
+}
+
+.about-dossier .about-affiliation {
+  min-width: min(100%, 18.5rem);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  padding: .7rem .8rem .75rem;
+  background: var(--panel-2);
+}
+
+.about-dossier .about-logo {
+  margin-left: 0;
+}
+
+.about-dossier .about-affiliation .affil-school {
+  padding-top: .5rem;
+  border-top: 1px solid var(--rule-strong);
+  color: var(--ink-2);
+  font-variant-numeric: tabular-nums;
+}
+
+.about-dossier .about-bio {
+  max-width: 50rem;
+  margin: 1.25rem 0 0;
+  padding-left: 1rem;
+  border-left: 2px solid var(--ink-2);
+  color: var(--ink);
+}
+
+.about-capabilities > .about-capability {
+  border-radius: var(--radius);
+}
+
+.about-capabilities > .about-capability:hover,
+.about-capabilities > .about-capability:focus-visible,
+.about-capabilities > .about-capability:focus-within {
+  position: relative;
+  z-index: 1;
+  background: var(--panel-2);
+  outline: 1px solid var(--edge);
+  outline-offset: -1px;
+}
+
+/* The ring is already site-wide; these two rules only restate it in --edge on
+   the pages this polish scopes. They carry no !important: at (0,2,1) they
+   already outrank the base :focus-visible, and forcing them would also outrank
+   a stylesheet that removes the ring, which is the one thing the audit
+   falsifies to prove it can still see a missing one. */
+.about-page :is(a, button, input, select, summary, [tabindex]):focus-visible,
+.facts :is(a, button, input, select, summary, [tabindex]):focus-visible {
+  outline: 2px solid var(--edge);
+  outline-offset: 2px;
+}
+
+.facts {
+  background: var(--panel);
+  border: 1px solid var(--rule-strong);
+  border-top: 2px solid var(--ink-2);
+  border-radius: var(--radius);
+  padding: 0 1rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.facts div {
+  padding-block: .82rem;
+  border-bottom: 1px solid var(--rule-strong);
+}
+
+.facts div:last-child {
+  border-bottom: 0;
+}
+
+.facts b,
+.facts dt {
+  color: var(--ink);
+}
+
+.facts span {
+  color: var(--ink-2);
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+.shelf {
+  position: relative;
+  margin-top: 2.25rem;
+  background: var(--panel);
+  border: 1px solid var(--rule-strong);
+  border-radius: var(--radius);
+}
+
+.shelf + .shelf {
+  margin-top: 3.5rem;
+}
+
+.shelf > .grouphead {
+  position: sticky;
+  top: var(--stick);
+  z-index: 6;
+  margin: 0;
+  padding: .9rem 1rem .85rem;
+  background: var(--panel-2);
+  border-top: 2px solid var(--ink-2);
+  border-bottom: 1px solid var(--rule-strong);
+}
+
+.shelf > .grouphead::before {
+  content: "";
+  width: .72rem;
+  height: .72rem;
+  flex: none;
+  background: var(--ink-2);
+  border: 1px solid var(--ink-2);
+}
+
+.shelf[data-group="course"] > .grouphead::before {
+  background: var(--panel-2);
+  border: 2px solid var(--ink-2);
+}
+
+.shelf[data-group="personal"] > .grouphead::before {
+  background: var(--edge);
+  border-color: var(--edge);
+}
+
+.shelf > .grouphead::after {
+  background: var(--rule-strong);
+}
+
+.shelf > .grouphead h2 {
+  color: var(--ink);
+}
+
+.shelf > .grouphead .gnote {
+  color: var(--ink-2);
+}
+
+.shelf > .grouphead .gcount {
+  color: var(--ink);
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+.shelf .stmt-list {
+  padding-inline: 1rem;
+  background: var(--panel);
+}
+
+.shelf .stmt-list > li {
+  border-bottom-color: var(--rule-strong);
+}
+
+.shelf .stmt-list > li.sr-head {
+  background: var(--panel-2);
+  border-bottom: 1px solid var(--ink-2);
+  margin-inline: -1rem;
+  padding-inline: 1rem;
+}
+
+.shelf .stmt-list > li[data-kind="tool"] {
+  margin-inline: -1rem;
+  padding-inline: 1rem;
+  background: var(--panel-2);
+  box-shadow: inset 3px 0 0 var(--edge);
+}
+
+.shelf .stmt-list > li[data-kind="tool"] .kind {
+  color: var(--ink);
+}
+
+.shelf .stmt-list > li[data-kind]:hover,
+.shelf .stmt-list > li[data-kind]:focus-visible,
+.shelf .stmt-list > li[data-kind]:has(a:focus-visible) {
+  position: relative;
+  z-index: 1;
+  background: var(--panel-2);
+  outline: 1px solid var(--edge);
+  outline-offset: -1px;
+}
+
+.shelf .stmt-list > li,
+.shelf .stmt-list > li * {
+  transition: none !important;
+}
+
+.shelf-page :is(a, button, input, select, summary, [tabindex]):focus-visible {
+  outline: 2px solid var(--edge);
+  outline-offset: 2px;
+}
+
+.shelf .stmt-list > li.sr-sub {
+  margin-inline: -1rem;
+  padding-inline: 1rem;
+  background: var(--panel-2);
+  border-top: 1px solid var(--ink-2);
+  border-bottom: 2px solid var(--ink-2);
+}
+
+.shelf .stmt-list .sr-n,
+.shelf .stmt-list .tnum {
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+.shelf .stmt-list h3 a {
+  color: var(--ink);
+}
+
+@media (max-width: 52rem) {
+  .about-dossier .about-identity {
+    grid-template-columns: minmax(0, 1fr);
+    align-items: start;
+  }
+
+  .about-dossier .about-affiliation {
+    width: 100%;
+  }
+
+  .facts {
+    padding-inline: .85rem;
+  }
+
+  .shelf,
+  .shelf + .shelf {
+    margin-top: 2.25rem;
+  }
+
+  .shelf > .grouphead {
+    position: static;
+    align-items: center;
+  }
+
+  .shelf > .grouphead .gcount {
+    width: 100%;
+    margin-left: 1.47rem;
+  }
+
+  .shelf .stmt-list {
+    padding-inline: .85rem;
+  }
+
+  .shelf .stmt-list > li.sr-head,
+  .shelf .stmt-list > li[data-kind="tool"],
+  .shelf .stmt-list > li.sr-sub {
+    margin-inline: -.85rem;
+    padding-inline: .85rem;
+  }
+}
+
+@media print {
+  .about-dossier,
+  .about-dossier .about-affiliation,
+  .about-capabilities > .about-capability,
+  .facts,
+  .shelf,
+  .shelf > .grouphead,
+  .shelf .stmt-list,
+  .shelf .stmt-list > li.sr-head,
+  .shelf .stmt-list > li[data-kind="tool"],
+  .shelf .stmt-list > li.sr-sub {
+    background: none !important;
+  }
+
+  /* The shelf head is sticky on screen. This selector outranks the print
+     release on .grouphead, so it has to let go here too, or a heading floats
+     over the page break it was meant to sit above. */
+  .shelf > .grouphead {
+    position: static;
+  }
 }

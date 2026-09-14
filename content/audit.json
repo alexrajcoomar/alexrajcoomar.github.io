@@ -3,8 +3,8 @@
  "meta": {
   "tool": "build/audit.js",
   "browser": "Chromium 141.0.7390.37",
-  "date": "2026-09-13",
-  "commit": "a15b2ab",
+  "date": "2026-09-14",
+  "commit": "24ef6f8",
   "runs": [
    {
     "commit": "21aacf2",
@@ -189,8 +189,8 @@
    "motion": {
     "animations": 0
    },
-   "inputs": "7db73da69e22",
-   "measured": "2026-09-13"
+   "inputs": "0a826fcc79ff",
+   "measured": "2026-09-14"
   },
   "about.html": {
    "ext": {
@@ -242,8 +242,8 @@
    "motion": {
     "animations": 0
    },
-   "inputs": "fe21c46c43df",
-   "measured": "2026-09-13"
+   "inputs": "fdabcae49f8a",
+   "measured": "2026-09-14"
   },
   "admin.html": {
    "ext": {
@@ -289,8 +289,8 @@
     "scrollWidth": 320,
     "overflow": false
    },
-   "inputs": "7eb7ebafa024",
-   "measured": "2026-09-13"
+   "inputs": "472dd3568a35",
+   "measured": "2026-09-14"
   },
   "afm241-cheat-sheet.html": {
    "ext": {
@@ -862,8 +862,8 @@
    "motion": {
     "animations": 0
    },
-   "inputs": "1acb591cc54c",
-   "measured": "2026-09-13"
+   "inputs": "68a22c66e8dd",
+   "measured": "2026-09-14"
   },
   "brittle-network.html": {
    "ext": {
@@ -975,8 +975,8 @@
    "motion": {
     "animations": 0
    },
-   "inputs": "a8a7625794d8",
-   "measured": "2026-09-13"
+   "inputs": "fe4ef3f773d7",
+   "measured": "2026-09-14"
   },
   "controls.html": {
    "ext": {
@@ -988,8 +988,8 @@
    },
    "errors": 0,
    "chrome": {
-    "a": 4568,
-    "b": 4523
+    "a": 6575,
+    "b": 6530
    },
    "print": {
     "stickyLeft": 0,
@@ -1028,8 +1028,8 @@
    "motion": {
     "animations": 0
    },
-   "inputs": "08a976abc6bf",
-   "measured": "2026-09-13"
+   "inputs": "32fb33137595",
+   "measured": "2026-09-14"
   },
   "coursework.html": {
    "ext": {
@@ -1081,8 +1081,8 @@
    "motion": {
     "animations": 0
    },
-   "inputs": "a2441da5b8a6",
-   "measured": "2026-09-13"
+   "inputs": "49b3cbdb8bb1",
+   "measured": "2026-09-14"
   },
   "crucible-cockpit.html": {
    "ext": {
@@ -1584,8 +1584,8 @@
    "motion": {
     "animations": 0
    },
-   "inputs": "d1a5afbb8aae",
-   "measured": "2026-09-13"
+   "inputs": "3006723d7fef",
+   "measured": "2026-09-14"
   },
   "kennedy-dossier.html": {
    "ext": {
@@ -1697,8 +1697,8 @@
    "motion": {
     "animations": 0
    },
-   "inputs": "82a673316bba",
-   "measured": "2026-09-13"
+   "inputs": "853155577cca",
+   "measured": "2026-09-14"
   },
   "monroe-case-file.html": {
    "ext": {
@@ -1890,8 +1890,8 @@
    "motion": {
     "animations": 0
    },
-   "inputs": "73af4f0dafce",
-   "measured": "2026-09-13"
+   "inputs": "647eb470b786",
+   "measured": "2026-09-14"
   },
   "resume.html": {
    "ext": {
@@ -1943,8 +1943,8 @@
    "motion": {
     "animations": 0
    },
-   "inputs": "560fda5271bf",
-   "measured": "2026-09-13"
+   "inputs": "84c68e805e5d",
+   "measured": "2026-09-14"
   },
   "revenue-recognition.html": {
    "ext": {
@@ -2016,8 +2016,8 @@
    "motion": {
     "animations": 0
    },
-   "inputs": "edbdeaa2385d",
-   "measured": "2026-09-13"
+   "inputs": "38301edfdcf1",
+   "measured": "2026-09-14"
   },
   "skill-forge.html": {
    "ext": {
@@ -2169,8 +2169,8 @@
    "motion": {
     "animations": 0
    },
-   "inputs": "efd523ab9f48",
-   "measured": "2026-09-13"
+   "inputs": "d79ee29ed937",
+   "measured": "2026-09-14"
   },
   "transformers-study-guide.html": {
    "ext": {
