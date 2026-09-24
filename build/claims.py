@@ -687,6 +687,18 @@ def build(ctx):
             ["canadian-dcf-cca.html", "controls.html"],
             note="This figure traces the tax-base reconstruction. It does not claim to map every dependency of the valuation model.")
 
+    t = T.get("thumbs", {})
+    checked("Every generated page with three or more section heads carries a thumb index on its right edge, and no other "
+            "page does, the Atlas and the controls page carrying none: one tab per head in the order the page sets them, "
+            "each numbered by its position, carrying its head's own words and landing on that head.",
+            ["42"],
+            f"{t.get('indexed', 0)} of {t.get('pages', 0)} generated pages carry an index, {t.get('short', 0)} have too few "
+            f"heads for one and {t.get('skipped', 0)} are excepted; {t.get('tabs', 0)} tabs against {t.get('heads', 0)} heads, "
+            f"{t.get('wrong', 0)} that disagree",
+            ["index.html", "resume.html", "colophon.html", "about.html"],
+            note="The tabs are read off the finished page, so they say what the headings say and nothing more; which "
+                 "heading reads as a part of the page is the page's own section-head markup, not a judgment made here.")
+
     t = T.get("editor", {})
     checked("The editor, admin.html, exists and the build never writes it: every stylesheet, script and local asset it references resolves to a file, "
             "every custom property its styles read is defined by the stylesheet it loads, every element id its script names is in its markup, "

@@ -1,6 +1,6 @@
 {
- "version": "5abee5759b75",
- "bytes": 19755569,
+ "version": "37acbc25445a",
+ "bytes": 19758625,
  "files": [
   "InterVariable-sub.woff2",
   "SYSTEM_ARCHITECTURE_AND_CREATIVE_BRIEF.md",
@@ -239,8 +239,8 @@
   "business-law-primer.html": "b2974c8e3d1e",
   "canadian-dcf-cca.html": "9fe98487aecc",
   "case-method.css": "9bc2c3a6e5e4",
-  "colophon.html": "65a0b0630951",
-  "controls.html": "004056820258",
+  "colophon.html": "a2d9e5c2922e",
+  "controls.html": "9a4a6a6d7df7",
   "coursework.html": "324dbd114f97",
   "crucible-cockpit.html": "6600a97e2ff0",
   "crucible-run-0-transcript.html": "3e6d8245a3ec",
@@ -357,7 +357,7 @@
   "predictive-history.html": "669399db3d74",
   "price-of-divergence.html": "401e5fcf75ab",
   "research.html": "6ba64955f8d4",
-  "resume.html": "27fdc1b34b3b",
+  "resume.html": "45dcdbc7f191",
   "revenue-recognition.html": "4a19d3b919d9",
   "selected.html": "721593eb8ae9",
   "site-192.png": "dbad8f0bc626",

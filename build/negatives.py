@@ -393,6 +393,23 @@ CASES = [
       lambda t: _edit(t, "build/build_site.py",
                       '"words": sum(q["words"] for q in items),',
                       '"words": sum(q["words"] for q in items) + 1000,')),
+
+    C("42", "thumb-head-without-a-tab", "the thumb index leaves the last section head of every indexed page without a tab",
+      lambda t: _in_block(t, BS, "def thumb_index(text, page):", "# One list, in build/claims.py",
+                         r"for i, \(hid, \(_s, _e, _a, _h, words\)\) in enumerate\(zip\(ids, heads\), 1\)",
+                         "for i, (hid, (_s, _e, _a, _h, words)) in enumerate(list(zip(ids, heads))[:-1], 1)")),
+    C("42", "thumb-tab-in-another-head-s-words", "every tab carries the words of the head after the one it lands on",
+      lambda t: _in_block(t, BS, "def thumb_index(text, page):", "# One list, in build/claims.py",
+                         r"% \(hid, i, esc\(words\)\)", "% (hid, i, esc(heads[i % len(heads)][4]))")),
+    C("42", "thumb-tab-lands-nowhere", "the id written on a head is not the id its tab lands on",
+      lambda t: _in_block(t, BS, "def thumb_index(text, page):", "# One list, in build/claims.py",
+                         r"""' id="%s"' % want""", """' id="%s-h"' % want""")),
+    C("42", "thumb-index-on-a-short-page", "the emitter indexes pages with two section heads, which the rule leaves without one",
+      lambda t: _edit(t, BS, "THUMB_MIN = 3\n", "THUMB_MIN = 2\n")),
+    C("42", "thumb-index-on-an-instrument", "the controls page, one of the two finished instruments, is given an index",
+      lambda t: (_edit(t, BS, 'THUMB_SKIP = ("atlas.html", "controls.html")', 'THUMB_SKIP = ()'),
+                 _edit(t, BS, "new_ctl = page_controls(register_html, instrument_html, counts, summary)",
+                       'new_ctl = thumb_index(page_controls(register_html, instrument_html, counts, summary), "controls.html")'))),
 ]
 
 
