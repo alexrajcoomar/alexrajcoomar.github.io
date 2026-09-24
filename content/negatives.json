@@ -1219,7 +1219,7 @@
   "meta": {
    "tool": "build/audit.js --falsify",
    "date": "2026-09-24",
-   "commit": "f23bcdc",
+   "commit": "6c908c8",
    "code": "e87c0e3a6638"
   },
   "cases": [
@@ -1311,16 +1311,16 @@
        "aimed": 6,
        "faced": 6,
        "framesSettle": 1554,
-       "framesAfter": 2216,
+       "framesAfter": 2220,
        "framesAtTop": 660
       },
       "phone": {
        "rows": 6,
        "aimed": 6,
        "faced": 6,
-       "framesSettle": 14952,
-       "framesAfter": 21360,
-       "framesAtTop": 3780
+       "framesSettle": 16212,
+       "framesAfter": 23160,
+       "framesAtTop": 4080
       }
      }
     }
@@ -1354,7 +1354,7 @@
       "pulseEnded": true,
       "repeated": false,
       "switched": true,
-      "framesAfterSwitch": 59,
+      "framesAfterSwitch": 60,
       "focusRing": true
      }
     }
@@ -1428,7 +1428,7 @@
      "inspect": {
       "layers": 2,
       "rest": 0,
-      "hover": 0.666652,
+      "hover": 0.666592,
       "focus": 1,
       "ms": 900,
       "moved": 0,
@@ -1579,16 +1579,16 @@
       "tokenInSession": false,
       "tokenInLocal": false,
       "rows": 0,
-      "pieces": 67,
+      "pieces": 68,
       "searched": 0,
-      "searchExpected": 25,
+      "searchExpected": 26,
       "editorOpened": false,
       "editEnabledPublish": false,
       "promptShown": false,
       "forgotten": true,
       "guardHeld": false,
       "files": 0,
-      "filesExpected": 130,
+      "filesExpected": 132,
       "siteFields": 0,
       "scrollWidth": 320,
       "overflow": false
@@ -1616,17 +1616,17 @@
       "cfgSaved": true,
       "tokenInSession": true,
       "tokenInLocal": false,
-      "rows": 67,
-      "pieces": 67,
-      "searched": 25,
-      "searchExpected": 25,
+      "rows": 68,
+      "pieces": 68,
+      "searched": 26,
+      "searchExpected": 26,
       "editorOpened": true,
       "editEnabledPublish": true,
       "promptShown": true,
       "forgotten": true,
       "guardHeld": true,
-      "files": 130,
-      "filesExpected": 130,
+      "files": 132,
+      "filesExpected": 132,
       "siteFields": 13,
       "scrollWidth": 320,
       "overflow": false
@@ -1654,17 +1654,17 @@
       "cfgSaved": true,
       "tokenInSession": true,
       "tokenInLocal": true,
-      "rows": 67,
-      "pieces": 67,
-      "searched": 25,
-      "searchExpected": 25,
+      "rows": 68,
+      "pieces": 68,
+      "searched": 26,
+      "searchExpected": 26,
       "editorOpened": true,
       "editEnabledPublish": true,
       "promptShown": true,
       "forgotten": true,
       "guardHeld": true,
-      "files": 130,
-      "filesExpected": 130,
+      "files": 132,
+      "filesExpected": 132,
       "siteFields": 13,
       "scrollWidth": 320,
       "overflow": false
@@ -1676,8 +1676,8 @@
     "page": "sw.js",
     "what": "the new worker neither carries the saved copy across nor syncs it, so a publish empties it",
     "rec": {
-     "before": 188,
-     "of": 188,
+     "before": 190,
+     "of": 190,
      "after": 0,
      "refreshed": false,
      "editor": {
@@ -1691,9 +1691,9 @@
     "page": "sw.js",
     "what": "the worker stores the editor like any other page, so a visit leaves it in the cache",
     "rec": {
-     "before": 188,
-     "of": 188,
-     "after": 188,
+     "before": 190,
+     "of": 190,
+     "after": 190,
      "refreshed": true,
      "editor": {
       "stored": true,
