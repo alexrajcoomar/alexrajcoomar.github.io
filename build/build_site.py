@@ -3187,6 +3187,17 @@ def page_colophon(summary=None):
       on the site is the light around the sphere, which encodes nothing and is drawn outside the disc
       so it darkens no mark. Dark mode is a selected set of tokens rather than an inversion, and the
       manual toggle wins over the system setting in both directions.</dd>
+
+      <dt>The thumb index</dt>
+      <dd>A generated page with three or more parts carries tabs on its right edge, one for each section
+      head in the order the page sets them, the way a bound reference is cut on its fore-edge so a
+      reader can open it at a part. The build reads the tabs off the finished page, so each says only
+      what its heading says, and it gives a heading an address where it had none. The tab for the part
+      being read is pulled: inked, and held a few pixels proud of the others. At rest the index stands
+      in the margin and covers no text; a tab draws out to show its heading only while it is pointed at
+      or focused, and a screen wide enough to hold the headings shows them at rest. The tabs are plain
+      links, so they work with scripts off. The Atlas and the controls page are instruments of their
+      own and carry none.</dd>
     </dl>
   </div>
   </div>
@@ -5198,6 +5209,71 @@ def jsonld_person():
     return ('<script type="application/ld+json">'
             + json.dumps(data, separators=(",", ":")).replace("</", "<\\/")
             + "</script>")
+
+
+# ------------------------------------------------------- the thumb index ----
+# A bound reference is opened at a part by the tabs cut into its fore-edge,
+# and a reader who works from one knows how to use them without being told.
+# A generated page with enough section heads carries the same thing on its
+# right edge, one tab per head in the order the page sets them, numbered by
+# position. Nothing is typed: the tabs are read off the finished page, a
+# head without an id is given one here so its tab has somewhere to land, and
+# nothing else on the page is touched. Check 42 reads every page back with a
+# parser of its own.
+THUMB_MIN = 3
+# the two instruments whose pages are finished as they stand
+THUMB_SKIP = ("atlas.html", "controls.html")
+_THUMB_HEAD = re.compile(r'<div class="sechead\b[^"]*">(?:(?!</div>).)*?<h2\b([^>]*)>(.*?)</h2>', re.S)
+
+
+def _thumb_words(inner):
+    """A heading's own words: its note references and markup left out."""
+    inner = re.sub(r'<a class="nref"[^>]*>.*?</a>', "", inner, flags=re.S)
+    return re.sub(r"\s+", " ", html.unescape(re.sub(r"<[^>]+>", "", inner))).strip()
+
+
+def _thumb_slug(words):
+    return "sec-" + (re.sub(r"[^a-z0-9]+", "-", words.lower()).strip("-")[:40].rstrip("-") or "part")
+
+
+def thumb_heads(text):
+    """(start, end, attrs, id or None, words) for every section head on a page,
+    in document order."""
+    out = []
+    for m in _THUMB_HEAD.finditer(text):
+        mid = re.search(r'\bid="([^"]+)"', m.group(1))
+        out.append((m.start(1) - 3, m.end(1), m.group(1), mid.group(1) if mid else None, _thumb_words(m.group(2))))
+    return out
+
+
+def thumb_index(text, page):
+    """The page with its thumb index: every head given an id if it had none,
+    and the index set as the last thing in the main content, where a keyboard
+    reaches it after the page it indexes rather than before."""
+    if page in THUMB_SKIP:
+        return text
+    heads = thumb_heads(text)
+    if len(heads) < THUMB_MIN or text.count("</main>") != 1:
+        return text
+    taken = set(re.findall(r'\bid="([^"]+)"', text))
+    ids = []
+    for _s, _e, _a, hid, words in heads:
+        if not hid:
+            base = hid = _thumb_slug(words)
+            k = 2
+            while hid in taken:
+                hid, k = "%s-%d" % (base, k), k + 1
+            taken.add(hid)
+        ids.append(hid)
+    # ids are written back to front so the offsets of the earlier heads hold
+    for (s, e, attrs, hid, _w), want in reversed(list(zip(heads, ids))):
+        if not hid:
+            text = text[:s] + "<h2" + attrs + ' id="%s"' % want + text[e:]
+    tabs = "\n".join(
+        '    <li><a href="#%s"><span class="num tnum">%02d</span><span class="ti-t">%s</span></a></li>'
+        % (hid, i, esc(words)) for i, (hid, (_s, _e, _a, _h, words)) in enumerate(zip(ids, heads), 1))
+    nav = ('<nav class="thumbs" aria-label="On this page">\n  <ol>\n%s\n  </ol>\n</nav>\n' % tabs)
+    return text.replace("</main>", nav + "</main>")
 
 
 # One list, in build/claims.py, because the register, the falsification wall
@@ -8164,6 +8240,9 @@ def main():
              "404.html": page_404(),
              "sitemap.xml": page_sitemap(), "robots.txt": page_robots(),
              "figures.css": figures_css}
+    # the thumb index, read off each page as it was written above
+    for name in [k for k in pages if k.endswith(".html")]:
+        pages[name] = thumb_index(pages[name], name)
     changed = []
     for name, text in pages.items():
         path = os.path.join(OUT, name)
@@ -8213,8 +8292,8 @@ def main():
         register_html = claims.render(rows, summary, meta, ctx["negatives"])
         instrument_html, counts = claims.render_instrument(ctx)
         new_ctl = page_controls(register_html, instrument_html, counts, summary)
-        new_col = page_colophon(summary=summary)
-        new_res = page_resume(summary=summary)
+        new_col = thumb_index(page_colophon(summary=summary), "colophon.html")
+        new_res = thumb_index(page_resume(summary=summary), "resume.html")
         moved = False
         for path, text, name in ((ctlpath, new_ctl, "controls.html"), (colpath, new_col, "colophon.html"),
                                  (respath, new_res, "resume.html")):
