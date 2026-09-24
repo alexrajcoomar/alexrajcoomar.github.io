@@ -10,8 +10,8 @@
   "copy": 50,
   "styling": 8,
   "untouched": 3,
-  "new": 6,
-  "pieces": 67
+  "new": 7,
+  "pieces": 68
  },
  "pieces": {
   "flagged-in-hindsight": {
@@ -554,6 +554,14 @@
    "kept": [
     "Second-person and assistant-voice wording left in place: 3 phrases (your textbook, your source, per your instruction, I've flagged) in sentences that carry a gap statement, a verification caveat, a scope decision or a legend; striking them would take the claim or the caveat with them, and paraphrase was ruled out."
    ],
+   "text_diff": [
+    "(new in this pass: no baseline text)"
+   ]
+  },
+  "afm291-revenue-atlas": {
+   "url": "afm291-revenue-atlas.html",
+   "title": "AFM 291 Revenue Atlas",
+   "class": "new",
    "text_diff": [
     "(new in this pass: no baseline text)"
    ]

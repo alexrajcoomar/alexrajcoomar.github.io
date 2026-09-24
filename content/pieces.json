@@ -506,6 +506,26 @@
    "built_from": "my AFM 291 textbook, course slides and class plans, with AI assistance; anything unlabelled in the vault comes from the textbook, and anything added beyond it is labelled inline."
   },
   {
+   "slug": "afm291-revenue-atlas",
+   "t": "AFM 291 Revenue Atlas",
+   "s": "Revenue recognition as one connected system",
+   "k": "Reference",
+   "surface": "course",
+   "c": "AFM 291",
+   "d": "September 2026",
+   "tags": [
+    "IFRS 15",
+    "Revenue",
+    "Exam prep"
+   ],
+   "blurb": "Revenue recognition drawn as one machine: the five steps taught through the Fall 2026 lectures' own cases, the Weeks 4 and 5 standards they hand off to, and four cases followed into later chapters. Every topic opens with the one question to ask and ends with retrieval questions you answer before the reveal.",
+   "demo": "A quiz mode folds every worked solution and hides every table answer until it is tapped, and each retrieval question can be marked got, shaky or missed, which builds a review list kept in the browser.",
+   "featured": false,
+   "pwa": false,
+   "url": "afm291-revenue-atlas.html",
+   "built_from": "my Fall 2026 AFM 291 lecture decks for Weeks 1 to 3, the Spring 2026 course folder (lectures, PBL cases and sample solutions, the Kennedy workbooks, the Midterm 1 papers from 2024 to 2026), the pre-lecture video transcripts and my earlier study pack, with AI assistance; every figure was recomputed, and the practice problems use invented facts."
+  },
+  {
    "slug": "us-canada-legal-architecture",
    "t": "US and Canada Legal Architecture",
    "s": "One page, two systems",
