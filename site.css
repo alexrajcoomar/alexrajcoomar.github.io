@@ -4355,3 +4355,86 @@ html.selected-review .stack-end{
     position: static;
   }
 }
+
+/* ---------------------------- the thumb index ------------------------
+   The tabs cut into the fore-edge of a bound reference, one per section
+   head in the order the page sets them. build/build_site.py reads them off
+   the finished page and check 42
+   reads them back. Fixed in the right margin, where it covers nothing at
+   rest at any width; a tab draws out over the page only while it is pointed
+   at or focused, and shows its heading in the metadata register. The part
+   being read is pulled: inked, and a few pixels proud of the others, the
+   way a thumb tab is held open. Existing tokens only, so check 36 already
+   measures every colour here, and no light, gradient or overlay is added.
+   Nothing moves while the reader is idle; under reduced motion it snaps. */
+.thumbs{
+  position:fixed;right:0;top:50%;z-index:30;transform:translateY(-50%);
+  pointer-events:none
+}
+.thumbs ol{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;align-items:flex-end;gap:3px}
+.thumbs li{margin:0;display:flex}
+.thumbs a{
+  pointer-events:auto;display:flex;flex-direction:row-reverse;align-items:center;
+  height:1.75rem;padding:0 .5rem 0 .55rem;
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  font-size:max(var(--meta-size),11.52px);letter-spacing:var(--meta-track);
+  font-weight:var(--meta-weight);text-transform:uppercase;font-variant-numeric:tabular-nums;line-height:1;
+  color:var(--ink-2);background:var(--panel);text-decoration:none;
+  border:1px solid var(--edge);border-right:0;border-radius:var(--radius);
+  transition:padding var(--t-fast) var(--ease-move),background var(--t-fast) ease,
+             color var(--t-fast) ease,border-color var(--t-fast) ease
+}
+.thumbs .num{letter-spacing:.04em}
+.thumbs .ti-t{
+  max-width:0;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;margin-right:0;
+  transition:max-width var(--t-fast) var(--ease-move),margin-right var(--t-fast) var(--ease-move)
+}
+.thumbs a:hover,.thumbs a:focus-visible{color:var(--ink);border-color:var(--ink)}
+.thumbs a:hover .ti-t,.thumbs a:focus-visible .ti-t{max-width:20rem;margin-right:.75rem}
+/* the ring is drawn inside the tab, because the tab's outer edge is the
+   edge of the screen */
+.thumbs a:focus-visible{outline:2px solid var(--accent);outline-offset:-4px}
+.thumbs a[aria-current]{
+  background:var(--ink);color:var(--paper);border-color:var(--ink);padding-left:calc(.55rem + 6px)
+}
+.thumbs a[aria-current]:focus-visible{outline-color:var(--paper)}
+/* The headings the tabs land on clear the header. The header is one row on
+   a desktop and up to three on a narrow phone, so site.js sets the margin
+   from its measured height; these are the values without a script. The
+   tab's reading line sits under that margin, so the part a tab opens is the
+   part it pulls. */
+.sechead h2[id]{scroll-margin-top:var(--thumb-land,5.5rem)}
+/* A margin that can hold the headings shows them at rest. */
+@media (min-width:110rem){
+  .thumbs .ti-t{max-width:calc((100vw - var(--shell)) / 2 - 7rem);margin-right:.75rem}
+}
+/* Narrower, the tab gives up its padding so it stays inside the margin the
+   shell leaves at that width. */
+@media (max-width:63.99rem){
+  .thumbs a{padding:0 .2rem}
+  .thumbs a[aria-current]{padding-left:calc(.2rem + 3px)}
+  .sechead h2[id]{scroll-margin-top:var(--thumb-land,7.5rem)}
+}
+/* A phone's margin is 1.25rem, so the digits stand upright one above the
+   other: a thin tab, a finger's height, clear of the text column. The
+   heading stays in the link's name for a screen reader. */
+@media (max-width:39.99rem){
+  .thumbs ol{gap:4px}
+  .thumbs a{writing-mode:vertical-rl;text-orientation:upright;height:auto;padding:.45rem 1px;letter-spacing:0}
+  .thumbs a[aria-current]{padding-left:5px}
+  .thumbs .num{letter-spacing:0}
+  .thumbs .ti-t,.thumbs a:hover .ti-t,.thumbs a:focus-visible .ti-t{max-width:0;max-height:0;margin:0}
+  .sechead h2[id]{scroll-margin-top:var(--thumb-land,8.5rem)}
+}
+/* too short to stand a column of tabs beside the page */
+@media (max-height:30rem){.thumbs{display:none}}
+@media (prefers-reduced-motion:reduce){.thumbs a,.thumbs .ti-t{transition:none}}
+@media print{.thumbs{display:none}}
+
+/* The notes band on the home page is a shell like every band above it, and
+   .notes above resets all four paddings with one shorthand, which took the
+   shell's side gutter with it: on a phone the note numbers stood against the
+   left edge of the screen and the text ran to the right edge, and on a
+   desktop the band started 48px left of every other band. The gutter is put
+   back here and nothing else about the band changes. */
+.notes.shell{padding-inline:var(--gap)}

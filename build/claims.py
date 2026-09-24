@@ -206,6 +206,18 @@ def page_ok(key, rec, declared_overflow=()):
                 and r.get("focus") == 1 and 0 < r.get("ms", 0) <= 260
                 and r.get("reducedMs", -1) == 0 and r.get("moved", 1) == 0
                 and r.get("framesAfter", 1) == 0)
+    if key == "thumbs":
+        # every tab pressed in both shapes; the pulled tab the rule's at every
+        # position, the top included; each pressed heading in view; no text
+        # under the index at rest; no frame after a stop; and under reduced
+        # motion no transition in the index and the right tab still pulled
+        shapes = [r.get("wide") or {}, r.get("phone") or {}]
+        red = r.get("reduced") or {}
+        return (r.get("tabs", 0) > 0
+                and all(sh.get("stops", -1) == r.get("tabs") and sh.get("positions", 0) == sh.get("stops", 0) + 1
+                        and sh.get("matched", -1) == sh.get("positions") and sh.get("landed", -1) == sh.get("stops")
+                        and sh.get("covered", 1) == 0 and sh.get("framesAfter", 1) == 0 for sh in shapes)
+                and red.get("animations", 1) == 0 and red.get("matched") is True)
     if key == "admin":
         return (r.get("errors", 1) == 0 and r.get("failed", 1) == 0 and r.get("external", 1) == 0 and r.get("idleFrames", 1) == 0
                 and r.get("tabs", 0) > 0 and r.get("switched", -1) == r.get("tabs") and r.get("threwUnconnected", 1) == 0
@@ -231,7 +243,31 @@ def runtime_pages(key, shell, allp, aux=()):
         return ["index.html"]
     if key == "admin":
         return list(aux)
+    if key == "thumbs":
+        return thumb_pages(shell)
     return list(allp)
+
+
+_THUMB_SEEN = {}
+
+
+def thumb_pages(shell, out_dir=ROOT):
+    """The generated pages that carry a thumb index, read off the pages as
+    written, so the rows, the wall and check 29 name the same pages the
+    build indexed. Remembered per file state: the wall asks once per page."""
+    out = []
+    for name in shell:
+        path = os.path.join(out_dir, name)
+        try:
+            st = os.stat(path)
+        except OSError:
+            continue
+        key = (path, st.st_mtime_ns, st.st_size)
+        if key not in _THUMB_SEEN:
+            _THUMB_SEEN[key] = '<nav class="thumbs"' in open(path, encoding="utf-8", errors="ignore").read()
+        if _THUMB_SEEN[key]:
+            out.append(name)
+    return out
 
 
 def _runtime(state, key, pages):
@@ -315,6 +351,20 @@ def agg(key, recs, names, declared_overflow=()):
                 f"the brand's box moved on {mv}, and {fr} frames were requested in the second after it settled",
                 two == len(rs) and rest == len(rs) and hov == len(rs) and foc == len(rs)
                 and cap == len(rs) and red == len(rs) and mv == 0 and fr == 0)
+    if key == "thumbs":
+        w = [r.get("wide") or {} for r in rs]; ph = [r.get("phone") or {} for r in rs]
+        tabs = sum(r.get("tabs", 0) for r in rs)
+        pos = sum(sh.get("positions", 0) for sh in w + ph); mat = sum(sh.get("matched", 0) for sh in w + ph)
+        stops = sum(sh.get("stops", 0) for sh in w + ph); land = sum(sh.get("landed", 0) for sh in w + ph)
+        cov = sum(sh.get("covered", 0) for sh in w + ph); fr = sum(max(0, sh.get("framesAfter", 0)) for sh in w + ph)
+        red = [r.get("reduced") or {} for r in rs]
+        ran = sum(max(0, x.get("animations", 0)) for x in red); rm = sum(1 for x in red if x.get("matched") is True)
+        ok = all(page_ok("thumbs", {"thumbs": r}) for r in rs)
+        return (f"on {len(rs)} pages, {tabs} tabs each pressed at 1440 and at 390: the pulled tab was the part at the reading line "
+                f"at {mat} of {pos} positions, the top of each page included; the pressed tab's heading landed in view and clear "
+                f"of the header at {land} of {stops} presses; the index at rest lay over {cov} lines of text; {fr} frames were "
+                f"requested in the second after a stop; under reduced motion {ran} transitions ran and the right tab was pulled "
+                f"on {rm} of {len(rs)} pages", bool(ok) and len(rs) > 0)
     if key == "admin":
         r = rs[0] if rs else {}
         ok = page_ok("admin", {"admin": r})
@@ -551,6 +601,11 @@ def build(ctx):
        "The change is opacity alone, inside a 260ms cap, removed entirely for a reader who asked for no motion, and it moves the brand's box by no pixel "
        "and requests no frame once it has settled.",
        "inspect", runtime_pages("inspect", shell, allp, aux), ["colophon.html"])
+    rt("On every page that carries a thumb index, a pressed tab lands its heading in view and clear of the header; the tab "
+       "that is pulled is the part at the reading line, at every stop and at the top of the page, at desktop and phone widths; "
+       "the index at rest covers no text the page shows; no frame is requested once a stop has settled; and under reduced "
+       "motion the right tab is pulled with no transition.",
+       "thumbs", runtime_pages("thumbs", shell, allp, aux), ["index.html", "resume.html", "colophon.html", "about.html"])
     rt("The editor, admin.html, loads with no console error, no uncaught exception and no failed request, asks nothing of another origin until it is connected, "
        "requests no frame while idle, and its controls respond: the tabs and the search before a connection exists, the theme button, the connection form "
        "keeping the repository in this browser and the token in this tab only, and, connected through a stub of GitHub that refuses every write, "
@@ -687,6 +742,18 @@ def build(ctx):
             ["canadian-dcf-cca.html", "controls.html"],
             note="This figure traces the tax-base reconstruction. It does not claim to map every dependency of the valuation model.")
 
+    t = T.get("thumbs", {})
+    checked("Every generated page with three or more section heads carries a thumb index on its right edge, and no other "
+            "page does, the Atlas and the controls page carrying none: one tab per head in the order the page sets them, "
+            "each numbered by its position, carrying its head's own words and landing on that head.",
+            ["42"],
+            f"{t.get('indexed', 0)} of {t.get('pages', 0)} generated pages carry an index, {t.get('short', 0)} have too few "
+            f"heads for one and {t.get('skipped', 0)} are excepted; {t.get('tabs', 0)} tabs against {t.get('heads', 0)} heads, "
+            f"{t.get('wrong', 0)} that disagree",
+            ["index.html", "resume.html", "colophon.html", "about.html"],
+            note="The tabs are read off the finished page, so they say what the headings say and nothing more; which "
+                 "heading reads as a part of the page is the page's own section-head markup, not a judgment made here.")
+
     t = T.get("editor", {})
     checked("The editor, admin.html, exists and the build never writes it: every stylesheet, script and local asset it references resolves to a file, "
             "every custom property its styles read is defined by the stylesheet it loads, every element id its script names is in its markup, "
@@ -777,7 +844,7 @@ def render(rows, summary, audit_meta, neg_state=None):
 # --------------------------------------------------------- the instrument --
 GLYPH = {"held": "#", "failed": "x", "stale": "?", "declared": "~", "none": ""}
 GLYPH_CLASS = {"held": "g-h", "failed": "g-x", "stale": "g-q", "declared": "g-d", "none": "g-n"}
-RUNTIME_COLS = [("ext", "E"), ("idle", "I"), ("keyboard", "K"), ("print", "P"), ("motion", "M"), ("fit", "F"), ("chrome", "C"), ("descent", "D"), ("theme", "T"), ("corona", "H"), ("inspect", "V"), ("admin", "A")]
+RUNTIME_COLS = [("ext", "E"), ("idle", "I"), ("keyboard", "K"), ("print", "P"), ("motion", "M"), ("fit", "F"), ("chrome", "C"), ("descent", "D"), ("theme", "T"), ("corona", "H"), ("inspect", "V"), ("thumbs", "X"), ("admin", "A")]
 
 
 def _sort_key(cid):
@@ -883,7 +950,7 @@ def render_instrument(ctx, page_titles=None):
     key = ('<p class="inst-key"><code>#</code> held on that page for this build &middot; <code>x</code> failed &middot; '
            '<code>?</code> not measured for this build &middot; <code>~</code> held by a declared exception &middot; '
            'blank: the check does not look at that page. Columns: the build\'s checks by number; E requests from another origin, '
-           'I idle frames, K keyboard focus, P print media, M reduced motion, F fit at 320px, C the chrome exclusion, D the descent on the home page, T the theme selector, H the corona\'s hue, A the editor, O the offline copy.</p>')
+           'I idle frames, K keyboard focus, P print media, M reduced motion, F fit at 320px, C the chrome exclusion, D the descent on the home page, T the theme selector, H the corona\'s hue, X the thumb index, A the editor, O the offline copy.</p>')
     return key + wall + ledg, {"pages": len(rows), "columns": len(cols), "glyphs": total_cells, "held": total_held,
                               "failed": total_failed, "stale": total_stale, "falsifications": nc, "caught": ncaught}
 

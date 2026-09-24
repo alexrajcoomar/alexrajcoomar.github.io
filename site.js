@@ -1694,3 +1694,55 @@
     });
   });
 })();
+
+/* ------------------------------------------------ the thumb index --
+   The tabs on the right edge are links the build wrote, one per section
+   head, and they work with scripts off. This only pulls the tab for the
+   part being read: the last part whose heading has reached the reading
+   line under the header, or, at the foot of the page, where a short last
+   part can never reach that line, the last heading in view. It also tells
+   the stylesheet how tall the header is, so a pressed tab lands its heading
+   clear of it. It runs on scroll and resize and nowhere else, asks for no
+   frame, and sets two attributes, so nothing moves while the reader is
+   idle. */
+(function () {
+  "use strict";
+  var nav = document.querySelector("nav.thumbs");
+  if (!nav) return;
+  var tabs = [].slice.call(nav.querySelectorAll('a[href^="#"]'));
+  var heads = tabs.map(function (a) { return document.getElementById(a.getAttribute("href").slice(1)); });
+  if (!tabs.length || heads.some(function (h) { return !h; })) return;
+  var header = document.querySelector("header.top");
+  /* the reading line: this far under the header's lower edge, which is
+     below the margin a heading lands at when its tab is pressed */
+  var LEAD = 48;
+  var pulled = -1, land = -1;
+  function pick() {
+    var bottom = header ? header.getBoundingClientRect().bottom : 0;
+    /* where a pressed tab lands its heading: a little under the header,
+       whose height is one row on a desktop and three on a narrow phone */
+    var want = Math.max(0, Math.round(bottom)) + 16;
+    if (want !== land) {
+      land = want;
+      document.documentElement.style.setProperty("--thumb-land", want + "px");
+    }
+    var line = bottom + LEAD;
+    var k = -1, i;
+    for (i = 0; i < heads.length; i++) {
+      if (heads[i].getBoundingClientRect().top <= line) k = i;
+    }
+    var doc = document.documentElement;
+    if (window.scrollY + window.innerHeight >= doc.scrollHeight - 2) {
+      for (i = heads.length - 1; i > k; i--) {
+        if (heads[i].getBoundingClientRect().top < window.innerHeight) { k = i; break; }
+      }
+    }
+    if (k === pulled) return;
+    if (pulled > -1) tabs[pulled].removeAttribute("aria-current");
+    pulled = k;
+    if (k > -1) tabs[k].setAttribute("aria-current", "location");
+  }
+  addEventListener("scroll", pick, { passive: true });
+  addEventListener("resize", pick);
+  pick();
+})();

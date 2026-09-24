@@ -22,7 +22,7 @@
 <link rel="manifest" href="site.webmanifest">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="preload" href="InterVariable-sub.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="site.css?v=6f387897">
+<link rel="stylesheet" href="site.css?v=863dfae7">
 <link rel="stylesheet" href="figures.css?v=6b6db02a">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' fill='%2316150f'/><g fill='none' stroke='%23faf9f6' stroke-linecap='round' stroke-linejoin='round'><path d='M12 56 L32 6 L52 56' stroke-width='4.95'/><path d='M20 38 H44' stroke-width='4.95'/><path d='M32 36 L51 56' stroke-width='4.95'/></g></svg>">
 <script>
@@ -71,7 +71,7 @@ document.documentElement.className+=' js';})();
 </div>
 
 <section class="band shell colo">
-  <div class="sechead"><h2>The measurements</h2><span class="count">9 definitions</span></div>
+  <div class="sechead"><h2 id="sec-the-measurements">The measurements</h2><span class="count">9 definitions</span></div>
   <div class="defwrap">
   <div class="prose measure">
     <dl id="definitions">
@@ -117,7 +117,7 @@ document.documentElement.className+=' js';})();
 
 <section class="band colo ground">
   <div class="shell">
-  <div class="sechead"><h2>The design rules</h2><span class="count">Conventions</span></div>
+  <div class="sechead"><h2 id="sec-the-design-rules">The design rules</h2><span class="count">Conventions</span></div>
   <div class="prose measure">
     <dl>
       <dt>One declared rule per piece</dt>
@@ -161,13 +161,24 @@ document.documentElement.className+=' js';})();
       on the site is the light around the sphere, which encodes nothing and is drawn outside the disc
       so it darkens no mark. Dark mode is a selected set of tokens rather than an inversion, and the
       manual toggle wins over the system setting in both directions.</dd>
+
+      <dt>The thumb index</dt>
+      <dd>A generated page with three or more parts carries tabs on its right edge, one for each section
+      head in the order the page sets them, the way a bound reference is cut on its fore-edge so a
+      reader can open it at a part. The build reads the tabs off the finished page, so each says only
+      what its heading says, and it gives a heading an address where it had none. The tab for the part
+      being read is pulled: inked, and held a few pixels proud of the others. At rest the index stands
+      in the margin and covers no text; a tab draws out to show its heading only while it is pointed at
+      or focused, and a screen wide enough to hold the headings shows them at rest. The tabs are plain
+      links, so they work with scripts off. The Atlas and the controls page are instruments of their
+      own and carry none.</dd>
     </dl>
   </div>
   </div>
 </section>
 
 <section class="band shell colo">
-  <div class="sechead"><h2>How it is built</h2><span class="count">Technical</span></div>
+  <div class="sechead"><h2 id="sec-how-it-is-built">How it is built</h2><span class="count">Technical</span></div>
   <div class="prose measure">
     <p>No framework, no runtime dependency, and nothing loaded from another origin except where
     the exceptions below say so. No tracking, no cookies, no analytics. 67 pieces served as
@@ -202,18 +213,18 @@ document.documentElement.className+=' js';})();
 </section>
 
 <section class="band shell colo" id="claims">
-  <div class="sechead"><h2>What this site claims about itself, and what checks it</h2><span class="count">The register</span></div>
+  <div class="sechead"><h2 id="sec-what-this-site-claims-about-itself-and-w">What this site claims about itself, and what checks it</h2><span class="count">The register</span></div>
   <div class="prose measure">
     <p>Every sentence the generated pages say about this site is a row in a register, beside the check
     that tests it, the last result with its denominator, and what happened when the claim was
-    deliberately made false. This build: 48 claims, 48 held, 0 untested, 0 not yet measured, 0 asserted with no check, 0 failed. The register, and the same records drawn one
+    deliberately made false. This build: 50 claims, 50 held, 0 untested, 0 not yet measured, 0 asserted with no check, 0 failed. The register, and the same records drawn one
     glyph each, are on the <a href="controls.html#register">controls page</a>.</p>
   </div>
 </section>
 
 <section class="band colo ground limits" id="limits">
   <div class="shell">
-  <div class="sechead"><h2>What the last pass got wrong, and what it left undone</h2><span class="count">15 notes</span></div>
+  <div class="sechead"><h2 id="sec-what-the-last-pass-got-wrong-and-what-it">What the last pass got wrong, and what it left undone</h2><span class="count">15 notes</span></div>
   <div class="prose measure">
     <p>The content pass that began on 2026-09-02 kept its own account of its mistakes and its
     omissions in <code>build/ledger-notes.json</code>. A site that scores its own claims should also
@@ -231,7 +242,7 @@ document.documentElement.className+=' js';})();
 
 <section class="band colo ground" id="exceptions">
   <div class="shell">
-  <div class="sechead"><h2>The exceptions</h2><span class="count">Counted, not remembered</span></div>
+  <div class="sechead"><h2 id="sec-the-exceptions">The exceptions</h2><span class="count">Counted, not remembered</span></div>
   <div class="prose measure">
     <ol class="excs">
       <li id="x1">No piece loads a typeface from another origin: every face the site uses is self-hosted, subset to the characters each piece shows, and the build fails on any character a subset lacks.</li>
@@ -251,7 +262,7 @@ document.documentElement.className+=' js';})();
 
 <section class="band colo ground" id="marks">
   <div class="shell">
-  <div class="sechead"><h2>The marks, the glyphs and the seal</h2>
+  <div class="sechead"><h2 id="sec-the-marks-the-glyphs-and-the-seal">The marks, the glyphs and the seal</h2>
     <span class="count">93 elements in 10 files</span></div>
   <div class="prose measure">
     <p>The identity is drawn rather than typed: a monogram whose A and R stand on one vertical datum, in the
@@ -335,7 +346,7 @@ document.documentElement.className+=' js';})();
 
 
 <section class="band shell colo" id="offline">
-  <div class="sechead"><h2>On your phone</h2><span class="count">Offline</span></div>
+  <div class="sechead"><h2 id="sec-on-your-phone">On your phone</h2><span class="count">Offline</span></div>
   <div class="prose measure">
     <p>This site installs. In Safari on a phone, open the share sheet and choose
     <b>Add to Home Screen</b>: the site becomes an app icon, and every page you
@@ -355,6 +366,18 @@ document.documentElement.className+=' js';})();
     while online brings everything back.</p>
   </div>
 </section>
+<nav class="thumbs" aria-label="On this page">
+  <ol>
+    <li><a href="#sec-the-measurements"><span class="num tnum">01</span><span class="ti-t">The measurements</span></a></li>
+    <li><a href="#sec-the-design-rules"><span class="num tnum">02</span><span class="ti-t">The design rules</span></a></li>
+    <li><a href="#sec-how-it-is-built"><span class="num tnum">03</span><span class="ti-t">How it is built</span></a></li>
+    <li><a href="#sec-what-this-site-claims-about-itself-and-w"><span class="num tnum">04</span><span class="ti-t">What this site claims about itself, and what checks it</span></a></li>
+    <li><a href="#sec-what-the-last-pass-got-wrong-and-what-it"><span class="num tnum">05</span><span class="ti-t">What the last pass got wrong, and what it left undone</span></a></li>
+    <li><a href="#sec-the-exceptions"><span class="num tnum">06</span><span class="ti-t">The exceptions</span></a></li>
+    <li><a href="#sec-the-marks-the-glyphs-and-the-seal"><span class="num tnum">07</span><span class="ti-t">The marks, the glyphs and the seal</span></a></li>
+    <li><a href="#sec-on-your-phone"><span class="num tnum">08</span><span class="ti-t">On your phone</span></a></li>
+  </ol>
+</nav>
 </main>
 <footer class="site">
   <div class="cols">
@@ -435,6 +458,6 @@ document.documentElement.className+=' js';})();
 <script>
 window.WORK = [{"t":"Flagged in Hindsight","s":"Five Canadian frauds, put back through the forensic screen ex ante","u":"flagged-in-hindsight.html","k":"Essay","c":"","d":"August 2026"},{"t":"Crucible Cockpit","s":"Adversarial claim auditing: decompose, attack, grade what survives","u":"crucible-cockpit.html","k":"Essay","c":"","d":"August 2026"},{"t":"Crucible Run 0: the Bank of Canada backtest","s":"Evidence locked at January 2023; the engine says what was knowable","u":"crucible-run-0.html","k":"Reference","c":"","d":"August 2026"},{"t":"Crucible Run B: the maturity-wall thesis","s":"The 2026 coupon step-up claim, audited and refuted","u":"crucible-run-b.html","k":"Reference","c":"","d":"August 2026"},{"t":"Crucible Run C: the goodwill-impairment thesis","s":"The too-little-too-late critique, audited against TSX issuers","u":"crucible-run-c.html","k":"Reference","c":"","d":"August 2026"},{"t":"Epistemic Quality Directive","s":"The evidentiary standard distilled from the claim-audit engine, in four modes","u":"epistemic-quality-directive.html","k":"Reference","c":"","d":"September 2026"},{"t":"The Brittle Network","s":"A pre-registered protocol on the Late Bronze Age collapse","u":"brittle-network.html","k":"Reference","c":"","d":"August 2026"},{"t":"The Price of Divergence","s":"A pre-registered protocol on ESG-rating disagreement and portfolios","u":"price-of-divergence.html","k":"Reference","c":"","d":"August 2026"},{"t":"IFRS 15 Judgment Trainer","s":"Sixty-two revenue scenarios, every answer anchored to the Handbook","u":"ifrs15-judgment-trainer.html","k":"Tool","c":"","d":"August 2026"},{"t":"IFRS 15 Item Bank: Verification and Backfill","s":"The verification memo behind the trainer","u":"ifrs15-verification-memo.html","k":"Reference","c":"","d":"August 2026"},{"t":"The Five Shall Paragraphs","s":"Materiality and sampling under the CAS, requirements separated from habit","u":"five-shall-paragraphs.html","k":"Reference","c":"","d":"August 2026"},{"t":"Zakaria's Putin, Audited","s":"A 2022 documentary, claim by claim, against the 2026 record","u":"zakaria-putin-audited.html","k":"Essay","c":"","d":"August 2026"},{"t":"Predictive History","s":"The map, and the method that audits it","u":"predictive-history.html","k":"Essay","c":"","d":"August 2026"},{"t":"Predictive History: the withdrawn first edition","s":"Kept uncorrected, with the divergence computed rather than described","u":"predictive-history-archive.html","k":"Reference","c":"","d":"August 2026"},{"t":"The Trillion-Dollar Vintage","s":"A study edition of the AI capital-cycle adjudication","u":"the-trillion-dollar-vintage.html","k":"Essay","c":"","d":"August 2026"},{"t":"Whose Losses Count","s":"Corporate ethics and the micro/macro foundations of strategy","u":"whose-losses-count.html","k":"Essay","c":"","d":"August 2026"},{"t":"Not Significant","s":"An essay on the accounting of harm","u":"not-significant.html","k":"Essay","c":"","d":"August 2026"},{"t":"Global Spending and Wealth","s":"Scale, structure, concentration","u":"global-spending-and-wealth.html","k":"Essay","c":"","d":"August 2026"},{"t":"Does chronic caffeine spend your heartbeat budget faster?","s":"A question taken seriously","u":"heartbeat-budget.html","k":"Essay","c":"","d":"August 2026"},{"t":"Exam Day Final Load","s":"The last hour","u":"exam-day-final-load.html","k":"Reference","c":"","d":"August 2026"},{"t":"Daily Learning Cockpit","s":"Prediction log, spaced rotation, calibration","u":"daily-learning-cockpit.html","k":"Tool","c":"","d":"August 2026"},{"t":"The Delayed Test","s":"Learning, judgment, and seeing clearly","u":"the-delayed-test.html","k":"Essay","c":"","d":"August 2026"},{"t":"The Calibrated Mind","s":"Operating principles for being right on purpose","u":"the-calibrated-mind.html","k":"Reference","c":"","d":"August 2026"},{"t":"AFM 291 Vault","s":"Map of content","u":"afm291.html","k":"Reference","c":"AFM 291","d":"July 2026"},{"t":"US and Canada Legal Architecture","s":"One page, two systems","u":"us-canada-legal-architecture.html","k":"Reference","c":"","d":"August 2026"},{"t":"Business Law for Accountants","s":"Canada and the United States","u":"business-law-primer.html","k":"Reference","c":"Business law","d":"August 2026"},{"t":"Law Arena","s":"Business law for accountants","u":"law-arena.html","k":"Tool","c":"Business law","d":"August 2026"},{"t":"Skill Forge","s":"AFM 291 drill engine","u":"skill-forge.html","k":"Tool","c":"AFM 291","d":"August 2026"},{"t":"AFM 291 Interactive Study System","s":"Intermediate Financial Accounting 1","u":"afm291-study-system.html","k":"Tool","c":"AFM 291","d":"August 2026"},{"t":"AFM 291 Practice Arena","s":"Timed question practice","u":"practice-arena.html","k":"Tool","c":"AFM 291","d":"August 2026"},{"t":"ECON 102 Interactive Exam Trainer","s":"Macroeconomics practice","u":"econ102-exam-trainer.html","k":"Tool","c":"ECON 102","d":"August 2026"},{"t":"Revenue Recognition","s":"Complete study guide","u":"revenue-recognition.html","k":"Reference","c":"AFM 291","d":"May 2026"},{"t":"AFM 291 Midterm Field Manual","s":"Revision C","u":"afm291-field-manual.html","k":"Reference","c":"AFM 291","d":"June 2026"},{"t":"AFM 291 Journal Entry Reference","s":"Every entry, one page","u":"afm291-journal-entries.html","k":"Reference","c":"AFM 291","d":"June 2026"},{"t":"AFM 291 Inventory and Gap Map","s":"What is covered, what is missing","u":"afm291-inventory-gap-map.html","k":"Reference","c":"AFM 291","d":"August 2026"},{"t":"AFM 274 Chapter 17","s":"Capital structure in a perfect market","u":"afm274-capital-structure.html","k":"Reference","c":"AFM 274","d":"June 2026"},{"t":"AFM 274 Chapter 19","s":"Financial distress, agency costs and information","u":"afm274-financial-distress.html","k":"Reference","c":"AFM 274","d":"June 2026"},{"t":"AFM 241 Exam Study Reference","s":"Full course reference","u":"afm241-study-reference.html","k":"Reference","c":"AFM 241","d":"June 2026"},{"t":"AFM 241 Two-Page Cheat Sheet","s":"Compressed to what fits","u":"afm241-cheat-sheet.html","k":"Reference","c":"AFM 241","d":"June 2026"},{"t":"The Gartner Hype Cycle","s":"The complete picture","u":"hype-cycle.html","k":"Reference","c":"AFM 241","d":"June 2026"},{"t":"ECON 102 Master Visual Reference","s":"Every model in one place","u":"econ102-visual-reference.html","k":"Reference","c":"ECON 102","d":"August 2026"},{"t":"Positive vs Normative","s":"ECON 102, slides 5 to 6","u":"positive-vs-normative.html","k":"Reference","c":"ECON 102","d":"August 2026"},{"t":"AFM 291 Chapter 1","s":"Financial accounting theory and data analytics","u":"afm291-ch1-theory-and-analytics.html","k":"Reference","c":"AFM 291","d":"July 2026"},{"t":"AFM 291 Chapter 2","s":"Conceptual frameworks for financial reporting","u":"afm291-ch2-conceptual-frameworks.html","k":"Reference","c":"AFM 291","d":"July 2026"},{"t":"AFM 291 Chapter 3","s":"Accrual accounting, changes and statement structure","u":"afm291-ch3-accrual-accounting.html","k":"Reference","c":"AFM 291","d":"July 2026"},{"t":"AFM 291 Chapter 4","s":"Revenue recognition, in course-week order","u":"afm291-ch4-revenue-recognition.html","k":"Reference","c":"AFM 291","d":"July 2026"},{"t":"AFM 291 Chapter 6","s":"Inventories: costing, cost flow, measurement and errors","u":"afm291-ch6-inventories.html","k":"Reference","c":"AFM 291","d":"July 2026"},{"t":"AFM 291 Chapter 9","s":"Intangibles, goodwill, mineral resources and grants","u":"afm291-ch9-intangibles-and-goodwill.html","k":"Reference","c":"AFM 291","d":"July 2026"},{"t":"AFM 291 Chapter 10","s":"Applications of fair value to non-current assets","u":"afm291-ch10-fair-value.html","k":"Reference","c":"AFM 291","d":"July 2026"},{"t":"AFM 291 Key Takeaways","s":"One reference map for the whole course","u":"afm291-key-takeaways.html","k":"Reference","c":"AFM 291","d":"August 2026"},{"t":"AFM 291 Study Plan","s":"What to do, in what order","u":"afm291-study-plan.html","k":"Reference","c":"AFM 291","d":"August 2026"},{"t":"AFM 291 Reconciliation","s":"Two indexes of the same course, reconciled","u":"afm291-reconciliation.html","k":"Reference","c":"AFM 291","d":"August 2026"},{"t":"AFM 291 Financial Assets I","s":"Equity investments and receivables","u":"afm291-w7-financial-assets.html","k":"Reference","c":"AFM 291","d":"July 2026"},{"t":"AFM 291 Case Guide: Equity Investments","s":"Week 7 problem-solving companion","u":"afm291-w7-cases.html","k":"Reference","c":"AFM 291","d":"July 2026"},{"t":"AFM 291 Financial Assets II","s":"Non-strategic debt investments","u":"afm291-w8-financial-assets.html","k":"Reference","c":"AFM 291","d":"July 2026"},{"t":"AFM 291 Case Guide: Debt Investments","s":"Week 8 problem-solving companion","u":"afm291-w8-cases.html","k":"Reference","c":"AFM 291","d":"July 2026"},{"t":"AFM 291 Property, Plant and Equipment","s":"Acquisition, cost and components","u":"afm291-w9-ppe.html","k":"Reference","c":"AFM 291","d":"July 2026"},{"t":"AFM 291 Case Guide: AceSpin Inc.","s":"Week 9 problem-solving companion","u":"afm291-w9-cases.html","k":"Reference","c":"AFM 291","d":"July 2026"},{"t":"AFM 291 Watch-Along Workbook","s":"One sheet per pre-lecture recording, in the order the videos run","u":"afm291-workbook.html","k":"Reference","c":"AFM 291","d":"September 2026"},{"t":"The Kennedys","s":"A dossier","u":"kennedy-dossier.html","k":"Reference","c":"","d":"August 2026"},{"t":"Case file: 4 to 5 August 1962","s":"One night, sourced","u":"monroe-case-file.html","k":"Reference","c":"","d":"August 2026"},{"t":"How to Judge a President","s":"A teaching companion, not a verdict","u":"how-to-judge-a-president.html","k":"Essay","c":"","d":"August 2026"},{"t":"The Portable Kit","s":"A five-stage audit of an evaluation framework","u":"leadership-evaluation-kit.html","k":"Reference","c":"","d":"August 2026"},{"t":"Attention, Worked on Paper","s":"The transformer's one mechanism, worked by hand, with the mask as the real difference between models","u":"transformers-study-guide.html","k":"Reference","c":"","d":"September 2026"},{"t":"Unit\u00e9 1: Au Caf\u00e9","s":"Essential caf\u00e9 interactions and ordering, at CEFR A1","u":"french-a1-cafe.html","k":"Reference","c":"","d":"September 2026"},{"t":"Unidad 1: En el Caf\u00e9","s":"The same caf\u00e9 in Spanish, read against the French unit","u":"spanish-a1-cafe.html","k":"Reference","c":"","d":"September 2026"},{"t":"The tax base nobody discloses","s":"A Dollarama valuation built on capital cost allowance","u":"canadian-dcf-cca.html","k":"Reference","c":"","d":"September 2026"}];
 </script>
-<script src="site.js?v=58eadc54" defer></script>
+<script src="site.js?v=8fcad7c2" defer></script>
 </body>
 </html>
