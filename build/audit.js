@@ -489,6 +489,125 @@ async function measurePage(browser, base, name, shell) {
       rec.motion = { animations };
       await ctx.close();
     }
+    /* The thumb index, on a page that carries one. Every tab is pressed at a
+       desktop width and a phone width. After each press, and at the top of
+       the page, the tab that is pulled must be the one the rule stated here
+       picks (the last heading at or above the reading line, 48px under the
+       header, or at the foot of the page the last heading in view); the
+       pressed tab's heading must be in view and clear of the header; the
+       index at rest must cover no text the page shows, clipped where the page
+       clips it; and once a stop has settled no frame may be requested. Under
+       reduced motion a press must run no transition in the index and still
+       pull the right tab. */
+    {
+      const THUMB_LEAD = 48;
+      const readThumbs = pg => pg.evaluate(lead => {
+        const nav = document.querySelector('nav.thumbs');
+        if (!nav) return null;
+        const tabs = [...nav.querySelectorAll('a[href^="#"]')];
+        const heads = tabs.map(a => document.getElementById(a.getAttribute('href').slice(1)));
+        const hb = (document.querySelector('header.top') || { getBoundingClientRect: () => ({ bottom: 0 }) }).getBoundingClientRect().bottom;
+        let want = -1;
+        heads.forEach((h, i) => { if (h && h.getBoundingClientRect().top <= hb + lead) want = i; });
+        if (scrollY + innerHeight >= document.documentElement.scrollHeight - 2) {
+          for (let i = heads.length - 1; i > want; i--) { if (heads[i] && heads[i].getBoundingClientRect().top < innerHeight) { want = i; break; } }
+        }
+        const pulled = tabs.map((a, i) => a.hasAttribute('aria-current') ? i : -1).filter(i => i > -1);
+        return { tabs: tabs.length, want, pulled, hb, tops: heads.map(h => h ? Math.round(h.getBoundingClientRect().top) : null) };
+      }, THUMB_LEAD).catch(() => null);
+      const covered = pg => pg.evaluate(() => {
+        const nav = document.querySelector('nav.thumbs');
+        if (!nav) return -1;
+        const boxes = [...nav.querySelectorAll('a')].map(a => a.getBoundingClientRect()).filter(r => r.width > 0 && r.height > 0);
+        const hit = (r, b) => r.right > b.left + 0.5 && r.left < b.right - 0.5 && r.bottom > b.top + 0.5 && r.top < b.bottom - 0.5;
+        const clipCache = new Map();
+        const clipOf = el => {
+          if (clipCache.has(el)) return clipCache.get(el);
+          let box = { left: -1e9, top: -1e9, right: 1e9, bottom: 1e9 };
+          for (let e = el; e && e !== document.documentElement; e = e.parentElement) {
+            const cs = getComputedStyle(e);
+            if (cs.overflowX !== 'visible' || cs.overflowY !== 'visible' || cs.clipPath !== 'none') {
+              const b = e.getBoundingClientRect();
+              box = { left: Math.max(box.left, b.left), top: Math.max(box.top, b.top), right: Math.min(box.right, b.right), bottom: Math.min(box.bottom, b.bottom) };
+            }
+          }
+          clipCache.set(el, box);
+          return box;
+        };
+        let n = 0;
+        const walk = document.createTreeWalker(document.querySelector('main') || document.body, NodeFilter.SHOW_TEXT);
+        const range = document.createRange();
+        for (let t = walk.nextNode(); t; t = walk.nextNode()) {
+          if (!t.nodeValue.trim() || nav.contains(t)) continue;
+          const el = t.parentElement;
+          if (!el || el.closest('[hidden], [aria-hidden="true"], dialog:not([open])')) continue;
+          range.selectNodeContents(t);
+          const all = range.getBoundingClientRect();
+          if (!boxes.some(b => hit(all, b))) continue;
+          const cs = getComputedStyle(el);
+          if (cs.visibility === 'hidden' || cs.opacity === '0') continue;
+          const clip = clipOf(el);
+          for (const r of range.getClientRects()) {
+            const v = { left: Math.max(r.left, clip.left), top: Math.max(r.top, clip.top), right: Math.min(r.right, clip.right), bottom: Math.min(r.bottom, clip.bottom) };
+            if (v.right - v.left < 1 || v.bottom - v.top < 1) continue;
+            if (boxes.some(b => hit(v, b))) n++;
+          }
+        }
+        return n;
+      }).catch(() => -1);
+      const th = { tabs: 0, wide: null, phone: null, reduced: null };
+      for (const shape of [{ key: 'wide', vp: { width: 1440, height: 900 }, touch: false }, { key: 'phone', vp: { width: 390, height: 844 }, touch: true }]) {
+        const ctx = await browser.newContext({ viewport: shape.vp, hasTouch: shape.touch, isMobile: shape.touch, deviceScaleFactor: 1 });
+        const page = await ctx.newPage();
+        await page.addInitScript(RAF_COUNTER);
+        try { await page.goto(base + '/' + name, { waitUntil: 'networkidle', timeout: 60000 }); } catch (e) { /* measured anyway */ }
+        await page.addStyleTag({ content: 'html{scroll-behavior:auto!important}' });
+        await page.waitForTimeout(400);
+        const sh = { stops: 0, positions: 0, matched: 0, landed: 0, covered: 0, framesAfter: 0 };
+        const settle = async () => {
+          // a stop is read once the page has come to rest: on the home page
+          // the globe's own spring takes up to 700ms after a scroll, and that
+          // is the descent's to measure, not the index's. Then the pointer
+          // leaves the index for the margin, so the tab it pressed folds back.
+          await page.waitForTimeout(800);
+          await page.mouse.move(8, shape.vp.height / 2); await page.waitForTimeout(300);
+          const r = await readThumbs(page);
+          sh.positions++;
+          if (r && r.pulled.length === (r.want > -1 ? 1 : 0) && (r.want === -1 || r.pulled[0] === r.want)) sh.matched++;
+          const cv = await covered(page);
+          sh.covered += cv < 0 ? 99 : cv;
+          sh.framesAfter += await page.evaluate(async () => { window.__rafReset(); await new Promise(r => setTimeout(r, 1000)); return window.__pageRaf(); }).catch(() => 99);
+          return r;
+        };
+        const first = await readThumbs(page);
+        if (!first) { await ctx.close(); break; }          // a page with no index
+        th.tabs = first.tabs;
+        await settle();                                    // the top of the page
+        for (let k = 0; k < th.tabs; k++) {
+          await page.click('nav.thumbs li:nth-child(' + (k + 1) + ') a').catch(() => {});
+          const r = await settle();
+          sh.stops++;
+          if (r && r.tops[k] !== null && r.tops[k] >= Math.floor(r.hb) - 1 && r.tops[k] < shape.vp.height) sh.landed++;
+        }
+        th[shape.key] = sh;
+        await ctx.close();
+      }
+      if (th.wide) {
+        const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 }, reducedMotion: 'reduce' });
+        const page = await ctx.newPage();
+        try { await page.goto(base + '/' + name, { waitUntil: 'networkidle', timeout: 60000 }); } catch (e) { /* measured anyway */ }
+        await page.waitForTimeout(300);
+        const k = Math.min(2, Math.max(1, th.tabs));
+        await page.click('nav.thumbs li:nth-child(' + k + ') a').catch(() => {});
+        await page.waitForTimeout(120);
+        const animations = await page.evaluate(() => { const n = document.querySelector('nav.thumbs'); return n ? n.getAnimations({ subtree: true }).filter(a => a.playState === 'running').length : -1; }).catch(() => -1);
+        await page.mouse.move(8, 450); await page.waitForTimeout(300);
+        const r = await readThumbs(page);
+        th.reduced = { animations, matched: !!(r && r.want > -1 && r.pulled.length === 1 && r.pulled[0] === r.want) };
+        await ctx.close();
+      }
+      if (th.wide) rec.thumbs = th;
+    }
   }
   return rec;
 }
@@ -608,6 +727,14 @@ const FALSIFICATIONS = [
     apply: h => h.replace('</head>', '<style>.mk-ins{opacity:1!important}</style></head>') },
   { key: 'inspect', page: 'about.html', what: 'the transition runs past the 260ms cap and keeps running for a reader who asked for no motion',
     apply: h => h.replace('</head>', '<style>.mk-ins{transition:opacity 900ms linear!important}@media (prefers-reduced-motion:reduce){.mk-ins{transition:opacity 900ms linear!important}}</style></head>') },
+  { key: 'thumbs', page: 'resume.html', what: 'a script pulls the tab after the part being read',
+    apply: h => h.replace('</body>', '<script>addEventListener("scroll",function(){setTimeout(function(){var t=[].slice.call(document.querySelectorAll("nav.thumbs a")),i=t.findIndex(function(a){return a.hasAttribute("aria-current")});if(i>-1&&i<t.length-1){t[i].removeAttribute("aria-current");t[i+1].setAttribute("aria-current","location")}},0)},{passive:true})</script></body>') },
+  { key: 'thumbs', page: 'resume.html', what: 'the index is widened at rest until it lies over the text column',
+    apply: h => h.replace('</head>', '<style>.thumbs a{min-width:3rem!important}</style></head>') },
+  { key: 'thumbs', page: 'resume.html', what: 'the pulled tab keeps its transition for a reader who asked for no motion',
+    apply: h => h.replace('</head>', '<style>@media (prefers-reduced-motion:reduce){.thumbs a{transition:padding 900ms linear,background 900ms linear!important}}</style></head>') },
+  { key: 'thumbs', page: 'resume.html', what: 'a pressed tab starts a loop that keeps requesting frames after the stop',
+    apply: h => h.replace('</body>', '<script>document.addEventListener("click",function(e){if(e.target.closest&&e.target.closest("nav.thumbs"))(function f(){requestAnimationFrame(f)})()})</script></body>') },
   { key: 'admin', page: 'admin.html', what: "a syntax error in the editor's script",
     apply: h => h.replace('"use strict";', '"use strict"; this is not javascript;') },
   { key: 'admin', page: 'admin.html', what: 'the editor links a stylesheet that does not exist',
