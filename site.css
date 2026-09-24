@@ -4355,3 +4355,11 @@ html.selected-review .stack-end{
     position: static;
   }
 }
+
+/* The notes band on the home page is a shell like every band above it, and
+   .notes above resets all four paddings with one shorthand, which took the
+   shell's side gutter with it: on a phone the note numbers stood against the
+   left edge of the screen and the text ran to the right edge, and on a
+   desktop the band started 48px left of every other band. The gutter is put
+   back here and nothing else about the band changes. */
+.notes.shell{padding-inline:var(--gap)}
