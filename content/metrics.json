@@ -101,6 +101,12 @@
   "tables": 8,
   "details": 0
  },
+ "afm291-revenue-atlas": {
+  "words": 18829,
+  "figures": 17,
+  "tables": 57,
+  "details": 40
+ },
  "afm291-study-plan": {
   "words": 4000,
   "figures": 0,
