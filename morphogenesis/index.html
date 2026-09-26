@@ -340,6 +340,65 @@ body.keys #toast{bottom:190px}
 #rec-dot i{width:9px;height:9px;border-radius:50%;background:#ff3b55;box-shadow:0 0 10px #ff3b55;animation:blink 1.2s ease-in-out infinite}
 body.recording #rec-dot{display:flex}
 
+/* ---------- comparative fork ---------- */
+#cmp{position:absolute;top:var(--gap);left:calc(292px + var(--gap) * 2);right:calc(318px + var(--gap) * 2);max-width:580px;margin:0 auto;padding:11px 14px 9px;--cb:#ffb05a}
+#cmp[hidden]{display:none}
+.cmp-head{display:flex;align-items:center;gap:10px;margin-bottom:6px}
+.cmp-head h2{flex:1;min-width:0;margin:0;font:600 11px/1 var(--mono);letter-spacing:.26em;text-transform:uppercase;color:var(--accent);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cmp-head h2 span{margin-left:8px;letter-spacing:.04em;text-transform:none;color:var(--ink-2);font-weight:400}
+.cmp-head .seg{width:212px;flex:none}
+.cmp-head .ib{height:30px;min-width:30px;padding:0 6px}
+.cmp-t{width:100%;border-collapse:collapse;font:12px/1.3 var(--mono);font-variant-numeric:tabular-nums}
+.cmp-t th,.cmp-t td{padding:3px 6px;text-align:right;border-bottom:1px solid rgba(150,240,235,.07);white-space:nowrap}
+.cmp-t thead th{font:600 10px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--dim)}
+.cmp-t thead th:first-child{letter-spacing:.04em;text-transform:none;font-weight:400;text-align:left}
+.cmp-t tbody th{text-align:left;font-weight:400;color:var(--ink-2)}
+.cmp-t td{color:var(--ink)}
+.cmp-t td.moved{color:var(--cb)}
+.sw{display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:6px;background:var(--accent)}
+.sw.b{background:var(--cb)}
+.cmp-div{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:7px;font:12px/1.35 var(--mono);color:var(--ink-2);font-variant-numeric:tabular-nums}
+.cmp-div b{color:var(--ink);font-weight:600}
+#cmp-spark{width:160px;height:28px;flex:none;overflow:visible}
+#cmp-spark .bg{fill:rgba(255,255,255,.03);stroke:rgba(150,240,235,.12)}
+#cmp-line{fill:none;stroke:var(--cb);stroke-width:1.5;vector-effect:non-scaling-stroke}
+.cmp-foot{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:7px;font:11.5px/1.4 var(--sans);color:var(--dim)}
+.cmp-foot b{font-weight:600;color:var(--cb)}
+.cmp-btns{display:flex;gap:6px;flex:none}
+#split{position:absolute;top:0;bottom:0;left:50%;width:24px;margin-left:-12px;cursor:col-resize;touch-action:none;outline:none}
+#split[hidden]{display:none}
+#split .grip{position:absolute;left:3px;top:50%;width:18px;height:46px;margin-top:-23px;border-radius:9px;background:rgba(8,13,19,.86);border:1px solid rgba(233,250,255,.55);box-shadow:0 4px 18px rgba(0,0,0,.65)}
+#split .grip::before,#split .grip::after{content:"";position:absolute;top:13px;bottom:13px;width:1.5px;background:rgba(233,250,255,.7)}
+#split .grip::before{left:5.5px}
+#split .grip::after{right:5.5px}
+#split:hover .grip,#split.drag .grip{border-color:var(--accent);box-shadow:0 0 16px rgba(var(--accent-rgb),.45)}
+#split:focus-visible .grip{outline:2px solid var(--accent);outline-offset:2px}
+#split .la,#split .lb{position:absolute;bottom:88px;padding:5px 8px;border-radius:7px;background:rgba(4,8,12,.74);border:1px solid var(--edge);font:600 10px/1 var(--mono);letter-spacing:.16em;text-transform:uppercase;white-space:nowrap;pointer-events:none}
+#split .la{right:26px;color:var(--ink)}
+#split .lb{left:26px;color:#ffd6a8}
+
+/* ---------- structure analyzer ---------- */
+#spec{position:absolute;left:var(--gap);bottom:76px;width:292px;margin:0;padding:10px 12px 8px}
+#spec[hidden]{display:none}
+body.spec .phase{display:none}
+#spec figcaption{display:flex;justify-content:space-between;gap:8px;font:10px/1 var(--mono);letter-spacing:.2em;text-transform:uppercase;color:var(--dim);margin-bottom:6px}
+#spec-l{letter-spacing:.02em;text-transform:none;color:var(--ink);font-variant-numeric:tabular-nums;white-space:nowrap}
+#spec-svg{display:block;width:268px;height:112px}
+#spec-hist{display:block;width:268px;height:18px;margin-top:4px}
+#spec-svg .ax,#spec-hist .ax{stroke:rgba(150,240,235,.13);stroke-width:1;fill:none}
+#spec-svg .zero{stroke:rgba(150,240,235,.3);stroke-dasharray:2 3}
+#spec-svg .ga{fill:none;stroke:var(--accent);stroke-width:1.7;stroke-linejoin:round}
+#spec-svg .gb{fill:none;stroke:#ffb05a;stroke-width:1.5;stroke-dasharray:4 3;stroke-linejoin:round}
+#spec-svg .sk{fill:rgba(var(--accent-rgb),.1);stroke:rgba(var(--accent-rgb),.32);stroke-width:1}
+#spec-svg .lam{stroke-width:1;stroke-dasharray:3 3}
+#spec-svg text,#spec-hist text{font:9.5px var(--mono);fill:var(--ink-2)}
+#spec-hist .lh{fill:none;stroke:var(--accent);stroke-width:1.3}
+#spec-hist .lhb{fill:none;stroke:#ffb05a;stroke-width:1.2;stroke-dasharray:3 2}
+#spec-read{margin:5px 0 0;font:11px/1.4 var(--mono);color:var(--dim);font-variant-numeric:tabular-nums;min-height:1.4em}
+#spec-win{position:fixed;left:0;top:0;z-index:6;border:1px dashed rgba(255,255,255,.6);border-radius:3px;pointer-events:none;box-shadow:0 0 0 1px rgba(0,0,0,.4)}
+#spec-win[hidden]{display:none}
+body.hud-hidden #spec-win,body.exhibit #spec-win{display:none}
+
 /* ---------- onboarding ---------- */
 #splash{position:fixed;inset:0;z-index:60;display:grid;place-items:center;padding:24px;background:radial-gradient(ellipse at 50% 45%,rgba(3,5,8,.3),rgba(1,2,4,.84) 78%);opacity:0;transition:opacity .7s ease;-webkit-backdrop-filter:blur(2.5px);backdrop-filter:blur(2.5px);cursor:pointer}
 #splash[hidden]{display:none}
@@ -373,7 +432,8 @@ body.splash #hud>*{pointer-events:none}
   .dock{width:292px}
   .model .ds{display:none}
   .model{height:36px}
-  #phylo,#keys{left:calc(252px + var(--gap) * 2);right:calc(292px + var(--gap) * 2)}
+  #phylo,#keys,#cmp{left:calc(252px + var(--gap) * 2);right:calc(292px + var(--gap) * 2)}
+  .cmp-head .seg{width:170px}
   body.keys .phase{display:none}
 }
 @media (max-width:760px){
@@ -400,6 +460,11 @@ body.splash #hud>*{pointer-events:none}
   .g-body .cards{grid-template-columns:1fr}
   #toast{bottom:64px}
   #phylo{left:var(--gap);right:var(--gap);top:128px;max-height:50vh}
+  #cmp{left:var(--gap);right:var(--gap);top:128px;max-width:none}
+  .cmp-head .seg{width:auto}
+  .cmp-foot #cmp-int{display:none}
+  #spec{left:var(--gap);right:var(--gap);bottom:60px;width:auto}
+  #spec-svg,#spec-hist{width:100%}
   #keys{left:var(--gap);right:var(--gap);bottom:60px;width:auto}
   .k-row{grid-template-columns:repeat(8,1fr)}
   .kk{height:56px}
@@ -423,6 +488,7 @@ body.splash #hud>*{pointer-events:none}
 <canvas id="stage" tabindex="-1" aria-label="Simulation specimen. Left-drag to paint, right-drag or Shift-drag to place the selected instrument."></canvas>
 
 <div id="atlas" hidden aria-hidden="true"></div>
+<div id="spec-win" hidden aria-hidden="true"></div>
 
 <div id="hud">
   <div class="left">
@@ -471,7 +537,15 @@ body.splash #hud>*{pointer-events:none}
         <div class="chips" id="lineage" role="group" aria-label="Ancestry of the current phenotype"></div>
       </section>
       <section class="sect">
-        <h3>Parameters</h3>
+        <h3>Research <span id="res-note"></span></h3>
+        <div class="toggles" role="group" aria-label="Research instruments">
+          <button class="tog" id="tog-cmp" aria-pressed="false" title="Fork the dish into A, the control, and B, the intervention, side by side (D)"><i></i>Compare A | B</button>
+          <button class="tog" id="tog-spec" aria-pressed="false" title="Structure analyzer: the pattern's radial autocorrelation and wavelength under the cursor (A)"><i></i>Analyzer</button>
+        </div>
+        <p class="hint" id="res-hint"><b>D</b> forks the dish into a control and an intervention. <b>A</b> measures the wavelength of the pattern under the cursor.</p>
+      </section>
+      <section class="sect">
+        <h3>Parameters <span id="params-note"></span></h3>
         <div id="params"></div>
       </section>
       <section class="sect">
@@ -504,6 +578,7 @@ body.splash #hud>*{pointer-events:none}
         <div class="toggles" role="group" aria-label="Relief">
           <button class="tog" id="tog-tilt" aria-pressed="false" title="Tilt the dish into 3D terrain (I)"><i></i>3D terrain</button>
           <button class="tog" id="tog-dof" aria-pressed="true" title="In 3D terrain, keep the orbit centre sharp and melt the far dish into bokeh"><i></i>Depth of field</button>
+          <button class="tog" id="tog-caus" aria-pressed="true" title="In 3D terrain, water light focused by the bodies of the specimen onto the floor beneath them"><i></i>Caustics</button>
         </div>
         <div class="param">
           <label for="p-relief">Relief &amp; cavity</label><output id="o-relief" for="p-relief">1.00</output>
@@ -518,6 +593,10 @@ body.splash #hud>*{pointer-events:none}
           <input type="range" id="p-gloss" min="0" max="2" step="0.01" value="1">
         </div>
         <div class="param">
+          <label for="p-iri">Thin film <i>iridescence</i></label><output id="o-iri" for="p-iri">1.00</output>
+          <input type="range" id="p-iri" min="0" max="2" step="0.01" value="1">
+        </div>
+        <div class="param">
           <label for="p-height">Terrain height</label><output id="o-height" for="p-height">1.00</output>
           <input type="range" id="p-height" min="0" max="3" step="0.01" value="1">
         </div>
@@ -527,8 +606,9 @@ body.splash #hud>*{pointer-events:none}
         <div class="toggles" role="group" aria-label="Performance">
           <button class="tog" id="tog-keys" aria-pressed="false" title="Play the specimen from the A to K row or a MIDI keyboard (N)"><i></i>Synth keys</button>
           <button class="tog" id="tog-exhibit" aria-pressed="false" title="Exhibition: a curated, self-guided tour (X)"><i></i>Exhibition</button>
+          <button class="tog" id="tog-strings" aria-pressed="true" title="Plucked strings and a resonant membrane: your notes pluck them, and so do collisions and divisions in Lenia and Gray-Scott, and sudden turns of a flock"><i></i>Strings</button>
         </div>
-        <p class="hint">Synth keys turn A&ndash;K into the current mode; each note bursts morphogen where its pitch sits on a dial. Plug in a MIDI keyboard and it plays too.</p>
+        <p class="hint">Synth keys turn A&ndash;K into the current mode; each note bursts morphogen where its pitch sits on a dial. Plug in a MIDI keyboard and it plays too. With <em>Strings</em> on, the specimen plucks them itself.</p>
       </section>
       <section class="sect">
         <h3>Protocol</h3>
@@ -539,11 +619,48 @@ body.splash #hud>*{pointer-events:none}
           <button class="act" id="act-clear" title="Clear the dish (C)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M5 7h14M9 7V4h6v3M7 7l1 13h8l1-13"/></svg>Clear</button>
           <button class="act wide evolve" id="act-evolve" title="Mutate the parameters over three seconds and breed a new phenotype (V)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M7 3c0 6 10 6 10 12s-10 3-10 6M17 3c0 6-10 6-10 12s10 3 10 6M8.5 7h7M8.5 17h7"/></svg><span id="evolve-t">Evolve a phenotype</span></button>
           <button class="act wide" id="act-snap" title="Render a 3840 by 2160 uncompressed PNG (S)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg><span id="snap-t">Capture 4K Snapshot</span></button>
+          <button class="act wide" id="act-obj" title="Export the heightfield as a closed, printable mesh with vertex colours (.obj)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9z"/><path d="M4 7.5l8 4.5 8-4.5M12 12v9"/></svg><span id="obj-t">Export 3D Mesh (.obj)</span></button>
           <button class="act wide rec" id="act-rec" aria-pressed="false" title="Film ten seconds of the specimen with its sound; press again to stop early (O)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="6" width="13" height="12" rx="2.5"/><path d="M16 10.5l5-3v9l-5-3z"/><circle class="rd" cx="9.5" cy="12" r="2.4" fill="currentColor" stroke="none"/></svg><span id="rec-t">Record 10 s Clip</span></button>
         </div>
       </section>
     </div>
   </aside>
+
+  <section class="glass" id="cmp" hidden aria-labelledby="cmp-h">
+    <header class="cmp-head">
+      <h2 id="cmp-h">Comparative fork <span id="cmp-age">t + 0</span></h2>
+      <div class="seg three" id="cmp-lens" role="group" aria-label="Divergence lens">
+        <button type="button" data-lens="0" aria-pressed="false" title="Dish A left of the divider, dish B right of it">Split</button>
+        <button type="button" data-lens="1" aria-pressed="true" title="Split, with a glow wherever the dishes differ">Overlay</button>
+        <button type="button" data-lens="2" aria-pressed="false" title="The divergence |sA − sB| alone, as a heat map">&Delta; map</button>
+      </div>
+      <button class="ib" id="cmp-close" aria-label="Close the comparison (D)" title="Close the comparison (D)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    </header>
+    <table class="cmp-t">
+      <thead><tr><th scope="col" id="cmp-sym">order parameter</th><th scope="col"><i class="sw"></i>A &middot; control</th><th scope="col"><i class="sw b"></i>B &middot; intervention</th></tr></thead>
+      <tbody>
+        <tr><th scope="row" id="cmp-k1">coverage</th><td id="cmp-a1">--</td><td id="cmp-b1">--</td></tr>
+        <tr><th scope="row" id="cmp-k2">mean</th><td id="cmp-a2">--</td><td id="cmp-b2">--</td></tr>
+        <tr><th scope="row" id="cmp-k3">evenness H</th><td id="cmp-a3">--</td><td id="cmp-b3">--</td></tr>
+      </tbody>
+    </table>
+    <div class="cmp-div">
+      <div><span id="cmp-dk">divergence</span> <b id="cmp-d">0</b> <span id="cmp-dx"></span></div>
+      <svg id="cmp-spark" viewBox="0 0 160 28" aria-hidden="true"><rect class="bg" x="0.5" y="0.5" width="159" height="27" rx="4"/><path id="cmp-line" d=""/></svg>
+    </div>
+    <footer class="cmp-foot">
+      <span id="cmp-int">B is an exact copy of A. Change B&rsquo;s sliders, paint either side, or press <b>V</b> to mutate B.</span>
+      <span class="cmp-btns"><button class="mini" id="cmp-edit" type="button" title="Which dish the parameter sliders change">Sliders: B</button><button class="mini" id="cmp-resync" type="button" title="Copy A&rsquo;s current state into B, keeping B&rsquo;s parameters">Re-sync B</button></span>
+    </footer>
+  </section>
+  <div id="split" hidden role="separator" aria-orientation="vertical" aria-valuemin="5" aria-valuemax="95" aria-valuenow="50" aria-label="Divider between dish A and dish B; arrow keys move it" tabindex="0"><i class="grip"></i><span class="la">A &middot; control</span><span class="lb">B &middot; intervention</span></div>
+
+  <figure class="glass" id="spec" hidden aria-labelledby="spec-h">
+    <figcaption><span id="spec-h">Structure analyzer</span><span id="spec-l">&lambda; --</span></figcaption>
+    <svg id="spec-svg" viewBox="0 0 268 112" role="img" aria-label="Radial autocorrelation G(r) of the pattern under the cursor, with its power spectrum and wavelength"></svg>
+    <svg id="spec-hist" viewBox="0 0 268 18" aria-hidden="true"></svg>
+    <p id="spec-read">Hover the dish to choose the window.</p>
+  </figure>
 
   <section class="glass" id="phylo" hidden aria-labelledby="phy-h">
     <header class="phy-head">
@@ -821,16 +938,26 @@ const clamp = (x, a, b) => (x < a ? a : x > b ? b : x);
 const lerp = (a, b, t) => a + (b - a) * t;
 const TAU = Math.PI * 2, DEG = Math.PI / 180;
 
+// the generator's whole state is r.s, so a stream can be cloned: twin dishes draw identical noise
 function mulberry32(seed) {
-  let a = seed >>> 0;
-  return () => {
-    a = (a + 0x6D2B79F5) | 0;
+  const r = () => {
+    const a = r.s = (r.s + 0x6D2B79F5) | 0;
     let t = Math.imul(a ^ (a >>> 15), 1 | a);
     t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
     return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
   };
+  r.s = seed >>> 0;
+  return r;
 }
+const cloneRng = r => { const c = mulberry32(0); c.s = r.s; return c; };
 let rand = mulberry32((Date.now() ^ 0x5bd1e995) >>> 0);
+// run fn with its own random stream in place of the global one
+function withRng(r, fn) {
+  if (!r) return fn();
+  const keep = rand;
+  rand = r;
+  try { return fn(); } finally { rand = keep; }
+}
 const hexRGB = h => [parseInt(h.slice(1, 3), 16) / 255, parseInt(h.slice(3, 5), 16) / 255, parseInt(h.slice(5, 7), 16) / 255];
 
 function fatal(msg) {
@@ -934,6 +1061,7 @@ CAPS.f32 = CAPS.cbf && renderable('rgba32f');
 CAPS.f16 = (CAPS.cbf || CAPS.cbhf) && renderable('rgba16f');
 const SIM = CAPS.f32 ? 'rgba32f' : CAPS.f16 ? 'rgba16f' : null;
 const HDR = CAPS.f16 ? 'rgba16f' : 'rgba8';
+const STATF = CAPS.f32 ? 'rgba32f' : 'rgba16f';   // instrument targets, read back as RGBA/FLOAT
 if (!SIM) {
   fatal('This graphics driver cannot render into floating-point textures (EXT_color_buffer_float), which every simulation here stores its chemistry in. Try a desktop browser with hardware acceleration switched on.');
   return;
@@ -1035,9 +1163,18 @@ void surfMask(inout vec3 alb, inout float h, vec2 uv) {
 // thick cores deepen and saturate, and a forward-scatter lobe lights the flesh from behind
 // when the viewer faces the light. Over that sits a wet coat: a two-lobe specular, a
 // thin-film sheen and a Fresnel rim. ao is horizon occlusion; cav darkens concave crevices.
+// The film is a transparent coat (index 1.38, a lipid or soap film) as thick as the body beneath:
+// light reflected from its two faces interferes with phase 4π·n·d·cosθt / λ, with one π shift
+// because the film is denser than the body, so R = sin²(δ/2) at red, green and blue. As the view
+// grazes, cosθt falls and the colours slide along the oil-slick sequence, weighted by the Fresnel
+// term (1 − N·V)³.
 const GLSL_SHADE = `
 uniform vec3 u_L, u_rim;
-uniform float u_gloss, u_relief, u_sss;
+uniform float u_gloss, u_relief, u_sss, u_iri;
+vec3 thinFilm(float ndv, float d) {
+  float ct = sqrt(max(0.0, 1.0 - (1.0 - ndv * ndv) / 1.9044));
+  return 0.5 - 0.5 * cos(17.3416 * d * ct / vec3(650.0, 532.0, 450.0));
+}
 vec3 shade(vec3 alb, float h, vec3 N, vec3 Nb, vec3 V, float ao, float cav, float thick) {
   float s = clamp(u_sss, 0.0, 2.0), sw = min(s, 1.0);
   float lum = max(max(alb.r, alb.g), alb.b);
@@ -1061,9 +1198,11 @@ vec3 shade(vec3 alb, float h, vec3 N, vec3 Nb, vec3 V, float ao, float cav, floa
   float wet = smoothstep(0.03, 0.3, h);
   float spec = (pow(ndh, 110.0) * 1.1 + pow(ndh, 16.0) * 0.04) * wet * mix(0.3, 1.0, smoothstep(0.0, 0.2, 1.0 - N.z));
   float fres = pow(1.0 - ndv, 3.0);
-  vec3 iri = 0.5 + 0.5 * cos(6.2831853 * (vec3(0.0, 0.33, 0.67) + ndv * 1.7 + h * 0.9));
-  col += mix(vec3(1.0), iri, 0.4) * spec * u_gloss * ao;
-  col += u_rim * fres * (0.15 + 0.85 * h) * 0.8 * u_gloss * mix(1.0, crev, 0.5);
+  vec3 film = thinFilm(ndv, 220.0 + 480.0 * thick);
+  float fi = clamp(u_iri, 0.0, 1.0);
+  col += mix(vec3(1.0), film * 1.3, 0.45 * fi) * spec * u_gloss * ao;
+  vec3 rimC = mix(u_rim, film * (1.15 + 0.55 * u_iri), fi);
+  col += rimC * fres * (0.15 + 0.85 * h) * 0.8 * u_gloss * mix(1.0, crev, 0.5);
   return col;
 }
 `;
@@ -1158,6 +1297,42 @@ function pass(prog, U, tgt, blend) {
   gl.drawArrays(gl.TRIANGLES, 0, 3);
 }
 const ADD = [gl.ONE, gl.ONE];
+
+// Asynchronous readback: readPixels into a pixel-pack buffer behind a fence, collected on a later
+// frame once the GPU has finished, so no instrument ever stalls the pipeline.
+class Readback {
+  constructor() { this.pbo = gl.createBuffer(); this.size = 0; this.fence = null; }
+  get busy() { return !!this.fence; }
+  request(tgt, w, h, type, bytes) {
+    if (this.fence) return false;
+    bindTarget(tgt);
+    gl.bindBuffer(gl.PIXEL_PACK_BUFFER, this.pbo);
+    if (this.size !== bytes) { gl.bufferData(gl.PIXEL_PACK_BUFFER, bytes, gl.STREAM_READ); this.size = bytes; }
+    gl.readPixels(0, 0, w, h, gl.RGBA, type, 0);
+    gl.bindBuffer(gl.PIXEL_PACK_BUFFER, null);
+    this.fence = gl.fenceSync(gl.SYNC_GPU_COMMANDS_COMPLETE, 0);
+    gl.flush();
+    return true;
+  }
+  ready() { return !this.fence || gl.clientWaitSync(this.fence, 0, 0) !== gl.TIMEOUT_EXPIRED; }
+  // fills dst and returns true once the reading has landed
+  poll(dst) {
+    if (!this.fence) return false;
+    const st = gl.clientWaitSync(this.fence, 0, 0);
+    if (st === gl.TIMEOUT_EXPIRED) return false;
+    gl.deleteSync(this.fence);
+    this.fence = null;
+    if (st === gl.WAIT_FAILED) return false;
+    gl.bindBuffer(gl.PIXEL_PACK_BUFFER, this.pbo);
+    gl.getBufferSubData(gl.PIXEL_PACK_BUFFER, 0, dst);
+    gl.bindBuffer(gl.PIXEL_PACK_BUFFER, null);
+    return true;
+  }
+  // a fenced buffer is never written again unread (the driver would drop its readback shadow):
+  // a cancelled reading takes its buffer with it
+  cancel() { if (this.fence) { gl.deleteSync(this.fence); this.fence = null; gl.deleteBuffer(this.pbo); this.pbo = gl.createBuffer(); this.size = 0; } }
+  free() { this.cancel(); if (this.pbo) gl.deleteBuffer(this.pbo); this.pbo = null; }
+}
 
 /* =====================================================================
    3 · Palettes (generated lookup table, 256 x N, RGBA8)
@@ -1552,30 +1727,85 @@ void main() {
 // occlusion, computed once per frame in the grid's own texture space (exact for a heightfield,
 // and free of the screen-edge artefacts of screen-space AO): r = horizon occlusion over six
 // directions out to ten cells, cone-filtered through the mips; g = crevice, the concave
-// curvature that darkens the narrow valleys between ridges
+// curvature that darkens the narrow valleys between ridges; b and a = caustic light (see below)
+//
+// Caustics. A refracting surface z = f(x) bends each ray sideways in proportion to ∇f, so the light
+// it carries lands spread over the Jacobian of that map: the floor receives 1 / |det(I + k·Hess f)|,
+// bright where the surface focuses and dim where it spreads. Two refractors are evaluated per cell:
+// a = the water above, five swells drifting across the dish, whose Hessians are analytic
+// (−c·sin(k·x − ωt)·d dᵀ for a swell of curvature amplitude c along d); b = the specimen's own
+// bodies as lenses, read up-light of the floor point (u_lofs), where its light crossed them.
 SRC.reliefAO = `
-uniform sampler2D u_surf; uniform vec2 u_size; uniform float u_hs;
+uniform sampler2D u_surf; uniform vec2 u_size, u_lofs; uniform float u_hs, u_aoOn, u_caus, u_time, u_cell, u_lens;
+float focus(mat2 H) { return 1.0 / max(abs(determinant(mat2(1.0) + H)), 0.1); }
+float hb(vec2 q) { return textureLod(u_surf, q, 1.3).a; }
 void main() {
   vec2 px = 1.0 / u_size, uv = gl_FragCoord.xy * px;
-  float h = texture(u_surf, uv).a, occ = 0.0;
-  for (int d = 0; d < 6; d++) {
-    float a = float(d) * 1.0471976 + 0.2618;
-    vec2 dir = vec2(cos(a), sin(a)) * px;
-    float tmax = 0.0, r = 1.5;
-    for (int k = 0; k < 3; k++) {
-      float hs = textureLod(u_surf, uv + dir * r, max(0.0, log2(r) - 0.5)).a;
-      tmax = max(tmax, (hs - h) * u_hs / r);
-      r *= 2.6;
+  vec2 ao = vec2(1.0, 0.0);
+  if (u_aoOn > 0.5) {
+    float h = texture(u_surf, uv).a, occ = 0.0;
+    for (int d = 0; d < 6; d++) {
+      float a = float(d) * 1.0471976 + 0.2618;
+      vec2 dir = vec2(cos(a), sin(a)) * px;
+      float tmax = 0.0, r = 1.5;
+      for (int k = 0; k < 3; k++) {
+        float hs = textureLod(u_surf, uv + dir * r, max(0.0, log2(r) - 0.5)).a;
+        tmax = max(tmax, (hs - h) * u_hs / r);
+        r *= 2.6;
+      }
+      occ += tmax * inversesqrt(1.0 + tmax * tmax);
     }
-    occ += tmax * inversesqrt(1.0 + tmax * tmax);
+    occ /= 6.0;
+    float ring = 0.25 * (texture(u_surf, uv + vec2(px.x, 0.0)).a + texture(u_surf, uv - vec2(px.x, 0.0)).a
+                       + texture(u_surf, uv + vec2(0.0, px.y)).a + texture(u_surf, uv - vec2(0.0, px.y)).a);
+    float wide = textureLod(u_surf, uv, 1.5).a;
+    float cav = smoothstep(0.004, 0.07, (ring - h) + 0.7 * (wide - h));
+    ao = vec2(clamp(1.0 - 1.25 * occ, 0.12, 1.0), cav);
   }
-  occ /= 6.0;
-  float ring = 0.25 * (texture(u_surf, uv + vec2(px.x, 0.0)).a + texture(u_surf, uv - vec2(px.x, 0.0)).a
-                     + texture(u_surf, uv + vec2(0.0, px.y)).a + texture(u_surf, uv - vec2(0.0, px.y)).a);
-  float wide = textureLod(u_surf, uv, 1.5).a;
-  float cav = smoothstep(0.004, 0.07, (ring - h) + 0.7 * (wide - h));
-  o = vec4(clamp(1.0 - 1.25 * occ, 0.12, 1.0), cav, 0.0, 1.0);
+  float body = 0.0, water = 0.0;
+  if (u_caus > 0.0) {
+    vec2 p = gl_FragCoord.xy * u_cell;
+    mat2 Hw = mat2(0.0);
+    for (int i = 0; i < 5; i++) {
+      float fi = float(i), an = 0.45 + fi * 1.33 + 0.07 * sin(u_time * 0.05 + fi);
+      vec2 d = vec2(cos(an), sin(an));
+      float lam = 38.0 + 11.0 * fi, c = 0.3 - 0.02 * fi;
+      float s = sin(dot(d, p) * 6.2831853 / lam - u_time * (0.8 + 0.13 * fi) + fi * 2.1);
+      Hw -= c * s * mat2(d.x * d.x, d.x * d.y, d.x * d.y, d.y * d.y);
+    }
+    water = focus(Hw);
+    vec2 q = uv + u_lofs * px, e = 2.0 * px;
+    float f0 = hb(q);
+    float fxx = hb(q + vec2(e.x, 0.0)) - 2.0 * f0 + hb(q - vec2(e.x, 0.0));
+    float fyy = hb(q + vec2(0.0, e.y)) - 2.0 * f0 + hb(q - vec2(0.0, e.y));
+    float fxy = 0.25 * (hb(q + e) - hb(q + vec2(e.x, -e.y)) - hb(q + vec2(-e.x, e.y)) + hb(q - e));
+    body = focus(u_lens * 0.25 * mat2(fxx, fxy, fxy, fyy));
+  }
+  o = vec4(ao, body * 0.2, water * 0.2);
 }`;
+
+// the comparative fork's divergence, laid onto the specimen before it is lit or fogged:
+// mode 1 glows over the regions where the dishes differ, mode 2 shows the heat map alone
+const GLSL_HEAT = `
+uniform sampler2D u_heat; uniform float u_heatMode;
+vec3 inferno(float t) {   // polynomial fit to the inferno colour map (after Matt Zucker)
+  const vec3 c0 = vec3(0.0002189403691192265, 0.001651004631001012, -0.01948089843709184);
+  const vec3 c1 = vec3(0.1065134194856116, 0.5639564367884091, 3.932712388889277);
+  const vec3 c2 = vec3(11.60249308247187, -3.972853965665698, -15.9423941062914);
+  const vec3 c3 = vec3(-41.70399613139459, 17.43639888205313, 44.35414519872813);
+  const vec3 c4 = vec3(77.162935699427, -33.40235894210092, -81.80730925738993);
+  const vec3 c5 = vec3(-71.31942824499214, 32.62606426397723, 73.20951985803202);
+  const vec3 c6 = vec3(25.13112622477341, -12.24266895238567, -23.07032500287172);
+  return max(c0 + t * (c1 + t * (c2 + t * (c3 + t * (c4 + t * (c5 + t * c6))))), 0.0);
+}
+vec3 heatFX(vec3 col, vec2 uv) {
+  if (u_heatMode < 0.5) return col;
+  vec2 q = texture(u_heat, uv).rg;
+  vec3 hc = inferno(0.1 + 0.9 * q.r);
+  if (u_heatMode < 1.5) return mix(col, col * 0.35 + hc * 1.7, q.g * (0.3 + 0.7 * q.r) * 0.9);
+  return mix(col * 0.13, hc * 1.35, q.g);
+}
+`;
 
 SRC.relief2D = `
 uniform sampler2D u_surf, u_ao;
@@ -1592,7 +1822,7 @@ void main() {
   vec4 a = texture(u_ao, uv);
   float r = clamp(u_relief, 0.0, 1.0);
   float thick = 0.5 * (s.a + textureLod(u_surf, uv, 2.0).a);
-  o = vec4(shade(s.rgb, s.a, N, Nb, vec3(0.0, 0.0, 1.0), mix(1.0, a.r, r), a.g * r, thick), 1.0);
+  o = vec4(heatFX(shade(s.rgb, s.a, N, Nb, vec3(0.0, 0.0, 1.0), mix(1.0, a.r, r), a.g * r, thick), uv), 1.0);
 }`;
 
 /* ---------- relief in 3D: a 3x3 field of displaced tiles, fogged to the horizon ---------- */
@@ -1614,8 +1844,8 @@ void main() {
 SRC.meshFS = `#version 300 es
 precision highp float; precision highp sampler2D;
 in vec2 v_g; in vec3 v_wp; out vec4 o;
-uniform sampler2D u_surf, u_ao; uniform vec2 u_size, u_target; uniform float u_cell, u_hcss, u_fogR, u_focus, u_aper; uniform vec3 u_eye, u_fwd, u_bg;
-` + GLSL_SHADE + `
+uniform sampler2D u_surf, u_ao; uniform vec2 u_size, u_target, u_lofs; uniform float u_cell, u_hcss, u_fogR, u_focus, u_aper, u_caus; uniform vec3 u_eye, u_fwd, u_bg;
+` + GLSL_SHADE + GLSL_HEAT + `
 void main() {
   vec2 px = 1.0 / u_size, uv = v_g * px;
   vec4 s = texture(u_surf, uv);
@@ -1630,6 +1860,20 @@ void main() {
   vec4 a = texture(u_ao, uv);
   float thick = 0.5 * (s.a + textureLod(u_surf, uv, 2.0).a);
   vec3 col = shade(s.rgb, s.a, N, Nb, V, a.r, a.g, thick);
+  if (u_caus > 0.0) {
+    // the caustic floor: water light, focused again by the bodies it crossed on the way down,
+    // and coloured by them (their hue, deepened by Beer-Lambert through their thickness)
+    float Iw = a.a * 5.0, Ib = a.b * 5.0;
+    vec4 sb = texture(u_surf, uv + u_lofs * px);
+    float dens = smoothstep(0.03, 0.45, sb.a);
+    vec3 hue = sb.rgb / max(max(sb.r, max(sb.g, sb.b)), 1e-3);
+    vec3 through = mix(vec3(1.0), mix(hue, vec3(1.0), 0.25) * exp(-0.9 * sb.a), dens);
+    float floorW = 1.0 - smoothstep(0.04, 0.3, s.a);
+    float ex = max(Iw * mix(1.0, Ib, floorW) - 1.0, 0.0);   // only light beyond the even flood, compressed
+    col += vec3(0.62, 0.84, 1.0) * through * ex / (1.0 + 0.6 * ex) * (0.1 + 0.9 * floorW) * 0.14 * u_caus;
+    col *= 1.0 + (min(Iw, 2.5) - 1.0) * 0.05 * u_caus;
+  }
+  col = heatFX(col, uv);
   float rad = length(v_wp.xy - u_target) / u_fogR;
   float fog = smoothstep(0.5, 1.0, rad);
   float z = dot(v_wp - u_eye, u_fwd);
@@ -2039,14 +2283,111 @@ void main() {
   o = vec4(mod(A.xy + u_shift, u_size), A.zw);
 }`;
 
+/* ---------- Instruments: the comparative fork, the structure analyzer, fabrication ---------- */
+// every grid model names one order parameter s in [0, 1] (Gray-Scott v, Lenia A, ...): a channel
+// mix of its state, optionally saturated as 1 - exp(-x·gain) for unbounded trail densities
+const GLSL_ORDER = `
+uniform vec4 u_w; uniform float u_omode, u_ogain;
+float ord(vec4 c) { float v = dot(c, u_w); return u_omode > 0.5 ? 1.0 - exp(-max(v, 0.0) * u_ogain) : clamp(v * u_ogain, 0.0, 1.0); }
+`;
+// dish A left of the divider, dish B right of it, with a hairline drawn into the image itself so
+// clips and plates carry the split; alpha (the depth-of-field circle) follows the side shown
+SRC.split = `
+uniform sampler2D u_a, u_b; uniform vec2 u_res; uniform float u_split, u_px;
+void main() {
+  vec2 uv = gl_FragCoord.xy / u_res;
+  float sx = u_split * u_res.x;
+  vec4 c = gl_FragCoord.x < sx ? texture(u_a, uv) : texture(u_b, uv);
+  float line = 1.0 - smoothstep(0.55, 1.35, abs(gl_FragCoord.x - sx) / u_px);
+  o = vec4(mix(c.rgb, vec3(0.9, 0.97, 1.0), line * 0.8), c.a);
+}`;
+// the divergence |sA - sB| per cell, as a log heat auto-ranged to the current maximum, so a faint
+// front and a hot core both read; g flags any difference at all
+SRC.cmpHeat = `
+uniform sampler2D u_a, u_b; uniform float u_scale;
+void main() {
+  ivec2 p = ivec2(gl_FragCoord.xy);
+  float d = abs(ord(texelFetch(u_a, p, 0)) - ord(texelFetch(u_b, p, 0)));
+  float t = clamp(log(1.0 + d * 1000.0) / log(1.0 + u_scale * 1000.0), 0.0, 1.0);
+  o = vec4(t, d > 0.0 ? 1.0 : 0.0, 0.0, 1.0);
+}`;
+// exact telemetry, stage 1: every cell of both dishes, in 8 x 8 blocks. Even columns hold dish A
+// (mean s, coverage, max |Δ|, cells / 64), odd columns dish B (mean s, coverage, mean |Δ|, broken)
+SRC.cmpR1 = `
+uniform sampler2D u_a, u_b; uniform vec2 u_size; uniform float u_thr, u_eps;
+void main() {
+  ivec2 q = ivec2(gl_FragCoord.xy), b0 = ivec2(q.x >> 1, q.y) * 8, sz = ivec2(u_size);
+  float n = 0.0, sA = 0.0, sB = 0.0, cA = 0.0, cB = 0.0, dm = 0.0, dx = 0.0, br = 0.0;
+  for (int j = 0; j < 8; j++) for (int i = 0; i < 8; i++) {
+    ivec2 p = b0 + ivec2(i, j);
+    if (p.x >= sz.x || p.y >= sz.y) continue;
+    float a = ord(texelFetch(u_a, p, 0)), b = ord(texelFetch(u_b, p, 0)), d = abs(a - b);
+    n += 1.0; sA += a; sB += b; dm += d; dx = max(dx, d);
+    cA += step(u_thr, a); cB += step(u_thr, b); br += step(u_eps, d);
+  }
+  n = max(n, 1.0);
+  o = (q.x & 1) == 0 ? vec4(sA / n, cA / n, dx, n / 64.0) : vec4(sB / n, cB / n, dm / n, br / n);
+}`;
+// stage 2: stage-1 blocks gathered into 16 x 16 regions, weighted by their cell counts
+SRC.cmpR2 = `
+uniform sampler2D u_src; uniform vec2 u_nb;
+void main() {
+  ivec2 q = ivec2(gl_FragCoord.xy), nb = ivec2(u_nb);
+  int side = q.x & 1, rx = q.x >> 1, ry = q.y;
+  int x0 = rx * nb.x / 16, x1 = (rx + 1) * nb.x / 16, y0 = ry * nb.y / 16, y1 = (ry + 1) * nb.y / 16;
+  vec4 acc = vec4(0.0);
+  float wsum = 0.0, dx = 0.0;
+  for (int y = y0; y < y1; y++) for (int x = x0; x < x1; x++) {
+    vec4 A = texelFetch(u_src, ivec2(2 * x, y), 0), B = texelFetch(u_src, ivec2(2 * x + 1, y), 0);
+    float w = A.a;
+    wsum += w;
+    dx = max(dx, A.b);
+    acc += side == 0 ? vec4(A.rg * w, 0.0, 0.0) : B * w;
+  }
+  float iw = wsum > 0.0 ? 1.0 / wsum : 0.0;
+  o = side == 0 ? vec4(acc.rg * iw, dx, wsum) : acc * iw;
+}`;
+// the analyzer's window: a periodic patch of s, four cells to a texel for a quarter of the traffic
+SRC.patch = `
+uniform sampler2D u_src; uniform vec2 u_size, u_org;
+void main() {
+  ivec2 q = ivec2(gl_FragCoord.xy), sz = ivec2(u_size), org = ivec2(u_org);
+  vec4 r;
+  for (int k = 0; k < 4; k++) {
+    ivec2 p = org + ivec2(q.x * 4 + k, q.y);
+    r[k] = ord(texelFetch(u_src, ivec2(((p.x % sz.x) + sz.x) % sz.x, ((p.y % sz.y) + sz.y) % sz.y), 0));
+  }
+  o = r;
+}`;
+// a coarse census of bodies for the collision listener: each texel averages a block of cells
+SRC.blobs = `
+uniform sampler2D u_src; uniform vec2 u_size; uniform float u_blk;
+void main() {
+  ivec2 q = ivec2(gl_FragCoord.xy), sz = ivec2(u_size);
+  int b = int(u_blk);
+  float s = 0.0, n = 0.0;
+  for (int j = 0; j < 8; j++) for (int i = 0; i < 8; i++) {
+    if (i >= b || j >= b) continue;
+    ivec2 p = q * b + ivec2(i, j);
+    if (p.x >= sz.x || p.y >= sz.y) continue;
+    s += ord(texelFetch(u_src, p, 0)); n += 1.0;
+  }
+  o = vec4(s / max(n, 1.0), 0.0, 0.0, 1.0);
+}`;
+// fabrication: the surface (albedo, height) at the mesh's vertices; vertex i sits at grid x = i·W/(n−1),
+// so the first and last rows sample the same periodic seam and tiles join edge to edge
+SRC.meshOut = `
+uniform sampler2D u_surf; uniform vec2 u_n;
+void main() { o = texture(u_surf, (floor(gl_FragCoord.xy) / (u_n - 1.0))); }`;
+
 /* =====================================================================
    5 · Shared state
    ===================================================================== */
 const VIEW = { cssW: Math.max(1, window.innerWidth), cssH: Math.max(1, window.innerHeight) };
 const STATE = {
   time: 0, frame: 0, paused: false, brushCss: 36, tool: 0, pmode: 'paint', dream: false,
-  fx: { bloom: true, aberration: false, crt: false, film: true, glow: 0.8, dof: true },
-  shade: { relief: 1, gloss: 1, height: 1, sss: 1 },
+  fx: { bloom: true, aberration: false, crt: false, film: true, glow: 0.8, dof: true, caustics: true },
+  shade: { relief: 1, gloss: 1, height: 1, sss: 1, iri: 1 },
   tilt: false, tiltT: 0
 };
 const easeT = t => t * t * t * (t * (t * 6 - 15) + 10);
@@ -2113,6 +2454,7 @@ class GridModel {
     freeTarget(this.aoT);
     this.surf = makeTarget(W, H, HDR, { filter: 'linear', mipmap: true });
     this.aoT = makeTarget(W, H, 'rgba8', { filter: 'linear' });
+    this.aoFlat = false;   // the fresh target holds zeros, not "no occlusion"
     if (this.onResize) this.onResize(off);
   }
   upload(pp, data) {
@@ -2162,16 +2504,38 @@ class GridModel {
   surfU() {
     return { u_size: [this.W, this.H], u_time: STATE.time, u_mask: this.mask.read, ...palUniforms(this.palette) };
   }
-  // draw the specimen: the model writes its surface, then the shared relief renderer lights it
-  render(tgt, view) {
+  // the order parameter the instruments measure: a channel mix of the state in [0, 1]
+  orderU() { const o = this.order(); return { u_w: o.w, u_omode: o.mode, u_ogain: o.gain }; }
+  // this frame's surface and its texture-space light: occlusion, crevices and, in 3D, caustics
+  prepare() {
     this.drawSurface();
     gl.bindTexture(gl.TEXTURE_2D, this.surf.tex);
     gl.generateMipmap(gl.TEXTURE_2D);
-    if (STATE.shade.relief > 0.001) pass(P('reliefAO'), { u_surf: this.surf, u_size: [this.W, this.H], u_hs: 4 + 8 * STATE.shade.relief }, this.aoT);
-    else if (!this.aoFlat) this.clearTarget(this.aoT, [1, 0, 0, 1]);
-    this.aoFlat = STATE.shade.relief <= 0.001;
-    if (this.tilted()) Relief.draw3D(this, tgt, view); else Relief.draw2D(this, tgt, view);
+    const aoOn = STATE.shade.relief > 0.001, caus = STATE.fx.caustics && this.tilted() ? easeT(clamp(STATE.tiltT, 0, 1)) : 0;
+    this.caus = caus;
+    if (aoOn || caus > 0) {
+      pass(P('reliefAO'), {
+        u_surf: this.surf, u_size: [this.W, this.H], u_hs: 4 + 8 * STATE.shade.relief, u_aoOn: aoOn ? 1 : 0, u_caus: caus,
+        u_time: STATE.time, u_cell: this.cell, u_lofs: Relief.lightOffset(this), u_lens: 26 * STATE.shade.height / (this.cell * this.cell)
+      }, this.aoT);
+      this.aoFlat = false;
+    } else if (!this.aoFlat) { this.clearTarget(this.aoT, [1, 0, 0, 0]); this.aoFlat = true; }
+  }
+  // light it: from above, or as terrain; extra carries the comparative fork's heat
+  draw(tgt, view, extra) {
+    if (this.tilted()) Relief.draw3D(this, tgt, view, extra); else Relief.draw2D(this, tgt, view, extra);
     if (this.overlay) this.overlay(tgt, view);
+  }
+  render(tgt, view) { this.prepare(); this.draw(tgt, view); }
+  // release every GL object this instance owns (programs are shared and stay cached)
+  dispose() {
+    for (const f of this.fieldSpecs) if (this[f.key]) this[f.key].free();
+    freeTarget(this.surf);
+    freeTarget(this.aoT);
+    if (this.agents) this.agents.free();
+    if (this.kern) gl.deleteTexture(this.kern);
+    if (this.disposeExtra) this.disposeExtra();
+    this.ready = false;
   }
   applyTool(s, tool) {
     pass(P('maskPaint'), { ...this.brushU(s), u_mask: this.mask.read, u_size: [this.W, this.H], u_tool: tool }, this.mask.write);
@@ -2279,6 +2643,7 @@ class GrayScott extends GridModel {
   secondary(s, tool) { this.applyTool(s, tool); if (tool === 3) this.paint(s, true); }
   drawSurface() { pass(P('gsSurf', GLSL_SURF), { ...this.surfU(), u_state: this.state.read, u_map: this.map }, this.surf); }
   metric() { return { tex: this.state.read, w: [0, 1, 0, 0], mode: 0, gain: 3.2 }; }
+  order() { return { tex: this.state.read, w: [0, 1, 0, 0], mode: 0, gain: 1, sym: 'v', name: 'autocatalyst v' }; }
   probeText(x, y) {
     const [gx, gy] = this.probe(x, y);
     if (this.map) {
@@ -2425,6 +2790,7 @@ class Physarum extends GridModel {
   secondary(s, tool) { this.applyTool(s, tool); if (tool === 3) this.trailBrush(s, true); }
   drawSurface() { pass(P('phySurf', GLSL_SURF), { ...this.surfU(), u_trail: this.trail.read, u_gain: this.p.gain, u_species: this.p.species }, this.surf); }
   metric() { return { tex: this.trail.read, w: [1, 1, 1, 0], mode: 1, gain: this.p.gain * 0.9 }; }
+  order() { return { tex: this.trail.read, w: [1, 1, 1, 0], mode: 1, gain: this.p.gain, sym: 'T', name: 'trail density 1 − e^(−gT)' }; }
   probeText(x, y) { const [gx, gy] = this.probe(x, y); return 'x ' + String(gx | 0).padStart(4) + ' y ' + String(gy | 0).padStart(4); }
   entities() { return ['AGENTS', this.count.toLocaleString('en-CA')]; }
   equation() {
@@ -2590,6 +2956,7 @@ class Lenia extends GridModel {
   secondary(s, tool) { this.applyTool(s, tool); if (tool === 3) this.paint(s, true); }
   drawSurface() { pass(P('leniaSurf', GLSL_SURF), { ...this.surfU(), u_state: this.state.read }, this.surf); }
   metric() { return { tex: this.state.read, w: [1, 0, 0, 0], mode: 0, gain: 2.5 }; }
+  order() { return { tex: this.state.read, w: [1, 0, 0, 0], mode: 0, gain: 1, sym: 'A', name: 'tissue A' }; }
   probeText(x, y) { const [gx, gy] = this.probe(x, y); return 'x ' + String(gx | 0).padStart(4) + ' y ' + String(gy | 0).padStart(4); }
   entities() { return ['KERNEL', this.kn.toLocaleString('en-CA') + ' taps']; }
   equation() {
@@ -2714,6 +3081,7 @@ class BZ extends GridModel {
   secondary(s, tool) { this.applyTool(s, tool); if (tool === 3) this.paint(s, true); }
   drawSurface() { pass(P('bzSurf', GLSL_SURF), { ...this.surfU(), u_state: this.state.read, u_variant: this.variant }, this.surf); }
   metric() { return { tex: this.state.read, w: [1, 0, 0, 0], mode: 0, gain: this.variant === 0 ? 1.4 : 2.2 }; }
+  order() { return { tex: this.state.read, w: [1, 0, 0, 0], mode: 0, gain: 1, sym: this.variant ? 'u' : 'a', name: this.variant ? 'excitation u' : 'species a' }; }
   probeText(x, y) { const [gx, gy] = this.probe(x, y); return 'x ' + String(gx | 0).padStart(4) + ' y ' + String(gy | 0).padStart(4); }
   entities() { return ['CELLS', (this.W * this.H).toLocaleString('en-CA')]; }
   equation() {
@@ -2802,12 +3170,15 @@ const Relief = {
   },
   shadeU(m) {
     const a = PALETTES[m.palette].accRGB[0];
-    return { u_L: LIGHT, u_rim: [lerp(a[0], 1, 0.3), lerp(a[1], 1, 0.3), lerp(a[2], 1, 0.3)], u_gloss: STATE.shade.gloss, u_relief: STATE.shade.relief, u_sss: STATE.shade.sss };
+    return { u_L: LIGHT, u_rim: [lerp(a[0], 1, 0.3), lerp(a[1], 1, 0.3), lerp(a[2], 1, 0.3)], u_gloss: STATE.shade.gloss, u_relief: STATE.shade.relief, u_sss: STATE.shade.sss, u_iri: STATE.shade.iri };
   },
-  draw2D(m, tgt, view) {
-    pass(P('relief2D', GLSL_VIEW + GLSL_SHADE), { ...m.viewU(view), ...this.shadeU(m), u_surf: m.surf, u_ao: m.aoT }, tgt);
+  // from a point on the floor, up-light to where its light crossed the bodies above (in cells):
+  // the caustic of a body lands beside it, away from the lamp, as under a jelly in shallow water
+  lightOffset(m) { const d = 1.6 * 22 * STATE.shade.height / m.cell; return [LIGHT[0] / LIGHT[2] * d, LIGHT[1] / LIGHT[2] * d]; },
+  draw2D(m, tgt, view, extra) {
+    pass(P('relief2D', GLSL_VIEW + GLSL_SHADE + GLSL_HEAT), { ...m.viewU(view), ...this.shadeU(m), u_surf: m.surf, u_ao: m.aoT, u_heatMode: 0, u_heat: null, ...extra }, tgt);
   },
-  draw3D(m, tgt, view) {
+  draw3D(m, tgt, view, extra) {
     const cam = this.camera(m, view);
     m.lastCam = cam;
     pass(P('reliefBG'), { u_xb: cam.xb, u_yb: cam.yb, u_zb: cam.zb, u_bg: BG3, u_tanH: cam.tanH, u_aspect: cam.aspect, u_res: view.res }, tgt);
@@ -2820,7 +3191,8 @@ const Relief = {
     bindUniforms(PROG.mesh, {
       ...this.shadeU(m), u_surf: m.surf, u_ao: m.aoT, u_size: [m.W, m.H], u_origin: origin, u_cell: m.cell, u_hcss: 22 * STATE.shade.height,
       u_vp: cam.vp, u_eye: cam.eye, u_target: [cam.target[0], cam.target[1]], u_fogR: 1.15 * Math.max(m.W, m.H) * m.cell, u_bg: BG3,
-      u_fwd: [-cam.zb[0], -cam.zb[1], -cam.zb[2]], u_focus: cam.dist, u_aper: 1.5
+      u_fwd: [-cam.zb[0], -cam.zb[1], -cam.zb[2]], u_focus: cam.dist, u_aper: 1.5,
+      u_caus: m.caus || 0, u_lofs: this.lightOffset(m), u_heatMode: 0, u_heat: null, ...extra
     });
     gl.enable(gl.DEPTH_TEST);
     gl.depthFunc(gl.LESS);
@@ -2886,12 +3258,14 @@ class Boids {
     ];
   }
   init() {
-    PROG.dart = makeProgram(SRC.dartVS, SRC.dartFS, 'dart');
-    PROG.star = makeProgram(SRC.starVS, SRC.starFS, 'star');
-    PROG.line = makeProgram(SRC.lineVS, SRC.lineFS, 'line');
-    PROG.glyph = makeProgram(SRC.glyphVS, SRC.glyphFS, 'glyph');
+    PROG.dart = PROG.dart || makeProgram(SRC.dartVS, SRC.dartFS, 'dart');
+    PROG.star = PROG.star || makeProgram(SRC.starVS, SRC.starFS, 'star');
+    PROG.line = PROG.line || makeProgram(SRC.lineVS, SRC.lineFS, 'line');
+    PROG.glyph = PROG.glyph || makeProgram(SRC.glyphVS, SRC.glyphFS, 'glyph');
     P('fade'); P('boidsBG');
-    const buf = (data, usage) => { const b = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, b); gl.bufferData(gl.ARRAY_BUFFER, data, usage); return b; };
+    this.glBufs = []; this.glVAOs = [];
+    const buf = (data, usage) => { const b = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, b); gl.bufferData(gl.ARRAY_BUFFER, data, usage); this.glBufs.push(b); return b; };
+    const vao = () => { const v = gl.createVertexArray(); this.glVAOs.push(v); return v; };
     const attr = (loc, size, stride, off, div) => {
       gl.enableVertexAttribArray(loc);
       gl.vertexAttribPointer(loc, size, gl.FLOAT, false, stride, off);
@@ -2899,7 +3273,7 @@ class Boids {
     };
     // darts: a chevron of two triangles, nose along +x
     this.instBuf = buf(this.inst.byteLength, gl.DYNAMIC_DRAW);
-    this.dartVAO = gl.createVertexArray();
+    this.dartVAO = vao();
     gl.bindVertexArray(this.dartVAO);
     buf(new Float32Array([1.7, 0, -1, 0.75, -0.4, 0, 1.7, 0, -0.4, 0, -1, -0.75]), gl.STATIC_DRAW);
     attr(0, 2, 0, 0);
@@ -2907,7 +3281,7 @@ class Boids {
     attr(1, 3, 32, 0, 1); attr(2, 3, 32, 12, 1); attr(3, 2, 32, 24, 1);
     // glyph billboards
     this.glyphBuf = buf(this.glyphData.byteLength, gl.DYNAMIC_DRAW);
-    this.glyphVAO = gl.createVertexArray();
+    this.glyphVAO = vao();
     gl.bindVertexArray(this.glyphVAO);
     buf(new Float32Array([-1, -1, 1, -1, 1, 1, -1, -1, 1, 1, -1, 1]), gl.STATIC_DRAW);
     attr(0, 2, 0, 0);
@@ -2920,13 +3294,13 @@ class Boids {
       st.set([r * q * Math.cos(t), r * u, r * q * Math.sin(t), rand()], i * 4);
     }
     this.nStars = ns;
-    this.starVAO = gl.createVertexArray();
+    this.starVAO = vao();
     gl.bindVertexArray(this.starVAO);
     buf(st, gl.STATIC_DRAW);
     attr(0, 4, 0, 0);
     // bounding box
     this.boxBuf = buf(24 * 3 * 4, gl.DYNAMIC_DRAW);
-    this.boxVAO = gl.createVertexArray();
+    this.boxVAO = vao();
     gl.bindVertexArray(this.boxVAO);
     gl.bindBuffer(gl.ARRAY_BUFFER, this.boxBuf);
     attr(0, 3, 0, 0);
@@ -2945,6 +3319,12 @@ class Boids {
     this.accum = n;
   }
   resize() { if (this.ready && (this.accum.w !== gl.drawingBufferWidth || this.accum.h !== gl.drawingBufferHeight)) this.makeAccum(); }
+  dispose() {
+    (this.glBufs || []).forEach(b => gl.deleteBuffer(b));
+    (this.glVAOs || []).forEach(v => gl.deleteVertexArray(v));
+    freeTarget(this.accum);
+    this.glBufs = []; this.glVAOs = []; this.accum = null; this.ready = false;
+  }
   bounds() { const a = clamp(VIEW.cssW / VIEW.cssH, 0.75, 2.4); return [120 * a, 120, 120]; }
   applyPreset(i) {
     const pr = this.presets[i];
@@ -3022,7 +3402,7 @@ class Boids {
     this.buildGrid(N, bx + pad, by + pad, bz + pad, perc);
     const G = this.grid, start = G.start, sorted = G.sorted, nx = G.nx, ny = G.ny, nz = G.nz;
     const PP = this.ppos, np = this.np, maxN = 40, marg = 32;
-    let dens = 0, act = 0, sumX = 0;
+    let dens = 0, act = 0, sumX = 0, sumY = 0, pvx = 0, pvy = 0, pvz = 0, spd = 0;
     const lure = this.lure, obs = this.obs, food = this.food;
     for (let i = 0; i < N; i++) {
       const i3 = i * 3, px = P[i3], py = P[i3 + 1], pz = P[i3 + 2], vx = V[i3], vy = V[i3 + 1], vz = V[i3 + 2];
@@ -3084,7 +3464,8 @@ class Boids {
       if (f2 > maxF * maxF) { const s = maxF / Math.sqrt(f2); fx *= s; fy *= s; fz *= s; }
       act += Math.min(1, Math.sqrt(f2) / maxF);
       dens += cnt / maxN;
-      sumX += px;
+      sumX += px; sumY += py;
+      pvx += vx; pvy += vy; pvz += vz; spd += Math.sqrt(vx * vx + vy * vy + vz * vz);
       const damp = Math.max(0, 1 - p.visc * dt);
       let nvx = (vx + fx * dt) * damp, nvy = (vy + fy * dt) * damp, nvz = (vz + fz * dt) * damp;
       const sp = Math.sqrt(nvx * nvx + nvy * nvy + nvz * nvz) + 1e-6;
@@ -3097,6 +3478,12 @@ class Boids {
     this.stats.density = N ? dens / N : 0;
     this.stats.activity = N ? act / N : 0;
     this.stats.cx = N ? clamp(0.5 + sumX / N / (2 * bx), 0, 1) : 0.5;
+    this.stats.cy = N ? clamp(0.5 + sumY / N / (2 * by), 0, 1) : 0.5;
+    this.stats.polar = spd > 1e-6 ? Math.hypot(pvx, pvy, pvz) / spd : 0;   // 1 when the flock flies as one
+    // a manoeuvre: the flock's mean steering force jumps well above its recent level
+    const J = this.jolt || (this.jolt = { fast: 0, slow: 0, t: 0 }), a = this.stats.activity;
+    J.fast = lerp(J.fast, a, 0.35); J.slow = lerp(J.slow, a, 0.02); J.t += dt;
+    if (J.fast - J.slow > 0.05 && J.fast > 0.16 && J.t > 0.4) { J.t = 0; if (this.onEvent) this.onEvent({ kind: 'turn', strength: clamp((J.fast - J.slow) / 0.15, 0.2, 1.4), x: this.stats.cx, y: this.stats.cy }); }
     // evenness of the flock over an 8x8 floor plan, for the soundscape
     if (STATE.frame % 10 === 0) {
       const hist = this.hist8 || (this.hist8 = new Float32Array(64));
@@ -3178,9 +3565,9 @@ class Boids {
     gl.drawArraysInstanced(gl.TRIANGLES, 0, 6, this.p.count + this.np);
   }
   // runs once per displayed frame: fade the trail buffer, then lay down this frame's darts
-  accumulate() {
+  accumulate(fixedCam) {
     if (!this.ready) return;
-    this.cam.yaw += this.p.orbit * 0.016;
+    if (!fixedCam) this.cam.yaw += this.p.orbit * 0.016;
     this.writeInstances();
     pass(P('fade'), { u_fade: this.p.trail }, this.accum, [gl.ZERO, gl.SRC_COLOR]);
     const cam = this.camera(screenView());
@@ -3360,7 +3747,7 @@ class Biosphere extends GridModel {
     gl.bufferData(gl.ARRAY_BUFFER, this.inst.byteLength, gl.DYNAMIC_DRAW);
     this.dartVAO = gl.createVertexArray();
     gl.bindVertexArray(this.dartVAO);
-    const cb = gl.createBuffer();
+    const cb = this.dartCB = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, cb);
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([1.7, 0, -1, 0.75, -0.4, 0, 1.7, 0, -0.4, 0, -1, -0.75]), gl.STATIC_DRAW);
     gl.enableVertexAttribArray(0);
@@ -3387,6 +3774,13 @@ class Biosphere extends GridModel {
     this.cmap = new Uint8Array(this.CW * this.CH * 4);
     this.fence = null;
     this.cfresh = false;
+  }
+  disposeExtra() {
+    if (this.fence) { gl.deleteSync(this.fence); this.fence = null; }
+    freeTarget(this.seedT); freeTarget(this.coarse);
+    [this.pbo, this.seedBuf, this.instBuf, this.dartCB].forEach(b => b && gl.deleteBuffer(b));
+    [this.seedVAO, this.dartVAO].forEach(v => v && gl.deleteVertexArray(v));
+    this.seedT = this.coarse = null;
   }
   onResize(off) {
     pass(P('phyShift'), { u_agents: this.agents.read, u_size: [this.W, this.H], u_shift: off }, this.agents.write);
@@ -3540,8 +3934,8 @@ class Biosphere extends GridModel {
     gl.disable(gl.BLEND);
   }
   takeCensus() {
-    // collect the last reading if the GPU has finished it
-    if (this.fence) {
+    // collect the last reading if the GPU has finished it (a twin pair waits until both have)
+    if (this.fence && !this.holdCensus) {
       const st = gl.clientWaitSync(this.fence, 0, 0);
       if (st !== gl.TIMEOUT_EXPIRED) {
         gl.deleteSync(this.fence);
@@ -3676,6 +4070,7 @@ class Biosphere extends GridModel {
     gl.disable(gl.BLEND);
   }
   metric() { return null; }
+  order() { return { tex: this.state.read, w: this.terrain ? [1, 0, 0, 0] : [0, 1, 0, 0], mode: 0, gain: 1, sym: this.terrain ? 'u' : 'N', name: 'nutrient terrain' }; }
   probeText(x, y) {
     const [gx, gy] = this.probe(x, y);
     if (!this.cfresh) return 'x ' + String(gx | 0).padStart(4) + ' y ' + String(gy | 0).padStart(4);
@@ -3744,14 +4139,14 @@ const Metrics = {
   init() {
     this.tgt = makeTarget(8, 8, 'rgba8', { wrap: 'clamp' });
     this.pbo = gl.createBuffer();
-    gl.bindBuffer(gl.PIXEL_PACK_BUFFER, this.pbo);
-    gl.bufferData(gl.PIXEL_PACK_BUFFER, 256, gl.STREAM_READ);
-    gl.bindBuffer(gl.PIXEL_PACK_BUFFER, null);
   },
   request(src) {
     if (this.fence) return;
     pass(P('reduce'), { u_src: src.tex, u_w: src.w, u_mode: src.mode, u_gain: src.gain }, this.tgt);
     gl.bindBuffer(gl.PIXEL_PACK_BUFFER, this.pbo);
+    // allocated just before its first write: storage fenced by another reading before this buffer's
+    // first readPixels would count as written twice, and the driver would drop its readback shadow
+    if (!this.sized) { gl.bufferData(gl.PIXEL_PACK_BUFFER, 256, gl.STREAM_READ); this.sized = true; }
     gl.readPixels(0, 0, 8, 8, gl.RGBA, gl.UNSIGNED_BYTE, 0);
     gl.bindBuffer(gl.PIXEL_PACK_BUFFER, null);
     this.fence = gl.fenceSync(gl.SYNC_GPU_COMMANDS_COMPLETE, 0);
@@ -3900,12 +4295,80 @@ const INSEN = [0, 1, 5, 7, 10];
 const ROOTS = { gs: 146.83, physarum: 110.0, lenia: 174.61, boids: 130.81, bz: 164.81, eco: 123.47 };
 const scaleFreq = (root, deg, sc) => root * Math.pow(2, Math.floor(deg / sc.length) + sc[umod(deg, sc.length)] / 12);
 
+/* Physical models. A Web Audio feedback loop cannot carry a plucked string above roughly 375 Hz:
+   the spec holds any DelayNode inside a cycle to at least one render quantum of 128 frames. The
+   strings are therefore computed here, sample by sample, and played from AudioBuffers, which keeps
+   every pitch exact and needs no AudioWorklet (so nothing is loaded, and file:// works). The
+   membrane underneath is a native loop, in the bass, where that floor does not bite. */
+
+// Extended Karplus-Strong (Jaffe and Smith, 1983). The loop is an N-sample delay, a two-point average
+// (half a sample, and a gentle lowpass: the string's frequency-dependent loss) and a first-order
+// allpass for the fraction, so it rings at exactly sr / (N + ½ + frac). One period of noise excites
+// it, softened for gentle strikes and combed at the pick position.
+function ksRender(sr, f0, vel, pos, t60, seed) {
+  const P = sr / f0;
+  let N = Math.floor(P - 0.5), frac = P - 0.5 - N;
+  if (frac < 0.1) { N -= 1; frac += 1; }   // the allpass is flattest with a delay between 0.1 and 1.1
+  const C = (1 - frac) / (1 + frac);
+  const rho = Math.min(0.99995, Math.pow(0.001, 1 / (t60 * f0)) / Math.cos(Math.PI * f0 / sr));
+  const len = Math.floor(sr * t60 * 0.92), out = new Float32Array(len), line = new Float32Array(N);
+  const rnd = mulberry32(seed), L = Math.max(2, Math.round(P)), ex = new Float32Array(L), a = 0.18 + 0.78 * vel;
+  let lp = 0, mean = 0, peak = 1e-9;
+  for (let i = 0; i < L; i++) { lp += a * (rnd() * 2 - 1 - lp); ex[i] = lp; }
+  const pk = clamp(Math.round(pos * P), 1, L - 1);
+  for (let i = L - 1; i >= pk; i--) ex[i] -= ex[i - pk];
+  for (let i = 0; i < L; i++) mean += ex[i] / L;
+  for (let i = 0; i < L; i++) { ex[i] -= mean; peak = Math.max(peak, Math.abs(ex[i])); }
+  const g = vel / peak;
+  let w = 0, prev = 0, apx = 0, apy = 0;
+  for (let n = 0; n < len; n++) {
+    const v = line[w], avg = 0.5 * (v + prev);
+    prev = v;
+    const ap = C * avg + apx - C * apy;
+    apx = avg; apy = ap;
+    const y = (n < L ? ex[n] * g : 0) + rho * ap;
+    line[w] = y;
+    w = w + 1 === N ? 0 : w + 1;
+    out[n] = y;
+  }
+  const fade = Math.min(len, Math.floor(sr * 0.03));
+  for (let i = 0; i < fade; i++) out[len - 1 - i] *= i / fade;
+  return out;
+}
+// The membrane: three modes of a circular drumhead (ratios 1, 1.594, 2.136), each a native loop of a
+// DelayNode, a lowpass BiquadFilter (frequency-dependent loss) and an inverting GainNode (the
+// reflection at a fixed rim). An inverted loop rings at 1 / (2 · its delay), so each mode's delay is
+// 1/(2f) less the lowpass's own phase delay at f, computed from the filter's coefficients exactly as
+// Web Audio defines them. The fundamental is lowered by octaves until every delay clears the floor.
+const MEMBRANE = [{ r: 1, w: 0.9 }, { r: 1.594, w: 0.55 }, { r: 2.136, w: 0.35 }];
+const MEMBRANE_Q = -3.0103;   // Web Audio's lowpass Q is in dB: this is Butterworth, no resonant peak
+function lowpassAt(f, fc, sr, qdb = MEMBRANE_Q) {
+  const w0 = TAU * fc / sr, al = Math.sin(w0) / (2 * Math.pow(10, qdb / 20)), cw = Math.cos(w0);
+  const b0 = (1 - cw) / 2, b1 = 1 - cw, b2 = b0, a0 = 1 + al, a1 = -2 * cw, a2 = 1 - al;
+  const w = TAU * f / sr, c1 = Math.cos(w), s1 = Math.sin(w), c2 = Math.cos(2 * w), s2 = Math.sin(2 * w);
+  const nr = b0 + b1 * c1 + b2 * c2, ni = -(b1 * s1 + b2 * s2), dr = a0 + a1 * c1 + a2 * c2, di = -(a1 * s1 + a2 * s2);
+  const phase = Math.atan2(ni, nr) - Math.atan2(di, dr), mag = Math.hypot(nr, ni) / Math.hypot(dr, di);
+  return { tau: -phase / w, mag };   // phase delay in samples, and gain, at f
+}
+function membranePlan(root, sr) {
+  const floor = 129 / sr, plan = f0 => MEMBRANE.map(m => {
+    const f = f0 * m.r, fc = Math.min(4 * f, 0.45 * sr), lp = lowpassAt(f, fc, sr), t60 = 1.4 / Math.sqrt(m.r);
+    // each trip scales the wave by g·|H|; two trips make a period, so (g|H|)^(2·f·t60) = 1/1000
+    const g = Math.min(0.995, Math.pow(0.001, 1 / (2 * f * t60))) / lp.mag;
+    return { f, fc, delay: 1 / (2 * f) - lp.tau / sr, g: -g, w: m.w };
+  });
+  let f0 = root / 2, p = plan(f0);
+  while (p.some(m => m.delay < floor)) { f0 /= 2; p = plan(f0); }
+  return p;
+}
+
 class Sound {
   constructor() {
     this.ctx = null; this.on = true; this.vol = 0.6; this.started = false; this.unavailable = false;
     this.voices = []; this.chord = 0; this.nextChord = 0; this.active = 0; this.lastTouch = 0; this.root = ROOTS.gs;
     this.mode = 1; this.nextMode = 1; this.bright = 0.6; this.nextArp = 0; this.arp = 7;
     this.plucks = 0; this.playT = -99; this.padT = -99; this.sustain = false;
+    this.strings = true; this.jobs = []; this.evT = 0; this.events = 0;
     this.onchange = null;
   }
   get modeScale() { return STATE.dream ? [0, 1, 5, 7, 10] : MODES[this.mode].s; }
@@ -4016,6 +4479,7 @@ class Sound {
     dl.delayTime.value = 0.42; fb.gain.value = 0.34; lp.type = 'lowpass'; lp.frequency.value = 2400; dOut.gain.value = 0.35;
     this.chimeBus.connect(dl);
     dl.connect(lp); lp.connect(fb); fb.connect(dl); lp.connect(dOut); dOut.connect(this.master);
+    this.buildMembrane();
     this.setChord(0, true);
     this.nextChord = c.currentTime + 10;
     this.nextArp = c.currentTime + 2;
@@ -4069,12 +4533,14 @@ class Sound {
   get live() { return this.started && this.on && this.ctx && this.ctx.state === 'running'; }
   setModel(id) {
     this.root = ROOTS[id] || ROOTS.gs;
+    this.tuneMembrane(false);
     if (this.live) { this.setChord(this.chord); this.chime(scaleFreq(this.root * 2, 0, this.pent), 0.12, 0, 0.6, 4.5); }
   }
   dream() { if (this.live) { this.setChord(this.chord); this.chime(scaleFreq(this.root * 4, 2, this.pent), 0.14, -0.3, 2.2, 4); this.chime(scaleFreq(this.root * 4, 5, this.pent), 0.1, 0.4, 2.2, 4); } }
   // Entropy, contrast and activity choose the mode (bright to dark); density and activity shape timbre.
   update(dt, M, painting) {
     if (!this.live) return;
+    if (this.jobs.length) this.jobs.shift()();   // one deferred string per frame keeps the frame budget
     const t = this.ctx.currentTime;
     const d = clamp(M.density, 0, 1), a = clamp(M.activity, 0, 1), H = clamp(M.entropy, 0, 1), C = clamp(M.contrast, 0, 1);
     this.bright = lerp(this.bright, clamp(0.55 + 0.6 * (H - 0.7) + 0.8 * (C - 0.2) - 0.7 * (a - 0.3), 0, 1), 0.02);
@@ -4162,9 +4628,20 @@ class Sound {
   play(freq, deg, vel, pan) {
     if (!this.live) return;
     const t = this.ctx.currentTime, sc = this.modeScale, sus = this.sustain ? 2.4 : 1;
-    this.pluck(freq, vel, pan, t, (1.5 + 1.5 * vel) * sus);
     const gap = 0.07 + 0.07 * (1 - vel);
-    [2, 4, 7].forEach((step, i) => this.pluck(scaleFreq(this.root, deg + step, sc), vel * (0.46 - i * 0.09), pan + (i - 1) * 0.3, t + gap * (i + 1), (1.2 + vel) * sus));
+    if (this.strings) {
+      // a plucked string at the note's true pitch, a knock on the membrane, and the arpeggio as a
+      // harp would answer it (each string computed on a later frame, well before it is due)
+      this.string(freq, vel, pan, t, sus, 0.11 + 0.12 * (1 - vel));
+      this.thump(0.2 + 0.45 * vel, t);
+      [2, 4, 7].forEach((step, i) => {
+        const f = scaleFreq(this.root, deg + step, sc), at = t + gap * (i + 1);
+        this.defer(() => this.string(f, vel * (0.5 - i * 0.09), pan + (i - 1) * 0.3, at, sus, 0.2));
+      });
+    } else {
+      this.pluck(freq, vel, pan, t, (1.5 + 1.5 * vel) * sus);
+      [2, 4, 7].forEach((step, i) => this.pluck(scaleFreq(this.root, deg + step, sc), vel * (0.46 - i * 0.09), pan + (i - 1) * 0.3, t + gap * (i + 1), (1.2 + vel) * sus));
+    }
     this.playT = t;
     if (t - this.padT > 0.7) {
       this.padT = t;
@@ -4201,6 +4678,99 @@ class Sound {
     [o1, o2, mod].forEach(o => { o.start(t); o.stop(t + dur + 0.05); });
     this.plucks++;
     o1.onended = () => { this.plucks--; try { out.disconnect(); g.disconnect(); lp.disconnect(); mg.disconnect(); o2g.disconnect(); } catch (e) { /* already detached */ } };
+  }
+  defer(fn) { if (this.jobs.length < 24) this.jobs.push(fn); }
+  // one string's samples, cached by pitch (an eighth of a semitone), strike and pick position
+  ksBuffer(freq, vel, pos, sus) {
+    const c = this.ctx, q = Math.round(this.midiOf(freq) * 8), vq = Math.round(clamp(vel, 0.05, 1) * 6), pq = Math.round(clamp(pos, 0.05, 0.5) * 20), long = sus > 1 ? 1 : 0;
+    const key = q + ':' + vq + ':' + pq + ':' + long, cache = this.ksCache || (this.ksCache = new Map());
+    let buf = cache.get(key);
+    if (buf) { cache.delete(key); cache.set(key, buf); return buf; }
+    const f0 = 440 * Math.pow(2, (q / 8 - 69) / 12);
+    const t60 = clamp(3.6 - 0.9 * Math.log2(f0 / 110), 1, 4.2) * (long ? 1.6 : 1);
+    const data = ksRender(c.sampleRate, f0, vq / 6, pq / 20, t60, q * 131 + vq * 17 + pq);
+    buf = c.createBuffer(1, data.length, c.sampleRate);
+    buf.copyToChannel(data, 0);
+    cache.set(key, buf);
+    if (cache.size > 40) cache.delete(cache.keys().next().value);
+    this.ksBuilt = (this.ksBuilt || 0) + 1;
+    return buf;
+  }
+  string(freq, vel, pan, t, sus, pos) {
+    if (this.plucks > 40) return;
+    const c = this.ctx, src = c.createBufferSource(), g = c.createGain();
+    src.buffer = this.ksBuffer(freq, vel, pos, sus);
+    g.gain.value = 0.17;
+    src.connect(g);
+    let out = g;
+    if (c.createStereoPanner) { out = c.createStereoPanner(); out.pan.value = clamp(pan, -1, 1); g.connect(out); }
+    out.connect(this.chimeBus);
+    let sym = null;
+    if (this.memIn) { sym = c.createGain(); sym.gain.value = 0.25; g.connect(sym); sym.connect(this.memIn); }   // the body answers sympathetically
+    src.start(Math.max(t, c.currentTime));
+    this.plucks++;
+    this.stringsPlayed = (this.stringsPlayed || 0) + 1;
+    src.onended = () => { this.plucks--; try { out.disconnect(); g.disconnect(); if (sym) sym.disconnect(); } catch (e) { /* already detached */ } };
+  }
+  buildMembrane() {
+    const c = this.ctx;
+    this.memIn = c.createGain();
+    this.memOut = c.createGain();
+    this.memOut.gain.value = 0.8;
+    this.memOut.connect(this.master);
+    const send = c.createGain();
+    send.gain.value = 0.35;
+    this.memOut.connect(send);
+    send.connect(this.verb);
+    this.memModes = MEMBRANE.map(m => {
+      const d = c.createDelay(0.25), lp = c.createBiquadFilter(), fb = c.createGain(), tap = c.createGain();
+      lp.type = 'lowpass';
+      lp.Q.value = MEMBRANE_Q;
+      tap.gain.value = m.w;
+      this.memIn.connect(d); d.connect(lp); lp.connect(fb); fb.connect(d); lp.connect(tap); tap.connect(this.memOut);
+      return { d, lp, fb };
+    });
+    this.tuneMembrane(true);
+  }
+  tuneMembrane(now) {
+    if (!this.memModes) return;
+    const t = this.ctx.currentTime, plan = membranePlan(this.root, this.ctx.sampleRate);
+    plan.forEach((m, i) => {
+      const n = this.memModes[i];
+      n.lp.frequency.setValueAtTime(m.fc, t);
+      n.fb.gain.setValueAtTime(m.g, t);
+      n.d.delayTime.setTargetAtTime(m.delay, t, now ? 0.002 : 0.25);
+    });
+    this.membrane = plan;
+  }
+  // a short, soft noise knock into the membrane
+  thump(vel, t) {
+    if (!this.memIn) return;
+    const c = this.ctx;
+    if (!this.memHit) {
+      const n = Math.round(c.sampleRate * 0.006), b = c.createBuffer(1, n, c.sampleRate), d = b.getChannelData(0), r = mulberry32(1952);
+      for (let i = 0; i < n; i++) d[i] = (r() * 2 - 1) * 0.5 * (1 - Math.cos(TAU * i / n));
+      this.memHit = b;
+    }
+    const src = c.createBufferSource(), g = c.createGain();
+    src.buffer = this.memHit;
+    g.gain.value = clamp(vel, 0, 1.2) * 0.9;
+    src.connect(g); g.connect(this.memIn);
+    src.start(Math.max(t, c.currentTime));
+    src.onended = () => { try { g.disconnect(); } catch (e) { /* already detached */ } };
+  }
+  // the specimen plays itself: a body merging or dividing, or a flock turning, plucks a string
+  // pitched by where it happened (height on the dish) and panned by where across it
+  event(kind, x, y, strength) {
+    if (!this.live || !this.strings) return;
+    const t = this.ctx.currentTime;
+    if (t - this.evT < 0.16) return;
+    this.evT = t;
+    this.events++;
+    const deg = Math.round(clamp(y, 0, 1) * 9) + (kind === 'split' ? 5 : 0), f = scaleFreq(this.root * 2, deg, this.pent);
+    const vel = clamp(0.2 + 0.45 * strength, 0.15, 0.85), pan = (clamp(x, 0, 1) - 0.5) * 1.6;
+    this.defer(() => this.string(f, vel, pan, this.ctx.currentTime + 0.005, 1, kind === 'merge' ? 0.32 : 0.12));
+    if (kind !== 'split') this.thump(vel * 0.8, t + 0.005);
   }
   // the mix after the compressor, as a stream the video recorder can carry
   recStream() {
@@ -4306,6 +4876,7 @@ const setFill = inp => inp.style.setProperty('--p', ((inp.value - inp.min) / ((i
 function activate(id, quiet) {
   const m = MODELS[id];
   if (!m) return;
+  if (Compare.on && m !== current) Compare.close(true);
   if (!m.ready) {
     try { m.init(); } catch (e) { reportError(e); return; }
   }
@@ -4357,7 +4928,7 @@ function buildDock() {
 }
 function choosePreset(i, quiet) {
   const m = current;
-  try { m.applyPreset(i); } catch (e) { reportError(e); return; }
+  try { m.applyPreset(i); if (Compare.on) Compare.resync(true); } catch (e) { reportError(e); return; }
   $$('#presets .chip').forEach((b, j) => b.setAttribute('aria-pressed', String(j === i)));
   buildParams();
   syncPalettes();
@@ -4367,7 +4938,7 @@ function choosePreset(i, quiet) {
   if (!quiet) toast('<b>' + m.presets[i].name + '</b> &middot; ' + m.presets[i].note, 4200);
 }
 function buildParams(focusKey) {
-  const m = current, box = $('#params');
+  const m = paramModel(), box = $('#params');
   box.textContent = '';
   for (const s of m.schema) {
     const id = 'p-' + s.key, row = el('div', 'param');
@@ -4386,9 +4957,12 @@ function buildParams(focusKey) {
     const val = () => (s.idx ? s.idx[+inp.value] : +inp.value);
     const show = () => { out.textContent = s.off ? 'mapped' : s.fmt(val()); setFill(inp); };
     inp.addEventListener('input', () => {
-      m.p[s.key] = val();
+      const both = Compare.on && SHARED_KEYS.has(s.key) ? [current, Compare.B] : [m];
+      for (const d of both) {
+        d.p[s.key] = val();
+        try { if (d.setParam) d.setParam(s.key); } catch (e) { reportError(e); }
+      }
       show();
-      try { if (m.setParam) m.setParam(s.key); } catch (e) { reportError(e); }
       if (s.key === 'species') buildParams('species');
       updateEq();
     });
@@ -4399,15 +4973,17 @@ function buildParams(focusKey) {
   }
 }
 function syncParam(key) {
-  const inp = $('#p-' + key);
+  const inp = $('#p-' + key), m = paramModel();
   if (!inp) return;
-  const s = current.schema.find(x => x.key === key);
-  inp.value = s.idx ? s.idx.indexOf(current.p[key]) : current.p[key];
+  const s = m.schema.find(x => x.key === key);
+  if (!s) return;
+  inp.value = s.idx ? s.idx.indexOf(m.p[key]) : m.p[key];
   const out = $('#o-' + key);
-  if (out) out.textContent = s.fmt(current.p[key]);
+  if (out) out.textContent = s.fmt(m.p[key]);
   setFill(inp);
 }
 MODELS.boids.onPredators = () => { if (current === MODELS.boids) { syncParam('preds'); updateEq(); } };
+MODELS.boids.onEvent = e => { if (current === MODELS.boids) sound.event(e.kind, e.x, e.y, e.strength); };
 
 function setTool(i) {
   STATE.tool = i;
@@ -4460,7 +5036,11 @@ function updateEq() {
   slide('gloss', v => { STATE.shade.gloss = v; });
   slide('height', v => { STATE.shade.height = v; });
   slide('sss', v => { STATE.shade.sss = v; });
+  slide('iri', v => { STATE.shade.iri = v; });
   $('#tog-dof').addEventListener('click', () => { STATE.fx.dof = !STATE.fx.dof; $('#tog-dof').setAttribute('aria-pressed', String(STATE.fx.dof)); });
+  $('#tog-caus').addEventListener('click', () => { STATE.fx.caustics = !STATE.fx.caustics; $('#tog-caus').setAttribute('aria-pressed', String(STATE.fx.caustics)); });
+  $('#tog-strings').addEventListener('click', () => { sound.strings = !sound.strings; $('#tog-strings').setAttribute('aria-pressed', String(sound.strings)); });
+  $('#act-obj').addEventListener('click', () => MeshExport.run());
   $('#tog-keys').addEventListener('click', () => Synth.toggle());
   $('#act-rec').addEventListener('click', () => Recorder.toggle());
   $('#tog-tilt').addEventListener('click', toggleTilt);
@@ -4537,8 +5117,9 @@ function togglePause() {
   $('#pause-ico').setAttribute('d', STATE.paused ? 'M7 5l12 7-12 7z' : 'M8 5v14M16 5v14');
   $('#live-t').textContent = STATE.paused ? 'paused' : 'running';
 }
-function reseed() { try { current.reset(); } catch (e) { reportError(e); } }
-function clearDish() { try { current.clear(); } catch (e) { reportError(e); } }
+// in a comparison both dishes restart from the same state, and B keeps its intervention
+function reseed() { try { current.reset(); if (Compare.on) Compare.resync(false); } catch (e) { reportError(e); } }
+function clearDish() { try { current.clear(); if (Compare.on) Compare.resync(false); } catch (e) { reportError(e); } }
 
 let lastFocus = null;
 function toggleGuide(force) {
@@ -4596,8 +5177,9 @@ function snapshot() {
       const viewCss = a > va ? [VIEW.cssH * a, VIEW.cssH] : [VIEW.cssW, VIEW.cssW / a];
       const view = { res: [W, H], viewCss, px: W / viewCss[0], snapshot: true };
       const pp = new Post(W, H), out = makeTarget(W, H, 'rgba8', { wrap: 'clamp' });
-      current.render(pp.scene, view);
+      renderScene(pp.scene, view);
       pp.run(out, STATE.fx, view.px, dofAmount());
+      const cmpNote = Compare.on ? ' Comparative fork: dish A (control) left of the divider at ' + Math.round(Compare.split * 100) + '%, dish B (intervention) right; ' + Compare.describe().replace(/<[^>]+>/g, '').replace(/&rsquo;/g, "'") + '; ' + Compare.steps + ' steps since the fork.' : '';
       bindTarget(out);
       const pbo = gl.createBuffer();
       gl.bindBuffer(gl.PIXEL_PACK_BUFFER, pbo);
@@ -4631,7 +5213,7 @@ function snapshot() {
         ['Software', 'Morphogenesis: The Emergence of Pattern & Life (single-file WebGL2 laboratory)'],
         ['Description', 'Model: ' + MODEL_NAMES[m.id] + '. Specimen: ' + pr.name + '. Palette: ' + PALETTES[m.palette].name + '. Parameters: ' + params + '.'],
         ['Creation Time', iso],
-        ['Comment', 'Rendered at ' + W + 'x' + H + ' from the live simulation state; uncompressed (stored deflate). FX: ' + Object.entries(STATE.fx).filter(([k, v]) => v === true).map(([k]) => k).join(', ') + (STATE.dream ? ', dream' : '') + '.']
+        ['Comment', 'Rendered at ' + W + 'x' + H + ' from the live simulation state; uncompressed (stored deflate). FX: ' + Object.entries(STATE.fx).filter(([k, v]) => v === true).map(([k]) => k).join(', ') + (STATE.dream ? ', dream' : '') + '.' + cmpNote]
       ];
       const blob = encodePNG(W, H, px, text);
       const pad = n => String(n).padStart(2, '0');
@@ -4755,7 +5337,7 @@ const Synth = {
       sound.start();
       this.build();
       if (!this.access) this.connect(true);
-      toast('<b>Synth keys</b> &middot; A S D F G H J K play the current mode, Shift an octave up. <b>N</b> hands S, F, G and H back to their usual jobs.', 5600);
+      toast('<b>Synth keys</b> &middot; A S D F G H J K play the current mode, Shift an octave up. <b>N</b> hands A, S, D, F, G and H back to their usual jobs.', 5600);
     } else { this.down.clear(); }
   },
   degFreq(deg) { return scaleFreq(sound.root * 2, deg, sound.modeScale); },
@@ -4965,6 +5547,7 @@ const Evolve = {
   // breed: mutate the genome of the highlighted species and glide the universe to its offspring
   start() {
     if (this.tw) return;
+    if (Compare.on) { Compare.mutate(); return; }
     const m = current, g = GENOMES[m.id];
     const tgt = g && g(m);
     if (!tgt) { toast('The Pearson Atlas already shows every phenotype at once: choose another specimen to breed.'); return; }
@@ -4977,6 +5560,7 @@ const Evolve = {
   // rewind: glide back to any node's genome (re-seeding first if it grew from another specimen)
   restore(node) {
     if (this.tw || !node) return;
+    if (Compare.on) Compare.close(true);
     if (current.id !== node.model) activate(node.model, true);
     const m = current;
     if (node.preset !== m.presetIdx) choosePreset(node.preset, true);
@@ -4987,10 +5571,10 @@ const Evolve = {
     const from = {};
     for (const k in tgt) from[k] = m.p[k];
     this.tw = { m, from, tgt, t0: performance.now(), dur: 3000, node, kind };
-    Phylo.setCur(m.id, node);
+    if (node) Phylo.setCur(m.id, node);
     const b = $('#act-evolve');
     b.setAttribute('aria-busy', 'true');
-    $('#evolve-t').textContent = kind === 'restore' ? 'Rewinding…' : 'Breeding…';
+    $('#evolve-t').textContent = kind === 'restore' ? 'Rewinding…' : kind === 'intervene' ? 'Mutating B…' : 'Breeding…';
     Exhibit.poke();
   },
   update() {
@@ -4999,21 +5583,25 @@ const Evolve = {
     const t = clamp((performance.now() - tw.t0) / tw.dur, 0, 1), e = easeT(t);
     for (const k in tw.tgt) {
       tw.m.p[k] = lerp(tw.from[k], tw.tgt[k], e);
-      if (tw.m === current) syncParam(k);
+      if (tw.m === paramModel()) syncParam(k);
     }
     $('#act-evolve').style.setProperty('--prog', t.toFixed(3));
     if (tw.m === current && STATE.frame % 6 === 0) updateEq();
     if (t >= 1) {
       this.tw = null;
       // the phenotype takes a few seconds to express itself; photograph it as it settles
-      Phylo.schedule(tw.node, tw.node.thumb ? [4] : [1.6, 5.5]);
+      if (tw.node) Phylo.schedule(tw.node, tw.node.thumb ? [4] : [1.6, 5.5]);
       renderLineage();
-      const b = $('#act-evolve');
-      b.removeAttribute('aria-busy');
-      b.style.setProperty('--prog', '0');
-      $('#evolve-t').textContent = 'Evolve a phenotype';
-      updateEq();
+      this.done();
     }
+  },
+  done() {
+    this.tw = null;
+    const b = $('#act-evolve');
+    b.removeAttribute('aria-busy');
+    b.style.setProperty('--prog', '0');
+    $('#evolve-t').textContent = Compare.on ? 'Mutate dish B' : 'Evolve a phenotype';
+    updateEq();
   }
 };
 
@@ -5270,12 +5858,13 @@ const Exhibit = {
   poke() { this.idle = 0; },
   activity() { this.idle = 0; if (this.on) this.exit(); },
   canStart() {
-    return !document.hidden && !snapBusy && !Evolve.tw && !Recorder.on && !Phylo.open && !gest.active && $('#help').hidden && !$('#guide').classList.contains('open') && !ptr.down;
+    return !document.hidden && !snapBusy && !Evolve.tw && !Recorder.on && !Phylo.open && !Compare.on && !MeshExport.busy && !gest.active && $('#help').hidden && !$('#guide').classList.contains('open') && !ptr.down;
   },
   toggle() { if (this.on) this.exit(); else this.enter(); },
   enter() {
     if (this.on) return;
     Splash.close(true);
+    if (Compare.on) Compare.close(true);
     this.on = true;
     this.saved = { tilt: STATE.tilt };
     document.body.classList.add('exhibit');
@@ -5339,6 +5928,670 @@ const Exhibit = {
   }
 };
 
+/* ---------- The comparative fork: one state, two dishes, measured against each other ---------- */
+// D forks the specimen. Dish B is a second instance of the same model, handed an exact copy of every
+// texture, agent, creature and random stream, so A and B stay bit-identical until something makes
+// them differ: B's parameters, a brush stroke on one side of the divider, or a mutation (V). The
+// telemetry is exact: every cell of both dishes is reduced on the GPU in two stages and read back
+// behind a fence, so measuring never stalls the frame.
+const SHARED_KEYS = new Set(['steps', 'xsteps', 'gain', 'trail', 'orbit']);   // clocks and display, never the experiment
+const paramModel = () => (Compare.on && Compare.edit === 'B' && Compare.B ? Compare.B : current);
+const dishAt = x => (Compare.on && Compare.B && x >= Compare.split * VIEW.cssW ? Compare.B : current);
+const copyTex = (src, dst) => pass(P('copy'), { u_src: src, u_srcSize: [src.w, src.h], u_off: [0, 0], u_wrap: 1, u_fill: [0, 0, 0, 0] }, dst);
+function evenness(q) {   // normalized Shannon entropy of a set of masses: 1 = perfectly even
+  let s = 0, H = 0;
+  for (const v of q) s += Math.max(v, 0);
+  if (s <= 1e-12 || q.length < 2) return 0;
+  for (const v of q) { const p = Math.max(v, 0) / s; if (p > 0) H -= p * Math.log(p); }
+  return H / Math.log(q.length);
+}
+const Compare = {
+  on: false, B: null, split: 0.5, lens: 1, edit: 'B', steps: 0, scale: 0.05, stats: null, hist: [], painted: { A: 0, B: 0 },
+  rngA: null, rngB: null, T: null, heatT: null, r1: null, r2: null, rb: null, meta: null, data: new Float32Array(32 * 16 * 4),
+  toggle() { if (this.on) this.close(); else this.open(); },
+  open() {
+    const A = current;
+    if (this.on || !A) return;
+    if (Evolve.tw) { toast('Let the breeding finish, then fork the dish.'); return; }
+    if (Exhibit.on) Exhibit.exit();
+    try { this.B = this.twin(A); } catch (e) { this.B = null; reportError(e); return; }
+    Object.assign(this, { on: true, steps: 0, stats: null, hist: [], scale: 0.05, edit: 'B', painted: { A: 0, B: 0 } });
+    this.rngA = mulberry32((rand() * 4294967296) >>> 0);
+    this.rngB = cloneRng(this.rngA);
+    if (!this.rb) this.rb = new Readback();
+    Phylo.toggle(false);
+    this.ui(true);
+    toast('<b>Forked</b> &middot; B is an exact copy of A. Change B&rsquo;s sliders, paint either side of the divider, or press <b>V</b> to mutate B.', 5600);
+  },
+  // a second instance of the same model, on the same lattice, holding an exact copy of A
+  twin(A) {
+    const B = new A.constructor();
+    if (A instanceof GridModel) { B.cell = A.cell; B.dims = () => [A.W, A.H]; }
+    withRng(mulberry32(7), () => B.init());
+    if (A instanceof GridModel) { B.view = A.view; B.cam3 = A.cam3; }
+    this.copy(A, B, true);
+    return B;
+  },
+  // A's state into B; with params, A's genome too (a fresh fork), otherwise B keeps its own
+  copy(A, B, params) {
+    if (params) {
+      B.p = { ...A.p };
+      for (const k of ['presetIdx', 'palette', 'map', 'mode', 'variant', 'kin', 'terrain', 'brushKind']) if (k in A) B[k] = A[k];
+      for (const k of ['beta', 'sl', 'sla', 'mapR']) if (Array.isArray(A[k])) B[k] = A[k].slice();
+      if (B instanceof Lenia) B.buildKernel();
+    }
+    for (const k of SHARED_KEYS) if (k in A.p) B.p[k] = A.p[k];
+    if ('simT' in A) B.simT = A.simT;
+    B.spawn = null; B.lastStamp = null;
+    if (A instanceof Boids) {
+      for (const k of ['pos', 'vel', 'nvel', 'tint', 'ppos', 'pvel']) B[k].set(A[k]);
+      Object.assign(B, { np: A.np, filled: A.filled, lure: null, jolt: null, obs: A.obs.map(o => ({ ...o })), food: A.food.map(f => ({ ...f })) });
+      B.p.count = A.p.count; B.p.preds = A.np;
+      Object.assign(B.cam, A.cam);
+      B.resize();
+      pass(P('blit'), { u_src: A.accum }, B.accum);
+      return;
+    }
+    if (A instanceof Physarum) { B.p.agents = A.p.agents; if (B.count !== A.count) B.makeAgents(); }
+    for (const f of A.fieldSpecs) copyTex(A[f.key].read, B[f.key].read);
+    if (A.agents) copyTex(A.agents.read, B.agents.read);
+    if (A instanceof Biosphere) {
+      for (const k of ['fpos', 'fvel', 'fen', 'cmap']) B[k].set(A[k]);
+      Object.assign(B, { fn: A.fn, cfresh: A.cfresh, census: { ...A.census }, hist: A.hist.map(h => ({ ...h })), stats: { ...A.stats } });
+      copyTex(A.seedT, B.seedT);
+      // a census still in flight would reach one dish before the other: both start afresh
+      for (const d of [A, B]) if (d.fence) { gl.deleteSync(d.fence); d.fence = null; }
+      A.holdCensus = B.holdCensus = false;
+    }
+  },
+  close(quiet) {
+    if (!this.on) return;
+    this.on = false;
+    if (Evolve.tw && Evolve.tw.m === this.B) Evolve.done();
+    if (ptr.dish === this.B) ptr.dish = null;
+    try { this.B.dispose(); } catch (e) { console.error(e); }
+    this.B = null;
+    this.freeTargets();
+    [this.heatT, this.r1, this.r2].forEach(freeTarget);
+    this.heatT = this.r1 = this.r2 = null;
+    if (this.rb) this.rb.cancel();
+    if (current) current.holdCensus = false;
+    this.ui(false);
+    if (!quiet) toast('Comparison closed &middot; dish A carries on.');
+  },
+  freeTargets() { if (this.T) { freeTarget(this.T[0]); freeTarget(this.T[1]); this.T = null; } },
+  // start the experiment again from A's present state (and, with params, A's genome)
+  resync(params) {
+    if (!this.on) return;
+    this.copy(current, this.B, params);
+    this.rngB = cloneRng(this.rngA);
+    Object.assign(this, { steps: 0, stats: null, hist: [], scale: 0.05, painted: { A: 0, B: 0 } });
+    if (this.rb) this.rb.cancel();
+    this.ui(true);
+  },
+  // both dishes advance the same number of steps, each with its own copy of the random stream
+  step(n, dt) {
+    const A = current, B = this.B;
+    if (A instanceof Biosphere) { const hold = !(this.censusReady(A) && this.censusReady(B)); A.holdCensus = B.holdCensus = hold; }
+    if (A instanceof Boids) { withRng(this.rngA, () => A.step(1, dt)); withRng(this.rngB, () => B.step(1, dt)); }
+    else { withRng(this.rngA, () => A.step(n)); withRng(this.rngB, () => B.step(n)); }
+    this.steps += n;
+  },
+  censusReady(d) { return !d.fence || gl.clientWaitSync(d.fence, 0, 0) !== gl.TIMEOUT_EXPIRED; },
+  accumulate() { Object.assign(this.B.cam, current.cam); this.B.accumulate(true); },
+  targets(tgt) {
+    const make = () => [0, 1].map(() => makeTarget(tgt.w, tgt.h, HDR, { filter: 'linear', wrap: 'clamp', depth: true }));
+    if (tgt !== post.scene) { const t = make(); t.temp = true; return t; }
+    if (!this.T || this.T[0].w !== tgt.w || this.T[0].h !== tgt.h) { this.freeTargets(); this.T = make(); }
+    return this.T;
+  },
+  // each dish lit in full, then A left of the divider and B right of it
+  render(tgt, view) {
+    const A = current, B = this.B, T = this.targets(tgt);
+    B.palette = A.palette;
+    if (A instanceof Boids) { A.render(T[0], view); B.render(T[1], view); }
+    else {
+      A.prepare(); B.prepare();
+      const extra = this.lens > 0 ? { u_heat: this.heat(A, B), u_heatMode: this.lens } : null;
+      A.draw(T[0], view, extra); B.draw(T[1], view, extra);
+    }
+    pass(P('split'), { u_a: T[0], u_b: T[1], u_res: [tgt.w, tgt.h], u_split: this.split, u_px: view.px }, tgt);
+    if (T.temp) { freeTarget(T[0]); freeTarget(T[1]); }
+  },
+  heat(A, B) {
+    if (!this.heatT || this.heatT.w !== A.W || this.heatT.h !== A.H) { freeTarget(this.heatT); this.heatT = makeTarget(A.W, A.H, HDR, { filter: 'linear' }); }
+    pass(P('cmpHeat', GLSL_ORDER), { u_a: A.order().tex, u_b: B.order().tex, ...A.orderU(), u_scale: this.scale }, this.heatT);
+    return this.heatT;
+  },
+  measure() {
+    if (!this.on) return;
+    const A = current, B = this.B;
+    if (A instanceof Boids) { if (STATE.frame % 6 === 0) this.boidStats(A, B); return; }
+    if (this.rb.poll(this.data)) this.digest(this.meta);
+    if (!this.rb.busy && STATE.frame % 6 === 0) {
+      const nbx = Math.ceil(A.W / 8), nby = Math.ceil(A.H / 8), o = A.order();
+      if (!this.r1 || this.r1.w !== 2 * nbx || this.r1.h !== nby) { freeTarget(this.r1); this.r1 = makeTarget(2 * nbx, nby, STATF, { wrap: 'clamp' }); }
+      if (!this.r2) this.r2 = makeTarget(32, 16, STATF, { wrap: 'clamp' });
+      pass(P('cmpR1', GLSL_ORDER), { u_a: o.tex, u_b: B.order().tex, ...A.orderU(), u_size: [A.W, A.H], u_thr: 0.15, u_eps: 1e-3 }, this.r1);
+      pass(P('cmpR2'), { u_src: this.r1, u_nb: [nbx, nby] }, this.r2);
+      this.rb.request(this.r2, 32, 16, gl.FLOAT, this.data.byteLength);
+      this.meta = { steps: this.steps, sym: o.sym, name: o.name };
+    }
+  },
+  // 16 x 16 regions: weighted means for the dish, masses for the evenness, extremes for the heat
+  digest(meta) {
+    const d = this.data, qa = [], qb = [];
+    let N = 0, mA = 0, mB = 0, cA = 0, cB = 0, dm = 0, dx = 0, br = 0;
+    for (let ry = 0; ry < 16; ry++) for (let rx = 0; rx < 16; rx++) {
+      const a = (ry * 32 + rx * 2) * 4, b = a + 4, w = d[a + 3];
+      if (!(w > 0)) continue;
+      N += w; mA += d[a] * w; cA += d[a + 1] * w; dx = Math.max(dx, d[a + 2]);
+      mB += d[b] * w; cB += d[b + 1] * w; dm += d[b + 2] * w; br += d[b + 3] * w;
+      qa.push(d[a] * w); qb.push(d[b] * w);
+    }
+    if (!N || !meta) return;
+    this.stats = {
+      kind: 'grid', sym: meta.sym, name: meta.name, steps: meta.steps, cells: Math.round(N * 64),
+      meanA: mA / N, meanB: mB / N, covA: cA / N, covB: cB / N, HA: evenness(qa), HB: evenness(qb), div: dm / N, max: dx, broken: br / N
+    };
+    this.track();
+  },
+  // the flock: twin boids share an index, so their separation is the divergence itself
+  boidStats(A, B) {
+    const n = Math.min(A.p.count, B.p.count), P = A.pos, Q = B.pos;
+    let sum = 0, mx = 0, apart = 0;
+    for (let i = 0; i < n * 3; i += 3) {
+      const d = Math.hypot(P[i] - Q[i], P[i + 1] - Q[i + 1], P[i + 2] - Q[i + 2]);
+      sum += d; if (d > mx) mx = d; if (d > 1) apart++;
+    }
+    this.stats = {
+      kind: 'boids', steps: this.steps, polA: A.stats.polar || 0, polB: B.stats.polar || 0, actA: A.stats.activity, actB: B.stats.activity,
+      HA: A.stats.entropy || 0, HB: B.stats.entropy || 0, div: n ? sum / n : 0, max: mx, broken: n ? apart / n : 0
+    };
+    this.track();
+  },
+  track() {
+    const s = this.stats;
+    this.hist.push({ t: s.steps, d: s.div });
+    if (this.hist.length > 240) this.hist.shift();
+    if (s.kind === 'grid') this.scale = lerp(this.scale, Math.max(0.004, s.max), 0.35);
+    this.show();
+  },
+  describe() {
+    const A = current, B = this.B, parts = [], seen = new Set();
+    for (const s of [...A.schema, ...B.schema]) {
+      const k = s.key;
+      if (seen.has(k) || SHARED_KEYS.has(k)) continue;
+      seen.add(k);
+      const a = A.p[k], b = B.p[k];
+      if (typeof a === 'number' && typeof b === 'number' && Math.abs(a - b) > 1e-12) parts.push((s.sym || s.label) + ' ' + s.fmt(a) + ' → ' + s.fmt(b));
+    }
+    if (this.painted.A) parts.push('A painted');
+    if (this.painted.B) parts.push('B painted');
+    return parts.length ? 'Intervention: <b>' + escHTML(parts.join(' · ')) + '</b>'
+      : 'B is an exact copy of A. Change B&rsquo;s sliders, paint either side, or press <b>V</b> to mutate B.';
+  },
+  show() {
+    if (!this.on) return;
+    const s = this.stats, boids = current === MODELS.boids, set = (id, t) => { $(id).textContent = t; };
+    set('#cmp-age', 't + ' + this.steps.toLocaleString('en-CA') + (boids ? ' frames' : ' steps'));
+    $('#cmp-int').innerHTML = this.describe();
+    const pct = v => (v * 100).toFixed(1) + '%', sci = v => (v === 0 ? '0' : v < 1e-3 ? v.toExponential(2) : v.toFixed(4));
+    const row = (i, k, a, b, fa) => {
+      set('#cmp-k' + i, k); set('#cmp-a' + i, fa(a)); set('#cmp-b' + i, fa(b));
+      $('#cmp-b' + i).classList.toggle('moved', fa(a) !== fa(b));
+    };
+    if (!s) { for (let i = 1; i <= 3; i++) { set('#cmp-a' + i, '--'); set('#cmp-b' + i, '--'); } set('#cmp-d', '--'); set('#cmp-dx', ''); return; }
+    if (s.kind === 'boids') {
+      set('#cmp-sym', 'flock');
+      row(1, 'polarisation φ', s.polA, s.polB, v => v.toFixed(3));
+      row(2, 'steering load', s.actA, s.actB, v => v.toFixed(3));
+      row(3, 'evenness H', s.HA, s.HB, v => v.toFixed(3));
+      set('#cmp-dk', 'twin separation ⟨|Δx|⟩');
+      set('#cmp-d', s.div.toFixed(2));
+      set('#cmp-dx', '· max ' + s.max.toFixed(1) + ' · apart ' + pct(s.broken));
+    } else {
+      set('#cmp-sym', s.name);
+      row(1, 'coverage ' + s.sym + ' > 0.15', s.covA, s.covB, pct);
+      row(2, 'mean ' + s.sym, s.meanA, s.meanB, v => v.toFixed(4));
+      row(3, 'evenness H', s.HA, s.HB, v => v.toFixed(3));
+      set('#cmp-dk', 'divergence ⟨|Δ' + s.sym + '|⟩');
+      set('#cmp-d', sci(s.div));
+      set('#cmp-dx', '· max ' + s.max.toFixed(3) + ' · broken ' + pct(s.broken));
+    }
+    // log divergence against time since the fork
+    const h = this.hist, lo = boids ? -3 : -6, hi = boids ? 3 : 0;
+    const y = v => (26 - (clamp(Math.log10(Math.max(v, 1e-12)), lo, hi) - lo) / (hi - lo) * 24).toFixed(1);
+    $('#cmp-line').setAttribute('d', h.length ? h.map((p, i) => (i ? 'L' : 'M') + (2 + i / Math.max(1, h.length - 1) * 156).toFixed(1) + ' ' + y(p.d)).join('') : '');
+  },
+  ui(on) {
+    document.body.classList.toggle('comparing', on);
+    $('#cmp').hidden = !on;
+    $('#split').hidden = !on;
+    $('#tog-cmp').setAttribute('aria-pressed', String(on));
+    this.place();
+    this.lensUI();
+    $('#cmp-edit').textContent = 'Sliders: ' + this.edit;
+    if (!Evolve.tw) $('#evolve-t').textContent = on ? 'Mutate dish B' : 'Evolve a phenotype';
+    $('#act-evolve').title = on ? 'Mutate dish B, the intervention, over three seconds (V)' : 'Mutate the parameters over three seconds and breed a new phenotype (V)';
+    $('#params-note').textContent = on ? (this.edit === 'B' ? 'dish B · intervention' : 'dish A · control') : '';
+    $('#res-note').textContent = on ? 'A | B' : '';
+    buildParams();
+    if (on) this.show();
+  },
+  lensUI() {
+    const boids = current === MODELS.boids;
+    $$('#cmp-lens button').forEach(b => { b.disabled = boids && b.dataset.lens !== '0'; b.setAttribute('aria-pressed', String(+b.dataset.lens === (boids ? 0 : this.lens))); });
+  },
+  place() {
+    const sp = $('#split');
+    sp.style.left = (this.split * 100).toFixed(2) + '%';
+    sp.setAttribute('aria-valuenow', String(Math.round(this.split * 100)));
+  },
+  // intervene at random: B's genome mutated as Evolve would, glided over three seconds
+  mutate() {
+    const B = this.B, g = GENOMES[B.id], tgt = g && g(B);
+    if (!tgt) { toast('The Pearson Atlas already spans every phenotype: set B&rsquo;s sliders by hand instead.'); return; }
+    Evolve.tween(B, tgt, null, 'intervene');
+    toast('Mutating <b>dish B</b> over three seconds &middot; A stays the control.', 3400);
+  },
+  info() {
+    if (!this.on) return { on: false };
+    return { on: true, model: current.id, steps: this.steps, split: this.split, lens: this.lens, edit: this.edit, stats: this.stats ? { ...this.stats } : null, intervention: this.describe().replace(/<[^>]+>/g, '') };
+  }
+};
+(function compareEvents() {
+  const sp = $('#split');
+  let drag = null;
+  sp.addEventListener('pointerdown', e => { drag = e.pointerId; try { sp.setPointerCapture(e.pointerId); } catch (err) { /* capture is a nicety */ } sp.classList.add('drag'); e.preventDefault(); e.stopPropagation(); });
+  sp.addEventListener('pointermove', e => { if (drag !== e.pointerId) return; Compare.split = clamp(e.clientX / VIEW.cssW, 0.05, 0.95); Compare.place(); });
+  const end = e => { if (drag !== e.pointerId) return; drag = null; sp.classList.remove('drag'); };
+  sp.addEventListener('pointerup', end);
+  sp.addEventListener('pointercancel', end);
+  sp.addEventListener('keydown', e => {
+    const k = e.key, step = e.shiftKey ? 0.1 : 0.02;
+    if (k === 'ArrowLeft') Compare.split -= step; else if (k === 'ArrowRight') Compare.split += step;
+    else if (k === 'Home') Compare.split = 0.05; else if (k === 'End') Compare.split = 0.95; else return;
+    e.preventDefault(); e.stopPropagation();
+    Compare.split = clamp(Compare.split, 0.05, 0.95);
+    Compare.place();
+  });
+  $$('#cmp-lens button').forEach(b => b.addEventListener('click', () => { Compare.lens = +b.dataset.lens; Compare.lensUI(); }));
+  $('#cmp-close').addEventListener('click', () => Compare.close());
+  $('#cmp-edit').addEventListener('click', () => { Compare.edit = Compare.edit === 'B' ? 'A' : 'B'; Compare.ui(true); });
+  $('#cmp-resync').addEventListener('click', () => { Compare.resync(false); toast('Dish B re-synced from A&rsquo;s present state; B keeps its parameters.', 3600); });
+  $('#tog-cmp').addEventListener('click', () => Compare.toggle());
+})();
+
+/* ---------- Structure analyzer: the pattern's own length scale ---------- */
+// A 128 x 128 window of the order parameter is read back without stalling the GPU and analysed on the
+// CPU a slice per frame. The window is Hann-tapered and zero-padded to 256 (so no lag wraps round),
+// transformed, squared and transformed back: by the Wiener-Khinchin theorem that is the
+// autocorrelation at every lag at once. Dividing each lag by the taper's own autocorrelation removes
+// its bias, and averaging over rings gives G(r). Its first peak beyond the first trough is the
+// pattern's dominant wavelength λ; where G has none, the peak of the radial power spectrum stands in.
+const FFTN = 256, PATCH = 128, LAGS = 64;
+const FFT = (() => {
+  const n = FFTN, rev = new Uint16Array(n), cs = new Float64Array(n / 2), sn = new Float64Array(n / 2), tr = new Float64Array(n), ti = new Float64Array(n);
+  for (let i = 0; i < n; i++) { let r = 0; for (let b = 0; b < 8; b++) r |= ((i >> b) & 1) << (7 - b); rev[i] = r; }
+  for (let i = 0; i < n / 2; i++) { cs[i] = Math.cos(TAU * i / n); sn[i] = -Math.sin(TAU * i / n); }
+  // radix-2, on n values of (re, im) from offset o at stride st; the inverse omits the 1/n
+  function run(re, im, o, st, inv) {
+    for (let i = 0; i < n; i++) { const j = o + i * st; tr[rev[i]] = re[j]; ti[rev[i]] = im[j]; }
+    for (let size = 2; size <= n; size <<= 1) {
+      const half = size >> 1, step = n / size;
+      for (let i = 0; i < n; i += size) for (let j = 0; j < half; j++) {
+        const k = j * step, wr = cs[k], wi = inv ? -sn[k] : sn[k], a = i + j, b = a + half;
+        const xr = tr[b] * wr - ti[b] * wi, xi = tr[b] * wi + ti[b] * wr;
+        tr[b] = tr[a] - xr; ti[b] = ti[a] - xi; tr[a] += xr; ti[a] += xi;
+      }
+    }
+    for (let i = 0; i < n; i++) { const j = o + i * st; re[j] = tr[i]; im[j] = ti[i]; }
+  }
+  return { run };
+})();
+const HANN = Float64Array.from({ length: PATCH }, (_, i) => 0.5 - 0.5 * Math.cos(TAU * (i + 0.5) / PATCH));
+const HANN_AC = (() => { const a = new Float64Array(PATCH); for (let d = 0; d < PATCH; d++) for (let x = 0; x + d < PATCH; x++) a[d] += HANN[x] * HANN[x + d]; return a; })();
+function* structureOf(patch, re, im) {
+  const n = FFTN, P = PATCH;
+  re.fill(0); im.fill(0);
+  let mean = 0, varr = 0;
+  for (let i = 0; i < P * P; i++) mean += patch[i];
+  mean /= P * P;
+  for (let i = 0; i < P * P; i++) varr += (patch[i] - mean) * (patch[i] - mean);
+  varr /= P * P;
+  for (let y = 0; y < P; y++) for (let x = 0; x < P; x++) re[y * n + x] = (patch[y * P + x] - mean) * HANN[x] * HANN[y];
+  for (let y = 0; y < P; y++) { FFT.run(re, im, y * n, 1, false); if ((y & 31) === 31) yield; }   // rows beyond P are zero
+  for (let x = 0; x < n; x++) { FFT.run(re, im, x, n, false); if ((x & 31) === 31) yield; }
+  const S = new Float64Array(n / 2 + 1), Sc = new Float64Array(n / 2 + 1);
+  for (let ky = 0; ky < n; ky++) {
+    const fy = ky < n / 2 ? ky : ky - n;
+    for (let kx = 0; kx < n; kx++) {
+      const i = ky * n + kx, p = re[i] * re[i] + im[i] * im[i], k = Math.round(Math.hypot(kx < n / 2 ? kx : kx - n, fy));
+      re[i] = p; im[i] = 0;
+      if (k <= n / 2) { S[k] += p; Sc[k]++; }
+    }
+  }
+  for (let k = 0; k <= n / 2; k++) if (Sc[k]) S[k] /= Sc[k];
+  yield;
+  for (let x = 0; x < n; x++) { FFT.run(re, im, x, n, true); if ((x & 31) === 31) yield; }
+  for (let y = 0; y < n; y++) { if (y > LAGS && y < n - LAGS) continue; FFT.run(re, im, y * n, 1, true); if ((y & 31) === 31) yield; }
+  const G = new Float64Array(LAGS + 2), Gc = new Float64Array(LAGS + 2);
+  for (let dy = -LAGS; dy <= LAGS; dy++) {
+    const row = (dy < 0 ? dy + n : dy) * n, wy = HANN_AC[Math.abs(dy)];
+    for (let dx = -LAGS; dx <= LAGS; dx++) {
+      const r = Math.hypot(dx, dy);
+      if (r > LAGS) continue;
+      const c = re[row + (dx < 0 ? dx + n : dx)] / (wy * HANN_AC[Math.abs(dx)]), r0 = Math.floor(r), t = r - r0;
+      G[r0] += c * (1 - t); Gc[r0] += 1 - t; G[r0 + 1] += c * t; Gc[r0 + 1] += t;
+    }
+  }
+  const out = new Float64Array(LAGS + 1), c0 = G[0] / Gc[0];
+  for (let r = 0; r <= LAGS; r++) out[r] = Gc[r] > 0 && c0 > 0 ? G[r] / Gc[r] / c0 : 0;
+  return { G: out, S, mean, variance: varr, uniform: !(varr > 1e-9) };
+}
+// the first peak of G beyond its first trough (sub-cell, by a parabola through three samples); failing
+// that, the radial power spectrum's clear maximum (λ = 256 / k); ξ is where G first falls below 1/e
+function wavelengthOf(G, S) {
+  const n = G.length - 1;
+  let xi = null;
+  for (let r = 1; r <= n; r++) if (G[r] < 1 / Math.E) { xi = r - 1 + (G[r - 1] - 1 / Math.E) / Math.max(1e-9, G[r - 1] - G[r]); break; }
+  let i = 1;
+  while (i < n - 1 && G[i + 1] < G[i]) i++;
+  const trough = i;
+  for (let r = trough + 1; r < n; r++) {
+    if (G[r] >= G[r - 1] && G[r] >= G[r + 1] && G[r] - G[trough] > 0.05) {
+      const a = G[r - 1], b = G[r], c = G[r + 1], den = a - 2 * b + c, off = den < 0 ? clamp(0.5 * (a - c) / den, -0.5, 0.5) : 0;
+      return { lambda: r + off, source: 'G', peak: b - 0.25 * (a - c) * off, trough: G[trough], xi };
+    }
+  }
+  let kb = 0, sum = 0, cnt = 0;
+  for (let k = 4; k < S.length - 1; k++) { sum += S[k]; cnt++; if (!kb || S[k] > S[kb]) kb = k; }
+  if (kb && S[kb] > 3 * sum / cnt) {
+    const a = S[kb - 1], b = S[kb], c = S[kb + 1], den = a - 2 * b + c, off = den < 0 ? clamp(0.5 * (a - c) / den, -0.5, 0.5) : 0;
+    return { lambda: FFTN / (kb + off), source: 'S', peak: null, trough: null, xi };
+  }
+  return { lambda: null, source: null, xi };
+}
+const Analyzer = {
+  on: false, at: null, jobs: [], res: [null, null], hist: [],
+  toggle(force) {
+    const on = force === undefined ? !this.on : force;
+    if (on === this.on) return;
+    if (on && current && !(current instanceof GridModel)) { toast('The analyzer reads a lattice: choose a grid model (1&ndash;3, 5 or 6).'); return; }
+    this.on = on;
+    document.body.classList.toggle('spec', on);
+    $('#spec').hidden = !on;
+    $('#tog-spec').setAttribute('aria-pressed', String(on));
+    if (!on) { $('#spec-win').hidden = true; this.jobs.forEach(J => { J.gen = null; J.rb.cancel(); }); }
+    else { this.at = null; this.res = [null, null]; this.hist = []; this.draw(); }
+  },
+  job(i) {
+    return this.jobs[i] || (this.jobs[i] = {
+      rb: new Readback(), tgt: makeTarget(PATCH / 4, PATCH, STATF, { wrap: 'clamp' }), patch: new Float32Array(PATCH * PATCH),
+      re: new Float64Array(FFTN * FFTN), im: new Float64Array(FFTN * FFTN), gen: null, meta: null
+    });
+  },
+  tick() {
+    const m = current;
+    if (!this.on) return;
+    if (!(m instanceof GridModel)) { this.toggle(false); return; }
+    if (ptr.hover && !gest.active) this.at = m.probe(ptr.hx, ptr.hy);
+    if (!this.at) this.at = [umod(m.W / 2 + m.view.panX, m.W), umod(m.H / 2 + m.view.panY, m.H)];
+    this.place(m);
+    const dishes = Compare.on && Compare.B ? [m, Compare.B] : [m], t0 = performance.now();
+    dishes.forEach((d, i) => {
+      const J = this.job(i);
+      if (J.gen) return;
+      if (J.rb.poll(J.patch)) { J.gen = structureOf(J.patch, J.re, J.im); return; }
+      if (!J.rb.busy) this.request(d, J);
+    });
+    // advance the analyses a slice at a time, within about a millisecond and a half of each frame
+    for (let i = 0; i < dishes.length; i++) {
+      const J = this.jobs[i];
+      while (J && J.gen && performance.now() - t0 < 1.5) {
+        const r = J.gen.next();
+        if (r.done) { J.gen = null; this.publish(i, r.value, J.meta); }
+      }
+    }
+  },
+  request(d, J) {
+    const org = [Math.round(this.at[0] - PATCH / 2), Math.round(this.at[1] - PATCH / 2)], o = d.order();
+    pass(P('patch', GLSL_ORDER), { u_src: o.tex, ...d.orderU(), u_size: [d.W, d.H], u_org: org }, J.tgt);
+    J.rb.request(J.tgt, PATCH / 4, PATCH, gl.FLOAT, PATCH * PATCH * 4);
+    J.meta = { sym: o.sym, cell: d.cell, org, at: this.at.slice() };
+  },
+  publish(i, res, meta) {
+    const w = res.uniform ? { lambda: null, source: null, xi: null } : wavelengthOf(res.G, res.S);
+    this.res[i] = { ...res, ...w, meta, t: STATE.time };
+    if (!Compare.on) this.res[1] = null;
+    if (i === 0) {
+      this.hist.push({ a: this.res[0].lambda, b: this.res[1] ? this.res[1].lambda : null });
+      if (this.hist.length > 160) this.hist.shift();
+    }
+    this.draw();
+  },
+  place(m) {
+    const w = $('#spec-win');
+    if (!this.on || m.tilted() || !this.at) { if (!w.hidden) w.hidden = true; return; }
+    const cx = m.W / 2 + m.view.panX, cy = m.H / 2 + m.view.panY;
+    const gx = this.at[0] + m.W * Math.round((cx - this.at[0]) / m.W), gy = this.at[1] + m.H * Math.round((cy - this.at[1]) / m.H);
+    const [sx, sy] = m.toScreen(gx - PATCH / 2, gy + PATCH / 2), size = PATCH * m.cell * m.view.zoom;
+    w.hidden = false;
+    w.style.width = w.style.height = size.toFixed(1) + 'px';
+    w.style.transform = 'translate(' + sx.toFixed(1) + 'px,' + sy.toFixed(1) + 'px)';
+  },
+  draw() {
+    const x0 = 26, x1 = 262, y0 = 8, y1 = 94, A = this.res[0], B = Compare.on ? this.res[1] : null;
+    const X = r => x0 + r / LAGS * (x1 - x0), Y = g => y0 + (1 - (clamp(g, -0.6, 1) + 0.6) / 1.6) * (y1 - y0);
+    let s = '<path class="ax" d="M' + x0 + ' ' + y0 + 'V' + y1 + 'H' + x1 + '"/><path class="zero" d="M' + x0 + ' ' + Y(0).toFixed(1) + 'H' + x1 + '"/>';
+    for (const r of [0, 16, 32, 48, 64]) s += '<text x="' + X(r).toFixed(1) + '" y="' + (y1 + 11) + '" text-anchor="middle">' + r + '</text>';
+    s += '<text x="' + (x0 - 4) + '" y="' + (Y(1) + 3).toFixed(1) + '" text-anchor="end">1</text><text x="' + (x0 - 4) + '" y="' + (Y(0) + 3).toFixed(1) + '" text-anchor="end">0</text><text x="' + (x0 + 5) + '" y="' + (y0 + 9) + '">G(r)</text>';
+    // the power spectrum on the same length axis (λ = 256 / k), scaled to its own peak
+    if (A && A.S && !A.uniform) {
+      const pts = [], Sat = k => { const k0 = Math.floor(k), t = k - k0; return A.S[k0] * (1 - t) + (A.S[k0 + 1] || 0) * t; };
+      let mx = 1e-30;
+      for (let l = 2; l <= LAGS; l += 0.5) mx = Math.max(mx, Sat(FFTN / l));
+      for (let l = 2; l <= LAGS; l += 0.5) pts.push(X(l).toFixed(1) + ' ' + (y1 - Sat(FFTN / l) / mx * (y1 - y0) * 0.55).toFixed(1));
+      s += '<path class="sk" d="M' + X(2).toFixed(1) + ' ' + y1 + 'L' + pts.join('L') + 'L' + X(LAGS).toFixed(1) + ' ' + y1 + 'Z"/>';
+    }
+    const curve = (R, cls) => { if (!R || !R.G || R.uniform) return; s += '<path class="' + cls + '" d="M' + Array.from(R.G, (g, r) => X(r).toFixed(1) + ' ' + Y(g).toFixed(1)).join('L') + '"/>'; };
+    curve(A, 'ga'); curve(B, 'gb');
+    const mark = (R, col, dy) => {
+      if (!R || R.lambda == null || R.lambda > LAGS) return;
+      const x = X(R.lambda).toFixed(1);
+      s += '<path class="lam" stroke="' + col + '" d="M' + x + ' ' + y0 + 'V' + y1 + '"/><text x="' + (+x + 4) + '" y="' + (y0 + 9 + dy) + '" style="fill:' + col + '">λ ' + R.lambda.toFixed(1) + (R.source === 'S' ? ' (S)' : '') + '</text>';
+    };
+    const acc = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim() || '#3ef2ff';
+    mark(A, acc, 0); mark(B, '#ffb05a', 11);
+    $('#spec-svg').innerHTML = s;
+    // λ over the last half-minute or so
+    const h = this.hist, vals = h.flatMap(p => [p.a, p.b]).filter(v => v != null);
+    let hs = '<path class="ax" d="M0 17.5H268"/>';
+    if (vals.length > 1) {
+      const lo = Math.min(...vals) - 0.5, hi = Math.max(...vals) + 0.5, HX = i => (i / Math.max(1, h.length - 1) * 230).toFixed(1), HY = v => (16 - (v - lo) / (hi - lo) * 14).toFixed(1);
+      const line = key => { let d = '', pen = false; h.forEach((p, i) => { if (p[key] == null) { pen = false; return; } d += (pen ? 'L' : 'M') + HX(i) + ' ' + HY(p[key]); pen = true; }); return d; };
+      hs += '<path class="lh" d="' + line('a') + '"/>' + (Compare.on ? '<path class="lhb" d="' + line('b') + '"/>' : '') + '<text x="266" y="8" text-anchor="end">' + hi.toFixed(1) + '</text><text x="266" y="17" text-anchor="end">' + lo.toFixed(1) + '</text>';
+    }
+    $('#spec-hist').innerHTML = hs;
+    const fmt = R => (!R ? '--' : R.uniform ? 'uniform' : R.lambda == null ? 'none' : R.lambda.toFixed(1));
+    $('#spec-l').textContent = B ? 'λ A ' + fmt(A) + ' · B ' + fmt(B) : 'λ ' + fmt(A) + (A && A.lambda != null ? ' cells' : '');
+    const m = A && A.meta;
+    $('#spec-read').textContent = !A ? 'Hover the dish to choose the window.'
+      : A.uniform ? 'A uniform window: no structure to measure.'
+      : (A.lambda != null ? 'λ ≈ ' + (A.lambda * m.cell).toFixed(0) + ' px · ' : 'no dominant wavelength · ') + 'ξ ' + (A.xi != null ? A.xi.toFixed(1) : '--')
+        + (A.peak != null ? ' · order ' + A.peak.toFixed(2) : A.source === 'S' ? ' · from the spectrum' : '') + ' · ' + m.sym + ' at ' + Math.round(m.at[0]) + ', ' + Math.round(m.at[1]);
+  }
+};
+$('#tog-spec').addEventListener('click', () => Analyzer.toggle());
+
+/* ---------- The specimen plays itself: collisions and divisions pluck the strings ---------- */
+// Every sixth frame a coarse census of the bodies in Lenia or Gray-Scott comes back without a stall.
+// Bodies are labelled on the torus (union-find) and matched to the last census by overlap: one new
+// body over two old ones is a merge (a collision), one old body spread over two new ones a division.
+const Collide = {
+  rb: null, tgt: null, data: null, prev: null, model: null, w: 0, h: 0, count: 0, merges: 0, splits: 0, force: false,
+  tick() {
+    const m = current;
+    if (!((sound.live && sound.strings) || this.force) || !(m === MODELS.gs || m === MODELS.lenia) || STATE.paused) { this.prev = null; return; }
+    if (!this.rb) this.rb = new Readback();
+    if (this.data && this.rb.poll(this.data)) { if (this.model === m) this.detect(this.data, this.w, this.h); }
+    if (!this.rb.busy && STATE.frame % 6 === 3) this.request(m);
+  },
+  request(m) {
+    const blk = clamp(Math.ceil(Math.max(m.W, m.H) / 160), 2, 8), w = Math.ceil(m.W / blk), h = Math.ceil(m.H / blk);
+    if (!this.tgt || this.tgt.w !== w || this.tgt.h !== h) { freeTarget(this.tgt); this.tgt = makeTarget(w, h, 'rgba8', { wrap: 'clamp' }); this.prev = null; }
+    if (this.model !== m) this.prev = null;
+    pass(P('blobs', GLSL_ORDER), { u_src: m.order().tex, ...m.orderU(), u_size: [m.W, m.H], u_blk: blk }, this.tgt);
+    if (!this.data || this.data.length !== w * h * 4) this.data = new Uint8Array(w * h * 4);
+    this.rb.request(this.tgt, w, h, gl.UNSIGNED_BYTE, w * h * 4);
+    Object.assign(this, { w, h, model: m });
+  },
+  detect(data, w, h) {
+    const n = w * h, par = new Int32Array(n), lab = new Int32Array(n).fill(-1), comps = [], thr = 51;
+    for (let i = 0; i < n; i++) par[i] = i;
+    const find = i => { while (par[i] !== i) { par[i] = par[par[i]]; i = par[i]; } return i; };
+    const join = (a, b) => { a = find(a); b = find(b); if (a !== b) par[a] = b; };
+    const on = i => data[i * 4] > thr;
+    for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) {
+      const i = y * w + x;
+      if (!on(i)) continue;
+      const r = y * w + (x + 1) % w, u = ((y + 1) % h) * w + x;
+      if (on(r)) join(i, r);
+      if (on(u)) join(i, u);
+    }
+    const idOf = new Map();
+    for (let i = 0; i < n; i++) {
+      if (!on(i)) continue;
+      const root = find(i);
+      let c = idOf.get(root);
+      if (c === undefined) { c = comps.length; idOf.set(root, c); comps.push({ area: 0, mass: 0, sx: 0, cx: 0, sy: 0, cy: 0 }); }
+      const C = comps[c], x = i % w, y = (i / w) | 0;
+      C.area++; C.mass += data[i * 4] / 255;
+      C.sx += Math.sin(TAU * x / w); C.cx += Math.cos(TAU * x / w); C.sy += Math.sin(TAU * y / h); C.cy += Math.cos(TAU * y / h);
+      lab[i] = c;
+    }
+    for (let i = 0; i < n; i++) if (lab[i] >= 0 && comps[lab[i]].area < 3) lab[i] = -1;   // specks are noise
+    const at = C => [umod(Math.atan2(C.sx, C.cx) / TAU, 1), umod(Math.atan2(C.sy, C.cy) / TAU, 1)];
+    let ev = null;
+    const P = this.prev;
+    if (P && P.w === w && P.h === h) {
+      const pairs = new Set(), olds = new Map(), news = new Map();
+      for (let i = 0; i < n; i++) if (lab[i] >= 0 && P.lab[i] >= 0) pairs.add(lab[i] * 65536 + P.lab[i]);
+      for (const k of pairs) { const a = Math.floor(k / 65536), b = k % 65536; olds.set(a, (olds.get(a) || 0) + 1); news.set(b, (news.get(b) || 0) + 1); }
+      for (const [a, k] of olds) if (k >= 2) { this.merges++; const C = comps[a]; if (!ev || ev.kind !== 'merge' || C.mass > ev.mass) ev = { kind: 'merge', mass: C.mass, at: at(C) }; }
+      for (const [b, k] of news) if (k >= 2) { this.splits++; const C = P.comps[b]; if (!ev || (ev.kind === 'split' && C.mass > ev.mass)) ev = { kind: 'split', mass: C.mass, at: at(C) }; }
+    }
+    this.prev = { w, h, lab, comps };
+    if (ev) { this.count++; this.last = ev; sound.event(ev.kind, ev.at[0], ev.at[1], clamp(Math.sqrt(ev.mass) / 6, 0.2, 1.4)); }
+    return ev;
+  }
+};
+
+/* ---------- Fabrication: the specimen as a printable solid ---------- */
+// The heightfield is resampled on the GPU at up to 480 samples on the long side (mip-filtered, so
+// finer lattices are averaged, not aliased) and read back behind a fence. The mesh is a closed,
+// manifold solid: the relief on top, four walls and a floor, every triangle counter-clockwise seen
+// from outside. Units are millimetres, Z up, 100 mm on the long side on a 3 mm base; each vertex
+// carries its colour from the active palette (v x y z r g b). The dish is periodic, so tiles printed
+// side by side join seamlessly.
+const MeshExport = {
+  busy: false,
+  async run() {
+    if (this.busy) return null;
+    const m = current;
+    if (!(m instanceof GridModel)) { toast('Boids fly free: they have no heightfield to print. Choose a grid model (1&ndash;3, 5 or 6).'); return null; }
+    this.busy = true;
+    const btn = $('#act-obj'), lab = $('#obj-t');
+    btn.disabled = true;
+    lab.textContent = 'Reading the relief…';
+    try {
+      const nx = Math.min(480, m.W) + 1, ny = Math.max(1, Math.round((nx - 1) * m.H / m.W)) + 1;
+      const tgt = makeTarget(nx, ny, STATF, { wrap: 'clamp' }), rb = new Readback(), px = new Float32Array(nx * ny * 4);
+      pass(P('meshOut'), { u_surf: m.surf, u_n: [nx, ny] }, tgt);
+      rb.request(tgt, nx, ny, gl.FLOAT, px.byteLength);
+      freeTarget(tgt);
+      const frame = () => new Promise(r => requestAnimationFrame(() => r()));
+      while (!rb.poll(px)) { if (!rb.busy) throw new Error('the GPU did not return the heightfield'); await frame(); }
+      rb.free();
+      const pr = m.presets[m.presetIdx], stamp = new Date();
+      const out = await this.build(m, px, nx, ny, pr, stamp, f => { lab.textContent = 'Meshing… ' + Math.round(f * 100) + '%'; });
+      const name = 'morphogenesis-' + m.id + '-' + pr.id + '-' + stampName(stamp) + '.obj';
+      download(out.blob, name);
+      STATE.lastMesh = { name, bytes: out.blob.size, vertices: out.v, triangles: out.f, nx, ny, mm: out.mm };
+      toast('Saved <b>' + escHTML(name) + '</b> &middot; ' + (out.blob.size / 1048576).toFixed(1) + ' MB &middot; ' + out.v.toLocaleString('en-CA') + ' vertices, ' + out.f.toLocaleString('en-CA') + ' triangles, watertight', 6400);
+      return STATE.lastMesh;
+    } catch (e) {
+      console.error(e);
+      toast('The mesh could not be exported: ' + escHTML((e && e.message) || String(e)), 6000);
+      return null;
+    } finally {
+      this.busy = false;
+      btn.disabled = false;
+      lab.textContent = 'Export 3D Mesh (.obj)';
+    }
+  },
+  async build(m, px, nx, ny, pr, stamp, progress) {
+    const span = Math.max(m.W, m.H) * m.cell, s = 100 / span, Wmm = m.W * m.cell * s, Hmm = m.H * m.cell * s;
+    const relief = 8 * STATE.shade.height, base = 3, NT = nx * ny;
+    const baseRGB = hexRGB(PALETTES[m.palette].stops[1][1]).map(v => clamp(v * 1.6 + 0.03, 0, 1));
+    const params = Object.entries(m.p).map(([k, v]) => k + '=' + (typeof v === 'number' ? +v.toFixed(5) : v)).join(', ');
+    const parts = [
+      '# Morphogenesis: ' + MODEL_NAMES[m.id] + ', ' + pr.name + (Compare.on ? ' (dish A, the control)' : '') + '\n',
+      '# Exported ' + stamp.toISOString() + ' from the live simulation. Palette: ' + PALETTES[m.palette].name + '.\n',
+      '# Parameters: ' + params + '.\n',
+      '# Units: millimetres, Z up. ' + Wmm.toFixed(1) + ' x ' + Hmm.toFixed(1) + ' mm, relief up to ' + relief.toFixed(1) + ' mm (terrain height ' + STATE.shade.height.toFixed(2) + '), on a ' + base + ' mm base.\n',
+      '# A closed, manifold solid: counter-clockwise triangles facing outward. Vertex colours as v x y z r g b (0 to 1).\n',
+      '# One period of a periodic dish: tiles placed edge to edge join seamlessly. In Blender, import with Up: Z.\n',
+      'o morphogenesis_' + m.id + '_' + pr.id + '\n'
+    ];
+    const f3 = v => v.toFixed(3), f4 = v => clamp(v, 0, 1).toFixed(4), nf = frame => new Promise(r => requestAnimationFrame(() => r(frame)));
+    let buf = [], t0 = performance.now();
+    const flush = () => { if (buf.length) { parts.push(buf.join('')); buf = []; } };
+    const yieldSome = async f => { if (performance.now() - t0 > 9) { flush(); progress(f); await nf(); t0 = performance.now(); } };
+    // top: one vertex per sample, row by row
+    for (let j = 0; j < ny; j++) {
+      const y = j / (ny - 1) * Hmm;
+      for (let i = 0; i < nx; i++) {
+        const k = (j * nx + i) * 4, h = clamp(px[k + 3], 0, 1.25);
+        buf.push('v ' + f3(i / (nx - 1) * Wmm) + ' ' + f3(y) + ' ' + f3(h * relief) + ' ' + f4(px[k]) + ' ' + f4(px[k + 1]) + ' ' + f4(px[k + 2]) + '\n');
+      }
+      await yieldSome(0.45 * j / ny);
+    }
+    // the rim, anticlockwise from above, and its twin on the base
+    const per = [];
+    for (let i = 0; i < nx; i++) per.push(i);
+    for (let j = 1; j < ny; j++) per.push(j * nx + nx - 1);
+    for (let i = nx - 2; i >= 0; i--) per.push((ny - 1) * nx + i);
+    for (let j = ny - 2; j >= 1; j--) per.push(j * nx);
+    const Pn = per.length, bc = baseRGB.map(f4).join(' ');
+    for (const t of per) buf.push('v ' + f3((t % nx) / (nx - 1) * Wmm) + ' ' + f3(Math.floor(t / nx) / (ny - 1) * Hmm) + ' ' + f3(-base) + ' ' + bc + '\n');
+    buf.push('v ' + f3(Wmm / 2) + ' ' + f3(Hmm / 2) + ' ' + f3(-base) + ' ' + bc + '\n');
+    const V = NT + Pn + 1;
+    buf.push('g relief\ns 1\n');
+    let F = 0;
+    for (let j = 0; j < ny - 1; j++) {
+      for (let i = 0; i < nx - 1; i++) {
+        const a = j * nx + i + 1, b = a + 1, c = a + nx, d = c + 1;
+        buf.push('f ' + a + ' ' + b + ' ' + d + '\nf ' + a + ' ' + d + ' ' + c + '\n');
+      }
+      F += 2 * (nx - 1);
+      await yieldSome(0.45 + 0.5 * j / ny);
+    }
+    buf.push('g walls\ns off\n');
+    for (let k = 0; k < Pn; k++) {
+      const k1 = (k + 1) % Pn, t = per[k] + 1, t1 = per[k1] + 1, b = NT + k + 1, b1 = NT + k1 + 1;
+      buf.push('f ' + b + ' ' + b1 + ' ' + t1 + '\nf ' + b + ' ' + t1 + ' ' + t + '\n');
+    }
+    buf.push('g base\n');
+    for (let k = 0; k < Pn; k++) buf.push('f ' + V + ' ' + (NT + (k + 1) % Pn + 1) + ' ' + (NT + k + 1) + '\n');
+    F += 3 * Pn;
+    flush();
+    progress(1);
+    return { blob: new Blob(parts, { type: 'model/obj' }), v: V, f: F, mm: [+Wmm.toFixed(2), +Hmm.toFixed(2), +(relief + base).toFixed(2)] };
+  }
+};
+
 /* ---------- Pearson atlas axis labels ---------- */
 let atlasSig = '';
 function updateAtlas() {
@@ -5382,7 +6635,7 @@ canvas.addEventListener('pointerdown', e => {
     if (gest.pts.size >= 2) {
       if (!gest.active) {
         // a second finger turns the stroke into a camera gesture
-        if (ptr.down) { ptr.down = false; if (current.endStroke) current.endStroke(); }
+        if (ptr.down) { ptr.down = false; const d = ptr.dish || current; if (d.endStroke) d.endStroke(); }
         Object.assign(gest, { active: true }, gestNow());
       }
       try { canvas.setPointerCapture(e.pointerId); } catch (err) { /* capture is a nicety */ }
@@ -5398,7 +6651,7 @@ canvas.addEventListener('pointerdown', e => {
   if (!mode) return;
   e.preventDefault();
   try { canvas.setPointerCapture(e.pointerId); } catch (err) { /* capture is a nicety */ }
-  Object.assign(ptr, { down: true, mode, id: e.pointerId, x: e.clientX, y: e.clientY, lx: e.clientX, ly: e.clientY, ax: null, ay: null, first: true, speed: 0, t: performance.now() });
+  Object.assign(ptr, { down: true, mode, id: e.pointerId, x: e.clientX, y: e.clientY, lx: e.clientX, ly: e.clientY, ax: null, ay: null, first: true, speed: 0, t: performance.now(), dish: mode === 'pan' ? null : dishAt(e.clientX) });
   canvas.classList.toggle('panning', mode === 'pan');
   if (mode !== 'pan') { sound.touch(e.clientX, e.clientY, 0, 0); Ripples.add(e.clientX, e.clientY, 1); ptr.rip = performance.now(); }
 });
@@ -5438,7 +6691,8 @@ function endPointer(e) {
   if (!ptr.down || e.pointerId !== ptr.id) return;
   ptr.down = false;
   canvas.classList.remove('panning');
-  if (current.endStroke) current.endStroke();
+  const d = ptr.dish || current;
+  if (d.endStroke) d.endStroke();
   try { canvas.releasePointerCapture(e.pointerId); } catch (err) { /* already released */ }
 }
 canvas.addEventListener('pointerup', endPointer);
@@ -5468,9 +6722,12 @@ canvas.addEventListener('dblclick', e => { if (e.altKey) current.resetView(); })
 
 function applyStroke() {
   if (!ptr.down || ptr.mode === 'pan') return;
+  const d = ptr.dish || current;
+  if (d !== current && !(Compare.on && d === Compare.B)) return;   // that dish has gone
   const s = { x0: ptr.ax == null ? ptr.x : ptr.ax, y0: ptr.ay == null ? ptr.y : ptr.ay, x1: ptr.x, y1: ptr.y, first: ptr.first };
-  if (ptr.mode === 'paint') current.paint(s, false);
-  else current.secondary(s, STATE.tool);
+  if (ptr.mode === 'paint') d.paint(s, false);
+  else d.secondary(s, STATE.tool);
+  if (Compare.on) Compare.painted[d === current ? 'A' : 'B']++;
   ptr.ax = ptr.x; ptr.ay = ptr.y; ptr.first = false;
 }
 
@@ -5518,6 +6775,8 @@ window.addEventListener('keydown', e => {
     if (!$('#help').hidden) toggleHelp(false);
     else if ($('#guide').classList.contains('open')) toggleGuide(false);
     else if (Phylo.open) Phylo.toggle(false);
+    else if (Compare.on) Compare.close();
+    else if (Analyzer.on) Analyzer.toggle(false);
     else if (Synth.on) Synth.toggle(false);
     else if (document.body.classList.contains('dock-open')) $('#btn-dock').click();
     else if (document.body.classList.contains('hud-hidden')) toggleHud();
@@ -5560,6 +6819,8 @@ window.addEventListener('keydown', e => {
     case 'o': case 'O': Recorder.toggle(); break;
     case 'x': case 'X': Exhibit.toggle(); break;
     case 'l': case 'L': Mic.toggle(); break;
+    case 'd': case 'D': Compare.toggle(); break;
+    case 'a': case 'A': Analyzer.toggle(); break;
     case '?': toggleHelp(); break;
     default: break;
   }
@@ -5585,7 +6846,7 @@ function resize() {
   post.resize(gl.drawingBufferWidth, gl.drawingBufferHeight);
   clearTimeout(resizeTimer);
   resizeTimer = setTimeout(() => {
-    try { for (const m of Object.values(MODELS)) if (m.ready) m.resize(); } catch (e) { reportError(e); }
+    try { for (const m of Object.values(MODELS)) if (m.ready) m.resize(); if (Compare.on) Compare.B.resize(); } catch (e) { reportError(e); }
     atlasSig = '';
   }, 160);
 }
@@ -5605,7 +6866,8 @@ const METRIC = { density: 0, activity: 0, cx: 0.5, cy: 0.5, entropy: 0.5, contra
 // a localized burst: a ripple in the glass and a pulse painted into the specimen at (x, y)
 function burst(x, y, strength, radiusCss) {
   Ripples.add(x, y, strength);
-  const m = current, keep = STATE.brushCss;
+  const m = dishAt(x), keep = STATE.brushCss;
+  if (Compare.on) Compare.painted[m === current ? 'A' : 'B']++;
   STATE.brushCss = radiusCss;
   try {
     if (m.pulse) m.pulse(x, y, strength);
@@ -5624,6 +6886,15 @@ function micPulse(strength) {
   burst(x, y, strength, 14 + 40 * Math.min(strength, 1.2));
   if (sound.live) sound.touch(x, y, 400 * strength, 0);
 }
+// one step of the specimen, or of both dishes in a comparison
+function stepModels(m, n, dt) {
+  if (Compare.on) Compare.step(n, dt);
+  else if (m === MODELS.boids) m.step(1, dt);
+  else m.step(n);
+}
+function renderScene(tgt, view) {
+  if (Compare.on) Compare.render(tgt, view); else current.render(tgt, view);
+}
 function frame() {
   raf = requestAnimationFrame(frame);
   const now = performance.now();
@@ -5639,21 +6910,24 @@ function frame() {
     applyStroke();
     let n = 0;
     if (!STATE.paused || stepOnce) {
-      if (m === MODELS.boids) { m.step(1, stepOnce ? 1 / 60 : dt); n = 1; }
+      if (m === MODELS.boids) { n = 1; stepModels(m, 1, stepOnce ? 1 / 60 : dt); }
       else {
         if (stepOnce) n = Math.max(1, Math.round(m.stepsPerFrame()));
         else { stepAcc += m.stepsPerFrame() * gov; n = Math.min(64, Math.floor(stepAcc)); stepAcc -= n; }
-        if (n > 0) m.step(n);
+        if (n > 0) stepModels(m, n);
       }
       stepOnce = false;
     }
     stepsTotal += n;
     hudSteps += n;
-    if (m.accumulate) m.accumulate();
-    m.render(post.scene, screenView());
+    if (m.accumulate) { m.accumulate(); if (Compare.on) Compare.accumulate(); }
+    renderScene(post.scene, screenView());
     post.run(null, STATE.fx, gl.drawingBufferWidth / VIEW.cssW, dofAmount());
     Phylo.tick();
     Recorder.tick();
+    Compare.measure();
+    Analyzer.tick();
+    Collide.tick();
     const src = m.metric();
     if (src) { Metrics.poll(); if (STATE.frame % 6 === 0) Metrics.request(src); }
     else Metrics.set(m.stats.density, m.stats.activity, m.stats.cx, m.stats.entropy, 0.2, 0.5);
@@ -5749,7 +7023,20 @@ window.MORPHO = {
   get cpuMs() { return cpuEMA; },
   get steps() { return stepsTotal; },
   get metric() { return { ...METRIC }; },
-  encodePNG
+  encodePNG,
+  compare: on => { if (on === false) Compare.close(true); else if (on === true) Compare.open(); return Compare.on; },
+  get cmp() { return Compare.info(); },
+  get twin() { return Compare.B; },
+  get fork() { return Compare; },
+  analyzer: on => { Analyzer.toggle(on); return Analyzer.on; },
+  get structure() { return Analyzer.res.map(r => r && { lambda: r.lambda, source: r.source, xi: r.xi, peak: r.peak, uniform: r.uniform, G: r.G && Array.from(r.G), at: r.meta && r.meta.at }); },
+  get analysis() { return { Analyzer, structureOf, wavelengthOf }; },
+  exportMesh: () => MeshExport.run(),
+  get mesh() { return STATE.lastMesh || null; },
+  get collide() { return Collide; },
+  get physics() { return { ksRender, membranePlan, lowpassAt, MEMBRANE, MEMBRANE_Q }; },
+  get sound() { return sound; },
+  gl
 };
 })();
 </script>
