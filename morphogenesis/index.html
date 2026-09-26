@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="color-scheme" content="dark">
 <meta name="theme-color" content="#030508">
-<meta name="description" content="A single-file research laboratory for emergent pattern: Gray-Scott reaction-diffusion, Physarum slime mould networks, Lenia continuous automata, 3D boids and Belousov-Zhabotinsky waves and a coupled ecosystem of all three kinds of life, with relief rendering and live generative sound.">
+<meta name="description" content="A single-file research laboratory for emergent pattern: Gray-Scott reaction-diffusion, Physarum slime mould networks, Lenia continuous automata, 3D boids, Belousov-Zhabotinsky waves and a coupled ecosystem of all three kinds of life. Translucent relief rendering with depth of field, a phylogeny of bred forms, MIDI and keyboard performance, video capture and live generative sound.">
 <title>Morphogenesis: The Emergence of Pattern &amp; Life</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23030508'/%3E%3Ccircle cx='24' cy='26' r='10' fill='none' stroke='%233ef2ff' stroke-width='4'/%3E%3Ccircle cx='42' cy='40' r='8' fill='none' stroke='%23ff3dcb' stroke-width='4'/%3E%3Ccircle cx='44' cy='18' r='4' fill='%23ffb43d'/%3E%3C/svg%3E">
 <style>
@@ -254,6 +254,117 @@ kbd.k{font:11px/1 var(--mono);color:var(--ink);border:1px solid var(--edge-2);bo
 #hint-hud{position:fixed;left:50%;top:18px;transform:translateX(-50%);z-index:20;padding:8px 14px;font:11.5px/1 var(--mono);color:var(--ink-2);opacity:0;pointer-events:none;transition:opacity .4s}
 body.hud-hidden #hint-hud.flash{opacity:1}
 
+
+/* ---------- lineage, phylogeny ---------- */
+.h3r{display:flex;align-items:center;gap:8px}
+.mini{height:20px;padding:0 8px;border-radius:6px;border:1px solid rgba(var(--accent-rgb),.45);background:rgba(var(--accent-rgb),.08);font:10.5px/1 var(--mono);letter-spacing:.06em;color:var(--accent);cursor:pointer;transition:background-color .15s}
+.mini:hover{background:rgba(var(--accent-rgb),.2)}
+#lineage .chip.wild{font-style:normal}
+#phylo{position:absolute;top:var(--gap);left:calc(292px + var(--gap) * 2);right:calc(318px + var(--gap) * 2);max-height:min(470px,58vh);display:flex;flex-direction:column;overflow:hidden;--up:#3ef2ff;--dn:#ff3dcb}
+#phylo[hidden]{display:none}
+.phy-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;padding:14px 10px 10px 18px;border-bottom:1px solid var(--edge)}
+.phy-head h2{margin:0;font:600 11px/1 var(--mono);letter-spacing:.26em;text-transform:uppercase;color:var(--accent)}
+.phy-head h2 span{margin-left:8px;letter-spacing:.06em;color:var(--ink-2)}
+.phy-head p{margin:7px 0 0;font:12px/1.45 var(--sans);color:var(--dim);max-width:64ch}
+.phy-head p b{font:600 11px/1 var(--mono);color:var(--ink-2)}
+.phy-body{flex:1;min-height:110px;overflow:auto;scrollbar-width:thin;scrollbar-color:rgba(150,240,235,.22) transparent}
+#phy-empty{margin:18px;font:13px/1.55 var(--sans);color:var(--ink-2)}
+#phy-empty[hidden]{display:none}
+#phy-svg{display:block}
+#phy-svg .edge{fill:none;stroke:rgba(150,240,235,.24);stroke-width:1.4}
+#phy-svg .edge.hot{stroke:var(--accent);stroke-width:2;filter:drop-shadow(0 0 4px rgba(var(--accent-rgb),.65))}
+#phy-svg .dv.up{fill:var(--up)}
+#phy-svg .dv.dn{fill:var(--dn)}
+#phy-svg .node{cursor:pointer;outline:none}
+#phy-svg .halo{fill:none;stroke:transparent;stroke-width:1.5;transition:stroke .15s}
+#phy-svg .node:hover .halo,#phy-svg .node:focus-visible .halo{stroke:rgba(255,255,255,.4)}
+#phy-svg .disc{fill:#04080c}
+#phy-svg .ring{fill:none;stroke:rgba(150,240,235,.38);stroke-width:1.2}
+#phy-svg .wild .ring{stroke-dasharray:3 2.6}
+#phy-svg .cultivar .ring{stroke:rgba(255,212,124,.6)}
+#phy-svg .cur .ring{stroke:var(--accent);stroke-width:2.2;stroke-dasharray:none}
+#phy-svg .cur .halo{stroke:rgba(var(--accent-rgb),.55);animation:phyPulse 2.4s ease-in-out infinite}
+#phy-svg .born .ring{stroke:#fff;animation:blink 0.9s ease-in-out infinite}
+#phy-svg .ph{fill:none;stroke:rgba(150,240,235,.4);stroke-width:1.4;stroke-linecap:round}
+#phy-svg .pending .ph{animation:blink 1.6s ease-in-out infinite}
+#phy-svg text{font:12.5px var(--sans);fill:var(--ink)}
+#phy-svg .it{font-style:italic;font-family:var(--serif);font-size:14px}
+#phy-svg .meta{font:10.5px var(--mono);fill:var(--dim)}
+#phy-svg .cur .nm{fill:#fff}
+#phy-svg .badge circle{fill:#04080c;stroke:rgba(150,240,235,.45);stroke-width:1}
+#phy-svg .badge text{font:600 9px var(--mono);fill:var(--ink-2);text-anchor:middle}
+#phy-svg .cur .badge circle{stroke:var(--accent)}
+#phy-svg .cur .badge text{fill:var(--accent)}
+#phy-cur{letter-spacing:.04em;text-transform:none;color:var(--ink-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+#phy-cur i{font:italic 12px var(--serif);color:var(--ink)}
+@keyframes phyPulse{50%{stroke-opacity:.12}}
+.phy-foot{display:flex;justify-content:space-between;gap:14px;padding:7px 16px 9px;border-top:1px solid var(--edge);font:10px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--dim)}
+#phy-count{letter-spacing:.04em;text-transform:none;color:var(--ink-2)}
+#phy-tip{position:fixed;left:0;top:0;z-index:25;width:258px;padding:11px 12px 10px;pointer-events:none;font:11.5px/1.4 var(--mono);color:var(--ink-2);background:var(--glass-strong)}
+#phy-tip[hidden]{display:none}
+#phy-tip b{display:block;margin-bottom:3px;font:600 13.5px/1.25 var(--sans);color:var(--ink)}
+#phy-tip b i{font:italic 500 15px/1.2 var(--serif)}
+#phy-tip span{display:block}
+#phy-tip table{width:100%;border-collapse:collapse;margin:8px 0 6px}
+#phy-tip td{padding:2px 0;font-variant-numeric:tabular-nums;white-space:nowrap}
+#phy-tip td:first-child{width:4.2em;color:var(--dim)}
+#phy-tip td:last-child{text-align:right}
+#phy-tip .up{color:var(--up)}
+#phy-tip .dn{color:var(--dn)}
+#phy-tip .dist{color:var(--dim);font-size:10.5px}
+#phy-tip .go{margin-top:6px;color:var(--accent);font-size:10.5px}
+#phy-tip{--up:#3ef2ff;--dn:#ff3dcb}
+
+/* ---------- synth keys ---------- */
+#keys{position:absolute;left:calc(292px + var(--gap) * 2);right:calc(318px + var(--gap) * 2);bottom:76px;width:fit-content;margin:0 auto;padding:9px 10px 10px}
+#keys[hidden]{display:none}
+.k-head{display:flex;justify-content:space-between;gap:18px;margin:0 2px 8px;font:10px/1 var(--mono);letter-spacing:.2em;text-transform:uppercase;color:var(--accent)}
+#k-midi{letter-spacing:.04em;text-transform:none;color:var(--ink-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:26ch}
+.k-row{display:grid;grid-template-columns:repeat(8,minmax(32px,52px));gap:5px}
+.kk{height:64px;display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:8px 0 7px;border-radius:9px;border:1px solid var(--edge);background:linear-gradient(180deg,rgba(255,255,255,.055),rgba(255,255,255,.01));color:var(--ink-2);cursor:pointer;touch-action:none;transition:border-color .25s,background-color .25s,box-shadow .35s,color .25s}
+.kk kbd{font:600 12.5px/1 var(--mono);color:var(--ink)}
+.kk span{font:11px/1 var(--mono)}
+.kk i{font:italic 12px/1 var(--serif);color:var(--dim)}
+.kk:hover{border-color:var(--edge-2);color:var(--ink)}
+.kk.lit{border-color:rgba(var(--accent-rgb),.85);background:rgba(var(--accent-rgb),.24);box-shadow:0 0 20px rgba(var(--accent-rgb),.5),inset 0 0 14px rgba(var(--accent-rgb),.3);color:#fff;transition:none}
+.kk.lit i{color:#fff}
+body.keys #toast{bottom:190px}
+
+/* ---------- recorder ---------- */
+.act.rec{position:relative;overflow:hidden}
+.act.rec .rd{color:#ff4f6a}
+.act.rec::after{content:"";position:absolute;left:0;bottom:0;height:2px;width:100%;transform-origin:0 50%;transform:scaleX(var(--prog,0));background:linear-gradient(90deg,#ff3b55,#ffd7dd);box-shadow:0 0 8px #ff3b55}
+.act.rec[aria-pressed="true"]{border-color:rgba(255,70,90,.65);color:#ffe4e8;background:linear-gradient(90deg,rgba(255,59,85,.18),rgba(255,255,255,.02))}
+.act.rec[aria-pressed="true"] .rd{animation:blink 1.2s ease-in-out infinite}
+#rec-dot{position:fixed;top:14px;left:50%;transform:translateX(-50%);z-index:45;display:none;align-items:center;gap:8px;padding:7px 12px;border-radius:20px;background:rgba(22,4,9,.74);border:1px solid rgba(255,70,90,.45);font:600 11px/1 var(--mono);letter-spacing:.2em;color:#ffd7dd;pointer-events:none;font-variant-numeric:tabular-nums}
+#rec-dot i{width:9px;height:9px;border-radius:50%;background:#ff3b55;box-shadow:0 0 10px #ff3b55;animation:blink 1.2s ease-in-out infinite}
+body.recording #rec-dot{display:flex}
+
+/* ---------- onboarding ---------- */
+#splash{position:fixed;inset:0;z-index:60;display:grid;place-items:center;padding:24px;background:radial-gradient(ellipse at 50% 45%,rgba(3,5,8,.3),rgba(1,2,4,.84) 78%);opacity:0;transition:opacity .7s ease;-webkit-backdrop-filter:blur(2.5px);backdrop-filter:blur(2.5px);cursor:pointer}
+#splash[hidden]{display:none}
+#splash.show{opacity:1}
+.sp-card{width:min(700px,100%);max-height:calc(100vh - 40px);overflow:auto;padding:28px 38px 20px;cursor:default;transform:translateY(14px) scale(.985);transition:transform .9s cubic-bezier(.2,.8,.2,1);scrollbar-width:thin}
+#splash.show .sp-card{transform:none}
+.sp-kick{margin:0 0 12px;font:11px/1 var(--mono);letter-spacing:.34em;text-transform:uppercase;color:var(--accent)}
+#sp-title{margin:0;font:600 clamp(26px,4.6vw,42px)/1 var(--mono);letter-spacing:.2em;text-transform:uppercase;color:var(--ink)}
+#sp-title b{font-weight:600;color:var(--accent);text-shadow:0 0 22px rgba(var(--accent-rgb),.6)}
+.sp-sub{margin:10px 0 0;font:italic 400 clamp(17px,2.2vw,22px)/1.3 var(--serif);color:var(--ink-2)}
+#splash blockquote{margin:18px 0 0;padding:0 0 0 16px;border-left:2px solid var(--accent);font:italic 15.5px/1.55 var(--serif);color:var(--ink)}
+#splash blockquote cite{display:block;margin-top:6px;font:normal 11px/1.3 var(--mono);letter-spacing:.06em;color:var(--dim)}
+#sp-body{margin:14px 0 0;font:14px/1.58 var(--sans);color:#cfe3e2}
+.sp-keys{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin:18px 0 0}
+.sp-keys div{padding:8px 10px;border:1px solid var(--edge);border-radius:10px;background:rgba(255,255,255,.02)}
+.sp-keys dt{margin:0 0 6px;font:600 12px/1 var(--mono);color:var(--accent)}
+.sp-keys dd{margin:0;font:11.5px/1.35 var(--sans);color:var(--ink-2)}
+.sp-go{margin:18px 0 0;width:100%;height:44px;display:flex;align-items:center;justify-content:center;gap:14px;border-radius:12px;border:1px solid rgba(var(--accent-rgb),.55);background:linear-gradient(90deg,rgba(var(--accent-rgb),.16),rgba(255,255,255,.03));font:600 12.5px/1 var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--ink);cursor:pointer;transition:box-shadow .2s,border-color .2s}
+.sp-go span{font:400 11px/1 var(--mono);letter-spacing:.04em;text-transform:none;color:var(--dim)}
+.sp-go:hover,.sp-go:focus-visible{box-shadow:0 0 26px rgba(var(--accent-rgb),.35);border-color:var(--accent)}
+.sp-credit{margin:12px 0 0;font:11px/1.6 var(--mono);color:var(--dim)}
+body.splash #hud,body.splash #toast{opacity:0}
+body.splash #hud>*{pointer-events:none}
+@media (max-height:740px){#splash blockquote{font-size:14.5px}#sp-body{font-size:13.5px;line-height:1.52}.sp-keys dd{font-size:11px}}
+
 /* ---------- mobile toggle (hidden on desktop) ---------- */
 #btn-dock{display:none}
 
@@ -262,6 +373,8 @@ body.hud-hidden #hint-hud.flash{opacity:1}
   .dock{width:292px}
   .model .ds{display:none}
   .model{height:36px}
+  #phylo,#keys{left:calc(252px + var(--gap) * 2);right:calc(292px + var(--gap) * 2)}
+  body.keys .phase{display:none}
 }
 @media (max-width:760px){
   :root{--gap:10px}
@@ -286,6 +399,15 @@ body.hud-hidden #hint-hud.flash{opacity:1}
   #btn-sound .lbl{display:none}
   .g-body .cards{grid-template-columns:1fr}
   #toast{bottom:64px}
+  #phylo{left:var(--gap);right:var(--gap);top:128px;max-height:50vh}
+  #keys{left:var(--gap);right:var(--gap);bottom:60px;width:auto}
+  .k-row{grid-template-columns:repeat(8,1fr)}
+  .kk{height:56px}
+  body.keys #toast{bottom:170px}
+  .sp-card{padding:24px 20px 20px}
+  .sp-go{position:sticky;bottom:0;background:linear-gradient(90deg,#0b2a30,#08161a);box-shadow:0 -14px 22px rgba(4,8,11,.9)}
+  .sp-keys{grid-template-columns:1fr 1fr}
+  #sp-body{font-size:13.5px}
 }
 @media (max-width:420px){
   .corner .lbl{display:none}
@@ -345,8 +467,8 @@ body.hud-hidden #hint-hud.flash{opacity:1}
         <div class="chips" id="presets" role="group" aria-label="Presets"></div>
       </section>
       <section class="sect" id="sect-lineage" hidden>
-        <h3>Lineage <span id="lineage-note"></span></h3>
-        <div class="chips" id="lineage" role="group" aria-label="Bred phenotypes"></div>
+        <h3>Lineage <span class="h3r"><span id="lineage-note"></span><button class="mini" id="btn-tree" type="button" aria-expanded="false" aria-controls="phylo" title="Open the phylogenetic tree (Y)">Tree</button></span></h3>
+        <div class="chips" id="lineage" role="group" aria-label="Ancestry of the current phenotype"></div>
       </section>
       <section class="sect">
         <h3>Parameters</h3>
@@ -381,11 +503,15 @@ body.hud-hidden #hint-hud.flash{opacity:1}
         </div>
         <div class="toggles" role="group" aria-label="Relief">
           <button class="tog" id="tog-tilt" aria-pressed="false" title="Tilt the dish into 3D terrain (I)"><i></i>3D terrain</button>
-          <button class="tog" id="tog-exhibit" aria-pressed="false" title="Exhibition: a curated, self-guided tour (X)"><i></i>Exhibition</button>
+          <button class="tog" id="tog-dof" aria-pressed="true" title="In 3D terrain, keep the orbit centre sharp and melt the far dish into bokeh"><i></i>Depth of field</button>
         </div>
         <div class="param">
-          <label for="p-relief">Relief depth</label><output id="o-relief" for="p-relief">1.00</output>
+          <label for="p-relief">Relief &amp; cavity</label><output id="o-relief" for="p-relief">1.00</output>
           <input type="range" id="p-relief" min="0" max="2.5" step="0.01" value="1">
+        </div>
+        <div class="param">
+          <label for="p-sss">Translucency <i>SSS</i></label><output id="o-sss" for="p-sss">1.00</output>
+          <input type="range" id="p-sss" min="0" max="2" step="0.01" value="1">
         </div>
         <div class="param">
           <label for="p-gloss">Gloss &amp; rim</label><output id="o-gloss" for="p-gloss">1.00</output>
@@ -397,6 +523,14 @@ body.hud-hidden #hint-hud.flash{opacity:1}
         </div>
       </section>
       <section class="sect">
+        <h3>Performance <span id="midi-note"></span></h3>
+        <div class="toggles" role="group" aria-label="Performance">
+          <button class="tog" id="tog-keys" aria-pressed="false" title="Play the specimen from the A to K row or a MIDI keyboard (N)"><i></i>Synth keys</button>
+          <button class="tog" id="tog-exhibit" aria-pressed="false" title="Exhibition: a curated, self-guided tour (X)"><i></i>Exhibition</button>
+        </div>
+        <p class="hint">Synth keys turn A&ndash;K into the current mode; each note bursts morphogen where its pitch sits on a dial. Plug in a MIDI keyboard and it plays too.</p>
+      </section>
+      <section class="sect">
         <h3>Protocol</h3>
         <div class="actions">
           <button class="act" id="act-pause" title="Pause or resume (Space)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path id="pause-ico" d="M8 5v14M16 5v14"/></svg><span id="pause-t">Pause</span></button>
@@ -405,10 +539,32 @@ body.hud-hidden #hint-hud.flash{opacity:1}
           <button class="act" id="act-clear" title="Clear the dish (C)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M5 7h14M9 7V4h6v3M7 7l1 13h8l1-13"/></svg>Clear</button>
           <button class="act wide evolve" id="act-evolve" title="Mutate the parameters over three seconds and breed a new phenotype (V)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M7 3c0 6 10 6 10 12s-10 3-10 6M17 3c0 6-10 6-10 12s10 3 10 6M8.5 7h7M8.5 17h7"/></svg><span id="evolve-t">Evolve a phenotype</span></button>
           <button class="act wide" id="act-snap" title="Render a 3840 by 2160 uncompressed PNG (S)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg><span id="snap-t">Capture 4K Snapshot</span></button>
+          <button class="act wide rec" id="act-rec" aria-pressed="false" title="Film ten seconds of the specimen with its sound; press again to stop early (O)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="6" width="13" height="12" rx="2.5"/><path d="M16 10.5l5-3v9l-5-3z"/><circle class="rd" cx="9.5" cy="12" r="2.4" fill="currentColor" stroke="none"/></svg><span id="rec-t">Record 10 s Clip</span></button>
         </div>
       </section>
     </div>
   </aside>
+
+  <section class="glass" id="phylo" hidden aria-labelledby="phy-h">
+    <header class="phy-head">
+      <div>
+        <h2 id="phy-h">Phylogeny <span id="phy-model"></span></h2>
+        <p>Branch length is genetic distance; the bars on each branch are its divergence vector. <b>V</b> breeds from the ringed species. Click any node to rewind the universe to its genome.</p>
+      </div>
+      <button class="ib" id="phy-close" aria-label="Close the phylogenetic tree"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    </header>
+    <div class="phy-body" id="phy-body">
+      <p id="phy-empty">No species yet. Press <kbd class="k">V</kbd> to breed the first offspring of this specimen; its wild type will root the tree.</p>
+      <svg id="phy-svg" role="group" aria-label="Phylogenetic tree" xmlns="http://www.w3.org/2000/svg"></svg>
+    </div>
+    <footer class="phy-foot"><span>genetic distance &rarr;</span><span id="phy-cur"></span><span id="phy-count"></span></footer>
+  </section>
+  <div class="glass" id="phy-tip" hidden></div>
+
+  <div class="glass" id="keys" hidden>
+    <div class="k-head"><span id="k-mode">Ionian</span><span id="k-midi">No MIDI device</span></div>
+    <div class="k-row" id="k-row" role="group" aria-label="Synth keys"></div>
+  </div>
 
   <figure class="glass phase" id="phase" aria-label="Phase portrait of the specimen">
     <figcaption><span id="ph-t">Phase portrait</span><span id="ph-m">--</span></figcaption>
@@ -445,6 +601,30 @@ body.hud-hidden #hint-hud.flash{opacity:1}
   <p id="ex-body"></p>
   <p id="ex-meta"></p>
   <p class="ex-exit">Move the mouse or press any key to take the controls</p>
+</div>
+
+<div id="rec-dot" aria-hidden="true"><i></i>REC <span id="rec-s">10</span></div>
+
+<div id="splash" hidden role="dialog" aria-modal="true" aria-labelledby="sp-title" aria-describedby="sp-body">
+  <div class="sp-card glass">
+    <p class="sp-kick">A laboratory of emergent form</p>
+    <h1 id="sp-title"><b>Morpho</b>genesis</h1>
+    <p class="sp-sub">The Emergence of Pattern &amp; Life</p>
+    <blockquote>&ldquo;It is suggested that a system of chemical substances, called morphogens, reacting together and diffusing through a tissue, is adequate to account for the main phenomena of morphogenesis.&rdquo;<cite>Alan Turing, 1952</cite></blockquote>
+    <p id="sp-body">Nothing on this screen is drawn. Every stripe, spiral, vein and flock is computed, moment by moment, from a few local rules: chemicals that react and spread, cells that follow a scent, creatures that copy their neighbours. No part holds the plan. The form is what the rules do together, which is why the same mathematics turns up in a leopard&rsquo;s coat, a slime mould&rsquo;s network and a starling murmuration. Turing called it morphogenesis. Today we would also call it emergent computation: the pattern is the answer the medium computes.</p>
+    <dl class="sp-keys">
+      <div><dt>Drag</dt><dd>paint the specimen</dd></div>
+      <div><dt>Right-drag</dt><dd>barriers, food, repellent</dd></div>
+      <div><dt>1&ndash;6</dt><dd>six living models</dd></div>
+      <div><dt>I</dt><dd>tilt into 3D terrain</dd></div>
+      <div><dt>V &middot; Y</dt><dd>evolve &middot; phylogeny</dd></div>
+      <div><dt>N</dt><dd>play it: A&ndash;K or MIDI</dd></div>
+      <div><dt>O &middot; S</dt><dd>film 10 s &middot; 4K plate</dd></div>
+      <div><dt>G &middot; ?</dt><dd>field guide &middot; all keys</dd></div>
+    </dl>
+    <button class="sp-go" id="sp-go" type="button">Enter the laboratory <span>Space or click</span></button>
+    <p class="sp-credit">A laboratory by Alex Rajcoomar, after Turing (1952), Gray and Scott (1984), Pearson (1993), Jones (2010), Chan (2019), Rafler (2011), Reynolds (1987), Belousov, Zhabotinsky and Barkley (1991). One self-contained file: no network, no tracking, nothing leaves the page unless you save it.</p>
+  </div>
 </div>
 
 <div id="hint-hud" class="glass">Interface hidden &middot; press <kbd class="k">H</kbd> to bring it back</div>
@@ -538,7 +718,9 @@ body.hud-hidden #hint-hud.flash{opacity:1}
       <h3>VIII &middot; Rendering</h3>
       <h4>Specimens as terrain</h4>
       <p>Every grid model writes a surface each frame: an albedo from its palette and a height from its concentration. One shared lighting pass treats that height as a landscape. Normals come from central differences. Light wraps around the relief, a sharp wet highlight rides the slopes, and crevices darken where the local surface sits below its blurred surroundings (a cavity term read from the texture's mipmaps). A Fresnel rim, proportional to (1 &minus; N&middot;V)&sup3;, lights the edges, and a faint thin-film tint shifts with viewing angle.</p>
-      <p>Press <kbd class="k">I</kbd> and the dish tilts into real geometry: the height field displaces a mesh, tiled three by three so the periodic world runs to a fogged horizon. The camera settles at the isometric elevation of 35.26&deg; (arctan&nbsp;1/&radic;2). Orbit with a middle-drag, an Alt-drag or the <em>Orbit</em> pointer mode; painting still works, because each stroke is cast as a ray onto the dish.</p>
+      <p>The body of every specimen is translucent. Each colour channel is lit through a progressively softer normal, with red, which scatters furthest in real tissue, the softest, and wraps further into shadow. Light carried through the flesh is absorbed by the Beer&ndash;Lambert law, so thin membranes glow pale while thick cores go deep and saturated, as in a siphonophore, a jelly or cast resin. Seen against the light in 3D, a forward-scattering lobe lights the edges from behind.</p>
+      <p>Occlusion is computed in the specimen&rsquo;s own texture space, which is exact for a heightfield and has none of the screen-edge artefacts of screen-space AO. For every cell, six directions are searched out to ten cells for the steepest horizon (cone-filtered through the mipmaps), and a curvature term darkens the concave crevices between ridges.</p>
+      <p>Press <kbd class="k">I</kbd> and the dish tilts into real geometry: the height field displaces a mesh, tiled three by three so the periodic world runs to a fogged horizon. The camera settles at the isometric elevation of 35.26&deg; (arctan&nbsp;1/&radic;2). Orbit with a middle-drag, an Alt-drag or the <em>Orbit</em> pointer mode; painting still works, because each stroke is cast as a ray onto the dish. A thin-lens depth of field focuses on the orbit centre: each fragment writes a signed circle of confusion, and a half-resolution bokeh pass gathers on a golden-angle spiral, so the far terrain melts into soft discs while the centre stays sharp.</p>
     </section>
 
     <section id="g-nature">
@@ -566,7 +748,10 @@ body.hud-hidden #hint-hud.flash{opacity:1}
         <tr><td>Middle-drag or Alt-drag</td><td>Pan the dish (or orbit the camera)</td></tr>
         <tr><td><kbd class="k">1</kbd>&ndash;<kbd class="k">6</kbd></td><td>Switch model; each keeps its state while you are away</td></tr>
         <tr><td><kbd class="k">I</kbd></td><td>Tilt the dish into 3D terrain, and back</td></tr>
-        <tr><td><kbd class="k">V</kbd></td><td>Evolve: breed a new phenotype from the current parameters</td></tr>
+        <tr><td><kbd class="k">V</kbd> <kbd class="k">Y</kbd></td><td>Evolve a new phenotype; open the phylogenetic tree</td></tr>
+        <tr><td><kbd class="k">N</kbd></td><td>Synth keys: the A&ndash;K row plays the current mode, and so does any MIDI keyboard</td></tr>
+        <tr><td><kbd class="k">O</kbd></td><td>Film a ten-second clip of the specimen with its sound</td></tr>
+        <tr><td>Two fingers</td><td>Pinch to zoom; drag to pan, or to orbit in 3D</td></tr>
         <tr><td><kbd class="k">X</kbd></td><td>Exhibition: a curated tour (it also starts after 25 seconds idle)</td></tr>
         <tr><td><kbd class="k">L</kbd></td><td>Listen: let the microphone pulse the specimen</td></tr>
         <tr><td><kbd class="k">Space</kbd> <kbd class="k">.</kbd></td><td>Pause, or advance a single frame</td></tr>
@@ -577,8 +762,13 @@ body.hud-hidden #hint-hud.flash{opacity:1}
         <tr><td><kbd class="k">M</kbd> <kbd class="k">G</kbd> <kbd class="k">H</kbd> <kbd class="k">F</kbd></td><td>Sound, this guide, hide the interface, fullscreen</td></tr>
         <tr><td><kbd class="k">0</kbd></td><td>Reset zoom and pan</td></tr>
       </table>
-      <h5>Evolve and the lineage</h5>
-      <p><em>Evolve</em> mutates the parameters that shape a phenotype and glides them to their new values over three seconds, so you watch the pattern turn into its offspring. The mutation respects what is viable: Gray&#8211;Scott offspring are drawn close to the saddle-node line k = &radic;F/2 &minus; F, where patterns live, and Lenia's growth centre moves only a few per cent. Each offspring gets a binomial name and joins the lineage; click a name to return to it.</p>
+      <h5>Evolve and the phylogeny</h5>
+      <p><em>Evolve</em> mutates the parameters that shape a phenotype and glides them to their new values over three seconds, so you watch the pattern turn into its offspring. The mutation respects what is viable: Gray&#8211;Scott offspring are drawn close to the saddle-node line k = &radic;F/2 &minus; F, where patterns live, and Lenia's growth centre moves only a few per cent.</p>
+      <p>Every offspring gets a binomial name and a place in a phylogenetic tree (<kbd class="k">Y</kbd>). The specimen as you found it is the <em>wild type</em> at the root; if you move the sliders by hand before breeding, the tuned form enters the tree as a <em>cultivar</em>, in single quotes as botanists write them. Branch length is genetic distance, the size of the parameter change measured against each slider's range, and the small bars on every branch are its divergence vector. Each node carries a photograph of the phenotype, taken once it has had a few seconds to express itself. Click any node and the universe glides back to that genome; the next Evolve branches from there.</p>
+      <h5>Playing the specimen</h5>
+      <p>With <em>Synth keys</em> on (<kbd class="k">N</kbd>), the home row A S D F G H J K plays one octave of the current mode, and Shift plays the octave above. Any MIDI keyboard plays as well: the page asks for MIDI access only when you turn the keys on. Each note sounds at its true pitch and is followed by a modal arpeggio (the diatonic third, fifth and octave above), and the pad re-voices onto the chord you played. Each note also bursts into the specimen at its place on a dial: pitch class sets the angle, with C at twelve o'clock, and octave sets the distance from the centre, so a scale traces a ring. Velocity sets the size of the burst, the mod wheel widens every burst, and the sustain pedal lengthens the notes.</p>
+      <h5>Recording</h5>
+      <p><em>Record 10 s Clip</em> (<kbd class="k">O</kbd>) films the canvas at up to 60 frames a second, together with the soundscape's final mix, and downloads the clip when it ends: MP4 (H.264) where the browser can encode it, otherwise WebM. The bitrate scales with the canvas, from 8 to 40 Mbit/s. The interface is not filmed.</p>
       <h5>Sound</h5>
       <p>The soundscape is synthesized live. An 8&times;8 census of the specimen gives its density, activity, contrast and spatial entropy (the evenness of its mass). These pick a mode on a scale from Lydian (ordered, bright) to Phrygian (turbulent, dark), changed only at chord boundaries. A sub-bass, a pad voiced across three octaves and a pentatonic arpeggio follow the specimen's density, centre and restlessness. Cursor ripples bend a chime's pitch with your hand's speed. With <em>Listen</em> on, onsets in the room (a clap, a syllable) pulse the specimen under your cursor, or at a slowly drifting source when the cursor is away. Sound is analysed in the page only and never recorded or sent.</p>
       <p>Everything here lives in one HTML file with no network requests. The fields are simulated in WebGL2 fragment shaders on floating-point textures; the slime mould runs up to a million agents on the GPU; the boids run on the CPU with a spatial hash. Snapshots are written as uncompressed PNG files, and each carries its model, specimen and parameters in its text chunks, so every plate keeps its own provenance.</p>
@@ -592,7 +782,9 @@ body.hud-hidden #hint-hud.flash{opacity:1}
     <h2 id="help-t">Keyboard</h2>
     <table>
       <tr><td><kbd class="k">1</kbd>&ndash;<kbd class="k">6</kbd></td><td>Gray&#8211;Scott, Physarum, Lenia, Boids, BZ, Biosphere</td></tr>
-      <tr><td><kbd class="k">I</kbd> / <kbd class="k">V</kbd></td><td>3D terrain / evolve a phenotype</td></tr>
+      <tr><td><kbd class="k">I</kbd> / <kbd class="k">V</kbd> / <kbd class="k">Y</kbd></td><td>3D terrain / evolve a phenotype / phylogenetic tree</td></tr>
+      <tr><td><kbd class="k">N</kbd></td><td>Synth keys: A S D F G H J K play the mode (Shift: octave up)</td></tr>
+      <tr><td><kbd class="k">O</kbd></td><td>Record a 10 s clip with sound (again to stop early)</td></tr>
       <tr><td><kbd class="k">X</kbd> / <kbd class="k">L</kbd></td><td>Exhibition tour / microphone</td></tr>
       <tr><td><kbd class="k">Space</kbd> / <kbd class="k">.</kbd></td><td>Pause / step</td></tr>
       <tr><td><kbd class="k">R</kbd> / <kbd class="k">C</kbd></td><td>Reseed / clear</td></tr>
@@ -604,6 +796,7 @@ body.hud-hidden #hint-hud.flash{opacity:1}
       <tr><td><kbd class="k">G</kbd> / <kbd class="k">H</kbd> / <kbd class="k">F</kbd></td><td>Field Guide / hide interface / fullscreen</td></tr>
       <tr><td><kbd class="k">0</kbd></td><td>Reset zoom and pan</td></tr>
       <tr><td><kbd class="k">Esc</kbd></td><td>Close panels</td></tr>
+      <tr><td>Two fingers</td><td>Pinch to zoom; drag to pan, or to orbit in 3D (touch screens and trackpads)</td></tr>
     </table>
     <button class="ib close" id="help-close">Close</button>
   </div>
@@ -836,14 +1029,32 @@ void surfMask(inout vec3 alb, inout float h, vec2 uv) {
 }
 `;
 
-// shared lighting: wrapped diffuse, a wet two-lobe specular, thin-film sheen,
-// Fresnel rim and self-illumination that rises with height
+// shared lighting for every heightfield. The body is translucent: each colour channel sees a
+// progressively softer normal and wraps further into shadow (red scatters furthest), light
+// carried through the flesh is absorbed by Beer-Lambert so thin membranes glow pale while
+// thick cores deepen and saturate, and a forward-scatter lobe lights the flesh from behind
+// when the viewer faces the light. Over that sits a wet coat: a two-lobe specular, a
+// thin-film sheen and a Fresnel rim. ao is horizon occlusion; cav darkens concave crevices.
 const GLSL_SHADE = `
 uniform vec3 u_L, u_rim;
-uniform float u_gloss, u_relief;
-vec3 shade(vec3 alb, float h, vec3 N, vec3 V, float ao) {
-  float ndl = dot(N, u_L);
-  float wrap = clamp((ndl + 0.3) / 1.3, 0.0, 1.0);
+uniform float u_gloss, u_relief, u_sss;
+vec3 shade(vec3 alb, float h, vec3 N, vec3 Nb, vec3 V, float ao, float cav, float thick) {
+  float s = clamp(u_sss, 0.0, 2.0), sw = min(s, 1.0);
+  float lum = max(max(alb.r, alb.g), alb.b);
+  vec3 hue = alb / max(lum, 1e-4);
+  lum = min(lum, 1.0);   // scattered light never exceeds what a fully lit body could carry
+  vec3 w = vec3(0.55, 0.3, 0.14) * s;
+  vec3 ndl = vec3(dot(normalize(mix(N, Nb, 0.9 * sw)), u_L), dot(normalize(mix(N, Nb, 0.55 * sw)), u_L), dot(normalize(mix(N, Nb, 0.2 * sw)), u_L));
+  vec3 diff = clamp((ndl + 0.3 + w) / (1.3 + w), 0.0, 1.0);
+  float crev = 1.0 - 0.8 * cav;
+  vec3 col = alb * (0.15 + 0.88 * diff) * ao * crev;
+  col += alb * h * (0.5 - 0.2 * sw);
+  float dens = smoothstep(0.02, 0.4, h);
+  vec3 through = exp(-((1.0 - hue) * 2.4 + 0.3) * thick * 2.6);
+  float bodyL = 0.3 + 0.7 * clamp(dot(Nb, u_L) * 0.5 + 0.5, 0.0, 1.0);
+  col += mix(hue, vec3(1.0), 0.15) * lum * dens * through * bodyL * 0.55 * s * mix(1.0, crev, 0.6);
+  float fwd = pow(clamp(dot(V, -normalize(u_L + N * 0.45)), 0.0, 1.0), 3.0);
+  col += hue * lum * fwd * dens * (1.0 - 0.6 * thick) * 1.4 * s;
   vec3 H = normalize(u_L + V);
   float ndh = max(dot(N, H), 0.0);
   float ndv = clamp(dot(N, V), 0.0, 1.0);
@@ -851,10 +1062,8 @@ vec3 shade(vec3 alb, float h, vec3 N, vec3 V, float ao) {
   float spec = (pow(ndh, 110.0) * 1.1 + pow(ndh, 16.0) * 0.04) * wet * mix(0.3, 1.0, smoothstep(0.0, 0.2, 1.0 - N.z));
   float fres = pow(1.0 - ndv, 3.0);
   vec3 iri = 0.5 + 0.5 * cos(6.2831853 * (vec3(0.0, 0.33, 0.67) + ndv * 1.7 + h * 0.9));
-  vec3 col = alb * (0.16 + 0.9 * wrap) * ao;
-  col += alb * h * 0.5;
   col += mix(vec3(1.0), iri, 0.4) * spec * u_gloss * ao;
-  col += u_rim * fres * (0.15 + 0.85 * h) * 0.8 * u_gloss;
+  col += u_rim * fres * (0.15 + 0.85 * h) * 0.8 * u_gloss * mix(1.0, crev, 0.5);
   return col;
 }
 `;
@@ -1340,18 +1549,50 @@ void main() {
 }`;
 
 /* ---------- relief: the lit heightfield, seen from above ---------- */
+// occlusion, computed once per frame in the grid's own texture space (exact for a heightfield,
+// and free of the screen-edge artefacts of screen-space AO): r = horizon occlusion over six
+// directions out to ten cells, cone-filtered through the mips; g = crevice, the concave
+// curvature that darkens the narrow valleys between ridges
+SRC.reliefAO = `
+uniform sampler2D u_surf; uniform vec2 u_size; uniform float u_hs;
+void main() {
+  vec2 px = 1.0 / u_size, uv = gl_FragCoord.xy * px;
+  float h = texture(u_surf, uv).a, occ = 0.0;
+  for (int d = 0; d < 6; d++) {
+    float a = float(d) * 1.0471976 + 0.2618;
+    vec2 dir = vec2(cos(a), sin(a)) * px;
+    float tmax = 0.0, r = 1.5;
+    for (int k = 0; k < 3; k++) {
+      float hs = textureLod(u_surf, uv + dir * r, max(0.0, log2(r) - 0.5)).a;
+      tmax = max(tmax, (hs - h) * u_hs / r);
+      r *= 2.6;
+    }
+    occ += tmax * inversesqrt(1.0 + tmax * tmax);
+  }
+  occ /= 6.0;
+  float ring = 0.25 * (texture(u_surf, uv + vec2(px.x, 0.0)).a + texture(u_surf, uv - vec2(px.x, 0.0)).a
+                     + texture(u_surf, uv + vec2(0.0, px.y)).a + texture(u_surf, uv - vec2(0.0, px.y)).a);
+  float wide = textureLod(u_surf, uv, 1.5).a;
+  float cav = smoothstep(0.004, 0.07, (ring - h) + 0.7 * (wide - h));
+  o = vec4(clamp(1.0 - 1.25 * occ, 0.12, 1.0), cav, 0.0, 1.0);
+}`;
+
 SRC.relief2D = `
-uniform sampler2D u_surf;
+uniform sampler2D u_surf, u_ao;
 void main() {
   vec2 g = toGrid(), px = 1.0 / u_size, uv = g * px;
   vec4 s = texture(u_surf, uv);
+  float k = u_relief * 5.0;
   float hx = texture(u_surf, uv + vec2(px.x, 0.0)).a - texture(u_surf, uv - vec2(px.x, 0.0)).a;
   float hy = texture(u_surf, uv + vec2(0.0, px.y)).a - texture(u_surf, uv - vec2(0.0, px.y)).a;
-  vec3 N = normalize(vec3(-vec2(hx, hy) * u_relief * 5.0, 1.0));
-  float a1 = textureLod(u_surf, uv, 2.0).a, a2 = textureLod(u_surf, uv, 4.0).a;
-  float ao = clamp(1.0 - 1.5 * max(a1 - s.a, 0.0) - 1.1 * max(a2 - s.a, 0.0), 0.15, 1.0);
-  ao = mix(1.0, ao, clamp(u_relief, 0.0, 1.0));
-  o = vec4(shade(s.rgb, s.a, N, vec3(0.0, 0.0, 1.0), ao), 1.0);
+  vec3 N = normalize(vec3(-vec2(hx, hy) * k, 1.0));
+  float bx = textureLod(u_surf, uv + vec2(4.0 * px.x, 0.0), 2.0).a - textureLod(u_surf, uv - vec2(4.0 * px.x, 0.0), 2.0).a;
+  float by = textureLod(u_surf, uv + vec2(0.0, 4.0 * px.y), 2.0).a - textureLod(u_surf, uv - vec2(0.0, 4.0 * px.y), 2.0).a;
+  vec3 Nb = normalize(vec3(-vec2(bx, by) * k * 0.25, 1.0));
+  vec4 a = texture(u_ao, uv);
+  float r = clamp(u_relief, 0.0, 1.0);
+  float thick = 0.5 * (s.a + textureLod(u_surf, uv, 2.0).a);
+  o = vec4(shade(s.rgb, s.a, N, Nb, vec3(0.0, 0.0, 1.0), mix(1.0, a.r, r), a.g * r, thick), 1.0);
 }`;
 
 /* ---------- relief in 3D: a 3x3 field of displaced tiles, fogged to the horizon ---------- */
@@ -1368,10 +1609,12 @@ void main() {
   v_wp = vec3(g * u_cell, h * u_hcss);
   gl_Position = u_vp * vec4(v_wp, 1.0);
 }`;
+// alpha carries a signed circle of confusion for the depth-of-field pass (0.5 = in focus):
+// a thin lens focused on the orbit target, plus a radial falloff so the far rim softens all round
 SRC.meshFS = `#version 300 es
 precision highp float; precision highp sampler2D;
 in vec2 v_g; in vec3 v_wp; out vec4 o;
-uniform sampler2D u_surf; uniform vec2 u_size, u_target; uniform float u_cell, u_hcss, u_fogR; uniform vec3 u_eye, u_bg;
+uniform sampler2D u_surf, u_ao; uniform vec2 u_size, u_target; uniform float u_cell, u_hcss, u_fogR, u_focus, u_aper; uniform vec3 u_eye, u_fwd, u_bg;
 ` + GLSL_SHADE + `
 void main() {
   vec2 px = 1.0 / u_size, uv = v_g * px;
@@ -1380,12 +1623,20 @@ void main() {
   float hy = texture(u_surf, uv + vec2(0.0, px.y)).a - texture(u_surf, uv - vec2(0.0, px.y)).a;
   float k = 0.5 * u_hcss / u_cell + u_relief * 2.0;
   vec3 N = normalize(vec3(-vec2(hx, hy) * k, 1.0));
+  float bx = textureLod(u_surf, uv + vec2(4.0 * px.x, 0.0), 2.0).a - textureLod(u_surf, uv - vec2(4.0 * px.x, 0.0), 2.0).a;
+  float by = textureLod(u_surf, uv + vec2(0.0, 4.0 * px.y), 2.0).a - textureLod(u_surf, uv - vec2(0.0, 4.0 * px.y), 2.0).a;
+  vec3 Nb = normalize(vec3(-vec2(bx, by) * k * 0.25, 1.0));
   vec3 V = normalize(u_eye - v_wp);
-  float a1 = textureLod(u_surf, uv, 2.0).a, a2 = textureLod(u_surf, uv, 4.0).a;
-  float ao = clamp(1.0 - 1.5 * max(a1 - s.a, 0.0) - 1.1 * max(a2 - s.a, 0.0), 0.15, 1.0);
-  vec3 col = shade(s.rgb, s.a, N, V, ao);
-  float fog = smoothstep(u_fogR * 0.5, u_fogR, length(v_wp.xy - u_target));
-  o = vec4(mix(col, u_bg, fog), 1.0);
+  vec4 a = texture(u_ao, uv);
+  float thick = 0.5 * (s.a + textureLod(u_surf, uv, 2.0).a);
+  vec3 col = shade(s.rgb, s.a, N, Nb, V, a.r, a.g, thick);
+  float rad = length(v_wp.xy - u_target) / u_fogR;
+  float fog = smoothstep(0.5, 1.0, rad);
+  float z = dot(v_wp - u_eye, u_fwd);
+  float lens = (z - u_focus) / max(z, 1.0) * u_aper;
+  float coc = sign(lens) * smoothstep(0.035, 0.75, abs(lens));
+  coc = coc >= 0.0 ? max(coc, smoothstep(0.22, 0.85, rad) * 0.7) : coc;
+  o = vec4(mix(col, u_bg, fog), 0.5 + 0.5 * clamp(coc, -1.0, 1.0));
 }`;
 
 SRC.reliefBG = `
@@ -1538,9 +1789,32 @@ void main() {
      + texture(u_src, v_uv + vec2(d.x, -d.y)).rgb + texture(u_src, v_uv + vec2(-d.x, d.y)).rgb;
   o = vec4(c / 16.0 * u_w, 1.0);
 }`;
+// depth of field: a single-pass scatter-as-gather bokeh on a golden-angle spiral (after Dennis
+// Gustafsson, 2018), at half resolution. Alpha holds the signed circle of confusion; a sample
+// behind the centre may blur over it only as far as the centre's own blur allows.
+SRC.dof = `
+uniform sampler2D u_src; uniform vec2 u_texel; uniform float u_maxR, u_rs;
+void main() {
+  vec4 c0 = texture(u_src, v_uv);
+  float cc = c0.a * 2.0 - 1.0, cs = abs(cc) * u_maxR;
+  vec3 acc = c0.rgb;
+  float tot = 1.0, r = u_rs, ang = 0.0;
+  for (int i = 0; i < 200; i++) {
+    if (r >= u_maxR) break;
+    vec4 sm = texture(u_src, v_uv + vec2(cos(ang), sin(ang)) * u_texel * r);
+    float sc = sm.a * 2.0 - 1.0, ss = abs(sc) * u_maxR;
+    if (sc > cc) ss = min(ss, cs * 2.0);
+    float m = smoothstep(r - 0.5, r + 0.5, ss);
+    acc += mix(acc / tot, sm.rgb, m);
+    tot += 1.0;
+    ang += 2.39996323;
+    r += u_rs / r;
+  }
+  o = vec4(acc / tot, c0.a);
+}`;
 SRC.composite = `
-uniform sampler2D u_scene, u_bloom;
-uniform vec2 u_res; uniform float u_px, u_time, u_bloomAmt, u_useBloom, u_ca, u_crt, u_grain, u_vig, u_kal, u_hue;
+uniform sampler2D u_scene, u_bloom, u_dof;
+uniform vec2 u_res; uniform float u_px, u_time, u_bloomAmt, u_useBloom, u_ca, u_crt, u_grain, u_vig, u_kal, u_hue, u_dofAmt;
 uniform vec4 u_rip[6];   // cursor and microphone ripples: centre (uv), age (s), amplitude
 vec3 hueRot(vec3 c, float a) {
   const vec3 k = vec3(0.57735);
@@ -1552,7 +1826,9 @@ vec3 shoulder(vec3 x) {
   return mix(x, k + (1.0 - k) * (1.0 - exp(-(x - k) / (1.0 - k))), step(k, x));
 }
 vec3 samp(vec2 uv) {
-  vec3 s = texture(u_scene, uv).rgb;
+  vec4 sc = texture(u_scene, uv);
+  vec3 s = sc.rgb;
+  if (u_dofAmt > 0.0) s = mix(s, texture(u_dof, uv).rgb, smoothstep(0.03, 0.2, abs(sc.a * 2.0 - 1.0)) * u_dofAmt);
   if (u_useBloom > 0.5) s += texture(u_bloom, uv).rgb * u_bloomAmt;
   return s;
 }
@@ -1769,8 +2045,8 @@ void main() {
 const VIEW = { cssW: Math.max(1, window.innerWidth), cssH: Math.max(1, window.innerHeight) };
 const STATE = {
   time: 0, frame: 0, paused: false, brushCss: 36, tool: 0, pmode: 'paint', dream: false,
-  fx: { bloom: true, aberration: false, crt: false, film: true, glow: 0.8 },
-  shade: { relief: 1, gloss: 1, height: 1 },
+  fx: { bloom: true, aberration: false, crt: false, film: true, glow: 0.8, dof: true },
+  shade: { relief: 1, gloss: 1, height: 1, sss: 1 },
   tilt: false, tiltT: 0
 };
 const easeT = t => t * t * t * (t * (t * 6 - 15) + 10);
@@ -1811,6 +2087,7 @@ class GridModel {
     [this.W, this.H] = this.dims();
     for (const f of this.fieldSpecs) this[f.key] = makePingPong(this.W, this.H, f.fmt, f.opt);
     this.surf = makeTarget(this.W, this.H, HDR, { filter: 'linear', mipmap: true });
+    this.aoT = makeTarget(this.W, this.H, 'rgba8', { filter: 'linear' });
     this.cam3 = { yaw: 0.62, pitch: 0.6155, dist: 0 };
     this.clearMask();
   }
@@ -1833,7 +2110,9 @@ class GridModel {
     }
     this.W = W; this.H = H;
     freeTarget(this.surf);
+    freeTarget(this.aoT);
     this.surf = makeTarget(W, H, HDR, { filter: 'linear', mipmap: true });
+    this.aoT = makeTarget(W, H, 'rgba8', { filter: 'linear' });
     if (this.onResize) this.onResize(off);
   }
   upload(pp, data) {
@@ -1888,6 +2167,9 @@ class GridModel {
     this.drawSurface();
     gl.bindTexture(gl.TEXTURE_2D, this.surf.tex);
     gl.generateMipmap(gl.TEXTURE_2D);
+    if (STATE.shade.relief > 0.001) pass(P('reliefAO'), { u_surf: this.surf, u_size: [this.W, this.H], u_hs: 4 + 8 * STATE.shade.relief }, this.aoT);
+    else if (!this.aoFlat) this.clearTarget(this.aoT, [1, 0, 0, 1]);
+    this.aoFlat = STATE.shade.relief <= 0.001;
     if (this.tilted()) Relief.draw3D(this, tgt, view); else Relief.draw2D(this, tgt, view);
     if (this.overlay) this.overlay(tgt, view);
   }
@@ -2520,10 +2802,10 @@ const Relief = {
   },
   shadeU(m) {
     const a = PALETTES[m.palette].accRGB[0];
-    return { u_L: LIGHT, u_rim: [lerp(a[0], 1, 0.3), lerp(a[1], 1, 0.3), lerp(a[2], 1, 0.3)], u_gloss: STATE.shade.gloss, u_relief: STATE.shade.relief };
+    return { u_L: LIGHT, u_rim: [lerp(a[0], 1, 0.3), lerp(a[1], 1, 0.3), lerp(a[2], 1, 0.3)], u_gloss: STATE.shade.gloss, u_relief: STATE.shade.relief, u_sss: STATE.shade.sss };
   },
   draw2D(m, tgt, view) {
-    pass(P('relief2D', GLSL_VIEW + GLSL_SHADE), { ...m.viewU(view), ...this.shadeU(m), u_surf: m.surf }, tgt);
+    pass(P('relief2D', GLSL_VIEW + GLSL_SHADE), { ...m.viewU(view), ...this.shadeU(m), u_surf: m.surf, u_ao: m.aoT }, tgt);
   },
   draw3D(m, tgt, view) {
     const cam = this.camera(m, view);
@@ -2536,8 +2818,9 @@ const Relief = {
     const origin = [Math.floor(tg[0] / m.W) * m.W, Math.floor(tg[1] / m.H) * m.H];
     gl.useProgram(PROG.mesh.p);
     bindUniforms(PROG.mesh, {
-      ...this.shadeU(m), u_surf: m.surf, u_size: [m.W, m.H], u_origin: origin, u_cell: m.cell, u_hcss: 22 * STATE.shade.height,
-      u_vp: cam.vp, u_eye: cam.eye, u_target: [cam.target[0], cam.target[1]], u_fogR: 1.15 * Math.max(m.W, m.H) * m.cell, u_bg: BG3
+      ...this.shadeU(m), u_surf: m.surf, u_ao: m.aoT, u_size: [m.W, m.H], u_origin: origin, u_cell: m.cell, u_hcss: 22 * STATE.shade.height,
+      u_vp: cam.vp, u_eye: cam.eye, u_target: [cam.target[0], cam.target[1]], u_fogR: 1.15 * Math.max(m.W, m.H) * m.cell, u_bg: BG3,
+      u_fwd: [-cam.zb[0], -cam.zb[1], -cam.zb[2]], u_focus: cam.dist, u_aper: 1.5
     });
     gl.enable(gl.DEPTH_TEST);
     gl.depthFunc(gl.LESS);
@@ -3379,7 +3662,7 @@ class Biosphere extends GridModel {
     bindTarget(tgt);
     gl.useProgram(PROG.dart.p);
     gl.enable(gl.BLEND);
-    gl.blendFunc(gl.ONE, gl.ONE);
+    gl.blendFuncSeparate(gl.ONE, gl.ONE, gl.ZERO, gl.ONE);   // keep the depth-of-field alpha of the terrain beneath
     if (tilted) { gl.enable(gl.DEPTH_TEST); gl.depthMask(false); }
     gl.bindVertexArray(this.dartVAO);
     const base = { u_vp: vp, u_eye: eye, u_size: (tilted ? 4.2 : 2.6) * c, u_gain: 0.8, ...palUniforms(this.palette) };
@@ -3416,14 +3699,20 @@ class Post {
     this.free();
     this.w = w; this.h = h;
     this.scene = makeTarget(w, h, HDR, { filter: 'linear', wrap: 'clamp', depth: true });
+    this.dofT = makeTarget(Math.max(1, w >> 1), Math.max(1, h >> 1), HDR, { filter: 'linear', wrap: 'clamp' });
     let lw = w >> 1, lh = h >> 1;
     for (let i = 0; i < 6 && lw >= 4 && lh >= 4; i++) {
       this.levels.push(makeTarget(lw, lh, HDR, { filter: 'linear', wrap: 'clamp' }));
       lw >>= 1; lh >>= 1;
     }
   }
-  run(out, fx, px) {
+  // dofAmt (0-1) blends in the bokeh pass; the scene's alpha must then hold a signed circle of confusion
+  run(out, fx, px, dofAmt = 0) {
     const L = this.levels, bloom = fx.bloom && L.length > 0;
+    if (dofAmt > 0) {
+      const maxR = Math.max(2, 0.0105 * this.h);   // largest bokeh radius, in half-resolution pixels
+      pass(P('dof'), { u_src: this.scene, u_texel: [1 / this.dofT.w, 1 / this.dofT.h], u_maxR: maxR, u_rs: Math.max(0.35, maxR * maxR / 128) }, this.dofT);
+    }
     if (bloom) {
       pass(P('prefilter'), { u_src: this.scene, u_texel: [1 / this.w, 1 / this.h], u_thr: 0.5, u_knee: 0.35 }, L[0]);
       for (let i = 1; i < L.length; i++) pass(P('down'), { u_src: L[i - 1], u_texel: [1 / L[i - 1].w, 1 / L[i - 1].h] }, L[i]);
@@ -3434,11 +3723,12 @@ class Post {
       u_scene: this.scene, u_bloom: bloom ? L[0] : null, u_res: res, u_px: px, u_time: STATE.time,
       u_bloomAmt: fx.glow, u_useBloom: bloom ? 1 : 0, u_ca: fx.aberration ? 1 : 0, u_crt: fx.crt ? 1 : 0,
       u_grain: fx.film ? 1 : 0, u_vig: fx.film ? 1 : 0.6, u_kal: STATE.dream ? 1 : 0, u_hue: STATE.time * 0.22,
-      u_rip: Ripples.uniform(out ? null : 1)
+      u_rip: Ripples.uniform(out ? null : 1), u_dof: dofAmt > 0 ? this.dofT : null, u_dofAmt: dofAmt
     }, out);
   }
   free() {
     freeTarget(this.scene);
+    freeTarget(this.dofT);
     this.levels.forEach(freeTarget);
     this.scene = null;
     this.levels = [];
@@ -3615,6 +3905,7 @@ class Sound {
     this.ctx = null; this.on = true; this.vol = 0.6; this.started = false; this.unavailable = false;
     this.voices = []; this.chord = 0; this.nextChord = 0; this.active = 0; this.lastTouch = 0; this.root = ROOTS.gs;
     this.mode = 1; this.nextMode = 1; this.bright = 0.6; this.nextArp = 0; this.arp = 7;
+    this.plucks = 0; this.playT = -99; this.padT = -99; this.sustain = false;
     this.onchange = null;
   }
   get modeScale() { return STATE.dream ? [0, 1, 5, 7, 10] : MODES[this.mode].s; }
@@ -3643,6 +3934,9 @@ class Sound {
     comp.threshold.value = -20; comp.knee.value = 14; comp.ratio.value = 3; comp.attack.value = 0.02; comp.release.value = 0.4;
     this.master.connect(comp);
     comp.connect(c.destination);
+    this.comp = comp;
+    // a tap for the video recorder, opened now so its track is already flowing when filming starts
+    if (c.createMediaStreamDestination) { try { this.recDest = c.createMediaStreamDestination(); comp.connect(this.recDest); } catch (e) { this.recDest = null; } }
     this.verb = c.createConvolver();
     this.verb.buffer = this.impulse(4.2);
     const wet = c.createGain();
@@ -3740,9 +4034,10 @@ class Sound {
     return buf;
   }
   // tertian chord on a mode degree, spread over three octaves; changes glide
-  setChord(k, now) {
+  setChord(k, now) { this.voiceChord([0, 3, 5, 4][k % 4], now); }
+  voiceChord(base, now) {
     if (!this.ctx) return;
-    const t = this.ctx.currentTime, sc = this.modeScale, base = [0, 3, 5, 4][k % 4];
+    const t = this.ctx.currentTime, sc = this.modeScale;
     const n = sc.length, degs = [base, base + 2 + n, base + 4 + n, base + 6 + n];   // root below, the rest an octave up
     this.voices.forEach((v, i) => {
       const f = scaleFreq(this.root, degs[i], sc);
@@ -3801,6 +4096,8 @@ class Sound {
       this.setChord(this.chord);
       this.nextChord = t + 9 + Math.random() * 6;
     }
+    // while a player is at the keys, the ambient melody steps back and lets them lead
+    if (t - this.playT < 4) { this.nextArp = Math.max(this.nextArp, t + 0.5); return; }
     // generative arpeggio across three octaves: rate follows activity, register follows the centroid
     if (t > this.nextArp) {
       const pent = this.pent, span = pent.length * 3;
@@ -3847,6 +4144,69 @@ class Sound {
     car.stop(t + dur + 0.05); mod.stop(t + dur + 0.05);
     this.active++;
     car.onended = () => { this.active--; try { out.disconnect(); g.disconnect(); mg.disconnect(); } catch (e) { /* already detached */ } };
+  }
+  // --- played notes (MIDI or the keyboard row): a glass-harp pluck and a modal arpeggio above it ---
+  midiOf(freq) { return 69 + 12 * Math.log2(freq / 440); }
+  // the degree of the current mode nearest to a MIDI pitch, counted from the model's root
+  degreeOf(midi) {
+    const sc = this.modeScale, n = sc.length, semi = midi - this.midiOf(this.root);
+    let best = 0, bd = 1e9;
+    for (let o = -4; o <= 6; o++) for (let i = 0; i < n; i++) {
+      const d = Math.abs(sc[i] + 12 * o - semi);
+      if (d < bd) { bd = d; best = o * n + i; }
+    }
+    return best;
+  }
+  // the note itself sounds at its true pitch; the diatonic third, fifth and octave above follow
+  // it as an arpeggio, faster for harder strikes, and the pad re-voices onto the played degree
+  play(freq, deg, vel, pan) {
+    if (!this.live) return;
+    const t = this.ctx.currentTime, sc = this.modeScale, sus = this.sustain ? 2.4 : 1;
+    this.pluck(freq, vel, pan, t, (1.5 + 1.5 * vel) * sus);
+    const gap = 0.07 + 0.07 * (1 - vel);
+    [2, 4, 7].forEach((step, i) => this.pluck(scaleFreq(this.root, deg + step, sc), vel * (0.46 - i * 0.09), pan + (i - 1) * 0.3, t + gap * (i + 1), (1.2 + vel) * sus));
+    this.playT = t;
+    if (t - this.padT > 0.7) {
+      this.padT = t;
+      this.voiceChord(umod(deg, sc.length));
+      this.nextChord = Math.max(this.nextChord, t + 8);
+    }
+  }
+  pluck(freq, vel, pan, t, dur) {
+    if (this.plucks > 40) return;
+    const c = this.ctx;
+    const o1 = c.createOscillator(), o2 = c.createOscillator(), mod = c.createOscillator();
+    const mg = c.createGain(), o2g = c.createGain(), lp = c.createBiquadFilter(), g = c.createGain();
+    o1.type = 'triangle'; o1.frequency.value = freq;
+    o2.type = 'sine'; o2.frequency.value = freq * 2.003;
+    mod.type = 'sine'; mod.frequency.value = freq;
+    mg.gain.setValueAtTime(freq * (0.5 + 1.4 * vel), t);
+    mg.gain.exponentialRampToValueAtTime(freq * 0.01 + 0.01, t + 0.45);
+    mod.connect(mg);
+    mg.connect(o1.frequency);
+    o2g.gain.value = 0.3;
+    lp.type = 'lowpass';
+    lp.Q.value = 0.7;
+    lp.frequency.setValueAtTime(Math.min(16000, freq * (4 + 12 * vel)), t);
+    lp.frequency.exponentialRampToValueAtTime(Math.max(220, freq * 1.4), t + dur * 0.7);
+    o1.connect(lp); o2.connect(o2g); o2g.connect(lp); lp.connect(g);
+    const peak = 0.035 + 0.11 * vel;
+    g.gain.setValueAtTime(0.0001, t);
+    g.gain.exponentialRampToValueAtTime(peak, t + 0.004);
+    g.gain.exponentialRampToValueAtTime(peak * 0.3, t + 0.3);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+    let out = g;
+    if (c.createStereoPanner) { out = c.createStereoPanner(); out.pan.value = clamp(pan, -1, 1); g.connect(out); }
+    out.connect(this.chimeBus);
+    [o1, o2, mod].forEach(o => { o.start(t); o.stop(t + dur + 0.05); });
+    this.plucks++;
+    o1.onended = () => { this.plucks--; try { out.disconnect(); g.disconnect(); lp.disconnect(); mg.disconnect(); o2g.disconnect(); } catch (e) { /* already detached */ } };
+  }
+  // the mix after the compressor, as a stream the video recorder can carry
+  recStream() {
+    if (!this.ctx || !this.comp) return null;
+    if (!this.recDest) { this.recDest = this.ctx.createMediaStreamDestination(); this.comp.connect(this.recDest); }
+    return this.recDest.stream;
   }
   visibility(hidden) {
     if (!this.ctx) return;
@@ -3995,7 +4355,7 @@ function buildDock() {
   $('#tool-hint').textContent = m.toolHints[STATE.tool];
   syncPalettes();
 }
-function choosePreset(i) {
+function choosePreset(i, quiet) {
   const m = current;
   try { m.applyPreset(i); } catch (e) { reportError(e); return; }
   $$('#presets .chip').forEach((b, j) => b.setAttribute('aria-pressed', String(j === i)));
@@ -4003,7 +4363,8 @@ function choosePreset(i) {
   syncPalettes();
   updateEq();
   atlasSig = '';
-  toast('<b>' + m.presets[i].name + '</b> &middot; ' + m.presets[i].note, 4200);
+  renderLineage();
+  if (!quiet) toast('<b>' + m.presets[i].name + '</b> &middot; ' + m.presets[i].note, 4200);
 }
 function buildParams(focusKey) {
   const m = current, box = $('#params');
@@ -4098,6 +4459,10 @@ function updateEq() {
   slide('relief', v => { STATE.shade.relief = v; });
   slide('gloss', v => { STATE.shade.gloss = v; });
   slide('height', v => { STATE.shade.height = v; });
+  slide('sss', v => { STATE.shade.sss = v; });
+  $('#tog-dof').addEventListener('click', () => { STATE.fx.dof = !STATE.fx.dof; $('#tog-dof').setAttribute('aria-pressed', String(STATE.fx.dof)); });
+  $('#tog-keys').addEventListener('click', () => Synth.toggle());
+  $('#act-rec').addEventListener('click', () => Recorder.toggle());
   $('#tog-tilt').addEventListener('click', toggleTilt);
   const br = $('#p-brush');
   br.addEventListener('input', () => { STATE.brushCss = +br.value; $('#o-brush').textContent = br.value; setFill(br); });
@@ -4111,7 +4476,7 @@ function updateEq() {
   $('#act-reset').addEventListener('click', reseed);
   $('#act-clear').addEventListener('click', clearDish);
   $('#act-snap').addEventListener('click', snapshot);
-  $('#act-evolve').addEventListener('click', () => { if (!Evolve.tw) Evolve.start(); });
+  $('#act-evolve').addEventListener('click', () => Evolve.start());
   $('#tog-exhibit').addEventListener('click', e => { e.stopPropagation(); Exhibit.toggle(); });
   $$('#rail .model').forEach(b => b.addEventListener('click', () => { if (current !== MODELS[b.dataset.model]) activate(b.dataset.model); }));
   const vol = $('#vol');
@@ -4232,7 +4597,7 @@ function snapshot() {
       const view = { res: [W, H], viewCss, px: W / viewCss[0], snapshot: true };
       const pp = new Post(W, H), out = makeTarget(W, H, 'rgba8', { wrap: 'clamp' });
       current.render(pp.scene, view);
-      pp.run(out, STATE.fx, view.px);
+      pp.run(out, STATE.fx, view.px, dofAmount());
       bindTarget(out);
       const pbo = gl.createBuffer();
       gl.bindBuffer(gl.PIXEL_PACK_BUFFER, pbo);
@@ -4293,6 +4658,216 @@ function snapDone() {
   $('#act-snap').disabled = false;
   $('#snap-t').textContent = 'Capture 4K Snapshot';
 }
+
+// depth of field only means something while a grid specimen stands as 3D terrain
+const dofAmount = () => (STATE.fx.dof && current && current.tilted && current.tilted() ? easeT(clamp(STATE.tiltT, 0, 1)) : 0);
+const stampName = d => { const p2 = n => String(n).padStart(2, '0'); return d.getFullYear() + p2(d.getMonth() + 1) + p2(d.getDate()) + '-' + p2(d.getHours()) + p2(d.getMinutes()) + p2(d.getSeconds()); };
+
+/* ---------- Cinema: a ten-second clip of the canvas and its sound ---------- */
+// The canvas stream (up to 60 fps) and the soundscape's post-compressor mix are recorded
+// together. The interface is DOM, not canvas, so the clip shows the specimen alone.
+const Recorder = {
+  on: false, dur: 10, left: -1,
+  type(audio) {
+    const v = ['video/mp4;codecs=avc1.640028', 'video/mp4;codecs=avc1', 'video/webm;codecs=h264', 'video/webm;codecs=vp9', 'video/webm;codecs=vp8', 'video/mp4', 'video/webm'];
+    const a = ['video/mp4;codecs=avc1.640028,mp4a.40.2', 'video/mp4;codecs=avc1,mp4a.40.2', 'video/webm;codecs=h264,opus', 'video/webm;codecs=vp9,opus', 'video/webm;codecs=vp8,opus', 'video/mp4', 'video/webm'];
+    return (audio ? a : v).find(t => { try { return MediaRecorder.isTypeSupported(t); } catch (e) { return false; } }) || '';
+  },
+  toggle(sec) { if (this.on) this.stop(); else this.start(sec || 10); },
+  start(sec) {
+    if (!window.MediaRecorder || !canvas.captureStream) { toast('This browser cannot film the canvas: MediaRecorder or captureStream is unavailable.', 5200); return; }
+    sound.start();
+    let vs;
+    try { vs = canvas.captureStream(60); } catch (e) { toast('The canvas could not be captured (' + escHTML((e && e.name) || 'error') + ').', 5200); return; }
+    const as = sound.live ? sound.recStream() : null, audio = !!(as && as.getAudioTracks().length);
+    const stream = new MediaStream([...vs.getVideoTracks(), ...(audio ? as.getAudioTracks() : [])]);
+    const mimeType = this.type(audio), px = gl.drawingBufferWidth * gl.drawingBufferHeight;
+    const opts = { videoBitsPerSecond: Math.round(clamp(px * 60 * 0.16, 8e6, 40e6)) };
+    if (audio) opts.audioBitsPerSecond = 192000;
+    if (mimeType) opts.mimeType = mimeType;
+    let rec;
+    try { rec = new MediaRecorder(stream, opts); }
+    catch (e) { vs.getTracks().forEach(t => t.stop()); toast('Recording could not start (' + escHTML((e && e.name) || 'error') + ').', 5200); return; }
+    const m = current, pr = m.presets[m.presetIdx], chunks = [];
+    rec.ondataavailable = e => { if (e.data && e.data.size) chunks.push(e.data); };
+    rec.onerror = e => toast('Recording failed (' + escHTML((e && e.error && e.error.name) || 'error') + ').', 5200);
+    rec.onstop = () => this.finish(rec, vs, chunks, audio, m, pr, opts);
+    try { rec.start(1000); }
+    catch (e) { vs.getTracks().forEach(t => t.stop()); toast('Recording could not start (' + escHTML((e && e.name) || 'error') + ').', 5200); return; }
+    Object.assign(this, { on: true, rec, t0: performance.now(), dur: sec, left: -1 });
+    this.timer = setTimeout(() => this.stop(), sec * 1000);
+    document.body.classList.add('recording');
+    $('#act-rec').setAttribute('aria-pressed', 'true');
+    toast('<b>Recording</b> &middot; ' + sec + ' s of the specimen' + (audio ? ' and its sound' : '; sound is off, so the clip is silent') + '. The interface is not filmed.', 4200);
+  },
+  stop() { clearTimeout(this.timer); if (this.rec && this.rec.state !== 'inactive') this.rec.stop(); },
+  finish(rec, vs, chunks, audio, m, pr, opts) {
+    vs.getTracks().forEach(t => t.stop());   // the canvas track only: the sound's stream stays open for next time
+    const mt = rec.mimeType || opts.mimeType || 'video/webm', base = mt.split(';')[0];
+    const ext = base.includes('mp4') ? 'mp4' : base.includes('matroska') ? 'mkv' : 'webm';
+    const blob = new Blob(chunks, { type: base }), secs = (performance.now() - this.t0) / 1000;
+    this.on = false;
+    this.rec = null;
+    document.body.classList.remove('recording');
+    const b = $('#act-rec');
+    b.setAttribute('aria-pressed', 'false');
+    b.style.setProperty('--prog', '0');
+    $('#rec-t').textContent = 'Record 10 s Clip';
+    if (!blob.size) { toast('The recording came back empty. Try again; if it recurs, mute the sound to film the canvas alone.', 6000); return; }
+    const name = 'morphogenesis-' + m.id + '-' + pr.id + '-' + stampName(new Date()) + '.' + ext;
+    download(blob, name);
+    STATE.lastClip = { name, bytes: blob.size, type: mt, audio, seconds: +secs.toFixed(2), W: gl.drawingBufferWidth, H: gl.drawingBufferHeight, bps: opts.videoBitsPerSecond };
+    toast('Saved <b>' + escHTML(name) + '</b> &middot; ' + (blob.size / 1048576).toFixed(1) + ' MB &middot; ' + escHTML(mt.replace(/^video\//, '')), 6400);
+  },
+  tick() {
+    if (!this.on) return;
+    const t = clamp((performance.now() - this.t0) / 1000 / this.dur, 0, 1), left = Math.ceil(this.dur * (1 - t));
+    $('#act-rec').style.setProperty('--prog', t.toFixed(3));
+    if (left !== this.left) { this.left = left; $('#rec-t').textContent = 'Recording · ' + left + ' s'; $('#rec-s').textContent = String(left).padStart(2, '0'); }
+  }
+};
+
+/* ---------- Performance: Web MIDI and the computer-keyboard synthesizer ---------- */
+// Notes land on a dial around the centre of the dish: pitch class sets the angle (C at twelve
+// o'clock) and octave the radius, so a scale traces a ring and a chord a constellation.
+// Velocity sets the size of the burst; the mod wheel widens every burst.
+const KEY_CODES = ['KeyA', 'KeyS', 'KeyD', 'KeyF', 'KeyG', 'KeyH', 'KeyJ', 'KeyK'];
+const NOTE_NAMES = ['C', 'C♯', 'D', 'E♭', 'E', 'F', 'F♯', 'G', 'A♭', 'A', 'B♭', 'B'];
+const ROMAN = ['i', 'ii', 'iii', 'iv', 'v', 'vi', 'vii'];
+const noteName = midi => { const r = Math.round(midi); return NOTE_NAMES[umod(r, 12)] + (Math.floor(r / 12) - 1); };
+function notePos(midi) {
+  const r = Math.round(midi), pc = umod(r, 12), oct = Math.floor(r / 12) - 1, t = STATE.time;
+  const R = Math.min(VIEW.cssW, VIEW.cssH) * 0.5;
+  const cx = VIEW.cssW * (0.5 + 0.05 * Math.sin(t * 0.07)), cy = VIEW.cssH * (0.5 + 0.05 * Math.cos(t * 0.05));
+  const a = pc / 12 * TAU - Math.PI / 2, rad = R * clamp(0.18 + 0.13 * (oct - 2), 0.1, 0.92);
+  return [cx + Math.cos(a) * rad, cy + Math.sin(a) * rad];
+}
+const Synth = {
+  on: false, access: null, inputs: [], mod: 0, notes: 0, down: new Set(), sig: '', lt: [],
+  toggle(force) {
+    const on = force === undefined ? !this.on : force;
+    if (on === this.on) return;
+    this.on = on;
+    document.body.classList.toggle('keys', on);
+    $('#tog-keys').setAttribute('aria-pressed', String(on));
+    $('#keys').hidden = !on;
+    if (on) {
+      sound.start();
+      this.build();
+      if (!this.access) this.connect(true);
+      toast('<b>Synth keys</b> &middot; A S D F G H J K play the current mode, Shift an octave up. <b>N</b> hands S, F, G and H back to their usual jobs.', 5600);
+    } else { this.down.clear(); }
+  },
+  degFreq(deg) { return scaleFreq(sound.root * 2, deg, sound.modeScale); },
+  build() {
+    const sc = sound.modeScale, mode = STATE.dream ? 'In-sen' : MODES[sound.mode].name;
+    const sig = mode + sound.root + sc.join();
+    if (sig === this.sig && $('#k-row').children.length) return;
+    this.sig = sig;
+    $('#k-mode').textContent = mode + ' on ' + noteName(sound.midiOf(sound.root * 2)).replace(/-?\d+$/, '');
+    const row = $('#k-row');
+    row.textContent = '';
+    KEY_CODES.forEach((code, i) => {
+      const b = el('button', 'kk'), midi = sound.midiOf(this.degFreq(i));
+      b.type = 'button';
+      b.append(el('kbd', null, code.slice(3)), el('span', null, noteName(midi)), el('i', null, (ROMAN[i % sc.length] || '') + (i >= sc.length ? '′' : '')));
+      b.setAttribute('aria-label', 'Play ' + noteName(midi));
+      b.addEventListener('pointerdown', e => { e.preventDefault(); this.key(i, e.shiftKey, 0.5 + 0.4 * clamp(e.pressure || 0.5, 0, 1)); });
+      row.append(b);
+    });
+  },
+  light(i, on) {
+    const b = $('#k-row').children[i];
+    if (b) b.classList.toggle('lit', on);
+  },
+  flash(i) {
+    this.light(i, true);
+    clearTimeout(this.lt[i]);
+    this.lt[i] = setTimeout(() => { if (!this.down.has(i)) this.light(i, false); }, 170);
+  },
+  key(i, up, vel = 0.72) {
+    const deg = i + (up ? sound.modeScale.length : 0), f = this.degFreq(deg);
+    this.strike(f, deg, vel, sound.midiOf(f));
+    this.flash(i);
+  },
+  strike(freq, deg, vel, midi) {
+    sound.start();
+    const [x, y] = notePos(midi);
+    sound.play(freq, deg, vel, (x / VIEW.cssW) * 2 - 1);
+    try { burst(x, y, 0.35 + 0.8 * vel, (12 + 46 * vel) * (1 + 1.5 * this.mod)); } catch (e) { reportError(e); }
+    this.notes++;
+  },
+  // Web MIDI is requested only when the player turns the keys on, or silently if already granted
+  probe() {
+    try {
+      if (navigator.permissions && navigator.requestMIDIAccess) navigator.permissions.query({ name: 'midi', sysex: false }).then(r => { if (r.state === 'granted') this.connect(false); }, () => {});
+    } catch (e) { /* this browser has no MIDI permission to ask about */ }
+  },
+  async connect(interactive) {
+    if (!navigator.requestMIDIAccess) { this.status(interactive ? 'No Web MIDI in this browser' : ''); return; }
+    try { this.access = await navigator.requestMIDIAccess({ sysex: false }); }
+    catch (e) { this.status('MIDI not permitted'); return; }
+    this.access.onstatechange = () => this.bind();
+    this.bind();
+  },
+  bind() {
+    const names = [];
+    this.access.inputs.forEach(inp => {
+      inp.onmidimessage = e => this.message(e.data);
+      if (inp.state !== 'disconnected') names.push(inp.name || 'MIDI input');
+    });
+    const fresh = names.length && names.join() !== this.inputs.join();
+    this.inputs = names;
+    this.status(names.length ? 'MIDI · ' + names[0] + (names.length > 1 ? ' +' + (names.length - 1) : '') : 'No MIDI device');
+    if (fresh) toast('<b>MIDI</b> &middot; ' + escHTML(names.join(', ')) + ': play, and each note bursts into the specimen.', 4600);
+  },
+  status(t) {
+    $('#k-midi').textContent = t || 'No MIDI device';
+    $('#midi-note').textContent = this.inputs.length ? 'MIDI · ' + this.inputs.length : '';
+  },
+  message(d) {
+    if (!d || d.length < 2) return;
+    const st = d[0] & 0xf0;
+    if (st === 0x90 && d[2] > 0) this.noteOn(d[1], d[2] / 127);
+    else if (st === 0xB0) {
+      if (d[1] === 1) this.mod = d[2] / 127;
+      else if (d[1] === 64) sound.sustain = d[2] >= 64;
+    }
+  },
+  noteOn(note, vel) {
+    Exhibit.activity();
+    Splash.close(true);
+    this.strike(440 * Math.pow(2, (note - 69) / 12), sound.degreeOf(note), vel, note);
+    if (this.on) {
+      const i = KEY_CODES.findIndex((c, j) => umod(Math.round(sound.midiOf(this.degFreq(j))), 12) === umod(note, 12));
+      if (i >= 0) this.flash(i);
+    }
+  }
+};
+
+/* ---------- Onboarding: the wall text ---------- */
+const Splash = {
+  open: false,
+  show() {
+    this.open = true;
+    const sp = $('#splash');
+    sp.hidden = false;
+    document.body.classList.add('splash');
+    requestAnimationFrame(() => sp.classList.add('show'));
+    setTimeout(() => { if (this.open) $('#sp-go').focus({ preventScroll: true }); }, 80);
+  },
+  close(quiet) {
+    if (!this.open) return;
+    this.open = false;
+    const sp = $('#splash');
+    sp.classList.remove('show');
+    document.body.classList.remove('splash');
+    if (sp.contains(document.activeElement)) document.activeElement.blur();
+    setTimeout(() => { if (!this.open) sp.hidden = true; }, 750);
+    if (!quiet) setTimeout(() => toast('Left-drag to paint &middot; right-drag or Shift-drag for instruments &middot; <b>G</b> opens the Field Guide', 5200), 600);
+  }
+};
+$('#splash').addEventListener('click', () => { sound.start(); Splash.close(); });
 
 /* ---------- phase portrait: where the specimen sits, and where it has been ---------- */
 const Phase = {
@@ -4384,21 +4959,38 @@ function binomial(m) {
   if (m.id === 'lenia') genus = ['Orbium', 'Geminium', 'Lenia', 'Lenia'][m.presetIdx] || 'Lenia';
   return genus + ' ' + pick(SYL) + pick(SYL) + (rand() < 0.4 ? pick(SYL) : '') + pick(END);
 }
+const CULTIVARS = ['Nocturne', 'Ember', 'Tidewater', 'Filigree', 'Lantern', 'Vesper', 'Opaline', 'Cinder', 'Halcyon', 'Gossamer', 'Reverie', 'Solstice'];
 const Evolve = {
-  tw: null, gen: 0, lineage: [],
-  start(target, name) {
+  tw: null, gen: 0,
+  // breed: mutate the genome of the highlighted species and glide the universe to its offspring
+  start() {
+    if (this.tw) return;
     const m = current, g = GENOMES[m.id];
-    const tgt = target || (g && g(m));
+    const tgt = g && g(m);
     if (!tgt) { toast('The Pearson Atlas already shows every phenotype at once: choose another specimen to breed.'); return; }
+    const parent = Phylo.ensureCurrent(m);
+    const child = Phylo.add(m, parent, tgt, binomial(m), 'bred');
+    this.gen++;
+    this.tween(m, tgt, child, 'breed');
+    toast('Breeding <b><i>' + child.name + '</i></b> &middot; generation ' + child.gen + ' &middot; <b>Y</b> shows the tree', 3400);
+  },
+  // rewind: glide back to any node's genome (re-seeding first if it grew from another specimen)
+  restore(node) {
+    if (this.tw || !node) return;
+    if (current.id !== node.model) activate(node.model, true);
+    const m = current;
+    if (node.preset !== m.presetIdx) choosePreset(node.preset, true);
+    this.tween(m, node.genome, node, 'restore');
+    toast('Rewinding to <b>' + (node.kind === 'wild' ? node.name : '<i>' + node.name + '</i>') + '</b> &middot; generation ' + node.gen, 3200);
+  },
+  tween(m, tgt, node, kind) {
     const from = {};
     for (const k in tgt) from[k] = m.p[k];
-    this.gen++;
-    const entry = target ? null : { name: name || binomial(m), gen: this.gen, id: m.id, preset: m.presetIdx, p: { ...m.p, ...tgt } };
-    this.tw = { m, from, tgt, t0: performance.now(), dur: 3000, entry };
+    this.tw = { m, from, tgt, t0: performance.now(), dur: 3000, node, kind };
+    Phylo.setCur(m.id, node);
     const b = $('#act-evolve');
     b.setAttribute('aria-busy', 'true');
-    $('#evolve-t').textContent = target ? 'Restoring…' : 'Breeding…';
-    toast(target ? 'Restoring <b>' + name + '</b>' : 'Breeding <b><i>' + entry.name + '</i></b> &middot; generation ' + this.gen, 3200);
+    $('#evolve-t').textContent = kind === 'restore' ? 'Rewinding…' : 'Breeding…';
     Exhibit.poke();
   },
   update() {
@@ -4409,12 +5001,12 @@ const Evolve = {
       tw.m.p[k] = lerp(tw.from[k], tw.tgt[k], e);
       if (tw.m === current) syncParam(k);
     }
-    if (tw.m.setParam) for (const k in tw.tgt) if (k === 'fauna') tw.m.setParam(k);
     $('#act-evolve').style.setProperty('--prog', t.toFixed(3));
     if (tw.m === current && STATE.frame % 6 === 0) updateEq();
     if (t >= 1) {
       this.tw = null;
-      if (tw.entry) { this.lineage.unshift(tw.entry); this.lineage.length = Math.min(this.lineage.length, 6); }
+      // the phenotype takes a few seconds to express itself; photograph it as it settles
+      Phylo.schedule(tw.node, tw.node.thumb ? [4] : [1.6, 5.5]);
       renderLineage();
       const b = $('#act-evolve');
       b.removeAttribute('aria-busy');
@@ -4424,30 +5016,249 @@ const Evolve = {
     }
   }
 };
+
+/* ---------- Phylogeny: every phenotype as a node in a branching tree ---------- */
+// Wild types (a specimen as found) root the trees; bred offspring branch from whichever node is
+// highlighted; hand-tuned variants become cultivars. Branch length is genetic distance: the
+// Euclidean norm of the parameter changes, each measured against its slider's range.
+const escHTML = t => String(t).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
+const Phylo = {
+  nodes: {}, cur: {}, uid: 0, open: false, due: [], MAX: 64,
+  forest(id) { return this.nodes[id] || (this.nodes[id] = []); },
+  byUid(id, uid) { return this.forest(id).find(n => n.uid === uid) || null; },
+  current(id) { return this.byUid(id, this.cur[id]); },
+  keysOf(m) { const g = GENOMES[m.id] && GENOMES[m.id](m); return g ? Object.keys(g) : null; },
+  genomeOf(m, keys) { const g = {}; for (const k of keys) g[k] = m.p[k]; return g; },
+  range(m, k) { const s = m.schema.find(x => x.key === k); return s && !s.idx ? (s.max - s.min) || 1 : Math.max(Math.abs(m.p[k]) || 0, 1e-3); },
+  diverge(m, a, b, keys) {
+    const div = {};
+    let d2 = 0;
+    for (const k of keys) { const d = ((b[k] || 0) - (a[k] || 0)) / this.range(m, k); div[k] = d; d2 += d * d; }
+    return { div, dist: Math.sqrt(d2) };
+  },
+  add(m, parent, genome, name, kind) {
+    const keys = Object.keys(genome);
+    const node = {
+      uid: ++this.uid, name, kind, model: m.id, preset: m.presetIdx, presetName: m.presets[m.presetIdx].name,
+      genome: { ...genome }, keys, parent: parent ? parent.uid : 0, gen: parent ? parent.gen + 1 : 0,
+      thumb: null, born: Date.now(), div: {}, dist: 0
+    };
+    if (parent) Object.assign(node, this.diverge(m, parent.genome, genome, keys));
+    this.forest(m.id).push(node);
+    this.prune(m.id);
+    return node;
+  },
+  // the node breeding continues from: the highlighted one, a hand-tuned cultivar of it, or a wild type
+  ensureCurrent(m) {
+    const keys = this.keysOf(m);
+    if (!keys) return null;
+    const sig = keys.join();
+    let cur = this.current(m.id);
+    if (cur && (cur.preset !== m.presetIdx || cur.keys.join() !== sig)) cur = null;
+    const now = this.genomeOf(m, keys);
+    if (!cur) {
+      cur = this.forest(m.id).find(n => !n.parent && n.preset === m.presetIdx && n.keys.join() === sig) || null;
+      if (!cur) {
+        cur = this.add(m, null, now, m.presets[m.presetIdx].name, 'wild');
+        this.snapNow(cur);
+        this.setCur(m.id, cur);
+        return cur;
+      }
+    }
+    if (this.diverge(m, cur.genome, now, keys).dist > 0.004) {
+      const base = cur.kind === 'wild' ? cur.name : cur.name.replace(/ ‘.*’$/, '');
+      cur = this.add(m, cur, now, base + ' ‘' + pick(CULTIVARS) + '’', 'cultivar');
+      this.snapNow(cur);
+    }
+    this.setCur(m.id, cur);
+    return cur;
+  },
+  setCur(id, node) { this.cur[id] = node ? node.uid : 0; renderLineage(); },
+  path(id, node) { const out = []; while (node) { out.unshift(node); node = node.parent ? this.byUid(id, node.parent) : null; } return out; },
+  prune(id) {
+    const f = this.forest(id);
+    while (f.length > this.MAX) {
+      const keep = new Set(this.path(id, this.current(id)).map(n => n.uid));
+      const i = f.findIndex(n => n.parent && !keep.has(n.uid) && !f.some(c => c.parent === n.uid));
+      if (i < 0) break;
+      f.splice(i, 1);
+    }
+  },
+  // thumbnails are photographed from the live canvas inside the frame that drew it
+  snapNow(node) { this.due.push({ node, at: 0 }); },
+  schedule(node, delays) { const now = performance.now(); delays.forEach(d => this.due.push({ node, at: now + d * 1000 })); },
+  tick() {
+    if (!this.due.length) return;
+    const now = performance.now();
+    for (let i = this.due.length - 1; i >= 0; i--) {
+      const d = this.due[i];
+      if (d.at > now) continue;
+      this.due.splice(i, 1);
+      // an immediate snap photographs the frame just drawn (the parent, as breeding begins);
+      // a timed one only if that species is still the one on show
+      if (current.id === d.node.model && (d.at === 0 || (this.cur[d.node.model] === d.node.uid && !Evolve.tw))) this.capture(d.node);
+    }
+  },
+  capture(node) {
+    const W = canvas.width, H = canvas.height, s = Math.floor(Math.min(W, H) * 0.56);
+    const c = this.tc || (this.tc = document.createElement('canvas'));
+    c.width = c.height = 112;
+    try {
+      c.getContext('2d').drawImage(canvas, (W - s) >> 1, (H - s) >> 1, s, s, 0, 0, 112, 112);
+      node.thumb = c.toDataURL('image/jpeg', 0.86);
+    } catch (e) { return; }
+    if (this.open) this.render();
+  },
+  toggle(force) {
+    const open = force === undefined ? !this.open : force;
+    if (open === this.open) return;
+    this.open = open;
+    const el = $('#phylo');
+    el.hidden = !open;
+    $('#btn-tree').setAttribute('aria-expanded', String(open));
+    if (open) { this.render(); setTimeout(() => { const n = $('#phy-svg .node.cur') || $('#phy-close'); n.focus({ preventScroll: true }); }, 30); }
+    else this.tip(null);
+  },
+  render() {
+    if (!this.open || !current) return;
+    const m = current, f = this.forest(m.id), svg = $('#phy-svg'), body = $('#phy-body');
+    $('#phy-model').textContent = MODEL_NAMES[m.id].replace('-', '–');
+    $('#phy-count').textContent = f.length ? f.length + (f.length === 1 ? ' species' : ' species') + ' · ' + f.filter(n => !n.parent).length + ' wild type' + (f.filter(n => !n.parent).length === 1 ? '' : 's') : '';
+    $('#phy-empty').hidden = f.length > 0;
+    if (!f.length) { svg.innerHTML = ''; svg.setAttribute('height', '0'); return; }
+    const rowH = 58, padL = 30, padT = 34, R = 19, labelW = 196, MINPX = 2 * R + 18;
+    const kids = uid => f.filter(n => n.parent === uid).sort((a, b) => a.uid - b.uid);
+    const roots = f.filter(n => !n.parent || !this.byUid(m.id, n.parent));
+    // phylogram: x is cumulative genetic distance, but no branch is drawn shorter than two nodes
+    const W0 = Math.max(320, body.clientWidth), avail = W0 - padL - labelW - R;
+    const depth = (n, d) => kids(n.uid).reduce((mx, k) => Math.max(mx, depth(k, d + k.dist)), d);
+    let sx = avail / Math.max(0.05, ...roots.map(r => depth(r, 0)));
+    const pos = new Map();
+    let row = 0;
+    const place = (n, x) => {
+      const xx = n.parent && pos.has(n.parent) ? x + Math.max(n.dist * sx, MINPX) : 0, ks = kids(n.uid);
+      if (!ks.length) { pos.set(n.uid, { x: xx, y: row++, leaf: true }); return; }
+      pos.set(n.uid, { x: xx, y: 0, leaf: false });
+      ks.forEach(k => place(k, xx));
+      const ys = ks.map(k => pos.get(k.uid).y);
+      pos.get(n.uid).y = (Math.min(...ys) + Math.max(...ys)) / 2;
+    };
+    const layout = () => { pos.clear(); row = 0; roots.forEach(r => { place(r, 0); row += 0.4; }); return Math.max(...[...pos.values()].map(q => q.x)); };
+    for (let i = 0, mx = layout(); i < 3 && mx > avail + 0.5; i++) { sx *= 0.92 * avail / mx; mx = layout(); }
+    const maxPx = Math.max(...[...pos.values()].map(q => q.x));
+    const W = Math.max(W0, Math.ceil(padL + maxPx + R + labelW)), H = Math.ceil(padT * 2 + (row - 1.4) * rowH + R);
+    const X = u => padL + pos.get(u).x, Y = u => padT + pos.get(u).y * rowH;
+    const cur = this.current(m.id), hot = new Set(cur ? this.path(m.id, cur).map(n => n.uid) : []);
+    const acc = PALETTES[m.palette].acc, tw = Evolve.tw;
+    let edges = '', glyphs = '', nodes = '';
+    for (const n of f) {
+      if (!pos.has(n.uid)) continue;
+      const cx = X(n.uid), cy = Y(n.uid), leaf = pos.get(n.uid).leaf;
+      if (n.parent && pos.has(n.parent)) {
+        const px = X(n.parent), py = Y(n.parent), dy = cy - py, flat = Math.abs(dy) < 0.5, r = Math.min(8, Math.abs(dy)), sg = Math.sign(dy);
+        const d = flat ? 'M' + (px + R) + ',' + py + 'H' + (cx - R)
+          : 'M' + px + ',' + (py + sg * R) + 'V' + (cy - sg * r) + 'Q' + px + ',' + cy + ' ' + (px + r) + ',' + cy + 'H' + (cx - R);
+        edges += '<path class="edge' + (hot.has(n.uid) ? ' hot' : '') + '" d="' + d + '"/>';
+        // the divergence vector, drawn on the branch: one bar per parameter, up for an increase
+        const x0s = flat ? px + R : px + r, seg = cx - R - x0s, w = 3, g = 2;
+        if (seg > 12 + n.keys.length * (w + g)) {
+          const x0 = (x0s + cx - R) / 2 - (n.keys.length * (w + g) - g) / 2;
+          n.keys.forEach((k, i) => {
+            const v = clamp((n.div[k] || 0) * 90, -10, 10), hgt = Math.max(1, Math.abs(v));
+            glyphs += '<rect class="dv ' + (v >= 0 ? 'up' : 'dn') + '" x="' + (x0 + i * (w + g)).toFixed(1) + '" y="' + (v >= 0 ? cy - hgt - 1 : cy + 1).toFixed(1) + '" width="' + w + '" height="' + hgt.toFixed(1) + '"/>';
+          });
+        }
+      }
+      const cls = 'node ' + n.kind + (cur && n.uid === cur.uid ? ' cur' : '') + (tw && tw.node === n ? ' born' : '') + (n.thumb ? '' : ' pending');
+      const aria = (n.kind === 'wild' ? 'Wild type ' : n.kind === 'cultivar' ? 'Cultivar ' : 'Generation ' + n.gen + ', ') + n.name + (cur && n.uid === cur.uid ? ', current' : '') + '. Activate to rewind to this genome.';
+      let label = '';
+      if (leaf) {
+        const nm = n.kind === 'wild' ? escHTML(n.name) : '<tspan class="it">' + escHTML(n.name) + '</tspan>';
+        const meta = n.kind === 'wild' ? 'wild type · as found' : (n.kind === 'cultivar' ? 'cultivar · ' : '') + 'Δ ' + n.dist.toFixed(3) + ' from parent';
+        label = '<text class="nm" x="' + (R + 9) + '" y="-2">' + nm + '</text><text class="meta" x="' + (R + 9) + '" y="13">' + meta + '</text>';
+      }
+      nodes += '<g class="' + cls + '" data-uid="' + n.uid + '" transform="translate(' + cx.toFixed(1) + ',' + cy.toFixed(1) + ')" tabindex="0" role="button" aria-label="' + escHTML(aria) + '">'
+        + '<circle class="halo" r="' + (R + 5) + '"/><circle class="disc" r="' + R + '"/>'
+        + (n.thumb ? '<image href="' + n.thumb + '" x="' + -R + '" y="' + -R + '" width="' + 2 * R + '" height="' + 2 * R + '" clip-path="url(#phy-clip)" preserveAspectRatio="xMidYMid slice"/>' : '<path class="ph" d="M0,0c0-2.4,3.4-2.4,3.4,0s-3,5.4-6.4,5.4-6.4-3.9-6.4-8.5 4.5-9.2 10.1-9.2 11 5.4 11 12.3"/>')
+        + '<circle class="ring" r="' + (R + 0.5) + '"/>'
+        + '<g class="badge" transform="translate(' + (R * 0.74).toFixed(1) + ',' + (R * 0.74).toFixed(1) + ')"><circle r="7.5"/><text y="3.4">' + (n.kind === 'wild' ? 'w' : n.kind === 'cultivar' ? 'c' : n.gen) + '</text></g>'
+        + label + '</g>';
+    }
+    $('#phy-cur').innerHTML = cur ? 'ringed: ' + (cur.kind === 'wild' ? escHTML(cur.name) : '<i>' + escHTML(cur.name) + '</i>') + (cur.kind === 'bred' ? ', gen ' + cur.gen : cur.kind === 'wild' ? ', wild type' : ', cultivar') : '';
+    svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
+    svg.setAttribute('width', W);
+    svg.setAttribute('height', H);
+    for (const e of [$('#phylo'), $('#phy-tip')]) { e.style.setProperty('--up', acc[0]); e.style.setProperty('--dn', acc[1]); }
+    svg.innerHTML = '<defs><clipPath id="phy-clip"><circle r="' + R + '"/></clipPath></defs><g class="edges">' + edges + '</g><g class="glyphs">' + glyphs + '</g><g class="nodes">' + nodes + '</g>';
+    if (cur && pos.has(cur.uid)) {
+      const y = Y(cur.uid);
+      if (y < body.scrollTop + 30 || y > body.scrollTop + body.clientHeight - 30) body.scrollTop = y - body.clientHeight / 2;
+    }
+  },
+  tip(g) {
+    const box = $('#phy-tip');
+    if (!g) { box.hidden = true; return; }
+    const n = this.byUid(current.id, +g.dataset.uid);
+    if (!n) { box.hidden = true; return; }
+    const par = n.parent ? this.byUid(n.model, n.parent) : null, m = MODELS[n.model];
+    let rows = '';
+    for (const k of n.keys) {
+      const s = m.schema.find(x => x.key === k), fmt = s && s.fmt ? s.fmt : v => (+v).toFixed(4);
+      const lab = s ? (s.sym || s.label) : k, d = (n.div[k] || 0) * 100;
+      rows += '<tr><td>' + escHTML(lab) + '</td><td>' + (par ? escHTML(fmt(par.genome[k])) + ' → ' : '') + escHTML(fmt(n.genome[k])) + '</td>'
+        + (par ? '<td class="' + (d >= 0 ? 'up' : 'dn') + '">' + (d >= 0 ? '+' : '−') + Math.abs(d).toFixed(1) + '%</td>' : '<td></td>') + '</tr>';
+    }
+    const kind = n.kind === 'wild' ? 'Wild type of <i>' + escHTML(n.presetName) + '</i>' : n.kind === 'cultivar' ? 'Cultivar, hand-tuned from <i>' + escHTML(par ? par.name : n.presetName) + '</i>' : 'Generation ' + n.gen + ', bred from ' + (par && par.kind !== 'wild' ? '<i>' + escHTML(par.name) + '</i>' : escHTML(par ? par.name : n.presetName));
+    box.innerHTML = '<b>' + (n.kind === 'wild' ? escHTML(n.name) : '<i>' + escHTML(n.name) + '</i>') + '</b><span>' + kind + '</span><table>' + rows + '</table>'
+      + (par ? '<span class="dist">genetic distance ' + n.dist.toFixed(3) + ' · Δ as % of each slider’s range</span>' : '') + '<span class="go">Click to rewind the universe to this genome</span>';
+    box.hidden = false;
+    // the card floats in the viewport beside the node, so it is never clipped by the panel
+    const r = (g.querySelector('.disc') || g).getBoundingClientRect(), bw = box.offsetWidth, bh = box.offsetHeight;
+    let x = r.right + 10, y = r.top - 8;
+    if (x + bw > VIEW.cssW - 8) x = r.left - bw - 10;
+    y = clamp(y, 8, VIEW.cssH - bh - 8);
+    box.style.transform = 'translate(' + clamp(x, 8, VIEW.cssW - bw - 8).toFixed(0) + 'px,' + y.toFixed(0) + 'px)';
+  },
+  // for the console API: the tree as plain data
+  data(id) { return this.forest(id).map(n => ({ uid: n.uid, name: n.name, kind: n.kind, gen: n.gen, parent: n.parent, dist: +n.dist.toFixed(4), genome: { ...n.genome }, thumb: !!n.thumb })); }
+};
 function renderLineage() {
-  const box = $('#lineage'), mine = Evolve.lineage.filter(e => e.id === current.id);
-  $('#sect-lineage').hidden = mine.length === 0;
-  $('#lineage-note').textContent = mine.length ? 'gen ' + mine[0].gen : '';
+  if (!current) return;
+  const m = current, f = Phylo.forest(m.id), box = $('#lineage'), cur = Phylo.current(m.id);
+  $('#sect-lineage').hidden = f.length === 0;
+  $('#lineage-note').textContent = cur ? (cur.kind === 'wild' ? 'wild type' : 'gen ' + cur.gen) : '';
   box.textContent = '';
-  mine.forEach(e => {
-    const b = el('button', 'chip', e.name);
+  const path = cur ? Phylo.path(m.id, cur).slice(-6) : [];
+  path.forEach(n => {
+    const b = el('button', 'chip' + (n.kind === 'wild' ? ' wild' : ''), n.name);
     b.type = 'button';
-    b.title = 'Generation ' + e.gen + ': ' + Object.keys(GENOMES[e.id](current) || {}).map(k => k + ' ' + (+e.p[k]).toFixed(4)).join(', ');
-    b.addEventListener('click', () => {
-      if (Evolve.tw) return;
-      const tgt = {};
-      for (const k of Object.keys(GENOMES[e.id](current) || {})) tgt[k] = e.p[k];
-      Evolve.start(tgt, e.name);
-    });
+    b.title = (n.kind === 'wild' ? 'Wild type' : 'Generation ' + n.gen) + ': ' + n.keys.map(k => k + ' ' + (+n.genome[k]).toFixed(4)).join(', ');
+    b.setAttribute('aria-pressed', String(n === cur));
+    b.addEventListener('click', () => Evolve.restore(n));
     box.append(b);
   });
+  if (Phylo.open) Phylo.render();
 }
+(function phyloEvents() {
+  const svg = $('#phy-svg'), nodeOf = e => e.target.closest && e.target.closest('.node');
+  svg.addEventListener('click', e => { const g = nodeOf(e); if (g) Evolve.restore(Phylo.byUid(current.id, +g.dataset.uid)); });
+  svg.addEventListener('keydown', e => {
+    const g = nodeOf(e);
+    if (g && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); e.stopPropagation(); Evolve.restore(Phylo.byUid(current.id, +g.dataset.uid)); }
+  });
+  svg.addEventListener('pointerover', e => Phylo.tip(nodeOf(e)));
+  svg.addEventListener('pointerleave', () => Phylo.tip(null));
+  svg.addEventListener('focusin', e => Phylo.tip(nodeOf(e)));
+  svg.addEventListener('focusout', () => Phylo.tip(null));
+  $('#phy-close').addEventListener('click', () => Phylo.toggle(false));
+  $('#btn-tree').addEventListener('click', () => Phylo.toggle());
+})();
 
 /* ---------- Exhibition: a curated, self-guided tour after 25 s idle ---------- */
 const Exhibit = {
   on: false, auto: true, idle: 0, stop: -1, t: 0,
   tour: [
-    { m: 'gs', p: 'mitosis', tilt: false, zoom: 1.5, body: 'Nothing here is told to divide. Each spot eats the substrate at its own centre until it pinches in two.' },
+    { m: 'gs', p: 'mitosis', tilt: true, dist: 0.42, body: 'Nothing here is told to divide. Each drop of catalyst eats the substrate at its own centre until it pinches in two. Lit from within, the drops read as living jelly.' },
     { m: 'physarum', p: 'network', tilt: true, body: 'Hundreds of thousands of agents, each with three sensors and no map. The network is their shared memory, written in chemoattractant.' },
     { m: 'lenia', p: 'orbium', tilt: false, zoom: 2.2, body: 'A creature that moves although nothing in it moves: every step, its front grows and its back decays.' },
     { m: 'bz', p: 'excitable', tilt: true, body: 'Every point is resting, firing or recovering. Break a wave and its free end has to curl: a spiral is born.' },
@@ -4459,11 +5270,12 @@ const Exhibit = {
   poke() { this.idle = 0; },
   activity() { this.idle = 0; if (this.on) this.exit(); },
   canStart() {
-    return !document.hidden && !snapBusy && !Evolve.tw && $('#help').hidden && !$('#guide').classList.contains('open') && !ptr.down;
+    return !document.hidden && !snapBusy && !Evolve.tw && !Recorder.on && !Phylo.open && !gest.active && $('#help').hidden && !$('#guide').classList.contains('open') && !ptr.down;
   },
   toggle() { if (this.on) this.exit(); else this.enter(); },
   enter() {
     if (this.on) return;
+    Splash.close(true);
     this.on = true;
     this.saved = { tilt: STATE.tilt };
     document.body.classList.add('exhibit');
@@ -4495,6 +5307,7 @@ const Exhibit = {
       const i = current.presets.findIndex(p => p.id === s.p);
       if (i >= 0) { current.applyPreset(i); buildDock(); }
       current.resetView();
+      if (s.dist && current.cam3) current.cam3.dist = Relief.dist0(current) * s.dist;
       STATE.tilt = !!s.tilt;
       $('#tog-tilt').setAttribute('aria-pressed', String(STATE.tilt));
       if (s.m === 'boids') { this.savedOrbit = current.p.orbit; current.p.orbit = 0.14; }
@@ -4556,8 +5369,28 @@ function updateAtlas() {
 const ptr = { down: false, mode: null, id: -1, x: 0, y: 0, ax: null, ay: null, lx: 0, ly: 0, first: false, hover: false, hx: 0, hy: 0, speed: 0, t: 0 };
 let stepOnce = false;
 canvas.addEventListener('contextmenu', e => e.preventDefault());
+// two-finger camera: pinch to zoom, drag to pan (2D) or orbit (3D terrain and boids)
+const gest = { pts: new Map(), active: false, cx: 0, cy: 0, d: 1 };
+function gestNow() {
+  const a = [...gest.pts.values()];
+  return { cx: (a[0].x + a[1].x) / 2, cy: (a[0].y + a[1].y) / 2, d: Math.max(1, Math.hypot(a[0].x - a[1].x, a[0].y - a[1].y)) };
+}
 canvas.addEventListener('pointerdown', e => {
-  if (ptr.down || !current) return;
+  if (!current) return;
+  if (e.pointerType === 'touch') {
+    gest.pts.set(e.pointerId, { x: e.clientX, y: e.clientY });
+    if (gest.pts.size >= 2) {
+      if (!gest.active) {
+        // a second finger turns the stroke into a camera gesture
+        if (ptr.down) { ptr.down = false; if (current.endStroke) current.endStroke(); }
+        Object.assign(gest, { active: true }, gestNow());
+      }
+      try { canvas.setPointerCapture(e.pointerId); } catch (err) { /* capture is a nicety */ }
+      e.preventDefault();
+      return;
+    }
+  }
+  if (ptr.down || gest.active) return;
   let mode = null;
   if (e.button === 1 || (e.button === 0 && (e.altKey || STATE.pmode === 'orbit'))) mode = 'pan';
   else if (e.button === 2 || (e.button === 0 && (e.shiftKey || STATE.pmode === 'tool'))) mode = 'tool';
@@ -4570,6 +5403,16 @@ canvas.addEventListener('pointerdown', e => {
   if (mode !== 'pan') { sound.touch(e.clientX, e.clientY, 0, 0); Ripples.add(e.clientX, e.clientY, 1); ptr.rip = performance.now(); }
 });
 canvas.addEventListener('pointermove', e => {
+  if (gest.pts.has(e.pointerId)) {
+    gest.pts.set(e.pointerId, { x: e.clientX, y: e.clientY });
+    if (gest.active && gest.pts.size >= 2) {
+      const g = gestNow(), k = g.d / gest.d;
+      if (Math.abs(k - 1) > 0.002) current.zoomAt(g.cx, g.cy, k);
+      current.panBy(g.cx - gest.cx, g.cy - gest.cy);
+      Object.assign(gest, g);
+      return;
+    }
+  }
   ptr.hover = true;
   const hv = Math.hypot(e.clientX - ptr.hx, e.clientY - ptr.hy);
   ptr.hx = e.clientX; ptr.hy = e.clientY;
@@ -4588,6 +5431,10 @@ canvas.addEventListener('pointermove', e => {
   if (now - (ptr.rip || 0) > 160) { ptr.rip = now; Ripples.add(e.clientX, e.clientY, 0.5); }
 });
 function endPointer(e) {
+  const wasGesture = gest.active;
+  gest.pts.delete(e.pointerId);
+  if (gest.pts.size < 2) gest.active = false;   // the finger left behind does not start painting
+  if (wasGesture) return;
   if (!ptr.down || e.pointerId !== ptr.id) return;
   ptr.down = false;
   canvas.classList.remove('panning');
@@ -4597,11 +5444,26 @@ function endPointer(e) {
 canvas.addEventListener('pointerup', endPointer);
 canvas.addEventListener('pointercancel', endPointer);
 canvas.addEventListener('pointerleave', () => { ptr.hover = false; });
+// Laptop trackpads arrive as wheel events: a pinch carries ctrlKey, a two-finger drag carries
+// pixel deltas (usually with some deltaX). A gesture is classified once, on its first event.
+let wheelKind = null, wheelT = 0;
 canvas.addEventListener('wheel', e => {
   e.preventDefault();
-  const k = Math.exp(-e.deltaY * (e.deltaMode === 1 ? 0.05 : 0.0015));
-  current.zoomAt(e.clientX, e.clientY, k);
+  const now = performance.now();
+  if (now - wheelT > 240) wheelKind = null;
+  wheelT = now;
+  if (e.ctrlKey) { current.zoomAt(e.clientX, e.clientY, Math.exp(-clamp(e.deltaY, -60, 60) * 0.012)); return; }
+  const wd = e.wheelDeltaY;
+  const pad = e.deltaMode === 0 && (e.deltaX !== 0 || (typeof wd === 'number' && wd !== 0 ? wd === -3 * e.deltaY : !Number.isInteger(e.deltaY) || Math.abs(e.deltaY) < 40));
+  if (!wheelKind || (pad && wheelKind === 'mouse' && e.deltaX !== 0)) wheelKind = pad ? 'pad' : 'mouse';
+  if (wheelKind === 'pad') current.panBy(-e.deltaX, -e.deltaY);
+  else current.zoomAt(e.clientX, e.clientY, Math.exp(-e.deltaY * (e.deltaMode === 1 ? 0.05 : 0.0015)));
 }, { passive: false });
+// Safari reports trackpad pinches as its own gesture events
+let gScale = 1;
+canvas.addEventListener('gesturestart', e => { e.preventDefault(); gScale = 1; });
+canvas.addEventListener('gesturechange', e => { e.preventDefault(); if (e.scale > 0) current.zoomAt(e.clientX || VIEW.cssW / 2, e.clientY || VIEW.cssH / 2, e.scale / gScale); gScale = e.scale || 1; Exhibit.activity(); });
+canvas.addEventListener('gestureend', e => e.preventDefault());
 canvas.addEventListener('dblclick', e => { if (e.altKey) current.resetView(); });
 
 function applyStroke() {
@@ -4622,10 +5484,23 @@ window.addEventListener('pointerdown', e => { if (!e.target.closest || !e.target
 window.addEventListener('wheel', () => Exhibit.activity(), { capture: true, passive: true });
 window.addEventListener('keydown', e => {
   if (e.key !== 'x' && e.key !== 'X') Exhibit.activity();
+  if (Splash.open) {
+    if (e.key === ' ' || e.key === 'Enter' || e.key === 'Escape') { e.preventDefault(); sound.start(); Splash.close(); return; }
+    if (!e.metaKey && !e.ctrlKey && !e.altKey) Splash.close();   // any other key enters and also does its usual job
+  }
   if (e.metaKey || e.ctrlKey) return;
   const t = e.target, tag = (t && t.tagName) || '';
   if (tag === 'TEXTAREA' || tag === 'SELECT' || (tag === 'INPUT' && t.type !== 'range')) return;
   sound.start();
+  // synth keys: the home row plays, and takes precedence over its usual shortcuts
+  if (Synth.on && !e.altKey) {
+    const i = KEY_CODES.indexOf(e.code);
+    if (i >= 0) {
+      e.preventDefault();
+      if (!e.repeat) { Synth.down.add(i); Synth.key(i, e.shiftKey); }
+      return;
+    }
+  }
   const k = e.key;
   keyTrail.push(k.length === 1 ? k.toLowerCase() : k);
   if (keyTrail.length > KONAMI.length) keyTrail.shift();
@@ -4642,6 +5517,8 @@ window.addEventListener('keydown', e => {
   if (k === 'Escape') {
     if (!$('#help').hidden) toggleHelp(false);
     else if ($('#guide').classList.contains('open')) toggleGuide(false);
+    else if (Phylo.open) Phylo.toggle(false);
+    else if (Synth.on) Synth.toggle(false);
     else if (document.body.classList.contains('dock-open')) $('#btn-dock').click();
     else if (document.body.classList.contains('hud-hidden')) toggleHud();
     return;
@@ -4677,13 +5554,22 @@ window.addEventListener('keydown', e => {
     case 't': case 'T': setTool(3); break;
     case '0': current.resetView(); break;
     case 'i': case 'I': toggleTilt(); break;
-    case 'v': case 'V': if (!Evolve.tw) Evolve.start(); break;
+    case 'v': case 'V': Evolve.start(); break;
+    case 'y': case 'Y': Phylo.toggle(); break;
+    case 'n': case 'N': Synth.toggle(); break;
+    case 'o': case 'O': Recorder.toggle(); break;
     case 'x': case 'X': Exhibit.toggle(); break;
     case 'l': case 'L': Mic.toggle(); break;
     case '?': toggleHelp(); break;
     default: break;
   }
 });
+
+window.addEventListener('keyup', e => {
+  const i = KEY_CODES.indexOf(e.code);
+  if (i >= 0 && Synth.down.delete(i)) Synth.light(i, false);
+});
+window.addEventListener('blur', () => { Synth.down.forEach(i => Synth.light(i, false)); Synth.down.clear(); });
 
 /* ---------- sizing ---------- */
 let resizeTimer = 0;
@@ -4694,7 +5580,7 @@ function resize() {
   let s = dpr;
   const maxPx = 5.2e6;
   if (w * h * s * s > maxPx) s = Math.sqrt(maxPx / (w * h));
-  const cw = Math.max(1, Math.round(w * s)), ch = Math.max(1, Math.round(h * s));
+  const cw = Math.max(2, Math.round(w * s) & ~1), ch = Math.max(2, Math.round(h * s) & ~1);   // even, for video encoders
   if (canvas.width !== cw || canvas.height !== ch) { canvas.width = cw; canvas.height = ch; }
   post.resize(gl.drawingBufferWidth, gl.drawingBufferHeight);
   clearTimeout(resizeTimer);
@@ -4716,13 +5602,11 @@ canvas.addEventListener('webglcontextrestored', () => location.reload());
 let last = performance.now(), msEMA = 16.7, cpuEMA = 0, stepAcc = 0, gov = 1, govT = 0;
 let hudT = 0, hudFrames = 0, hudSteps = 0, stepsTotal = 0;
 const METRIC = { density: 0, activity: 0, cx: 0.5, cy: 0.5, entropy: 0.5, contrast: 0 };
-// an onset from the microphone: a ripple, and a pulse painted into the specimen where the voice "stands"
-function micPulse(strength) {
-  const t = STATE.time;
-  const x = ptr.hover ? ptr.hx : VIEW.cssW * (0.5 + 0.28 * Math.sin(t * 0.13)), y = ptr.hover ? ptr.hy : VIEW.cssH * (0.5 + 0.22 * Math.sin(t * 0.17 + 1));
+// a localized burst: a ripple in the glass and a pulse painted into the specimen at (x, y)
+function burst(x, y, strength, radiusCss) {
   Ripples.add(x, y, strength);
   const m = current, keep = STATE.brushCss;
-  STATE.brushCss = 14 + 40 * Math.min(strength, 1.2);
+  STATE.brushCss = radiusCss;
   try {
     if (m.pulse) m.pulse(x, y, strength);
     else {
@@ -4732,6 +5616,12 @@ function micPulse(strength) {
       if (kind) m.brushKind = kind;
     }
   } finally { STATE.brushCss = keep; }
+}
+// an onset from the microphone: a burst where the voice "stands" (the cursor, or a drifting source)
+function micPulse(strength) {
+  const t = STATE.time;
+  const x = ptr.hover ? ptr.hx : VIEW.cssW * (0.5 + 0.28 * Math.sin(t * 0.13)), y = ptr.hover ? ptr.hy : VIEW.cssH * (0.5 + 0.22 * Math.sin(t * 0.17 + 1));
+  burst(x, y, strength, 14 + 40 * Math.min(strength, 1.2));
   if (sound.live) sound.touch(x, y, 400 * strength, 0);
 }
 function frame() {
@@ -4761,7 +5651,9 @@ function frame() {
     hudSteps += n;
     if (m.accumulate) m.accumulate();
     m.render(post.scene, screenView());
-    post.run(null, STATE.fx, gl.drawingBufferWidth / VIEW.cssW);
+    post.run(null, STATE.fx, gl.drawingBufferWidth / VIEW.cssW, dofAmount());
+    Phylo.tick();
+    Recorder.tick();
     const src = m.metric();
     if (src) { Metrics.poll(); if (STATE.frame % 6 === 0) Metrics.request(src); }
     else Metrics.set(m.stats.density, m.stats.activity, m.stats.cx, m.stats.entropy, 0.2, 0.5);
@@ -4778,6 +5670,7 @@ function frame() {
       else if (msEMA < 15.5 && gov < 1) gov = Math.min(1, gov * 1.08);
     }
     Evolve.update();
+    if (Synth.on && STATE.frame % 30 === 0) Synth.build();
     Exhibit.update(Math.min(rawDt, 1));
     Phase.sample(m);
     if (STATE.frame % 4 === 0) Phase.draw(m);
@@ -4815,7 +5708,8 @@ try {
   soundUI();
   last = performance.now();
   raf = requestAnimationFrame(frame);
-  setTimeout(() => toast('Left-drag to paint &middot; right-drag or Shift-drag for instruments &middot; <b>G</b> opens the Field Guide', 5200), 900);
+  Splash.show();
+  Synth.probe();
 } catch (e) {
   reportError(e);
 }
@@ -4827,9 +5721,21 @@ window.MORPHO = {
   activate: id => { Exhibit.poke(); activate(id, true); },
   exhibit: on => { if (on === false) { Exhibit.auto = false; Exhibit.exit(); } else if (on === true) Exhibit.enter(); return Exhibit.on; },
   evolve: () => Evolve.start(),
+  get phylo() { const c = Phylo.current(current.id); return { open: Phylo.open, current: c ? c.name : null, nodes: Phylo.data(current.id) }; },
+  restore: uid => Evolve.restore(Phylo.byUid(current.id, uid)),
+  tree: open => { Phylo.toggle(open); return Phylo.open; },
+  keys: on => { Synth.toggle(on); return Synth.on; },
+  play: (i, shift, vel) => Synth.key(i | 0, !!shift, vel || 0.72),
+  midi: bytes => Synth.message(Uint8Array.from(bytes)),
+  get synth() { return { on: Synth.on, notes: Synth.notes, inputs: Synth.inputs.slice(), plucks: sound.plucks, mod: Synth.mod, sustain: sound.sustain }; },
+  record: sec => { Recorder.toggle(sec); return Recorder.on; },
+  get recording() { return Recorder.on; },
+  get clip() { return STATE.lastClip || null; },
+  splash: open => { if (open === false) Splash.close(true); else if (open === true) Splash.show(); return Splash.open; },
+  get dof() { return dofAmount(); },
   get audio() { return { state: sound.state, label: sound.label, mode: MODES[sound.mode].name, voices: sound.active, mic: Mic.on, micLevel: +Mic.level.toFixed(3), onsets: Mic.count || 0, entropy: +Metrics.entropy.toFixed(3) }; },
   get tour() { return { on: Exhibit.on, stop: Exhibit.stop, t: +Exhibit.t.toFixed(2), idle: +Exhibit.idle.toFixed(2) }; },
-  get lineage() { return Evolve.lineage.map(e => e.name); },
+  get lineage() { return Phylo.forest(current.id).filter(n => n.kind !== 'wild').map(n => n.name); },
   preset: i => choosePreset(i),
   sync: () => { gl.finish(); return true; },
   step: n => { if (current !== MODELS.boids) current.step(n | 0 || 1); else current.step(1, 1 / 60); },
