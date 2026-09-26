@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="color-scheme" content="dark">
 <meta name="theme-color" content="#030508">
-<meta name="description" content="A single-file research laboratory for emergent pattern: Gray-Scott reaction-diffusion, Physarum slime mould networks, Lenia continuous automata, 3D boids and Belousov-Zhabotinsky waves, with live generative sound.">
+<meta name="description" content="A single-file research laboratory for emergent pattern: Gray-Scott reaction-diffusion, Physarum slime mould networks, Lenia continuous automata, 3D boids and Belousov-Zhabotinsky waves and a coupled ecosystem of all three kinds of life, with relief rendering and live generative sound.">
 <title>Morphogenesis: The Emergence of Pattern &amp; Life</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23030508'/%3E%3Ccircle cx='24' cy='26' r='10' fill='none' stroke='%233ef2ff' stroke-width='4'/%3E%3Ccircle cx='42' cy='40' r='8' fill='none' stroke='%23ff3dcb' stroke-width='4'/%3E%3Ccircle cx='44' cy='18' r='4' fill='%23ffb43d'/%3E%3C/svg%3E">
 <style>
@@ -111,6 +111,8 @@ input[type=range]:focus-visible::-webkit-slider-thumb{box-shadow:0 0 0 3px var(-
 input[type=range]:focus-visible::-moz-range-thumb{box-shadow:0 0 0 3px var(--obsidian),0 0 0 5px var(--accent)}
 .seg{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;padding:3px;border:1px solid var(--edge);border-radius:10px;background:rgba(0,0,0,.18)}
 .seg.two,#tools{grid-template-columns:1fr 1fr}
+.seg.three{grid-template-columns:1fr 1fr 1fr}
+.tog[disabled]{opacity:.4;cursor:not-allowed}
 .seg button{height:28px;border:1px solid transparent;border-radius:7px;background:transparent;font:11.5px/1 var(--mono);color:var(--dim);cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:0 4px;transition:background-color .15s,color .15s,border-color .15s}
 .seg button:hover{color:var(--ink);background:rgba(255,255,255,.05)}
 .seg button[aria-pressed="true"]{color:var(--ink);background:rgba(var(--accent-rgb),.14);border-color:rgba(var(--accent-rgb),.45)}
@@ -154,9 +156,40 @@ input[type=range]:focus-visible::-moz-range-thumb{box-shadow:0 0 0 3px var(--obs
 #btn-sound[data-state="waiting"] .dot{background:var(--amber);animation:blink 1.6s ease-in-out infinite}
 @keyframes blink{50%{opacity:.25}}
 #vol{width:74px}
+#btn-mic{position:relative;min-width:36px;padding:0 8px}
+#btn-mic[aria-pressed="true"]{color:var(--accent);border-color:rgba(var(--accent-rgb),.4)}
+#btn-mic .lvl{position:absolute;right:5px;bottom:7px;width:3px;height:18px;border-radius:2px;background:var(--accent);transform-origin:50% 100%;transform:scaleY(var(--lvl,0));opacity:.9;transition:transform .08s linear}
 .corner .sep{width:1px;height:24px;background:var(--edge);margin:0 3px}
 :focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 button:focus:not(:focus-visible){outline:none}
+
+/* ---------- evolve ---------- */
+.act.evolve{position:relative;overflow:hidden;border-color:rgba(182,255,92,.35);background:linear-gradient(90deg,rgba(182,255,92,.1),rgba(255,255,255,.02))}
+.act.evolve::after{content:"";position:absolute;left:0;bottom:0;height:2px;width:100%;transform-origin:0 50%;transform:scaleX(var(--prog,0));background:linear-gradient(90deg,var(--accent),#fff);box-shadow:0 0 8px var(--accent)}
+.act.evolve[aria-busy="true"]{color:var(--accent)}
+#lineage .chip{font-style:italic}
+
+/* ---------- exhibition ---------- */
+#exhibit{position:fixed;left:clamp(20px,5vw,72px);bottom:clamp(28px,8vh,96px);max-width:min(620px,86vw);z-index:15;pointer-events:none;opacity:0;transform:translateY(10px);transition:opacity 1.4s ease,transform 1.4s ease;text-shadow:0 2px 18px rgba(0,0,0,.85),0 0 2px rgba(0,0,0,.9)}
+#exhibit.show{opacity:1;transform:none}
+#exhibit[hidden]{display:none}
+#exhibit .ex-kick{margin:0 0 12px;font:11px/1 var(--mono);letter-spacing:.34em;text-transform:uppercase;color:var(--accent)}
+#exhibit h2{margin:0;font:italic 400 clamp(34px,5.2vw,64px)/1.02 var(--serif);color:#f4fffd;letter-spacing:-.01em}
+#ex-model{margin:10px 0 0;font:12px/1.3 var(--mono);letter-spacing:.2em;text-transform:uppercase;color:var(--ink-2)}
+#ex-body{margin:16px 0 0;font:400 clamp(15px,1.5vw,19px)/1.55 var(--sans);color:#d8ecea;max-width:52ch}
+#ex-meta{margin:12px 0 0;font:12px/1.4 var(--mono);color:var(--dim)}
+#exhibit .ex-exit{margin:22px 0 0;font:11px/1 var(--mono);color:var(--faint);letter-spacing:.08em}
+body.exhibit #hud{opacity:0}
+body.exhibit #hud>*{pointer-events:none}
+body.exhibit #toast{opacity:0}
+
+/* ---------- phase portrait ---------- */
+.phase{position:absolute;left:var(--gap);bottom:76px;width:292px;margin:0;padding:10px 12px 8px;pointer-events:none!important}
+.phase figcaption{display:flex;justify-content:space-between;font:10px/1 var(--mono);letter-spacing:.2em;text-transform:uppercase;color:var(--dim);margin-bottom:7px}
+.phase figcaption #ph-m{letter-spacing:.04em;text-transform:none;color:var(--ink-2);font-variant-numeric:tabular-nums}
+#ph-cv{display:block;width:268px;height:92px}
+.ph-ax{display:flex;justify-content:space-between;margin-top:5px;font:10px/1 var(--mono);color:var(--dim)}
+@media (max-height:700px){.phase{display:none}}
 
 /* ---------- Pearson atlas axis labels ---------- */
 #atlas{position:fixed;inset:0;pointer-events:none;z-index:5;font:10.5px/1 var(--mono);color:rgba(226,246,244,.72);text-shadow:0 1px 3px #000}
@@ -246,6 +279,7 @@ body.hud-hidden #hint-hud.flash{opacity:1}
   #btn-dock{display:inline-flex}
   .status{height:44px;bottom:var(--gap)}
   .status .stat:nth-child(n+3){display:none}
+  .phase{display:none}
   .corner{height:44px}
   #vol,.corner .sep,#btn-help,#btn-full{display:none}
   #btn-sound{width:auto}
@@ -296,6 +330,10 @@ body.hud-hidden #hint-hud.flash{opacity:1}
         <svg viewBox="0 0 32 32" fill="none" stroke="#9d8bff" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M16 16c0-1.6 2.2-1.6 2.2 0s-2 3.6-4.3 3.6-4.3-2.6-4.3-5.7 3-6.2 6.8-6.2 7.4 3.6 7.4 8.3-4.2 9.3-9.8 9.3S3.8 21.6 3.8 15.9"/></svg>
         <span><span class="nm">Belousov&#8211;Zhabotinsky</span><span class="ds">oscillating chemistry</span></span><kbd>5</kbd>
       </button>
+      <button class="model" data-model="eco" aria-pressed="false">
+        <svg viewBox="0 0 32 32" fill="none" stroke="#b6ff5c" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="16" cy="16" r="11.5" stroke-dasharray="3 3"/><path d="M8 20c3-5 6-2 8-6s5-3 8-7"/><path d="M19.5 22.5l4-1.8-1.1 1.8 1.1 1.8z" fill="#b6ff5c"/></svg>
+        <span><span class="nm">Cosmic Biosphere</span><span class="ds">coupled ecosystem</span></span><kbd>6</kbd>
+      </button>
     </nav>
   </div>
 
@@ -305,6 +343,10 @@ body.hud-hidden #hint-hud.flash{opacity:1}
       <section class="sect">
         <h3>Specimens <span id="preset-note"></span></h3>
         <div class="chips" id="presets" role="group" aria-label="Presets"></div>
+      </section>
+      <section class="sect" id="sect-lineage" hidden>
+        <h3>Lineage <span id="lineage-note"></span></h3>
+        <div class="chips" id="lineage" role="group" aria-label="Bred phenotypes"></div>
       </section>
       <section class="sect">
         <h3>Parameters</h3>
@@ -318,9 +360,10 @@ body.hud-hidden #hint-hud.flash{opacity:1}
         </div>
         <div class="seg" id="tools" role="group" aria-label="Right-click instrument"></div>
         <p class="hint" id="tool-hint"></p>
-        <div class="seg two" id="pmode" role="group" aria-label="What a left-drag or touch does">
-          <button data-pm="paint" aria-pressed="true">Left: paint</button>
-          <button data-pm="tool" aria-pressed="false">Left: instrument</button>
+        <div class="seg three" id="pmode" role="group" aria-label="What a left-drag or touch does">
+          <button data-pm="paint" aria-pressed="true" title="Left-drag paints">Paint</button>
+          <button data-pm="tool" aria-pressed="false" title="Left-drag places the instrument">Instrument</button>
+          <button data-pm="orbit" aria-pressed="false" title="Left-drag orbits the 3D camera (pans in 2D)">Orbit</button>
         </div>
       </section>
       <section class="sect">
@@ -336,6 +379,22 @@ body.hud-hidden #hint-hud.flash{opacity:1}
           <label for="p-glow">Bloom intensity</label><output id="o-glow" for="p-glow">0.80</output>
           <input type="range" id="p-glow" min="0" max="2" step="0.01" value="0.8">
         </div>
+        <div class="toggles" role="group" aria-label="Relief">
+          <button class="tog" id="tog-tilt" aria-pressed="false" title="Tilt the dish into 3D terrain (I)"><i></i>3D terrain</button>
+          <button class="tog" id="tog-exhibit" aria-pressed="false" title="Exhibition: a curated, self-guided tour (X)"><i></i>Exhibition</button>
+        </div>
+        <div class="param">
+          <label for="p-relief">Relief depth</label><output id="o-relief" for="p-relief">1.00</output>
+          <input type="range" id="p-relief" min="0" max="2.5" step="0.01" value="1">
+        </div>
+        <div class="param">
+          <label for="p-gloss">Gloss &amp; rim</label><output id="o-gloss" for="p-gloss">1.00</output>
+          <input type="range" id="p-gloss" min="0" max="2" step="0.01" value="1">
+        </div>
+        <div class="param">
+          <label for="p-height">Terrain height</label><output id="o-height" for="p-height">1.00</output>
+          <input type="range" id="p-height" min="0" max="3" step="0.01" value="1">
+        </div>
       </section>
       <section class="sect">
         <h3>Protocol</h3>
@@ -344,11 +403,18 @@ body.hud-hidden #hint-hud.flash{opacity:1}
           <button class="act" id="act-step" title="Advance one frame (.)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 5l9 7-9 7zM18 5v14"/></svg>Step</button>
           <button class="act" id="act-reset" title="Reseed the specimen (R)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 12a8 8 0 1 0 2.4-5.7M4 4v5h5"/></svg>Reseed</button>
           <button class="act" id="act-clear" title="Clear the dish (C)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M5 7h14M9 7V4h6v3M7 7l1 13h8l1-13"/></svg>Clear</button>
+          <button class="act wide evolve" id="act-evolve" title="Mutate the parameters over three seconds and breed a new phenotype (V)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M7 3c0 6 10 6 10 12s-10 3-10 6M17 3c0 6-10 6-10 12s10 3 10 6M8.5 7h7M8.5 17h7"/></svg><span id="evolve-t">Evolve a phenotype</span></button>
           <button class="act wide" id="act-snap" title="Render a 3840 by 2160 uncompressed PNG (S)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg><span id="snap-t">Capture 4K Snapshot</span></button>
         </div>
       </section>
     </div>
   </aside>
+
+  <figure class="glass phase" id="phase" aria-label="Phase portrait of the specimen">
+    <figcaption><span id="ph-t">Phase portrait</span><span id="ph-m">--</span></figcaption>
+    <canvas id="ph-cv" aria-hidden="true"></canvas>
+    <div class="ph-ax"><span id="ph-x">density &rarr;</span><span id="ph-y">activity &uarr;</span></div>
+  </figure>
 
   <footer class="glass status" aria-label="Instrument readout">
     <div class="stat"><span class="k">FPS</span><span class="v" id="st-fps">--</span></div>
@@ -363,12 +429,22 @@ body.hud-hidden #hint-hud.flash{opacity:1}
     <button class="ib" id="btn-dock" aria-expanded="false" aria-controls="dock"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></svg><span class="lbl">Controls</span></button>
     <button class="ib" id="btn-sound" aria-pressed="true" data-state="waiting" title="Sound on or off (M)"><span class="dot" aria-hidden="true"></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 9h4l5-4v14l-5-4H4z"/><path id="snd-wave" d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"/></svg><span class="lbl" id="snd-t">Tap to wake</span></button>
     <input type="range" id="vol" min="0" max="1" step="0.01" value="0.6" aria-label="Volume">
+    <button class="ib" id="btn-mic" aria-pressed="false" title="Microphone reactivity (L): room sound pulses the specimen" aria-label="Microphone reactivity"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21"/></svg><i class="lvl" aria-hidden="true"></i></button>
     <span class="sep" aria-hidden="true"></span>
     <button class="ib" id="btn-guide" aria-expanded="false" aria-controls="guide" title="Field Guide (G)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 5.5C6.5 4 9.5 4 12 6c2.5-2 5.5-2 8-.5V19c-2.5-1.5-5.5-1.5-8 .5-2.5-2-5.5-2-8-.5z"/><path d="M12 6v13.5"/></svg><span class="lbl">Field Guide</span></button>
     <button class="ib" id="btn-help" title="Keyboard shortcuts (?)" aria-label="Keyboard shortcuts">?</button>
     <button class="ib" id="btn-full" title="Fullscreen (F)" aria-label="Fullscreen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 9V4h5M15 4h5v5M20 15v5h-5M9 20H4v-5"/></svg></button>
     <button class="ib" id="btn-hide" title="Hide the interface (H)" aria-label="Hide the interface"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="3"/></svg></button>
   </div>
+</div>
+
+<div id="exhibit" aria-live="polite" hidden>
+  <p class="ex-kick">Exhibition &middot; <span id="ex-n">1 / 8</span></p>
+  <h2 id="ex-title"></h2>
+  <p id="ex-model"></p>
+  <p id="ex-body"></p>
+  <p id="ex-meta"></p>
+  <p class="ex-exit">Move the mouse or press any key to take the controls</p>
 </div>
 
 <div id="hint-hud" class="glass">Interface hidden &middot; press <kbd class="k">H</kbd> to bring it back</div>
@@ -380,7 +456,7 @@ body.hud-hidden #hint-hud.flash{opacity:1}
     <button class="ib" id="guide-close" aria-label="Close the Field Guide"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
   </div>
   <nav class="g-toc" aria-label="Field Guide sections">
-    <a href="#g-turing">1952</a><a href="#g-pde">Equations</a><a href="#g-physarum">Slime mould</a><a href="#g-lenia">Lenia</a><a href="#g-boids">Boids</a><a href="#g-bz">BZ waves</a><a href="#g-nature">In nature</a><a href="#g-lab">Using the lab</a>
+    <a href="#g-turing">1952</a><a href="#g-pde">Equations</a><a href="#g-physarum">Slime mould</a><a href="#g-lenia">Lenia</a><a href="#g-boids">Boids</a><a href="#g-bz">BZ waves</a><a href="#g-eco">Biosphere</a><a href="#g-render">Rendering</a><a href="#g-nature">In nature</a><a href="#g-lab">Using the lab</a>
   </nav>
   <div class="g-body" id="guide-body">
     <section id="g-turing">
@@ -450,8 +526,23 @@ body.hud-hidden #hint-hud.flash{opacity:1}
       <p>With g(u) = u this is Barkley's model, a fast caricature of the Oregonator. Paint a barrier across a travelling wave to break it and a pair of spirals appears. The <em>Turbulence</em> preset uses the delayed recovery of B&auml;r and Eiswirth (1993), under which spirals break apart.</p>
     </section>
 
+    <section id="g-eco">
+      <h3>VII &middot; Model 6</h3>
+      <h4>Cosmic Biosphere: three layers, one loop</h4>
+      <p>The first five models live alone. Here they feed on one another. A chemical terrain (Gray&#8211;Scott, or Barkley's excitable waves) is the food. Slime agents climb its gradients and graze it. Flocks of fauna graze the slime, and every one of them drops chemical seeds in its wake, so the terrain they ate regrows along the paths they flew.</p>
+      <div class="eqn">terrain&nbsp; &part;v/&part;t = D<sub>v</sub>&nabla;&sup2;v + uv&sup2; &minus; (F + k)v &minus; &gamma;&middot;S&middot;v + seeds<br>slime&nbsp;&nbsp;&nbsp; sensors read T + &chi;&middot;N; deposit grows with N<br>fauna&nbsp;&nbsp;&nbsp; dE/dt = &alpha;&middot;S &minus; &mu;; divide at E &gt; 2, starve at E &lt; 0<span class="c">N: nutrient (the terrain). S: slime density. T: slime trail. &chi;: chemotaxis. &gamma;: slime appetite. &alpha;, &mu;: fauna appetite and metabolism.</span></div>
+      <p>The fauna read a coarse census of the dish, read back from the GPU without stalling it, to decide where the food is. The phase portrait at lower left plots nutrient against slime, coloured by the size of the fauna population. When grazers overshoot, the trajectory circles like the predator and prey cycles that Alfred Lotka (1925) and Vito Volterra (1926) found in their equations.</p>
+    </section>
+
+    <section id="g-render">
+      <h3>VIII &middot; Rendering</h3>
+      <h4>Specimens as terrain</h4>
+      <p>Every grid model writes a surface each frame: an albedo from its palette and a height from its concentration. One shared lighting pass treats that height as a landscape. Normals come from central differences. Light wraps around the relief, a sharp wet highlight rides the slopes, and crevices darken where the local surface sits below its blurred surroundings (a cavity term read from the texture's mipmaps). A Fresnel rim, proportional to (1 &minus; N&middot;V)&sup3;, lights the edges, and a faint thin-film tint shifts with viewing angle.</p>
+      <p>Press <kbd class="k">I</kbd> and the dish tilts into real geometry: the height field displaces a mesh, tiled three by three so the periodic world runs to a fogged horizon. The camera settles at the isometric elevation of 35.26&deg; (arctan&nbsp;1/&radic;2). Orbit with a middle-drag, an Alt-drag or the <em>Orbit</em> pointer mode; painting still works, because each stroke is cast as a ray onto the dish.</p>
+    </section>
+
     <section id="g-nature">
-      <h3>VII &middot; Field notes</h3>
+      <h3>IX &middot; Field notes</h3>
       <h4>Where the equations live</h4>
       <div class="cards">
         <div class="card"><b>Cheetah and leopard coats</b>James Murray argued that the size and shape of the embryo select the pattern: spots on a broad flank, stripes along a narrow tail. His model predicts that a spotted animal can have a striped tail, but a striped animal cannot have a spotted tail.<br><button class="try" data-try="gs:mitosis">Try Mitosis</button></div>
@@ -466,14 +557,18 @@ body.hud-hidden #hint-hud.flash{opacity:1}
     </section>
 
     <section id="g-lab">
-      <h3>VIII &middot; Using the laboratory</h3>
+      <h3>X &middot; Using the laboratory</h3>
       <h4>Instruments and protocol</h4>
       <table>
         <tr><td>Left-drag</td><td>Paint morphogen, stimulate, or seed a cluster of agents</td></tr>
         <tr><td>Right-drag or Shift-drag</td><td>Place the selected instrument: barrier, nutrient well, repulsor, or eraser</td></tr>
         <tr><td>Wheel</td><td>Zoom the microscope (or the camera, for boids)</td></tr>
         <tr><td>Middle-drag or Alt-drag</td><td>Pan the dish (or orbit the camera)</td></tr>
-        <tr><td><kbd class="k">1</kbd>&ndash;<kbd class="k">5</kbd></td><td>Switch model; each keeps its state while you are away</td></tr>
+        <tr><td><kbd class="k">1</kbd>&ndash;<kbd class="k">6</kbd></td><td>Switch model; each keeps its state while you are away</td></tr>
+        <tr><td><kbd class="k">I</kbd></td><td>Tilt the dish into 3D terrain, and back</td></tr>
+        <tr><td><kbd class="k">V</kbd></td><td>Evolve: breed a new phenotype from the current parameters</td></tr>
+        <tr><td><kbd class="k">X</kbd></td><td>Exhibition: a curated tour (it also starts after 25 seconds idle)</td></tr>
+        <tr><td><kbd class="k">L</kbd></td><td>Listen: let the microphone pulse the specimen</td></tr>
         <tr><td><kbd class="k">Space</kbd> <kbd class="k">.</kbd></td><td>Pause, or advance a single frame</td></tr>
         <tr><td><kbd class="k">R</kbd> <kbd class="k">C</kbd></td><td>Reseed, or clear</td></tr>
         <tr><td><kbd class="k">S</kbd></td><td>Capture a 4K snapshot</td></tr>
@@ -482,7 +577,10 @@ body.hud-hidden #hint-hud.flash{opacity:1}
         <tr><td><kbd class="k">M</kbd> <kbd class="k">G</kbd> <kbd class="k">H</kbd> <kbd class="k">F</kbd></td><td>Sound, this guide, hide the interface, fullscreen</td></tr>
         <tr><td><kbd class="k">0</kbd></td><td>Reset zoom and pan</td></tr>
       </table>
-      <p>The soundscape is synthesized live: pentatonic pads whose filter, detuning and chord follow the density of the specimen, and bell-like chimes that answer activity and your brush. Nothing is recorded or sent anywhere.</p>
+      <h5>Evolve and the lineage</h5>
+      <p><em>Evolve</em> mutates the parameters that shape a phenotype and glides them to their new values over three seconds, so you watch the pattern turn into its offspring. The mutation respects what is viable: Gray&#8211;Scott offspring are drawn close to the saddle-node line k = &radic;F/2 &minus; F, where patterns live, and Lenia's growth centre moves only a few per cent. Each offspring gets a binomial name and joins the lineage; click a name to return to it.</p>
+      <h5>Sound</h5>
+      <p>The soundscape is synthesized live. An 8&times;8 census of the specimen gives its density, activity, contrast and spatial entropy (the evenness of its mass). These pick a mode on a scale from Lydian (ordered, bright) to Phrygian (turbulent, dark), changed only at chord boundaries. A sub-bass, a pad voiced across three octaves and a pentatonic arpeggio follow the specimen's density, centre and restlessness. Cursor ripples bend a chime's pitch with your hand's speed. With <em>Listen</em> on, onsets in the room (a clap, a syllable) pulse the specimen under your cursor, or at a slowly drifting source when the cursor is away. Sound is analysed in the page only and never recorded or sent.</p>
       <p>Everything here lives in one HTML file with no network requests. The fields are simulated in WebGL2 fragment shaders on floating-point textures; the slime mould runs up to a million agents on the GPU; the boids run on the CPU with a spatial hash. Snapshots are written as uncompressed PNG files, and each carries its model, specimen and parameters in its text chunks, so every plate keeps its own provenance.</p>
       <p class="coda">Turing named everything he studied. Typing his first name at the keyboard is said to change the view.</p>
     </section>
@@ -493,7 +591,9 @@ body.hud-hidden #hint-hud.flash{opacity:1}
   <div class="card glass">
     <h2 id="help-t">Keyboard</h2>
     <table>
-      <tr><td><kbd class="k">1</kbd>&ndash;<kbd class="k">5</kbd></td><td>Gray&#8211;Scott, Physarum, Lenia, Boids, BZ</td></tr>
+      <tr><td><kbd class="k">1</kbd>&ndash;<kbd class="k">6</kbd></td><td>Gray&#8211;Scott, Physarum, Lenia, Boids, BZ, Biosphere</td></tr>
+      <tr><td><kbd class="k">I</kbd> / <kbd class="k">V</kbd></td><td>3D terrain / evolve a phenotype</td></tr>
+      <tr><td><kbd class="k">X</kbd> / <kbd class="k">L</kbd></td><td>Exhibition tour / microphone</td></tr>
       <tr><td><kbd class="k">Space</kbd> / <kbd class="k">.</kbd></td><td>Pause / step</td></tr>
       <tr><td><kbd class="k">R</kbd> / <kbd class="k">C</kbd></td><td>Reseed / clear</td></tr>
       <tr><td><kbd class="k">S</kbd></td><td>4K snapshot (uncompressed PNG)</td></tr>
@@ -589,7 +689,7 @@ function makeTexture(w, h, fmt, opt = {}) {
   let filter = opt.filter === 'linear' ? gl.LINEAR : gl.NEAREST;
   if (fmt === 'rgba32f' && !CAPS.f32Linear) filter = gl.NEAREST;
   const wrap = opt.wrap === 'clamp' ? gl.CLAMP_TO_EDGE : gl.REPEAT;
-  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, filter);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, opt.mipmap && filter === gl.LINEAR ? gl.LINEAR_MIPMAP_LINEAR : filter);
   gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, filter);
   gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, wrap);
   gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, wrap);
@@ -601,13 +701,22 @@ function makeTarget(w, h, fmt, opt = {}) {
   const fbo = gl.createFramebuffer();
   gl.bindFramebuffer(gl.FRAMEBUFFER, fbo);
   gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, tex, 0);
+  let depth = null;
+  if (opt.depth) {
+    depth = gl.createRenderbuffer();
+    gl.bindRenderbuffer(gl.RENDERBUFFER, depth);
+    gl.renderbufferStorage(gl.RENDERBUFFER, gl.DEPTH_COMPONENT24, w, h);
+    gl.framebufferRenderbuffer(gl.FRAMEBUFFER, gl.DEPTH_ATTACHMENT, gl.RENDERBUFFER, depth);
+    gl.bindRenderbuffer(gl.RENDERBUFFER, null);
+  }
   gl.bindFramebuffer(gl.FRAMEBUFFER, null);
-  return { tex, fbo, w, h, fmt, opt };
+  return { tex, fbo, depth, w, h, fmt, opt };
 }
 function freeTarget(t) {
   if (!t) return;
   gl.deleteTexture(t.tex);
   gl.deleteFramebuffer(t.fbo);
+  if (t.depth) gl.deleteRenderbuffer(t.depth);
 }
 function makePingPong(w, h, fmt, opt = {}) {
   const pp = {
@@ -702,6 +811,50 @@ vec3 maskFX(vec3 col, vec2 g) {
   float pulse = 0.65 + 0.35 * sin(u_time * 2.6 - length(g) * 0.04);
   col += u_acc2 * m.g * 0.42 * pulse;
   col += u_acc1 * m.b * 0.36 * (1.3 - pulse);
+  return col;
+}
+`;
+
+// shared helpers for the per-model surface pass (albedo in rgb, height in a)
+const GLSL_SURF = `
+uniform vec2 u_size;
+uniform sampler2D u_pal;
+uniform float u_palRow;
+uniform vec3 u_acc0, u_acc1, u_acc2;
+uniform float u_time;
+uniform sampler2D u_mask;
+vec3 pal(float t) { return texture(u_pal, vec2(clamp(t, 0.0, 1.0) * (255.0 / 256.0) + 0.5 / 256.0, u_palRow)).rgb; }
+void surfMask(inout vec3 alb, inout float h, vec2 uv) {
+  vec4 m = texture(u_mask, uv);
+  float wall = smoothstep(0.3, 0.7, m.r);
+  alb = mix(alb, vec3(0.045, 0.06, 0.075) + 0.06 * u_acc0, wall);
+  h = mix(h, 0.92, wall);
+  float pulse = 0.65 + 0.35 * sin(u_time * 2.6 - length(gl_FragCoord.xy) * 0.04);
+  alb += u_acc2 * m.g * 0.55 * pulse;
+  alb += u_acc1 * m.b * 0.45 * (1.3 - pulse);
+  h = max(h, m.g * 0.3 * pulse);
+}
+`;
+
+// shared lighting: wrapped diffuse, a wet two-lobe specular, thin-film sheen,
+// Fresnel rim and self-illumination that rises with height
+const GLSL_SHADE = `
+uniform vec3 u_L, u_rim;
+uniform float u_gloss, u_relief;
+vec3 shade(vec3 alb, float h, vec3 N, vec3 V, float ao) {
+  float ndl = dot(N, u_L);
+  float wrap = clamp((ndl + 0.3) / 1.3, 0.0, 1.0);
+  vec3 H = normalize(u_L + V);
+  float ndh = max(dot(N, H), 0.0);
+  float ndv = clamp(dot(N, V), 0.0, 1.0);
+  float wet = smoothstep(0.03, 0.3, h);
+  float spec = (pow(ndh, 110.0) * 1.1 + pow(ndh, 16.0) * 0.04) * wet * mix(0.3, 1.0, smoothstep(0.0, 0.2, 1.0 - N.z));
+  float fres = pow(1.0 - ndv, 3.0);
+  vec3 iri = 0.5 + 0.5 * cos(6.2831853 * (vec3(0.0, 0.33, 0.67) + ndv * 1.7 + h * 0.9));
+  vec3 col = alb * (0.16 + 0.9 * wrap) * ao;
+  col += alb * h * 0.5;
+  col += mix(vec3(1.0), iri, 0.4) * spec * u_gloss * ao;
+  col += u_rim * fres * (0.15 + 0.85 * h) * 0.8 * u_gloss;
   return col;
 }
 `;
@@ -876,14 +1029,14 @@ void main() {
   o = m;
 }`;
 
-// density / activity probe: 4x4 regions, each averaging an 8x8 lattice
+// density / activity probe: 8x8 regions, each averaging an 8x8 lattice
 SRC.reduce = `
 uniform sampler2D u_src; uniform vec4 u_w; uniform float u_mode; uniform float u_gain;
 void main() {
   vec2 cell = floor(gl_FragCoord.xy);
   float s = 0.0, mx = 0.0;
   for (int j = 0; j < 8; j++) for (int i = 0; i < 8; i++) {
-    vec2 uv = (cell + (vec2(i, j) + 0.5) / 8.0) / 4.0;
+    vec2 uv = (cell + (vec2(i, j) + 0.5) / 8.0) / 8.0;
     float v = dot(texture(u_src, uv), u_w);
     v = u_mode > 0.5 ? 1.0 - exp(-max(v, 0.0) * u_gain) : clamp(v * u_gain, 0.0, 1.0);
     s += v; mx = max(mx, v);
@@ -937,26 +1090,6 @@ void main() {
   o = c;
 }`;
 
-SRC.gsView = `
-uniform sampler2D u_state; uniform float u_relief, u_map;
-void main() {
-  vec2 g = toGrid();
-  vec4 c = bil(u_state, g);
-  float v = c.y;
-  float gx = bil(u_state, g + vec2(1.0, 0.0)).y - bil(u_state, g - vec2(1.0, 0.0)).y;
-  float gy = bil(u_state, g + vec2(0.0, 1.0)).y - bil(u_state, g - vec2(0.0, 1.0)).y;
-  float t = 0.8 * smoothstep(0.01, 0.5, v);
-  vec3 base = pal(t) * 0.82;
-  vec3 N = normalize(vec3(-vec2(gx, gy) * u_relief * 7.0, 1.0));
-  vec3 L = normalize(vec3(-0.45, 0.55, 0.7));
-  float dif = max(dot(N, L), 0.0);
-  float spe = pow(max(dot(reflect(-L, N), vec3(0.0, 0.0, 1.0)), 0.0), 36.0);
-  vec3 col = base * mix(1.0, 0.25 + 0.95 * dif, min(u_relief, 1.0));
-  col += spe * mix(u_acc0, vec3(1.0), 0.5) * 0.5 * smoothstep(0.04, 0.3, v) * min(u_relief, 1.5);
-  col += u_acc2 * max(v - c.z, 0.0) * 2.0;
-  if (u_map > 0.5) col *= 0.42 + 0.58 * smoothstep(0.003, 0.04, length(vec2(gx, gy)));
-  o = vec4(maskFX(col, g), 1.0);
-}`;
 
 /* ---------- Physarum ---------- */
 SRC.phyUpdate = `
@@ -1031,24 +1164,6 @@ void main() {
   o = vec4(max(t, 0.0), 1.0);
 }`;
 
-SRC.phyView = `
-uniform sampler2D u_trail; uniform float u_gain, u_species;
-void main() {
-  vec2 g = toGrid();
-  vec3 t = texture(u_trail, g / u_size).rgb;
-  vec3 q = 1.0 - exp(-t * u_gain);
-  vec3 col;
-  if (u_species < 1.5) {
-    col = pal(0.05 + 0.8 * q.r) * smoothstep(0.0, 0.08, q.r + 0.02);
-    col += vec3(1.0) * pow(q.r, 8.0) * 0.25;
-  } else {
-    col = q.r * u_acc0 + q.g * u_acc1 + q.b * u_acc2;
-    float pk = max(q.r, max(q.g, q.b));
-    col = col * 0.9 + vec3(pow(pk, 8.0) * 0.3);
-  }
-  col += pal(0.1) * 0.3;
-  o = vec4(maskFX(col, g), 1.0);
-}`;
 
 /* ---------- Lenia / SmoothLife ---------- */
 SRC.leniaStep = `
@@ -1108,21 +1223,6 @@ void main() {
   o = c;
 }`;
 
-SRC.leniaView = `
-uniform sampler2D u_state;
-void main() {
-  vec2 g = toGrid();
-  vec4 c = bil(u_state, g);
-  float a = c.r;
-  float ax = bil(u_state, g + vec2(1.0, 0.0)).r - bil(u_state, g - vec2(1.0, 0.0)).r;
-  float ay = bil(u_state, g + vec2(0.0, 1.0)).r - bil(u_state, g - vec2(0.0, 1.0)).r;
-  float edge = length(vec2(ax, ay));
-  vec3 col = pal(pow(a, 0.8) * 0.82);
-  col += u_acc0 * edge * 0.85;
-  col += u_acc2 * max(c.g, 0.0) * 0.2 * smoothstep(0.0, 0.12, a + edge);
-  col += u_acc1 * max(-c.g, 0.0) * 0.16 * smoothstep(0.02, 0.25, a);
-  o = vec4(maskFX(col, g), 1.0);
-}`;
 
 /* ---------- Belousov-Zhabotinsky ---------- */
 SRC.bzStep = `
@@ -1177,21 +1277,130 @@ void main() {
   o = c;
 }`;
 
-SRC.bzView = `
+
+/* ---------- surfaces: every grid model writes albedo (rgb) and height (a) ---------- */
+SRC.gsSurf = `
+uniform sampler2D u_state; uniform float u_map;
+void main() {
+  vec2 px = 1.0 / u_size, uv = gl_FragCoord.xy * px;
+  vec4 c = texture(u_state, uv);
+  float v = c.y, h = smoothstep(0.0, 0.48, v);
+  vec3 alb = pal(0.06 + 0.72 * h) * 0.9;
+  alb += u_acc2 * max(v - c.z, 0.0) * 1.8;
+  if (u_map > 0.5) {
+    float gx = texture(u_state, uv + vec2(px.x, 0.0)).y - texture(u_state, uv - vec2(px.x, 0.0)).y;
+    float gy = texture(u_state, uv + vec2(0.0, px.y)).y - texture(u_state, uv - vec2(0.0, px.y)).y;
+    alb *= 0.4 + 0.6 * smoothstep(0.003, 0.04, length(vec2(gx, gy)));
+  }
+  surfMask(alb, h, uv);
+  o = vec4(alb, h);
+}`;
+
+SRC.phySurf = `
+uniform sampler2D u_trail; uniform float u_gain, u_species;
+void main() {
+  vec2 uv = gl_FragCoord.xy / u_size;
+  vec3 q = 1.0 - exp(-texture(u_trail, uv).rgb * u_gain);
+  float h = max(q.r, max(q.g, q.b));
+  vec3 alb = u_species < 1.5 ? pal(0.05 + 0.75 * q.r) : (q.r * u_acc0 + q.g * u_acc1 + q.b * u_acc2) * 0.85;
+  alb += pal(0.1) * 0.25;
+  surfMask(alb, h, uv);
+  o = vec4(alb, h);
+}`;
+
+SRC.leniaSurf = `
+uniform sampler2D u_state;
+void main() {
+  vec2 uv = gl_FragCoord.xy / u_size;
+  vec4 c = texture(u_state, uv);
+  float a = c.r, h = a;
+  vec3 alb = pal(pow(a, 0.8) * 0.8);
+  alb += u_acc2 * max(c.g, 0.0) * 0.18 * smoothstep(0.0, 0.12, a);
+  alb += u_acc1 * max(-c.g, 0.0) * 0.14 * smoothstep(0.02, 0.25, a);
+  surfMask(alb, h, uv);
+  o = vec4(alb, h);
+}`;
+
+SRC.bzSurf = `
 uniform sampler2D u_state; uniform float u_variant;
 void main() {
-  vec2 g = toGrid();
-  vec4 c = bil(u_state, g);
-  vec3 col;
+  vec2 uv = gl_FragCoord.xy / u_size;
+  vec4 c = texture(u_state, uv);
+  vec3 alb; float h;
   if (u_variant < 0.5) {
-    col = pal(c.x * 0.84) * 0.72 + u_acc1 * c.y * 0.2 + u_acc2 * c.z * 0.14;
+    h = c.x;
+    alb = pal(c.x * 0.84) * 0.72 + u_acc1 * c.y * 0.2 + u_acc2 * c.z * 0.14;
   } else {
     float u = clamp(c.x, 0.0, 1.0);
-    col = pal(0.1 + 0.72 * u) * (0.2 + 0.7 * u)
-        + u_acc1 * smoothstep(0.0, 0.9, c.y) * 0.3 * (1.0 - u)
-        + u_acc0 * c.z * 0.07;
+    h = max(u, c.z * 0.35);
+    alb = pal(0.08 + 0.6 * u) * (0.2 + 0.55 * u) + u_acc1 * smoothstep(0.0, 0.9, c.y) * 0.28 * (1.0 - u) + u_acc0 * c.z * 0.06;
   }
-  o = vec4(maskFX(col, g), 1.0);
+  surfMask(alb, h, uv);
+  o = vec4(alb, h);
+}`;
+
+/* ---------- relief: the lit heightfield, seen from above ---------- */
+SRC.relief2D = `
+uniform sampler2D u_surf;
+void main() {
+  vec2 g = toGrid(), px = 1.0 / u_size, uv = g * px;
+  vec4 s = texture(u_surf, uv);
+  float hx = texture(u_surf, uv + vec2(px.x, 0.0)).a - texture(u_surf, uv - vec2(px.x, 0.0)).a;
+  float hy = texture(u_surf, uv + vec2(0.0, px.y)).a - texture(u_surf, uv - vec2(0.0, px.y)).a;
+  vec3 N = normalize(vec3(-vec2(hx, hy) * u_relief * 5.0, 1.0));
+  float a1 = textureLod(u_surf, uv, 2.0).a, a2 = textureLod(u_surf, uv, 4.0).a;
+  float ao = clamp(1.0 - 1.5 * max(a1 - s.a, 0.0) - 1.1 * max(a2 - s.a, 0.0), 0.15, 1.0);
+  ao = mix(1.0, ao, clamp(u_relief, 0.0, 1.0));
+  o = vec4(shade(s.rgb, s.a, N, vec3(0.0, 0.0, 1.0), ao), 1.0);
+}`;
+
+/* ---------- relief in 3D: a 3x3 field of displaced tiles, fogged to the horizon ---------- */
+SRC.meshVS = `#version 300 es
+precision highp float; precision highp sampler2D;
+layout(location = 0) in vec2 a_t;
+uniform sampler2D u_surf; uniform vec2 u_size, u_origin; uniform float u_cell, u_hcss; uniform mat4 u_vp;
+out vec2 v_g; out vec3 v_wp;
+void main() {
+  vec2 tile = vec2(float(gl_InstanceID % 3) - 1.0, float(gl_InstanceID / 3) - 1.0);
+  vec2 g = u_origin + (a_t + tile) * u_size;
+  float h = textureLod(u_surf, g / u_size, 0.0).a;
+  v_g = g;
+  v_wp = vec3(g * u_cell, h * u_hcss);
+  gl_Position = u_vp * vec4(v_wp, 1.0);
+}`;
+SRC.meshFS = `#version 300 es
+precision highp float; precision highp sampler2D;
+in vec2 v_g; in vec3 v_wp; out vec4 o;
+uniform sampler2D u_surf; uniform vec2 u_size, u_target; uniform float u_cell, u_hcss, u_fogR; uniform vec3 u_eye, u_bg;
+` + GLSL_SHADE + `
+void main() {
+  vec2 px = 1.0 / u_size, uv = v_g * px;
+  vec4 s = texture(u_surf, uv);
+  float hx = texture(u_surf, uv + vec2(px.x, 0.0)).a - texture(u_surf, uv - vec2(px.x, 0.0)).a;
+  float hy = texture(u_surf, uv + vec2(0.0, px.y)).a - texture(u_surf, uv - vec2(0.0, px.y)).a;
+  float k = 0.5 * u_hcss / u_cell + u_relief * 2.0;
+  vec3 N = normalize(vec3(-vec2(hx, hy) * k, 1.0));
+  vec3 V = normalize(u_eye - v_wp);
+  float a1 = textureLod(u_surf, uv, 2.0).a, a2 = textureLod(u_surf, uv, 4.0).a;
+  float ao = clamp(1.0 - 1.5 * max(a1 - s.a, 0.0) - 1.1 * max(a2 - s.a, 0.0), 0.15, 1.0);
+  vec3 col = shade(s.rgb, s.a, N, V, ao);
+  float fog = smoothstep(u_fogR * 0.5, u_fogR, length(v_wp.xy - u_target));
+  o = vec4(mix(col, u_bg, fog), 1.0);
+}`;
+
+SRC.reliefBG = `
+uniform vec3 u_xb, u_yb, u_zb, u_bg; uniform float u_tanH, u_aspect; uniform vec2 u_res;
+void main() {
+  vec2 n = gl_FragCoord.xy / u_res * 2.0 - 1.0;
+  vec3 d = normalize(u_xb * n.x * u_tanH * u_aspect + u_yb * n.y * u_tanH - u_zb);
+  vec3 col = u_bg * (0.55 + 0.9 * exp(-abs(d.z) * 6.0));
+  vec2 q = vec2(atan(d.y, d.x), asin(clamp(d.z, -1.0, 1.0))) * 190.0;
+  vec2 cell = floor(q), f = fract(q) - 0.5;
+  float r = rnd(uint(cell.x + 8192.0) * 7919u + uint(cell.y + 8192.0) * 104729u);
+  vec2 jit = vec2(fract(r * 13.1), fract(r * 71.7)) - 0.5;
+  float star = step(0.986, r) * (1.0 - smoothstep(0.0, 0.16, length(f - jit * 0.6)));
+  col += vec3(0.6, 0.78, 1.0) * star * (0.3 + 0.7 * fract(r * 391.0)) * smoothstep(-0.05, 0.25, d.z);
+  o = vec4(col, 1.0);
 }`;
 
 /* ---------- Boids (instanced geometry) ---------- */
@@ -1201,8 +1410,8 @@ layout(location = 0) in vec2 a_c;
 layout(location = 1) in vec3 i_p;
 layout(location = 2) in vec3 i_v;
 layout(location = 3) in vec2 i_m;   // kind (0 boid, 1 predator), tint
-uniform mat4 u_vp; uniform vec3 u_eye; uniform float u_size, u_gain;
-uniform sampler2D u_pal; uniform float u_palRow; uniform vec3 u_acc2;
+uniform mat4 u_vp; uniform vec3 u_eye, u_off; uniform float u_size, u_gain;
+uniform sampler2D u_pal; uniform float u_palRow; uniform vec3 u_acc1, u_acc2;
 out vec3 v_c;
 void main() {
   float sp = length(i_v);
@@ -1211,12 +1420,13 @@ void main() {
   float sl = length(sd);
   sd = sl > 1e-4 ? sd / sl : vec3(0.0, 1.0, 0.0);
   float pred = i_m.x;
-  float sz = u_size * (pred > 0.5 ? 2.8 : 1.0);
-  vec3 wp = i_p + f * a_c.x * sz + sd * a_c.y * sz;
+  float sz = u_size * (pred > 0.5 && pred < 1.5 ? 2.8 : 1.0);
+  vec3 wp = i_p + u_off + f * a_c.x * sz + sd * a_c.y * sz;
   gl_Position = u_vp * vec4(wp, 1.0);
   float fade = clamp(1.3 - gl_Position.w / 850.0, 0.22, 1.0);
   vec3 col = texture(u_pal, vec2(0.5 + 0.45 * i_m.y, u_palRow)).rgb;
-  if (pred > 0.5) col = u_acc2 * 1.7;
+  if (pred > 1.5) col = mix(u_acc1 * 0.7, vec3(1.0, 0.96, 0.88), i_m.y) * 1.5;
+  else if (pred > 0.5) col = u_acc2 * 1.7;
   v_c = col * fade * u_gain * (a_c.x > 0.5 ? 1.35 : 0.7);
 }`;
 SRC.dartFS = `#version 300 es
@@ -1331,6 +1541,7 @@ void main() {
 SRC.composite = `
 uniform sampler2D u_scene, u_bloom;
 uniform vec2 u_res; uniform float u_px, u_time, u_bloomAmt, u_useBloom, u_ca, u_crt, u_grain, u_vig, u_kal, u_hue;
+uniform vec4 u_rip[6];   // cursor and microphone ripples: centre (uv), age (s), amplitude
 vec3 hueRot(vec3 c, float a) {
   const vec3 k = vec3(0.57735);
   float ca = cos(a);
@@ -1358,11 +1569,22 @@ void main() {
     uv = r * vec2(cos(a), sin(a)) / vec2(aspect, 1.0) + 0.5;
     uv = 1.0 - abs(1.0 - mod(uv, 2.0));
   }
+  float glint = 0.0;
+  for (int i = 0; i < 6; i++) {
+    vec4 r = u_rip[i];
+    if (r.w <= 0.0) continue;
+    vec2 d = (uv - r.xy) * vec2(aspect, 1.0);
+    float dist = length(d), front = r.z * 0.32;
+    float ring = exp(-pow((dist - front) * 26.0, 2.0)) * r.w * exp(-r.z * 1.3);
+    uv -= d / max(dist, 1e-4) / vec2(aspect, 1.0) * ring * 0.007;
+    glint += ring;
+  }
   vec3 col;
   if (u_ca > 0.5) {
     vec2 off = (uv - 0.5) * 0.009 * (1.0 + 1.5 * dot(uv - 0.5, uv - 0.5));
     col = vec3(samp(uv + off).r, samp(uv).g, samp(uv - off).b);
   } else col = samp(uv);
+  col += col * glint * 0.35 + vec3(0.6, 0.85, 1.0) * glint * 0.025;
   if (u_kal > 0.5) col = hueRot(col, u_hue);
   col = shoulder(col);
   col *= mix(1.0, 1.0 - 0.55 * smoothstep(0.4, 1.5, length(cc0 * vec2(1.0, 0.86))), u_vig);
@@ -1381,6 +1603,159 @@ void main() {
   o = vec4(max(col, 0.0), 1.0);
 }`;
 
+/* ---------- Cosmic Biosphere: three coupled layers on one dish ---------- */
+// chemistry: Gray-Scott or Barkley terrain, grazed by slime, seeded by fauna
+SRC.ecoChem = `
+uniform sampler2D u_state, u_mask, u_seed, u_trail; uniform vec2 u_size;
+uniform float u_terrain, u_F, u_k, u_graze, u_seedAmt, u_h, u_time, u_period;
+uniform vec4 u_bk;
+void main() {
+  vec2 px = 1.0 / u_size, uv = gl_FragCoord.xy * px;
+  vec4 c = texture(u_state, uv), m = texture(u_mask, uv), sd = texture(u_seed, uv);
+  float sl = 1.0 - exp(-texture(u_trail, uv).r * 0.015);
+  float s = min(sd.r * u_seedAmt, 1.0);
+  if (u_terrain < 0.5) {
+    vec2 lap = 0.2 * (texture(u_state, uv + vec2(0.0, px.y)).xy + texture(u_state, uv - vec2(0.0, px.y)).xy
+                    + texture(u_state, uv + vec2(px.x, 0.0)).xy + texture(u_state, uv - vec2(px.x, 0.0)).xy)
+             + 0.05 * (texture(u_state, uv + px).xy + texture(u_state, uv - px).xy
+                    + texture(u_state, uv + vec2(px.x, -px.y)).xy + texture(u_state, uv + vec2(-px.x, px.y)).xy) - c.xy;
+    float F = u_F + 0.035 * m.g, k = u_k + 0.015 * m.b;
+    float u = c.x, v = c.y, r = u * v * v;
+    u += lap.x - r + F * (1.0 - u);
+    v += 0.5 * lap.y + r - (F + k) * v - u_graze * sl * v * 0.08;
+    v = max(v, 0.28 * s);
+    u = min(u, 1.0 - 0.45 * s);
+    if (m.r > 0.5) { u = 1.0; v = 0.0; }
+    v = clamp(v, 0.0, 1.0);
+    o = vec4(clamp(u, 0.0, 1.0), v, c.z + (v - c.z) * 0.006, 1.0);
+  } else {
+    float u = c.x, v = c.y;
+    float lap = (texture(u_state, uv + vec2(px.x, 0.0)).x + texture(u_state, uv - vec2(px.x, 0.0)).x
+               + texture(u_state, uv + vec2(0.0, px.y)).x + texture(u_state, uv - vec2(0.0, px.y)).x - 4.0 * u) / (u_h * u_h);
+    float f = u * (1.0 - u) * (u - (v + u_bk.y) / u_bk.x) / u_bk.z;
+    u += u_bk.w * (f + lap);
+    v += u_bk.w * (u - v + u_graze * sl * 0.4);
+    u = max(u, s);
+    if (m.g > 0.5 && fract(u_time / u_period) < 0.03) u = 1.0;
+    v = max(v, m.b);
+    if (m.r > 0.5) { u = 0.0; v = 0.0; }
+    u = clamp(u, 0.0, 1.0);
+    o = vec4(u, clamp(v, 0.0, 2.0), max(c.z * 0.996, u), 1.0);
+  }
+}`;
+
+// slime agents: follow their own trail plus the nutrient terrain (chemotaxis)
+SRC.ecoSlime = `
+uniform sampler2D u_agents, u_trail, u_mask, u_state;
+uniform vec2 u_size, u_asize, u_shift;
+uniform float u_SA, u_RA, u_SO, u_SS, u_frame, u_taxis, u_terrain;
+uniform vec4 u_spawn;
+float nutr(vec2 uv) { vec4 c = texture(u_state, uv); return u_terrain < 0.5 ? c.y : c.x + c.z * 0.3; }
+float sense(vec2 p, float a) {
+  vec2 uv = (p + u_SO * vec2(cos(a), sin(a))) / u_size;
+  vec4 m = texture(u_mask, uv);
+  return texture(u_trail, uv).r + u_taxis * nutr(uv) + m.g * 40.0 - m.b * 60.0 - m.r * 1.0e4;
+}
+void main() {
+  ivec2 ip = ivec2(gl_FragCoord.xy);
+  vec4 A = texelFetch(u_agents, ip, 0);
+  uint id = uint(ip.y) * uint(u_asize.x) + uint(ip.x);
+  uint sd = pcg(id ^ (uint(u_frame) * 2654435761u));
+  float r1 = rnd(sd), r2 = rnd(sd + 1u), r3 = rnd(sd + 2u), r4 = rnd(sd + 3u), r5 = rnd(sd + 4u);
+  vec2 p = mod(A.xy + u_shift, u_size);
+  float a = A.z;
+  float F = sense(p, a), L = sense(p, a + u_SA), R = sense(p, a - u_SA);
+  if (F > L && F > R) { }
+  else if (F < L && F < R) a += (r1 < 0.5 ? -1.0 : 1.0) * u_RA;
+  else if (L > R) a += u_RA;
+  else if (R > L) a -= u_RA;
+  a += (r2 - 0.5) * 0.08;
+  vec2 np = mod(p + u_SS * vec2(cos(a), sin(a)), u_size);
+  if (texture(u_mask, np / u_size).r > 0.5 && texture(u_mask, p / u_size).r <= 0.5) { np = p; a = r3 * 6.2831853; }
+  if (r4 < u_spawn.w) {
+    float th = r1 * 6.2831853;
+    np = mod(u_spawn.xy + sqrt(r5) * u_spawn.z * vec2(cos(th), sin(th)), u_size);
+    a = th;
+  }
+  o = vec4(np, mod(a, 6.2831853), A.w);
+}`;
+
+// slime deposits more where the terrain is rich
+SRC.ecoDepositVS = `#version 300 es
+precision highp float; precision highp int; precision highp sampler2D;
+uniform sampler2D u_agents, u_state; uniform vec2 u_asize, u_size; uniform float u_dep, u_terrain;
+out vec3 v_c;
+void main() {
+  int id = gl_VertexID, aw = int(u_asize.x);
+  vec4 a = texelFetch(u_agents, ivec2(id % aw, id / aw), 0);
+  vec2 q = (floor(a.xy) + 0.5) / u_size;
+  vec4 c = textureLod(u_state, q, 0.0);
+  float n = u_terrain < 0.5 ? c.y : c.x + c.z * 0.3;
+  v_c = vec3(u_dep * (0.25 + 3.0 * n), 0.0, 0.0);
+  gl_Position = vec4(q * 2.0 - 1.0, 0.0, 1.0);
+  gl_PointSize = 1.0;
+}`;
+
+SRC.ecoDiffuse = `
+uniform sampler2D u_trail, u_mask, u_seed; uniform vec2 u_size;
+uniform float u_decay, u_emit, u_bstr, u_erase, u_fgraze;
+void main() {
+  vec2 px = 1.0 / u_size, uv = gl_FragCoord.xy * px;
+  float s = 0.0;
+  for (int j = -1; j <= 1; j++) for (int i = -1; i <= 1; i++) s += texture(u_trail, uv + vec2(i, j) * px).r;
+  float t = s / 9.0 * (1.0 - u_decay);
+  vec4 m = texture(u_mask, uv);
+  t *= 1.0 - smoothstep(0.3, 0.6, m.r);
+  t *= 1.0 - clamp(texture(u_seed, uv).g * u_fgraze, 0.0, 0.9);
+  t += m.g * u_emit;
+  float f = brushF(gl_FragCoord.xy, u_size);
+  t = u_erase > 0.5 ? t * (1.0 - f) : t + f * u_bstr;
+  o = vec4(max(t, 0.0), 0.0, 0.0, 1.0);
+}`;
+
+// fauna footprints: r = chemical seed in the wake, g = grazing under the body
+SRC.seedVS = `#version 300 es
+precision highp float;
+layout(location = 0) in vec4 a_p;
+uniform vec2 u_size; uniform float u_ps;
+out vec2 v_rg;
+void main() { gl_Position = vec4(a_p.xy / u_size * 2.0 - 1.0, 0.0, 1.0); gl_PointSize = u_ps; v_rg = a_p.zw; }`;
+SRC.seedFS = `#version 300 es
+precision highp float;
+in vec2 v_rg; out vec4 o;
+void main() { float f = 1.0 - smoothstep(0.1, 0.5, length(gl_PointCoord - 0.5)); o = vec4(v_rg * f, 0.0, 0.0); }`;
+
+// a coarse census the CPU reads back: slime (r), nutrient (g), slime peak (b)
+SRC.ecoCoarse = `
+uniform sampler2D u_trail, u_state; uniform vec2 u_csize; uniform float u_terrain;
+void main() {
+  vec2 cell = floor(gl_FragCoord.xy);
+  float s = 0.0, n = 0.0, mx = 0.0;
+  for (int j = 0; j < 4; j++) for (int i = 0; i < 4; i++) {
+    vec2 uv = (cell + (vec2(i, j) + 0.5) / 4.0) / u_csize;
+    float q = 1.0 - exp(-texture(u_trail, uv).r * 0.015);
+    vec4 c = texture(u_state, uv);
+    s += q; n += u_terrain < 0.5 ? c.y * 2.0 : c.x; mx = max(mx, q);
+  }
+  o = vec4(s / 16.0, clamp(n / 16.0, 0.0, 1.0), mx, 1.0);
+}`;
+
+SRC.ecoSurf = `
+uniform sampler2D u_state, u_trail, u_seed; uniform float u_terrain;
+void main() {
+  vec2 uv = gl_FragCoord.xy / u_size;
+  vec4 c = texture(u_state, uv);
+  float nu = u_terrain < 0.5 ? smoothstep(0.0, 0.45, c.y) : clamp(c.x + c.z * 0.25, 0.0, 1.0);
+  float sl = 1.0 - exp(-texture(u_trail, uv).r * 0.015);
+  vec4 sd = texture(u_seed, uv);
+  vec3 alb = pal(0.05 + 0.42 * nu) * (0.3 + 0.55 * nu);
+  alb = mix(alb, u_acc2 * (0.5 + 0.6 * sl), smoothstep(0.1, 0.75, sl) * 0.85);
+  alb += u_acc0 * min(sd.r, 1.0) * 0.45;
+  float h = clamp(0.5 * nu + 0.62 * sl, 0.0, 1.0);
+  surfMask(alb, h, uv);
+  o = vec4(alb, h);
+}`;
+
 SRC.phyShift = `
 uniform sampler2D u_agents; uniform vec2 u_size, u_shift;
 void main() {
@@ -1394,8 +1769,11 @@ void main() {
 const VIEW = { cssW: Math.max(1, window.innerWidth), cssH: Math.max(1, window.innerHeight) };
 const STATE = {
   time: 0, frame: 0, paused: false, brushCss: 36, tool: 0, pmode: 'paint', dream: false,
-  fx: { bloom: true, aberration: false, crt: false, film: true, glow: 0.8 }
+  fx: { bloom: true, aberration: false, crt: false, film: true, glow: 0.8 },
+  shade: { relief: 1, gloss: 1, height: 1 },
+  tilt: false, tiltT: 0
 };
+const easeT = t => t * t * t * (t * (t * 6 - 15) + 10);
 const NO_BRUSH = { u_b0: [0, 0, 0, 0], u_b1: [1, 0, 0, 0] };
 const screenView = () => ({ res: [gl.drawingBufferWidth, gl.drawingBufferHeight], viewCss: [VIEW.cssW, VIEW.cssH], px: gl.drawingBufferWidth / VIEW.cssW });
 
@@ -1432,6 +1810,8 @@ class GridModel {
   alloc() {
     [this.W, this.H] = this.dims();
     for (const f of this.fieldSpecs) this[f.key] = makePingPong(this.W, this.H, f.fmt, f.opt);
+    this.surf = makeTarget(this.W, this.H, HDR, { filter: 'linear', mipmap: true });
+    this.cam3 = { yaw: 0.62, pitch: 0.6155, dist: 0 };
     this.clearMask();
   }
   clearTarget(t, c) {
@@ -1452,15 +1832,23 @@ class GridModel {
       this[f.key] = n;
     }
     this.W = W; this.H = H;
+    freeTarget(this.surf);
+    this.surf = makeTarget(W, H, HDR, { filter: 'linear', mipmap: true });
     if (this.onResize) this.onResize(off);
   }
   upload(pp, data) {
     gl.bindTexture(gl.TEXTURE_2D, pp.read.tex);
     gl.texSubImage2D(gl.TEXTURE_2D, 0, 0, 0, pp.w, pp.h, gl.RGBA, gl.FLOAT, data);
   }
+  tilted() { return STATE.tiltT > 0.001; }
   toGrid(x, y) {
+    if (this.tilted()) { const h = Relief.pick(this, x, y); return [h.p[0] / this.cell, h.p[1] / this.cell]; }
     const c = this.cell * this.view.zoom;
     return [(x - VIEW.cssW / 2) / c + this.W / 2 + this.view.panX, ((VIEW.cssH - y) - VIEW.cssH / 2) / c + this.H / 2 + this.view.panY];
+  }
+  gridPerCss(x, y) {
+    if (this.tilted()) { const h = Relief.pick(this, x, y); return 2 * h.d * h.tanH / VIEW.cssH / this.cell; }
+    return 1 / (this.cell * this.view.zoom);
   }
   toScreen(gx, gy) {
     const c = this.cell * this.view.zoom;
@@ -1468,6 +1856,7 @@ class GridModel {
   }
   probe(x, y) { const g = this.toGrid(x, y); return [umod(g[0], this.W), umod(g[1], this.H)]; }
   zoomAt(x, y, k) {
+    if (this.tilted()) { const c = this.cam3, d0 = Relief.dist0(this); c.dist = clamp((c.dist || d0 * 1.1) / k, d0 * 0.25, d0 * 1.7); return; }
     const a = this.toGrid(x, y);
     this.view.zoom = clamp(this.view.zoom * k, 1, 16);
     const b = this.toGrid(x, y);
@@ -1476,6 +1865,7 @@ class GridModel {
     this.normPan();
   }
   panBy(dx, dy) {
+    if (this.tilted()) { this.cam3.yaw -= dx * 0.005; this.cam3.pitch = clamp(this.cam3.pitch + dy * 0.004, 0.16, 1.5); return; }
     const c = this.cell * this.view.zoom;
     this.view.panX -= dx / c;
     this.view.panY += dy / c;
@@ -1485,10 +1875,21 @@ class GridModel {
     this.view.panX = umod(this.view.panX + this.W / 2, this.W) - this.W / 2;
     this.view.panY = umod(this.view.panY + this.H / 2, this.H) - this.H / 2;
   }
-  resetView() { this.view.zoom = 1; this.view.panX = 0; this.view.panY = 0; }
+  resetView() { this.view.zoom = 1; this.view.panX = 0; this.view.panY = 0; this.cam3.yaw = 0.62; this.cam3.pitch = 0.6155; this.cam3.dist = 0; }
   brushU(s, strength = 1) {
     const a = this.toGrid(s.x0, s.y0), b = this.toGrid(s.x1, s.y1);
-    return { u_b0: [a[0], a[1], b[0], b[1]], u_b1: [STATE.brushCss / (this.cell * this.view.zoom), strength, 1, (rand() * 65535) | 0] };
+    return { u_b0: [a[0], a[1], b[0], b[1]], u_b1: [STATE.brushCss * this.gridPerCss(s.x1, s.y1), strength, 1, (rand() * 65535) | 0] };
+  }
+  surfU() {
+    return { u_size: [this.W, this.H], u_time: STATE.time, u_mask: this.mask.read, ...palUniforms(this.palette) };
+  }
+  // draw the specimen: the model writes its surface, then the shared relief renderer lights it
+  render(tgt, view) {
+    this.drawSurface();
+    gl.bindTexture(gl.TEXTURE_2D, this.surf.tex);
+    gl.generateMipmap(gl.TEXTURE_2D);
+    if (this.tilted()) Relief.draw3D(this, tgt, view); else Relief.draw2D(this, tgt, view);
+    if (this.overlay) this.overlay(tgt, view);
   }
   applyTool(s, tool) {
     pass(P('maskPaint'), { ...this.brushU(s), u_mask: this.mask.read, u_size: [this.W, this.H], u_tool: tool }, this.mask.write);
@@ -1508,7 +1909,7 @@ class GridModel {
 class GrayScott extends GridModel {
   constructor() {
     super({ id: 'gs', cell: 2, maxCells: 620000, wrap: true, fill: [1, 0, 0, 1], palette: 0 });
-    this.p = { F: 0.0545, k: 0.062, visc: 1, steps: 12, relief: 1 };
+    this.p = { F: 0.0545, k: 0.062, visc: 1, steps: 12 };
     this.map = 0;
     this.mapR = [0.005, 0.085, 0.03, 0.07];
     this.presets = [
@@ -1534,13 +1935,12 @@ class GrayScott extends GridModel {
       { key: 'F', label: 'Feed rate', sym: 'F', min: 0.005, max: 0.1, step: 0.0001, fmt: v => v.toFixed(4), off: this.map },
       { key: 'k', label: 'Kill rate', sym: 'k', min: 0.03, max: 0.075, step: 0.0001, fmt: v => v.toFixed(4), off: this.map },
       { key: 'visc', label: 'Viscosity', sym: 'η', min: 1, max: 3, step: 0.01, fmt: v => v.toFixed(2) },
-      { key: 'steps', label: 'Steps per frame', min: 1, max: 32, step: 1, fmt: v => String(v) },
-      { key: 'relief', label: 'Relief lighting', min: 0, max: 2, step: 0.01, fmt: v => v.toFixed(2) }
+      { key: 'steps', label: 'Steps per frame', min: 1, max: 32, step: 1, fmt: v => String(v) }
     ];
   }
   init() {
     ['gsStep', 'gsPaint'].forEach(n => P(n));
-    P('gsView', GLSL_VIEW);
+    P('gsSurf', GLSL_SURF);
     this.alloc();
     this.ready = true;
     this.applyPreset(0);
@@ -1595,7 +1995,7 @@ class GrayScott extends GridModel {
     this.state.swap();
   }
   secondary(s, tool) { this.applyTool(s, tool); if (tool === 3) this.paint(s, true); }
-  render(tgt, view) { pass(P('gsView', GLSL_VIEW), { ...this.viewU(view), u_state: this.state.read, u_relief: this.p.relief, u_map: this.map }, tgt); }
+  drawSurface() { pass(P('gsSurf', GLSL_SURF), { ...this.surfU(), u_state: this.state.read, u_map: this.map }, this.surf); }
   metric() { return { tex: this.state.read, w: [0, 1, 0, 0], mode: 0, gain: 3.2 }; }
   probeText(x, y) {
     const [gx, gy] = this.probe(x, y);
@@ -1655,7 +2055,7 @@ class Physarum extends GridModel {
   }
   init() {
     ['phyUpdate', 'phyDiffuse', 'phyShift'].forEach(n => P(n));
-    P('phyView', GLSL_VIEW);
+    P('phySurf', GLSL_SURF);
     PROG.phyDeposit = PROG.phyDeposit || makeProgram(SRC.phyDepositVS, SRC.phyDepositFS, 'phyDeposit');
     this.alloc();
     this.makeAgents();
@@ -1737,11 +2137,11 @@ class Physarum extends GridModel {
   }
   paint(s) {
     this.trailBrush(s, false);
-    const g = this.toGrid(s.x1, s.y1), r = STATE.brushCss / (this.cell * this.view.zoom);
+    const g = this.toGrid(s.x1, s.y1), r = STATE.brushCss * this.gridPerCss(s.x1, s.y1);
     this.spawn = [umod(g[0], this.W), umod(g[1], this.H), r, Math.min(0.02, 1400 / this.count)];
   }
   secondary(s, tool) { this.applyTool(s, tool); if (tool === 3) this.trailBrush(s, true); }
-  render(tgt, view) { pass(P('phyView', GLSL_VIEW), { ...this.viewU(view), u_trail: this.trail.read, u_gain: this.p.gain, u_species: this.p.species }, tgt); }
+  drawSurface() { pass(P('phySurf', GLSL_SURF), { ...this.surfU(), u_trail: this.trail.read, u_gain: this.p.gain, u_species: this.p.species }, this.surf); }
   metric() { return { tex: this.trail.read, w: [1, 1, 1, 0], mode: 1, gain: this.p.gain * 0.9 }; }
   probeText(x, y) { const [gx, gy] = this.probe(x, y); return 'x ' + String(gx | 0).padStart(4) + ' y ' + String(gy | 0).padStart(4); }
   entities() { return ['AGENTS', this.count.toLocaleString('en-CA')]; }
@@ -1790,7 +2190,7 @@ class Lenia extends GridModel {
   }
   init() {
     ['leniaStep', 'leniaPaint', 'leniaStamp'].forEach(n => P(n));
-    P('leniaView', GLSL_VIEW);
+    P('leniaSurf', GLSL_SURF);
     this.alloc();
     this.ready = true;
     this.applyPreset(0);
@@ -1906,7 +2306,7 @@ class Lenia extends GridModel {
     this.state.swap();
   }
   secondary(s, tool) { this.applyTool(s, tool); if (tool === 3) this.paint(s, true); }
-  render(tgt, view) { pass(P('leniaView', GLSL_VIEW), { ...this.viewU(view), u_state: this.state.read }, tgt); }
+  drawSurface() { pass(P('leniaSurf', GLSL_SURF), { ...this.surfU(), u_state: this.state.read }, this.surf); }
   metric() { return { tex: this.state.read, w: [1, 0, 0, 0], mode: 0, gain: 2.5 }; }
   probeText(x, y) { const [gx, gy] = this.probe(x, y); return 'x ' + String(gx | 0).padStart(4) + ' y ' + String(gy | 0).padStart(4); }
   entities() { return ['KERNEL', this.kn.toLocaleString('en-CA') + ' taps']; }
@@ -1960,7 +2360,7 @@ class BZ extends GridModel {
   }
   init() {
     ['bzStep', 'bzPaint'].forEach(n => P(n));
-    P('bzView', GLSL_VIEW);
+    P('bzSurf', GLSL_SURF);
     this.alloc();
     this.ready = true;
     this.applyPreset(0);
@@ -2030,7 +2430,7 @@ class BZ extends GridModel {
     this.state.swap();
   }
   secondary(s, tool) { this.applyTool(s, tool); if (tool === 3) this.paint(s, true); }
-  render(tgt, view) { pass(P('bzView', GLSL_VIEW), { ...this.viewU(view), u_state: this.state.read, u_variant: this.variant }, tgt); }
+  drawSurface() { pass(P('bzSurf', GLSL_SURF), { ...this.surfU(), u_state: this.state.read, u_variant: this.variant }, this.surf); }
   metric() { return { tex: this.state.read, w: [1, 0, 0, 0], mode: 0, gain: this.variant === 0 ? 1.4 : 2.2 }; }
   probeText(x, y) { const [gx, gy] = this.probe(x, y); return 'x ' + String(gx | 0).padStart(4) + ' y ' + String(gy | 0).padStart(4); }
   entities() { return ['CELLS', (this.W * this.H).toLocaleString('en-CA')]; }
@@ -2062,6 +2462,92 @@ const v3 = {
   cross: (a, b) => [a[1] * b[2] - a[2] * b[1], a[2] * b[0] - a[0] * b[2], a[0] * b[1] - a[1] * b[0]],
   dot: (a, b) => a[0] * b[0] + a[1] * b[1] + a[2] * b[2],
   norm: a => { const l = Math.hypot(a[0], a[1], a[2]) || 1; return [a[0] / l, a[1] / l, a[2] / l]; }
+};
+
+/* =====================================================================
+   6b · Relief renderer: heightfield lighting from above, or as terrain
+   ===================================================================== */
+const LIGHT = v3.norm([-0.5, 0.6, 0.75]);
+const BG3 = [0.012, 0.018, 0.03];
+const Relief = {
+  meshes: {},
+  mesh(nx, ny) {
+    const key = nx + 'x' + ny;
+    if (this.meshes[key]) return this.meshes[key];
+    const v = new Float32Array(nx * ny * 2);
+    for (let j = 0; j < ny; j++) for (let i = 0; i < nx; i++) { v[(j * nx + i) * 2] = i / (nx - 1); v[(j * nx + i) * 2 + 1] = j / (ny - 1); }
+    const idx = new Uint32Array((nx - 1) * (ny - 1) * 6);
+    let k = 0;
+    for (let j = 0; j < ny - 1; j++) for (let i = 0; i < nx - 1; i++) {
+      const a = j * nx + i, b = a + 1, c = a + nx, d = c + 1;
+      idx[k++] = a; idx[k++] = b; idx[k++] = d; idx[k++] = a; idx[k++] = d; idx[k++] = c;
+    }
+    const vao = gl.createVertexArray();
+    gl.bindVertexArray(vao);
+    const vb = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, vb);
+    gl.bufferData(gl.ARRAY_BUFFER, v, gl.STATIC_DRAW);
+    gl.enableVertexAttribArray(0);
+    gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0);
+    const ib = gl.createBuffer();
+    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, ib);
+    gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, idx, gl.STATIC_DRAW);
+    gl.bindVertexArray(null);
+    return (this.meshes[key] = { vao, count: idx.length });
+  },
+  fov: 35 * DEG,
+  dist0(m) { return VIEW.cssH / (2 * Math.tan(this.fov / 2) * m.view.zoom); },
+  // orbit camera about the dish centre; the tilt eases in from straight overhead
+  camera(m, view) {
+    const e = easeT(clamp(STATE.tiltT, 0, 1)), c = m.cam3, d0 = this.dist0(m);
+    const pitch = lerp(Math.PI / 2 - 0.002, c.pitch, e), yaw = lerp(0, c.yaw, e), dist = lerp(d0, c.dist || d0 * 1.1, e);
+    const target = [(m.W / 2 + m.view.panX) * m.cell, (m.H / 2 + m.view.panY) * m.cell, 0];
+    const cp = Math.cos(pitch), zb = [Math.sin(yaw) * cp, -Math.cos(yaw) * cp, Math.sin(pitch)];
+    const eye = [target[0] + zb[0] * dist, target[1] + zb[1] * dist, zb[2] * dist];
+    const xb = [Math.cos(yaw), Math.sin(yaw), 0], yb = v3.cross(zb, xb);
+    const viewM = new Float32Array([xb[0], yb[0], zb[0], 0, xb[1], yb[1], zb[1], 0, xb[2], yb[2], zb[2], 0, -v3.dot(xb, eye), -v3.dot(yb, eye), -v3.dot(zb, eye), 1]);
+    const tanH = Math.tan(this.fov / 2) * (view.viewCss[1] / VIEW.cssH), aspect = view.viewCss[0] / view.viewCss[1];
+    return { vp: M4.mul(M4.persp(tanH, aspect, dist * 0.02, dist * 9), viewM), eye, xb, yb, zb, tanH, aspect, target, dist };
+  },
+  // where a css pixel's ray meets the dish plane (z = 0), in css units
+  pick(m, x, y) {
+    const cam = this.camera(m, screenView());
+    const nx = (x / VIEW.cssW) * 2 - 1, ny = 1 - (y / VIEW.cssH) * 2;
+    const dx = nx * cam.tanH * cam.aspect, dy = ny * cam.tanH;
+    const dir = v3.norm([cam.xb[0] * dx + cam.yb[0] * dy - cam.zb[0], cam.xb[1] * dx + cam.yb[1] * dy - cam.zb[1], cam.xb[2] * dx + cam.yb[2] * dy - cam.zb[2]]);
+    const dz = Math.min(dir[2], -0.03), t = -cam.eye[2] / dz;
+    return { p: [cam.eye[0] + dir[0] * t, cam.eye[1] + dir[1] * t], d: t, tanH: cam.tanH };
+  },
+  shadeU(m) {
+    const a = PALETTES[m.palette].accRGB[0];
+    return { u_L: LIGHT, u_rim: [lerp(a[0], 1, 0.3), lerp(a[1], 1, 0.3), lerp(a[2], 1, 0.3)], u_gloss: STATE.shade.gloss, u_relief: STATE.shade.relief };
+  },
+  draw2D(m, tgt, view) {
+    pass(P('relief2D', GLSL_VIEW + GLSL_SHADE), { ...m.viewU(view), ...this.shadeU(m), u_surf: m.surf }, tgt);
+  },
+  draw3D(m, tgt, view) {
+    const cam = this.camera(m, view);
+    m.lastCam = cam;
+    pass(P('reliefBG'), { u_xb: cam.xb, u_yb: cam.yb, u_zb: cam.zb, u_bg: BG3, u_tanH: cam.tanH, u_aspect: cam.aspect, u_res: view.res }, tgt);
+    if (!PROG.mesh) PROG.mesh = makeProgram(SRC.meshVS, SRC.meshFS, 'mesh');
+    const nx = clamp(Math.round(m.W / Math.max(1, m.W / 300)), 16, 300), ny = clamp(Math.round(nx * m.H / m.W), 16, 300);
+    const mesh = this.mesh(nx, ny);
+    const tg = [cam.target[0] / m.cell, cam.target[1] / m.cell];
+    const origin = [Math.floor(tg[0] / m.W) * m.W, Math.floor(tg[1] / m.H) * m.H];
+    gl.useProgram(PROG.mesh.p);
+    bindUniforms(PROG.mesh, {
+      ...this.shadeU(m), u_surf: m.surf, u_size: [m.W, m.H], u_origin: origin, u_cell: m.cell, u_hcss: 22 * STATE.shade.height,
+      u_vp: cam.vp, u_eye: cam.eye, u_target: [cam.target[0], cam.target[1]], u_fogR: 1.15 * Math.max(m.W, m.H) * m.cell, u_bg: BG3
+    });
+    gl.enable(gl.DEPTH_TEST);
+    gl.depthFunc(gl.LESS);
+    gl.depthMask(true);
+    gl.clear(gl.DEPTH_BUFFER_BIT);
+    gl.bindVertexArray(mesh.vao);
+    gl.drawElementsInstanced(gl.TRIANGLES, mesh.count, gl.UNSIGNED_INT, 0, 9);
+    gl.bindVertexArray(null);
+    gl.disable(gl.DEPTH_TEST);
+  }
 };
 
 class Boids {
@@ -2328,6 +2814,15 @@ class Boids {
     this.stats.density = N ? dens / N : 0;
     this.stats.activity = N ? act / N : 0;
     this.stats.cx = N ? clamp(0.5 + sumX / N / (2 * bx), 0, 1) : 0.5;
+    // evenness of the flock over an 8x8 floor plan, for the soundscape
+    if (STATE.frame % 10 === 0) {
+      const hist = this.hist8 || (this.hist8 = new Float32Array(64));
+      hist.fill(0);
+      for (let i = 0; i < N; i++) hist[clamp(Math.floor((P[i * 3 + 2] / bz + 1) * 4), 0, 7) * 8 + clamp(Math.floor((P[i * 3] / bx + 1) * 4), 0, 7)]++;
+      let H = 0;
+      for (let i = 0; i < 64; i++) { const q = hist[i] / Math.max(1, N); if (q > 0) H -= q * Math.log(q); }
+      this.stats.entropy = H / Math.log(64);
+    }
   }
   stepPredators(dt, N, bx, by, bz) {
     const P = this.pos, maxS = this.p.speed * 1.18;
@@ -2484,6 +2979,14 @@ class Boids {
     }
   }
   endStroke() { this.lure = null; }
+  // a sudden sound startles the flock outward from where it came
+  pulse(x, y, s) {
+    const pt = this.pick(x, y), R = 60 + 60 * s, N = this.p.count, P = this.pos, V = this.vel;
+    for (let i = 0; i < N; i++) {
+      const dx = P[i * 3] - pt[0], dy = P[i * 3 + 1] - pt[1], dz = P[i * 3 + 2] - pt[2], d = Math.hypot(dx, dy, dz);
+      if (d < R && d > 1e-3) { const k = (1 - d / R) * this.p.speed * 1.4 * s / d; V[i * 3] += dx * k; V[i * 3 + 1] += dy * k; V[i * 3 + 2] += dz * k; }
+    }
+  }
   zoomAt(x, y, k) { this.cam.dist = clamp(this.cam.dist / k, 150, 1100); }
   panBy(dx, dy) { this.cam.yaw -= dx * 0.005; this.cam.pitch = clamp(this.cam.pitch + dy * 0.004, -1.3, 1.3); }
   resetView() { this.cam.dist = 400; this.cam.pitch = 0.24; }
@@ -2497,6 +3000,412 @@ class Boids {
 }
 
 /* =====================================================================
+   7b · Model 6 · Cosmic Biosphere: terrain, slime and fauna, coupled
+   ===================================================================== */
+class Biosphere extends GridModel {
+  constructor() {
+    super({ id: 'eco', cell: 2, maxCells: 520000, wrap: true, fill: [1, 0, 0, 1], palette: 4 });
+    this.fieldSpecs.splice(1, 0, { key: 'trail', fmt: HDR, opt: { filter: 'linear' }, wrap: true, fill: [0, 0, 0, 1] });
+    this.terrain = 0;
+    this.h = 0.5;
+    this.simT = 0;
+    this.period = 6;
+    this.p = { F: 0.037, k: 0.06, a: 0.75, eps: 0.02, chem: 8, SA: 30, SO: 10, taxis: 60, graze: 0.3, fauna: 420, metab: 0.12, appetite: 1, seeding: 1 };
+    this.FMAX = 1500;
+    this.fpos = new Float32Array(this.FMAX * 2);
+    this.fvel = new Float32Array(this.FMAX * 2);
+    this.fen = new Float32Array(this.FMAX);
+    this.fn = 0;
+    this.count = 131072; this.aw = 512; this.ah = 256;
+    this.hist = [];
+    this.stats = { density: 0, activity: 0, cx: 0.5 };
+    this.census = { n: 0, s: 0, f: 0 };
+    this.presets = [
+      { id: 'garden', name: 'Tidal Garden', terrain: 0, p: { F: 0.037, k: 0.06, taxis: 60, graze: 0.3, metab: 0.12, appetite: 1, seeding: 1, fauna: 420 }, palette: 4, note: 'Dividing chemical islands feed the slime; grazers garden the tide.' },
+      { id: 'reef', name: 'Mycelial Reef', terrain: 0, p: { F: 0.029, k: 0.057, taxis: 90, graze: 0.2, metab: 0.1, appetite: 0.9, seeding: 0.6, fauna: 360 }, palette: 1, note: 'Slime threads the ridges of a chemical labyrinth.' },
+      { id: 'savanna', name: 'Wavefront Savanna', terrain: 1, p: { a: 0.75, eps: 0.02, chem: 10, taxis: 45, graze: 0.25, metab: 0.12, appetite: 1.1, seeding: 1, fauna: 380 }, palette: 0, note: 'Excitable waves sweep the plain; every flock that passes lights new ones.' },
+      { id: 'boom', name: 'Boom and Bust', terrain: 0, p: { F: 0.045, k: 0.062, taxis: 70, graze: 0.4, metab: 0.22, appetite: 1.6, seeding: 1.2, fauna: 1200 }, palette: 3, note: 'Hungry fauna overgraze, starve and return: watch the phase portrait circle.' }
+    ];
+    this.tools = ['Barrier', 'Nutrient', 'Repellent', 'Eraser'];
+    this.toolHints = [
+      'Walls for chemistry and slime alike; fauna fly over them.',
+      'Feeds the terrain and draws slime toward it.',
+      'Sensed as negative concentration by the slime.',
+      'Removes instruments and wipes chemistry and slime under the brush.'
+    ];
+  }
+  get schema() {
+    const s = this.terrain === 0
+      ? [{ key: 'F', label: 'Terrain feed', sym: 'F', min: 0.01, max: 0.09, step: 0.0001, fmt: v => v.toFixed(4) },
+         { key: 'k', label: 'Terrain kill', sym: 'k', min: 0.04, max: 0.07, step: 0.0001, fmt: v => v.toFixed(4) }]
+      : [{ key: 'a', label: 'Excitability', sym: 'a', min: 0.4, max: 1.05, step: 0.005, fmt: v => v.toFixed(3) },
+         { key: 'eps', label: 'Time-scale ratio', sym: 'ε', min: 0.01, max: 0.08, step: 0.001, fmt: v => v.toFixed(3) }];
+    return s.concat([
+      { key: 'taxis', label: 'Chemotaxis', sym: 'χ', min: 0, max: 200, step: 1, fmt: v => String(v) },
+      { key: 'graze', label: 'Slime appetite', sym: 'γ', min: 0, max: 1, step: 0.01, fmt: v => v.toFixed(2) },
+      { key: 'SA', label: 'Sensor angle', sym: 'SA°', min: 5, max: 90, step: 0.5, fmt: v => v.toFixed(1) },
+      { key: 'SO', label: 'Sensor offset', sym: 'SO', min: 2, max: 40, step: 0.5, fmt: v => v.toFixed(1) },
+      { key: 'fauna', label: 'Fauna capacity', min: 20, max: this.FMAX, step: 10, fmt: v => String(v) },
+      { key: 'metab', label: 'Metabolism', sym: 'μ', min: 0.02, max: 0.5, step: 0.005, fmt: v => v.toFixed(3) },
+      { key: 'appetite', label: 'Fauna appetite', sym: 'α', min: 0.1, max: 3, step: 0.01, fmt: v => v.toFixed(2) },
+      { key: 'seeding', label: 'Wake seeding', min: 0, max: 3, step: 0.01, fmt: v => v.toFixed(2) },
+      { key: 'chem', label: 'Chemistry steps', min: 1, max: 20, step: 1, fmt: v => String(v) }
+    ]);
+  }
+  init() {
+    ['ecoChem', 'ecoSlime', 'ecoDiffuse', 'ecoCoarse', 'phyShift'].forEach(n => P(n));
+    P('ecoSurf', GLSL_SURF);
+    PROG.ecoDeposit = PROG.ecoDeposit || makeProgram(SRC.ecoDepositVS, SRC.phyDepositFS, 'ecoDeposit');
+    PROG.seed = PROG.seed || makeProgram(SRC.seedVS, SRC.seedFS, 'seed');
+    PROG.dart = PROG.dart || makeProgram(SRC.dartVS, SRC.dartFS, 'dart');
+    this.alloc();
+    this.makeAux();
+    this.agents = makePingPong(this.aw, this.ah, CAPS.f32 ? 'rgba32f' : SIM, {});
+    // fauna footprints, drawn as points
+    this.seedData = new Float32Array(this.FMAX * 8);
+    this.seedBuf = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, this.seedBuf);
+    gl.bufferData(gl.ARRAY_BUFFER, this.seedData.byteLength, gl.DYNAMIC_DRAW);
+    this.seedVAO = gl.createVertexArray();
+    gl.bindVertexArray(this.seedVAO);
+    gl.enableVertexAttribArray(0);
+    gl.vertexAttribPointer(0, 4, gl.FLOAT, false, 0, 0);
+    // fauna darts
+    this.inst = new Float32Array(this.FMAX * 8);
+    this.instBuf = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, this.instBuf);
+    gl.bufferData(gl.ARRAY_BUFFER, this.inst.byteLength, gl.DYNAMIC_DRAW);
+    this.dartVAO = gl.createVertexArray();
+    gl.bindVertexArray(this.dartVAO);
+    const cb = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, cb);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([1.7, 0, -1, 0.75, -0.4, 0, 1.7, 0, -0.4, 0, -1, -0.75]), gl.STATIC_DRAW);
+    gl.enableVertexAttribArray(0);
+    gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0);
+    gl.bindBuffer(gl.ARRAY_BUFFER, this.instBuf);
+    [[1, 3, 0], [2, 3, 12], [3, 2, 24]].forEach(([loc, size, off]) => {
+      gl.enableVertexAttribArray(loc);
+      gl.vertexAttribPointer(loc, size, gl.FLOAT, false, 32, off);
+      gl.vertexAttribDivisor(loc, 1);
+    });
+    gl.bindVertexArray(null);
+    this.pbo = gl.createBuffer();
+    this.ready = true;
+    this.applyPreset(0);
+  }
+  // the seed layer and the coarse census follow the grid's size
+  makeAux() {
+    freeTarget(this.seedT);
+    freeTarget(this.coarse);
+    this.seedT = makeTarget(this.W, this.H, HDR, { filter: 'linear' });
+    this.CW = 64;
+    this.CH = clamp(Math.round(64 * this.H / this.W), 8, 128);
+    this.coarse = makeTarget(this.CW, this.CH, 'rgba8', { wrap: 'clamp' });
+    this.cmap = new Uint8Array(this.CW * this.CH * 4);
+    this.fence = null;
+    this.cfresh = false;
+  }
+  onResize(off) {
+    pass(P('phyShift'), { u_agents: this.agents.read, u_size: [this.W, this.H], u_shift: off }, this.agents.write);
+    this.agents.swap();
+    for (let i = 0; i < this.fn; i++) { this.fpos[i * 2] = umod(this.fpos[i * 2] + off[0], this.W); this.fpos[i * 2 + 1] = umod(this.fpos[i * 2 + 1] + off[1], this.H); }
+    if (this.fence) { gl.deleteSync(this.fence); this.fence = null; }
+    this.makeAux();
+  }
+  applyPreset(i) {
+    const pr = this.presets[i];
+    this.presetIdx = i;
+    this.terrain = pr.terrain;
+    Object.assign(this.p, { chem: pr.terrain ? 10 : 8, SA: 30, SO: 10 }, pr.p);
+    this.palette = pr.palette;
+    this.reset();
+  }
+  setParam(key) { if (key === 'fauna' && this.fn > this.p.fauna) this.fn = this.p.fauna; }
+  reset(blank) {
+    const W = this.W, H = this.H, d = new Float32Array(W * H * 4);
+    for (let i = 0; i < W * H; i++) { d[i * 4] = this.terrain ? 0 : 1; d[i * 4 + 3] = 1; }
+    if (!blank) {
+      if (this.terrain === 0) {
+        const n = Math.floor(W * H / 2500);
+        for (let k = 0; k < n; k++) {
+          const cx = Math.floor(rand() * W), cy = Math.floor(rand() * H), r = 3 + Math.floor(rand() * 4);
+          for (let y = -r; y <= r; y++) for (let x = -r; x <= r; x++) {
+            if (x * x + y * y > r * r) continue;
+            const j = (umod(cy + y, H) * W + umod(cx + x, W)) * 4;
+            d[j] = 0.5; d[j + 1] = 0.25 + (rand() - 0.5) * 0.1;
+          }
+        }
+      } else {
+        for (let k = 0; k < 3; k++) {
+          const cx = rand() * W, cy = rand() * H, th = rand() * TAU, c = Math.cos(th), s = Math.sin(th), Rs = 60;
+          for (let y = -Rs; y <= Rs; y++) for (let x = -Rs; x <= Rs; x++) {
+            if (x * x + y * y > Rs * Rs) continue;
+            const lx = c * x + s * y, ly = -s * x + c * y;
+            if (ly <= 0) continue;
+            const j = (umod(Math.floor(cy + y), H) * W + umod(Math.floor(cx + x), W)) * 4;
+            if (lx > 0 && lx < 5) d[j] = 1; else if (lx > -16 && lx <= 0) d[j + 1] = 0.75;
+          }
+        }
+      }
+    }
+    this.upload(this.state, d);
+    this.clearTarget(this.trail.a, [0, 0, 0, 1]);
+    this.clearTarget(this.trail.b, [0, 0, 0, 1]);
+    const ag = new Float32Array(this.count * 4);
+    for (let i = 0; i < this.count; i++) { ag[i * 4] = rand() * W; ag[i * 4 + 1] = rand() * H; ag[i * 4 + 2] = rand() * TAU; }
+    gl.bindTexture(gl.TEXTURE_2D, this.agents.read.tex);
+    gl.texSubImage2D(gl.TEXTURE_2D, 0, 0, 0, this.aw, this.ah, gl.RGBA, gl.FLOAT, ag);
+    this.fn = 0;
+    const start = blank ? 0 : Math.min(this.p.fauna, 140);
+    for (let i = 0; i < start; i++) this.addFauna(rand() * W, rand() * H, 1);
+    this.hist.length = 0;
+    this.simT = 0;
+  }
+  addFauna(x, y, e) {
+    if (this.fn >= Math.min(this.FMAX, this.p.fauna)) return;
+    const i = this.fn++, a = rand() * TAU, s = 14 + rand() * 10;
+    this.fpos[i * 2] = umod(x, this.W); this.fpos[i * 2 + 1] = umod(y, this.H);
+    this.fvel[i * 2] = Math.cos(a) * s; this.fvel[i * 2 + 1] = Math.sin(a) * s;
+    this.fen[i] = e;
+  }
+  // bilinear read of the census (0: slime, 1: nutrient) at grid coordinates
+  censusAt(x, y, ch) {
+    const cw = this.CW, chh = this.CH, m = this.cmap;
+    const fx = umod(x / this.W * cw - 0.5, cw), fy = umod(y / this.H * chh - 0.5, chh);
+    const x0 = Math.floor(fx), y0 = Math.floor(fy), x1 = (x0 + 1) % cw, y1 = (y0 + 1) % chh, tx = fx - x0, ty = fy - y0;
+    const g = (xx, yy) => m[(yy * cw + xx) * 4 + ch];
+    return lerp(lerp(g(x0, y0), g(x1, y0), tx), lerp(g(x0, y1), g(x1, y1), tx), ty) / 255;
+  }
+  stepFauna(dt) {
+    const n = this.fn, W = this.W, H = this.H, Pp = this.fpos, V = this.fvel, E = this.fen, p = this.p;
+    const perc = 10, perc2 = perc * perc, maxS = 36, minS = 9;
+    const gx = Math.max(1, Math.floor(W / perc)), gy = Math.max(1, Math.floor(H / perc)), cells = gx * gy;
+    if (!this.hStart || this.hStart.length < cells + 1) { this.hStart = new Int32Array(cells + 1); this.hFill = new Int32Array(cells + 1); }
+    if (!this.hSorted) { this.hSorted = new Int32Array(this.FMAX); this.hCell = new Int32Array(this.FMAX); }
+    const st = this.hStart, fl = this.hFill, so = this.hSorted, hc = this.hCell;
+    st.fill(0, 0, cells + 1);
+    for (let i = 0; i < n; i++) {
+      const c = Math.min(gy - 1, Math.floor(Pp[i * 2 + 1] / H * gy)) * gx + Math.min(gx - 1, Math.floor(Pp[i * 2] / W * gx));
+      hc[i] = c; st[c + 1]++;
+    }
+    for (let c = 0; c < cells; c++) st[c + 1] += st[c];
+    fl.set(st.subarray(0, cells));
+    for (let i = 0; i < n; i++) so[fl[hc[i]]++] = i;
+    const hasMap = this.cfresh;
+    for (let i = 0; i < n; i++) {
+      const px = Pp[i * 2], py = Pp[i * 2 + 1], vx = V[i * 2], vy = V[i * 2 + 1];
+      const cx = hc[i] % gx, cy = (hc[i] / gx) | 0;
+      let cnt = 0, ax = 0, ay = 0, qx = 0, qy = 0, sx = 0, sy = 0;
+      for (let oy = -1; oy <= 1; oy++) for (let ox = -1; ox <= 1; ox++) {
+        const c = umod(cy + oy, gy) * gx + umod(cx + ox, gx);
+        for (let k = st[c], e = st[c + 1]; k < e; k++) {
+          const j = so[k];
+          if (j === i) continue;
+          let dx = Pp[j * 2] - px, dy = Pp[j * 2 + 1] - py;
+          dx -= W * Math.round(dx / W); dy -= H * Math.round(dy / H);
+          const d2 = dx * dx + dy * dy;
+          if (d2 > perc2) continue;
+          cnt++; ax += V[j * 2]; ay += V[j * 2 + 1]; qx += dx; qy += dy;
+          if (d2 < 12) { const inv = 1 / (d2 + 0.5); sx -= dx * inv; sy -= dy * inv; }
+        }
+      }
+      let fx = 0, fy = 0;
+      if (cnt) { fx += (ax / cnt - vx) * 1.2 + qx / cnt * 0.9 + sx * 40; fy += (ay / cnt - vy) * 1.2 + qy / cnt * 0.9 + sy * 40; }
+      const hunger = clamp(1 - E[i] / 1.6, 0, 1);
+      if (hasMap) {
+        const gxs = this.censusAt(px + 8, py, 0) - this.censusAt(px - 8, py, 0), gys = this.censusAt(px, py + 8, 0) - this.censusAt(px, py - 8, 0);
+        const gl2 = Math.hypot(gxs, gys);
+        if (gl2 > 1e-4) { fx += gxs / gl2 * maxS * 3.2 * hunger * p.appetite; fy += gys / gl2 * maxS * 3.2 * hunger * p.appetite; }
+      }
+      fx += (rand() - 0.5) * maxS * 2; fy += (rand() - 0.5) * maxS * 2;
+      let nvx = vx + fx * dt, nvy = vy + fy * dt;
+      const sp = Math.hypot(nvx, nvy) + 1e-6, lim = sp > maxS ? maxS / sp : sp < minS ? minS / sp : 1;
+      nvx *= lim; nvy *= lim;
+      V[i * 2] = nvx; V[i * 2 + 1] = nvy;
+      Pp[i * 2] = umod(px + nvx * dt, W); Pp[i * 2 + 1] = umod(py + nvy * dt, H);
+      const food = hasMap ? this.censusAt(px, py, 0) : 0.3;
+      E[i] += (food * p.appetite * 0.9 - p.metab) * dt;
+    }
+    // births and deaths, after everyone has moved
+    const cap = Math.min(this.FMAX, p.fauna);
+    for (let i = this.fn - 1; i >= 0; i--) {
+      if (this.fen[i] > 2 && this.fn < cap) { this.fen[i] = 1; this.addFauna(Pp[i * 2] + (rand() - 0.5) * 6, Pp[i * 2 + 1] + (rand() - 0.5) * 6, 1); }
+      else if (this.fen[i] < 0 && this.fn > 8) {
+        const l = --this.fn;
+        Pp[i * 2] = Pp[l * 2]; Pp[i * 2 + 1] = Pp[l * 2 + 1]; V[i * 2] = V[l * 2]; V[i * 2 + 1] = V[l * 2 + 1]; this.fen[i] = this.fen[l];
+      } else if (this.fen[i] < 0) this.fen[i] = 0;
+    }
+  }
+  drawSeeds() {
+    const n = this.fn, d = this.seedData, s = this.p.seeding;
+    for (let i = 0; i < n; i++) {
+      const x = this.fpos[i * 2], y = this.fpos[i * 2 + 1], vx = this.fvel[i * 2], vy = this.fvel[i * 2 + 1], sp = Math.hypot(vx, vy) + 1e-6;
+      d[i * 8] = x; d[i * 8 + 1] = y; d[i * 8 + 2] = 0; d[i * 8 + 3] = 1;
+      d[i * 8 + 4] = umod(x - vx / sp * 5, this.W); d[i * 8 + 5] = umod(y - vy / sp * 5, this.H); d[i * 8 + 6] = 0.8 * s; d[i * 8 + 7] = 0;
+    }
+    this.clearTarget(this.seedT, [0, 0, 0, 0]);
+    if (!n) return;
+    gl.bindBuffer(gl.ARRAY_BUFFER, this.seedBuf);
+    gl.bufferSubData(gl.ARRAY_BUFFER, 0, d, 0, n * 8);
+    gl.useProgram(PROG.seed.p);
+    bindUniforms(PROG.seed, { u_size: [this.W, this.H], u_ps: 7 });
+    gl.enable(gl.BLEND);
+    gl.blendFunc(gl.ONE, gl.ONE);
+    gl.bindVertexArray(this.seedVAO);
+    gl.drawArrays(gl.POINTS, 0, n * 2);
+    gl.bindVertexArray(null);
+    gl.disable(gl.BLEND);
+  }
+  takeCensus() {
+    // collect the last reading if the GPU has finished it
+    if (this.fence) {
+      const st = gl.clientWaitSync(this.fence, 0, 0);
+      if (st !== gl.TIMEOUT_EXPIRED) {
+        gl.deleteSync(this.fence);
+        this.fence = null;
+        if (st !== gl.WAIT_FAILED) {
+          gl.bindBuffer(gl.PIXEL_PACK_BUFFER, this.pbo);
+          gl.getBufferSubData(gl.PIXEL_PACK_BUFFER, 0, this.cmap);
+          gl.bindBuffer(gl.PIXEL_PACK_BUFFER, null);
+          this.cfresh = true;
+          this.digest();
+        }
+      }
+    }
+    if (!this.fence && STATE.frame % 3 === 0) {
+      pass(P('ecoCoarse'), { u_trail: this.trail.read, u_state: this.state.read, u_csize: [this.CW, this.CH], u_terrain: this.terrain }, this.coarse);
+      gl.bindBuffer(gl.PIXEL_PACK_BUFFER, this.pbo);
+      gl.bufferData(gl.PIXEL_PACK_BUFFER, this.cmap.byteLength, gl.STREAM_READ);
+      gl.readPixels(0, 0, this.CW, this.CH, gl.RGBA, gl.UNSIGNED_BYTE, 0);
+      gl.bindBuffer(gl.PIXEL_PACK_BUFFER, null);
+      this.fence = gl.fenceSync(gl.SYNC_GPU_COMMANDS_COMPLETE, 0);
+      gl.flush();
+    }
+  }
+  digest() {
+    const m = this.cmap, n = this.CW * this.CH;
+    let s = 0, nu = 0, sx = 0;
+    for (let i = 0; i < n; i++) { const v = m[i * 4] / 255; s += v; nu += m[i * 4 + 1] / 255; sx += v * ((i % this.CW) + 0.5) / this.CW; }
+    const S = s / n, N = nu / n, F = this.fn / Math.max(1, this.p.fauna);
+    const prev = this.census;
+    this.stats.activity = clamp((Math.abs(S - prev.s) + Math.abs(N - prev.n)) * 40, 0, 1);
+    this.stats.density = S;
+    this.stats.cx = s > 1e-4 ? sx / s : 0.5;
+    let H = 0;
+    if (s > 1e-6) for (let i = 0; i < n; i++) { const q = m[i * 4] / 255 / s; if (q > 0) H -= q * Math.log(q); }
+    this.stats.entropy = H / Math.log(n);
+    this.census = { n: N, s: S, f: F };
+    this.hist.push(this.census);
+    if (this.hist.length > 400) this.hist.shift();
+  }
+  stepsPerFrame() { return 1; }
+  step(n) {
+    const p = this.p, size = [this.W, this.H];
+    for (let t = 0; t < n; t++) {
+      this.takeCensus();
+      this.stepFauna(1 / 60);
+      this.drawSeeds();
+      const C = {
+        u_mask: this.mask.read, u_seed: this.seedT, u_trail: this.trail.read, u_size: size, u_terrain: this.terrain,
+        u_F: p.F, u_k: p.k, u_graze: p.graze, u_seedAmt: 1, u_h: this.h, u_period: this.period, u_bk: [p.a, 0.02, p.eps, 0.012]
+      };
+      for (let i = 0; i < p.chem; i++) {
+        C.u_state = this.state.read;
+        C.u_time = this.simT;
+        pass(P('ecoChem'), C, this.state.write);
+        this.state.swap();
+        if (this.terrain) this.simT += 0.012;
+      }
+      pass(P('ecoSlime'), {
+        u_agents: this.agents.read, u_trail: this.trail.read, u_mask: this.mask.read, u_state: this.state.read, u_size: size, u_asize: [this.aw, this.ah],
+        u_shift: [0, 0], u_SA: p.SA * DEG, u_RA: 45 * DEG, u_SO: p.SO, u_SS: 1.1, u_frame: STATE.frame % 16777216, u_taxis: p.taxis, u_terrain: this.terrain,
+        u_spawn: t === 0 && this.spawn ? this.spawn : [0, 0, 0, 0]
+      }, this.agents.write);
+      this.agents.swap();
+      pass(P('ecoDiffuse'), { ...NO_BRUSH, u_trail: this.trail.read, u_mask: this.mask.read, u_seed: this.seedT, u_size: size, u_decay: 0.08, u_emit: 3, u_bstr: 0, u_erase: 0, u_fgraze: 0.35 }, this.trail.write);
+      gl.useProgram(PROG.ecoDeposit.p);
+      bindUniforms(PROG.ecoDeposit, { u_agents: this.agents.read, u_state: this.state.read, u_asize: [this.aw, this.ah], u_size: size, u_dep: 4, u_terrain: this.terrain });
+      bindTarget(this.trail.write);
+      gl.enable(gl.BLEND);
+      gl.blendFunc(gl.ONE, gl.ONE);
+      gl.bindVertexArray(emptyVAO);
+      gl.drawArrays(gl.POINTS, 0, this.count);
+      gl.disable(gl.BLEND);
+      this.trail.swap();
+    }
+    this.spawn = null;
+  }
+  paint(s, erase) {
+    const B = this.brushU(s);
+    pass(P('ecoDiffuse'), { ...B, u_trail: this.trail.read, u_mask: this.mask.read, u_seed: this.seedT, u_size: [this.W, this.H], u_decay: 0, u_emit: 0, u_bstr: 20, u_erase: erase ? 1 : 0, u_fgraze: 0 }, this.trail.write);
+    this.trail.swap();
+    if (!this.terrain || erase) {
+      pass(P('gsPaint'), { ...B, u_state: this.state.read, u_size: [this.W, this.H], u_erase: erase ? 1 : 0 }, this.state.write);
+      this.state.swap();
+    } else {
+      pass(P('bzPaint'), { ...B, u_state: this.state.read, u_size: [this.W, this.H], u_variant: 1, u_erase: 0 }, this.state.write);
+      this.state.swap();
+    }
+    if (!erase) {
+      const g = this.toGrid(s.x1, s.y1);
+      this.spawn = [umod(g[0], this.W), umod(g[1], this.H), B.u_b1[0], 0.006];
+      if (s.first) for (let i = 0; i < 6; i++) this.addFauna(g[0] + (rand() - 0.5) * 10, g[1] + (rand() - 0.5) * 10, 1.2);
+    }
+  }
+  secondary(s, tool) { this.applyTool(s, tool); if (tool === 3) this.paint(s, true); }
+  drawSurface() { pass(P('ecoSurf', GLSL_SURF), { ...this.surfU(), u_state: this.state.read, u_trail: this.trail.read, u_seed: this.seedT, u_terrain: this.terrain }, this.surf); }
+  // fauna drawn over the relief, tiled so the torus reads as seamless
+  overlay(tgt, view) {
+    const n = this.fn;
+    if (!n) return;
+    const tilted = this.tilted(), I = this.inst, c = this.cell, hc = 22 * STATE.shade.height;
+    for (let i = 0; i < n; i++) {
+      const x = this.fpos[i * 2], y = this.fpos[i * 2 + 1];
+      const z = tilted && this.cfresh ? (0.5 * this.censusAt(x, y, 1) + 0.62 * this.censusAt(x, y, 0)) * hc + 9 : 6;
+      I[i * 8] = x * c; I[i * 8 + 1] = y * c; I[i * 8 + 2] = z;
+      I[i * 8 + 3] = this.fvel[i * 2]; I[i * 8 + 4] = this.fvel[i * 2 + 1]; I[i * 8 + 5] = 0;
+      I[i * 8 + 6] = 2; I[i * 8 + 7] = clamp(this.fen[i] / 2, 0, 1);
+    }
+    gl.bindBuffer(gl.ARRAY_BUFFER, this.instBuf);
+    gl.bufferSubData(gl.ARRAY_BUFFER, 0, I, 0, n * 8);
+    let vp, eye;
+    if (tilted && this.lastCam) { vp = this.lastCam.vp; eye = this.lastCam.eye; }
+    else {
+      const z = this.view.zoom, sx = 2 * z / view.viewCss[0], sy = 2 * z / view.viewCss[1];
+      const tx = (this.W / 2 + this.view.panX) * c, ty = (this.H / 2 + this.view.panY) * c;
+      vp = new Float32Array([sx, 0, 0, 0, 0, sy, 0, 0, 0, 0, 0, 0, -tx * sx, -ty * sy, 0, 1]);
+      eye = [tx, ty, 1e5];
+    }
+    bindTarget(tgt);
+    gl.useProgram(PROG.dart.p);
+    gl.enable(gl.BLEND);
+    gl.blendFunc(gl.ONE, gl.ONE);
+    if (tilted) { gl.enable(gl.DEPTH_TEST); gl.depthMask(false); }
+    gl.bindVertexArray(this.dartVAO);
+    const base = { u_vp: vp, u_eye: eye, u_size: (tilted ? 4.2 : 2.6) * c, u_gain: 0.8, ...palUniforms(this.palette) };
+    for (let oy = -1; oy <= 1; oy++) for (let ox = -1; ox <= 1; ox++) {
+      bindUniforms(PROG.dart, { ...base, u_off: [ox * this.W * c, oy * this.H * c, 0] });
+      gl.drawArraysInstanced(gl.TRIANGLES, 0, 6, n);
+    }
+    gl.bindVertexArray(null);
+    gl.depthMask(true);
+    gl.disable(gl.DEPTH_TEST);
+    gl.disable(gl.BLEND);
+  }
+  metric() { return null; }
+  probeText(x, y) {
+    const [gx, gy] = this.probe(x, y);
+    if (!this.cfresh) return 'x ' + String(gx | 0).padStart(4) + ' y ' + String(gy | 0).padStart(4);
+    return 'N ' + this.censusAt(gx, gy, 1).toFixed(2) + ' S ' + this.censusAt(gx, gy, 0).toFixed(2);
+  }
+  entities() { return ['FAUNA', this.fn + ' / ' + this.p.fauna]; }
+  equation() {
+    return (this.terrain ? '<i>terrain</i> excitable waves (Barkley)' : '<i>terrain</i> ∂v/∂t = … − γ·S·v')
+      + '\n<i>slime</i> senses T + χ·N, grazes N\n<i>fauna</i> E′ = αS − μ · ' + this.fn + ' alive';
+  }
+}
+
+/* =====================================================================
    8 · Post-processing: bloom mip chain, then one composite pass
    ===================================================================== */
 class Post {
@@ -2506,7 +3415,7 @@ class Post {
     if (w === this.w && h === this.h) return;
     this.free();
     this.w = w; this.h = h;
-    this.scene = makeTarget(w, h, HDR, { filter: 'linear', wrap: 'clamp' });
+    this.scene = makeTarget(w, h, HDR, { filter: 'linear', wrap: 'clamp', depth: true });
     let lw = w >> 1, lh = h >> 1;
     for (let i = 0; i < 6 && lw >= 4 && lh >= 4; i++) {
       this.levels.push(makeTarget(lw, lh, HDR, { filter: 'linear', wrap: 'clamp' }));
@@ -2524,7 +3433,8 @@ class Post {
     pass(P('composite'), {
       u_scene: this.scene, u_bloom: bloom ? L[0] : null, u_res: res, u_px: px, u_time: STATE.time,
       u_bloomAmt: fx.glow, u_useBloom: bloom ? 1 : 0, u_ca: fx.aberration ? 1 : 0, u_crt: fx.crt ? 1 : 0,
-      u_grain: fx.film ? 1 : 0, u_vig: fx.film ? 1 : 0.6, u_kal: STATE.dream ? 1 : 0, u_hue: STATE.time * 0.22
+      u_grain: fx.film ? 1 : 0, u_vig: fx.film ? 1 : 0.6, u_kal: STATE.dream ? 1 : 0, u_hue: STATE.time * 0.22,
+      u_rip: Ripples.uniform(out ? null : 1)
     }, out);
   }
   free() {
@@ -2539,20 +3449,20 @@ class Post {
    9 · The density probe: a 4x4 reduction read back asynchronously
    ===================================================================== */
 const Metrics = {
-  buf: new Uint8Array(64), prev: new Float32Array(16),
-  density: 0, activity: 0, cx: 0.5, fresh: false,
+  buf: new Uint8Array(256), prev: new Float32Array(64),
+  density: 0, activity: 0, cx: 0.5, cy: 0.5, entropy: 0.5, contrast: 0,
   init() {
-    this.tgt = makeTarget(4, 4, 'rgba8', { wrap: 'clamp' });
+    this.tgt = makeTarget(8, 8, 'rgba8', { wrap: 'clamp' });
     this.pbo = gl.createBuffer();
     gl.bindBuffer(gl.PIXEL_PACK_BUFFER, this.pbo);
-    gl.bufferData(gl.PIXEL_PACK_BUFFER, 64, gl.STREAM_READ);
+    gl.bufferData(gl.PIXEL_PACK_BUFFER, 256, gl.STREAM_READ);
     gl.bindBuffer(gl.PIXEL_PACK_BUFFER, null);
   },
   request(src) {
     if (this.fence) return;
     pass(P('reduce'), { u_src: src.tex, u_w: src.w, u_mode: src.mode, u_gain: src.gain }, this.tgt);
     gl.bindBuffer(gl.PIXEL_PACK_BUFFER, this.pbo);
-    gl.readPixels(0, 0, 4, 4, gl.RGBA, gl.UNSIGNED_BYTE, 0);
+    gl.readPixels(0, 0, 8, 8, gl.RGBA, gl.UNSIGNED_BYTE, 0);
     gl.bindBuffer(gl.PIXEL_PACK_BUFFER, null);
     this.fence = gl.fenceSync(gl.SYNC_GPU_COMMANDS_COMPLETE, 0);
     gl.flush();
@@ -2567,20 +3477,51 @@ const Metrics = {
     gl.bindBuffer(gl.PIXEL_PACK_BUFFER, this.pbo);
     gl.getBufferSubData(gl.PIXEL_PACK_BUFFER, 0, this.buf);
     gl.bindBuffer(gl.PIXEL_PACK_BUFFER, null);
-    let sum = 0, sx = 0, act = 0;
-    for (let i = 0; i < 16; i++) {
-      const v = this.buf[i * 4] / 255;
-      sum += v;
-      sx += v * ((i % 4) + 0.5) / 4;
-      act += Math.abs(v - this.prev[i]);
-      this.prev[i] = v;
+    const v = new Float32Array(64), mx = new Float32Array(64);
+    let act = 0;
+    for (let i = 0; i < 64; i++) {
+      v[i] = this.buf[i * 4] / 255;
+      mx[i] = this.buf[i * 4 + 1] / 255;
+      act += Math.abs(v[i] - this.prev[i]);
+      this.prev[i] = v[i];
     }
-    this.set(sum / 16, clamp(act / 16 * 20, 0, 1), sum > 1e-4 ? sx / sum : 0.5);
+    this.digest(v, mx, 8, 8, clamp(act / 64 * 20, 0, 1));
   },
-  set(d, a, cx) {
+  // spatial statistics of a grid of region means: evenness (normalized Shannon entropy),
+  // local contrast (peak minus mean), and the centroid
+  digest(v, mx, w, h, activity) {
+    const n = w * h;
+    let sum = 0, sx = 0, sy = 0, con = 0;
+    for (let i = 0; i < n; i++) { sum += v[i]; sx += v[i] * ((i % w) + 0.5) / w; sy += v[i] * (Math.floor(i / w) + 0.5) / h; if (mx) con += mx[i] - v[i]; }
+    let H = 0;
+    if (sum > 1e-6) for (let i = 0; i < n; i++) { const p = v[i] / sum; if (p > 0) H -= p * Math.log(p); }
+    this.set(sum / n, activity, sum > 1e-4 ? sx / sum : 0.5, sum > 1e-6 ? H / Math.log(n) : 0, mx ? con / n : this.contrast, sum > 1e-4 ? sy / sum : 0.5);
+  },
+  set(d, a, cx, H, C, cy) {
     this.density = lerp(this.density, d, 0.35);
     this.activity = lerp(this.activity, a, 0.3);
     this.cx = lerp(this.cx, cx, 0.3);
+    if (H !== undefined) this.entropy = lerp(this.entropy, H, 0.3);
+    if (C !== undefined) this.contrast = lerp(this.contrast, C, 0.3);
+    if (cy !== undefined) this.cy = lerp(this.cy, cy, 0.3);
+  }
+};
+
+/* =====================================================================
+   9b · Ripples: cursor and microphone disturbances in the glass
+   ===================================================================== */
+const Ripples = {
+  list: [], data: new Float32Array(24),
+  add(x, y, amp) {
+    this.list.push({ x: x / VIEW.cssW, y: 1 - y / VIEW.cssH, t0: STATE.time, amp: clamp(amp, 0, 1.5) });
+    if (this.list.length > 6) this.list.shift();
+  },
+  uniform() {
+    const d = this.data;
+    d.fill(0);
+    this.list = this.list.filter(r => STATE.time - r.t0 < 3.2);
+    this.list.forEach((r, i) => d.set([r.x, r.y, STATE.time - r.t0, r.amp], i * 4));
+    return d;
   }
 };
 
@@ -2656,18 +3597,29 @@ function download(blob, name) {
 /* =====================================================================
    11 · Generative soundscape (Web Audio, synthesized, nothing loaded)
    ===================================================================== */
-const PENTA = [0, 2, 4, 7, 9];
+// Modes ordered from brightest to darkest; each carries the pentatonic its melody may use.
+const MODES = [
+  { name: 'Lydian', s: [0, 2, 4, 6, 7, 9, 11], pent: [0, 2, 4, 7, 9] },
+  { name: 'Ionian', s: [0, 2, 4, 5, 7, 9, 11], pent: [0, 2, 4, 7, 9] },
+  { name: 'Mixolydian', s: [0, 2, 4, 5, 7, 9, 10], pent: [0, 2, 5, 7, 9] },
+  { name: 'Dorian', s: [0, 2, 3, 5, 7, 9, 10], pent: [0, 2, 5, 7, 9] },
+  { name: 'Aeolian', s: [0, 2, 3, 5, 7, 8, 10], pent: [0, 3, 5, 7, 10] },
+  { name: 'Phrygian', s: [0, 1, 3, 5, 7, 8, 10], pent: [0, 3, 5, 7, 10] }
+];
 const INSEN = [0, 1, 5, 7, 10];
-const ROOTS = { gs: 146.83, physarum: 110.0, lenia: 174.61, boids: 130.81, bz: 164.81 };
+const ROOTS = { gs: 146.83, physarum: 110.0, lenia: 174.61, boids: 130.81, bz: 164.81, eco: 123.47 };
 const scaleFreq = (root, deg, sc) => root * Math.pow(2, Math.floor(deg / sc.length) + sc[umod(deg, sc.length)] / 12);
 
 class Sound {
   constructor() {
     this.ctx = null; this.on = true; this.vol = 0.6; this.started = false; this.unavailable = false;
     this.voices = []; this.chord = 0; this.nextChord = 0; this.active = 0; this.lastTouch = 0; this.root = ROOTS.gs;
+    this.mode = 1; this.nextMode = 1; this.bright = 0.6; this.nextArp = 0; this.arp = 7;
     this.onchange = null;
   }
-  get scale() { return STATE.dream ? INSEN : PENTA; }
+  get modeScale() { return STATE.dream ? [0, 1, 5, 7, 10] : MODES[this.mode].s; }
+  get pent() { return STATE.dream ? INSEN : MODES[this.mode].pent; }
+  get label() { return (STATE.dream ? 'In-sen' : MODES[this.mode].name) + ' · H ' + Metrics.entropy.toFixed(2); }
   get state() { return this.unavailable ? 'off' : !this.on ? 'off' : this.started && this.ctx && this.ctx.state === 'running' ? 'on' : 'waiting'; }
   start() {
     if (!this.on || this.unavailable) return;
@@ -2692,12 +3644,12 @@ class Sound {
     this.master.connect(comp);
     comp.connect(c.destination);
     this.verb = c.createConvolver();
-    this.verb.buffer = this.impulse(3.8);
+    this.verb.buffer = this.impulse(4.2);
     const wet = c.createGain();
     wet.gain.value = 0.55;
     this.verb.connect(wet);
     wet.connect(this.master);
-    // harmonic pad: four voices, each a sawtooth and a triangle an octave up
+    // harmonic pad: four voices voiced across three octaves, each a sawtooth and a triangle an octave up
     this.padFilter = c.createBiquadFilter();
     this.padFilter.type = 'lowpass';
     this.padFilter.frequency.value = 500;
@@ -2718,12 +3670,20 @@ class Sound {
     lfo.start();
     for (let v = 0; v < 4; v++) {
       const g = c.createGain(), a = c.createOscillator(), b = c.createOscillator();
-      g.gain.value = v === 0 ? 0.07 : 0.05;
+      g.gain.value = [0.07, 0.05, 0.045, 0.035][v];
       a.type = 'sawtooth'; b.type = 'triangle';
       a.connect(g); b.connect(g); g.connect(this.padFilter);
       a.start(); b.start();
       this.voices.push({ a, b, g });
     }
+    // sub-bass drone an octave below the root, swelling with density
+    this.bass = c.createOscillator();
+    this.bass.type = 'sine';
+    this.bassG = c.createGain();
+    this.bassG.gain.value = 0;
+    this.bass.connect(this.bassG);
+    this.bassG.connect(this.master);
+    this.bass.start();
     // shimmer: a sine above the chord, brought in by dense specimens
     this.shimmer = c.createOscillator();
     this.shimmer.type = 'sine';
@@ -2764,6 +3724,7 @@ class Sound {
     dl.connect(lp); lp.connect(fb); fb.connect(dl); lp.connect(dOut); dOut.connect(this.master);
     this.setChord(0, true);
     this.nextChord = c.currentTime + 10;
+    this.nextArp = c.currentTime + 2;
   }
   impulse(sec) {
     const c = this.ctx, n = Math.floor(c.sampleRate * sec), buf = c.createBuffer(2, n, c.sampleRate);
@@ -2778,14 +3739,17 @@ class Sound {
     }
     return buf;
   }
+  // tertian chord on a mode degree, spread over three octaves; changes glide
   setChord(k, now) {
     if (!this.ctx) return;
-    const t = this.ctx.currentTime, sc = this.scale, base = [0, 3, 1, 4][k % 4];
+    const t = this.ctx.currentTime, sc = this.modeScale, base = [0, 3, 5, 4][k % 4];
+    const n = sc.length, degs = [base, base + 2 + n, base + 4 + n, base + 6 + n];   // root below, the rest an octave up
     this.voices.forEach((v, i) => {
-      const f = scaleFreq(this.root, base + i * 2, sc);
+      const f = scaleFreq(this.root, degs[i], sc);
       v.a.frequency.setTargetAtTime(f, t, now ? 0.02 : 1.4);
       v.b.frequency.setTargetAtTime(f * 2, t, now ? 0.02 : 1.4);
     });
+    this.bass.frequency.setTargetAtTime(scaleFreq(this.root / 2, base, sc), t, now ? 0.02 : 2);
     this.shimmer.frequency.setTargetAtTime(scaleFreq(this.root * 4, base + 4, sc), t, now ? 0.02 : 1.4);
   }
   apply() {
@@ -2798,7 +3762,7 @@ class Sound {
       g.setTargetAtTime(this.vol * 0.9, t, 0.7);
     } else {
       g.setTargetAtTime(0, t, 0.06);
-      setTimeout(() => { if (!this.on && this.ctx.state === 'running') this.ctx.suspend().then(() => this.changed(), () => {}); }, 450);
+      setTimeout(() => { if (!this.on && this.ctx.state === 'running' && !Mic.on) this.ctx.suspend().then(() => this.changed(), () => {}); }, 450);
     }
   }
   toggle() {
@@ -2810,48 +3774,64 @@ class Sound {
   get live() { return this.started && this.on && this.ctx && this.ctx.state === 'running'; }
   setModel(id) {
     this.root = ROOTS[id] || ROOTS.gs;
-    if (this.live) { this.setChord(this.chord); this.chime(scaleFreq(this.root * 2, 0, this.scale), 0.12, 0, 0.6, 4.5); }
+    if (this.live) { this.setChord(this.chord); this.chime(scaleFreq(this.root * 2, 0, this.pent), 0.12, 0, 0.6, 4.5); }
   }
-  dream() { if (this.live) { this.setChord(this.chord); this.chime(scaleFreq(this.root * 4, 2, this.scale), 0.14, -0.3, 2.2, 4); this.chime(scaleFreq(this.root * 4, 5, this.scale), 0.1, 0.4, 2.2, 4); } }
+  dream() { if (this.live) { this.setChord(this.chord); this.chime(scaleFreq(this.root * 4, 2, this.pent), 0.14, -0.3, 2.2, 4); this.chime(scaleFreq(this.root * 4, 5, this.pent), 0.1, 0.4, 2.2, 4); } }
+  // Entropy, contrast and activity choose the mode (bright to dark); density and activity shape timbre.
   update(dt, M, painting) {
     if (!this.live) return;
-    const t = this.ctx.currentTime, sc = this.scale;
-    const d = clamp(M.density, 0, 1), a = clamp(M.activity, 0, 1);
+    const t = this.ctx.currentTime;
+    const d = clamp(M.density, 0, 1), a = clamp(M.activity, 0, 1), H = clamp(M.entropy, 0, 1), C = clamp(M.contrast, 0, 1);
+    this.bright = lerp(this.bright, clamp(0.55 + 0.6 * (H - 0.7) + 0.8 * (C - 0.2) - 0.7 * (a - 0.3), 0, 1), 0.02);
+    this.nextMode = Math.round((1 - this.bright) * (MODES.length - 1));
     this.padFilter.frequency.setTargetAtTime(220 + 2300 * Math.pow(d, 0.8) + 1300 * a + (painting ? 700 : 0), t, 0.6);
-    this.padFilter.Q.setTargetAtTime(0.6 + 5 * a, t, 0.8);
+    this.padFilter.Q.setTargetAtTime(0.6 + 4 * a + 3 * (1 - H), t, 0.8);
     this.voices.forEach((v, i) => {
-      v.a.detune.setTargetAtTime((i - 1.5) * (4 + 22 * a), t, 1);
+      v.a.detune.setTargetAtTime((i - 1.5) * (4 + 22 * a + 10 * (1 - H)), t, 1);
       v.b.detune.setTargetAtTime(-(i - 1.5) * (3 + 14 * a), t, 1);
     });
     this.padGain.gain.setTargetAtTime(0.16 + 0.22 * d, t, 1.5);
+    this.bassG.gain.setTargetAtTime(0.05 + 0.12 * d, t, 2);
     this.shimG.gain.setTargetAtTime(0.03 * clamp((d - 0.35) / 0.4, 0, 1), t, 2);
     this.breathG.gain.setTargetAtTime(0.01 + 0.05 * a, t, 0.8);
     this.breathF.frequency.setTargetAtTime(380 + 2200 * d, t, 1);
     if (t > this.nextChord) {
+      this.mode = this.nextMode;                     // modes change only on chord boundaries
       this.chord = (this.chord + 1 + (d > 0.5 ? 1 : 0)) % 4;
       this.setChord(this.chord);
       this.nextChord = t + 9 + Math.random() * 6;
     }
-    const rate = 0.12 + 2.2 * a + 0.7 * d;
+    // generative arpeggio across three octaves: rate follows activity, register follows the centroid
+    if (t > this.nextArp) {
+      const pent = this.pent, span = pent.length * 3;
+      const centre = Math.round(clamp(M.cy, 0, 1) * (span - 1));
+      this.arp = clamp(this.arp + [-2, -1, 1, 2, 1, -1][Math.floor(Math.random() * 6)] + Math.sign(centre - this.arp) * (Math.random() < 0.3 ? 1 : 0), 0, span - 1);
+      this.chime(scaleFreq(this.root * 2, this.arp, pent), 0.025 + 0.05 * a, (M.cx - 0.5) * 1.6, 0.4 + 2.6 * H, 1.4 + 1.2 * (1 - a));
+      this.nextArp = t + 1 / (0.35 + 4.5 * a + 1.2 * d) * (0.7 + Math.random() * 0.6);
+    }
+    const rate = 0.08 + 1.2 * a + 0.4 * d;
     if (Math.random() < rate * dt && this.active < 12) {
       const deg = Math.floor(d * 6 + Math.random() * 6);
-      this.chime(scaleFreq(this.root * 4, deg, sc), 0.035 + 0.07 * a, (M.cx - 0.5) * 1.4 + (Math.random() - 0.5) * 0.6, 1 + a * 1.5);
+      this.chime(scaleFreq(this.root * 4, deg, this.pent), 0.03 + 0.06 * a, (M.cx - 0.5) * 1.4 + (Math.random() - 0.5) * 0.6, 1 + H * 2);
     }
   }
-  touch(x, y, speed) {
+  // a ripple under the cursor: pitch from height, pan from x, a glide from horizontal speed
+  touch(x, y, speed, vx) {
     if (!this.live) return;
     const t = this.ctx.currentTime;
     if (t - this.lastTouch < 0.09) return;
     this.lastTouch = t;
-    const deg = Math.round((1 - y / VIEW.cssH) * 10) + 2;
-    this.chime(scaleFreq(this.root * 2, deg, this.scale), 0.06 + Math.min(0.08, speed * 0.00005), (x / VIEW.cssW) * 2 - 1, 1.6);
+    const deg = Math.round((1 - y / VIEW.cssH) * 14) + 2;
+    this.chime(scaleFreq(this.root * 2, deg, this.pent), 0.06 + Math.min(0.08, speed * 0.00005), (x / VIEW.cssW) * 2 - 1, 1.2 + Metrics.entropy * 1.5, 0, clamp((vx || 0) * 0.25, -120, 120));
   }
-  chime(freq, vel, pan, fm, len) {
+  chime(freq, vel, pan, fm, len, bend) {
+    if (this.active > 24) return;
     const c = this.ctx, t = c.currentTime + 0.01, dur = len || 2.2 + Math.random() * 1.6;
     const car = c.createOscillator(), mod = c.createOscillator(), mg = c.createGain(), g = c.createGain();
     car.type = 'sine'; mod.type = 'sine';
     car.frequency.value = freq;
     mod.frequency.value = freq * 3.5;
+    if (bend) { car.detune.setValueAtTime(bend, t); car.detune.linearRampToValueAtTime(0, t + 0.35); }
     mg.gain.setValueAtTime(freq * fm, t);
     mg.gain.exponentialRampToValueAtTime(freq * 0.02 + 0.01, t + dur * 0.6);
     mod.connect(mg);
@@ -2871,16 +3851,76 @@ class Sound {
   visibility(hidden) {
     if (!this.ctx) return;
     if (hidden && this.ctx.state === 'running') this.ctx.suspend().then(() => this.changed(), () => {});
-    else if (!hidden && this.on) this.ctx.resume().then(() => this.changed(), () => {});
+    else if (!hidden && (this.on || Mic.on)) this.ctx.resume().then(() => this.changed(), () => {});
   }
 }
 
 /* =====================================================================
+   11b · Microphone: room sound and voice pulse the specimen
+   ===================================================================== */
+const Mic = {
+  on: false, busy: false, level: 0, flux: 0, avg: 0.02, last: 0, onchange: null,
+  async toggle() {
+    if (this.busy) return;
+    if (this.on) { this.stop(); return; }
+    const md = navigator.mediaDevices;
+    if (!md || !md.getUserMedia) { toast('This browser offers no microphone access here.'); return; }
+    sound.start();
+    if (!sound.ctx) { toast('Audio is unavailable, so the microphone cannot be analysed.'); return; }
+    this.busy = true;
+    try {
+      this.stream = await md.getUserMedia({ audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: false } });
+      if (sound.ctx.state === 'suspended') await sound.ctx.resume();
+      this.node = sound.ctx.createMediaStreamSource(this.stream);
+      this.an = sound.ctx.createAnalyser();
+      this.an.fftSize = 1024;
+      this.an.smoothingTimeConstant = 0.35;
+      this.node.connect(this.an);            // analysed only: never routed to the speakers
+      this.time = new Float32Array(this.an.fftSize);
+      this.spec = new Float32Array(this.an.frequencyBinCount);
+      this.prev = new Float32Array(this.an.frequencyBinCount);
+      this.on = true;
+      toast('<b>Listening</b> &middot; speak, sing or clap: onsets pulse the specimen. Nothing is recorded.', 4800);
+    } catch (e) {
+      toast('The microphone was not made available (' + ((e && e.name) || 'error') + ').', 4800);
+    }
+    this.busy = false;
+    if (this.onchange) this.onchange();
+  },
+  stop() {
+    try { this.stream.getTracks().forEach(t => t.stop()); this.node.disconnect(); } catch (e) { /* already closed */ }
+    this.on = false;
+    this.level = 0;
+    if (this.onchange) this.onchange();
+  },
+  // returns an onset strength (0 when nothing new happened)
+  read() {
+    if (!this.on) return 0;
+    this.an.getFloatTimeDomainData(this.time);
+    let e = 0;
+    for (let i = 0; i < this.time.length; i++) e += this.time[i] * this.time[i];
+    const rms = Math.sqrt(e / this.time.length);
+    this.level = lerp(this.level, clamp(rms * 6, 0, 1), 0.3);
+    this.an.getFloatFrequencyData(this.spec);
+    let flux = 0;
+    for (let i = 2; i < this.spec.length; i++) {
+      const m = Math.pow(10, this.spec[i] / 20), d = m - this.prev[i];
+      if (d > 0) flux += d;
+      this.prev[i] = m;
+    }
+    this.avg = lerp(this.avg, flux, 0.04);
+    const now = performance.now();
+    if (flux > this.avg * 1.8 + 0.01 && rms > 0.01 && now - this.last > 140) { this.last = now; this.count = (this.count || 0) + 1; return clamp(rms * 8, 0.2, 1.5); }
+    return 0;
+  }
+};
+
+/* =====================================================================
    12 · The laboratory: models, interface, input, loop
    ===================================================================== */
-const MODELS = { gs: new GrayScott(), physarum: new Physarum(), lenia: new Lenia(), boids: new Boids(), bz: new BZ() };
-const MODEL_NAMES = { gs: 'Gray-Scott', physarum: 'Physarum', lenia: 'Lenia', boids: 'Boids', bz: 'Belousov-Zhabotinsky' };
-const ACCENTS = { gs: '#3ef2ff', physarum: '#ffb43d', lenia: '#3dffa8', boids: '#ff3dcb', bz: '#9d8bff' };
+const MODELS = { gs: new GrayScott(), physarum: new Physarum(), lenia: new Lenia(), boids: new Boids(), bz: new BZ(), eco: new Biosphere() };
+const MODEL_NAMES = { gs: 'Gray-Scott', physarum: 'Physarum', lenia: 'Lenia', boids: 'Boids', bz: 'Belousov-Zhabotinsky', eco: 'Cosmic Biosphere' };
+const ACCENTS = { gs: '#3ef2ff', physarum: '#ffb43d', lenia: '#3dffa8', boids: '#ff3dcb', bz: '#9d8bff', eco: '#b6ff5c' };
 const post = new Post(gl.drawingBufferWidth, gl.drawingBufferHeight);
 const sound = new Sound();
 let current = null;
@@ -2913,6 +3953,7 @@ function activate(id, quiet) {
   current = m;
   if (m.resize) m.resize();
   $$('#rail .model').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.model === id)));
+  $('#tog-tilt').disabled = id === 'boids';
   const hex = ACCENTS[id], rgb = hexRGB(hex).map(v => Math.round(v * 255)).join(',');
   document.documentElement.style.setProperty('--accent', hex);
   document.documentElement.style.setProperty('--accent-rgb', rgb);
@@ -2940,6 +3981,7 @@ function buildDock() {
     chips.append(b);
   });
   buildParams();
+  renderLineage();
   const tools = $('#tools');
   tools.textContent = '';
   m.tools.forEach((t, i) => {
@@ -3048,6 +4090,15 @@ function updateEq() {
   const glow = $('#p-glow');
   glow.addEventListener('input', () => { STATE.fx.glow = +glow.value; $('#o-glow').textContent = (+glow.value).toFixed(2); setFill(glow); });
   setFill(glow);
+  const slide = (id, fn, digits = 2) => {
+    const inp = $('#p-' + id);
+    inp.addEventListener('input', () => { fn(+inp.value); $('#o-' + id).textContent = (+inp.value).toFixed(digits); setFill(inp); });
+    setFill(inp);
+  };
+  slide('relief', v => { STATE.shade.relief = v; });
+  slide('gloss', v => { STATE.shade.gloss = v; });
+  slide('height', v => { STATE.shade.height = v; });
+  $('#tog-tilt').addEventListener('click', toggleTilt);
   const br = $('#p-brush');
   br.addEventListener('input', () => { STATE.brushCss = +br.value; $('#o-brush').textContent = br.value; setFill(br); });
   setFill(br);
@@ -3060,12 +4111,15 @@ function updateEq() {
   $('#act-reset').addEventListener('click', reseed);
   $('#act-clear').addEventListener('click', clearDish);
   $('#act-snap').addEventListener('click', snapshot);
+  $('#act-evolve').addEventListener('click', () => { if (!Evolve.tw) Evolve.start(); });
+  $('#tog-exhibit').addEventListener('click', e => { e.stopPropagation(); Exhibit.toggle(); });
   $$('#rail .model').forEach(b => b.addEventListener('click', () => { if (current !== MODELS[b.dataset.model]) activate(b.dataset.model); }));
   const vol = $('#vol');
   vol.addEventListener('input', () => { sound.setVolume(+vol.value); setFill(vol); });
   setFill(vol);
   $('#btn-sound').addEventListener('click', () => { if (!sound.started && sound.on) sound.start(); else sound.toggle(); });
   $('#btn-guide').addEventListener('click', () => toggleGuide());
+  $('#btn-mic').addEventListener('click', () => Mic.toggle());
   $('#guide-close').addEventListener('click', () => toggleGuide(false));
   $('#btn-help').addEventListener('click', () => toggleHelp());
   $('#help-close').addEventListener('click', () => toggleHelp(false));
@@ -3103,7 +4157,14 @@ function soundUI() {
   $('#snd-wave').style.opacity = st === 'on' ? '1' : '0.15';
 }
 sound.onchange = soundUI;
+Mic.onchange = () => { $('#btn-mic').setAttribute('aria-pressed', String(Mic.on)); $('#btn-mic').style.setProperty('--lvl', '0'); };
 
+function toggleTilt() {
+  if (current === MODELS.boids) return;
+  STATE.tilt = !STATE.tilt;
+  $('#tog-tilt').setAttribute('aria-pressed', String(STATE.tilt));
+  atlasSig = '';
+}
 function togglePause() {
   STATE.paused = !STATE.paused;
   document.body.classList.toggle('paused', STATE.paused);
@@ -3233,11 +4294,243 @@ function snapDone() {
   $('#snap-t').textContent = 'Capture 4K Snapshot';
 }
 
+/* ---------- phase portrait: where the specimen sits, and where it has been ---------- */
+const Phase = {
+  cv: $('#ph-cv'), hist: [], k: 0,
+  sample(m) {
+    if (m.hist) return;
+    if (++this.k % 5) return;
+    this.hist.push({ x: Metrics.density, y: Metrics.activity });
+    if (this.hist.length > 360) this.hist.shift();
+  },
+  draw(m) {
+    const cv = this.cv;
+    if (!cv.offsetParent) return;
+    const dpr = Math.min(2, window.devicePixelRatio || 1), W = 268, H = 92;
+    if (cv.width !== W * dpr) { cv.width = W * dpr; cv.height = H * dpr; }
+    const c = cv.getContext('2d');
+    c.setTransform(dpr, 0, 0, dpr, 0, 0);
+    c.clearRect(0, 0, W, H);
+    const eco = !!m.hist;
+    const pts = eco ? m.hist.map(h => ({ x: h.n, y: h.s, f: h.f })) : this.hist;
+    const acc = PALETTES[m.palette].acc;
+    c.strokeStyle = 'rgba(150,240,235,0.08)';
+    c.lineWidth = 1;
+    for (let i = 1; i < 4; i++) { c.beginPath(); c.moveTo(i * W / 4, 0); c.lineTo(i * W / 4, H); c.moveTo(0, i * H / 4); c.lineTo(W, i * H / 4); c.stroke(); }
+    if (pts.length < 2) return;
+    let x0 = Infinity, x1 = -Infinity, y0 = Infinity, y1 = -Infinity;
+    for (const p of pts) { x0 = Math.min(x0, p.x); x1 = Math.max(x1, p.x); y0 = Math.min(y0, p.y); y1 = Math.max(y1, p.y); }
+    const sx = Math.max(0.02, x1 - x0), sy = Math.max(0.02, y1 - y0);
+    x0 -= sx * 0.12; y0 -= sy * 0.15;
+    const X = v => 6 + (v - x0) / (sx * 1.24) * (W - 12), Y = v => H - 6 - (v - y0) / (sy * 1.3) * (H - 12);
+    const n = pts.length;
+    for (let i = 1; i < n; i++) {
+      const a = i / n;
+      c.strokeStyle = eco ? 'hsla(' + (300 - 220 * clamp(pts[i].f, 0, 1)).toFixed(0) + ',95%,65%,' + (a * a * 0.9).toFixed(3) + ')' : this.rgba(acc[0], a * a * 0.9);
+      c.lineWidth = 0.6 + a * 1.2;
+      c.beginPath(); c.moveTo(X(pts[i - 1].x), Y(pts[i - 1].y)); c.lineTo(X(pts[i].x), Y(pts[i].y)); c.stroke();
+    }
+    // the attractor: mean of the recent trajectory
+    const tail = pts.slice(-90);
+    const mx = tail.reduce((s, p) => s + p.x, 0) / tail.length, my = tail.reduce((s, p) => s + p.y, 0) / tail.length;
+    c.strokeStyle = this.rgba(acc[2], 0.55);
+    c.setLineDash([2, 3]);
+    c.beginPath(); c.arc(X(mx), Y(my), 7, 0, TAU); c.stroke();
+    c.setLineDash([]);
+    const h = pts[n - 1];
+    c.fillStyle = '#fff';
+    c.shadowColor = acc[0]; c.shadowBlur = 10;
+    c.beginPath(); c.arc(X(h.x), Y(h.y), 2.6, 0, TAU); c.fill();
+    c.shadowBlur = 0;
+    if (STATE.frame % 16 === 0) {
+      $('#ph-t').textContent = eco ? 'Ecosystem' : 'Phase portrait';
+      $('#ph-x').textContent = eco ? 'nutrient →' : 'density →';
+      $('#ph-y').textContent = eco ? 'slime ↑' : 'activity ↑';
+      $('#ph-m').textContent = eco ? 'fauna ' + m.fn + ' · N ' + h.x.toFixed(2) + ' S ' + h.y.toFixed(2) : Phase.label();
+    }
+  },
+  rgba(hex, a) { const [r, g, b] = hexRGB(hex); return 'rgba(' + Math.round(r * 255) + ',' + Math.round(g * 255) + ',' + Math.round(b * 255) + ',' + a.toFixed(3) + ')'; },
+  label() { return sound.live ? sound.label : 'H ' + Metrics.entropy.toFixed(2) + ' · a ' + Metrics.activity.toFixed(2); }
+};
+
+/* ---------- Evolve: viability-aware mutation, tweened over three seconds ---------- */
+const gauss = () => { let u = 0, v = 0; while (!u) u = rand(); while (!v) v = rand(); return Math.sqrt(-2 * Math.log(u)) * Math.cos(TAU * v); };
+const jig = (x, rel, lo, hi) => clamp(x * (1 + gauss() * rel), lo, hi);
+const kSN = F => Math.sqrt(F) / 2 - F;   // Gray-Scott saddle-node line: patterns crowd just beside it
+const GENOMES = {
+  gs: m => {
+    if (m.map) return null;
+    const F = clamp(m.p.F + gauss() * 0.008, 0.012, 0.08);
+    return { F, k: clamp(kSN(F) + (rand() * 0.009 - 0.002), 0.035, 0.07), visc: clamp(m.p.visc + gauss() * 0.2, 1, 2.2) };
+  },
+  physarum: m => ({ SA: jig(m.p.SA, 0.35, 4, 100), RA: jig(m.p.RA, 0.35, 4, 100), SO: jig(m.p.SO, 0.3, 3, 40), SS: jig(m.p.SS, 0.2, 0.4, 3), decay: jig(m.p.decay, 0.3, 0.01, 0.3), diff: clamp(m.p.diff + gauss() * 0.1, 0.3, 1) }),
+  lenia: m => m.mode === 0 ? { mu: jig(m.p.mu, 0.04, 0.08, 0.4), sigma: jig(m.p.sigma, 0.06, 0.005, 0.06) } : { dt: jig(m.p.dt, 0.15, 0.04, 0.3) },
+  bz: m => m.variant === 0
+    ? { alpha: clamp(m.p.alpha + gauss() * 0.12, 0.7, 1.45), beta: clamp(m.p.beta + gauss() * 0.12, 0.7, 1.45), gamma: clamp(m.p.gamma + gauss() * 0.12, 0.7, 1.45) }
+    : { a: clamp(m.p.a + gauss() * 0.05, 0.55, 0.98), b: clamp(m.p.b + gauss() * 0.01, 0, 0.09), eps: jig(m.p.eps, 0.25, 0.012, 0.09) },
+  boids: m => ({ coh: jig(m.p.coh, 0.4, 0.1, 4), ali: jig(m.p.ali, 0.4, 0.1, 4), sep: jig(m.p.sep, 0.3, 0.4, 5), perc: jig(m.p.perc, 0.25, 8, 36), speed: jig(m.p.speed, 0.2, 25, 140), visc: jig(m.p.visc + 0.05, 0.5, 0, 2) }),
+  eco: m => {
+    const g = { taxis: jig(m.p.taxis, 0.35, 5, 200), graze: jig(m.p.graze, 0.35, 0.02, 1), metab: jig(m.p.metab, 0.3, 0.03, 0.5), appetite: jig(m.p.appetite, 0.3, 0.2, 3), seeding: jig(m.p.seeding, 0.35, 0.1, 3) };
+    if (m.terrain === 0) { g.F = clamp(m.p.F + gauss() * 0.006, 0.015, 0.075); g.k = clamp(kSN(g.F) + (rand() * 0.008 - 0.002), 0.04, 0.07); }
+    return g;
+  }
+};
+const GENERA = { gs: 'Chemomorpha', physarum: 'Physarum', lenia: 'Orbium', boids: 'Sturnus', bz: 'Belousovia', eco: 'Gaia' };
+const SYL = ['lu', 'ci', 'an', 'the', 'ra', 'no', 'vi', 'sa', 'mor', 'phi', 'ca', 'li', 'zo', 'ri', 'qua', 'mi', 'ne', 'ul', 'ly', 'pho', 'cy', 'aur'];
+const END = ['ensis', 'ata', 'ifera', 'oides', 'ula', 'ina', 'alis', 'ella', 'osa', 'escens'];
+const pick = a => a[Math.floor(rand() * a.length)];
+function binomial(m) {
+  let genus = GENERA[m.id];
+  if (m.id === 'lenia') genus = ['Orbium', 'Geminium', 'Lenia', 'Lenia'][m.presetIdx] || 'Lenia';
+  return genus + ' ' + pick(SYL) + pick(SYL) + (rand() < 0.4 ? pick(SYL) : '') + pick(END);
+}
+const Evolve = {
+  tw: null, gen: 0, lineage: [],
+  start(target, name) {
+    const m = current, g = GENOMES[m.id];
+    const tgt = target || (g && g(m));
+    if (!tgt) { toast('The Pearson Atlas already shows every phenotype at once: choose another specimen to breed.'); return; }
+    const from = {};
+    for (const k in tgt) from[k] = m.p[k];
+    this.gen++;
+    const entry = target ? null : { name: name || binomial(m), gen: this.gen, id: m.id, preset: m.presetIdx, p: { ...m.p, ...tgt } };
+    this.tw = { m, from, tgt, t0: performance.now(), dur: 3000, entry };
+    const b = $('#act-evolve');
+    b.setAttribute('aria-busy', 'true');
+    $('#evolve-t').textContent = target ? 'Restoring…' : 'Breeding…';
+    toast(target ? 'Restoring <b>' + name + '</b>' : 'Breeding <b><i>' + entry.name + '</i></b> &middot; generation ' + this.gen, 3200);
+    Exhibit.poke();
+  },
+  update() {
+    const tw = this.tw;
+    if (!tw) return;
+    const t = clamp((performance.now() - tw.t0) / tw.dur, 0, 1), e = easeT(t);
+    for (const k in tw.tgt) {
+      tw.m.p[k] = lerp(tw.from[k], tw.tgt[k], e);
+      if (tw.m === current) syncParam(k);
+    }
+    if (tw.m.setParam) for (const k in tw.tgt) if (k === 'fauna') tw.m.setParam(k);
+    $('#act-evolve').style.setProperty('--prog', t.toFixed(3));
+    if (tw.m === current && STATE.frame % 6 === 0) updateEq();
+    if (t >= 1) {
+      this.tw = null;
+      if (tw.entry) { this.lineage.unshift(tw.entry); this.lineage.length = Math.min(this.lineage.length, 6); }
+      renderLineage();
+      const b = $('#act-evolve');
+      b.removeAttribute('aria-busy');
+      b.style.setProperty('--prog', '0');
+      $('#evolve-t').textContent = 'Evolve a phenotype';
+      updateEq();
+    }
+  }
+};
+function renderLineage() {
+  const box = $('#lineage'), mine = Evolve.lineage.filter(e => e.id === current.id);
+  $('#sect-lineage').hidden = mine.length === 0;
+  $('#lineage-note').textContent = mine.length ? 'gen ' + mine[0].gen : '';
+  box.textContent = '';
+  mine.forEach(e => {
+    const b = el('button', 'chip', e.name);
+    b.type = 'button';
+    b.title = 'Generation ' + e.gen + ': ' + Object.keys(GENOMES[e.id](current) || {}).map(k => k + ' ' + (+e.p[k]).toFixed(4)).join(', ');
+    b.addEventListener('click', () => {
+      if (Evolve.tw) return;
+      const tgt = {};
+      for (const k of Object.keys(GENOMES[e.id](current) || {})) tgt[k] = e.p[k];
+      Evolve.start(tgt, e.name);
+    });
+    box.append(b);
+  });
+}
+
+/* ---------- Exhibition: a curated, self-guided tour after 25 s idle ---------- */
+const Exhibit = {
+  on: false, auto: true, idle: 0, stop: -1, t: 0,
+  tour: [
+    { m: 'gs', p: 'mitosis', tilt: false, zoom: 1.5, body: 'Nothing here is told to divide. Each spot eats the substrate at its own centre until it pinches in two.' },
+    { m: 'physarum', p: 'network', tilt: true, body: 'Hundreds of thousands of agents, each with three sensors and no map. The network is their shared memory, written in chemoattractant.' },
+    { m: 'lenia', p: 'orbium', tilt: false, zoom: 2.2, body: 'A creature that moves although nothing in it moves: every step, its front grows and its back decays.' },
+    { m: 'bz', p: 'excitable', tilt: true, body: 'Every point is resting, firing or recovering. Break a wave and its free end has to curl: a spiral is born.' },
+    { m: 'boids', p: 'murmuration', body: 'Three rules and one falcon. No bird leads; the cloud turns because each bird copies its nearest neighbours.' },
+    { m: 'eco', p: 'garden', tilt: true, body: 'Chemistry feeds the slime, the slime feeds the flocks, the flocks seed new chemistry. The loop never quite settles.' },
+    { m: 'gs', p: 'labyrinth', tilt: true, body: 'Seen as terrain, a Turing pattern is a landscape of ridges spaced by chemistry alone: the rule that stripes an angelfish.' },
+    { m: 'bz', p: 'cyclic', tilt: false, zoom: 1.6, body: 'Rock, paper, scissors, played by three chemicals at once. Where they meet in balance, spirals turn for as long as you watch.' }
+  ],
+  poke() { this.idle = 0; },
+  activity() { this.idle = 0; if (this.on) this.exit(); },
+  canStart() {
+    return !document.hidden && !snapBusy && !Evolve.tw && $('#help').hidden && !$('#guide').classList.contains('open') && !ptr.down;
+  },
+  toggle() { if (this.on) this.exit(); else this.enter(); },
+  enter() {
+    if (this.on) return;
+    this.on = true;
+    this.saved = { tilt: STATE.tilt };
+    document.body.classList.add('exhibit');
+    $('#tog-exhibit').setAttribute('aria-pressed', 'true');
+    $('#exhibit').hidden = false;
+    this.next();
+  },
+  exit() {
+    if (!this.on) return;
+    this.on = false;
+    this.idle = 0;
+    document.body.classList.remove('exhibit');
+    $('#tog-exhibit').setAttribute('aria-pressed', 'false');
+    const ex = $('#exhibit');
+    ex.classList.remove('show');
+    setTimeout(() => { if (!this.on) ex.hidden = true; }, 1400);
+    if (MODELS.boids.ready) MODELS.boids.p.orbit = this.savedOrbit ?? MODELS.boids.p.orbit;
+    $('#tog-tilt').setAttribute('aria-pressed', String(STATE.tilt));
+  },
+  next() {
+    this.stop = (this.stop + 1) % this.tour.length;
+    this.t = 0;
+    this.t0 = performance.now();
+    const s = this.tour[this.stop], ex = $('#exhibit');
+    ex.classList.remove('show');
+    setTimeout(() => {
+      if (!this.on) return;
+      activate(s.m, true);
+      const i = current.presets.findIndex(p => p.id === s.p);
+      if (i >= 0) { current.applyPreset(i); buildDock(); }
+      current.resetView();
+      STATE.tilt = !!s.tilt;
+      $('#tog-tilt').setAttribute('aria-pressed', String(STATE.tilt));
+      if (s.m === 'boids') { this.savedOrbit = current.p.orbit; current.p.orbit = 0.14; }
+      const pr = current.presets[current.presetIdx];
+      $('#ex-n').textContent = (this.stop + 1) + ' / ' + this.tour.length;
+      $('#ex-title').textContent = pr.name;
+      $('#ex-model').textContent = MODEL_NAMES[s.m].replace('-', '–');
+      $('#ex-body').textContent = s.body;
+      $('#ex-meta').textContent = pr.note;
+      updateEq();
+      ex.classList.add('show');
+    }, 900);
+  },
+  update(dt) {
+    if (!this.on) {
+      this.idle += dt;
+      if (this.auto && this.idle > 25 && this.canStart()) this.enter();
+      return;
+    }
+    const prevT = this.t;
+    this.t = (performance.now() - this.t0) / 1000;
+    dt = Math.max(0, this.t - prevT);
+    const s = this.tour[this.stop], m = current;
+    if (m && m.view && m.cam3) {
+      if (STATE.tilt) { m.cam3.yaw += 0.045 * dt; m.cam3.pitch = 0.62 + 0.14 * Math.sin(this.t * 0.11); }
+      else { const z = lerp(1, s.zoom || 1.3, easeT(clamp(this.t / 22, 0, 1))); m.view.zoom = z; m.view.panX = Math.sin(this.t * 0.05) * m.W * 0.06; m.view.panY = Math.cos(this.t * 0.04) * m.H * 0.05; }
+    }
+    if (this.t > 26) this.next();
+  }
+};
+
 /* ---------- Pearson atlas axis labels ---------- */
 let atlasSig = '';
 function updateAtlas() {
   const m = current, box = $('#atlas');
-  const show = m === MODELS.gs && m.map === 1 && !document.body.classList.contains('hud-hidden');
+  const show = m === MODELS.gs && m.map === 1 && STATE.tiltT === 0 && !document.body.classList.contains('hud-hidden');
   if (!show) { if (!box.hidden) box.hidden = true; atlasSig = ''; return; }
   const sig = [m.W, m.H, m.view.zoom, m.view.panX, m.view.panY, VIEW.cssW, VIEW.cssH].join();
   if (sig === atlasSig) return;
@@ -3266,7 +4559,7 @@ canvas.addEventListener('contextmenu', e => e.preventDefault());
 canvas.addEventListener('pointerdown', e => {
   if (ptr.down || !current) return;
   let mode = null;
-  if (e.button === 1 || (e.button === 0 && e.altKey)) mode = 'pan';
+  if (e.button === 1 || (e.button === 0 && (e.altKey || STATE.pmode === 'orbit'))) mode = 'pan';
   else if (e.button === 2 || (e.button === 0 && (e.shiftKey || STATE.pmode === 'tool'))) mode = 'tool';
   else if (e.button === 0) mode = 'paint';
   if (!mode) return;
@@ -3274,11 +4567,13 @@ canvas.addEventListener('pointerdown', e => {
   try { canvas.setPointerCapture(e.pointerId); } catch (err) { /* capture is a nicety */ }
   Object.assign(ptr, { down: true, mode, id: e.pointerId, x: e.clientX, y: e.clientY, lx: e.clientX, ly: e.clientY, ax: null, ay: null, first: true, speed: 0, t: performance.now() });
   canvas.classList.toggle('panning', mode === 'pan');
-  if (mode !== 'pan') sound.touch(e.clientX, e.clientY, 0);
+  if (mode !== 'pan') { sound.touch(e.clientX, e.clientY, 0, 0); Ripples.add(e.clientX, e.clientY, 1); ptr.rip = performance.now(); }
 });
 canvas.addEventListener('pointermove', e => {
   ptr.hover = true;
+  const hv = Math.hypot(e.clientX - ptr.hx, e.clientY - ptr.hy);
   ptr.hx = e.clientX; ptr.hy = e.clientY;
+  if (!ptr.down && hv > 28 && performance.now() - (ptr.rip || 0) > 380) { ptr.rip = performance.now(); Ripples.add(e.clientX, e.clientY, 0.22); }
   if (!ptr.down || e.pointerId !== ptr.id) return;
   if (ptr.mode === 'pan') {
     current.panBy(e.clientX - ptr.lx, e.clientY - ptr.ly);
@@ -3289,7 +4584,8 @@ canvas.addEventListener('pointermove', e => {
   ptr.speed = lerp(ptr.speed, d / Math.max(1, now - ptr.t) * 1000, 0.3);
   ptr.t = now;
   ptr.x = e.clientX; ptr.y = e.clientY;
-  if (d > 0) sound.touch(e.clientX, e.clientY, ptr.speed);
+  if (d > 0) sound.touch(e.clientX, e.clientY, ptr.speed, e.movementX * 30);
+  if (now - (ptr.rip || 0) > 160) { ptr.rip = now; Ripples.add(e.clientX, e.clientY, 0.5); }
 });
 function endPointer(e) {
   if (!ptr.down || e.pointerId !== ptr.id) return;
@@ -3320,7 +4616,12 @@ function applyStroke() {
 const KONAMI = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
 let keyTrail = [], typed = '';
 window.addEventListener('pointerdown', e => { if (!e.target.closest || !e.target.closest('#btn-sound')) sound.start(); }, true);
+let lastMove = [0, 0];
+window.addEventListener('pointermove', e => { if (Math.hypot(e.clientX - lastMove[0], e.clientY - lastMove[1]) > 6) { lastMove = [e.clientX, e.clientY]; Exhibit.activity(); } }, true);
+window.addEventListener('pointerdown', e => { if (!e.target.closest || !e.target.closest('#tog-exhibit')) Exhibit.activity(); }, true);
+window.addEventListener('wheel', () => Exhibit.activity(), { capture: true, passive: true });
 window.addEventListener('keydown', e => {
+  if (e.key !== 'x' && e.key !== 'X') Exhibit.activity();
   if (e.metaKey || e.ctrlKey) return;
   const t = e.target, tag = (t && t.tagName) || '';
   if (tag === 'TEXTAREA' || tag === 'SELECT' || (tag === 'INPUT' && t.type !== 'range')) return;
@@ -3348,8 +4649,8 @@ window.addEventListener('keydown', e => {
   if (!$('#help').hidden && k !== '?') return;
   const onButton = tag === 'BUTTON' || tag === 'A';
   switch (k) {
-    case '1': case '2': case '3': case '4': case '5': {
-      const id = ['gs', 'physarum', 'lenia', 'boids', 'bz'][+k - 1];
+    case '1': case '2': case '3': case '4': case '5': case '6': {
+      const id = ['gs', 'physarum', 'lenia', 'boids', 'bz', 'eco'][+k - 1];
       if (current !== MODELS[id]) activate(id);
       break;
     }
@@ -3375,6 +4676,10 @@ window.addEventListener('keydown', e => {
     case 'e': case 'E': setTool(2); break;
     case 't': case 'T': setTool(3); break;
     case '0': current.resetView(); break;
+    case 'i': case 'I': toggleTilt(); break;
+    case 'v': case 'V': if (!Evolve.tw) Evolve.start(); break;
+    case 'x': case 'X': Exhibit.toggle(); break;
+    case 'l': case 'L': Mic.toggle(); break;
     case '?': toggleHelp(); break;
     default: break;
   }
@@ -3408,17 +4713,37 @@ canvas.addEventListener('webglcontextlost', e => {
 canvas.addEventListener('webglcontextrestored', () => location.reload());
 
 /* ---------- the loop ---------- */
-let last = performance.now(), msEMA = 16.7, stepAcc = 0, gov = 1, govT = 0;
+let last = performance.now(), msEMA = 16.7, cpuEMA = 0, stepAcc = 0, gov = 1, govT = 0;
 let hudT = 0, hudFrames = 0, hudSteps = 0, stepsTotal = 0;
-const METRIC = { density: 0, activity: 0, cx: 0.5 };
-function frame(now) {
+const METRIC = { density: 0, activity: 0, cx: 0.5, cy: 0.5, entropy: 0.5, contrast: 0 };
+// an onset from the microphone: a ripple, and a pulse painted into the specimen where the voice "stands"
+function micPulse(strength) {
+  const t = STATE.time;
+  const x = ptr.hover ? ptr.hx : VIEW.cssW * (0.5 + 0.28 * Math.sin(t * 0.13)), y = ptr.hover ? ptr.hy : VIEW.cssH * (0.5 + 0.22 * Math.sin(t * 0.17 + 1));
+  Ripples.add(x, y, strength);
+  const m = current, keep = STATE.brushCss;
+  STATE.brushCss = 14 + 40 * Math.min(strength, 1.2);
+  try {
+    if (m.pulse) m.pulse(x, y, strength);
+    else {
+      const kind = m.brushKind;
+      if (kind) m.brushKind = 'noise';
+      m.paint({ x0: x, y0: y, x1: x, y1: y, first: true }, false);
+      if (kind) m.brushKind = kind;
+    }
+  } finally { STATE.brushCss = keep; }
+  if (sound.live) sound.touch(x, y, 400 * strength, 0);
+}
+function frame() {
   raf = requestAnimationFrame(frame);
+  const now = performance.now();
   if (gl.isContextLost()) return;
-  const dt = clamp((now - last) / 1000, 0, 0.1);
+  const rawDt = Math.max(0, (now - last) / 1000), dt = Math.min(rawDt, 0.1);
   last = now;
   msEMA = lerp(msEMA, dt * 1000, 0.06);
   STATE.time += dt;
   STATE.frame++;
+  STATE.tiltT = clamp(STATE.tiltT + (STATE.tilt ? dt : -dt) / 1.2, 0, 1);
   try {
     const m = current;
     applyStroke();
@@ -3439,8 +4764,12 @@ function frame(now) {
     post.run(null, STATE.fx, gl.drawingBufferWidth / VIEW.cssW);
     const src = m.metric();
     if (src) { Metrics.poll(); if (STATE.frame % 6 === 0) Metrics.request(src); }
-    else Metrics.set(m.stats.density, m.stats.activity, m.stats.cx);
+    else Metrics.set(m.stats.density, m.stats.activity, m.stats.cx, m.stats.entropy, 0.2, 0.5);
     METRIC.density = Metrics.density; METRIC.activity = Metrics.activity; METRIC.cx = Metrics.cx;
+    METRIC.cy = Metrics.cy; METRIC.entropy = Metrics.entropy; METRIC.contrast = Metrics.contrast;
+    const onset = Mic.read();
+    if (onset) micPulse(onset);
+    if (Mic.on && STATE.frame % 2 === 0) $('#btn-mic').style.setProperty('--lvl', Mic.level.toFixed(3));
     sound.update(dt, METRIC, ptr.down && ptr.mode !== 'pan');
     govT += dt;
     if (govT > 0.5) {
@@ -3448,10 +4777,15 @@ function frame(now) {
       if (msEMA > 19.5 && gov > 0.25) gov = Math.max(0.25, gov * 0.85);
       else if (msEMA < 15.5 && gov < 1) gov = Math.min(1, gov * 1.08);
     }
+    Evolve.update();
+    Exhibit.update(Math.min(rawDt, 1));
+    Phase.sample(m);
+    if (STATE.frame % 4 === 0) Phase.draw(m);
     hudFrames++;
-    hudT += dt;
+    hudT += rawDt;
     if (hudT >= 0.25) updateHud();
     updateAtlas();
+    cpuEMA = lerp(cpuEMA, performance.now() - now, 0.05);
   } catch (err) {
     cancelAnimationFrame(raf);
     reportError(err);
@@ -3479,7 +4813,8 @@ try {
   const start = (location.hash || '').slice(1);
   activate(MODELS[start] ? start : 'gs', true);
   soundUI();
-  raf = requestAnimationFrame(t => { last = t; frame(t); });
+  last = performance.now();
+  raf = requestAnimationFrame(frame);
   setTimeout(() => toast('Left-drag to paint &middot; right-drag or Shift-drag for instruments &middot; <b>G</b> opens the Field Guide', 5200), 900);
 } catch (e) {
   reportError(e);
@@ -3489,8 +4824,14 @@ try {
 window.MORPHO = {
   get model() { return current && current.id; },
   get models() { return MODELS; },
-  activate: id => activate(id, true),
+  activate: id => { Exhibit.poke(); activate(id, true); },
+  exhibit: on => { if (on === false) { Exhibit.auto = false; Exhibit.exit(); } else if (on === true) Exhibit.enter(); return Exhibit.on; },
+  evolve: () => Evolve.start(),
+  get audio() { return { state: sound.state, label: sound.label, mode: MODES[sound.mode].name, voices: sound.active, mic: Mic.on, micLevel: +Mic.level.toFixed(3), onsets: Mic.count || 0, entropy: +Metrics.entropy.toFixed(3) }; },
+  get tour() { return { on: Exhibit.on, stop: Exhibit.stop, t: +Exhibit.t.toFixed(2), idle: +Exhibit.idle.toFixed(2) }; },
+  get lineage() { return Evolve.lineage.map(e => e.name); },
   preset: i => choosePreset(i),
+  sync: () => { gl.finish(); return true; },
   step: n => { if (current !== MODELS.boids) current.step(n | 0 || 1); else current.step(1, 1 / 60); },
   snapshot,
   dream: toggleDream,
@@ -3499,6 +4840,7 @@ window.MORPHO = {
   formats: { sim: SIM, hdr: HDR },
   get governor() { return gov; },
   get frameMs() { return msEMA; },
+  get cpuMs() { return cpuEMA; },
   get steps() { return stepsTotal; },
   get metric() { return { ...METRIC }; },
   encodePNG
