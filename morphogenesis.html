@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en-CA">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Morphogenesis · A laboratory of emergent pattern, computed live</title>
+<meta name="author" content="Leesharam Alexander Rajcoomar">
+<link rel="preload" href="InterVariable-sub.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="site.css?v=863dfae7">
+<style>
+/* the preview sits on the text column, framed like the site's figures */
+.docbody figure{margin:1.5rem 0 2rem}
+.docbody figure img{display:block;border:1px solid var(--rule)}
+.docbody figcaption{margin-top:.6rem;font-size:.875rem;color:var(--ink-3)}
+</style>
+<script>
+/* Theme before first paint, so there is no flash. Wrapped because some
+   embedded contexts throw on storage access. */
+(function(){try{var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}
+document.documentElement.className+=' js';})();
+</script>
+<!--__meta-->
+<meta name="color-scheme" content="light dark">
+<meta name="description" content="Six living systems computed live on the graphics card, from reaction–diffusion and slime mould to Lenia and flocking. Paint into them, fork a dish into a…">
+
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' fill='%2316150f'/><g fill='none' stroke='%23faf9f6' stroke-linecap='round' stroke-linejoin='round'><path d='M12 56 L32 6 L52 56' stroke-width='4.95'/><path d='M20 38 H44' stroke-width='4.95'/><path d='M32 36 L51 56' stroke-width='4.95'/></g></svg>">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="site.webmanifest">
+<link rel="canonical" href="https://alexrajcoomar.github.io/morphogenesis.html">
+<meta property="og:title" content="Morphogenesis · A laboratory of emergent pattern, computed live">
+<meta property="og:description" content="Six living systems computed live on the graphics card, from reaction–diffusion and slime mould to Lenia and flocking. Paint into them, fork a dish into a…">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://alexrajcoomar.github.io/morphogenesis.html">
+<meta property="og:site_name" content="Alex Rajcoomar · portfolio">
+<meta property="og:image" content="https://alexrajcoomar.github.io/cards/morphogenesis.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Morphogenesis · Alex Rajcoomar">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://alexrajcoomar.github.io/cards/morphogenesis.png">
+<script>
+(function(){
+  var d=document.documentElement;
+  try{var t=localStorage.getItem('theme'); if(t) d.setAttribute('data-theme',t);}catch(e){}
+  new MutationObserver(function(){
+    try{
+      var v=d.getAttribute('data-theme');
+      if(v) localStorage.setItem('theme',v); else localStorage.removeItem('theme');
+    }catch(e){}
+  }).observe(d,{attributes:true,attributeFilter:['data-theme']});
+})();
+</script>
+<!--/__meta-->
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <div class="bar">
+    <a class="brand" href="index.html"><span class="mark" aria-hidden="true">A</span>Alex Rajcoomar <span class="sub">portfolio</span></a>
+    <nav class="main" aria-label="Sections">
+      <a href="index.html">Home</a>
+      <a href="library.html">Work</a>
+      <a href="atlas.html">Atlas</a>
+      <a href="about.html">About</a>
+      <a href="colophon.html">Notes</a>
+    </nav>
+    <div class="hbtns">
+      <button class="iconbtn searchbtn" type="button" id="searchbtn" aria-label="Search all work">
+        <span aria-hidden="true">&#9906;</span><span class="lbl">Search</span> <kbd>/</kbd>
+      </button>
+      <button class="iconbtn" type="button" id="themebtn" aria-label="Switch between light and dark">&#9686;</button>
+    </div>
+  </div>
+</header>
+<main id="main">
+<div class="doc">
+  <div>
+      <header class="docmast">
+        <p class="kick">Independent project · Interactive laboratory</p>
+        <p class="docmast-h1">Morphogenesis</p>
+        <p class="dek">Six living systems computed live on the graphics card: chemistry that spots and stripes, slime mould that builds networks, creatures that glide, flocks that turn as one. Nothing on the screen is drawn. Every form emerges from local rules.</p>
+        <div class="docmeta"><span class="mchip">Six models</span><span class="mchip">WebGL2</span><span class="mchip">One self-contained file</span></div>
+      </header>
+      <article class="docbody">
+<h1 id="morphogenesis">Morphogenesis</h1>
+<p><a class="pbtn pbtn-go" href="morphogenesis/index.html">Launch the laboratory <span aria-hidden="true">&#8594;</span></a></p>
+<p>It opens full screen in this tab, on a recent desktop or laptop browser; phones and tablets get a touch layout. Sound starts on your first click or tap.</p>
+<figure>
+<img src="morphogenesis-preview.png" width="1152" height="664" alt="The laboratory at work: Gray&#8211;Scott spots dividing across a dark dish, with the six models listed on the left and the Laboratory panel of specimens, research tools and parameters on the right.">
+<figcaption>Gray&#8211;Scott reaction&#8211;diffusion in the laboratory&#8217;s desktop interface.</figcaption>
+</figure>
+<h2 id="what-it-is">What it is</h2>
+<p>Morphogenesis is a laboratory for pattern that nobody draws. Each system follows a few local rules: chemicals that react and spread, cells that follow a scent, creatures that copy their neighbours. The stripes, spirals, networks and flocks are what those rules compute, moment by moment. Alan Turing named the process in 1952.</p>
+<ul>
+<li><strong>Gray&#8211;Scott</strong> reaction&#8211;diffusion: spots that divide, stripes and labyrinths.</li>
+<li><strong>Physarum</strong>: hundreds of thousands of slime-mould agents building transport networks.</li>
+<li><strong>Lenia</strong>: continuous cellular automata, with creatures that glide and hold their shape.</li>
+<li><strong>Boids</strong>: a murmuration in three dimensions, turning away from a falcon.</li>
+<li><strong>Belousov&#8211;Zhabotinsky</strong>: an excitable chemistry of spiral waves.</li>
+<li><strong>Cosmic Biosphere</strong>: the others coupled into one ecosystem, where chemistry feeds the slime and the slime feeds the flocks.</li>
+</ul>
+<h2 id="what-you-can-do">What you can do</h2>
+<ul>
+<li>Paint into the dish, and place barriers, food and repellent.</li>
+<li>Tilt a dish into 3D relief and orbit it.</li>
+<li>Fork a dish into a control and an intervention, and watch the two diverge side by side.</li>
+<li>Measure a pattern&#8217;s wavelength, or pin a moment and see what grows and what recedes.</li>
+<li>Breed new phenotypes and trace them on a family tree.</li>
+<li>Take a guided tour that returns you to your own specimen.</li>
+<li>Save an exact specimen as a .morpho file, and open it again later.</li>
+<li>Export a 4K snapshot, a ten-second clip with its sound, or a printable 3D mesh, and play the dish as an instrument.</li>
+</ul>
+<h2 id="running-it">Running it</h2>
+<p>The laboratory is one HTML file with no dependencies. It makes no network requests, and a specimen leaves the page only when you save it. It needs WebGL2 with floating-point render targets. It has been tested in Chromium on a desktop and in phone and tablet emulation; Firefox, Safari and real phones have not yet been checked, and frame rates depend on the graphics chip.</p>
+<p>Inside, press <kbd>?</kbd> for every shortcut, or open the Field Guide for the mathematics behind each model.</p>
+<h2 id="how-it-was-built">How it was built</h2>
+<p>Each model follows its published source, from Turing&#8217;s paper to Reynolds on flocking and Chan on Lenia, and the Field Guide names them all. The shaders, sound and interface were written with AI assistance and are held to an automated suite of browser checks: a forked dish must match its original exactly, a saved specimen must reopen bit for bit, and the wavelength analyzer must read test patterns to within half a cell.</p>
+      </article>
+  </div>
+</div>
+</main>
+<!--__foot--><footer class="site">
+  <div class="cols">
+    <div>
+      <h2 id="alex-rajcoomar">Alex Rajcoomar</h2>
+      <p class="small fnote">Accounting and Financial Management, Analytics stream, University of Waterloo. 69 published pieces: research, interactive tools and references, all of them running rather than described.</p>
+      <p class="small"><a class="inlink" href="mailto:leesharamrajcoomar@gmail.com">leesharamrajcoomar@gmail.com</a></p>
+    </div>
+    <nav aria-label="Sections, from the footer">
+      <h2 id="sections">Sections</h2>
+      <a href="research.html">Research and writing</a>
+      <a href="coursework.html">Coursework</a>
+      <a href="tools.html">Interactive tools</a>
+      <a href="library.html">Full library</a>
+    </nav>
+    <nav aria-label="About this site">
+      <h2 id="this-site">This site</h2>
+      <a href="about.html">About and contact</a>
+      <a href="colophon.html">Colophon and method</a>
+      <a href="controls.html">Controls: what is tested</a>
+      <a href="https://alexrajcoomar.github.io">alexrajcoomar.github.io</a>
+    </nav>
+  </div>
+  <div class="fine">
+    <span>&copy; 2026 Leesharam Alexander Rajcoomar</span>
+    <span><b><data class="m" value="69" data-m="pieces">69</data></b> pieces &middot; <b><data class="m" value="511988" data-m="words">511,988</data></b> words &middot; <b><data class="m" value="206" data-m="figures">206</data></b> figures &middot; no framework, nothing external at runtime, one build you can read</span>
+  </div>
+</footer><!--/__foot-->
+
+<!--__tail--><!-- Search across every piece. Progressive: every link on the site works
+     without it, and the button is the same route as the keyboard. -->
+<dialog class="cmdk" id="cmdk" aria-label="Search all work">
+  <div class="cmdk-panel">
+    <input id="cmdk-input" type="text" placeholder="Search 69 pieces by title, course or topic" autocomplete="off" spellcheck="false" role="combobox" aria-expanded="false" aria-autocomplete="list" aria-controls="cmdk-list">
+    <ul class="cmdk-list" id="cmdk-list" role="listbox" aria-label="Results"></ul>
+    <div class="cmdk-foot">
+      <span><kbd>&#8593;</kbd><kbd>&#8595;</kbd> move</span><span><kbd>Enter</kbd> open</span><span><kbd>Esc</kbd> close</span>
+    </div>
+  </div>
+</dialog>
+
+<script>
+window.WORK = [{"t":"Flagged in Hindsight","s":"Five Canadian frauds, put back through the forensic screen ex ante","u":"flagged-in-hindsight.html","k":"Essay","c":"","d":"August 2026"},{"t":"Crucible Cockpit","s":"Adversarial claim auditing: decompose, attack, grade what survives","u":"crucible-cockpit.html","k":"Essay","c":"","d":"August 2026"},{"t":"Crucible Run 0: the Bank of Canada backtest","s":"Evidence locked at January 2023; the engine says what was knowable","u":"crucible-run-0.html","k":"Reference","c":"","d":"August 2026"},{"t":"Crucible Run B: the maturity-wall thesis","s":"The 2026 coupon step-up claim, audited and refuted","u":"crucible-run-b.html","k":"Reference","c":"","d":"August 2026"},{"t":"Crucible Run C: the goodwill-impairment thesis","s":"The too-little-too-late critique, audited against TSX issuers","u":"crucible-run-c.html","k":"Reference","c":"","d":"August 2026"},{"t":"Epistemic Quality Directive","s":"The evidentiary standard distilled from the claim-audit engine, in four modes","u":"epistemic-quality-directive.html","k":"Reference","c":"","d":"September 2026"},{"t":"The Brittle Network","s":"A pre-registered protocol on the Late Bronze Age collapse","u":"brittle-network.html","k":"Reference","c":"","d":"August 2026"},{"t":"The Price of Divergence","s":"A pre-registered protocol on ESG-rating disagreement and portfolios","u":"price-of-divergence.html","k":"Reference","c":"","d":"August 2026"},{"t":"Morphogenesis","s":"A laboratory of emergent pattern, computed live","u":"morphogenesis.html","k":"Tool","c":"","d":"September 2026"},{"t":"IFRS 15 Judgment Trainer","s":"Sixty-two revenue scenarios, every answer anchored to the Handbook","u":"ifrs15-judgment-trainer.html","k":"Tool","c":"","d":"August 2026"},{"t":"IFRS 15 Item Bank: Verification and Backfill","s":"The verification memo behind the trainer","u":"ifrs15-verification-memo.html","k":"Reference","c":"","d":"August 2026"},{"t":"The Five Shall Paragraphs","s":"Materiality and sampling under the CAS, requirements separated from habit","u":"five-shall-paragraphs.html","k":"Reference","c":"","d":"August 2026"},{"t":"Zakaria's Putin, Audited","s":"A 2022 documentary, claim by claim, against the 2026 record","u":"zakaria-putin-audited.html","k":"Essay","c":"","d":"August 2026"},{"t":"Predictive History","s":"The map, and the method that audits it","u":"predictive-history.html","k":"Essay","c":"","d":"August 2026"},{"t":"Predictive History: the withdrawn first edition","s":"Kept uncorrected, with the divergence computed rather than described","u":"predictive-history-archive.html","k":"Reference","c":"","d":"August 2026"},{"t":"The Trillion-Dollar Vintage","s":"A study edition of the AI capital-cycle adjudication","u":"the-trillion-dollar-vintage.html","k":"Essay","c":"","d":"August 2026"},{"t":"Whose Losses Count","s":"Corporate ethics and the micro/macro foundations of strategy","u":"whose-losses-count.html","k":"Essay","c":"","d":"August 2026"},{"t":"Not Significant","s":"An essay on the accounting of harm","u":"not-significant.html","k":"Essay","c":"","d":"August 2026"},{"t":"Global Spending and Wealth","s":"Scale, structure, concentration","u":"global-spending-and-wealth.html","k":"Essay","c":"","d":"August 2026"},{"t":"Does chronic caffeine spend your heartbeat budget faster?","s":"A question taken seriously","u":"heartbeat-budget.html","k":"Essay","c":"","d":"August 2026"},{"t":"Exam Day Final Load","s":"The last hour","u":"exam-day-final-load.html","k":"Reference","c":"","d":"August 2026"},{"t":"Daily Learning Cockpit","s":"Prediction log, spaced rotation, calibration","u":"daily-learning-cockpit.html","k":"Tool","c":"","d":"August 2026"},{"t":"The Delayed Test","s":"Learning, judgment, and seeing clearly","u":"the-delayed-test.html","k":"Essay","c":"","d":"August 2026"},{"t":"The Calibrated Mind","s":"Operating principles for being right on purpose","u":"the-calibrated-mind.html","k":"Reference","c":"","d":"August 2026"},{"t":"AFM 291 Vault","s":"Map of content","u":"afm291.html","k":"Reference","c":"AFM 291","d":"July 2026"},{"t":"AFM 291 Revenue Atlas","s":"Revenue recognition as one connected system","u":"afm291-revenue-atlas.html","k":"Reference","c":"AFM 291","d":"September 2026"},{"t":"US and Canada Legal Architecture","s":"One page, two systems","u":"us-canada-legal-architecture.html","k":"Reference","c":"","d":"August 2026"},{"t":"Business Law for Accountants","s":"Canada and the United States","u":"business-law-primer.html","k":"Reference","c":"Business law","d":"August 2026"},{"t":"Law Arena","s":"Business law for accountants","u":"law-arena.html","k":"Tool","c":"Business law","d":"August 2026"},{"t":"Skill Forge","s":"AFM 291 drill engine","u":"skill-forge.html","k":"Tool","c":"AFM 291","d":"August 2026"},{"t":"AFM 291 Interactive Study System","s":"Intermediate Financial Accounting 1","u":"afm291-study-system.html","k":"Tool","c":"AFM 291","d":"August 2026"},{"t":"AFM 291 Practice Arena","s":"Timed question practice","u":"practice-arena.html","k":"Tool","c":"AFM 291","d":"August 2026"},{"t":"ECON 102 Interactive Exam Trainer","s":"Macroeconomics practice","u":"econ102-exam-trainer.html","k":"Tool","c":"ECON 102","d":"August 2026"},{"t":"Revenue Recognition","s":"Complete study guide","u":"revenue-recognition.html","k":"Reference","c":"AFM 291","d":"May 2026"},{"t":"AFM 291 Midterm Field Manual","s":"Revision C","u":"afm291-field-manual.html","k":"Reference","c":"AFM 291","d":"June 2026"},{"t":"AFM 291 Journal Entry Reference","s":"Every entry, one page","u":"afm291-journal-entries.html","k":"Reference","c":"AFM 291","d":"June 2026"},{"t":"AFM 291 Inventory and Gap Map","s":"What is covered, what is missing","u":"afm291-inventory-gap-map.html","k":"Reference","c":"AFM 291","d":"August 2026"},{"t":"AFM 274 Chapter 17","s":"Capital structure in a perfect market","u":"afm274-capital-structure.html","k":"Reference","c":"AFM 274","d":"June 2026"},{"t":"AFM 274 Chapter 19","s":"Financial distress, agency costs and information","u":"afm274-financial-distress.html","k":"Reference","c":"AFM 274","d":"June 2026"},{"t":"AFM 241 Exam Study Reference","s":"Full course reference","u":"afm241-study-reference.html","k":"Reference","c":"AFM 241","d":"June 2026"},{"t":"AFM 241 Two-Page Cheat Sheet","s":"Compressed to what fits","u":"afm241-cheat-sheet.html","k":"Reference","c":"AFM 241","d":"June 2026"},{"t":"The Gartner Hype Cycle","s":"The complete picture","u":"hype-cycle.html","k":"Reference","c":"AFM 241","d":"June 2026"},{"t":"ECON 102 Master Visual Reference","s":"Every model in one place","u":"econ102-visual-reference.html","k":"Reference","c":"ECON 102","d":"August 2026"},{"t":"Positive vs Normative","s":"ECON 102, slides 5 to 6","u":"positive-vs-normative.html","k":"Reference","c":"ECON 102","d":"August 2026"},{"t":"AFM 291 Chapter 1","s":"Financial accounting theory and data analytics","u":"afm291-ch1-theory-and-analytics.html","k":"Reference","c":"AFM 291","d":"July 2026"},{"t":"AFM 291 Chapter 2","s":"Conceptual frameworks for financial reporting","u":"afm291-ch2-conceptual-frameworks.html","k":"Reference","c":"AFM 291","d":"July 2026"},{"t":"AFM 291 Chapter 3","s":"Accrual accounting, changes and statement structure","u":"afm291-ch3-accrual-accounting.html","k":"Reference","c":"AFM 291","d":"July 2026"},{"t":"AFM 291 Chapter 4","s":"Revenue recognition, in course-week order","u":"afm291-ch4-revenue-recognition.html","k":"Reference","c":"AFM 291","d":"July 2026"},{"t":"AFM 291 Chapter 6","s":"Inventories: costing, cost flow, measurement and errors","u":"afm291-ch6-inventories.html","k":"Reference","c":"AFM 291","d":"July 2026"},{"t":"AFM 291 Chapter 9","s":"Intangibles, goodwill, mineral resources and grants","u":"afm291-ch9-intangibles-and-goodwill.html","k":"Reference","c":"AFM 291","d":"July 2026"},{"t":"AFM 291 Chapter 10","s":"Applications of fair value to non-current assets","u":"afm291-ch10-fair-value.html","k":"Reference","c":"AFM 291","d":"July 2026"},{"t":"AFM 291 Key Takeaways","s":"One reference map for the whole course","u":"afm291-key-takeaways.html","k":"Reference","c":"AFM 291","d":"August 2026"},{"t":"AFM 291 Study Plan","s":"What to do, in what order","u":"afm291-study-plan.html","k":"Reference","c":"AFM 291","d":"August 2026"},{"t":"AFM 291 Reconciliation","s":"Two indexes of the same course, reconciled","u":"afm291-reconciliation.html","k":"Reference","c":"AFM 291","d":"August 2026"},{"t":"AFM 291 Financial Assets I","s":"Equity investments and receivables","u":"afm291-w7-financial-assets.html","k":"Reference","c":"AFM 291","d":"July 2026"},{"t":"AFM 291 Case Guide: Equity Investments","s":"Week 7 problem-solving companion","u":"afm291-w7-cases.html","k":"Reference","c":"AFM 291","d":"July 2026"},{"t":"AFM 291 Financial Assets II","s":"Non-strategic debt investments","u":"afm291-w8-financial-assets.html","k":"Reference","c":"AFM 291","d":"July 2026"},{"t":"AFM 291 Case Guide: Debt Investments","s":"Week 8 problem-solving companion","u":"afm291-w8-cases.html","k":"Reference","c":"AFM 291","d":"July 2026"},{"t":"AFM 291 Property, Plant and Equipment","s":"Acquisition, cost and components","u":"afm291-w9-ppe.html","k":"Reference","c":"AFM 291","d":"July 2026"},{"t":"AFM 291 Case Guide: AceSpin Inc.","s":"Week 9 problem-solving companion","u":"afm291-w9-cases.html","k":"Reference","c":"AFM 291","d":"July 2026"},{"t":"AFM 291 Watch-Along Workbook","s":"One sheet per pre-lecture recording, in the order the videos run","u":"afm291-workbook.html","k":"Reference","c":"AFM 291","d":"September 2026"},{"t":"The Kennedys","s":"A dossier","u":"kennedy-dossier.html","k":"Reference","c":"","d":"August 2026"},{"t":"Case file: 4 to 5 August 1962","s":"One night, sourced","u":"monroe-case-file.html","k":"Reference","c":"","d":"August 2026"},{"t":"How to Judge a President","s":"A teaching companion, not a verdict","u":"how-to-judge-a-president.html","k":"Essay","c":"","d":"August 2026"},{"t":"The Portable Kit","s":"A five-stage audit of an evaluation framework","u":"leadership-evaluation-kit.html","k":"Reference","c":"","d":"August 2026"},{"t":"Attention, Worked on Paper","s":"The transformer's one mechanism, worked by hand, with the mask as the real difference between models","u":"transformers-study-guide.html","k":"Reference","c":"","d":"September 2026"},{"t":"Unit\u00e9 1: Au Caf\u00e9","s":"Essential caf\u00e9 interactions and ordering, at CEFR A1","u":"french-a1-cafe.html","k":"Reference","c":"","d":"September 2026"},{"t":"Unidad 1: En el Caf\u00e9","s":"The same caf\u00e9 in Spanish, read against the French unit","u":"spanish-a1-cafe.html","k":"Reference","c":"","d":"September 2026"},{"t":"The tax base nobody discloses","s":"A Dollarama valuation built on capital cost allowance","u":"canadian-dcf-cca.html","k":"Reference","c":"","d":"September 2026"}];
+</script><!--/__tail-->
+<script src="site.js?v=8fcad7c2" defer></script>
+
+<!--__rbp-->
+<!-- The pill styles itself: this block used to live only with the top bar,
+     so the seven tool pages, which carry the pill alone, rendered it as an
+     unstyled link at the very end of the document. Whatever carries the
+     pill now carries its style. -->
+<style id="__rbp-style">
+#__rb-pill{
+  position:fixed;left:14px;bottom:14px;z-index:2147483000;
+  display:inline-flex;align-items:center;gap:.45rem;padding:.58rem .9rem;
+  background:rgba(22,21,15,.93);color:#faf9f6;text-decoration:none;border-radius:99px;
+  font:600 12.5px/1 InterVar,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  border:1px solid rgba(255,255,255,.16);box-shadow:0 6px 22px rgba(0,0,0,.28);
+  opacity:0;transform:translateY(6px);pointer-events:none;
+  transition:opacity .2s ease,transform .2s ease;
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+}
+#__rb-pill.__on{opacity:1;transform:none;pointer-events:auto}
+#__rb-pill:hover{background:#16150f;color:#fff}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) #__rb-pill{background:rgba(243,243,240,.95);color:#0d0e11;border-color:rgba(0,0,0,.2)}
+  :root:not([data-theme="light"]) #__rb-pill:hover{background:#fff;color:#000}
+}
+:root[data-theme="dark"] #__rb-pill{background:rgba(243,243,240,.95);color:#0d0e11;border-color:rgba(0,0,0,.2)}
+:root[data-theme="dark"] #__rb-pill:hover{background:#fff;color:#000}
+@media (prefers-reduced-motion:reduce){#__rb-pill{transition:none}}
+@media print{#__rb-pill{display:none !important}}
+/* a tool carries no bar, so what it was built from stands at the foot of the document */
+#__rb-from{margin:1.25rem 1rem;font:400 13px/1.45 InterVar,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;color:#66635a;max-width:70ch}
+#__rb-from b{font-weight:600;color:#55524a}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) #__rb-from{color:#8f929a}
+  :root:not([data-theme="light"]) #__rb-from b{color:#b9bbc1}
+}
+:root[data-theme="dark"] #__rb-from{color:#8f929a}
+:root[data-theme="dark"] #__rb-from b{color:#b9bbc1}
+</style>
+<!-- With scripts off nothing ever adds the __on class, and the only way
+     back from a tool page vanished. The pill needs its script for the
+     scroll threshold, not for existing. -->
+<noscript><style>#__rb-pill{opacity:1 !important;transform:none !important;pointer-events:auto !important}</style></noscript>
+<a id="__rb-pill" href="research.html">&#8592; Research</a>
+<p id="__rb-from"><b>Built from</b> the published models it names, from Turing&#x27;s reaction-diffusion paper onward, written as one self-contained file of WebGL2 shaders and JavaScript with AI assistance.</p>
+<script>
+(function(){
+  var p=document.getElementById('__rb-pill'); if(!p) return;
+  /* On a page with the top bar the pill waits until the bar has scrolled
+     out of reach. On a page without one (the tools carry no bar, because a
+     bar inside a full-screen application sits in the wrong place) the pill
+     is the only way back, so it is there from the first paint: a tool
+     screen shorter than the threshold used to strand the reader entirely. */
+  var TH=document.getElementById('__rb')?160:-1;
+  var t=false;
+  function run(){ t=false;
+    p.classList.toggle('__on',(window.scrollY||document.documentElement.scrollTop)>TH); }
+  function q(){ if(!t){ t=true; requestAnimationFrame(run); } }
+  addEventListener('scroll',q,{passive:true}); run();
+})();
+/* the trail, for the pages that carry only the pill (the tools) */
+(function(){
+  if(window.__trailed) return; window.__trailed=1;
+  if('serviceWorker' in navigator && location.protocol.indexOf('http')===0){
+    addEventListener('load',function(){setTimeout(function(){
+      navigator.serviceWorker.register('sw.js').catch(function(){});},6000);});
+  }
+  try{
+    var k='atlas.trail';
+    var u=location.pathname.split('/').pop()||'index.html';
+    var t2=JSON.parse(localStorage.getItem(k)||'{}');
+    function put(key){
+      if(t2[key]||Object.keys(t2).length<500){
+        t2[key]=(t2[key]||0)+1;
+        try{localStorage.setItem(k,JSON.stringify(t2));}catch(e){}
+      }
+    }
+    put(u+location.hash);
+    addEventListener('hashchange',function(){ put(u+location.hash); });
+  }catch(e){}
+})();
+</script>
+<!--/__rbp-->
+</body>
+</html>
