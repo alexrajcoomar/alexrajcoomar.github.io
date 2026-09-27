@@ -2356,8 +2356,14 @@ def page_research():
 
 def page_tools():
     items = [p for p in P if p["k"] == "Tool"]
-    n_drill = sum(1 for p in items if not p["is_doc"])
-    n_full  = len(items) - n_drill
+    # A laboratory computes its specimen live rather than holding a question
+    # bank, so it is counted apart from the drill engines it would otherwise
+    # join; the tag in content/pieces.json says which is which.
+    n_lab   = sum(1 for p in items if not p["is_doc"] and "Simulation" in p["tags"])
+    n_drill = sum(1 for p in items if not p["is_doc"]) - n_lab
+    n_full  = len(items) - n_drill - n_lab
+    lab = (f" {n_lab} {'is a laboratory that computes its specimens' if n_lab == 1 else 'are laboratories that compute their specimens'}"
+           f" live, and carr{'ies' if n_lab == 1 else 'y'} no reading time either." if n_lab else "")
     rows = [shelf_list_head()] + [shelf_row(k, p) for k, p in enumerate(items, 1)]
     rows.append(shelf_subtotal(f"Tools, {len(items)} pieces, counted once on their own shelves", items))
     body = f"""<div class="hero tight shell">
@@ -2365,7 +2371,7 @@ def page_tools():
   <h1 class="h1">Interactive tools</h1>
   <p class="lede">{len(items)} things you use rather than read. {N_PWA} of them install to a phone home
   screen. {n_drill} are drill engines that hold their question banks in code, so they carry no reading
-  time: a drill has no length, only a session. The other {n_full} render{'s' if n_full == 1 else ''} a full document on load and
+  time: a drill has no length, only a session.{lab} The other {n_full} render{'s' if n_full == 1 else ''} a full document on load and
   {'is' if n_full == 1 else 'are'} measured like one.</p>
 {section_guide("tools.html")}
 </div>
@@ -5344,7 +5350,10 @@ def check_site():
         look("13", f)
     T["numerals"] = {"n": getattr(_typed_numerals, "checked", 0), "pages": len(SHELL_PAGES)}
     html_files = sorted(f for f in files if f.endswith(".html"))
-    for sub in ("cards", "fonts", "content", "build"):
+    # morphogenesis/ holds one self-contained application, full screen and
+    # always animating, so it is not a piece: its project page,
+    # morphogenesis.html, is the piece, and links into it.
+    for sub in ("cards", "fonts", "content", "build", "morphogenesis"):
         if os.path.isdir(os.path.join(OUT, sub)):
             files |= {sub + "/" + f for f in os.listdir(os.path.join(OUT, sub))}
 

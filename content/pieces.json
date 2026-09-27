@@ -189,6 +189,26 @@
    "built_from": "A pre-registered protocol, methodology only, built from the verified foundational literature in its section 1.5, cited from the primary sources."
   },
   {
+   "slug": "morphogenesis",
+   "t": "Morphogenesis",
+   "s": "A laboratory of emergent pattern, computed live",
+   "k": "Tool",
+   "surface": "independent",
+   "c": "",
+   "d": "September 2026",
+   "url": "morphogenesis.html",
+   "featured": false,
+   "pwa": false,
+   "tags": [
+    "Interactive",
+    "Visual",
+    "Simulation"
+   ],
+   "blurb": "Six living systems computed live on the graphics card, from reaction–diffusion and slime mould to Lenia and flocking. Paint into them, fork a dish into a control and an intervention, and save an exact specimen to open again later.",
+   "demo": "Pattern that nobody draws: every stripe, spiral and flock is computed from local rules as you watch.",
+   "built_from": "the published models it names, from Turing's reaction-diffusion paper onward, written as one self-contained file of WebGL2 shaders and JavaScript with AI assistance."
+  },
+  {
    "slug": "ifrs15-judgment-trainer",
    "t": "IFRS 15 Judgment Trainer",
    "s": "Sixty-two revenue scenarios, every answer anchored to the Handbook",

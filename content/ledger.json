@@ -10,8 +10,8 @@
   "copy": 50,
   "styling": 8,
   "untouched": 3,
-  "new": 7,
-  "pieces": 68
+  "new": 8,
+  "pieces": 69
  },
  "pieces": {
   "flagged-in-hindsight": {
@@ -161,6 +161,14 @@
     "Measure: the shared case-method stylesheet now holds concession paragraphs, claim texts, falsifiers and source lines to 70ch (styling only on the frozen pieces); the family's running text was already at 66ch.",
     "Em dashes, this phase: 104 replaced by rule (commas 5, parentheses 4, colon 28, colon in a heading 15, comma 52). The rule is build/emdash.py; a dash inside quotation marks was converted like any other, and no word moved."
    ],
+   "text_diff": [
+    "(new in this pass: no baseline text)"
+   ]
+  },
+  "morphogenesis": {
+   "url": "morphogenesis.html",
+   "title": "Morphogenesis",
+   "class": "new",
    "text_diff": [
     "(new in this pass: no baseline text)"
    ]
