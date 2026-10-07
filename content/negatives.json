@@ -1218,8 +1218,8 @@
  "runtime": {
   "meta": {
    "tool": "build/audit.js --falsify",
-   "date": "2026-09-27",
-   "commit": "aab42be",
+   "date": "2026-10-07",
+   "commit": "89c3ef6",
    "code": "e87c0e3a6638"
   },
   "cases": [
@@ -1311,16 +1311,16 @@
        "aimed": 6,
        "faced": 6,
        "framesSettle": 1554,
-       "framesAfter": 2220,
-       "framesAtTop": 671
+       "framesAfter": 2225,
+       "framesAtTop": 660
       },
       "phone": {
        "rows": 6,
        "aimed": 6,
        "faced": 6,
-       "framesSettle": 16026,
-       "framesAfter": 22800,
-       "framesAtTop": 4020
+       "framesSettle": 13188,
+       "framesAfter": 18840,
+       "framesAtTop": 3360
       }
      }
     }
@@ -1354,7 +1354,7 @@
       "pulseEnded": true,
       "repeated": false,
       "switched": true,
-      "framesAfterSwitch": 61,
+      "framesAfterSwitch": 60,
       "focusRing": true
      }
     }
@@ -1428,7 +1428,7 @@
      "inspect": {
       "layers": 2,
       "rest": 0,
-      "hover": 0.666577,
+      "hover": 0.666647,
       "focus": 1,
       "ms": 900,
       "moved": 0,
@@ -1588,7 +1588,7 @@
       "forgotten": true,
       "guardHeld": false,
       "files": 0,
-      "filesExpected": 134,
+      "filesExpected": 135,
       "siteFields": 0,
       "scrollWidth": 320,
       "overflow": false
@@ -1625,8 +1625,8 @@
       "promptShown": true,
       "forgotten": true,
       "guardHeld": true,
-      "files": 134,
-      "filesExpected": 134,
+      "files": 135,
+      "filesExpected": 135,
       "siteFields": 13,
       "scrollWidth": 320,
       "overflow": false
@@ -1663,8 +1663,8 @@
       "promptShown": true,
       "forgotten": true,
       "guardHeld": true,
-      "files": 134,
-      "filesExpected": 134,
+      "files": 135,
+      "filesExpected": 135,
       "siteFields": 13,
       "scrollWidth": 320,
       "overflow": false

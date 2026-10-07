@@ -2,9 +2,9 @@
  "note": "Written by build/audit.js: what a headless browser measured on each page, with the fingerprint of the inputs it measured. The register on the controls page prints these results; a page whose inputs moved since is not yet measured for that build. meta.runs is appended by build/claims.py --record-run on every publish.",
  "meta": {
   "tool": "build/audit.js",
-  "browser": "Chromium 141.0.7390.37",
-  "date": "2026-09-27",
-  "commit": "aab42be",
+  "browser": "Chromium 153.0.8010.12",
+  "date": "2026-10-07",
+  "commit": "89c3ef6",
   "runs": [
    {
     "commit": "21aacf2",
@@ -170,6 +170,11 @@
     "commit": "93966c5",
     "date": "2026-10-07",
     "audit": "kept"
+   },
+   {
+    "commit": "89c3ef6",
+    "date": "2026-10-07",
+    "audit": "ran"
    }
   ]
  },
@@ -300,8 +305,8 @@
      "matched": true
     }
    },
-   "inputs": "c35497567eaf",
-   "measured": "2026-09-27"
+   "inputs": "36541dbb94dd",
+   "measured": "2026-10-07"
   },
   "admin.html": {
    "ext": {
@@ -900,8 +905,8 @@
    },
    "errors": 0,
    "chrome": {
-    "a": 15008,
-    "b": 14963
+    "a": 15001,
+    "b": 14956
    },
    "print": {
     "stickyLeft": 0,
@@ -940,8 +945,8 @@
    "motion": {
     "animations": 0
    },
-   "inputs": "b963544ab508",
-   "measured": "2026-09-27"
+   "inputs": "77257fd6aee7",
+   "measured": "2026-10-07"
   },
   "brittle-network.html": {
    "ext": {
@@ -1708,8 +1713,8 @@
      "matched": true
     }
    },
-   "inputs": "2ec6e50d60aa",
-   "measured": "2026-09-27"
+   "inputs": "253b01a347d7",
+   "measured": "2026-10-07"
   },
   "kennedy-dossier.html": {
    "ext": {
@@ -2110,8 +2115,8 @@
      "matched": true
     }
    },
-   "inputs": "55aadea5d2d0",
-   "measured": "2026-09-27"
+   "inputs": "6d5ea7e5c05c",
+   "measured": "2026-10-07"
   },
   "revenue-recognition.html": {
    "ext": {
